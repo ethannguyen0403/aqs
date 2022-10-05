@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="PROD_AQS_Smoke_TCs" verbose="1">
+    <listeners>
+        <listener class-name="com.paltech.utils.ExtentReporterNG"/>
+    </listeners>
+
+    <test name="AQS_Smoke_Chrome">
+        <parameter name='browser' value='window10.local.chrome'/>
+        <parameter name='env' value='aqsprod'/>
+        <parameter name='language' value='en'/>
+        <parameter name='isLogin' value='true'/>
+        <parameter name='isProxy' value='false'/>
+        <parameter name='username' value='qa'/>
+        <parameter name='password' value='p8PEjV0gJOnWf9U0aEgGEA=='/>
+        <parameter name='newpassword' value='5pjguoEh1fnSILpykWt1vQ=='/>
+        <parameter name='isThrown' value='true'/>
+
+        <groups>
+            <run>
+                <include name="smoke" />
+            </run>
+        </groups>
+
+        <classes>
+            <class name="testcases.AQSHome.LoginTest"/>
+            <class name="testcases.AQSHome.LogoutTest"/>
+            <class name="testcases.AQSHome.HeaderTest"/>
+            <class name="testcases.AQSHome.BetOrderTest"/>
+            <class name="testcases.AQSHome.RoleTest"/>
+            <class name="testcases.AQSHome.ManagerTest"/>
+        </classes>
+
+
+    </test>
+</suite>
