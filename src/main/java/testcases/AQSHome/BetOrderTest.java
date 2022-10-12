@@ -54,12 +54,12 @@ public class BetOrderTest extends BaseCaseAQS {
         //Confirm table
         ArrayList<String> lstConfirmHead = betOrderPage.tbPending.getHeaderList();
         Assert.assertEquals(betOrderPage.lblConfirm.getText(),CONFIRM,"FAILED! Confirm title is incorrect display");
-        Assert.assertEquals(lstPendingHead, ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Pending table header is incorrect display");
+        Assert.assertEquals(lstConfirmHead, ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Pending table header is incorrect display");
 
         //Cancelled table
         ArrayList<String> lstCancelledHead = betOrderPage.tbPending.getHeaderList();
         Assert.assertEquals(betOrderPage.lblCancel.getText(),CANCELLED,"FAILED! Cancelled title is incorrect display");
-        Assert.assertEquals(lstPendingHead, ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Pending table header is incorrect display");
+        Assert.assertEquals(lstCancelledHead, ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Pending table header is incorrect display");
         log("INFO: Executed completely");
     }
 
@@ -519,7 +519,7 @@ public class BetOrderTest extends BaseCaseAQS {
 //        chb.click();
         int ttRow = columnSettingPopup.tbColumns.getNumberOfRows(false,false);
         List<String> lstCol = columnSettingPopup.tbColumns.getColumn(1,false);
-        for (int i=1 ; i < ttRow; i++){
+        for (int i=0 ; i <= ttRow; i++){
             if (lstCol.get(i).contains("Market")) {
                 log("Market row is "+i);
             }
