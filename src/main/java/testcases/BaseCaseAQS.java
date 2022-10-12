@@ -1,0 +1,215 @@
+package testcases;
+import com.paltech.driver.DriverManager;
+import com.paltech.driver.DriverProperties;
+import com.paltech.utils.ScreenShotUtils;
+import com.paltech.utils.StringUtils;
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+import com.relevantcodes.extentreports.LogStatus;
+import net.lightbody.bmp.BrowserMobProxy;
+import net.lightbody.bmp.core.har.HarEntry;
+import objects.Environment;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.testng.ITestResult;
+import org.testng.Reporter;
+import org.testng.annotations.*;
+import pages.ess.BetOrderPage;
+import pages.ess.HomePage;
+import pages.ess.LoginPage;
+
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.rmi.UnexpectedException;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+public class BaseCaseAQS {
+    private static ApplicationContext context;
+    public static DriverProperties driverProperties;
+    public static Environment environment;
+    public static ExtentTest logger;
+    public static ExtentReports report;
+    public static HomePage homePage;
+    public static BetOrderPage betOrderPage;
+    public static LoginPage loginPage;
+    public static BrowserMobProxy browserMobProxy;
+
+    @BeforeSuite(alwaysRun = true)
+    public static void beforeSuite() throws IOException {
+        context = new ClassPathXmlApplicationContext("resources/settings/AQSSetting.xml");
+        report = new ExtentReports("", true);
+    }
+
+    @Parameters({"browser", "env"})
+    @BeforeClass(alwaysRun = true)
+    public void beforeClass(String browser, String env) {
+        environment = (Environment) context.getBean(env);
+        driverProperties = (DriverProperties) context.getBean(browser);
+        System.out.println(String.format("RUNNING ON %s under the link %s", env.toUpperCase(), environment.getLoginURL()));
+    }
+
+   /* @Parameters({"username", "password", "isLogin","isProxy"})
+    @BeforeMethod(alwaysRun = true)
+    public static void beforeMethod(String username, String password, boolean isLogin, boolean isProxy, Method method, ITestResult result) throws Exception {
+        System.out.println("*****************************************Beginning TC's " + method.getName() +"****************************************************");
+        logger = report.startTest(method.getName(), method.getClass().getName());
+        driverProperties.setMethodName(method.getName());
+        driverProperties.setIsProxy(isProxy);
+        createDriver();
+        if (isLogin){
+       //     Set<Cookie> browserCookies = DriverManager.getDriver().getCookies();
+            homePage = loginPage.login(username, StringUtils.decrypt(password));
+          //  DriverManager.getDriver().addCookie();
+       //    browserCookies = DriverManager.getDriver().getCookies();
+           String cookie = DriverManager.getDriver().getCookies().toString();
+            if(!homePage.lblUserName.isDisplayed()){
+                homePage = loginPage.login(username,password);
+            }
+        } else {
+            loginPage = new LoginPage();
+        }
+
+        if (isProxy){
+            browserMobProxy = driverProperties.getBrowserMobProxy();
+        }
+    }*/
+      @Parameters({"username", "password", "isLogin","isProxy"})
+    @BeforeMethod(alwaysRun = true)
+    public static void beforeMethod(String username, String password, boolean isLogin, boolean isProxy, Method method, ITestResult result) throws Exception {
+        System.out.println("*****************************************Beginning TC's " + method.getName() +"****************************************************");
+        logger = report.startTest(method.getName(), method.getClass().getName());
+        driverProperties.setMethodName(method.getName());
+        driverProperties.setIsProxy(isProxy);
+        createDriver();
+        if (isLogin){
+            betOrderPage = loginPage.login(username, StringUtils.decrypt(password));
+         /*   SessionStorage sessionStorage = DriverManager.getDriver().getSessionStorage();
+            String token =sessionStorage.getItemFromSessionStorage("token-user");*/
+//            WebStorage webStorage = (WebStorage) new Augmenter().augment(driver);
+// using local storage
+            /*LocalStorage localStorage = webStorage.getLocalStorage();
+            localStorage.getItem("token");*/
+
+// using session storage
+//            SessionStorage sessionStorage = webStorage.getSessionStorage();
+//            String tokenUser= sessionStorage.getItem("token-user");
+//            String username2 =sessionStorage.getItem("username");
+
+      /*      WebStorage webStorage = (WebStorage) driver;
+            SessionStorage sessionStorage = webStorage.getSessionStorage();
+            String tokenUser = sessionStorage.getItem("token-user");
+            String username2 = sessionStorage.getItem("username");
+            String usernameRemember = sessionStorage.getItem("usernameRemember");
+            String loggedIN = sessionStorage.getItem("LoggedIn");
+            if(driver instanceof WebStorage){
+
+            }
+*/
+          /*  if(!homePage.lblUserName.isDisplayed()){
+                homePage = loginPage.login(username,password);
+            }*/
+        } else {
+            loginPage = new LoginPage();
+        }
+
+        if (isProxy){
+            browserMobProxy = driverProperties.getBrowserMobProxy();
+        }
+    }
+   /* @Parameters({"username", "password", "isLogin","isProxy"})
+    @BeforeMethod(alwaysRun = true)
+    public static void beforeMethod(String username, String password, boolean isLogin, boolean isProxy, Method method, ITestResult result) throws Exception {
+        System.out.println("*****************************Beginning TC's " + method.getName() +"*******************************");
+        logger = report.startTest(method.getName(), method.getClass().getName());
+        driverProperties.setMethodName(method.getName());
+        driverProperties.setIsProxy(isProxy);
+        String dashBoardURL = environment.getDashboardURL();
+        createDriver();
+        if (isLogin){
+
+            Helper.loginAQSAPI(environment.getSosURL(), dashBoardURL, username, password,true);
+
+            homePage = new HomePage();
+            homePage.menuAQS.isDisplayed();
+        } else {
+            loginPage = new LoginPage();
+        }
+        if (isProxy){
+            browserMobProxy = driverProperties.getBrowserMobProxy();
+        }
+    }
+*/
+    @AfterMethod(alwaysRun = true)
+    public static void afterMethod(ITestResult result) {
+        String testResult = "PASSED";
+        if(!result.isSuccess()) {
+            testResult = "FAILED";
+            logger.log(LogStatus.FAIL, result.getThrowable());
+            String srcBase64 = ScreenShotUtils.captureScreenshotWithBase64(DriverManager.getDriver().getWebDriver());
+            result.setAttribute(result.getMethod().getMethodName(), srcBase64);
+        }
+        if (driverProperties.isProxy()){
+            log("Info: Quitting BrowserMobProxy's port is " + browserMobProxy.getPort());
+            browserMobProxy.stop();
+        }
+        DriverManager.quitAll();
+        System.out.println("*****************************************Ending TC's name: " + result.getMethod().getMethodName() + " is " + testResult + " ********************************************");
+    }
+
+    @AfterSuite
+    public static void tearDownSuite() {
+        report.endTest(logger);
+        report.flush();
+        report.close();
+    }
+
+    protected static void log(String message) {
+        logger.log(LogStatus.INFO, message);//For extentTest HTML report
+        System.out.println(message);
+        Reporter.log(message);
+    }
+
+    public static void logBug(String message) {
+        logger.log(LogStatus.ERROR, message);
+        System.err.println(message);
+        Reporter.log(message);
+    }
+
+    protected boolean hasHTTPRespondedOK(){
+        browserMobProxy.waitForQuiescence(1, 3, TimeUnit.SECONDS);
+        List<HarEntry> entries = browserMobProxy.getHar().getLog().getEntries();
+        for (HarEntry entry : entries) {
+            if(entry.getResponse().getStatus() >= 400 && entry.getResponse().getStatus() != 423) { // skip 423 status due to sending a request in too short time
+                log(String.format("ERROR URL: %s - STATUS CODE: %s", entry.getRequest().getUrl(), entry.getResponse().getStatus()));
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**********************
+     * Private methods
+     *******************/
+    private static void createDriver() throws MalformedURLException, UnexpectedException {
+        int count = 3;
+        DriverManager.quitAll();
+        while (count-- > 0){
+            DriverManager.createWebDriver(driverProperties);
+            DriverManager.getDriver().setLoadingTimeOut(100);
+            DriverManager.getDriver().maximize();
+            if (DriverManager.getDriver().getToAvoidTimeOut(environment.getLoginURL()) || count==0) {
+                loginPage = new LoginPage();
+          /*      if(!loginPage.txtUsername.isDisplayed(5))
+                    DriverManager.getDriver().getToAvoidTimeOut(environment.getLoginURL());*/
+                log(String.format("DEBUG: CREATED DRIVER SUCCESSFULLY with COUNT %s", count));
+                System.out.println(String.format("Width x Height is %sx%s with MAP SIZE %s", DriverManager.getDriver().getWidth(), DriverManager.getDriver().getHeight(), DriverManager.driverMap.size()));
+                break;
+            } else {
+                log("DEBUG: QUIT BROWSER DUE TO NOT CONNECTED");
+                DriverManager.quitAll();
+            }
+        }
+    }
+}
