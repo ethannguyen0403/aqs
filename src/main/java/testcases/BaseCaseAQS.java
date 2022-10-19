@@ -9,14 +9,20 @@ import com.relevantcodes.extentreports.LogStatus;
 import net.lightbody.bmp.BrowserMobProxy;
 import net.lightbody.bmp.core.har.HarEntry;
 import objects.Environment;
+import org.json.simple.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.annotations.*;
 import pages.ess.BetOrderPage;
 import pages.ess.HomePage;
 import pages.ess.LoginPage;
+import testcases.AQSHome.LoginTest;
+import utils.testraildemo.APIClient;
+import utils.testraildemo.APIException;
+import utils.testraildemo.TestRails;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -35,11 +41,33 @@ public class BaseCaseAQS {
     public static BetOrderPage betOrderPage;
     public static LoginPage loginPage;
     public static BrowserMobProxy browserMobProxy;
+    public static String PROJECT_ID="1";
+    public static APIClient client;
 
     @BeforeSuite(alwaysRun = true)
-    public static void beforeSuite() throws IOException {
+    public static void beforeSuite(ITestContext ctx) throws IOException, APIException {
         context = new ClassPathXmlApplicationContext("resources/settings/AQSSetting.xml");
         report = new ExtentReports("", true);
+
+        // Add run in TestRail
+        client  = new APIClient("https://merito1.testrail.io");
+        client.setUser("huonghuynh90@gmail.com");
+        client.setPassword("P@l332211");
+        Map data = new HashMap();
+        //data.put("suite_id",true);
+        data.put("include_all",true);
+        data.put("name","Test Run "+System.currentTimeMillis());
+        JSONObject c = null;
+        c = (JSONObject)client.sendPost("add_run/"+PROJECT_ID,data);
+        Long suite_id = (Long)c.get("id");
+        ctx.setAttribute("suiteId",suite_id);
+        try{
+            context = new ClassPathXmlApplicationContext("resources/settings/AQSSetting.xml");
+            report = new ExtentReports("", true);
+        } catch(Exception ex) {
+            throw new NullPointerException(String.format("ERROR: Exception occurs beforeSuite by '%s'", ex.getMessage()));
+        }
+        //End add Run in TestRail
     }
 
     @Parameters({"browser", "env"})
@@ -75,9 +103,15 @@ public class BaseCaseAQS {
             browserMobProxy = driverProperties.getBrowserMobProxy();
         }
     }*/
-      @Parameters({"username", "password", "isLogin","isProxy"})
+   @Parameters({"username", "password", "isLogin","isProxy"})
     @BeforeMethod(alwaysRun = true)
-    public static void beforeMethod(String username, String password, boolean isLogin, boolean isProxy, Method method, ITestResult result) throws Exception {
+    public static void beforeMethod(String username, String password, boolean isLogin, boolean isProxy, Method method, ITestResult resultI,ITestContext ctx) throws Exception {
+       System.out.println("*** Map test case in script with test case in TestRail ***");
+       Method m = method;
+       if (m.isAnnotationPresent(TestRails.class)) {
+           TestRails ta = m.getAnnotation(TestRails.class);
+           ctx.setAttribute("caseId",ta.id());
+       }
         System.out.println("*****************************************Beginning TC's " + method.getName() +"****************************************************");
         logger = report.startTest(method.getName(), method.getClass().getName());
         driverProperties.setMethodName(method.getName());
@@ -85,31 +119,6 @@ public class BaseCaseAQS {
         createDriver();
         if (isLogin){
             betOrderPage = loginPage.login(username, StringUtils.decrypt(password));
-         /*   SessionStorage sessionStorage = DriverManager.getDriver().getSessionStorage();
-            String token =sessionStorage.getItemFromSessionStorage("token-user");*/
-//            WebStorage webStorage = (WebStorage) new Augmenter().augment(driver);
-// using local storage
-            /*LocalStorage localStorage = webStorage.getLocalStorage();
-            localStorage.getItem("token");*/
-
-// using session storage
-//            SessionStorage sessionStorage = webStorage.getSessionStorage();
-//            String tokenUser= sessionStorage.getItem("token-user");
-//            String username2 =sessionStorage.getItem("username");
-
-      /*      WebStorage webStorage = (WebStorage) driver;
-            SessionStorage sessionStorage = webStorage.getSessionStorage();
-            String tokenUser = sessionStorage.getItem("token-user");
-            String username2 = sessionStorage.getItem("username");
-            String usernameRemember = sessionStorage.getItem("usernameRemember");
-            String loggedIN = sessionStorage.getItem("LoggedIn");
-            if(driver instanceof WebStorage){
-
-            }
-*/
-          /*  if(!homePage.lblUserName.isDisplayed()){
-                homePage = loginPage.login(username,password);
-            }*/
         } else {
             loginPage = new LoginPage();
         }
@@ -118,31 +127,21 @@ public class BaseCaseAQS {
             browserMobProxy = driverProperties.getBrowserMobProxy();
         }
     }
-   /* @Parameters({"username", "password", "isLogin","isProxy"})
-    @BeforeMethod(alwaysRun = true)
-    public static void beforeMethod(String username, String password, boolean isLogin, boolean isProxy, Method method, ITestResult result) throws Exception {
-        System.out.println("*****************************Beginning TC's " + method.getName() +"*******************************");
-        logger = report.startTest(method.getName(), method.getClass().getName());
-        driverProperties.setMethodName(method.getName());
-        driverProperties.setIsProxy(isProxy);
-        String dashBoardURL = environment.getDashboardURL();
-        createDriver();
-        if (isLogin){
-
-            Helper.loginAQSAPI(environment.getSosURL(), dashBoardURL, username, password,true);
-
-            homePage = new HomePage();
-            homePage.menuAQS.isDisplayed();
-        } else {
-            loginPage = new LoginPage();
-        }
-        if (isProxy){
-            browserMobProxy = driverProperties.getBrowserMobProxy();
-        }
-    }
-*/
     @AfterMethod(alwaysRun = true)
-    public static void afterMethod(ITestResult result) {
+    public static void afterMethod(ITestResult result, ITestContext ctx) throws APIException, IOException {
+        Map data = new HashMap();
+        if(result.isSuccess()) {
+            data.put("status_id",1);
+        }
+        else{
+            data.put("status_id",5);
+            data.put("comment", result.getThrowable().toString());
+        }
+        String caseId = (String)ctx.getAttribute("caseId");
+        Long suiteId = (Long)ctx.getAttribute("suiteId");
+        client.sendPost("add_result_for_case/"+suiteId+"/"+caseId,data);
+        System.out.println("******** Done Add Result in Test Run in Testrail *********");
+
         String testResult = "PASSED";
         if(!result.isSuccess()) {
             testResult = "FAILED";
