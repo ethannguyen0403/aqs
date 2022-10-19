@@ -24,7 +24,7 @@
 
         <classes>
             <class name="testcases.AQSHome.LoginTest"/>
-          <!--  <class name="testcases.AQSHome.LogoutTest"/>-->
+            <class name="testcases.AQSHome.LogoutTest"/>
         </classes>
     </test>
 </suite>
