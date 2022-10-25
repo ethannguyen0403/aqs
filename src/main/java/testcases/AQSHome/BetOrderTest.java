@@ -42,21 +42,14 @@ public class BetOrderTest extends BaseCaseAQS {
         Assert.assertEquals(betOrderPage.lblToDate.getText(),"To Date","FAILED! To Date title is incorrect display");
         Assert.assertTrue(betOrderPage.txtToDate.isDisplayed(), "FAILED! To Date date time picker is not displayed");
         Assert.assertTrue(betOrderPage.btnShow.isDisplayed(), "FAILED! Show button is not displayed!");
+
         log("Verify Pending, Confirm, Cancelled table display with correct header");
-        //Pending table
-        ArrayList<String> lstPendingHead = betOrderPage.tbPending.getHeaderNameOfRows();
         Assert.assertEquals(betOrderPage.lblPending.getText(),PENDING,"FAILED! Pending title is incorrect display");
-        Assert.assertEquals(lstPendingHead, ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Pending table header is incorrect display");
-
-        //Confirm table
-        ArrayList<String> lstConfirmHead = betOrderPage.tbConfirm.getHeaderNameOfRows();
+        Assert.assertEquals(betOrderPage.tbPending.getHeaderNameOfRows(), ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Pending table header is incorrect display");
         Assert.assertEquals(betOrderPage.lblConfirm.getText(),CONFIRM,"FAILED! Confirm title is incorrect display");
-        Assert.assertEquals(lstConfirmHead, ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Confirm table header is incorrect display");
-
-        //Cancelled table
-        ArrayList<String> lstCancelledHead = betOrderPage.tbCancelled.getHeaderNameOfRows();
+        Assert.assertEquals(betOrderPage.tbConfirm.getHeaderNameOfRows(), ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Confirm table header is incorrect display");
         Assert.assertEquals(betOrderPage.lblCancel.getText(),CANCELLED,"FAILED! Cancelled title is incorrect display");
-        Assert.assertEquals(lstCancelledHead, ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Cancelled table header is incorrect display");
+        Assert.assertEquals(betOrderPage.tbCancelled.getHeaderNameOfRows(), ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Cancelled table header is incorrect display");
         log("INFO: Executed completely");
     }
 
@@ -68,8 +61,10 @@ public class BetOrderTest extends BaseCaseAQS {
         String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-3,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
+
         log("@Step 2: Click on AQS menu");
         betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
+
         log("@Step 3: Click Bets link at Selection column  on any table: Pending,  Confirm, Cancelled");
         List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer",CONFIRM);
         if(betOrderPage.isNodata(orderLst)){
@@ -78,12 +73,11 @@ public class BetOrderTest extends BaseCaseAQS {
         BetListPopup betListPopup = betOrderPage.openBetList(orderLst.get(0).getOrderId(),CONFIRM);
 
         log("Verify Bet List popup should display with correct info:");
-        log("1. Title:AQS Bet Orders > Bet List");
+        log("Verify 1. Title:AQS Bet Orders > Bet List");
         Assert.assertEquals(betListPopup.lblTitle.getText(),"AQS Bet Orders > Bet List", "FAILED! Bet list title is displayed incorrectly!");
 
-        log("2. Event info: Match Date | Event Name | League name");
-        String eventDateAPI = orderLst.get(0).getEventDate();
-        String dateconvert = DateUtils.convertDateToNewTimeZone(eventDateAPI,"yyyy-MM-dd'T'HH:mm:ss.SSSXXX","","dd/MM/yyyy HH:mm","GMT+8");
+        log("Verify 2. Event info: Match Date | Event Name | League name");
+        String dateconvert = DateUtils.convertDateToNewTimeZone(orderLst.get(0).getEventDate(),"yyyy-MM-dd'T'HH:mm:ss.SSSXXX","","dd/MM/yyyy HH:mm","GMT+8");
         Assert.assertTrue(betListPopup.lbleventInfo.getText().contains(dateconvert),"FAILED! Event date is displayed incorrectly!");
         Assert.assertTrue(betListPopup.lbleventInfo.getText().contains(orderLst.get(0).getHome()), "FAILED! Home team name is displayed incorrectly!");
         Assert.assertTrue(betListPopup.lbleventInfo.getText().contains(orderLst.get(0).getAway()), "FAILED! Away team name is displayed incorrectly!");
@@ -102,17 +96,19 @@ public class BetOrderTest extends BaseCaseAQS {
         String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
+
         log("@Step 2: Click on AQS menu");
         betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
+
         log("@Step 3: Click Bets link at Action column in Pending section");
         List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer",PENDING);
         if(betOrderPage.isNodata(orderLst)){
             log("SKIP: No data to click on Market name to open order log popup in Pending order");
             return;}
         BetSlipPopup betSlipPopup = betOrderPage.openBetSlip(orderLst.get(0).getOrderId(),PENDING);
+
         log("@Verify Bet Slip popup display with correct info: Start date, League - Event name - Market type");
-        String eventDateAPI = orderLst.get(0).getEventDate();
-        String dateconvert = DateUtils.convertDateToNewTimeZone(eventDateAPI,"yyyy-MM-dd'T'HH:mm:ss.SSSXXX","","dd/MM HH:mm","GMT+8");
+        String dateconvert = DateUtils.convertDateToNewTimeZone(orderLst.get(0).getEventDate(),"yyyy-MM-dd'T'HH:mm:ss.SSSXXX","","dd/MM HH:mm","GMT+8");
         Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(dateconvert),"FAILED! Event date is displayed incorrectly!");
         Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(0).getHome()), "FAILED! Home team name is displayed incorrectly!");
         Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(0).getAway()), "FAILED! Away team name is displayed incorrectly!");
@@ -130,14 +126,17 @@ public class BetOrderTest extends BaseCaseAQS {
         String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
+
         log("@Step 2: Click on AQS menu");
         betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
+
         log("@Step 3: Click Bets link at Action column in Pending section");
         List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer",PENDING);
         if(betOrderPage.isNodata(orderLst)){
             log("SKIP: No data to click on Market name to open order log popup in Pending order");
             return;}
         BetSlipPopup betSlipPopup = betOrderPage.openBetSlip(orderLst.get(0).getOrderId(),PENDING);
+
         log("@Verify control in Bet Slip display correctly");
         Assert.assertTrue(betSlipPopup.btnSelectAll.isDisplayed(),"Failed! Select All button is not displayed");
         Assert.assertTrue(betSlipPopup.btnDelSelect.isDisplayed(),"Failed! Delete Selected button is not displayed");
@@ -155,14 +154,17 @@ public class BetOrderTest extends BaseCaseAQS {
         String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
+
         log("@Step 2: Click on AQS menu");
         betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
+
         log("@Step 3: Click Bets link at Action column  in Cancelled section");
         List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer",CANCELLED);
         if(betOrderPage.isNodata(orderLst)){
             log("SKIP: No data to click on Market name to open order log popup in Cancelled order");
             return;}
         BetSlipPopup betSlipPopup = betOrderPage.openBetSlip(orderLst.get(0).getOrderId(),CANCELLED);
+
         log("@Verify all control is visible and cannot place bet");
         Assert.assertTrue(betSlipPopup.btnSelectAll.isInvisible(1),"Failed! Select All button is displayed");
         Assert.assertTrue(betSlipPopup.btnSelectAll.isInvisible(1),"Failed! Delete Selected button is displayed");
@@ -177,14 +179,17 @@ public class BetOrderTest extends BaseCaseAQS {
         String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
+
         log("@Step 2: Click on AQS menu");
         betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
+
         log("@Step 3: Click Bets link at Action column in Confirm section");
         List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer",CONFIRM);
         if(betOrderPage.isNodata(orderLst)){
             log("SKIP: No data to click on Market name to open order log popup in Confirm order");
             return;}
         ConfirmPopup confirmPopup = betOrderPage.openConfirmPopup(orderLst.get(0).getOrderId());
+
         log("@Verify the message confirm display The order already settled! Do you want to continue? With yes no button");
         Assert.assertEquals(confirmPopup.lblConfirm.getText(), CONFIRM, "FAILED! Confirm title is not displayed!");
         Assert.assertEquals(confirmPopup.msgConfirm.getText(), "The order already settled! Do you want to continue?", "FAILED! Message is displayed incorrectly!");
@@ -193,72 +198,64 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    /**
-     * @title: Verify Bet Slip poup display when Confirming in Confirm section
-     * @steps:   1. Login the page
-     * 2. Click on AQS menu
-     * 3. Click Bets link at Action column in Confirm section
-     * 4. A confirm message display and click on Yes
-     * @expect: Verify Bet Slip popup display
-     */
-
     @Test(groups = {"smoke"})
     public void BetOrder_008(){
-        log("@title: Verify Bet Slip poup display when Confirming in Confirm section");
+        log("@title: Verify Bet Slip popup display when Confirming in Confirm section");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
         String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
+
         log("@Step 2: Click on AQS menu");
         betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
+
         log("@Step 3: Click Bets link at Action column in Confirm section");
         List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer","CONFIRM");
         if(betOrderPage.isNodata(orderLst)){
             log("SKIP: No data to click on Market name to open order log popup in Confirm order");
             return;}
         ConfirmPopup confirmPopup = betOrderPage.openConfirmPopup(orderLst.get(0).getOrderId());
+
         log("@Step 4: Click Yes on confirm message popup");
         confirmPopup.clickConfirmPopup("YES");
+
         log("@Verify Bet Slip popup display");
         BetSlipPopup betSlipPopup = new BetSlipPopup();
         Assert.assertTrue(betSlipPopup.betSlipPopup.isDisplayed(),"Failed! Bet Slip popup is not displayed");
+
         log("INFO: Executed completely");
     }
 
-    /**
-     * @title: Verify Bet Slip poup does not display when unconfirm in Confirm section
-     * @steps:   1. Login the page
-     * 2. Click on AQS menu
-     * 3. Click Bets link at Action column in Confirm section
-     * 4. A confirm message display and click on No
-     * @expect: Verify Confirm message disappear
-     * - Verify Bet Slip popup not display
-     */
-
     @Test(groups = {"smoke"})
     public void BetOrder_009(){
-        log("@title: Verify Bet Slip poup does not display when unconfirm in Confirm section");
+        log("@title: Verify Bet Slip ppoup does not display when unconfirm in Confirm section");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
         String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
+
         log("@Step 2: Click on AQS menu");
         betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
+
         log("@Step 3: Click Bets link at Action column in Confirm section");
         List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer","CONFIRM");
         if(betOrderPage.isNodata(orderLst)){
             log("SKIP: No data to click on Market name to open order log popup in Confirm order");
             return;}
         ConfirmPopup confirmPopup = betOrderPage.openConfirmPopup(orderLst.get(0).getOrderId());
+
         log("@Step 4: Click No on confirm message popup");
         confirmPopup.clickConfirmPopup("NO");
+
         log("@Verify 1: Confirm message disappear");
-        Assert.assertTrue(!confirmPopup.msgConfirm.isDisplayed(),"Failed! Confirm message is still displayed");
+        Assert.assertFalse(confirmPopup.msgConfirm.isDisplayed(),"Failed! Confirm message is still displayed");
+
         log("Verify 2: Bet Slip popup not display");
         BetSlipPopup betSlipPopup = new BetSlipPopup();
-        Assert.assertTrue(!betSlipPopup.betSlipPopup.isDisplayed(),"Failed! Bet Slip popup is still displayed");
+        Assert.assertFalse(betSlipPopup.betSlipPopup.isDisplayed(),"Failed! Bet Slip popup is still displayed");
+
         log("INFO: Executed completely");
     }
 
@@ -506,7 +503,6 @@ public class BetOrderTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     public void BetOrder_018(){
         log("@title: Verify hide a column is worked");
-
         List<String> listHeader = Arrays.asList("#", "Selection", "Action", "Market","Event Date","Event English","Event Chinese","Agent - Hitter");
 
         log("@Step 1: Login with valid account");

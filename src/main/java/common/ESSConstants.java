@@ -61,6 +61,9 @@ public class ESSConstants {
     public static class RolePage {
         public final static String ROLES = "Roles";
         public final static String PERMISSIONS = "Permissions";
+        public final static List<String> PERMISSION_LIST = Arrays.asList("AQS View Only", "Account List", "Bet Order", "Delete Bet","Enable Bet List","Enable Copy to PS7","Enable Pending/Confirm/Cancel"
+        ,"Master Account","Place Bet","Role","See All Orders","See My Own Orders","See User Management","View Cricket Orders","View Pending/Confirm/Cancel","View Soccer Orders");
+        public final static List<String> ROLE_LIST = Arrays.asList("Administrator","Agent","Cricket Trader","Runner","Trader","Trader Soccer");
     }
 
     public static class ChangePassword {
