@@ -1,9 +1,7 @@
 package testcases.AQSHome;
 
-import com.paltech.element.common.CheckBox;
 import com.paltech.utils.DateUtils;
 import common.ESSConstants;
-import controls.Cell;
 import objects.Order;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -12,7 +10,6 @@ import testcases.BaseCaseAQS;
 import utils.GetOrdersUtils;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static common.ESSConstants.BetOrderPage.*;
@@ -47,19 +44,19 @@ public class BetOrderTest extends BaseCaseAQS {
         Assert.assertTrue(betOrderPage.btnShow.isDisplayed(), "FAILED! Show button is not displayed!");
         log("Verify Pending, Confirm, Cancelled table display with correct header");
         //Pending table
-        ArrayList<String> lstPendingHead = betOrderPage.tbPending.getHeaderList();
+        ArrayList<String> lstPendingHead = betOrderPage.tbPending.getHeaderNameOfRows();
         Assert.assertEquals(betOrderPage.lblPending.getText(),PENDING,"FAILED! Pending title is incorrect display");
         Assert.assertEquals(lstPendingHead, ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Pending table header is incorrect display");
 
         //Confirm table
-        ArrayList<String> lstConfirmHead = betOrderPage.tbPending.getHeaderList();
+        ArrayList<String> lstConfirmHead = betOrderPage.tbConfirm.getHeaderNameOfRows();
         Assert.assertEquals(betOrderPage.lblConfirm.getText(),CONFIRM,"FAILED! Confirm title is incorrect display");
-        Assert.assertEquals(lstConfirmHead, ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Pending table header is incorrect display");
+        Assert.assertEquals(lstConfirmHead, ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Confirm table header is incorrect display");
 
         //Cancelled table
-        ArrayList<String> lstCancelledHead = betOrderPage.tbPending.getHeaderList();
+        ArrayList<String> lstCancelledHead = betOrderPage.tbCancelled.getHeaderNameOfRows();
         Assert.assertEquals(betOrderPage.lblCancel.getText(),CANCELLED,"FAILED! Cancelled title is incorrect display");
-        Assert.assertEquals(lstCancelledHead, ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Pending table header is incorrect display");
+        Assert.assertEquals(lstCancelledHead, ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Cancelled table header is incorrect display");
         log("INFO: Executed completely");
     }
 
@@ -506,28 +503,20 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke2"})
+    @Test(groups = {"smoke"})
     public void BetOrder_018(){
         log("@title: Verify hide a column is worked");
+
+        List<String> listHeader = Arrays.asList("#", "Selection", "Action", "Market","Event Date","Event English","Event Chinese","Agent - Hitter");
+
         log("@Step 1: Login with valid account");
         log("@Step 2: Click Hide column link and hide Bookie - OrderId column ");
-        betOrderPage.btnHideColumns.click();
-        ColumnSettingPopup columnSettingPopup = new ColumnSettingPopup();
-        //columnSettingPopup.cbAll.click();
-//        String chbColumnPath = columnSettingPopup.tbColumns.getControlxPathBasedValueOfDifferentColumnOnRow("Selection", 1, 2, 2, null, 3, "input", false, false);
-//        CheckBox chb = CheckBox.xpath(chbColumnPath);
-//        chb.click();
-        int ttRow = columnSettingPopup.tbColumns.getNumberOfRows(false,false);
-        List<String> lstCol = columnSettingPopup.tbColumns.getColumn(1,false);
-        for (int i=0 ; i <= ttRow; i++){
-            if (lstCol.get(i).contains("Market")) {
-                log("Market row is "+i);
-            }
-        }
-
+        betOrderPage.hideColumnSetting("Bookie - OrderId");
 
         log("Verify the column Bookie - OrderId column is hidden in Pending, Cancel, Confirm table");
-
+        Assert.assertEquals(betOrderPage.tbPending.getHeaderNameOfRows(), listHeader,"FAILED! Pending table header is incorrect display");
+        Assert.assertEquals(betOrderPage.tbConfirm.getHeaderNameOfRows(),listHeader,"FAILED! Confirm table header is incorrect display");
+        Assert.assertEquals(betOrderPage.tbCancelled.getHeaderNameOfRows(),listHeader,"FAILED! Cancelled table header is incorrect display");
         log("INFO: Executed completely");
     }
 
@@ -535,15 +524,21 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_019(){
         log("@title: Verify hide/unhide all column is worked");
         log("@Step 1: Login with valid account");
-        log("@Step 2: Hide and Unhide all column");
+        log("@Step 2: Hide all column setting");
+        betOrderPage.hideColumnSetting("All");
+
         log("Verify 1: Table is not display when hide all columns");
-        betOrderPage.btnHideColumns.click();
-        ColumnSettingPopup columnSettingPopup = new ColumnSettingPopup();
-        //columnSettingPopup.cbAll.click();
-        columnSettingPopup.hideColumn("Selection");
+        Assert.assertTrue(betOrderPage.tbPending.getHeaderNameOfRows().isEmpty(),"FAILED! Pending table header is incorrect display");
+        Assert.assertTrue(betOrderPage.tbConfirm.getHeaderNameOfRows().isEmpty(),"FAILED! Confirm table header is incorrect display");
+        Assert.assertTrue(betOrderPage.tbCancelled.getHeaderNameOfRows().isEmpty(),"FAILED! Cancelled table header is incorrect display");
 
+        log("Step 3: Unhide all column setting");
+        betOrderPage.hideColumnSetting("All");
 
-        log("Verify 2: table display all headers when unhide all columns");
+        log("Verify 2: Table Pending, Confirm, Cancleled display all headers when unhide all columns");
+        Assert.assertEquals(betOrderPage.tbPending.getHeaderNameOfRows(), ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Pending table header is incorrect display");
+        Assert.assertEquals(betOrderPage.tbConfirm.getHeaderNameOfRows(), ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Confirm table header is incorrect display");
+        Assert.assertEquals(betOrderPage.tbCancelled.getHeaderNameOfRows(), ESSConstants.BetOrderPage.TABLE_HEADER,"FAILED! Cancleled table header is incorrect display");
         log("INFO: Executed completely");
     }
 
