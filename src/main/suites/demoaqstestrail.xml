@@ -1,37 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="AQS_QAT_Smoke_johnnytest" verbose="1">
+<suite name="AQS_QAT_Smoke" verbose="1">
     <listeners>
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
+        <listener class-name="utils.testraildemo.Listener"/>
     </listeners>
 
-    <test name="Smoke_Chrome">
+    <test name="QAT AQS Smoke Test">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='aqsqat'/>
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
-        <parameter name='username' value='johnny'/>
+        <parameter name='username' value='isa'/>
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
         <parameter name='isThrown' value='true'/>
-        <parameter name="isAddTestRailResult" value="false"/>
 
         <groups>
             <run>
-                <include name="smoke5" />
+                <include name="smoke" />
             </run>
         </groups>
 
         <classes>
-           <class name="testcases.AQSHome.LoginTest"/>
-           <class name="testcases.AQSHome.LogoutTest"/>
-           <class name="testcases.AQSHome.HeaderTest"/>
-           <class name="testcases.AQSHome.BetOrderTest"/>
-           <class name="testcases.AQSHome.RoleTest"/>
-           <class name="testcases.AQSHome.ManagerTest"/>
-           <class name="testcases.AQSHome.AccountTest"/>
+            <class name="testcases.TestRailTest.AQSTest.RoleAQSTest"/>
+            <class name="testcases.TestRailTest.AQSTest.LoginAQSTest"/>
+
         </classes>
-
-
     </test>
 </suite>
