@@ -229,7 +229,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @Test(groups = {"smoke"})
     public void BetOrder_009(){
-        log("@title: Verify Bet Slip ppoup does not display when unconfirm in Confirm section");
+        log("@title: Verify Bet Slip popup does not display when unconfirm in Confirm section");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
         String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));

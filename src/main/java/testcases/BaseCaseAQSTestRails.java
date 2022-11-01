@@ -1,4 +1,5 @@
 package testcases;
+
 import com.paltech.driver.DriverManager;
 import com.paltech.driver.DriverProperties;
 import com.paltech.utils.DateUtils;
@@ -20,7 +21,6 @@ import org.testng.annotations.*;
 import pages.ess.BetOrderPage;
 import pages.ess.HomePage;
 import pages.ess.LoginPage;
-import testcases.AQSHome.LoginTest;
 import utils.testraildemo.APIClient;
 import utils.testraildemo.APIException;
 import utils.testraildemo.TestRails;
@@ -32,7 +32,7 @@ import java.rmi.UnexpectedException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class BaseCaseAQS {
+public class BaseCaseAQSTestRails {
     private static ApplicationContext context;
     public static DriverProperties driverProperties;
     public static Environment environment;
@@ -42,36 +42,45 @@ public class BaseCaseAQS {
     public static BetOrderPage betOrderPage;
     public static LoginPage loginPage;
     public static BrowserMobProxy browserMobProxy;
-    public static String PROJECT_ID="1";
+    public static String PROJECT_ID="2";
     public static APIClient client;
-    private static boolean isAddTestRailResult = false;
+    private static boolean isAddTestRailResult = true;
+    private static  List<Long> lstCases= new ArrayList<>();
+
 
     @BeforeSuite(alwaysRun = true)
-    public static void beforeSuite(ITestContext ctx, Method method) throws IOException, APIException {
+    public static void beforeSuite(ITestContext ctx) throws IOException, APIException {
         try{
             context = new ClassPathXmlApplicationContext("resources/settings/AQSSetting.xml");
             report = new ExtentReports("", true);
         } catch(Exception ex) {
             throw new NullPointerException(String.format("ERROR: Exception occurs beforeSuite by '%s'", ex.getMessage()));
         }
+        ctx.getName();
 
         if(isAddTestRailResult) {
-            // Add run in TestRail
+            System.out.println("Add New Test Run in TestRails" );
             client = new APIClient("https://demotestrailmerito.testrail.io");
             client.setUser("isabella.huynh@pal.net.vn");
             client.setPassword("P@l332211");
             Map data = new HashMap();
             //data.put("suite_id",true);
-            data.put("include_all", true);
-            data.put("name", "Test Run " + method.getName());
-            JSONObject c = null;
-            c = (JSONObject) client.sendPost("add_run/" + PROJECT_ID, data);
+            data.put("include_all", false);
+            data.put("name", "Test Run of suite " + ctx.getName() +" on"+ DateUtils.getDateFollowingGMT("GMT+7","dd-MM-YYYY hh:mm:ss"));
+           // data.put("milestone_id",1);
+
+            JSONObject c = (JSONObject) client.sendPost("add_run/" + PROJECT_ID, data);
+            c.get("id");
             Long suite_id = (Long) c.get("id");
             ctx.setAttribute("suiteId", suite_id);
+
+            //data1.put("include_all", false);
+          //  data1.put("suite_id",suite_id);
 
             //End add Run in TestRail
         }
     }
+
 
     @Parameters({"browser", "env"})
     @BeforeClass(alwaysRun = true)
@@ -114,7 +123,9 @@ public class BaseCaseAQS {
           Method m = method;
           if (m.isAnnotationPresent(TestRails.class)) {
               TestRails ta = m.getAnnotation(TestRails.class);
-              ctx.setAttribute("caseId",ta.id());
+              String caseId = ta.id();
+              ctx.setAttribute("caseId",caseId);
+
           }
       }
 
@@ -135,27 +146,7 @@ public class BaseCaseAQS {
     }
 
     @AfterMethod(alwaysRun = true)
-    public static void afterMethod(ITestResult result, ITestContext ctx) throws APIException, IOException {
-       if(isAddTestRailResult) {
-           String caseId = (String) ctx.getAttribute("caseId");
-           Map data = new HashMap();
-       //    data.put("caseId",caseId);
-           if (result.isSuccess()) {
-               data.put("status_id", 1);
-           } else {
-               data.put("status_id", 5);
-               data.put("comment", result.getThrowable().toString());
-           }
-
-           Long suiteId = (Long) ctx.getAttribute("suiteId");
-           client.sendPost("add_result_for_case/" + suiteId + "/" + caseId, data);
-          /* if(!result.isSuccess()) {
-               String imagePath = ScreenShotUtils.captureScreenshot(DriverManager.getDriver().getWebDriver(), "Image"+DateUtils.getMilliSeconds());
-               client.sendPost("add_attachment_to_case/"+caseId,imagePath);
-           }*/
-           System.out.println("******** Done Add Result in Test Run in Testrail *********");
-       }
-        String testResult = "PASSED";
+    public static void afterMethod(ITestResult result, ITestContext ctx) throws APIException, IOException {        String testResult = "PASSED";
         if(!result.isSuccess()) {
             testResult = "FAILED";
             logger.log(LogStatus.FAIL, result.getThrowable());
@@ -168,10 +159,32 @@ public class BaseCaseAQS {
         }
         DriverManager.quitAll();
         System.out.println("*****************************************Ending TC's name: " + result.getMethod().getMethodName() + " is " + testResult + " ********************************************");
+        if(isAddTestRailResult) {
+            String caseId = (String) ctx.getAttribute("caseId");
+            Long suiteId = (Long) ctx.getAttribute("suiteId");
+            Map data1 = new HashMap();
+            // add test case for test run
+            lstCases.add(Long.parseLong(caseId));
+            data1.put("case_ids",lstCases);
+            client.sendPost("update_run/" + suiteId, data1);
+            //end add test case for test run
+            //start add result for a test case
+            Map data = new HashMap();
+            if (result.isSuccess()) {
+                data.put("status_id", 1);
+            } else {
+                data.put("status_id", 5);
+                data.put("comment", result.getThrowable().toString());
+            }
+            client.sendPost("add_result_for_case/" + suiteId + "/" + caseId, data);
+            //End add result for a test case
+            System.out.println("******** Done Add Result in Test Run in Testrail *********");
+        }
     }
 
     @AfterSuite
-    public static void tearDownSuite() {
+    public static void tearDownSuite(ITestContext ctx) throws APIException, IOException {
+        client.sendPost("close_run/" + ctx.getAttribute("suiteId"),null);
         report.endTest(logger);
         report.flush();
         report.close();
