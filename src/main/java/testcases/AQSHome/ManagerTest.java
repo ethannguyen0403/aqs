@@ -5,12 +5,13 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.ess.ManagerPage;
 import testcases.BaseCaseAQS;
+import testcases.BaseCaseAQSTestRails;
 
 import java.util.ArrayList;
 
 import static common.ESSConstants.HomePage.MANAGER;
 
-public class ManagerTest extends BaseCaseAQS {
+public class ManagerTest extends BaseCaseAQSTestRails {
     /**
      * @title: Verify Manager Page UI
      * @steps:   1.  Login with valid Username and Password

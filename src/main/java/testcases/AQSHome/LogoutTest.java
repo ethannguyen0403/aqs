@@ -3,9 +3,10 @@ package testcases.AQSHome;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import testcases.BaseCaseAQS;
+import testcases.BaseCaseAQSTestRails;
 import utils.testraildemo.TestRails;
 
-public class LogoutTest extends BaseCaseAQS {
+public class LogoutTest extends BaseCaseAQSTestRails {
 
     /**
      * @title: Verify that can logout successfully

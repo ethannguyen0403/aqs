@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.ess.popup.*;
 import testcases.BaseCaseAQS;
+import testcases.BaseCaseAQSTestRails;
 import utils.GetOrdersUtils;
 
 import java.text.ParseException;
@@ -16,7 +17,7 @@ import static common.ESSConstants.BetOrderPage.*;
 import static common.ESSConstants.OrderLog.TABLE_HEADER;
 import static common.ESSConstants.OrderLog.TABLE_HEADER_BET_LIST;
 
-public class BetOrderTest extends BaseCaseAQS {
+public class BetOrderTest extends BaseCaseAQSTestRails {
 
     @Test(groups = {"smoke"})
     public void BetOrder_001(){
@@ -171,7 +172,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     public void BetOrder_007(){
         log("@title: Verify message confirm display when click on BET link in Action column in Confirm section");
         log("@Step 1: Login with valid account");
@@ -267,7 +268,7 @@ public class BetOrderTest extends BaseCaseAQS {
      * @expect: Verify bet is move to Confirm section
      */
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     public void BetOrder_010(){
         log("@title: Verify order display in Confirm when clicking Confirm link Pending section");
         log("@Step 1: Login with valid account");
@@ -297,7 +298,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     public void BetOrder_011(){
         log("@title: Verify order display in Cancelled section when clicking Cancel link Pending section");
         log("@Step 1: Login with valid account");
@@ -327,7 +328,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     public void BetOrder_012(){
         log("@title: Verify order display in Pending when clicking Pending link Confirm section");
         log("@Step 1: Login with valid account");
@@ -357,7 +358,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     public void BetOrder_013(){
         log("@title: Verify order display in Pending when clicking Pending link Cancelled section");
         log("@Step 1: Login with valid account");
@@ -386,7 +387,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     public void BetOrder_014(){
         log("@title: Verify order display in Confirm when clicking Confirm link Cancelled section");
         log("@Step 1: Login with valid account");
@@ -507,13 +508,19 @@ public class BetOrderTest extends BaseCaseAQS {
 
         log("@Step 1: Login with valid account");
         log("@Step 2: Click Hide column link and hide Bookie - OrderId column ");
-        betOrderPage.hideColumnSetting("Bookie - OrderId");
+        try {
+            betOrderPage.hideColumnSetting("Bookie - OrderId");
 
-        log("Verify the column Bookie - OrderId column is hidden in Pending, Cancel, Confirm table");
-        Assert.assertEquals(betOrderPage.tbPending.getHeaderNameOfRows(), listHeader,"FAILED! Pending table header is incorrect display");
-        Assert.assertEquals(betOrderPage.tbConfirm.getHeaderNameOfRows(),listHeader,"FAILED! Confirm table header is incorrect display");
-        Assert.assertEquals(betOrderPage.tbCancelled.getHeaderNameOfRows(),listHeader,"FAILED! Cancelled table header is incorrect display");
-        log("INFO: Executed completely");
+            log("Verify the column Bookie - OrderId column is hidden in Pending, Cancel, Confirm table");
+            Assert.assertEquals(betOrderPage.tbPending.getHeaderNameOfRows(), listHeader, "FAILED! Pending table header is incorrect display");
+            Assert.assertEquals(betOrderPage.tbConfirm.getHeaderNameOfRows(), listHeader, "FAILED! Confirm table header is incorrect display");
+            Assert.assertEquals(betOrderPage.tbCancelled.getHeaderNameOfRows(), listHeader, "FAILED! Cancelled table header is incorrect display");
+            log("INFO: Executed completely");
+        }finally {
+            /**Post-condition: unhide Bookie - OrderId column**/
+            betOrderPage.hideColumnSetting("Bookie - OrderId");
+        }
+
     }
 
     @Test(groups = {"smoke"})

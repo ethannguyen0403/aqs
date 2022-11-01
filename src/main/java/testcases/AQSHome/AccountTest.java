@@ -5,10 +5,11 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.ess.ManagerPage;
 import testcases.BaseCaseAQS;
+import testcases.BaseCaseAQSTestRails;
 
 import java.util.ArrayList;
 
-public class AccountTest extends BaseCaseAQS {
+public class AccountTest extends BaseCaseAQSTestRails {
 
     /**
      * @title: Verify Account Info Page UI
