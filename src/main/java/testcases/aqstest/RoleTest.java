@@ -1,4 +1,4 @@
-package testcases.AQSHome;
+package testcases.aqstest;
 
 import common.ESSConstants;
 import org.testng.Assert;

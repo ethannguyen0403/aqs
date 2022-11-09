@@ -1,4 +1,4 @@
-package testcases.AQSHome;
+package testcases.aqstest;
 
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -16,15 +16,13 @@ public class LoginTest extends BaseCaseAQS {
      * - Username label display
      * - Profile icon display
      */
-    @TestRails(id = "1")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters("username")
     public void LoginTC_001(String username){
         log("@title: Verify that can login successfully");
         log("@Step 1: Login with valid account");
         log("Verify that can login successfully");
-        Assert.assertEquals(betOrderPage.lblUserName.getText(),username,"FAILED! Username is not displayed");
-        Assert.assertTrue(betOrderPage.profileIcon.isDisplayed(),"FAILED! Profile icon is not displayed");
+        Assert.assertEquals(welcomePage.lblUserName.getText(),username,"FAILED! Username is not displayed");
         log("INFO: Executed completely");
     }
 }

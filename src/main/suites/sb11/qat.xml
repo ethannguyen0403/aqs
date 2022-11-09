@@ -3,29 +3,31 @@
 <suite name="AQS_QAT_Smoke" verbose="1">
     <listeners>
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
-        <listener class-name="utils.testraildemo.Listener"/>
     </listeners>
 
-    <test name="QAT AQS Smoke Test">
+    <test name="Smoke_Chrome">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='qat'/>
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
-        <parameter name='username' value='isa'/>
+        <parameter name='username' value='Isa'/>
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
         <parameter name='isThrown' value='true'/>
-        <parameter name="appname" value="aqs"/>
+        <parameter name="appname" value="sp11"/>
+
         <groups>
             <run>
-                <include name="smoke" />
+                <include name="smoke5" />
             </run>
         </groups>
 
         <classes>
-            <class name="testcases.testrailtest.AQSTest.RoleAQSTest"/>
-            <class name="testcases.testrailtest.AQSTest.LoginAQSTest"/>
-
+            <class name="testcases.sb11test.LoginTest"/>
+            <class name="testcases.sb11test.BookieInfoTest"/>
+            <class name="testcases.sb11test.ClientSystemTest"/>
         </classes>
+
+
     </test>
 </suite>

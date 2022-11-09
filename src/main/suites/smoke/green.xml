@@ -7,14 +7,14 @@
 
     <test name="Smoke_Chrome">
         <parameter name='browser' value='window10.local.chrome'/>
-        <parameter name='env' value='aqspro'/>
+        <parameter name='env' value='pro'/>
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
         <parameter name='username' value='qa'/>
         <parameter name='password' value='p8PEjV0gJOnWf9U0aEgGEA=='/>
         <parameter name='isThrown' value='true'/>
-
+        <parameter name="appname" value="aqs"/>
         <groups>
             <run>
                 <include name="smoke_qc" />
@@ -22,12 +22,12 @@
         </groups>
 
         <classes>
-           <class name="testcases.AQSHome.LoginTest"/>
-           <class name="testcases.AQSHome.LogoutTest"/>
-           <class name="testcases.AQSHome.HeaderTest"/>
-           <class name="testcases.AQSHome.BetOrderTest"/>
-           <class name="testcases.AQSHome.RoleTest"/>
-           <class name="testcases.AQSHome.ManagerTest"/>
+           <class name="testcases.aqstest.LoginTest"/>
+           <class name="testcases.aqstest.LogoutTest"/>
+           <class name="testcases.aqstest.HeaderTest"/>
+           <class name="testcases.aqstest.BetOrderTest"/>
+           <class name="testcases.aqstest.RoleTest"/>
+           <class name="testcases.aqstest.ManagerTest"/>
         </classes>
 
 

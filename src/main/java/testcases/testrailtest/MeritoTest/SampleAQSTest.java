@@ -1,4 +1,4 @@
-package testcases.TestRailTest.MeritoTest;
+package testcases.testrailtest.MeritoTest;
 
 import org.testng.annotations.Test;
 import testcases.BaseCaseMeritoTestRails;

@@ -30,23 +30,17 @@
         <property name="executablePath" value="${DriverSetting.Window10.Local.Chrome.ExecutablePath}"/>
         <property name="elementWaitTimeOut" value="${DriverSetting.Window10.Local.Chrome.ElementWaitTimeOut}"/>
     </bean>
-    <bean name="aqsqat" class="objects.Environment" scope="prototype">
-        <property name="loginURL" value="${QAT.LoginUrl}"/>
-        <property name="dashboardURL" value="${QAT.DashboardUrl}"/>
-        <property name="wsURL" value="${QAT.WebService}"/>
-        <property name="sosURL" value="${QAT.SOSUrl}"/>
+    <bean name="qat" class="objects.Environment" scope="prototype">
+        <property name="aqsLoginURL" value="${QAT.AqsLoginUrl}"/>
+        <property name="sbpLoginURL" value="${QAT.SbpLoginUrl}"/>
     </bean>
     <bean name="stg" class="objects.Environment" scope="prototype">
-        <property name="loginURL" value="${STG.LoginUrl}"/>
-        <property name="dashboardURL" value="${STG.DashboardUrl}"/>
-        <property name="wsURL" value="${STG.WebService}"/>
-        <property name="sosURL" value="${STG.SOSUrl}"/>
+        <property name="aqsLoginURL" value="${STG.AqsLoginUrl}"/>
+        <property name="sbpLoginURL" value="${STG.SbpLoginUrl}"/>
     </bean>
-    <bean name="aqspro" class="objects.Environment" scope="prototype">
-        <property name="loginURL" value="${AQSPRO.LoginUrl}"/>
-        <property name="dashboardURL" value="${AQSPRO.DashboardUrl}"/>
-        <property name="wsURL" value="${AQSPRO.WebService}"/>
-        <property name="sosURL" value="${AQSPRO.SOSUrl}"/>
+    <bean name="pro" class="objects.Environment" scope="prototype">
+        <property name="aqsLoginURL" value="${PRO.AqsLoginUrl}"/>
+        <property name="sbpLoginURL" value="${PRO.SbpLoginUrl}"/>
     </bean>
 
 </beans>

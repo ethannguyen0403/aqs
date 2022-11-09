@@ -1,4 +1,4 @@
-package testcases.AQSHome;
+package testcases.aqstest;
 
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -8,10 +8,11 @@ import testcases.BaseCaseAQS;
 
 import java.util.ArrayList;
 
-public class AccountTest extends BaseCaseAQS {
+import static common.ESSConstants.HomePage.MANAGER;
 
+public class ManagerTest extends BaseCaseAQS {
     /**
-     * @title: Verify Account Info Page UI
+     * @title: Verify Manager Page UI
      * @steps:   1.  Login with valid Username and Password
      * 2. Click Manager menu
      * @expect: Verify User Management table display with correct header
@@ -29,7 +30,8 @@ public class AccountTest extends BaseCaseAQS {
         log("@title: Verify Manager Page UI");
         log("@Step 1: Login with valid Username and Password");
         log("@Step 2: Click Manager menu");
-        ManagerPage managerPage = betOrderPage.activeMenu("Manager",ManagerPage.class);
+        ManagerPage managerPage = betOrderPage.activeMenu(MANAGER,ManagerPage.class);
+
         log("Verify User Management table display with correct header");
         ArrayList<String> colUserManagement = managerPage.tbUserManagement.getColumnNamesOfTable();
 
@@ -44,3 +46,5 @@ public class AccountTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 }
+
+
