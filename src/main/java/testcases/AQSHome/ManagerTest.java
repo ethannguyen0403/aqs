@@ -5,12 +5,14 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.ess.ManagerPage;
 import testcases.BaseCaseAQS;
+import testcases.BaseCaseAQSTestRails;
+import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;
 
 import static common.ESSConstants.HomePage.MANAGER;
 
-public class ManagerTest extends BaseCaseAQS {
+public class ManagerTest extends BaseCaseAQSTestRails {
     /**
      * @title: Verify Manager Page UI
      * @steps:   1.  Login with valid Username and Password
@@ -24,6 +26,7 @@ public class ManagerTest extends BaseCaseAQS {
      * - The list account contains the login account
      */
 
+    @TestRails(id = "491")
     @Test(groups = {"smoke"})
     @Parameters("username")
     public void ManagerTC_001(String username){

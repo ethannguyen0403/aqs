@@ -4,9 +4,10 @@ import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import testcases.BaseCaseAQS;
+import testcases.BaseCaseAQSTestRails;
 import utils.testraildemo.TestRails;
 
-public class LoginTest extends BaseCaseAQS {
+public class LoginTest extends BaseCaseAQSTestRails {
 
     /**
      * @title: Verify that can login successfully
@@ -16,8 +17,8 @@ public class LoginTest extends BaseCaseAQS {
      * - Username label display
      * - Profile icon display
      */
-    @TestRails(id = "1")
-    @Test(groups = {"smoke1"})
+    @TestRails(id = "459")
+    @Test(groups = {"smoke"})
     @Parameters("username")
     public void LoginTC_001(String username){
         log("@title: Verify that can login successfully");
