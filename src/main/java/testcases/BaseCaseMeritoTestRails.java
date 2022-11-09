@@ -47,7 +47,7 @@ public class BaseCaseMeritoTestRails {
     public static BrowserMobProxy browserMobProxy;
     public static String PROJECT_ID="1";
     public static APIClient client;
-    private static boolean isAddTestRailResult = true;
+    private static boolean isAddTestRailResult = false;
     private static  List<Long> lstCases= new ArrayList<>();
 
 
@@ -60,7 +60,6 @@ public class BaseCaseMeritoTestRails {
             throw new NullPointerException(String.format("ERROR: Exception occurs beforeSuite by '%s'", ex.getMessage()));
         }
         ctx.getName();
-
         if(isAddTestRailResult) {
             System.out.println("Add New Test Run in TestRails" );
             client = new APIClient("https://demotestrailmerito.testrail.io");
@@ -119,7 +118,7 @@ public class BaseCaseMeritoTestRails {
     public void beforeClass(String browser, String env) {
         environment = (Environment) context.getBean(env);
         driverProperties = (DriverProperties) context.getBean(browser);
-        System.out.println(String.format("RUNNING ON %s under the link %s", env.toUpperCase(), environment.getLoginURL()));
+        System.out.println(String.format("RUNNING ON %s under the link %s", env.toUpperCase(), environment.getAqsLoginURL()));
     }
 
    /* @Parameters({"username", "password", "isLogin","isProxy"})
@@ -256,7 +255,7 @@ public class BaseCaseMeritoTestRails {
             DriverManager.createWebDriver(driverProperties);
             DriverManager.getDriver().setLoadingTimeOut(100);
             DriverManager.getDriver().maximize();
-            if (DriverManager.getDriver().getToAvoidTimeOut(environment.getLoginURL()) || count==0) {
+            if (DriverManager.getDriver().getToAvoidTimeOut(environment.getAqsLoginURL()) || count==0) {
                 loginPage = new LoginPage();
           /*      if(!loginPage.txtUsername.isDisplayed(5))
                     DriverManager.getDriver().getToAvoidTimeOut(environment.getLoginURL());*/

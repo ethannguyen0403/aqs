@@ -1,4 +1,4 @@
-package testcases.TestRailTest.AQSTest;
+package testcases.testrailtest.AQSTest;
 
 import common.ESSConstants;
 import org.testng.Assert;

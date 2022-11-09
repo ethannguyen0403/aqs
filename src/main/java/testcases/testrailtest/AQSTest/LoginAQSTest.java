@@ -1,4 +1,4 @@
-package testcases.TestRailTest.AQSTest;
+package testcases.testrailtest.AQSTest;
 
 import org.testng.Assert;
 import org.testng.annotations.Parameters;

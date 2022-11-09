@@ -44,7 +44,7 @@ public class BaseCaseAQSTestRails {
     public static BrowserMobProxy browserMobProxy;
     public static String PROJECT_ID="2";
     public static APIClient client;
-    private static boolean isAddTestRailResult = true;
+    private static boolean isAddTestRailResult = false;
     private static  List<Long> lstCases= new ArrayList<>();
 
 
@@ -87,7 +87,7 @@ public class BaseCaseAQSTestRails {
     public void beforeClass(String browser, String env) {
         environment = (Environment) context.getBean(env);
         driverProperties = (DriverProperties) context.getBean(browser);
-        System.out.println(String.format("RUNNING ON %s under the link %s", env.toUpperCase(), environment.getLoginURL()));
+        System.out.println(String.format("RUNNING ON %s under the link %s", env.toUpperCase(), environment.getAqsLoginURL()));
     }
 
    /* @Parameters({"username", "password", "isLogin","isProxy"})
@@ -224,7 +224,7 @@ public class BaseCaseAQSTestRails {
             DriverManager.createWebDriver(driverProperties);
             DriverManager.getDriver().setLoadingTimeOut(100);
             DriverManager.getDriver().maximize();
-            if (DriverManager.getDriver().getToAvoidTimeOut(environment.getLoginURL()) || count==0) {
+            if (DriverManager.getDriver().getToAvoidTimeOut(environment.getAqsLoginURL()) || count==0) {
                 loginPage = new LoginPage();
           /*      if(!loginPage.txtUsername.isDisplayed(5))
                     DriverManager.getDriver().getToAvoidTimeOut(environment.getLoginURL());*/

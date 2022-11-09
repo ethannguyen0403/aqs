@@ -8,7 +8,7 @@
 
     <test name="QAT Merito Smoke Test">
         <parameter name='browser' value='window10.local.chrome'/>
-        <parameter name='env' value='aqsqat'/>
+        <parameter name='env' value='qat'/>
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
@@ -22,7 +22,7 @@
         </groups>
 
         <classes>
-            <class name="testcases.TestRailTest.MeritoTest.SampleAQSTest"/>
+            <class name="testcases.testrailtest.MeritoTest.SampleAQSTest"/>
         </classes>
     </test>
 </suite>
