@@ -1,4 +1,4 @@
-package testcases.AQSHome;
+package testcases.aqstest;
 
 import com.paltech.utils.DateUtils;
 import common.ESSConstants;
@@ -628,6 +628,32 @@ public class BetOrderTest extends BaseCaseAQS {
         log("verify 2 The table header is corrected displayed");
         Assert.assertEquals(orderLogPopup.tblOrder.getHeaderList(),TABLE_HEADER,String.format("Failed! Header Table is incorrect"));
 
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"smoke"})
+    public void BetOrder_024(){
+        log("@title: Validate tooltip info display when click on I icon in # column");
+        log("@Step 1: Login with valid account");
+        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
+        String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
+
+        log(String.format("@Step 2: Filter Soccer data from %s to %s and get an order in pending section",fromDate,toDate));
+        betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
+        List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer",PENDING);
+        if(betOrderPage.isNodata(orderLst)){
+            log("SKIP: No data to click on Market name to open order log popup in Pending order");
+            return;}
+
+        log("@Step 2  In #  column of any section if having order(Pending, Confrim, Cancelled), Click on icon i");
+        betOrderPage.getControlOnTableBasedOnOrderID("PENDING", orderLst.get(0).getOrderId(),"TOOLTIP").click();
+
+        log("verify 1 tooltip display with value: Create By, Create date, Confirm By, Confrim Date, Revert By, Revert Date ");
+        Assert.assertTrue(betOrderPage.lblTooltip.isDisplayed(),"Failed! Tooltip is not display");
+        String tooltipInfo = betOrderPage.lblTooltip.getText();
+        Assert.assertTrue(tooltipInfo.contains("Created By"),"FAIIED! No found Create By in Tooltip info");
+        Assert.assertTrue(tooltipInfo.contains("Created Date"),"FAIIED! No found Create By in Tooltip info");
         log("INFO: Executed completely");
     }
 }
