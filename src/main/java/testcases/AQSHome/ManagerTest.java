@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import pages.ess.ManagerPage;
 import testcases.BaseCaseAQS;
 import testcases.BaseCaseAQSTestRails;
+import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ public class ManagerTest extends BaseCaseAQSTestRails {
      * - The list account contains the login account
      */
 
+    @TestRails(id = "491")
     @Test(groups = {"smoke"})
     @Parameters("username")
     public void ManagerTC_001(String username){

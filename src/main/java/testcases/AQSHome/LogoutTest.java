@@ -18,7 +18,7 @@ public class LogoutTest extends BaseCaseAQSTestRails {
      * - Login button display
      */
 
-    @TestRails(id = "2")
+    @TestRails(id = "460")
     @Test(groups = {"smoke1"})
     public void LogoutTC_001(){
         log("@title: Verify that can logout successfully");

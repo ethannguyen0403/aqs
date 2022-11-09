@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 import pages.ess.MasterAccountPage;
 import testcases.BaseCaseAQS;
 import testcases.BaseCaseAQSTestRails;
+import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ public class MasterTest extends BaseCaseAQSTestRails {
      * - Master Account
      * - Add button
      */
-
+    @TestRails(id = "493")
     @Test(groups = {"smoke"})
     public void MasterTC_001(){
         log("@title: Verify Master Account Page UI");
