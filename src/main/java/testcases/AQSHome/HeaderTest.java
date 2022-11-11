@@ -13,7 +13,7 @@ import java.util.List;
 
 import static common.ESSConstants.*;
 
-public class HeaderTest extends BaseCaseAQSTestRails {
+public class HeaderTest extends BaseCaseAQS {
 
     /**
      * @title: Verify menu in header section is correctly display

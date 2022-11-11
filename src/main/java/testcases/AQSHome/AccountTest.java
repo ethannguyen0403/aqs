@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import static common.ESSConstants.HomePage.ACCOUNT;
 
-public class AccountTest extends BaseCaseAQSTestRails {
+public class AccountTest extends BaseCaseAQS {
 
     /**
      * @title: Verify Account Info Page UI

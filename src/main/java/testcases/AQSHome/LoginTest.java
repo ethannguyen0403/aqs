@@ -7,7 +7,7 @@ import testcases.BaseCaseAQS;
 import testcases.BaseCaseAQSTestRails;
 import utils.testraildemo.TestRails;
 
-public class LoginTest extends BaseCaseAQSTestRails {
+public class LoginTest extends BaseCaseAQS {
 
     /**
      * @title: Verify that can login successfully

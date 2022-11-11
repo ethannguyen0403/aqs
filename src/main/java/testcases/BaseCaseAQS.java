@@ -42,12 +42,12 @@ public class BaseCaseAQS {
     public static BetOrderPage betOrderPage;
     public static LoginPage loginPage;
     public static BrowserMobProxy browserMobProxy;
-    public static String PROJECT_ID="1";
+    public static String PROJECT_ID="2";
     public static APIClient client;
     private static boolean isAddTestRailResult = false;
 
     @BeforeSuite(alwaysRun = true)
-    public static void beforeSuite(ITestContext ctx, Method method) throws IOException, APIException {
+    public static void beforeSuite(ITestContext ctx) throws IOException, APIException {
         try{
             context = new ClassPathXmlApplicationContext("resources/settings/AQSSetting.xml");
             report = new ExtentReports("", true);
@@ -63,7 +63,7 @@ public class BaseCaseAQS {
             Map data = new HashMap();
             //data.put("suite_id",true);
             data.put("include_all", true);
-            data.put("name", "Test Run " + method.getName());
+            data.put("name", "Test Run of suite " + ctx.getName() +" on"+ DateUtils.getDateFollowingGMT("GMT+7","dd-MM-YYYY hh:mm:ss"));
             JSONObject c = null;
             c = (JSONObject) client.sendPost("add_run/" + PROJECT_ID, data);
             Long suite_id = (Long) c.get("id");

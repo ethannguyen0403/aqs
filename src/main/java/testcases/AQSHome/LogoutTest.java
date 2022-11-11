@@ -6,7 +6,7 @@ import testcases.BaseCaseAQS;
 import testcases.BaseCaseAQSTestRails;
 import utils.testraildemo.TestRails;
 
-public class LogoutTest extends BaseCaseAQSTestRails {
+public class LogoutTest extends BaseCaseAQS {
 
     /**
      * @title: Verify that can logout successfully
@@ -19,7 +19,7 @@ public class LogoutTest extends BaseCaseAQSTestRails {
      */
 
     @TestRails(id = "460")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void LogoutTC_001(){
         log("@title: Verify that can logout successfully");
         log("@Step 1: Login with valid Username and Password");

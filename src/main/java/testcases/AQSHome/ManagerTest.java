@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 import static common.ESSConstants.HomePage.MANAGER;
 
-public class ManagerTest extends BaseCaseAQSTestRails {
+public class ManagerTest extends BaseCaseAQS {
     /**
      * @title: Verify Manager Page UI
      * @steps:   1.  Login with valid Username and Password
