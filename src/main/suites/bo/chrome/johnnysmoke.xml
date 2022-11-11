@@ -7,7 +7,7 @@
 
     <test name="Smoke_Chrome">
         <parameter name='browser' value='window10.local.chrome'/>
-        <parameter name='env' value='aqsqat'/>
+        <parameter name='env' value='qat'/>
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
@@ -15,10 +15,10 @@
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
         <parameter name='isThrown' value='true'/>
         <parameter name="isAddTestRailResult" value="false"/>
-
+        <parameter name="appname" value="aqs"/>
         <groups>
             <run>
-                <include name="smoke5" />
+                <include name="smoke4" />
             </run>
         </groups>
 

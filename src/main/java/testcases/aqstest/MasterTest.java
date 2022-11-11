@@ -4,14 +4,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.ess.MasterAccountPage;
 import testcases.BaseCaseAQS;
-import testcases.BaseCaseAQSTestRails;
 import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;
 
 import static common.ESSConstants.HomePage.MASTERACCOUNT;
 
-public class MasterTest extends BaseCaseAQSTestRails {
+public class MasterTest extends BaseCaseAQS {
     /**
      * @title: Verify Master Account Page UI
      * @steps:   1.  Login with valid Username and Password

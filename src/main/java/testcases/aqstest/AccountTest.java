@@ -1,19 +1,14 @@
 package testcases.aqstest;
 
 import org.testng.Assert;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.ess.AccountInfoPage;
-import pages.ess.ManagerPage;
 import testcases.BaseCaseAQS;
-import testcases.BaseCaseAQSTestRails;
 import utils.testraildemo.TestRails;
-
-import java.util.ArrayList;
 
 import static common.ESSConstants.HomePage.ACCOUNT;
 
-public class AccountTest extends BaseCaseAQSTestRails {
+public class AccountTest extends BaseCaseAQS {
 
     /**
      * @title: Verify Account Info Page UI

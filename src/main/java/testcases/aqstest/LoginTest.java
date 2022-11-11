@@ -16,7 +16,7 @@ public class LoginTest extends BaseCaseAQS {
      * - Username label display
      * - Profile icon display
      */
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke4"})
     @TestRails(id = "459")
     @Parameters("username")
     public void LoginTC_001(String username){

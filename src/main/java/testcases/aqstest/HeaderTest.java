@@ -6,14 +6,13 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.ess.ChangePasswordPopup;
 import testcases.BaseCaseAQS;
-import testcases.BaseCaseAQSTestRails;
 import utils.testraildemo.TestRails;
 
 import java.util.List;
 
 import static common.ESSConstants.*;
 
-public class HeaderTest extends BaseCaseAQSTestRails {
+public class HeaderTest extends BaseCaseAQS {
 
     /**
      * @title: Verify menu in header section is correctly display

@@ -1,4 +1,4 @@
-package testcases.AQSHome;
+package testcases.aqstest;
 
 import com.paltech.utils.DateUtils;
 import common.ESSConstants;
@@ -18,7 +18,7 @@ import static common.ESSConstants.BetOrderPage.*;
 import static common.ESSConstants.OrderLog.TABLE_HEADER;
 import static common.ESSConstants.OrderLog.TABLE_HEADER_BET_LIST;
 
-public class BetOrderTest extends BaseCaseAQSTestRails {
+public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "465")
     @Test(groups = {"smoke"})

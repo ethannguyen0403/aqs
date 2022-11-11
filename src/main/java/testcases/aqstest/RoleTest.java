@@ -5,7 +5,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.ess.RolePage;
 import testcases.BaseCaseAQS;
-import testcases.BaseCaseAQSTestRails;
 import utils.testraildemo.TestRails;
 
 import java.util.List;
@@ -14,7 +13,7 @@ import static common.ESSConstants.HomePage.ROLE;
 import static common.ESSConstants.RolePage.PERMISSION_LIST;
 import static common.ESSConstants.RolePage.ROLE_LIST;
 
-public class RoleTest extends BaseCaseAQSTestRails {
+public class RoleTest extends BaseCaseAQS {
 
     /**
      * @title: Verify Role Page UI
