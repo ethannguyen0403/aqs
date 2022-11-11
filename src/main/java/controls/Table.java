@@ -9,9 +9,7 @@ import org.openqa.selenium.WebElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author by Liam.Ho on Nov/26/2019.
- */
+
 public class Table extends BaseElement {
     protected String _xpathTable = null;
     protected int _columnNumber = 0;

@@ -1,10 +1,9 @@
-package testcases.AQSHome;
+package testcases.testrailtest.AQSTest;
 
 import common.ESSConstants;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.ess.RolePage;
-import testcases.BaseCaseAQS;
 import testcases.BaseCaseAQSTestRails;
 import utils.testraildemo.TestRails;
 
@@ -14,7 +13,7 @@ import static common.ESSConstants.HomePage.ROLE;
 import static common.ESSConstants.RolePage.PERMISSION_LIST;
 import static common.ESSConstants.RolePage.ROLE_LIST;
 
-public class RoleTest extends BaseCaseAQS {
+public class RoleAQSTest extends BaseCaseAQSTestRails {
 
     /**
      * @title: Verify Role Page UI
@@ -24,8 +23,8 @@ public class RoleTest extends BaseCaseAQS {
      * - Roles list is displayed with correct header
      * - Permissions list is displayed with correct header
      */
-    @TestRails(id = "489")
-    @Test(groups = {"smoke"})
+    @TestRails(id = "4")
+    @Test(groups = {"smoke1"})
     public void RoleTC_001(){
         log("@title: Verify Role Page UI");
         log("@Step 1: Login with valid Username and Password");
@@ -48,7 +47,7 @@ public class RoleTest extends BaseCaseAQS {
      * - Role: Administrator and Agent
      * - Permissions: There are 14 permissions in the list
      */
-    @TestRails(id = "490")
+    @TestRails(id = "6")
     @Test(groups = {"smoke"})
     public void RoleTC_002(){
         log("@title: Verify data in Role Page");

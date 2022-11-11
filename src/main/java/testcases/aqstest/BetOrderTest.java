@@ -1,4 +1,4 @@
-package testcases.AQSHome;
+package testcases.aqstest;
 
 import com.paltech.utils.DateUtils;
 import common.ESSConstants;
