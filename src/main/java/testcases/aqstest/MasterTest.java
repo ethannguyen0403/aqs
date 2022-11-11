@@ -4,12 +4,14 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.ess.MasterAccountPage;
 import testcases.BaseCaseAQS;
+import testcases.BaseCaseAQSTestRails;
+import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;
 
 import static common.ESSConstants.HomePage.MASTERACCOUNT;
 
-public class MasterTest extends BaseCaseAQS {
+public class MasterTest extends BaseCaseAQSTestRails {
     /**
      * @title: Verify Master Account Page UI
      * @steps:   1.  Login with valid Username and Password
@@ -19,7 +21,7 @@ public class MasterTest extends BaseCaseAQS {
      * - Master Account
      * - Add button
      */
-
+    @TestRails(id = "493")
     @Test(groups = {"smoke"})
     public void MasterTC_001(){
         log("@title: Verify Master Account Page UI");

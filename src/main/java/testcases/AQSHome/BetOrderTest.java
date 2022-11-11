@@ -1,4 +1,4 @@
-package testcases.aqstest;
+package testcases.AQSHome;
 
 import com.paltech.utils.DateUtils;
 import common.ESSConstants;
@@ -7,7 +7,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.ess.popup.*;
 import testcases.BaseCaseAQS;
+import testcases.BaseCaseAQSTestRails;
 import utils.GetOrdersUtils;
+import utils.testraildemo.TestRails;
 
 import java.text.ParseException;
 import java.util.*;
@@ -16,8 +18,9 @@ import static common.ESSConstants.BetOrderPage.*;
 import static common.ESSConstants.OrderLog.TABLE_HEADER;
 import static common.ESSConstants.OrderLog.TABLE_HEADER_BET_LIST;
 
-public class BetOrderTest extends BaseCaseAQS {
+public class BetOrderTest extends BaseCaseAQSTestRails {
 
+    @TestRails(id = "465")
     @Test(groups = {"smoke"})
     public void BetOrder_001(){
         log("@title: Verify Bet Order Page display by default after login");
@@ -30,6 +33,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "466")
     @Test(groups = {"smoke"})
     public void BetOrder_002(){
         log("@title: Verify Bet Order Page display by default after login");
@@ -53,6 +57,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+   @TestRails(id = "467")
    @Test(groups = {"smoke"})
     public void BetOrder_003() throws ParseException {
         log("@title: Verify Bet List popup displayed correctly info: popup title, event info, table header");
@@ -88,6 +93,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "468")
     @Test(groups = {"smoke"})
     public void BetOrder_004() throws ParseException {
         log("@title: Verify Bet Slip in Pending section display with correct info");
@@ -118,6 +124,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "469")
     @Test(groups = {"smoke"})
     public void BetOrder_005(){
         log("@title: Verify control in Bet Slip display correctly");
@@ -146,6 +153,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "470")
     @Test(groups = {"smoke"})
     public void BetOrder_006(){
         log("@title: Verify Bet Slip in Cancelled section is disable to place bet");
@@ -171,7 +179,8 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @TestRails(id = "471")
+    @Test(groups = {"smoke_qc"})
     public void BetOrder_007(){
         log("@title: Verify message confirm display when click on BET link in Action column in Confirm section");
         log("@Step 1: Login with valid account");
@@ -198,6 +207,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "472")
     @Test(groups = {"smoke"})
     public void BetOrder_008(){
         log("@title: Verify Bet Slip popup display when Confirming in Confirm section");
@@ -227,6 +237,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "473")
     @Test(groups = {"smoke"})
     public void BetOrder_009(){
         log("@title: Verify Bet Slip popup does not display when unconfirm in Confirm section");
@@ -267,7 +278,8 @@ public class BetOrderTest extends BaseCaseAQS {
      * @expect: Verify bet is move to Confirm section
      */
 
-    @Test(groups = {"smoke"})
+    @TestRails(id = "474")
+    @Test(groups = {"smoke_qc"})
     public void BetOrder_010(){
         log("@title: Verify order display in Confirm when clicking Confirm link Pending section");
         log("@Step 1: Login with valid account");
@@ -297,7 +309,8 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @TestRails(id = "475")
+    @Test(groups = {"smoke_qc"})
     public void BetOrder_011(){
         log("@title: Verify order display in Cancelled section when clicking Cancel link Pending section");
         log("@Step 1: Login with valid account");
@@ -327,7 +340,8 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @TestRails(id = "476")
+    @Test(groups = {"smoke_qc"})
     public void BetOrder_012(){
         log("@title: Verify order display in Pending when clicking Pending link Confirm section");
         log("@Step 1: Login with valid account");
@@ -357,7 +371,8 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @TestRails(id = "477")
+    @Test(groups = {"smoke_qc"})
     public void BetOrder_013(){
         log("@title: Verify order display in Pending when clicking Pending link Cancelled section");
         log("@Step 1: Login with valid account");
@@ -386,7 +401,8 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @TestRails(id = "478")
+    @Test(groups = {"smoke_qc"})
     public void BetOrder_014(){
         log("@title: Verify order display in Confirm when clicking Confirm link Cancelled section");
         log("@Step 1: Login with valid account");
@@ -419,6 +435,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "479")
     @Test(groups = {"smoke"})
     public void BetOrder_015(){
         log("@title: Verify there is no Pending link in Action column Pending section");
@@ -446,6 +463,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "480")
     @Test(groups = {"smoke"})
     public void BetOrder_016(){
         log("@title: Verify there is no Confirm link in Action column Confirm section");
@@ -473,6 +491,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "481")
     @Test(groups = {"smoke"})
     public void BetOrder_017(){
         log("@title: Verify there is no Cancel link in Action column Cancelled section");
@@ -500,6 +519,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "482")
     @Test(groups = {"smoke"})
     public void BetOrder_018(){
         log("@title: Verify hide a column is worked");
@@ -507,15 +527,22 @@ public class BetOrderTest extends BaseCaseAQS {
 
         log("@Step 1: Login with valid account");
         log("@Step 2: Click Hide column link and hide Bookie - OrderId column ");
-        betOrderPage.hideColumnSetting("Bookie - OrderId");
+        try {
+            betOrderPage.hideColumnSetting("Bookie - OrderId");
 
-        log("Verify the column Bookie - OrderId column is hidden in Pending, Cancel, Confirm table");
-        Assert.assertEquals(betOrderPage.tbPending.getHeaderNameOfRows(), listHeader,"FAILED! Pending table header is incorrect display");
-        Assert.assertEquals(betOrderPage.tbConfirm.getHeaderNameOfRows(),listHeader,"FAILED! Confirm table header is incorrect display");
-        Assert.assertEquals(betOrderPage.tbCancelled.getHeaderNameOfRows(),listHeader,"FAILED! Cancelled table header is incorrect display");
-        log("INFO: Executed completely");
+            log("Verify the column Bookie - OrderId column is hidden in Pending, Cancel, Confirm table");
+            Assert.assertEquals(betOrderPage.tbPending.getHeaderNameOfRows(), listHeader, "FAILED! Pending table header is incorrect display");
+            Assert.assertEquals(betOrderPage.tbConfirm.getHeaderNameOfRows(), listHeader, "FAILED! Confirm table header is incorrect display");
+            Assert.assertEquals(betOrderPage.tbCancelled.getHeaderNameOfRows(), listHeader, "FAILED! Cancelled table header is incorrect display");
+            log("INFO: Executed completely");
+        }finally {
+            /**Post-condition: unhide Bookie - OrderId column**/
+            betOrderPage.hideColumnSetting("Bookie - OrderId");
+        }
+
     }
 
+    @TestRails(id = "483")
     @Test(groups = {"smoke"})
     public void BetOrder_019(){
         log("@title: Verify hide/unhide all column is worked");
@@ -538,6 +565,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "484")
     @Test(groups = {"smoke"})
     public void BetOrder_020(){
         log("@title: Verify pending order info display in UI correctly");
@@ -559,6 +587,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "485")
     @Test(groups = {"smoke"})
     public void BetOrder_021(){
         log("@title: Verify Confirm order info display in UI correctly");
@@ -580,6 +609,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "486")
     @Test(groups = {"smoke"})
     public void BetOrder_022(){
         log("@title: Verify Cancelled order info display in UI correctly");
@@ -601,6 +631,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "487")
     @Test(groups = {"smoke"})
     public void BetOrder_023(){
         log("@title: Verify can open Order log");
@@ -630,6 +661,8 @@ public class BetOrderTest extends BaseCaseAQS {
 
         log("INFO: Executed completely");
     }
+
+    @TestRails(id = "488")
     @Test(groups = {"smoke"})
     public void BetOrder_024(){
         log("@title: Validate tooltip info display when click on I icon in # column");
@@ -652,8 +685,8 @@ public class BetOrderTest extends BaseCaseAQS {
         log("verify 1 tooltip display with value: Create By, Create date, Confirm By, Confrim Date, Revert By, Revert Date ");
         Assert.assertTrue(betOrderPage.lblTooltip.isDisplayed(),"Failed! Tooltip is not display");
         String tooltipInfo = betOrderPage.lblTooltip.getText();
-        Assert.assertTrue(tooltipInfo.contains("Created By"),"FAIIED! No found Create By in Tooltip info");
-        Assert.assertTrue(tooltipInfo.contains("Created Date"),"FAIIED! No found Create By in Tooltip info");
+        Assert.assertTrue(tooltipInfo.contains("Created By"),"FAILED! No found Create By in Tooltip info");
+        Assert.assertTrue(tooltipInfo.contains("Created Date"),"FAILED! No found Create By in Tooltip info");
         log("INFO: Executed completely");
     }
 }

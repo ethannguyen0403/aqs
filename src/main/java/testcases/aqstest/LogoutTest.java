@@ -3,9 +3,10 @@ package testcases.aqstest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import testcases.BaseCaseAQS;
+import testcases.BaseCaseAQSTestRails;
 import utils.testraildemo.TestRails;
 
-public class LogoutTest extends BaseCaseAQS {
+public class LogoutTest extends BaseCaseAQSTestRails {
 
     /**
      * @title: Verify that can logout successfully
@@ -17,7 +18,7 @@ public class LogoutTest extends BaseCaseAQS {
      * - Login button display
      */
 
-    @TestRails(id = "2")
+    @TestRails(id = "460")
     @Test(groups = {"smoke1"})
     public void LogoutTC_001(){
         log("@title: Verify that can logout successfully");
