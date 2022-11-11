@@ -9,6 +9,7 @@ import pages.ess.popup.*;
 import testcases.BaseCaseAQS;
 import testcases.BaseCaseAQSTestRails;
 import utils.GetOrdersUtils;
+import utils.aqs.PlaceOrderUtils;
 import utils.testraildemo.TestRails;
 
 import java.text.ParseException;
@@ -687,6 +688,40 @@ public class BetOrderTest extends BaseCaseAQS {
         String tooltipInfo = betOrderPage.lblTooltip.getText();
         Assert.assertTrue(tooltipInfo.contains("Created By"),"FAILED! No found Create By in Tooltip info");
         Assert.assertTrue(tooltipInfo.contains("Created Date"),"FAILED! No found Create By in Tooltip info");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"smoke"})
+    public void BetOrder_025(){
+        log("@title: Validate can add order by API");
+        log("@Step 1: Login with valid account");
+        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String orderID = "9fbe42d5-4308-46ec-isa805-autoid" + DateUtils.getMilliSeconds();
+        Map<String, String> headersParam = new HashMap<String, String>()
+        {
+            {
+                put("Operator-Name", "johnnytestaqs");
+                put("Agent-Name", "Simulator");
+                put("Content-Type", "application/json");
+            }
+        };
+        log(String.format("@Step 1: Place "+orderID+" order by API",fromDate,toDate));
+        PlaceOrderUtils.prepareOrder(orderID,headersParam);
+        log(String.format("@Step 2: Filter Soccer data from %s to %s and get an order in pending section",fromDate,toDate));
+        betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
+
+        log(String.format("Verify 1: The order place by API display in Pending section"));
+        Assert.assertTrue(betOrderPage.getControlOnTableBasedOnOrderID(PENDING,orderID,"BETS").isDisplayed(),"FAILED! The order "+orderID+"" +
+                " not display in Pending list after creating by API");
+
+        log(String.format("@Step 3: Cancle "+orderID+" order by API",fromDate,toDate));
+        PlaceOrderUtils.cancelOrder(orderID,headersParam);
+        betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
+
+        log(String.format("Verify 1: The order cacnel by API display in Cancelled section"));
+        Assert.assertTrue(betOrderPage.getControlOnTableBasedOnOrderID(CANCELLED,orderID,"BETS").isDisplayed(),"FAILED! The order "+orderID+"" +
+                " not display in Cancelled list after cancelling by API");
         log("INFO: Executed completely");
     }
 }
