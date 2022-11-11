@@ -5,6 +5,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.ess.RolePage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class RoleTest extends BaseCaseAQS {
      * - Roles list is displayed with correct header
      * - Permissions list is displayed with correct header
      */
-
+    @TestRails(id = "489")
     @Test(groups = {"smoke"})
     public void RoleTC_001(){
         log("@title: Verify Role Page UI");
@@ -46,7 +47,7 @@ public class RoleTest extends BaseCaseAQS {
      * - Role: Administrator and Agent
      * - Permissions: There are 14 permissions in the list
      */
-
+    @TestRails(id = "490")
     @Test(groups = {"smoke"})
     public void RoleTC_002(){
         log("@title: Verify data in Role Page");

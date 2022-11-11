@@ -43,7 +43,7 @@ public class BaseCaseAQS {
     public static pages.ess.LoginPage loginAQSPage;
     public static pages.sb11.LoginPage loginSB11Page;
     public static BrowserMobProxy browserMobProxy;
-    public static String PROJECT_ID="1";
+    public static String PROJECT_ID="2";
     public static APIClient client;
     private static boolean isAddTestRailResult = false;
     public static String aqsLoginURL;

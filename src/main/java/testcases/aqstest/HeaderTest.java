@@ -6,6 +6,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.ess.ChangePasswordPopup;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class HeaderTest extends BaseCaseAQS {
      * - logo: AQS
      * - Role, Manager,Account,AQS
      */
+    @TestRails(id = "461")
     @Test(groups = {"smoke"})
     public void HeaderTC_001(){
         log("@title: Verify menu in header section is correctly display");
@@ -40,6 +42,7 @@ public class HeaderTest extends BaseCaseAQS {
      * 2. Click on profile icon
      * @expect: Verify Change password icon display
      */
+    @TestRails(id = "462")
     @Test(groups = {"smoke"})
     public void HeaderTC_002(){
         log("@title: Verify Change Password menu display");
@@ -63,6 +66,7 @@ public class HeaderTest extends BaseCaseAQS {
      * - Confirm Password + Textbox
      * Update and Close button
      */
+    @TestRails(id = "463")
     @Test(groups = {"smoke"})
     public void HeaderTC_003(){
         log("@title: Verify Change Password menu display");
@@ -90,6 +94,7 @@ public class HeaderTest extends BaseCaseAQS {
      * @expect: Verify can change password
      * Verify can login account with new pw
      */
+    @TestRails(id = "464")
     @Test(groups = {"smoke"})
     @Parameters({"username","password"})
     public void HeaderTC_004(String username, String password) throws Exception {
