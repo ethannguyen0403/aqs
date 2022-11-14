@@ -691,7 +691,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     public void BetOrder_025(){
         log("@title: Validate can add order by API");
         log("@Step 1: Login with valid account");
@@ -709,7 +709,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log(String.format("@Step 1: Place "+orderID+" order by API",fromDate,toDate));
         PlaceOrderUtils.prepareOrder(orderID,headersParam);
         log(String.format("@Step 2: Filter Soccer data from %s to %s and get an order in pending section",fromDate,toDate));
-        betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
+        betOrderPage.filterBetOrders("","","Soccer", true);
 
         log(String.format("Verify 1: The order place by API display in Pending section"));
         Assert.assertTrue(betOrderPage.getControlOnTableBasedOnOrderID(PENDING,orderID,"BETS").isDisplayed(),"FAILED! The order "+orderID+"" +
