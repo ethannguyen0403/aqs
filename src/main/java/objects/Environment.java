@@ -5,32 +5,18 @@ package objects;
  * @created Nov/9/2019
  */
 public class Environment {
-    private  String loginURL;
-    private  String dashboardURL;
-    private  String wsURL;
-    private  String sosURL;
-    public String getLoginURL() {
-        return loginURL;
+    private String aqsLoginURL;
+    private String sbpLoginURL;
+    public String getAqsLoginURL() {
+        return aqsLoginURL;
     }
-    public void setLoginURL(String val) {
-        this.loginURL = val;
+    public void setAqsLoginURL(String val) {
+        this.aqsLoginURL = val;
     }
-    public String getDashboardURL() {
-        return dashboardURL;
+    public String getSbpLoginURL() {
+        return sbpLoginURL;
     }
-    public void setDashboardURL(String val) {
-        this.dashboardURL = val;
-    }
-    public String getWsURL() {
-        return wsURL;
-    }
-    public void setWsURL(String val) {
-        this.wsURL = val;
-    }
-    public String getSosURL() {
-        return sosURL;
-    }
-    public void setSosURL(String val) {
-        this.sosURL = val;
+    public void setSbpLoginURL(String val) {
+        this.sbpLoginURL = val;
     }
 }

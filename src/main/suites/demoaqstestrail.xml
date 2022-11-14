@@ -8,14 +8,14 @@
 
     <test name="QAT AQS Smoke Test">
         <parameter name='browser' value='window10.local.chrome'/>
-        <parameter name='env' value='aqsqat'/>
+        <parameter name='env' value='qat'/>
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
         <parameter name='username' value='isa'/>
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
         <parameter name='isThrown' value='true'/>
-
+        <parameter name="appname" value="aqs"/>
         <groups>
             <run>
                 <include name="smoke" />
@@ -23,8 +23,8 @@
         </groups>
 
         <classes>
-            <class name="testcases.TestRailTest.AQSTest.RoleAQSTest"/>
-            <class name="testcases.TestRailTest.AQSTest.LoginAQSTest"/>
+            <class name="testcases.testrailtest.AQSTest.RoleAQSTest"/>
+            <class name="testcases.testrailtest.AQSTest.LoginAQSTest"/>
 
         </classes>
     </test>

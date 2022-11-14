@@ -1,4 +1,4 @@
-package testcases.AQSHome;
+package testcases.aqstest;
 
 import com.paltech.utils.StringUtils;
 import org.testng.Assert;
@@ -6,7 +6,6 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.ess.ChangePasswordPopup;
 import testcases.BaseCaseAQS;
-import testcases.BaseCaseAQSTestRails;
 import utils.testraildemo.TestRails;
 
 import java.util.List;
@@ -112,8 +111,8 @@ public class HeaderTest extends BaseCaseAQS {
         Assert.assertEquals(messageSuccess, ChangePassword.MESSAGE_SUCCESS, "FAILED! Success message when change password is incorrect");
 
         log("@Step 4: Re-login with new pw");
-        loginPage = betOrderPage.logout();
-        betOrderPage = loginPage.login(username, newPass);
+        loginAQSPage = betOrderPage.logout();
+        betOrderPage = loginAQSPage.login(username, newPass);
         Assert.assertTrue(betOrderPage.profileIcon.isDisplayed(), String.format("ERROR: cannot login after change password for login account", username));
         log("INFO: Executed completely");
         }finally {

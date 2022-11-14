@@ -1,11 +1,10 @@
-package testcases.AQSHome;
+package testcases.aqstest;
 
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.ess.ManagerPage;
 import testcases.BaseCaseAQS;
-import testcases.BaseCaseAQSTestRails;
 import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;

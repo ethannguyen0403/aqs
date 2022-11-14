@@ -19,8 +19,7 @@ import org.testng.Reporter;
 import org.testng.annotations.*;
 import pages.ess.BetOrderPage;
 import pages.ess.HomePage;
-import pages.ess.LoginPage;
-import testcases.AQSHome.LoginTest;
+import pages.sb11.WelcomePage;
 import utils.testraildemo.APIClient;
 import utils.testraildemo.APIException;
 import utils.testraildemo.TestRails;
@@ -40,11 +39,15 @@ public class BaseCaseAQS {
     public static ExtentReports report;
     public static HomePage homePage;
     public static BetOrderPage betOrderPage;
-    public static LoginPage loginPage;
+    public static WelcomePage welcomePage;
+    public static pages.ess.LoginPage loginAQSPage;
+    public static pages.sb11.LoginPage loginSB11Page;
     public static BrowserMobProxy browserMobProxy;
     public static String PROJECT_ID="2";
     public static APIClient client;
     private static boolean isAddTestRailResult = false;
+    public static String aqsLoginURL;
+    public static String sb11LoginURL;
 
     @BeforeSuite(alwaysRun = true)
     public static void beforeSuite(ITestContext ctx) throws IOException, APIException {
@@ -54,20 +57,26 @@ public class BaseCaseAQS {
         } catch(Exception ex) {
             throw new NullPointerException(String.format("ERROR: Exception occurs beforeSuite by '%s'", ex.getMessage()));
         }
+        ctx.getName();
 
         if(isAddTestRailResult) {
-            // Add run in TestRail
+            System.out.println("Add New Test Run in TestRails" );
             client = new APIClient("https://demotestrailmerito.testrail.io");
             client.setUser("isabella.huynh@pal.net.vn");
             client.setPassword("P@l332211");
             Map data = new HashMap();
             //data.put("suite_id",true);
-            data.put("include_all", true);
+            data.put("include_all", false);
             data.put("name", "Test Run of suite " + ctx.getName() +" on"+ DateUtils.getDateFollowingGMT("GMT+7","dd-MM-YYYY hh:mm:ss"));
-            JSONObject c = null;
-            c = (JSONObject) client.sendPost("add_run/" + PROJECT_ID, data);
+            // data.put("milestone_id",1);
+
+            JSONObject c = (JSONObject) client.sendPost("add_run/" + PROJECT_ID, data);
+            c.get("id");
             Long suite_id = (Long) c.get("id");
             ctx.setAttribute("suiteId", suite_id);
+
+            //data1.put("include_all", false);
+            //  data1.put("suite_id",suite_id);
 
             //End add Run in TestRail
         }
@@ -78,37 +87,14 @@ public class BaseCaseAQS {
     public void beforeClass(String browser, String env) {
         environment = (Environment) context.getBean(env);
         driverProperties = (DriverProperties) context.getBean(browser);
-        System.out.println(String.format("RUNNING ON %s under the link %s", env.toUpperCase(), environment.getLoginURL()));
+        System.out.println(String.format("RUNNING ON %s under the link %s", env.toUpperCase(), environment.getAqsLoginURL()));
+        aqsLoginURL = environment.getAqsLoginURL();
+        sb11LoginURL = environment.getSbpLoginURL();
     }
 
-   /* @Parameters({"username", "password", "isLogin","isProxy"})
+   @Parameters({"appname","username", "password", "isLogin","isProxy"})
     @BeforeMethod(alwaysRun = true)
-    public static void beforeMethod(String username, String password, boolean isLogin, boolean isProxy, Method method, ITestResult result) throws Exception {
-        System.out.println("*****************************************Beginning TC's " + method.getName() +"****************************************************");
-        logger = report.startTest(method.getName(), method.getClass().getName());
-        driverProperties.setMethodName(method.getName());
-        driverProperties.setIsProxy(isProxy);
-        createDriver();
-        if (isLogin){
-       //     Set<Cookie> browserCookies = DriverManager.getDriver().getCookies();
-            homePage = loginPage.login(username, StringUtils.decrypt(password));
-          //  DriverManager.getDriver().addCookie();
-       //    browserCookies = DriverManager.getDriver().getCookies();
-           String cookie = DriverManager.getDriver().getCookies().toString();
-            if(!homePage.lblUserName.isDisplayed()){
-                homePage = loginPage.login(username,password);
-            }
-        } else {
-            loginPage = new LoginPage();
-        }
-
-        if (isProxy){
-            browserMobProxy = driverProperties.getBrowserMobProxy();
-        }
-    }*/
-   @Parameters({"username", "password", "isLogin","isProxy"})
-    @BeforeMethod(alwaysRun = true)
-    public static void beforeMethod(String username, String password, boolean isLogin, boolean isProxy, Method method, ITestResult resultI,ITestContext ctx) throws Exception {
+    public static void beforeMethod(String appname,String username, String password, boolean isLogin, boolean isProxy, Method method, ITestResult resultI,ITestContext ctx) throws Exception {
        System.out.println("*** Map test case in script with test case in TestRail ***");
       if(isAddTestRailResult){
           Method m = method;
@@ -122,12 +108,14 @@ public class BaseCaseAQS {
         logger = report.startTest(method.getName(), method.getClass().getName());
         driverProperties.setMethodName(method.getName());
         driverProperties.setIsProxy(isProxy);
-        createDriver();
-        if (isLogin){
-            betOrderPage = loginPage.login(username, StringUtils.decrypt(password));
-        } else {
-            loginPage = new LoginPage();
-        }
+       switch (appname){
+           case "aqs":
+               loginqas(username,password,isLogin);
+               break;
+           default:
+               loginsb11(username,password,isLogin);
+               break;
+       }
 
         if (isProxy){
             browserMobProxy = driverProperties.getBrowserMobProxy();
@@ -201,20 +189,38 @@ public class BaseCaseAQS {
         return true;
     }
 
+    public static void loginqas(String username, String password, boolean isLogin) throws Exception {
+        createDriver(aqsLoginURL);
+        loginAQSPage = new pages.ess.LoginPage();
+        if (isLogin) {
+            if (isLogin) {
+                betOrderPage = loginAQSPage.login(username, StringUtils.decrypt(password));
+            }
+        }
+    }
+
+    public static void loginsb11(String username, String password, boolean isLogin) throws Exception {
+        createDriver(sb11LoginURL);
+        loginSB11Page = new pages.sb11.LoginPage();
+        if (isLogin) {
+            if (isLogin) {
+                welcomePage = loginSB11Page.login(username, StringUtils.decrypt(password));
+            }
+        }
+    }
+
     /**********************
      * Private methods
      *******************/
-    private static void createDriver() throws MalformedURLException, UnexpectedException {
+    private static void createDriver(String url) throws MalformedURLException, UnexpectedException {
         int count = 3;
         DriverManager.quitAll();
         while (count-- > 0){
             DriverManager.createWebDriver(driverProperties);
             DriverManager.getDriver().setLoadingTimeOut(100);
             DriverManager.getDriver().maximize();
-            if (DriverManager.getDriver().getToAvoidTimeOut(environment.getLoginURL()) || count==0) {
-                loginPage = new LoginPage();
-          /*      if(!loginPage.txtUsername.isDisplayed(5))
-                    DriverManager.getDriver().getToAvoidTimeOut(environment.getLoginURL());*/
+            if (DriverManager.getDriver().getToAvoidTimeOut(url) || count==0) {
+                log(String.format("RUNNING under the link %s", url));
                 log(String.format("DEBUG: CREATED DRIVER SUCCESSFULLY with COUNT %s", count));
                 System.out.println(String.format("Width x Height is %sx%s with MAP SIZE %s", DriverManager.getDriver().getWidth(), DriverManager.getDriver().getHeight(), DriverManager.driverMap.size()));
                 break;
