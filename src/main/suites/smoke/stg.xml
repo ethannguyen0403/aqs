@@ -17,19 +17,18 @@
 
         <groups>
             <run>
-                <include name="smoke_qc" />
+                <include name="smoke" />
             </run>
         </groups>
 
         <classes>
-           <class name="testcases.AQSHome.LoginTest"/>
-           <class name="testcases.AQSHome.LogoutTest"/>
-           <class name="testcases.AQSHome.HeaderTest"/>
-           <class name="testcases.AQSHome.BetOrderTest"/>
-           <class name="testcases.AQSHome.RoleTest"/>
-           <class name="testcases.AQSHome.ManagerTest"/>
+            <class name="testcases.AQSHome.LoginTest"/>
+            <class name="testcases.AQSHome.LogoutTest"/>
+            <class name="testcases.AQSHome.HeaderTest"/>
+            <class name="testcases.AQSHome.BetOrderTest"/>
+            <class name="testcases.AQSHome.RoleTest"/>
+            <class name="testcases.AQSHome.ManagerTest"/>
+            <class name="testcases.AQSHome.AccountTest"/>
         </classes>
-
-
     </test>
 </suite>
