@@ -33,14 +33,17 @@
     <bean name="qat" class="objects.Environment" scope="prototype">
         <property name="aqsLoginURL" value="${QAT.AqsLoginUrl}"/>
         <property name="sbpLoginURL" value="${QAT.SbpLoginUrl}"/>
+        <property name="aqsAPI" value="${QAT.AqsAPI}"/>
     </bean>
     <bean name="stg" class="objects.Environment" scope="prototype">
         <property name="aqsLoginURL" value="${STG.AqsLoginUrl}"/>
         <property name="sbpLoginURL" value="${STG.SbpLoginUrl}"/>
+        <property name="aqsAPI" value="${STG.AqsAPI}"/>
     </bean>
     <bean name="pro" class="objects.Environment" scope="prototype">
         <property name="aqsLoginURL" value="${PRO.AqsLoginUrl}"/>
         <property name="sbpLoginURL" value="${PRO.SbpLoginUrl}"/>
+        <property name="aqsAPI" value="${PRO.AqsAPI}"/>
     </bean>
 
 </beans>

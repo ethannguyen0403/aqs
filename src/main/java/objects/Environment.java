@@ -7,6 +7,7 @@ package objects;
 public class Environment {
     private String aqsLoginURL;
     private String sbpLoginURL;
+    private String aqsAPI;
     public String getAqsLoginURL() {
         return aqsLoginURL;
     }
@@ -18,5 +19,13 @@ public class Environment {
     }
     public void setSbpLoginURL(String val) {
         this.sbpLoginURL = val;
+    }
+
+    public String getAqsAPI() {
+        return aqsAPI;
+    }
+
+    public void setAqsAPI(String aqsAPI) {
+        this.aqsAPI = aqsAPI;
     }
 }

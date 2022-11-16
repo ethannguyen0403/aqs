@@ -5,19 +5,19 @@
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
-    <test name="Smoke_Chrome">
+    <test name="AQS_STG_Smoke_Chrome">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='stg'/>
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
-        <parameter name='username' value='AutoQC'/>
+        <parameter name='username' value='autoqc'/>
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="aqs"/>
         <groups>
             <run>
-                <include name="smoke" />
+                <include name="smoke_qc1" />
             </run>
         </groups>
 

@@ -9,7 +9,7 @@ import static testcases.BaseCaseAQS.environment;
 
 public class PlaceOrderUtils {
         private static JSONObject prepareOrderJson(String orderID, Map<String, String> headers){
-        String api = String.format("%saqs-gateway/v3/orders/prepare/%s",environment.getAqsLoginURL(),orderID);
+        String api = String.format("%saqs-gateway/v3/orders/prepare/%s",environment.getAqsAPI(),orderID);
         String jsn = String.format("{\n" +
                 "    \"orderId\": \"%s\",\n" +
                 "    \"hitterId\": \"jo\",\n" +
@@ -52,7 +52,7 @@ public class PlaceOrderUtils {
         return  WSUtils.getPUTJSONObjectWithDynamicHeaders(api, jsn,headers);
     }
     private static JSONObject placeOverUnderOrderJson(String orderID, Map<String,String> headers){
-        String api = String.format("%saqs-gateway/v3/orders/%s",environment.getAqsLoginURL(),orderID);
+        String api = String.format("%saqs-gateway/v3/orders/%s",environment.getAqsAPI(),orderID);
         String jsn = String.format("{\n" +
                 "    \"orderId\": \"%s\",\n" +
                 "    \"createdTimeUtc\": \"\",\n" +
@@ -114,7 +114,7 @@ public class PlaceOrderUtils {
         return  WSUtils.getPUTJSONObjectWithDynamicHeaders(api, jsn,headers);
     }
     private static JSONObject placeHandicapOrderJson(String orderID, Map<String,String> headers){
-        String api = String.format("%saqs-gateway/v3/orders/%s",environment.getAqsLoginURL(),orderID);
+        String api = String.format("%saqs-gateway/v3/orders/%s",environment.getAqsAPI(),orderID);
         String jsn = String.format("{\n" +
                 "    \"orderId\": \"%s\",\n" +
                 "    \"createdTimeUtc\": \"\",\n" +
@@ -176,7 +176,7 @@ public class PlaceOrderUtils {
         return  WSUtils.getPUTJSONObjectWithDynamicHeaders(api, jsn,headers);
     }
     private static JSONObject updatePriceJson(String orderID, Map<String,String> headers){
-        String api = String.format("%s/aqs-gateway/v3/orders/%s/updatePrice",environment.getAqsLoginURL(),orderID);
+        String api = String.format("%s/aqs-gateway/v3/orders/%s/updatePrice",environment.getAqsAPI(),orderID);
         String jsn = String.format("{\n" +
                 "    \"orderId\": \"%s\",\n" +
                 "    \"hitterId\": \"jo\",\n" +
@@ -229,7 +229,7 @@ public class PlaceOrderUtils {
         return  WSUtils.getPOSTJSONObjectWithDynamicHeaders(api, jsn,headers);
     }
     private static JSONObject cancelOrderJson(String orderID, Map<String,String> headers){
-        String api = String.format("%s/aqs-gateway/v3/orders/%s/cancel",environment.getAqsLoginURL(),orderID);
+        String api = String.format("%s/aqs-gateway/v3/orders/%s/cancel",environment.getAqsAPI(),orderID);
         String jsn = String.format("{\n" +
                 "    \"orderId\": \"%s\",\n" +
                 "    \"hitterId\": \"jo\",\n" +
@@ -283,6 +283,9 @@ public class PlaceOrderUtils {
     }
     public static void prepareOrder(String orderID, Map<String,String> headers ){
         prepareOrderJson(orderID,headers);
+    }
+    public static void placeOverUnder(String orderID, Map<String, String> headers){
+        placeOverUnderOrderJson(orderID,headers);
     }
     public static void cancelOrder(String orderID, Map<String,String> headers ){
         cancelOrderJson(orderID,headers);

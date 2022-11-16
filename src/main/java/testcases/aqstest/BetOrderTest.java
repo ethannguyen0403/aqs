@@ -4,10 +4,10 @@ import com.paltech.utils.DateUtils;
 import common.ESSConstants;
 import objects.Order;
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.ess.popup.*;
 import testcases.BaseCaseAQS;
-import testcases.BaseCaseAQSTestRails;
 import utils.GetOrdersUtils;
 import utils.aqs.PlaceOrderUtils;
 import utils.testraildemo.TestRails;
@@ -18,6 +18,7 @@ import java.util.*;
 import static common.ESSConstants.BetOrderPage.*;
 import static common.ESSConstants.OrderLog.TABLE_HEADER;
 import static common.ESSConstants.OrderLog.TABLE_HEADER_BET_LIST;
+import static utils.aqs.PlaceOrderUtils.placeOverUnder;
 
 public class BetOrderTest extends BaseCaseAQS {
 
@@ -63,8 +64,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_003() throws ParseException {
         log("@title: Verify Bet List popup displayed correctly info: popup title, event info, table header");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-3,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-3,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-3,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -83,7 +84,7 @@ public class BetOrderTest extends BaseCaseAQS {
         Assert.assertEquals(betListPopup.lblTitle.getText(),"AQS Bet Orders > Bet List", "FAILED! Bet list title is displayed incorrectly!");
 
         log("Verify 2. Event info: Match Date | Event Name | League name");
-        String dateconvert = DateUtils.convertDateToNewTimeZone(orderLst.get(0).getEventDate(),"yyyy-MM-dd'T'HH:mm:ss.SSSXXX","","dd/MM/yyyy HH:mm","GMT+8");
+        String dateconvert = DateUtils.convertDateToNewTimeZone(orderLst.get(0).getEventDate(),"yyyy-MM-dd'T'HH:mm:ss.SSSXXX","","d/MM/yyyy HH:mm","GMT+8");
         Assert.assertTrue(betListPopup.lbleventInfo.getText().contains(dateconvert),"FAILED! Event date is displayed incorrectly!");
         Assert.assertTrue(betListPopup.lbleventInfo.getText().contains(orderLst.get(0).getHome()), "FAILED! Home team name is displayed incorrectly!");
         Assert.assertTrue(betListPopup.lbleventInfo.getText().contains(orderLst.get(0).getAway()), "FAILED! Away team name is displayed incorrectly!");
@@ -99,8 +100,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_004() throws ParseException {
         log("@title: Verify Bet Slip in Pending section display with correct info");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -130,8 +131,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_005(){
         log("@title: Verify control in Bet Slip display correctly");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -159,8 +160,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_006(){
         log("@title: Verify Bet Slip in Cancelled section is disable to place bet");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -185,8 +186,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_007(){
         log("@title: Verify message confirm display when click on BET link in Action column in Confirm section");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -213,8 +214,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_008(){
         log("@title: Verify Bet Slip popup display when Confirming in Confirm section");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -243,8 +244,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_009(){
         log("@title: Verify Bet Slip popup does not display when unconfirm in Confirm section");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -284,8 +285,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_010(){
         log("@title: Verify order display in Confirm when clicking Confirm link Pending section");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-4,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-4,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-4,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -315,8 +316,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_011(){
         log("@title: Verify order display in Cancelled section when clicking Cancel link Pending section");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-4,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-4,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-4,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -343,96 +344,138 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "476")
     @Test(groups = {"smoke_qc"})
-    public void BetOrder_012(){
+    @Parameters(("username"))
+    public void BetOrder_012(String username){
         log("@title: Verify order display in Pending when clicking Pending link Confirm section");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-4,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-4,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-4,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
+        String orderID = "9fbe42d5-4308-46ec-isa805-autoid" + DateUtils.getMilliSeconds();
 
-        log(String.format("@Step 2: Filter Soccer data from %s to %s ",fromDate,toDate));
-        betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
+            log(String.format("@Precondition Step: Place an order %s", orderID));
+            Map<String, String> headersParam = new HashMap<String, String>() {
+                {
+                    put(String.format("Operator-Name", "\"%s\""), username);
+                    put("Agent-Name", "Simulator");
+                    put("Content-Type", "application/json");
+                }
+            };
+        try {
+            PlaceOrderUtils.prepareOrder(orderID, headersParam);
+            placeOverUnder(orderID, headersParam);
 
-        log("@Step 3: Get Order API in Cancelled status");
-        List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer",CONFIRM);
-        if(betOrderPage.isNodata(orderLst)){
-            log("SKIP: No data in Cancelled order");
-            return;}
+            log(String.format("@Step 2: Filter Soccer data from %s to %s ", fromDate, toDate));
+            betOrderPage.filterBetOrders(fromDate, toDate, "Soccer", true);
 
-        String orderID=orderLst.get(0).getOrderId();
-        log("@Step 4: In Confirm section, click on Pending link of the order "+ orderID);
-        betOrderPage.clickControlInTable(CONFIRM, orderID,PENDING);
+            log(String.format("@Step 3: Click confirm link of order %s in Pending section", orderID));
+            List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI, toDateAPI, "Soccer", CONFIRM);
+            Order order = GetOrdersUtils.getOrderInfoById(orderLst, orderID);
+            betOrderPage.clickControlInTable(PENDING, orderID, CONFIRM);
 
-        log("verify 11 Verify bet is move to Pending section");
-        betOrderPage.verifyOrderInfo(orderLst.get(0),PENDING);
+            log("@Step 4: In Confirm section, click on Pending link of the order " + orderID);
+            betOrderPage.clickControlInTable(CONFIRM, orderID, PENDING);
 
-        log("Post-condition: Move the order from Pending to Confirm section");
-        betOrderPage.clickControlInTable(PENDING, orderID,CONFIRM);
+            log("verify 11 Verify bet is move to Pending section");
+            betOrderPage.verifyOrderInfo(order, PENDING);
+        }finally {
+            log("Post-condition: Move the order from Pending to Cancel section");
+            PlaceOrderUtils.cancelOrder(orderID,headersParam);
+        }
         log("INFO: Executed completely");
     }
 
     @TestRails(id = "477")
     @Test(groups = {"smoke_qc"})
-    public void BetOrder_013(){
+    @Parameters(("username"))
+    public void BetOrder_013(String username){
         log("@title: Verify order display in Pending when clicking Pending link Cancelled section");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-11,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
-        String fromDateAPI = String.format(DateUtils.getDate(-11,"yyyy-MM-dd","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
+        String fromDateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
+        String orderID = "9fbe42d5-4308-46ec-isa805-autoid" + DateUtils.getMilliSeconds();
+        Map<String, String> headersParam = new HashMap<String, String>()
+        {
+            {
+                put(String.format("Operator-Name","\"%s\""),username) ;
+                put("Agent-Name", "Simulator");
+                put("Content-Type", "application/json");
+            }
+        };
+        log("@Step 3: Place a Order API in Cancelled status");
+        PlaceOrderUtils.prepareOrder(orderID,headersParam);
+        PlaceOrderUtils.placeOverUnder(orderID, headersParam);
+        PlaceOrderUtils.cancelOrder(orderID,headersParam);
+        log(String.format("@Step 2: Filter Soccer data from %s to %s ", fromDate, toDate));
+        betOrderPage.filterBetOrders(fromDate, toDate, "Soccer", true);
+        List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI, toDateAPI, "Soccer", CANCELLED);
+        Order order = GetOrdersUtils.getOrderInfoById(orderLst,orderID);
+        try {
+            log("@Step 4: In Cancelled section, click on Pending link of the order " + orderID);
+            betOrderPage.clickControlInTable(CANCELLED, orderID, PENDING);
 
-        log(String.format("@Step 2: Filter Soccer data from %s to %s ",fromDate,toDate));
-        betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
+            log("verify 1 Verify bet is move to Pending section");
+            betOrderPage.verifyOrderInfo(order, PENDING);
 
-        log("@Step 3: Get Order API in Cancelled status");
-        List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer",CANCELLED);
-        if(betOrderPage.isNodata(orderLst)){
-            log("SKIP: No data in Cancelled order");
-            return;}
-        String orderID=orderLst.get(0).getOrderId();
-        log("@Step 4: In Cancelled section, click on Pending link of the order "+orderID);
-        betOrderPage.clickControlInTable(CANCELLED, orderID,PENDING);
+        }finally {
+            log("Post-condition: Move the order from Pending to Cancelled section");
+            PlaceOrderUtils.cancelOrder(orderID,headersParam);
+        }
 
-        log("verify 11 Verify bet is move to Pending section");
-        betOrderPage.verifyOrderInfo(orderLst.get(0),PENDING);
-
-        log("Post-condition: Move the order from Pending to Cancelled section");
-        betOrderPage.clickControlInTable(PENDING, orderID,CANCEL);
         log("INFO: Executed completely");
     }
 
     @TestRails(id = "478")
     @Test(groups = {"smoke_qc"})
-    public void BetOrder_014(){
+    @Parameters(("username"))
+    public void BetOrder_014(String username){
         log("@title: Verify order display in Confirm when clicking Confirm link Cancelled section");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-9,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-9,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-9,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
-
+        String orderID = "9fbe42d5-4308-46ec-isa805-autoid" + DateUtils.getMilliSeconds();
+        Map<String, String> headersParam = new HashMap<String, String>()
+        {
+            {
+                put(String.format("Operator-Name","\"%s\""),username) ;
+                put("Agent-Name", "Simulator");
+                put("Content-Type", "application/json");
+            }
+        };
+        PlaceOrderUtils.prepareOrder(orderID,headersParam);
+        placeOverUnder(orderID, headersParam);
+        PlaceOrderUtils.cancelOrder(orderID,headersParam);
         log(String.format("@Step 2: Filter Soccer data from %s to %s ",fromDate,toDate));
         betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
+        List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI, toDateAPI, "Soccer", CANCELLED);
+        Order order = GetOrdersUtils.getOrderInfoById(orderLst,orderID);
 
         log("@Step 3: Get Order API in Cancelled status");
-        List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer",CANCELLED);
+      /*  List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer",CANCELLED);
         if(betOrderPage.isNodata(orderLst)){
             log("SKIP: No data in Cancelled order");
-            return;}
-        String orderID=orderLst.get(0).getOrderId();
+            return;}*/
+      //  String orderID=orderLst.get(0).getOrderId();
 
         log("@Step 4: In Cancelled section, click on Confirm link of the order "+orderID);
-        betOrderPage.clickControlInTable(CANCELLED, orderID,CONFIRM);
+        try {
+            betOrderPage.clickControlInTable(CANCELLED, orderID, CONFIRM);
 
-        log("verify 11 Verify bet is move to Confirm section");
-        Assert.assertFalse(betOrderPage.getControlOnTableBasedOnOrderID(CONFIRM,orderLst.get(0).getOrderId(),CONFIRM).isDisplayed(),"Failed! Confirm link is display for Confirm order");
-        Assert.assertTrue(betOrderPage.getControlOnTableBasedOnOrderID(CONFIRM,orderLst.get(0).getOrderId(),PENDING).isDisplayed(),"Failed! Pending link is not display for Confirm order");
-        Assert.assertTrue(betOrderPage.getControlOnTableBasedOnOrderID(CONFIRM,orderLst.get(0).getOrderId(),CANCEL).isDisplayed(),"Failed! Cancel link is not display for Confirm order");
-        Assert.assertTrue(betOrderPage.getControlOnTableBasedOnOrderID(CONFIRM,orderLst.get(0).getOrderId(),"Bet").isDisplayed(),"Failed! Bet link is not display for Confirm order");
-
-        log("Post-condition: Move the order from Confirm to Cancelled section");
-        betOrderPage.clickControlInTable(CONFIRM, orderID,CANCEL);
+            log("verify 11 Verify bet is move to Confirm section");
+            betOrderPage.verifyOrderInfo(order, CONFIRM);
+            Assert.assertFalse(betOrderPage.getControlOnTableBasedOnOrderID(CONFIRM,orderID, CONFIRM).isDisplayed(), "Failed! Confirm link is display for Confirm order");
+            Assert.assertTrue(betOrderPage.getControlOnTableBasedOnOrderID(CONFIRM,orderID, PENDING).isDisplayed(), "Failed! Pending link is not display for Confirm order");
+            Assert.assertTrue(betOrderPage.getControlOnTableBasedOnOrderID(CONFIRM,orderID, CANCEL).isDisplayed(), "Failed! Cancel link is not display for Confirm order");
+            Assert.assertTrue(betOrderPage.getControlOnTableBasedOnOrderID(CONFIRM, orderID, "Bet").isDisplayed(), "Failed! Bet link is not display for Confirm order");
+        }finally {
+            log("Post-condition: Move the order from Confirm to Cancelled section");
+            PlaceOrderUtils.cancelOrder(orderID,headersParam);
+        }
         log("INFO: Executed completely");
     }
 
@@ -441,8 +484,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_015(){
         log("@title: Verify there is no Pending link in Action column Pending section");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -469,8 +512,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_016(){
         log("@title: Verify there is no Confirm link in Action column Confirm section");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -497,8 +540,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_017(){
         log("@title: Verify there is no Cancel link in Action column Cancelled section");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -571,8 +614,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_020(){
         log("@title: Verify pending order info display in UI correctly");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -593,8 +636,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_021(){
         log("@title: Verify Confirm order info display in UI correctly");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -615,8 +658,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_022(){
         log("@title: Verify Cancelled order info display in UI correctly");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -637,8 +680,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_023(){
         log("@title: Verify can open Order log");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -658,7 +701,7 @@ public class BetOrderTest extends BaseCaseAQS {
         Assert.assertEquals(orderLogPopup.lblTitle.getText(),"AQS Bet Orders Order Logs","Failed! Title popup is incorrect");
 
         log("verify 2 The table header is corrected displayed");
-        Assert.assertEquals(orderLogPopup.tblOrder.getHeaderList(),TABLE_HEADER,String.format("Failed! Header Table is incorrect"));
+        Assert.assertEquals(orderLogPopup.tblOrder.getColumnNamesOfTable(),TABLE_HEADER,String.format("Failed! Header Table is incorrect"));
 
         log("INFO: Executed completely");
     }
@@ -668,8 +711,8 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_024(){
         log("@title: Validate tooltip info display when click on I icon in # column");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
@@ -691,23 +734,25 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke1"})
-    public void BetOrder_025(){
+    @Test(groups = {"smoke_qc"})
+    @Parameters(("username"))
+    public void BetOrder_025(String username){
         log("@title: Validate can add order by API");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT -4"));
-        String toDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String orderID = "9fbe42d5-4308-46ec-isa805-autoid" + DateUtils.getMilliSeconds();
         Map<String, String> headersParam = new HashMap<String, String>()
         {
             {
-                put("Operator-Name", "johnnytestaqs");
+                put("Operator-Name",username) ;
                 put("Agent-Name", "Simulator");
                 put("Content-Type", "application/json");
             }
         };
         log(String.format("@Step 1: Place "+orderID+" order by API",fromDate,toDate));
         PlaceOrderUtils.prepareOrder(orderID,headersParam);
+        placeOverUnder(orderID, headersParam);
         log(String.format("@Step 2: Filter Soccer data from %s to %s and get an order in pending section",fromDate,toDate));
         betOrderPage.filterBetOrders("","","Soccer", true);
 
