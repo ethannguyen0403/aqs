@@ -3,9 +3,9 @@ package utils.testraildemo;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
-import testcases.BaseCaseAQS;
+import testcases.BaseCaseAQSTestRails;
 
-public class Listener extends BaseCaseAQS implements ITestListener {
+public class Listener extends BaseCaseAQSTestRails implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult iTestResult) {

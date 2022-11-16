@@ -1,10 +1,11 @@
-package testcases.AQSHome;
+package testcases.aqstest;
 
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.ess.ManagerPage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,8 @@ public class ManagerTest extends BaseCaseAQS {
      * - The list account contains the login account
      */
 
-    @Test(groups = {"smoke"})
+    @TestRails(id = "491")
+    @Test(groups = {"smoke3"})
     @Parameters("username")
     public void ManagerTC_001(String username){
         log("@title: Verify Manager Page UI");
@@ -42,7 +44,7 @@ public class ManagerTest extends BaseCaseAQS {
         Assert.assertTrue(colUserManagement.contains("Role"), "Failed! Role column is not displayed!");
         Assert.assertTrue(colUserManagement.contains("Status"), "Failed! Status column is not displayed!");
         log("Verify that list account contains the login account");
-        Assert.assertTrue(managerPage.isAccountDisplayed(username), "Failed! " + username + " is not displayed!");
+        Assert.assertTrue(managerPage.isAccountDisplayed(username.toLowerCase()), "Failed! " + username + " is not displayed!");
         log("INFO: Executed completely");
     }
 }

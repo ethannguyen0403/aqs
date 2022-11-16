@@ -47,7 +47,7 @@ public class RolePage {
         Label lbl;
         int i =1;
         while (true){
-            lbl = Label.xpath(tbRoles.getxPathOfCell(1,colRolName , i,null));
+            lbl = Label.xpath(tbRoles.getxPathOfCell(1,colRolName , i,"span"));
             if(!lbl.isDisplayed())
                 return lstRole;
             lstRole.add(lbl.getText().trim());

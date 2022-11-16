@@ -1,4 +1,4 @@
-package testcases.AQSHome;
+package testcases.aqstest;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -17,19 +17,19 @@ public class LogoutTest extends BaseCaseAQS {
      * - Login button display
      */
 
-    @TestRails(id = "2")
-    @Test(groups = {"smoke1"})
+    @TestRails(id = "460")
+    @Test(groups = {"smoke"})
     public void LogoutTC_001(){
         log("@title: Verify that can logout successfully");
         log("@Step 1: Login with valid Username and Password");
         log("@Step 2: Click Logout button");
         betOrderPage.logout();
-        loginPage.btnCopyRight.click();
+        loginAQSPage.btnCopyRight.click();
 
         log("Verify that can logout successfully");
-        Assert.assertTrue(loginPage.btnLogin.isDisplayed(), "FAILED! Login button does not display");
-        Assert.assertTrue(loginPage.txtUsername.isDisplayed(),"FAILED! Username field does not display");
-        Assert.assertTrue(loginPage.txtPassword.isDisplayed(),"FAILED! Password field does not display");
+        Assert.assertTrue(loginAQSPage.btnLogin.isDisplayed(), "FAILED! Login button does not display");
+        Assert.assertTrue(loginAQSPage.txtUsername.isDisplayed(),"FAILED! Username field does not display");
+        Assert.assertTrue(loginAQSPage.txtPassword.isDisplayed(),"FAILED! Password field does not display");
         log("INFO: Executed completely");
     }
 }

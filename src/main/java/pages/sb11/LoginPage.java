@@ -1,4 +1,4 @@
-package pages.ess;
+package pages.sb11;
 
 import com.paltech.element.common.Button;
 import com.paltech.element.common.TextBox;
@@ -9,10 +9,9 @@ public class LoginPage {
     public TextBox txtPassword = TextBox.xpath("//input[@formcontrolname='password']");
     public TextBox txtCode = TextBox.xpath("//input[@formcontrolname='code']");
     public Button btnLogin = Button.xpath("//button[contains(@class,'btn-login')]");
-
     public Button btnCopyRight = Button.xpath("//em[contains(@class, 'far fa-copyright')]");
 
-    public BetOrderPage login(String username,String password){
+    public WelcomePage login(String username, String password){
         btnCopyRight.isDisplayed(2);
         btnCopyRight.click();
         txtUsername.sendKeys(username);
@@ -24,7 +23,7 @@ public class LoginPage {
         }
         btnLogin.click();
         txtUsername.isDisplayedShort(10);
-        return new BetOrderPage();
+        return new WelcomePage();
     }
 
 }

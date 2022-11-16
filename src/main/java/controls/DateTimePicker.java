@@ -170,7 +170,7 @@ public class DateTimePicker extends BaseElement {
             String y =  sd.format(date);
             sd = new SimpleDateFormat("MMMM");
             String mm =  sd.format(date);
-            sd = new SimpleDateFormat("dd");
+            sd = new SimpleDateFormat("d");
             String dd =  sd.format(date);
             // click year
             if(!currentYear.equals(y)){

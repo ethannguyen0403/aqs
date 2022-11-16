@@ -1,34 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="AQS_QAT_Smoke_johnnytest" verbose="1">
+<suite name="AQS_QAT_Smoke" verbose="1">
     <listeners>
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
     <test name="Smoke_Chrome">
         <parameter name='browser' value='window10.local.chrome'/>
-        <parameter name='env' value='aqsqat'/>
+        <parameter name='env' value='qat'/>
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
-        <parameter name='username' value='johnny'/>
+        <parameter name='username' value='Isa'/>
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
         <parameter name='isThrown' value='true'/>
+        <parameter name="appname" value="sp11"/>
 
         <groups>
             <run>
-                <include name="smoke2" />
+                <include name="smoke5" />
             </run>
         </groups>
 
         <classes>
-           <class name="testcases.AQSHome.LoginTest"/>
-           <class name="testcases.AQSHome.LogoutTest"/>
-           <class name="testcases.AQSHome.HeaderTest"/>
-           <class name="testcases.AQSHome.BetOrderTest"/>
-           <class name="testcases.AQSHome.RoleTest"/>
-           <class name="testcases.AQSHome.ManagerTest"/>
-           <class name="testcases.AQSHome.AccountTest"/>
+            <class name="testcases.sb11test.LoginTest"/>
+            <class name="testcases.sb11test.BookieInfoTest"/>
+            <class name="testcases.sb11test.ClientSystemTest"/>
         </classes>
 
 

@@ -1,10 +1,11 @@
-package testcases.AQSHome;
+package testcases.aqstest;
 
 import common.ESSConstants;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.ess.RolePage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class RoleTest extends BaseCaseAQS {
      * - Roles list is displayed with correct header
      * - Permissions list is displayed with correct header
      */
-
+    @TestRails(id = "489")
     @Test(groups = {"smoke"})
     public void RoleTC_001(){
         log("@title: Verify Role Page UI");
@@ -46,8 +47,8 @@ public class RoleTest extends BaseCaseAQS {
      * - Role: Administrator and Agent
      * - Permissions: There are 14 permissions in the list
      */
-
-    @Test(groups = {"smoke"})
+    @TestRails(id = "490")
+    @Test(groups = {"smoke1"})
     public void RoleTC_002(){
         log("@title: Verify data in Role Page");
         log("@Step 1: Login with valid Username and Password");
@@ -55,8 +56,10 @@ public class RoleTest extends BaseCaseAQS {
         RolePage rolePage = betOrderPage.activeMenu(ROLE,RolePage.class);
 
         log("Verify that Role list are displayed correctly");
-        Assert.assertEquals(rolePage.getRoleList(), ROLE_LIST,"Failed! Agent role is not displayed");
-
+        List<String> roleList= rolePage.getRoleList();
+        Assert.assertTrue(roleList.contains("Administrator"),"Failed! Administrator role is not displayed");
+        Assert.assertTrue(roleList.contains("Agent"),"Failed! Agent role is not displayed");
+        Assert.assertTrue(roleList.contains("Trader"),"Failed! Trader role is not displayed");
         log("Verify that Permissions list permission is correctly");
         List<String> permissionLst = rolePage.getPermissionList();
         Assert.assertEquals(permissionLst, PERMISSION_LIST, "Failed! Permissions list is incorrect displayed");

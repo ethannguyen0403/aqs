@@ -22,7 +22,7 @@ public class GetOrdersUtils {
        return  sessionStorage.getItemFromSessionStorage("token-user");
     }
     private static JSONObject getOrdersAPIJson(String fromDate, String toDate, String sport){
-        String api = String.format("%saqs-agent-service/api/getOrders?fromDate=%s&toDate=%s&sport=%s",environment.getWsURL(),fromDate,toDate,sport);
+        String api = String.format("%saqs-agent-service/api/getOrders?fromDate=%s&toDate=%s&sport=%s",environment.getAqsLoginURL(),fromDate,toDate,sport);
     //    WSUtils.getGETJSONArrayWithCookies(api, Configs.HEADER_JSON_CHARSET, DriverManager.getDriver().getCookies().toString(),Configs.HEADER_JSON);
         String autho = String.format("Bearer  %s",token());
        // WSUtils.getPOSTJSONObjectWithCookiesHasHeader(api, Configs.HEADER_FORM_URLENCODED, null, null,"","Authorization",autho);
@@ -63,6 +63,14 @@ public class GetOrdersUtils {
             }
         }
         return lstOrder;
+    }
+
+    public static Order getOrderInfoById(List <Order> lsOrder,String orderId){
+        for(Order order:lsOrder){
+            if(order.getOrderId().equals(orderId))
+                return order;
+        }
+        return null;
     }
 
 }

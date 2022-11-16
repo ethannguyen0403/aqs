@@ -26,6 +26,7 @@ public class BetOrderPage extends HomePage {
     public TextBox txtFromDate = TextBox.xpath("//div[@class='p-2']/div[contains(text(),'From Date')]//following::input[1]");
     public TextBox txtToDate = TextBox.xpath("//div[@class='p-2']/div[contains(text(),'To Date')]//following::input[1]");
     public Link lblHideColumn = Link.xpath("//div[contains(@class, 'text-right cursor-pointer')]");
+    public Label lblTooltip = Label.xpath("//popover-container[@role='tooltip']");
     public Table tbPending = Table.xpath("//div[contains(@class, 'PENDING')]//following::table[1]", 9);
     public Table tbConfirm = Table.xpath("//div[contains(@class, 'CONFIRM')]//following::table[1]", 9);
     public Table tbCancelled = Table.xpath("//div[contains(@class, 'CANCELLED')]//following::table[1]", 9);
@@ -42,12 +43,19 @@ public class BetOrderPage extends HomePage {
     private int colBookieOrderID = 9;
 
     public void filterBetOrders(String fromDate, String toDate, String sport, boolean isShow){
-        dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-        dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+        if(!fromDate.isEmpty()){
+        dtpFromDate.selectDate(fromDate,"d/MM/yyyy");}
+        if(!toDate.isEmpty()) {
+            dtpToDate.selectDate(toDate, "d/MM/yyyy");
+        }
         ddSport.selectByVisibleContainsText(sport);
      /*   dtpFromDate.currentMonthWithDate(fromDate);
         dtpToDate.currentMonthWithDate(toDate);*/
-        btnShow.click();
+        if(isShow) {
+            btnShow.click();
+            waitSpinLoad();
+        }
+
     }
 
     private Table getTableByStatus(String status){
@@ -205,6 +213,9 @@ public class BetOrderPage extends HomePage {
             case "BET":
                 return (Link)table.getControlBasedValueOfDifferentColumnOnRow(orderID,1,colBookieOrderID,1,
                         "div[2]",colAction,"span[contains(@tooltip,'Place Bet')]",false,false);
+            case "TOOLTIP":
+                return (Link)table.getControlBasedValueOfDifferentColumnOnRow(orderID,1,colBookieOrderID,1,
+                        "div[2]",colNo,"i",false,false);
             default:
                 return (Link)table.getControlBasedValueOfDifferentColumnOnRow(orderID,1,colBookieOrderID,1,
                         "div[2]",colMarket,"a",false,false);
