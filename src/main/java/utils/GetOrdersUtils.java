@@ -65,4 +65,12 @@ public class GetOrdersUtils {
         return lstOrder;
     }
 
+    public static Order getOrderInfoById(List <Order> lsOrder,String orderId){
+        for(Order order:lsOrder){
+            if(order.getOrderId().equals(orderId))
+                return order;
+        }
+        return null;
+    }
+
 }

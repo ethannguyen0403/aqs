@@ -44,13 +44,18 @@ public class BetOrderPage extends HomePage {
 
     public void filterBetOrders(String fromDate, String toDate, String sport, boolean isShow){
         if(!fromDate.isEmpty()){
-        dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");}
-        if(!toDate.isEmpty())
-            dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+        dtpFromDate.selectDate(fromDate,"d/MM/yyyy");}
+        if(!toDate.isEmpty()) {
+            dtpToDate.selectDate(toDate, "d/MM/yyyy");
+        }
         ddSport.selectByVisibleContainsText(sport);
      /*   dtpFromDate.currentMonthWithDate(fromDate);
         dtpToDate.currentMonthWithDate(toDate);*/
-        btnShow.click();
+        if(isShow) {
+            btnShow.click();
+            waitSpinLoad();
+        }
+
     }
 
     private Table getTableByStatus(String status){

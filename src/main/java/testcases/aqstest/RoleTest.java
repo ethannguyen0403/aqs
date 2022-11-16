@@ -48,7 +48,7 @@ public class RoleTest extends BaseCaseAQS {
      * - Permissions: There are 14 permissions in the list
      */
     @TestRails(id = "490")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     public void RoleTC_002(){
         log("@title: Verify data in Role Page");
         log("@Step 1: Login with valid Username and Password");
@@ -56,8 +56,10 @@ public class RoleTest extends BaseCaseAQS {
         RolePage rolePage = betOrderPage.activeMenu(ROLE,RolePage.class);
 
         log("Verify that Role list are displayed correctly");
-        Assert.assertEquals(rolePage.getRoleList(), ROLE_LIST,"Failed! Agent role is not displayed");
-
+        List<String> roleList= rolePage.getRoleList();
+        Assert.assertTrue(roleList.contains("Administrator"),"Failed! Administrator role is not displayed");
+        Assert.assertTrue(roleList.contains("Agent"),"Failed! Agent role is not displayed");
+        Assert.assertTrue(roleList.contains("Trader"),"Failed! Trader role is not displayed");
         log("Verify that Permissions list permission is correctly");
         List<String> permissionLst = rolePage.getPermissionList();
         Assert.assertEquals(permissionLst, PERMISSION_LIST, "Failed! Permissions list is incorrect displayed");
