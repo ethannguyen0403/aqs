@@ -45,7 +45,8 @@ public class BaseCaseAQS {
     public static BrowserMobProxy browserMobProxy;
     public static String PROJECT_ID="2";
     public static APIClient client;
-    private static boolean isAddTestRailResult = false;
+    private static boolean isAddTestRailResult = true;
+    private static  List<Long> lstCases= new ArrayList<>();
     public static String aqsLoginURL;
     public static String sb11LoginURL;
 
@@ -61,8 +62,8 @@ public class BaseCaseAQS {
 
         if(isAddTestRailResult) {
             System.out.println("Add New Test Run in TestRails" );
-            client = new APIClient("https://demotestrailmerito.testrail.io");
-            client.setUser("isabella.huynh@pal.net.vn");
+            client = new APIClient("https://paltech.testrail.io");
+            client.setUser("tim.dang@pal.net.vn");
             client.setPassword("P@l332211");
             Map data = new HashMap();
             //data.put("suite_id",true);
@@ -126,16 +127,21 @@ public class BaseCaseAQS {
     public static void afterMethod(ITestResult result, ITestContext ctx) throws APIException, IOException {
        if(isAddTestRailResult) {
            String caseId = (String) ctx.getAttribute("caseId");
+           Long suiteId = (Long) ctx.getAttribute("suiteId");
+           Map data1 = new HashMap();
+           // add test case for test run
+           lstCases.add(Long.parseLong(caseId));
+           data1.put("case_ids",lstCases);
+           client.sendPost("update_run/" + suiteId, data1);
+           //end add test case for test run
+           //start add result for a test case
            Map data = new HashMap();
-       //    data.put("caseId",caseId);
            if (result.isSuccess()) {
                data.put("status_id", 1);
            } else {
                data.put("status_id", 5);
                data.put("comment", result.getThrowable().toString());
            }
-
-           Long suiteId = (Long) ctx.getAttribute("suiteId");
            client.sendPost("add_result_for_case/" + suiteId + "/" + caseId, data);
           /* if(!result.isSuccess()) {
                String imagePath = ScreenShotUtils.captureScreenshot(DriverManager.getDriver().getWebDriver(), "Image"+DateUtils.getMilliSeconds());
