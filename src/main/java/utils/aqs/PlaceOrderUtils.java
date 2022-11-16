@@ -285,6 +285,6 @@ public class PlaceOrderUtils {
         prepareOrderJson(orderID,headers);
     }
     public static void cancelOrder(String orderID, Map<String,String> headers ){
-        prepareOrderJson(orderID,headers);
+        cancelOrderJson(orderID,headers);
     }
 }

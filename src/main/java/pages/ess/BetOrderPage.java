@@ -43,8 +43,10 @@ public class BetOrderPage extends HomePage {
     private int colBookieOrderID = 9;
 
     public void filterBetOrders(String fromDate, String toDate, String sport, boolean isShow){
-        dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-        dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+        if(!fromDate.isEmpty()){
+        dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");}
+        if(!toDate.isEmpty())
+            dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         ddSport.selectByVisibleContainsText(sport);
      /*   dtpFromDate.currentMonthWithDate(fromDate);
         dtpToDate.currentMonthWithDate(toDate);*/
