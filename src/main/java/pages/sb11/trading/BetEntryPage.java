@@ -22,7 +22,6 @@ public class BetEntryPage extends WelcomePage {
     public Button btnCricket = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Cricket')]");
     public Button btnMixedSport = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Mixed Sports')]");
 
-
     public void placeBetSoccer (String league, String accCode){
         btnSoccer.click();
         ddLeague.selectByVisibleContainsText(league);

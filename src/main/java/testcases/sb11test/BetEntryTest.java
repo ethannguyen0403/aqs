@@ -20,7 +20,6 @@ public class BetEntryTest extends BaseCaseAQS {
         betEntryPage.placeBetSoccer("All","JO-TEL-AC-01");
         log("Verify that Page title is correctly display");
         //Assert.assertEquals(betEntryPage.getTitlePage(),"Trading Bet Entry","FAILED! Page Title is incorrect display");
-
         log("INFO: Executed completely");
     }
 }
