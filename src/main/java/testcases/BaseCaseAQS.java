@@ -128,6 +128,7 @@ public class BaseCaseAQS {
            String caseId = (String) ctx.getAttribute("caseId");
            Long suiteId = (Long) ctx.getAttribute("suiteId");
            Map data1 = new HashMap();
+
            // add test case for test run
            lstCases.add(Long.parseLong(caseId));
            data1.put("case_ids",lstCases);
