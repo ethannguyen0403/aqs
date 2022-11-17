@@ -10,7 +10,7 @@ import static common.SBPConstants.*;
 
 public class BetEntryTest extends BaseCaseAQS {
 
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Bookie_Info_TC_001(){
         log("@title: Verify that can login successfully");
         log("@Step 1: Login with valid account");

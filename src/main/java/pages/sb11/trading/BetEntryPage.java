@@ -29,6 +29,7 @@ public class BetEntryPage extends WelcomePage {
         btnShow.click();
         txtAccCode.sendKeys(accCode);
     }
+
     @Override
     public String getTitlePage ()
     {
