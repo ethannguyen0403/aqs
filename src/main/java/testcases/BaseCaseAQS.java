@@ -78,7 +78,6 @@ public class BaseCaseAQS {
 
             //data1.put("include_all", false);
             //  data1.put("suite_id",suite_id);
-
             //End add Run in TestRail
         }
     }
