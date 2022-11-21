@@ -3,6 +3,7 @@
 <suite name="AQS_PRO_Smoke" verbose="1">
     <listeners>
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
+        <listener class-name="utils.testraildemo.Listener"/>
     </listeners>
 
     <test name="AQS_PRO_Smoke_Chrome">
@@ -17,7 +18,7 @@
         <parameter name="appname" value="aqs"/>
         <groups>
             <run>
-                <include name="smoke" />
+                <include name="smoke"/>
             </run>
         </groups>
 
