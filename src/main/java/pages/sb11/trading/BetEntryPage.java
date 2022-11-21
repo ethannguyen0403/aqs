@@ -27,12 +27,12 @@ public class BetEntryPage extends WelcomePage {
     public Button btnMixedSport = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Mixed Sports')]");
     public Table tbEvent = Table.xpath("//table[contains(@class,'table')]",16);
 
-    private Label lblTitle = Label.xpath("//app-bet-entry//div[contains(@class,'card-header')]//span");
+    /*private Label lblTitle = Label.xpath("//app-bet-entry//div[contains(@class,'card-header')]//span");
     private Label lblGoto = Label.xpath("//app-bet-entry//div[contains(@class,'card-body')]//div[1]");
     private Button btnSoccer = Button.xpath("//app-bet-entry//div[contains(@class,'card-body')]//div[2]");
     private Button btnCricket = Button.xpath("//app-bet-entry//div[contains(@class,'card-body')]//div[3]");
     private Button btnMixedSports = Button.xpath("//app-bet-entry//div[contains(@class,'card-body')]//div[4]");
-
+*/
     public String getTitlePage ()
     {
         return lblTitle.getText().trim();
@@ -47,7 +47,7 @@ public class BetEntryPage extends WelcomePage {
         return new CricketBetEntryPage();
     }
     public ManualBetBetEntryPage goToMixedSports(){
-        btnMixedSports.click();
+        btnMixedSport.click();
         return new ManualBetBetEntryPage();
     }
     public void openBetSlipSoccer (String accCode, String betType){
@@ -105,6 +105,6 @@ public class BetEntryPage extends WelcomePage {
         }
         return new BetSlipPopup();
     }
-    @Override
-        public String getTitlePage() {return this.lblTitle.getText().trim();}
+    /*@Override
+        public String getTitlePage() {return this.lblTitle.getText().trim();}*/
 }
