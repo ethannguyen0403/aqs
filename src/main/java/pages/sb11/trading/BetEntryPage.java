@@ -10,6 +10,8 @@ import pages.ess.popup.ColumnSettingPopup;
 import pages.sb11.WelcomePage;
 import pages.sb11.trading.popup.BetSlipPopup;
 
+import static org.apache.commons.lang3.BooleanUtils.and;
+
 public class BetEntryPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
     public DropDownBox ddComp = DropDownBox.id("company-unit");
@@ -66,11 +68,11 @@ public class BetEntryPage extends WelcomePage {
         betSlipPopup.ddHandicap.selectByVisibleText(handicap);
         betSlipPopup.txtOdds.sendKeys(odds);
         betSlipPopup.txtStake.sendKeys(stake);
-        if (copyMinusOdds){
+        if ((copyMinusOdds) && (!betSlipPopup.cbIncreaseOdds.isSelected())){
             betSlipPopup.cbIncreaseOdds.click();
         }
 
-        if (copySameOdds){
+        if ((copySameOdds) && (!betSlipPopup.cbSameOdds.isSelected())){
             betSlipPopup.cbSameOdds.click();
         }
 
