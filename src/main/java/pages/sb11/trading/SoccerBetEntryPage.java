@@ -5,7 +5,12 @@ import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
+import objects.Order;
 import pages.sb11.Header;
+import pages.sb11.trading.popup.SoccerBetListPopup;
+import pages.sb11.trading.popup.SoccerBetSlipPopup;
+
+import java.util.List;
 
 public class SoccerBetEntryPage extends BetEntryPage {
     private Label lblTitle = Label.xpath("//app-bet-entry-soccer//app-common-header-sport//div[contains(@class,'main-box-header')]/div[1]/span");
@@ -29,6 +34,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
     private int colMore =13;
     private int colSPB = 14;
     public Table tblEvent = Table.xpath("//app-bet-entry-soccer//table",totalCol);
+    public Label lblSuccessPlaceBetMessage = Label.xpath("//app-bet-entry-soccer//div[@class='message-box']div[contains(@class,'alert-success')]");
     public String getTitlePage ()
     {
         return lblTitle.getText().trim();
@@ -91,13 +97,29 @@ public class SoccerBetEntryPage extends BetEntryPage {
             i = i +1;
         }
     }
-    public void openBetSlip(String accountCode, String eventName, boolean isFullTime, String type){
+
+    /**
+     * Click on .... of according event, Full time, half time and selection to open bet slip
+     * @param accountCode
+     * @param eventName
+     * @param isFullTime
+     * @param type
+     * @return
+     */
+    public SoccerBetSlipPopup openBetSlip(String accountCode, String eventName, boolean isFullTime, String type){
         int rowIndex = getEventRowIndex(eventName);
         int colIndex = defineColumn(isFullTime,type);
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
-        return;
+        return new SoccerBetSlipPopup();
 
     }
+
+    /**
+     * Define colum HDP , HOME, AWAY .... by Fultime or  halftime
+     * @param isFullTime
+     * @param type
+     * @return
+     */
     private int defineColumn(boolean isFullTime, String type){
         int cellIndex = 0;
         if(!isFullTime)
@@ -121,5 +143,34 @@ public class SoccerBetEntryPage extends BetEntryPage {
         }
     }
 
+    /**
+     * According event, open bet slip and place bet
+     * @param accountCode
+     * @param eventName
+     * @param isFullTime
+     * @param type
+     * @param lstOrder
+     * @param isCopySPBPS7SameOdds
+     * @param isCopySPBPS7MinusOdds
+     * @param isPlaceBet
+     */
+    public void placeBet(String accountCode, String eventName, boolean isFullTime, String type, List<Order> lstOrder,boolean isCopySPBPS7SameOdds, boolean isCopySPBPS7MinusOdds, boolean isPlaceBet){
+         SoccerBetSlipPopup soccerBetSlipPopup = openBetSlip(accountCode,eventName,isFullTime,type);
+         soccerBetSlipPopup.placebet(lstOrder,isCopySPBPS7SameOdds,isCopySPBPS7MinusOdds,isPlaceBet);
+    }
+
+    /**
+     * Open Bet Slip of according event
+     * @param eventName
+     * @return
+     */
+    public SoccerBetListPopup openBetList(String eventName){
+        int rowIndex = getEventRowIndex(eventName);
+        tblEvent.getControlOfCell(1,colSPB, rowIndex,"span").click();
+        SoccerBetListPopup soccerBetListPopup = new SoccerBetListPopup();
+        soccerBetListPopup.icRefresh.isDisplayed();
+        return soccerBetListPopup;
+
+    }
 
 }

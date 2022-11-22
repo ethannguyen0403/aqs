@@ -27,6 +27,7 @@ public class BetEntryPage extends WelcomePage {
     public Button btnMixedSport = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Mixed Sports')]");
     public Table tbEvent = Table.xpath("//table[contains(@class,'table')]",16);
 
+
     /*private Label lblTitle = Label.xpath("//app-bet-entry//div[contains(@class,'card-header')]//span");
     private Label lblGoto = Label.xpath("//app-bet-entry//div[contains(@class,'card-body')]//div[1]");
     private Button btnSoccer = Button.xpath("//app-bet-entry//div[contains(@class,'card-body')]//div[2]");
