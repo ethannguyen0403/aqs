@@ -1,8 +1,5 @@
 package pages.sb11.trading;
-import com.paltech.element.common.Button;
-import com.paltech.element.common.Label;
-import pages.sb11.Header;
 
-public class CricketBetEntryPage extends BetEntryPage {
+public class CricketBetEntryPage extends SoccerBetEntryPage {
 
 }
