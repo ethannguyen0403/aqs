@@ -11,8 +11,9 @@ public class SBPConstants {
     public final static String CLIENT_SYSTEM = "Client System";
     public final static String TRADING = "Trading";
     public final static String BET_ENTRY = "Bet Entry";
-    public static class BookieInfoPage {
 
+    public static class BetEntryPage {
+        public final static String MESSAGE_SUCCESS_MANUAL_BET ="Place Successful !";
     }
 
 }
