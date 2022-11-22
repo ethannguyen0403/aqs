@@ -11,6 +11,17 @@ public class SBPConstants {
     public final static String CLIENT_SYSTEM = "Client System";
     public final static String TRADING = "Trading";
     public final static String BET_ENTRY = "Bet Entry";
+    public static final Map<String, String> MAKETTYPE= new HashMap<String, String>() {
+        {
+            put("HDP", "HDP");
+            put("FullTime", "FT");
+            put("HalfTime", "HT");
+            put("InRunning", "IR");
+            put("OverUnder", "OU");
+            put("HDP", "HDP");
+
+        }
+    };
     public static class BookieInfoPage {
 
     }
