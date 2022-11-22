@@ -107,6 +107,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
      * @return
      */
     public SoccerBetSlipPopup openBetSlip(String accountCode, String eventName, boolean isFullTime, String type){
+        txtAccCode.sendKeys(accountCode);
         int rowIndex = getEventRowIndex(eventName);
         int colIndex = defineColumn(isFullTime,type);
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
