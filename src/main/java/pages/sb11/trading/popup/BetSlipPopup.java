@@ -11,4 +11,5 @@ public class BetSlipPopup {
     public DropDownBox ddHandicap = DropDownBox.xpath("//div[contains(@class,'pl-3')]//div[contains(@class,'w-25')]//select");
     public TextBox txtOdds = TextBox.xpath("//div[contains(@class,'pl-3')]//div[contains(@class,'w-25')]//input");
     public TextBox txtStake = TextBox.xpath("//div[contains(@class,'pl-3')]//div[@class='input-group']//input");
+
 }
