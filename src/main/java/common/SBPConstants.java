@@ -22,8 +22,9 @@ public class SBPConstants {
 
         }
     };
-    public static class BookieInfoPage {
 
+    public static class BetEntryPage {
+        public final static String MESSAGE_SUCCESS_MANUAL_BET ="Place Successful !";
     }
 
 }
