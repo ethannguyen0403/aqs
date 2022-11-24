@@ -36,7 +36,7 @@ public class SoccerBetListPopup {
     }
 
     /**
-     * To verify bet info display as expect then set Betref ID to expected Order
+     * To verify bet info display as expect then set Betref ID back to expected Order
      * @param lstOrder
      * @param marketType
      * @param createDate
