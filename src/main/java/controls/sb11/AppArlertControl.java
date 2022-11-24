@@ -14,7 +14,7 @@ public class AppArlertControl extends BaseElement {
     public AppArlertControl(By locator, String xpathExpression) {
         super(locator);
         this._xpath = xpathExpression;
-        lblSuccessMessage = Label.xpath(String.format("%s//div[contains(@class,'alert-success')]"));
+        lblSuccessMessage = Label.xpath(String.format("%s//div[contains(@class,'alert-success')]",_xpath));
     }
 
     public static AppArlertControl xpath(String xpathExpression) {

@@ -20,9 +20,9 @@ public class SoccerBetEntryPage extends BetEntryPage {
     private DropDownBox ddpLeague = DropDownBox.id("league");
     private DropDownBox ddpSearchBy = DropDownBox.xpath("//select[@class='form-control']");
     private TextBox txtAccountCode = TextBox.id("account-code");
-    private TextBox txtDate = TextBox.xpath("//input[@name='fromDate']");
+    private TextBox txtDate = TextBox.xpath("//app-bet-entry-soccer//input[@name='fromDate']");
     private DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
-    int totalCol =14;
+    int totalCol =16;
     private int colTime = 1;
     private int colEvent = 2;
     private int colFTHdp = 3;
@@ -31,8 +31,8 @@ public class SoccerBetEntryPage extends BetEntryPage {
     private int colFTGoal = 6;
     private int colFTOver = 7;
     private int colFTUnder = 8;
-    private int colMore =13;
-    private int colSPB = 14;
+    private int colMore =15;
+    private int colSPB = 16;
     public Table tblEvent = Table.xpath("//app-bet-entry-soccer//table",totalCol);
     public Label lblSuccessPlaceBetMessage = Label.xpath("//app-bet-entry-soccer//div[@class='message-box']div[contains(@class,'alert-success')]");
     public String getTitlePage ()
@@ -48,10 +48,12 @@ public class SoccerBetEntryPage extends BetEntryPage {
      */
     public void showLeague(String companyUnit, String date, String league){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
-        dtpDate.selectDate(date,"dd/MM/yyyy");
+        if(!date.isEmpty()){
+            dtpDate.selectDate(date,"dd/MM/yyyy");
+        }
         ddpLeague.selectByVisibleText(league);
         btnShow.click();
-        waitPageLoad();
+        //waitPageLoad();
     }
 
     /**
@@ -85,12 +87,12 @@ public class SoccerBetEntryPage extends BetEntryPage {
         int i = 1;
         Label lblEvent;
         while (true){
-            lblEvent = Label.xpath(tblEvent.getxPathOfCell(1,1,i,null));
+            lblEvent = Label.xpath(tblEvent.getxPathOfCell(1,colEvent,i,null));
             if(!lblEvent.isDisplayed()) {
                 System.out.println("Can NOT found the league "+eventName+" in the table");
                 return 0;
             }
-            if(lblEvent.getText().equals(eventName)){
+            if(lblEvent.getText().contains(eventName)){
                 System.out.println("Found the league "+eventName+" in the table");
                 return i;
             }
@@ -107,7 +109,8 @@ public class SoccerBetEntryPage extends BetEntryPage {
      * @return
      */
     public SoccerBetSlipPopup openBetSlip(String accountCode, String eventName, boolean isFullTime, String type){
-        txtAccCode.sendKeys(accountCode);
+        txtAccCode.type(accountCode);
+        btnShow.click();
         int rowIndex = getEventRowIndex(eventName);
         int colIndex = defineColumn(isFullTime,type);
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
@@ -155,11 +158,25 @@ public class SoccerBetEntryPage extends BetEntryPage {
      * @param isCopySPBPS7MinusOdds
      * @param isPlaceBet
      */
-    public void placeBet(String accountCode, String eventName, boolean isFullTime, String type, List<Order> lstOrder,boolean isCopySPBPS7SameOdds, boolean isCopySPBPS7MinusOdds, boolean isPlaceBet){
-         SoccerBetSlipPopup soccerBetSlipPopup = openBetSlip(accountCode,eventName,isFullTime,type);
-         soccerBetSlipPopup.placebet(lstOrder,isCopySPBPS7SameOdds,isCopySPBPS7MinusOdds,isPlaceBet);
+    public void placeBet(String accountCode, String eventName, boolean isFullTime, String type,List<Order> lstOrder,boolean isCopySPBPS7SameOdds, boolean isCopySPBPS7MinusOdds, boolean isPlaceBet){
+        Order order = lstOrder.get(0);
+        boolean fullTime = false;
+        if(order.getStage().equalsIgnoreCase("FT") || order.getStage().equalsIgnoreCase("Full Time"))
+        {
+            fullTime = true;
+        }
+        /*String type1;
+        if(order.getMarketType().equalsIgnoreCase("HDP") && order.getSelection().equals(order.getHome())){
+            type1 = "Home";
+        }
+        if(order.getMarketType().equalsIgnoreCase("HDP") && order.getSelection().equals(order.getAway())){
+            type1 = "Away";
+        }
+        // Type = Over or Type = Under
+        type1 = order.getMarketType();*/
+        SoccerBetSlipPopup soccerBetSlipPopup = openBetSlip(lstOrder.get(0).getAccountCode(),lstOrder.get(0).getSelection(),fullTime,type);
+        soccerBetSlipPopup.placeMultiBet(lstOrder,isCopySPBPS7SameOdds,isCopySPBPS7MinusOdds,isPlaceBet);
     }
-
     /**
      * Open Bet Slip of according event
      * @param eventName
@@ -172,6 +189,24 @@ public class SoccerBetEntryPage extends BetEntryPage {
         soccerBetListPopup.icRefresh.isDisplayed();
         return soccerBetListPopup;
 
+    }
+    public String getFirstLeague(){
+        List<String> lstLeague = getListLeague();
+        try {
+            // 0 Select, 1 All => get league from index = 2
+            return lstLeague.get(2);
+        }catch (Exception e){
+            System.out.println("There is NO League on day "+ txtDate.getText());
+            return null;
+        }
+    }
+
+    /**
+     * Get all the League in League dropdown
+     * @return
+     */
+    public List<String> getListLeague(){
+        return ddpLeague.getOptions();
     }
 
 }

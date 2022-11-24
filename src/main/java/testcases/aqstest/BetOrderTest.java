@@ -8,7 +8,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.ess.popup.*;
 import testcases.BaseCaseAQS;
-import utils.GetOrdersUtils;
+import utils.aqs.GetOrdersUtils;
 import utils.aqs.PlaceOrderUtils;
 import utils.testraildemo.TestRails;
 

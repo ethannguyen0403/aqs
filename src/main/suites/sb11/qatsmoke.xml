@@ -5,7 +5,7 @@
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
-    <test name="Smoke_Chrome">
+    <test name="SB11 QAT Smoke">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='qat'/>
         <parameter name='language' value='en'/>
@@ -15,17 +15,17 @@
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
+        <parameter name="accountCode" value="2RA0000000"/>
+        <parameter name="accountCurrency" value="CAD"/>
 
         <groups>
             <run>
-                <include name="smoke5" />
+                <include name="smoke" />
             </run>
         </groups>
 
         <classes>
-            <class name="testcases.sb11test.LoginTest"/>
-            <class name="testcases.sb11test.BookieInfoTest"/>
-            <class name="testcases.sb11test.ClientSystemTest"/>
+            <class name="testcases.sb11test.trading.BetEntryTest"/>
         </classes>
 
 

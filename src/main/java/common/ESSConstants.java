@@ -41,11 +41,16 @@ public class ESSConstants {
         {
             {
                 put("AsianHandicap", "HDP");
+                put("Handicap", "HDP");
                 put("FullTime", "FT");
                 put("HalfTime", "HT");
                 put("InRunning", "IR");
                 put("OverUnder", "OU");
                 put("HDP", "HDP");
+                put("Full Time", "FT");
+                put("Half Time", "HT");
+                put("FT", "FT");
+                put("HT", "HT");
 
             }
         };

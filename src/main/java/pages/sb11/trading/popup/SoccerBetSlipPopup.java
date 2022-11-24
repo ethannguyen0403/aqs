@@ -27,23 +27,12 @@ public class SoccerBetSlipPopup {
     public void close(){
         btnClose.click();
     }
-
-    /**
-     * Input info and click place bet
-     * @param lstOrder the order info : is handicap (-,+) pirce, odds type, bet type, live score, stake
-     * @param isCopySPBPS7SameOdds
-     * @param isCopySPBPS7MinusOdds
-     * @param isPlaceBet
-     */
-     public void placebet(List<Order> lstOrder, boolean isCopySPBPS7SameOdds, boolean isCopySPBPS7MinusOdds, boolean isPlaceBet){
+/*
+    public void placebet(Order order, boolean isCopySPBPS7SameOdds, boolean isCopySPBPS7MinusOdds, boolean isPlaceBet){
         OrderRowControl orderRowControl ;
-        Order order;
-        for(int i = 0; i<lstOrder.size(); i++){
-            order = lstOrder.get(i);
-            orderRowControl = OrderRowControl.xpath(String.format("%s[%s]",xPathrderRowControl,i+1));
-            orderRowControl.inputInfo(order.isNegativeHdp(),order.getHdpPoint(), order.getPrice(),order.getOddType(), order.getBetType(),
-                    order.getLiveHomeScore(),order.getLiveAwayScore(),order.getRequireStake());
-        }
+        orderRowControl = OrderRowControl.xpath(String.format("%s[%s]",xPathrderRowControl,1));
+        orderRowControl.inputInfo(order.isNegativeHdp(),order.getHdpPoint(), order.getPrice(),order.getOddType(), order.getBetType(),
+        order.getLiveHomeScore(),order.getLiveAwayScore(),order.getRequireStake());
         if(isCopySPBPS7SameOdds != cbCopyBetToSPBPS7SameOdds.isSelected()){
             cbCopyBetToSPBPS7SameOdds.click();
         }
@@ -54,7 +43,34 @@ public class SoccerBetSlipPopup {
             btnPlaceBet.click();
         }
 
-    }
+    }*/
+
+    /**
+     * Input info for more than 1 row and click place bet
+     * @param lstOrder the order info : is handicap (-,+) pirce, odds type, bet type, live score, stake
+
+     */
+     public void placeMultiBet(List<Order> lstOrder,boolean isCopySPBPS7SameOdds, boolean isCopySPBPS7MinusOdds, boolean isPlaceBet){
+        OrderRowControl orderRowControl ;
+        Order order;
+        for(int i = 0; i<lstOrder.size(); i++){
+            order = lstOrder.get(i);
+            orderRowControl = OrderRowControl.xpath(String.format("%s[%s]",xPathrderRowControl,i+1));
+            orderRowControl.inputInfo(order.isNegativeHdp(),order.getHdpPoint(), order.getPrice(),order.getOddType(), order.getBetType(),
+                    order.getLiveHomeScore(),order.getLiveAwayScore(),order.getRequireStake());
+        }
+         if(isCopySPBPS7SameOdds != cbCopyBetToSPBPS7SameOdds.isSelected()){
+             cbCopyBetToSPBPS7SameOdds.click();
+         }
+         if(isCopySPBPS7MinusOdds != cbCopyBetToSPBPS7MinusOdds.isSelected()){
+             cbCopyBetToSPBPS7MinusOdds.click();
+         }
+         if(isPlaceBet) {
+             btnPlaceBet.click();
+         }
+
+
+     }
 
 
 }

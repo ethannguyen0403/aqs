@@ -1,6 +1,7 @@
 package objects;
 
 public class Order {
+
     private String selection;
     private String marketType;
     private String competitionName;
@@ -26,6 +27,9 @@ public class Order {
     private String betType;
     private int liveHomeScore;
     private int liveAwayScore;
+    private String accountCurrency;
+    private String createDate;
+    private String betId;
 
     public String getSelection() {
         return selection;
@@ -225,6 +229,30 @@ public class Order {
         this.accountCode = accountCode;
     }
 
+    public String getAccountCurrency() {
+        return accountCurrency;
+    }
+
+    public void setAccountCurrency(String accountCurrency) {
+        this.accountCurrency = accountCurrency;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getBetId() {
+        return betId;
+    }
+
+    public void setBetId(String betId) {
+        this.betId = betId;
+    }
+
     public static class Builder {
         private String _selection;
         private String _marketType;
@@ -250,19 +278,20 @@ public class Order {
         private String _betType;
         private int _liveHomeScore;
         private int _liveAwayScore;
+        private String _accountCode;
+        private String _accountCurrency;
+        private String _createDate;
+        private String _betId;
         public Builder() {
         }
-
         public Builder selection(String val) {
             _selection = val;
             return this;
         }
-
         public Builder competitionName(String val) {
             _competitionName = val;
             return this;
         }
-
         public Builder marketType(String val) {
             _marketType = val;
             return this;
@@ -356,6 +385,22 @@ public class Order {
             _liveAwayScore = val;
             return this;
         }
+        public Builder accountCurrency(String val) {
+            _accountCurrency = val;
+            return this;
+        }
+        public Builder createDate(String val) {
+            _createDate = val;
+            return this;
+        }
+        public Builder betId(String val) {
+            _betId = val;
+            return this;
+        }
+        public Builder accountCode(String val) {
+            _accountCode = val;
+            return this;
+        }
         public Order build() {
             return new Order(this);
         }
@@ -386,6 +431,10 @@ public class Order {
         this.betType = builder._betType;
         this.liveHomeScore = builder._liveHomeScore;
         this.liveAwayScore = builder._liveAwayScore;
+        this.accountCode = builder._accountCode;
+        this.accountCurrency = builder._accountCurrency;
+        this.createDate = builder._createDate;
+        this.betId = builder._betId;
     }
 
 

@@ -11,6 +11,8 @@ public class SBPConstants {
     public final static String CLIENT_SYSTEM = "Client System";
     public final static String TRADING = "Trading";
     public final static String BET_ENTRY = "Bet Entry";
+    public final static String CONFIRM_BETS = "Confirm Bets";
+    public final static String PLACE_BET_SUCCESS_MSG ="The bet was placed successfully";
     public static final Map<String, String> MAKETTYPE= new HashMap<String, String>() {
         {
             put("HDP", "HDP");
@@ -22,8 +24,9 @@ public class SBPConstants {
 
         }
     };
-    public static class BookieInfoPage {
 
+    public static class BetEntryPage {
+        public final static String MESSAGE_SUCCESS_MANUAL_BET ="Place Successful !";
     }
 
 }
