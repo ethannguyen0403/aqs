@@ -1,4 +1,4 @@
-package testcases.sb11test;
+package testcases.sb11test.master;
 
 import org.testng.Assert;
 import org.testng.annotations.Parameters;

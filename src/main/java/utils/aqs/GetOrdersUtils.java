@@ -1,4 +1,4 @@
-package utils;
+package utils.aqs;
 
 import com.paltech.constant.Configs;
 import com.paltech.constant.Helper;
@@ -9,6 +9,7 @@ import objects.Environment;
 import objects.Order;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import utils.AppUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +18,10 @@ import java.util.Objects;
 import static testcases.BaseCaseAQS.environment;
 
 public class GetOrdersUtils {
-    private static String token(){
-        SessionStorage sessionStorage = DriverManager.getDriver().getSessionStorage();
-       return  sessionStorage.getItemFromSessionStorage("token-user");
-    }
-    private static JSONObject getOrdersAPIJson(String fromDate, String toDate, String sport){
+        private static JSONObject getOrdersAPIJson(String fromDate, String toDate, String sport){
         String api = String.format("%saqs-agent-service/api/getOrders?fromDate=%s&toDate=%s&sport=%s",environment.getAqsLoginURL(),fromDate,toDate,sport);
     //    WSUtils.getGETJSONArrayWithCookies(api, Configs.HEADER_JSON_CHARSET, DriverManager.getDriver().getCookies().toString(),Configs.HEADER_JSON);
-        String autho = String.format("Bearer  %s",token());
+        String autho = String.format("Bearer  %s", AppUtils.token());
        // WSUtils.getPOSTJSONObjectWithCookiesHasHeader(api, Configs.HEADER_FORM_URLENCODED, null, null,"","Authorization",autho);
         return  WSUtils.getPOSTJSONObjectWithCookiesHasHeader(api, Configs.HEADER_FORM_URLENCODED, null, null,"","Authorization",autho);
     }
