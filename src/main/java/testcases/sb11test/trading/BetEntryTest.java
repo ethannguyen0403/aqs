@@ -25,6 +25,7 @@ import static common.SBPConstants.*;
 
 public class BetEntryTest extends BaseCaseAQS {
 
+    @TestRails(id="862")
     @Test(groups = {"smoke1"})
     public void Bet_Entry_TC862(){
         log("@title: Validate users can place Mixed Sports bets successfully");
@@ -93,22 +94,22 @@ public class BetEntryTest extends BaseCaseAQS {
         log("@Step 6: In the first row Handicap input the required fields (Handicap _,+, handicap point, price, odds type, bet type, live score, stake)");
         log("@Step 7: Click Place Bet without select \"option copy bet to SPBPS7same odds\" and \"copy bet to SPBPS7minus odds\"");
         soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
-       // String placeTime = String.format(DateUtils.getDate(0,"dd/MM hh:mm","UTC+07:00"));
-        //String successMessage = soccerBetEntryPage.getSuccessMessage();
+
         log("@Verify 1: User can place Soccer bets successfully with message 'The bet was placed successfully'");
         Assert.assertTrue(soccerBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+soccerBetEntryPage.getSuccessMessage());
 
         log("@Step 7: Click 'Bets' at SPB column of event at step 5 > observe");
         SoccerBetListPopup betListPopup = soccerBetEntryPage.openBetList(eventInfo.getHome());
+
         log("@Verify 2: Bets information is displayed correctly in Bet List");
         lstOrder = betListPopup.verifyListOrderInfoDisplay(lstOrder,"Handicap","");
-        lstOrder = GetSoccerEventUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder,eventInfo.getEventId());
+       // lstOrder = GetSoccerEventUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder,eventInfo.getEventId());
         betListPopup.close();
 
-        log("@Post-Condition: Cancel Pending bet "+ lstOrder.get(0).getOrderId() +" in Confirm Bet page");
+        log("@Post-Condition: Cancel Pending bet "+ lstOrder.get(0).getBetId() +" in Confirm Bet page");
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
         confirmBetsPage.filter(companyUnit,"","Pending","Soccer","All","Specific Date","","",accountCode);
-        confirmBetsPage.deleteOrder(lstOrder.get(0).getOrderId());
+        confirmBetsPage.deleteOrder(lstOrder.get(0).getBetId());
 
         log("INFO: Executed completely");
     }

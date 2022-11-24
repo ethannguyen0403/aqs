@@ -100,7 +100,7 @@ public class ConfirmBetsPage extends WelcomePage {
 
     /**
      * Detete a order
-     * @param orderId
+     * @param orderId order id or bet id
      */
     public void deleteOrder(String orderId){
         int rowIndex =getOrderIndex(orderId);
