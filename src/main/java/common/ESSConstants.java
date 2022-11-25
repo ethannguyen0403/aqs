@@ -46,11 +46,22 @@ public class ESSConstants {
                 put("HalfTime", "HT");
                 put("InRunning", "IR");
                 put("OverUnder", "OU");
+                put("OU", "OU");
                 put("HDP", "HDP");
                 put("Full Time", "FT");
                 put("Half Time", "HT");
                 put("FT", "FT");
                 put("HT", "HT");
+
+            }
+        };
+        public static final Map<String, String> CRICKET_MARKET_TYPE= new HashMap<String, String>()
+        {
+            {
+                put("1X2", "Match Betting");
+                put("Match-HDP", "Match Handicap");
+                put("OU", "Over/Under");
+                put("DNB", "DrawNoBet");
 
             }
         };
