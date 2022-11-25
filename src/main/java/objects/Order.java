@@ -1,7 +1,7 @@
 package objects;
 
 public class Order {
-
+private String sport;
     private String selection;
     private String marketType;
     private String competitionName;
@@ -30,7 +30,17 @@ public class Order {
     private String accountCurrency;
     private String createDate;
     private String betId;
+    private double runs;
+    private int handicapWtks;
+    private double handicapRuns;
+    private boolean isLive;
+    public String getSport() {
+        return sport;
+    }
 
+    public void setSport(String val ) {
+        this.sport = val;
+    }
     public String getSelection() {
         return selection;
     }
@@ -253,6 +263,38 @@ public class Order {
         this.betId = betId;
     }
 
+    public double getRuns() {
+        return runs;
+    }
+
+    public void setRuns(double runs) {
+        this.runs = runs;
+    }
+
+    public int getHandicapWtks() {
+        return handicapWtks;
+    }
+
+    public void setHandicapWtks(int handicapWtks) {
+        this.handicapWtks = handicapWtks;
+    }
+
+    public double getHandicapRuns() {
+        return handicapRuns;
+    }
+
+    public void setHandicapRuns(double handicapRuns) {
+        this.handicapRuns = handicapRuns;
+    }
+
+    public boolean isLive() {
+        return isLive;
+    }
+
+    public void setLive(boolean live) {
+        isLive = live;
+    }
+
     public static class Builder {
         private String _selection;
         private String _marketType;
@@ -282,7 +324,16 @@ public class Order {
         private String _accountCurrency;
         private String _createDate;
         private String _betId;
+        private double _runs;
+        private int _handicapWtks;
+        private double _handicapRuns;
+        private boolean _isLive;
+        private String _sport;
         public Builder() {
+        }
+        public Builder sport(String val) {
+            _sport = val;
+            return this;
         }
         public Builder selection(String val) {
             _selection = val;
@@ -401,6 +452,22 @@ public class Order {
             _accountCode = val;
             return this;
         }
+        public Builder runs(double val) {
+            _runs = val;
+            return this;
+        }
+        public Builder handicapWtks(int val) {
+            _handicapWtks = val;
+            return this;
+        }
+        public Builder handicapRuns(double val) {
+            _handicapRuns = val;
+            return this;
+        }
+        public Builder isLive(boolean val) {
+            _isLive = val;
+            return this;
+        }
         public Order build() {
             return new Order(this);
         }
@@ -435,6 +502,11 @@ public class Order {
         this.accountCurrency = builder._accountCurrency;
         this.createDate = builder._createDate;
         this.betId = builder._betId;
+        this.runs = builder._runs;
+        this.handicapRuns = builder._handicapRuns;
+        this.handicapWtks = builder._handicapWtks;
+        this.isLive = builder._isLive;
+        this.sport = builder._sport;
     }
 
 

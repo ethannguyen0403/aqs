@@ -6,8 +6,7 @@ import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Order;
-import pages.sb11.Header;
-import pages.sb11.trading.popup.SoccerBetListPopup;
+import pages.sb11.trading.popup.BetListPopup;
 import pages.sb11.trading.popup.SoccerBetSlipPopup;
 
 import java.util.List;
@@ -15,12 +14,13 @@ import java.util.List;
 public class SoccerBetEntryPage extends BetEntryPage {
     private Label lblTitle = Label.xpath("//app-bet-entry-soccer//app-common-header-sport//div[contains(@class,'main-box-header')]/div[1]/span");
     private Label lblGoto = Label.xpath("//app-bet-entry-soccer//app-common-header-sport//div[contains(@class,'main-box-header')]/div[2]/span");
-    private DropDownBox ddbSport = DropDownBox.id("navigate-page");
+    private TextBox txtAccCode = TextBox.id("account-code");
     private DropDownBox ddpCompanyUnit = DropDownBox.id("company-unit");
     private DropDownBox ddpLeague = DropDownBox.id("league");
     private DropDownBox ddpSearchBy = DropDownBox.xpath("//select[@class='form-control']");
     private TextBox txtAccountCode = TextBox.id("account-code");
     private TextBox txtDate = TextBox.xpath("//app-bet-entry-soccer//input[@name='fromDate']");
+    private Button btnShow = Button.xpath("//app-bet-entry-soccer//button[contains(@class,'btn-show')]");
     private DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
     int totalCol =16;
     private int colTime = 1;
@@ -34,7 +34,6 @@ public class SoccerBetEntryPage extends BetEntryPage {
     private int colMore =15;
     private int colSPB = 16;
     public Table tblEvent = Table.xpath("//app-bet-entry-soccer//table",totalCol);
-    public Label lblSuccessPlaceBetMessage = Label.xpath("//app-bet-entry-soccer//div[@class='message-box']div[contains(@class,'alert-success')]");
     public String getTitlePage ()
     {
         return lblTitle.getText().trim();
@@ -182,10 +181,10 @@ public class SoccerBetEntryPage extends BetEntryPage {
      * @param eventName
      * @return
      */
-    public SoccerBetListPopup openBetList(String eventName){
+    public BetListPopup openBetList(String eventName){
         int rowIndex = getEventRowIndex(eventName);
         tblEvent.getControlOfCell(1,colSPB, rowIndex,"span").click();
-        SoccerBetListPopup soccerBetListPopup = new SoccerBetListPopup();
+        BetListPopup soccerBetListPopup = new BetListPopup();
         soccerBetListPopup.icRefresh.isDisplayed();
         return soccerBetListPopup;
 

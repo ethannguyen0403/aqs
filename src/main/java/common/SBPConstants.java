@@ -13,14 +13,13 @@ public class SBPConstants {
     public final static String BET_ENTRY = "Bet Entry";
     public final static String CONFIRM_BETS = "Confirm Bets";
     public final static String PLACE_BET_SUCCESS_MSG ="The bet was placed successfully";
-    public static final Map<String, String> MAKETTYPE= new HashMap<String, String>() {
+    public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
+    {
         {
-            put("HDP", "HDP");
-            put("FullTime", "FT");
-            put("HalfTime", "HT");
-            put("InRunning", "IR");
-            put("OverUnder", "OU");
-            put("HDP", "HDP");
+            put("1X2", "Match Betting");
+            put("Match-HDP", "Match Handicap");
+            put("OU", "Over/Under");
+            put("DNB", "DrawNoBet");
 
         }
     };
