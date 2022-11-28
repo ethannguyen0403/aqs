@@ -46,7 +46,7 @@ public class BetEntryTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetEntry_TC189(String accountCode,String accountCurrency){
-        log("@title: Validate users can place single Soccer bets successfully without copy bet to SPBPS7 ");
+        log("@title:Validate users can place single Soccer bets and bet list show correct info");
         log("Precondition: User has permission to access Bet Entry page");
         log("Precondition:Having a valid account that can place bets (e.g. "+accountCode);
         String sport="Soccer";
@@ -103,7 +103,7 @@ public class BetEntryTest extends BaseCaseAQS {
     }
 
     @TestRails(id="863")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetEntry_TC863(String accountCode,String accountCurrency){
         log("@title: Validate user can place Cricket bets successfully with correct bets information in Bet List");
@@ -113,22 +113,24 @@ public class BetEntryTest extends BaseCaseAQS {
         String sport="Cricket";
         String companyUnit = "Kastraki Limited";
         String marketType = "Match-HDP";
-
-        //TODO: Create Cricket event for run test
+        String leagueName = "QA League";
 
         log("@Step 1: Login to SB11 site");
-        log("@Step 2: Navigate to Trading > Bet Entry");
+
         String date = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+
+        log("@Step prepare data: Add event for QA League in today local time and can filter in today in Trading>Bet Entry");
+        Event eventInfo =  welcomePage.createCricketEvent(dateAPI,dateAPI,sport,leagueName);
+
+        log("@Step 2: Navigate to Trading > Bet Entry");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
 
         log("@Step 3: Click on 'Cricket' > select any League > click Show");
         CricketBetEntryPage cricketBetEntryPage =betEntryPage.goToCricket();
 
         log("@Step Precondition: Get the first Event of Frist League of Today Cricket");
-        String league = cricketBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
-        cricketBetEntryPage.showLeague(companyUnit,"",league);
+        cricketBetEntryPage.showLeague(companyUnit,"",leagueName);
 
         log("@Step Precondition: Define order to place bet");
         Order order = new Order.Builder()

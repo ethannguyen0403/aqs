@@ -43,6 +43,7 @@ public class ConfirmBetsPage extends WelcomePage {
     public Label lblSelectAll = Label.xpath("//button[text()='Select All']");
     public Label lblDeleteSelected = Label.xpath("//button[text()='Delete Selected']");
     public Button btnConfirm = Button.xpath("//button[text()='Confirm Bet']");
+    public Label lblTotalStake = Label.xpath("//span[contains(@class,'total-stake-pending')]");
     public String getTitlePage ()
     {
         return lblTitle.getText().trim();
