@@ -24,6 +24,12 @@ public class SBPConstants {
         }
     };
 
+    public static final Map<String, String> SOCCER_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
+    {
+        {
+            put("HDP", "Full Time Handicap");
+        }
+    };
     public static class BetEntryPage {
         public final static String MESSAGE_SUCCESS_MANUAL_BET ="Place Successful !";
     }
