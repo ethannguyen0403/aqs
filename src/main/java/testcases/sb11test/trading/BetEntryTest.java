@@ -10,10 +10,12 @@ import org.testng.annotations.Test;
 import pages.sb11.trading.*;
 import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.popup.BetListPopup;
+import pages.sb11.trading.popup.SoccerBetSlipPopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ import static common.SBPConstants.*;
 public class BetEntryTest extends BaseCaseAQS {
 
     @TestRails(id="862")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Bet_Entry_TC862(){
         log("@title: Validate users can place Mixed Sports bets successfully");
         log("@Step 1: Login to SB11 site");
@@ -91,7 +93,7 @@ public class BetEntryTest extends BaseCaseAQS {
 
         log("@Verify 2: Bets information is displayed correctly in Bet List");
         lstOrder = betListPopup.verifyListOrderInfoDisplay(lstOrder,"Handicap","");
-       // lstOrder = GetSoccerEventUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder,eventInfo.getEventId());
+        // lstOrder = GetSoccerEventUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder,eventInfo.getEventId());
         betListPopup.close();
 
         log("@Post-Condition: Cancel Pending bet "+ lstOrder.get(0).getBetId() +" in Confirm Bet page");
@@ -149,13 +151,13 @@ public class BetEntryTest extends BaseCaseAQS {
                 .away((eventInfo.getAway()))
                 .build();
 
-       log("@Step 4: Input account at precondition on 'Account Code' field");
+        log("@Step 4: Input account at precondition on 'Account Code' field");
         log("@Step 5: Click on '.......' of any event > select handicap value with inputting odds and stake");
         log("@Step 6: In the first row Handicap input the required fields (Handicap _,+, handicap point, price, odds type, bet type, live score, stake)");
         log("@Step 7: Click Place Bet without select \"option copy bet to SPBPS7same odds\" and \"copy bet to SPBPS7minus odds\"");
         cricketBetEntryPage.placeBet(order,true);
 
-        log("@Verify 1: User can place Cricet bets successfully with message 'The bet was placed successfully'");
+        log("@Verify 1: User can place Cricket bets successfully with message 'The bet was placed successfully'");
         Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
 
         log("@Step 7: Click 'Bets' at CPB column of event at step 5 > observe");
@@ -172,4 +174,53 @@ public class BetEntryTest extends BaseCaseAQS {
 
         log("INFO: Executed completely");
     }
+    @TestRails(id="191")
+    @Test(groups = {"smoke1"})
+    @Parameters({"accountCode","accountCurrency"})
+    public void BetEntry_TC191(String accountCode,String accountCurrency) throws ParseException {
+        log("@title: Validate Bet Slip info display correctly when open Soccer> FT>HDP>Home");
+        log("Precondition: User has permission to access Bet Entry page");
+        log("Precondition: Having a valid account that can place bets (e.g. "+accountCode);
+        String sport="Soccer";
+        String companyUnit = "Kastraki Limited";
+        String marketType = "HDP";
+
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Trading > Bet Entry");
+        String date = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+
+        log("@Step 3: Click on 'Soccer' > select any League > click Show");
+        SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
+
+        log("@Step Precondition: Get the first Event of Frist League of Today Soccer");
+        String league = soccerBetEntryPage.getFirstLeague();
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,"",league);
+
+        log("@Step Precondition: Define order to place bet");
+        List<Order> lstOrder = new ArrayList<>();
+        Order order = new Order.Builder()
+                .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
+                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
+                .marketType(SOCCER_MARKET_TYPE_BET_LIST.get(marketType))
+                .stage("FT")
+                .selection(eventInfo.getHome())
+                .home(eventInfo.getHome())
+                .away(eventInfo.getAway())
+                .competitionName(eventInfo.getLeagueName())
+                .build();
+        lstOrder.add(order);
+
+        log("@Step 4: Input account at precondition on 'Account Code' field");
+        log("@Step 5: Click on ... at the selected event, Column FT, HDP, Home");
+        soccerBetEntryPage.openBetSlip(lstOrder.get(0).getAccountCode(),lstOrder.get(0).getSelection(),true,"HOME");
+        log("@Verify: Verify info on bet slip display correctly: Competition name, Event Name, Market Type, Selection Type, Start date");
+        SoccerBetSlipPopup soccerBetSlipPopup = new SoccerBetSlipPopup();
+        String dateconvert = DateUtils.convertDateToNewTimeZone(eventInfo.getEventDate(),"yyyy-MM-dd'T'HH:mm:ss.SSSXXX","","d/MM","");
+        soccerBetSlipPopup.verifyOrderInfoDisplay(lstOrder,SOCCER_MARKET_TYPE_BET_LIST.get(marketType),dateconvert);
+        log("INFO: Executed completely");
+    }
+
 }
