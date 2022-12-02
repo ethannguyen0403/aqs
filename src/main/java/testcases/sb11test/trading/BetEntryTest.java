@@ -103,7 +103,7 @@ public class BetEntryTest extends BaseCaseAQS {
     }
 
     @TestRails(id="863")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetEntry_TC863(String accountCode,String accountCurrency){
         log("@title: Validate user can place Cricket bets successfully with correct bets information in Bet List");
@@ -116,7 +116,6 @@ public class BetEntryTest extends BaseCaseAQS {
         String leagueName = "QA League";
 
         log("@Step 1: Login to SB11 site");
-
         String date = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
 

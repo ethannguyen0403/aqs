@@ -48,7 +48,7 @@ public class RoleTest extends BaseCaseAQS {
      * - Permissions: There are 14 permissions in the list
      */
     @TestRails(id = "490")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void RoleTC_002(){
         log("@title: Verify data in Role Page");
         log("@Step 1: Login with valid Username and Password");

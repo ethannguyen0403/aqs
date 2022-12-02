@@ -1,35 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="AQS_STG_Smoke" verbose="1">
+<suite name="AQS_QAT_Smoke" verbose="1">
     <listeners>
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
-    <test name="AQS_STG_Smoke_Chrome">
+    <test name="SB11 QAT Smoke">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='stg'/>
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
-        <parameter name='username' value='autoqc'/>
+        <parameter name='username' value='AutoQC'/>
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
         <parameter name='isThrown' value='true'/>
-        <parameter name="appname" value="aqs"/>
+        <parameter name="appname" value="sp11"/>
+        <parameter name="accountCode" value="0480000009"/>
+        <parameter name="accountCurrency" value="HKD"/>
+
         <groups>
             <run>
-                <include name="smoke1" />
+                <include name="smoke" />
             </run>
         </groups>
 
         <classes>
-            <class name="testcases.aqstest.LoginTest"/>
-            <class name="testcases.aqstest.LogoutTest"/>
-            <class name="testcases.aqstest.HeaderTest"/>
-            <class name="testcases.aqstest.BetOrderTest"/>
-            <class name="testcases.aqstest.RoleTest"/>
-            <class name="testcases.aqstest.ManagerTest"/>
+            <class name="testcases.sb11test.trading.BetEntryTest"/>
         </classes>
-
-
     </test>
 </suite>

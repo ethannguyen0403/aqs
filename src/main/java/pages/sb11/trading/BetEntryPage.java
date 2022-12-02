@@ -28,6 +28,7 @@ public class BetEntryPage extends WelcomePage {
 
     public SoccerBetEntryPage goToSoccer(){
         btnSoccer.click();
+        waitPageLoad();
         return new SoccerBetEntryPage();
     }
     public CricketBetEntryPage goToCricket(){

@@ -17,7 +17,8 @@ public class LoginPage {
         txtUsername.sendKeys(username);
         txtPassword.sendKeys(password);
         if(txtCode.isDisplayed()){
-            String today= DateUtils.getDate(0,"yyyyMMdd","GMT+7");
+            String today= DateUtils.getDate(0,"yyyyMMd","GMT+7");
+            System.out.println(today);
             String code = String.format("%s%s@))*",today,username);
             txtCode.sendKeys(code);
         }
