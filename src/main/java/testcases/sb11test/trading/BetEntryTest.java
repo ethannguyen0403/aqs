@@ -222,5 +222,138 @@ public class BetEntryTest extends BaseCaseAQS {
         soccerBetSlipPopup.verifyOrderInfoDisplay(lstOrder,SOCCER_MARKET_TYPE_BET_LIST.get(marketType),dateconvert);
         log("INFO: Executed completely");
     }
+    @TestRails(id="341")
+    @Test(groups = {"smoke"})
+    @Parameters({"accountCode","accountCurrency"})
+    public void BetEntry_TC341(String accountCode,String accountCurrency){
+        log("@title: Validate can place bet for soccer with option copy bet to SPBPS7 as same odds\n");
+        log("Precondition: User has permission to access Bet Entry page");
+        log("Precondition:Having a valid account that can place bets (e.g. "+accountCode);
+        String sport="Soccer";
+        String companyUnit = "Kastraki Limited";
+
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Trading > Bet Entry");
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+
+        log("@Step 3: Click on 'Soccer' > select any League > click Show");
+        SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
+
+        log("@Step Precondition: Get the first Event of Frist League of Today Soccer");
+        String league = soccerBetEntryPage.getFirstLeague();
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,"",league);
+
+        log("@Step Precondition: Define order to place bet");
+        List<Order> lstOrder = new ArrayList<>();
+        Order order = new Order.Builder()
+                .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
+                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
+                .marketType("HDP")
+                .stage("FT")
+                .selection(eventInfo.getHome())
+                .build();
+        lstOrder.add(order);
+
+        Order orderSPBPS7 = new Order.Builder()
+                .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
+                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode("SPBPS7").accountCurrency("HKD")
+                .marketType("HDP")
+                .stage("FT")
+                .selection(eventInfo.getHome())
+                .build();
+
+        log("@Step 4: Input account at precondition on 'Account Code' field");
+        log("@Step 5: Click on '.......' of any event > select handicap value with inputting odds and stake");
+        log("@Step 6: In the first row Handicap input the required fields (Handicap _,+, handicap point, price, odds type, bet type, live score, stake)");
+        log("@Step 7: Click Place Bet with Tick on option \"Tick here to Copy Bet to SPBPS7 as Same Odds\"");
+        soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,true,false,true);
+
+        lstOrder.add(orderSPBPS7);
+
+        log("@Step 8: Click 'Bets' at SPB column of event at step 6 > observe");
+        BetListPopup betListPopup = soccerBetEntryPage.openBetList(eventInfo.getHome());
+
+        log("@Verify there are 2 bets created: 1 bet placed on account code with correct info and 1 bet placed on SPBPS7 with same info as Account Code ");
+        lstOrder = betListPopup.verifyListOrderInfoDisplay(lstOrder,"Handicap","");
+        betListPopup.close();
+
+        log("@Post-Condition: Cancel Pending bet "+ lstOrder.get(0).getBetId() + " + " + lstOrder.get(1).getBetId()+" in Confirm Bet page");
+        ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date","","",accountCode);
+        confirmBetsPage.deleteOrder(lstOrder.get(0).getBetId());
+        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date","","","SPBPS7");
+        confirmBetsPage.deleteOrder(lstOrder.get(1).getBetId());
+
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id="1053")
+    @Test(groups = {"smoke"})
+    @Parameters({"accountCode","accountCurrency"})
+    public void BetEntry_TC1053(String accountCode,String accountCurrency){
+        log("@title: Validate can place bet for soccer with option copy bet to SPBPS7 as same odds\n");
+        log("Precondition: User has permission to access Bet Entry page");
+        log("Precondition:Having a valid account that can place bets (e.g. "+accountCode);
+        String sport="Soccer";
+        String companyUnit = "Kastraki Limited";
+
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Trading > Bet Entry");
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+
+        log("@Step 3: Click on 'Soccer' > select any League > click Show");
+        SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
+
+        log("@Step Precondition: Get the first Event of Frist League of Today Soccer");
+        String league = soccerBetEntryPage.getFirstLeague();
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,"",league);
+
+        log("@Step Precondition: Define order to place bet");
+        List<Order> lstOrder = new ArrayList<>();
+        Order order = new Order.Builder()
+                .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
+                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
+                .marketType("HDP")
+                .stage("FT")
+                .selection(eventInfo.getHome())
+                .build();
+        lstOrder.add(order);
+
+        Order orderSPBPS7 = new Order.Builder()
+                .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.14).requireStake(15.50)
+                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode("SPBPS7").accountCurrency("HKD")
+                .marketType("HDP")
+                .stage("FT")
+                .selection(eventInfo.getHome())
+                .build();
+
+        log("@Step 4: Input account at precondition on 'Account Code' field");
+        log("@Step 5: Click on '.......' of any event > select handicap value with inputting odds and stake");
+        log("@Step 6: In the first row Handicap input the required fields (Handicap _,+, handicap point, price, odds type, bet type, live score, stake)");
+        log("@Step 7: Click Place Bet with Tick on option \"Tick here to Copy Bet to SPBPS7 Minus 0.01 Odds\"");
+        soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,true,true);
+
+        lstOrder.add(orderSPBPS7);
+
+        log("@Step 8: Click 'Bets' at SPB column of event at step 6 > observe");
+        BetListPopup betListPopup = soccerBetEntryPage.openBetList(eventInfo.getHome());
+
+        log("@Verify there are 2 bets created: 1 bet placed on account code with correct info and 1 bet placed on SPBPS7 with odds = place odds - 0.01, other info display as Account Code");
+        lstOrder = betListPopup.verifyListOrderInfoDisplay(lstOrder,"Handicap","");
+        betListPopup.close();
+
+        log("@Post-Condition: Cancel Pending bet "+ lstOrder.get(0).getBetId() + " + " + lstOrder.get(1).getBetId()+" in Confirm Bet page");
+        ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date","","",accountCode);
+        confirmBetsPage.deleteOrder(lstOrder.get(0).getBetId());
+        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date","","","SPBPS7");
+        confirmBetsPage.deleteOrder(lstOrder.get(1).getBetId());
+
+        log("INFO: Executed completely");
+    }
 
 }
