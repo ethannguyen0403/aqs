@@ -22,6 +22,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
     private TextBox txtDate = TextBox.xpath("//app-bet-entry-soccer//input[@name='fromDate']");
     private Button btnShow = Button.xpath("//app-bet-entry-soccer//button[contains(@class,'btn-show')]");
     private DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
+    private Button btnMore = Button.xpath("");
     int totalCol =16;
     private int colTime = 1;
     private int colEvent = 2;
@@ -112,6 +113,22 @@ public class SoccerBetEntryPage extends BetEntryPage {
         btnShow.click();
         int rowIndex = getEventRowIndex(eventName);
         int colIndex = defineColumn(isFullTime,type);
+        tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
+        return new SoccerBetSlipPopup();
+
+    }
+
+    /**
+     * Click on + of according event to open More bet slip
+     * @param accountCode
+     * @param eventName
+     * @return
+     */
+    public SoccerBetSlipPopup openSPBBetSlip(String accountCode, String eventName){
+        txtAccCode.type(accountCode);
+        btnShow.click();
+        int rowIndex = getEventRowIndex(eventName);
+        int colIndex = colMore;
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
         return new SoccerBetSlipPopup();
 
