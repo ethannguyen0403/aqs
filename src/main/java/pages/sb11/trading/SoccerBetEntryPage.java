@@ -8,6 +8,7 @@ import controls.Table;
 import objects.Order;
 import pages.sb11.trading.popup.BetListPopup;
 import pages.sb11.trading.popup.SoccerBetSlipPopup;
+import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 
 import java.util.List;
 
@@ -193,6 +194,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
         SoccerBetSlipPopup soccerBetSlipPopup = openBetSlip(lstOrder.get(0).getAccountCode(),lstOrder.get(0).getSelection(),fullTime,type);
         soccerBetSlipPopup.placeMultiBet(lstOrder,isCopySPBPS7SameOdds,isCopySPBPS7MinusOdds,isPlaceBet);
     }
+    
     /**
      * Open Bet Slip of according event
      * @param eventName

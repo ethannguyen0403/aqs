@@ -11,6 +11,7 @@ import pages.sb11.trading.*;
 import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.popup.BetListPopup;
 import pages.sb11.trading.popup.SoccerBetSlipPopup;
+import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
@@ -176,7 +177,7 @@ public class BetEntryTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="191")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetEntry_TC191(String accountCode,String accountCurrency) throws ParseException {
         log("@title: Validate Bet Slip info display correctly when open Soccer> FT>HDP>Home");
@@ -205,7 +206,7 @@ public class BetEntryTest extends BaseCaseAQS {
         Order order = new Order.Builder()
                 .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
                 .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType(SOCCER_MARKET_TYPE_BET_LIST.get(marketType))
+                .marketType(marketType)
                 .stage("FT")
                 .selection(eventInfo.getHome())
                 .home(eventInfo.getHome())
@@ -354,6 +355,70 @@ public class BetEntryTest extends BaseCaseAQS {
         confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date","","","SPBPS7");
         confirmBetsPage.deleteOrder(lstOrder.get(1).getBetId());
 
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id="868")
+    @Test(groups = {"smoke1"})
+    @Parameters({"accountCode","accountCurrency"})
+    public void BetEntry_TC868(String accountCode,String accountCurrency){
+        log("@title: Validate can place bet for soccer with option copy bet to SPBPS7 as same odds");
+        log("Precondition: User has permission to access Bet Entry page");
+        log("Precondition:Having a valid account that can place bets (e.g. "+accountCode);
+        String sport="Soccer";
+        String companyUnit = "Kastraki Limited";
+        String marketType = "Full Time - 1x2";
+
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Trading > Bet Entry");
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+
+        log("@Step 3: Click on 'Soccer' > select any League > click Show");
+        SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
+
+        log("@Step Precondition: Get the first Event of First League of Today Soccer");
+        String league = soccerBetEntryPage.getFirstLeague();
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,"",league);
+
+        log("@Step Precondition: Define order to place bet");
+        Order order = new Order.Builder()
+                .sport(sport)
+                .price(2.15)
+                .requireStake(15.50)
+                .oddType("HK")
+                .betType("Back")
+                .accountCode(accountCode)
+                .accountCurrency(accountCurrency)
+                .marketType(marketType)
+                .stage("FT")
+                .selection(eventInfo.getHome())
+                .isHome(true)
+                .home(eventInfo.getHome())
+                .away((eventInfo.getAway()))
+                .build();
+
+        log("@Step 4: Input account at precondition on 'Account Code' field");
+        log("@Step 5: Click (+) at More column of according event > select handicap value with inputting odds and stake");
+        log("@Step 6: Click Place Bet with Tick on option \"Tick here to Copy Bet to SPBPS7 Minus 0.01 Odds\"");
+        SoccerSPBBetSlipPopup soccerSPBBetSlipPopup = new SoccerSPBBetSlipPopup();
+        soccerSPBBetSlipPopup.placeMoreBet(order,false,false,true);
+
+        log("@Verify 1: User can place Soccer bets successfully with message 'The bet was placed successfully'");
+        Assert.assertTrue(soccerBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+soccerBetEntryPage.getSuccessMessage());
+
+        log("@Step 8: Click 'Bets' at SPB column of event at step 6 > observe");
+        BetListPopup betListPopup = soccerBetEntryPage.openBetList(eventInfo.getHome());
+
+        log("@Verify info in Bet slip popup display correctly");
+        betListPopup.verifyOrderInfoDisplay(order,"1x2","");
+        betListPopup.close();
+
+        log("@Post-Condition: Cancel Pending bet "+ order.getBetId() +" in Confirm Bet page");
+        ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date","","",accountCode);
+        confirmBetsPage.deleteOrder(order.getBetId());
         log("INFO: Executed completely");
     }
 

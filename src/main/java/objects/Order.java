@@ -1,7 +1,7 @@
 package objects;
 
 public class Order {
-private String sport;
+    private String sport;
     private String selection;
     private String marketType;
     private String competitionName;
@@ -34,6 +34,8 @@ private String sport;
     private int handicapWtks;
     private double handicapRuns;
     private boolean isLive;
+    private boolean isHome;
+    private boolean isAway;
     public String getSport() {
         return sport;
     }
@@ -295,6 +297,22 @@ private String sport;
         isLive = live;
     }
 
+    public boolean isHome() {
+        return isHome;
+    }
+
+    public void setHome(boolean home) {
+        isHome = home;
+    }
+
+    public boolean isAway() {
+        return isAway;
+    }
+
+    public void setAway(boolean away) {
+        isAway = away;
+    }
+
     public static class Builder {
         private String _selection;
         private String _marketType;
@@ -328,6 +346,8 @@ private String sport;
         private int _handicapWtks;
         private double _handicapRuns;
         private boolean _isLive;
+        private boolean _isHome;
+        private boolean _isAway;
         private String _sport;
         public Builder() {
         }
@@ -468,6 +488,14 @@ private String sport;
             _isLive = val;
             return this;
         }
+        public Builder isHome(boolean val) {
+            _isHome = val;
+            return this;
+        }
+        public Builder isAway(boolean val) {
+            _isAway = val;
+            return this;
+        }
         public Order build() {
             return new Order(this);
         }
@@ -506,6 +534,8 @@ private String sport;
         this.handicapRuns = builder._handicapRuns;
         this.handicapWtks = builder._handicapWtks;
         this.isLive = builder._isLive;
+        this.isHome = builder._isHome;
+        this.isAway = builder._isAway;
         this.sport = builder._sport;
     }
 
