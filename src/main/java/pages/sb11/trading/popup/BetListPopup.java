@@ -103,8 +103,13 @@ public class BetListPopup {
 
         // Define value base on Sport name
         if (expectedOrder.getSport().equalsIgnoreCase("Soccer")) {
-            expectedBetType = String.format("%s-%s", EN_US.get(expectedOrder.getStage()), EN_US.get(expectedOrder.getMarketType()));
-            expectedHDP = String.format("%s%s", hdpSign, expectedOrder.getHdpPoint());
+            if (marketType.contains("1x2")){
+                expectedBetType = String.format("%s-%s", EN_US.get(expectedOrder.getStage()), "1x2");
+                expectedHDP = String.format("%.2f", expectedOrder.getHdpPoint());
+            } else {
+                expectedBetType = String.format("%s-%s", EN_US.get(expectedOrder.getStage()), EN_US.get(expectedOrder.getMarketType()));
+                expectedHDP = String.format("%s%s", hdpSign, expectedOrder.getHdpPoint());
+            }
             if (expectedOrder.getLiveHomeScore() == 0 && expectedOrder.getLiveAwayScore() == 0) {
                 expectedLive = String.format("%s:%s", expectedOrder.getLiveHomeScore(), expectedOrder.getLiveAwayScore());
             }

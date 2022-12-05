@@ -54,13 +54,13 @@ public class SoccerSPBBetSlipPopup {
         }
     }
 
-    public void inputFT1x2info(boolean isHome,boolean isAway, double price, String betType, String oddsType, String betSelection, int liveHomeScore, int liveAwayScore, double stake){
+    public void inputFT1x2info(boolean isHome,boolean isAway, double price, String marketType, String oddsType, String betSelection, int liveHomeScore, int liveAwayScore, double stake){
         if(isHome){
             rbHome.click();
         } else if (isAway){
             rbAway.click();
         } else rbDraw.click();
-        ddBetType.selectByVisibleText(betType);
+        ddBetType.selectByVisibleText(marketType);
         txtOdds.sendKeys(String.format("%.3f",price));
         ddOddType.selectByVisibleText(oddsType);
         ddBetSelection.selectByVisibleText(betSelection);

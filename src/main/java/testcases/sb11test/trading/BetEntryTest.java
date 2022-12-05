@@ -20,6 +20,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static common.ESSConstants.HomePage.EN_US;
 import static common.SBPConstants.*;
 
 public class BetEntryTest extends BaseCaseAQS {
@@ -385,6 +386,7 @@ public class BetEntryTest extends BaseCaseAQS {
         log("@Step Precondition: Define order to place bet");
         Order order = new Order.Builder()
                 .sport(sport)
+                .hdpPoint(0.00)
                 .price(2.15)
                 .requireStake(15.50)
                 .oddType("HK")
@@ -412,13 +414,14 @@ public class BetEntryTest extends BaseCaseAQS {
         BetListPopup betListPopup = soccerBetEntryPage.openBetList(eventInfo.getHome());
 
         log("@Verify info in Bet slip popup display correctly");
-        betListPopup.verifyOrderInfoDisplay(order,"1x2","");
+        order = betListPopup.verifyOrderInfoDisplay(order,SOCCER_MORE_MARKET_TYPE_BET_LIST.get(marketType),"");
         betListPopup.close();
 
         log("@Post-Condition: Cancel Pending bet "+ order.getBetId() +" in Confirm Bet page");
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
         confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date","","",accountCode);
         confirmBetsPage.deleteOrder(order.getBetId());
+
         log("INFO: Executed completely");
     }
 
