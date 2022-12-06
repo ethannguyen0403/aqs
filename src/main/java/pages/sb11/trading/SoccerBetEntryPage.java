@@ -8,6 +8,7 @@ import controls.Table;
 import objects.Order;
 import pages.sb11.trading.popup.BetListPopup;
 import pages.sb11.trading.popup.SoccerBetSlipPopup;
+import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
     private TextBox txtDate = TextBox.xpath("//app-bet-entry-soccer//input[@name='fromDate']");
     private Button btnShow = Button.xpath("//app-bet-entry-soccer//button[contains(@class,'btn-show')]");
     private DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
+    private Button btnMore = Button.xpath("");
     int totalCol =16;
     private int colTime = 1;
     private int colEvent = 2;
@@ -118,6 +120,22 @@ public class SoccerBetEntryPage extends BetEntryPage {
     }
 
     /**
+     * Click on + of according event to open More bet slip
+     * @param accountCode
+     * @param eventName
+     * @return
+     */
+    public SoccerBetSlipPopup openSPBBetSlip(String accountCode, String eventName){
+        txtAccCode.type(accountCode);
+        btnShow.click();
+        int rowIndex = getEventRowIndex(eventName);
+        int colIndex = colMore;
+        tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
+        return new SoccerBetSlipPopup();
+
+    }
+
+    /**
      * Define colum HDP , HOME, AWAY .... by Fultime or  halftime
      * @param isFullTime
      * @param type
@@ -176,6 +194,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
         SoccerBetSlipPopup soccerBetSlipPopup = openBetSlip(lstOrder.get(0).getAccountCode(),lstOrder.get(0).getSelection(),fullTime,type);
         soccerBetSlipPopup.placeMultiBet(lstOrder,isCopySPBPS7SameOdds,isCopySPBPS7MinusOdds,isPlaceBet);
     }
+    
     /**
      * Open Bet Slip of according event
      * @param eventName

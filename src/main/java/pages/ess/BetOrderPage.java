@@ -160,7 +160,6 @@ public class BetOrderPage extends HomePage {
                 return;
             }
             i= i+1;
-
         }
 
     }

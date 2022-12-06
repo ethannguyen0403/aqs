@@ -7,20 +7,20 @@
 
     <test name="SB11 QAT Smoke">
         <parameter name='browser' value='window10.local.chrome'/>
-        <parameter name='env' value='qat'/>
+        <parameter name='env' value='stg'/>
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
-        <parameter name='username' value='Isa'/>
+        <parameter name='username' value='AutoQC'/>
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
-        <parameter name="accountCode" value="2RA0000000"/>
-        <parameter name="accountCurrency" value="CAD"/>
+        <parameter name="accountCode" value="0480000009"/>
+        <parameter name="accountCurrency" value="HKD"/>
 
         <groups>
             <run>
-                <include name="smoke1" />
+                <include name="smoke" />
             </run>
         </groups>
 

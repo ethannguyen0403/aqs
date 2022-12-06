@@ -90,9 +90,10 @@ public class GetSoccerEventUtils {
             e.printStackTrace();
         }
         if(Objects.nonNull(jsonObject)){
+            if(!jsonObject.has(league))
+                return null;
             JSONArray resultArr  = jsonObject.getJSONArray(league);
             if(resultArr.length()>0) {
-
                 JSONObject orderObj = resultArr.getJSONObject(0);
                 return new Event.Builder()
                         .leagueName(league)
@@ -104,7 +105,6 @@ public class GetSoccerEventUtils {
                         .eventId(Long.toString(orderObj.getLong("eventId")))
                         .build();
             }
-
         }
         return null;
     }

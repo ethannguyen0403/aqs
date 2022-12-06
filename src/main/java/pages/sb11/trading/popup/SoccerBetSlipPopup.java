@@ -1,16 +1,19 @@
 package pages.sb11.trading.popup;
 
 import com.paltech.element.common.*;
+import com.paltech.utils.DateUtils;
 import objects.Order;
+import org.testng.Assert;
 import pages.sb11.trading.controls.OrderRowControl;
 
+import java.text.ParseException;
 import java.util.List;
 
 public class SoccerBetSlipPopup {
-    private Label lblEventStartTime = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[1]");
-    private Label lblLeagureName = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[2]/span[1]");
+    public Label lblEventStartTime = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[1]");
+    private Label lblLeagueName = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[2]/span[1]");
     private Label lblEventName = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[2]/span[2]");
-    private Label lblMarketType = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[2]/span[3]");
+    public Label lblMarketType = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[2]/span[3]");
     private Button btnClose = Button.xpath("//app-match-odd-bet-slip//div[contains(@class,'close-btn ')]");
     private Label lblSelectionName = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'place-form ')]/label");
     private String xPathrderRowControl = "//app-match-odd-bet-slip//div[contains(@class,'place-form ')]//div[contains(@class,'order-row')]";
@@ -50,7 +53,7 @@ public class SoccerBetSlipPopup {
      * @param lstOrder the order info : is handicap (-,+) pirce, odds type, bet type, live score, stake
 
      */
-     public void placeMultiBet(List<Order> lstOrder,boolean isCopySPBPS7SameOdds, boolean isCopySPBPS7MinusOdds, boolean isPlaceBet){
+    public void placeMultiBet(List<Order> lstOrder,boolean isCopySPBPS7SameOdds, boolean isCopySPBPS7MinusOdds, boolean isPlaceBet){
         OrderRowControl orderRowControl ;
         Order order;
         for(int i = 0; i<lstOrder.size(); i++){
@@ -59,18 +62,33 @@ public class SoccerBetSlipPopup {
             orderRowControl.inputInfo(order.isNegativeHdp(),order.getHdpPoint(), order.getPrice(),order.getOddType(), order.getBetType(),
                     order.getLiveHomeScore(),order.getLiveAwayScore(),order.getRequireStake());
         }
-         if(isCopySPBPS7SameOdds != cbCopyBetToSPBPS7SameOdds.isSelected()){
-             cbCopyBetToSPBPS7SameOdds.click();
-         }
-         if(isCopySPBPS7MinusOdds != cbCopyBetToSPBPS7MinusOdds.isSelected()){
-             cbCopyBetToSPBPS7MinusOdds.click();
-         }
-         if(isPlaceBet) {
-             btnPlaceBet.click();
-         }
+        if(isCopySPBPS7SameOdds != cbCopyBetToSPBPS7SameOdds.isSelected()){
+            cbCopyBetToSPBPS7SameOdds.click();
+        }
+        if(isCopySPBPS7MinusOdds != cbCopyBetToSPBPS7MinusOdds.isSelected()){
+            cbCopyBetToSPBPS7MinusOdds.click();
+        }
+        if(isPlaceBet) {
+            btnPlaceBet.click();
+        }
+    }
 
+    public List<Order> verifyOrderInfoDisplay(List<Order> expectedOrder, String marketType, String eventDate) throws ParseException {
+        String competition = lblLeagueName.getText().trim();
+        String eventName = lblEventName.getText().trim();
+        marketType = lblMarketType.getText().trim();
+        String selectionType = lblSelectionName.getText().trim();
+        String startDate = lblEventStartTime.getText().trim();
 
-     }
+        String[] dateconvert = startDate.split("\\s");
+
+        Assert.assertEquals(competition, expectedOrder.get(0).getCompetitionName(), "Failed! Competition name is incorrect");
+        Assert.assertEquals(eventName, expectedOrder.get(0).getHome() + " -vs- " + expectedOrder.get(0).getAway(), "Failed! Event name is incorrect");
+        Assert.assertEquals(marketType, expectedOrder.get(0).getMarketType(), "Failed! Market type is incorrect");
+        Assert.assertEquals(selectionType, expectedOrder.get(0).getSelection(), "Failed! Selection type is incorrect");
+        Assert.assertEquals(eventDate, dateconvert[0], "Failed! Start date is incorrect");
+        return expectedOrder;
+    }
 
 
 }

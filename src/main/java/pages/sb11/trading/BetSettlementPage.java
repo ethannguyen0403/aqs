@@ -3,15 +3,10 @@ package pages.sb11.trading;
 import com.paltech.element.common.*;
 import controls.DateTimePicker;
 import controls.Table;
-import objects.Order;
-import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.control.ConfirmPopupControl;
-import pages.sb11.trading.popup.BetSlipPopup;
 
-import static common.ESSConstants.HomePage.EN_US;
-
-public class ConfirmBetsPage extends WelcomePage {
+public class BetSettlementPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
     public DropDownBox ddbCompanyUnit = DropDownBox.id("company");
     public TextBox txtAccStartWith = TextBox.id("acc-starts-with");
@@ -46,7 +41,7 @@ public class ConfirmBetsPage extends WelcomePage {
     public Button btnDuplcateBetForSPBPS7 = Button.xpath("//button[text()='Duplicate Bet For SPBPS7']");
     public Label lblSelectAll = Label.xpath("//button[text()='Select All']");
     public Label lblDeleteSelected = Label.xpath("//button[text()='Delete Selected']");
-    public Button btnConfirmBet = Button.xpath("//button[text()='Confirm Bet']");
+    public Button btnConfirm = Button.xpath("//button[text()='Confirm Bet']");
     public Label lblTotalStake = Label.xpath("//span[contains(@class,'total-stake-pending')]");
     public String getTitlePage ()
     {
@@ -103,57 +98,6 @@ public class ConfirmBetsPage extends WelcomePage {
         }
     }
 
-    /**
-     * Verify order info as expected
-     * @param order
-     * @return
-     */
-    public void verifyOrder(Order order){
-        int orderIndex = getOrderIndex(order.getOrderId());
-        System.out.println(String.format("verity order %s  at row %s", order.getOrderId(), orderIndex));
-        String dateEvent = tblOrder.getControlOfCell(1, colEventDate, orderIndex, null).getText().trim();
-        String country = tblOrder.getControlOfCell(1, colCountry, orderIndex, null).getText().trim();
-        String league = tblOrder.getControlOfCell(1, colLeague, orderIndex, null).getText().trim();
-        String eventName = tblOrder.getControlOfCell(1, colEvent, orderIndex, "div[1]").getText().trim();
-        String orderID = tblOrder.getControlOfCell(1, colEvent, orderIndex, "div[2]").getText().trim();
-        String betDate = tblOrder.getControlOfCell(1, colBetDate, orderIndex, null).getText().trim();
-        String selection = tblOrder.getControlOfCell(1, colSelection, orderIndex, "select").getText().trim();
-        String hdp = tblOrder.getControlOfCell(1, colHdp, orderIndex, "select").getText().trim();
-        String liveHomeScore = tblOrder.getControlOfCell(1, colLive, orderIndex, "input[1]").getText().trim();
-        String liveAwayScore = tblOrder.getControlOfCell(1, colLive, orderIndex, "input[2]").getText().trim();
-        String odds = tblOrder.getControlOfCell(1, colOdds, orderIndex, "input").getText().trim();
-        String oddsType = tblOrder.getControlOfCell(1, colOdds, orderIndex, "span").getText().trim();
-        String bl = tblOrder.getControlOfCell(1, colBL, orderIndex, "select").getText().trim();
-        String stake =tblOrder.getControlOfCell(1, colStake, orderIndex, "input").getText().trim();
-        String bt =tblOrder.getControlOfCell(1, colBT, orderIndex, null).getText().trim();
-        String trad=tblOrder.getControlOfCell(1, colTra, orderIndex, null).getText().trim();
-
-        Assert.assertEquals(dateEvent, order.getEventDate(), "Failed! Event date is incorrect");
-        Assert.assertEquals(country, "country of league", "Failed! Country is incorrect");
-        Assert.assertEquals(league, order.getCompetitionName(), "Failed! Selection is incorrect");
-        Assert.assertEquals(eventName, String.format("%s vs %s",order.getHome(),order.getAway()), "Failed! Event name is incorrect");
-        Assert.assertEquals(orderID, String.format("%s / %s",order.getOrderId(), order.getBetId()), "Failed! Live Score is incorrect ");
-        Assert.assertEquals(betDate,order.getCreateDate(), "Failed! Place time is incorrect");
-        Assert.assertEquals(selection, order.getSelection(), "Failed! Stake is incorrect is in correct");
-        Assert.assertEquals(hdp, order.getHdpPoint(), "Failed!HDP is incorrect");
-        Assert.assertEquals(liveHomeScore, order.getLiveHomeScore(), "Failed!Home live score is incorrect");
-        Assert.assertEquals(liveAwayScore, order.getLiveAwayScore(), "Failed!Away live score is incorrect");
-        Assert.assertEquals(odds, order.getPrice(), "Failed!Odds is incorrect");
-        Assert.assertEquals(oddsType,String.format("(%s)",order.getOddType()), "Failed! Odds Type is incorrect");
-        Assert.assertEquals(bl,order.getBetType(), "Failed! Bet Type (Back/Lay )is incorrect");
-        Assert.assertEquals(stake,order.getRequireStake(), "Failed! Stake is incorrect");
-        Assert.assertEquals(bt,String.format("%s-%s",order.getStage(),order.getMarketType()), "Failed!BT is incorrect");
-    }
-
-    /**
-     * Detete a order
-     * @param orderId order id or bet id
-     */
-    public void confirmBet(String orderId){
-        int rowIndex =getOrderIndex(orderId);
-        btnConfirmBet.click();
-        waitPageLoad();
-    }
     /**
      * Detete a order
      * @param orderId order id or bet id
