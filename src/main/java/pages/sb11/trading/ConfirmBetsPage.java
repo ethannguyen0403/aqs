@@ -1,13 +1,16 @@
 package pages.sb11.trading;
 
 import com.paltech.element.common.*;
+import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Order;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.control.ConfirmPopupControl;
-import pages.sb11.trading.popup.BetSlipPopup;
+
+import java.text.ParseException;
+import java.util.List;
 
 import static common.ESSConstants.HomePage.EN_US;
 
@@ -44,9 +47,9 @@ public class ConfirmBetsPage extends WelcomePage {
     public Table tblOrder = Table.xpath("//app-confirm-bet//div[@id= 'customTable']//table[contains(@aria-label,'bet table')]",colTotal);
     public Button btnUpdateBet = Button.xpath("//button[text()='Update Bet']");
     public Button btnDuplcateBetForSPBPS7 = Button.xpath("//button[text()='Duplicate Bet For SPBPS7']");
-    public Label lblSelectAll = Label.xpath("//button[text()='Select All']");
-    public Label lblDeleteSelected = Label.xpath("//button[text()='Delete Selected']");
-    public Button btnConfirmBet = Button.xpath("//button[text()='Confirm Bet']");
+    public Label lblSelectAll = Label.xpath("//app-confirm-bet//span[text()='Select All']");
+    public Label lblDeleteSelected = Label.xpath("//app-confirm-bet//span[text()='Delete Selected']");
+    public Button btnConfirmBet = Button.xpath("//app-confirm-bet//button[text()='Confirm Bet']");
     public Label lblTotalStake = Label.xpath("//span[contains(@class,'total-stake-pending')]");
     public String getTitlePage ()
     {
@@ -78,7 +81,7 @@ public class ConfirmBetsPage extends WelcomePage {
             dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         txtAccountCode.sendKeys(accountCode);
         btnShow.click();
-       // waitPageLoad();
+        waitPageLoad();
     }
 
     /**
@@ -115,65 +118,132 @@ public class ConfirmBetsPage extends WelcomePage {
         String country = tblOrder.getControlOfCell(1, colCountry, orderIndex, null).getText().trim();
         String league = tblOrder.getControlOfCell(1, colLeague, orderIndex, null).getText().trim();
         String eventName = tblOrder.getControlOfCell(1, colEvent, orderIndex, "div[1]").getText().trim();
-        String orderID = tblOrder.getControlOfCell(1, colEvent, orderIndex, "div[2]").getText().trim();
+        String orderID = tblOrder.getControlOfCell(1, colEvent, orderIndex, "div[contains(@class,'row')][2]/div[contains(@class,'col')][1]/span").getText().trim();
         String betDate = tblOrder.getControlOfCell(1, colBetDate, orderIndex, null).getText().trim();
-        String selection = tblOrder.getControlOfCell(1, colSelection, orderIndex, "select").getText().trim();
-        String hdp = tblOrder.getControlOfCell(1, colHdp, orderIndex, "select").getText().trim();
-        String liveHomeScore = tblOrder.getControlOfCell(1, colLive, orderIndex, "input[1]").getText().trim();
-        String liveAwayScore = tblOrder.getControlOfCell(1, colLive, orderIndex, "input[2]").getText().trim();
-        String odds = tblOrder.getControlOfCell(1, colOdds, orderIndex, "input").getText().trim();
+        String selection =  DropDownBox.xpath(tblOrder.getxPathOfCell(1, colSelection, orderIndex, "select")).getFirstSelectedOption().trim();
+        String hdp = DropDownBox.xpath(tblOrder.getxPathOfCell(1, colHdp, orderIndex, "select")).getFirstSelectedOption().trim();
+        String liveHomeScore = TextBox.xpath(tblOrder.getxPathOfCell(1, colLive, orderIndex, "input[1]")).getAttribute("value").trim();
+        String liveAwayScore =  TextBox.xpath(tblOrder.getxPathOfCell(1, colLive, orderIndex, "input[2]")).getAttribute("value").trim();
+        String odds = TextBox.xpath(tblOrder.getxPathOfCell(1, colOdds, orderIndex, "input")).getAttribute("value").trim();
         String oddsType = tblOrder.getControlOfCell(1, colOdds, orderIndex, "span").getText().trim();
-        String bl = tblOrder.getControlOfCell(1, colBL, orderIndex, "select").getText().trim();
-        String stake =tblOrder.getControlOfCell(1, colStake, orderIndex, "input").getText().trim();
+        String bl = DropDownBox.xpath(tblOrder.getxPathOfCell(1, colBL, orderIndex, "select")).getFirstSelectedOption().trim();
+        String stake =TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, orderIndex, "input")).getAttribute("value").trim();
         String bt =tblOrder.getControlOfCell(1, colBT, orderIndex, null).getText().trim();
         String trad=tblOrder.getControlOfCell(1, colTra, orderIndex, null).getText().trim();
-
-        Assert.assertEquals(dateEvent, order.getEventDate(), "Failed! Event date is incorrect");
-        Assert.assertEquals(country, "country of league", "Failed! Country is incorrect");
-        Assert.assertEquals(league, order.getCompetitionName(), "Failed! Selection is incorrect");
-        Assert.assertEquals(eventName, String.format("%s vs %s",order.getHome(),order.getAway()), "Failed! Event name is incorrect");
-        Assert.assertEquals(orderID, String.format("%s / %s",order.getOrderId(), order.getBetId()), "Failed! Live Score is incorrect ");
-        Assert.assertEquals(betDate,order.getCreateDate(), "Failed! Place time is incorrect");
+        String dateconvert="";
+        //Assert.assertEquals(dateEvent, order.getEventDate(), "Failed! Event date is incorrect");
+        try {
+            dateconvert = DateUtils.convertDateToNewTimeZone(order.getEvent().getEventDate(),"yyyy-MM-dd'T'HH:mm:ss.SSSXXX","","dd/MM HH:mm","GMT+8");
+        } catch (ParseException e) {
+            Assert.assertTrue(false, "Failed! convert event date "+ e.toString());
+        }
+       // Assert.assertEquals(dateEvent, dateconvert, "Failed! Event date is incorrect");
+        //Assert.assertEquals(country, "country of league", "Failed! Country is incorrect");
+        Assert.assertEquals(league, order.getEvent().getLeagueName(), "Failed! Selection is incorrect");
+        Assert.assertEquals(eventName, String.format("%s\n" + "vs\n" +"%s",order.getEvent().getHome(),order.getEvent().getAway()), "Failed! Event name is incorrect");
+        Assert.assertEquals(orderID, String.format("%s / %s",order.getOrderId(), order.getBetId()), "Failed! Order id and Bet Id is incorrect ");
+        //Assert.assertEquals(betDate,order.getCreateDate(), "Failed! Place time is incorrect");
         Assert.assertEquals(selection, order.getSelection(), "Failed! Stake is incorrect is in correct");
-        Assert.assertEquals(hdp, order.getHdpPoint(), "Failed!HDP is incorrect");
-        Assert.assertEquals(liveHomeScore, order.getLiveHomeScore(), "Failed!Home live score is incorrect");
-        Assert.assertEquals(liveAwayScore, order.getLiveAwayScore(), "Failed!Away live score is incorrect");
-        Assert.assertEquals(odds, order.getPrice(), "Failed!Odds is incorrect");
+        Assert.assertEquals(hdp, String.format("%.2f",order.getHdpPoint()), "Failed!HDP is incorrect");
+        Assert.assertEquals(liveHomeScore, String.format("%d",order.getLiveHomeScore()), "Failed!Home live score is incorrect");
+        Assert.assertEquals(liveAwayScore,String.format("%d", order.getLiveAwayScore()), "Failed!Away live score is incorrect");
+        Assert.assertEquals(odds,String.format("%.3f",order.getPrice()), "Failed!Odds is incorrect");
         Assert.assertEquals(oddsType,String.format("(%s)",order.getOddType()), "Failed! Odds Type is incorrect");
         Assert.assertEquals(bl,order.getBetType(), "Failed! Bet Type (Back/Lay )is incorrect");
-        Assert.assertEquals(stake,order.getRequireStake(), "Failed! Stake is incorrect");
-        Assert.assertEquals(bt,String.format("%s-%s",order.getStage(),order.getMarketType()), "Failed!BT is incorrect");
+        Assert.assertEquals(stake,String.format("%.2f",order.getRequireStake()), "Failed! Stake is incorrect");
+        Assert.assertEquals(bt,String.format("%s-%s",EN_US.get(order.getStage()),EN_US.get(order.getMarketType())), "Failed!BT is incorrect");
+        Assert.assertEquals(trad,"", "Failed! Trad is incorrect");
     }
 
     /**
-     * Detete a order
-     * @param orderId order id or bet id
+     * Select an order then click on Confirm Bet button
+     * @param order order id or bet id
      */
-    public void confirmBet(String orderId){
-        int rowIndex =getOrderIndex(orderId);
+    public void confirmBet(Order order){
+        selectBet(order,true);
         btnConfirmBet.click();
         waitPageLoad();
     }
+
+    public void confirmMultipleBets(List<Order> lstOrder){
+       selectBets(lstOrder,true);
+       btnConfirmBet.click();
+    }
     /**
      * Detete a order
-     * @param orderId order id or bet id
+     * @param order order id or bet id
+     * @param isPending to define column delete icon based on filter Pending (true) or Confirm(false) status
      */
-    public void deleteOrder(String orderId){
-        int rowIndex =getOrderIndex(orderId);
-        Icon.xpath(tblOrder.getxPathOfCell(1,colDelete,rowIndex,"i")).click();
+    public void deleteOrder(Order order, boolean isPending){
+        int rowIndex =getOrderIndex(order.getBetId());
+        Icon.xpath(tblOrder.getxPathOfCell(1,defineDeleteColIndex(isPending),rowIndex,"i")).click();
         ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
         confirmPopupControl.confirmYes();
+        waitPageLoad();
+    }
+
+    /**
+     * This action will select multiple order then click on Delete Selected label
+     * @param lstOrder the list order
+     */
+    public void deleteSelectedOrders(List<Order> lstOrder, boolean isPending){
+        selectBets(lstOrder,isPending);
+        lblDeleteSelected.click();
+        ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
+        confirmPopupControl.confirmYes();
+        waitPageLoad();
+
+    }
+
+    private void selectBets(List<Order> lstOrder,boolean isPending){
+        for (Order order: lstOrder
+        ) {
+            selectBet(order,isPending);
+        }
+    }
+
+    private int defineSelectColIndex(boolean isPending){
+        if(isPending)
+            return colSelect;
+        return colSelect +1;
+    }
+    private int defineDeleteColIndex(boolean isPending){
+        if(isPending)
+            return colDelete;
+        return colDelete +1;
+    }
+    private void selectBet(Order order, boolean isPendingBet){
+
+        int rowIndex =getOrderIndex(order.getBetId());
+        Icon.xpath(tblOrder.getxPathOfCell(1,defineSelectColIndex(isPendingBet),rowIndex,"input")).click();
     }
 
     /**
      * To check an orderid display in confirm bet table or not
-     * @param orderID
+     * @param order
      * @return
      */
-    public boolean isOrderDisplayInTheTable(String orderID){
-        int index = getOrderIndex(orderID);
+    public boolean isOrderDisplayInTheTable(Order order){
+        int index = getOrderIndex(order.getOrderId());
         if(index == 0)
             return false;
+        return true;
+    }
+    /**
+     * To check an orderid display in confirm bet table or not
+     * @param lstOrder
+     * @return
+     */
+    public boolean isOrdersDisplayInTheTable(List<Order> lstOrder){
+        for (Order order: lstOrder
+             ) {
+            int index = getOrderIndex(order.getBetId());
+            if(index == 0)
+            {
+                System.out.println("The order "+ order.getBetId()+" does not display in the ");
+                return false;
+            }
+        }
         return true;
     }
 }
