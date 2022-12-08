@@ -125,13 +125,13 @@ public class SoccerBetEntryPage extends BetEntryPage {
      * @param eventName
      * @return
      */
-    public SoccerBetSlipPopup openSPBBetSlip(String accountCode, String eventName){
+    public SoccerSPBBetSlipPopup openSPBBetSlip(String accountCode, String eventName){
         txtAccCode.type(accountCode);
         btnShow.click();
         int rowIndex = getEventRowIndex(eventName);
         int colIndex = colMore;
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
-        return new SoccerBetSlipPopup();
+        return new SoccerSPBBetSlipPopup();
 
     }
 
