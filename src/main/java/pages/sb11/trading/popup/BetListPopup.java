@@ -64,6 +64,24 @@ public class BetListPopup {
            i = i +1;
        }
     }
+
+    public boolean isOrderDisplay(String orderId){
+        // to get row index with expected market type
+        int i = 1;
+        while(true){
+            if(!tblOrder.getControlOfCell(1,colAccount,i,null).isDisplayed()) {
+                System.out.println("Not found bet id "+orderId+" in the table");
+                return false;
+            }
+            String betId = tblOrder.getControlOfCell(1,colBetrefId,i,null).getText().trim();
+            if(!betId.equals(orderId))
+            {
+               return true;
+            }
+            i = i +1;
+        }
+    }
+
     public Order verifyOrderInfoDisplay(Order order, String marketType, String createDate){
         // to get row index with expected market type
         int startIndex = getStartRowWithMarketType(marketType);
@@ -76,7 +94,6 @@ public class BetListPopup {
             i = i +1;
         }
     }
-
 
     /**
      * To verify bet info display as expect then set Betref ID to expected Order
