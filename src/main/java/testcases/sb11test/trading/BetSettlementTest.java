@@ -53,10 +53,10 @@ public class BetSettlementTest extends BaseCaseAQS {
 
         log("@Step 3. Input account at the precondition to 'Account Code' field and search for the bet at precondition");
         log("@Step 4.  Click on 'X' button of the bet at the precondition and observe");
-        confirmBetsPage.deleteOrder(lstOrder.get(0).getBetId());
+        confirmBetsPage.deleteOrder(lstOrder.get(0),true);
 
         log("@Verify: Users can delete pending bet by clicking on 'X' button and it will be no longer displayed");
-        Assert.assertFalse(confirmBetsPage.isOrderDisplayInTheTable(order.getOrderId()),"Failed! The order still displayed after deleteing");
+        Assert.assertFalse(confirmBetsPage.isOrderDisplayInTheTable(order),"Failed! The order still displayed after deleteing");
 
         log("INFO: Executed completely");
     }

@@ -36,6 +36,16 @@ public class Order {
     private boolean isLive;
     private boolean isHome;
     private boolean isAway;
+    private Event event;
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
     public String getSport() {
         return sport;
     }
@@ -348,6 +358,7 @@ public class Order {
         private boolean _isLive;
         private boolean _isHome;
         private boolean _isAway;
+        private Event _event;
         private String _sport;
         public Builder() {
         }
@@ -492,6 +503,10 @@ public class Order {
             _isHome = val;
             return this;
         }
+        public Builder event(Event val) {
+            _event = val;
+            return this;
+        }
         public Builder isAway(boolean val) {
             _isAway = val;
             return this;
@@ -537,6 +552,7 @@ public class Order {
         this.isHome = builder._isHome;
         this.isAway = builder._isAway;
         this.sport = builder._sport;
+        this.event = builder._event;
     }
 
 
