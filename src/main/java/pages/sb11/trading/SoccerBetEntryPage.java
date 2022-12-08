@@ -135,6 +135,10 @@ public class SoccerBetEntryPage extends BetEntryPage {
 
     }
 
+    public void placeMoreBet(Order order, boolean issamodd, boolean minusOdd, boolean isPlace){
+        SoccerSPBBetSlipPopup popup =openSPBBetSlip(order.getAccountCode(), order.getEvent().getHome());
+        popup.placeMoreBet(order,issamodd,minusOdd,isPlace);
+    }
     /**
      * Define colum HDP , HOME, AWAY .... by Fultime or  halftime
      * @param isFullTime
