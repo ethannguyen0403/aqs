@@ -20,6 +20,7 @@ import org.testng.annotations.*;
 import pages.ess.BetOrderPage;
 import pages.ess.HomePage;
 import pages.sb11.WelcomePage;
+import pages.sb11.accounting.JournalEntriesPage;
 import utils.testraildemo.APIClient;
 import utils.testraildemo.APIException;
 import utils.testraildemo.TestRails;
@@ -39,6 +40,7 @@ public class BaseCaseAQS {
     public static ExtentReports report;
     public static HomePage homePage;
     public static BetOrderPage betOrderPage;
+    public static JournalEntriesPage journalEntriesPage;
     public static WelcomePage welcomePage;
     public static pages.ess.LoginPage loginAQSPage;
     public static pages.sb11.LoginPage loginSB11Page;

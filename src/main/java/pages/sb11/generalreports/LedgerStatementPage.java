@@ -23,4 +23,18 @@ public class LedgerStatementPage extends WelcomePage {
 
     Label lblTitle = Label.xpath("//div[contains(@class,'header-filter')]//span[1]");
     public String getTitlePage () {return lblTitle.getText().trim();}
+
+    public void showLedger (String companyUnit, String financialYear, String accountType, String ledgerGroup, String fromDate, String toDate){
+        ddCompanyUnit.selectByVisibleText(companyUnit);
+        ddFinancialYear.selectByVisibleText(financialYear);
+        ddLedgerName.selectByVisibleContainsText(accountType);
+        ddLedgerGroup.selectByVisibleContainsText(ledgerGroup);
+        if (!fromDate.isEmpty()){
+            dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
+        }
+        if (!toDate.isEmpty()){
+            dtpToDate.selectDate(toDate, "dd/MM/yyyy");
+        }
+        btnShow.click();
+    }
 }
