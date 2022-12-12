@@ -1,7 +1,6 @@
 package objects;
 
-public class Order {
-    private String sport;
+public class Order {  private String sport;
     private String selection;
     private String marketType;
     private String competitionName;
@@ -554,6 +553,5 @@ public class Order {
         this.sport = builder._sport;
         this.event = builder._event;
     }
-
 
 }

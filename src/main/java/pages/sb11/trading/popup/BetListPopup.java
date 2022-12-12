@@ -43,26 +43,26 @@ public class BetListPopup {
      */
     public List<Order> verifyListOrderInfoDisplay(List<Order> lstOrder, String marketType, String createDate){
         // to get row index with expected market type
-       int startIndex = getStartRowWithMarketType(marketType);
-       int i = startIndex +1;
-       int orderIndex = 0;
-       while(true){
-           if(!tblOrder.getControlOfCell(1,colAccount,i,null).isDisplayed())
-               return lstOrder;
-           if(orderIndex >= lstOrder.size())
-               return lstOrder;
+        int startIndex = getStartRowWithMarketType(marketType);
+        int i = startIndex +1;
+        int orderIndex = 0;
+        while(true){
+            if(!tblOrder.getControlOfCell(1,colAccount,i,null).isDisplayed())
+                return lstOrder;
+            if(orderIndex >= lstOrder.size())
+                return lstOrder;
 
-           String accountCode = tblOrder.getControlOfCell(1,colAccount,i,null).getText().trim();
-           if(!accountCode.equals(lstOrder.get(orderIndex).getAccountCode()))
-           {
-               System.out.println(String.format("Skip verity %s section at row %s because the account code is different with %s", marketType,i,accountCode));
-               continue;
-           }else {
-               verifyOrderInfoDisplayCorrectInRow(lstOrder.get(orderIndex),createDate,i);
-               orderIndex = orderIndex +1;
-           }
-           i = i +1;
-       }
+            String accountCode = tblOrder.getControlOfCell(1,colAccount,i,null).getText().trim();
+            if(!accountCode.equals(lstOrder.get(orderIndex).getAccountCode()))
+            {
+                System.out.println(String.format("Skip verity %s section at row %s because the account code is different with %s", marketType,i,accountCode));
+                continue;
+            }else {
+                verifyOrderInfoDisplayCorrectInRow(lstOrder.get(orderIndex),createDate,i);
+                orderIndex = orderIndex +1;
+            }
+            i = i +1;
+        }
     }
 
     public boolean isOrderDisplay(String orderId){
@@ -76,7 +76,7 @@ public class BetListPopup {
             String betId = tblOrder.getControlOfCell(1,colBetrefId,i,null).getText().trim();
             if(!betId.equals(orderId))
             {
-               return true;
+                return true;
             }
             i = i +1;
         }

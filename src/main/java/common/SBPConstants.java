@@ -8,8 +8,13 @@ public class SBPConstants {
     public final static String BOOKIE_INFO = "Bookie Info";
     public final static String CLIENT_SYSTEM = "Client System";
     public final static String TRADING = "Trading";
+    public final static String ACCOUNTING = "Accounting";
+    public final static String CHART_OF_ACCOUNT = "Chart Of Account";
+    public final static String GENERAL_REPORTS = "General Reports";
+    public final static String LEDGER_STATEMENT = "Ledger Statement";
     public final static String BET_ENTRY = "Bet Entry";
     public final static String SPORT= "Sport";
+    public final static String CLIENT_STATEMENT = "Client Statement";
     public final static String EVENT_SCHEDULE = "Event Schedule";
     public final static String CONFIRM_BETS = "Confirm Bets";
     public final static String BET_SETTLEMENT = "Bet Settlement";
@@ -42,12 +47,6 @@ public class SBPConstants {
         }
     };
 
-    public static final Map<String, String> SOCCER_MORE_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
-    {
-        {
-            put("Full Time - 1x2", "1x2");
-        }
-    };
     public static class BetEntryPage {
         public final static String MESSAGE_SUCCESS_MANUAL_BET ="Place Successful !";
     }
