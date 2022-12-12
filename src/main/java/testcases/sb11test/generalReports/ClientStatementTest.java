@@ -11,14 +11,14 @@ import static common.SBPConstants.GENERAL_REPORTS;
 import static common.SBPConstants.CLIENT_STATEMENT;
 
 public class ClientStatementTest extends BaseCaseAQS {
+    String viewBy = "Client Point";
+    String companyUnit = "Kastraki Limited";
+    String financialYear = "Year 2022-2023";
+    String clients = "QA_TEST - QA Client Test";
 
     @Test(groups = {"smoke"})
     @TestRails(id = "309")
     public void ClientStatementTC_309(){
-        String viewBy = "Client Point";
-        String companyUnit = "Kastraki Limited";
-        String financialYear = "Year 2022-2023";
-        String clients = "QA_TEST - QA Client Test";
         String openingVal;
         String winLossVal;
         String commissionVal;
@@ -47,7 +47,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @TestRails(id = "310")
     public void ClientStatementTC_310(){
         String viewBy = "Client Point";
