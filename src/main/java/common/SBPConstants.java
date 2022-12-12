@@ -14,6 +14,8 @@ public class SBPConstants {
     public final static String LEDGER_STATEMENT = "Ledger Statement";
     public final static String BET_ENTRY = "Bet Entry";
     public final static String SPORT= "Sport";
+    public final static String GENERAL_REPORTS = "General Reports";
+    public final static String CLIENT_STATEMENT = "Client Statement";
     public final static String EVENT_SCHEDULE = "Event Schedule";
     public final static String CONFIRM_BETS = "Confirm Bets";
     public final static String PLACE_BET_SUCCESS_MSG ="The bet was placed successfully";
