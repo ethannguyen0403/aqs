@@ -509,7 +509,6 @@ public class Order {
         this.handicapWtks = builder._handicapWtks;
         this.isLive = builder._isLive;
         this.sport = builder._sport;
-        this.event = builder._event;
     }
 
 
