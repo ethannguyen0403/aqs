@@ -2,10 +2,10 @@ package pages.sb11;
 
 
 import com.paltech.element.common.Label;
+import com.paltech.utils.DateUtils;
 import controls.sb11.AppArlertControl;
 import objects.Event;
 import pages.sb11.sport.EventSchedulePage;
-import pages.sb11.trading.BetEntryPage;
 import utils.sb11.GetSoccerEventUtils;
 
 import java.util.Objects;
@@ -25,15 +25,32 @@ public class WelcomePage extends Header{
         lblSpin.isDisplayed(3);
     }
 
-    public Event createCricketEvent(String fromDate, String toDate, String sport, String league){
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(fromDate,toDate,sport,league);
+    /**
+     * This method create the event if League does not have any event
+     * @param event
+     */
+    public Event createEvent(Event event){
+        // Get all list Event of a League by APU and check exist event or not
+        String date = DateUtils.formatDate(event.getEventDate(),"dd/MM/yyyy","yyyy-MM-dd");
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(date,date,event.getSportName(),event.getLeagueName());
+        //Create in EventSchedulePage when not existing
         if(Objects.isNull(eventInfo)){
-            EventSchedulePage eventSchedulePage = navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
-            //TODO: add function create event for leage
+            createEventOfSport(event);
+        }else {
+            if(!eventInfo.getHome().equals(event.getHome())){
+                createEventOfSport (event);
+            }
         }
-        return eventInfo;
+        return GetSoccerEventUtils.setEventID(event);
     }
-
+    
+    private void createEventOfSport(Event event){
+        EventSchedulePage eventSchedulePage = navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
+        eventSchedulePage.goToSport(event.getSportName());
+        eventSchedulePage.showLeague(event.getLeagueName(),event.getEventDate());
+        eventSchedulePage.addEvent(event);
+    }
+    
     public String getSuccessMessage(){
         return appArlertControl.getSuscessMessage();
     }

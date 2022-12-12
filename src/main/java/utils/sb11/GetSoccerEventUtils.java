@@ -1,6 +1,7 @@
 package utils.sb11;
 
 import com.paltech.constant.Configs;
+import com.paltech.utils.DateUtils;
 import com.paltech.utils.WSUtils;
 import objects.Event;
 import org.json.JSONArray;
@@ -11,7 +12,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
 import static testcases.BaseCaseAQS.environment;
 
 public class GetSoccerEventUtils {
@@ -57,6 +57,30 @@ public class GetSoccerEventUtils {
             }
         }
         return null;
+    }
+
+    public static Event setEventID(Event event) {
+        JSONObject jsonObject = null;
+        String date = DateUtils.formatDate(event.getEventDate(),"dd/MM/yyyy","yyyy-MM-dd");
+        try {
+            jsonObject = getEventsAPIJson(date, date, event.getSportName());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        if(Objects.nonNull(jsonObject)){
+            JSONArray resultArr  = jsonObject.getJSONArray(event.getLeagueName());
+            if(resultArr.length()>0) {
+                for(int i =0; i < resultArr.length(); i ++) {
+                    JSONObject orderObj = resultArr.getJSONObject(i);
+                    if(orderObj.getString("homeTeamName").equals(event.getHome()) && orderObj.getString("awayTeamName").equals(event.getAway())){
+                        event.setEventId(Long.toString(orderObj.getLong("eventId")));
+                        event.setEventDate(orderObj.getString("startDate"));
+                        return event;
+                    }
+                }
+            }
+        }
+        return event;
     }
 
 

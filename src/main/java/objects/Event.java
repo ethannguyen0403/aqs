@@ -1,6 +1,9 @@
 package objects;
 
+import freemarker.core._SettingEvaluationEnvironment;
+
 public class Event {
+    private String sportName;
     private String leagueName;
     private String away;
     private String home;
@@ -8,6 +11,18 @@ public class Event {
     private String startDate;
     private String openTime;
     private String eventId;
+    private String eventStatus;
+    private boolean isLive;
+    private boolean isN;
+
+    public String getSportName() {
+        return sportName;
+    }
+
+    public void setSportName(String sportName) {
+        this.sportName = sportName;
+    }
+
     public String getLeagueName() {
         return leagueName;
     }
@@ -64,7 +79,32 @@ public class Event {
         this.eventId = eventId;
     }
 
+    public String getEventStatus() {
+        return eventStatus;
+    }
+
+    public void setEventStatus(String eventStatus) {
+        this.eventStatus = eventStatus;
+    }
+
+    public boolean isLive() {
+        return isLive;
+    }
+
+    public void setLive(boolean live) {
+        isLive = live;
+    }
+
+    public boolean isN() {
+        return isN;
+    }
+
+    public void setN(boolean n) {
+        isN = n;
+    }
+
     public static class Builder {
+        private String _sportName;
         private String _leagueName;
         private String _away;
         private String _home;
@@ -72,9 +112,27 @@ public class Event {
         private String _startDate;
         private String _openTime;
         private String _eventId;
+        private String _eventStatus;
+        private boolean _isLive;
+        private boolean _isN;
         public Builder() {
         }
-
+        public Builder sportName(String val) {
+            _sportName = val;
+            return this;
+        }
+        public Builder eventStatus(String val) {
+            _eventStatus = val;
+            return this;
+        }
+        public Builder isLive(boolean val) {
+            _isLive = val;
+            return this;
+        }
+        public Builder isN(boolean val) {
+            _isN = val;
+            return this;
+        }
         public Builder leagueName(String val) {
             _leagueName = val;
             return this;
@@ -111,6 +169,7 @@ public class Event {
     }
 
     public Event(Builder builder) {
+        this.sportName= builder._sportName;
         this.leagueName = builder._leagueName;
         this.home = builder._home;
         this.away = builder._away;
@@ -118,6 +177,9 @@ public class Event {
         this.startDate = builder._startDate;
         this.openTime = builder._openTime;
         this.eventId= builder._eventId;
+        this.isLive = builder._isLive;
+        this.isN = builder._isN;
+        this.eventStatus= builder._eventStatus;
     }
 
 
