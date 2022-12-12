@@ -12,11 +12,11 @@ public class SoccerSPBBetSlipPopup {
     private Label lblHomeName = Label.xpath("//app-more-bet-option//div[contains(@class,'form-check')]/div[1]/span[1]");
     private Label lblAway = Label.xpath("//app-more-bet-option//div[contains(@class,'form-check')]/div[1]/span[2]");
     private Label lblBetType = Label.xpath("//app-more-bet-option//div[contains(@class,'form-check')]/div[2]//label");
-    private DropDownBox ddBetType = DropDownBox.xpath("//app-more-bet-option//label[contains(text(),'Bet Type')]//following::select[1]");
+    private DropDownBox ddMarketType = DropDownBox.xpath("//app-more-bet-option//label[contains(text(),'Bet Type')]//following::select[1]");
     private Label lblSelection = Label.xpath("//app-more-bet-option//div[contains(@class,'form-check')]/div[3]//label");
     private TextBox txtOdds = TextBox.xpath("//app-more-bet-option//label[contains(text(),'Odds')]//following::input[1]");
     private DropDownBox ddOddType = DropDownBox.xpath("//app-more-bet-option//label[contains(text(),'Odds')]//following::select");
-    private DropDownBox ddBetSelection = DropDownBox.xpath("//app-more-bet-option//label[contains(text(),'Selection')]//following::select[1]");
+    private DropDownBox ddBetType = DropDownBox.xpath("//app-more-bet-option//label[contains(text(),'Selection')]//following::select[1]");
     private TextBox txtHomeScore = TextBox.xpath("//app-more-bet-option//label[contains(text(),'Live Score')]//following::input[1]");
     private TextBox txtAwayScore = TextBox.xpath("//app-more-bet-option//label[contains(text(),'Live Score')]//following::input[2]");
     private TextBox txtStake = TextBox.xpath("//app-more-bet-option//label[contains(text(),'Stake')]//following::input[1]");
@@ -38,11 +38,7 @@ public class SoccerSPBBetSlipPopup {
     }
 
     public void placeMoreBet(Order placedOrder, boolean isCopySPBPS7SameOdds, boolean isCopySPBPS7MinusOdds, boolean isPlaceBet){
-        SoccerBetEntryPage soccerBetEntryPage = new SoccerBetEntryPage();
-        soccerBetEntryPage.openSPBBetSlip(placedOrder.getAccountCode(),placedOrder.getSelection());
-        SoccerSPBBetSlipPopup soccerSPBBetSlipPopup = new SoccerSPBBetSlipPopup();
-        soccerSPBBetSlipPopup.inputFT1x2info(placedOrder.isHome(),placedOrder.isAway(),placedOrder.getPrice(), placedOrder.getMarketType(), placedOrder.getOddType(),placedOrder.getBetType(),
-                placedOrder.getLiveHomeScore(), placedOrder.getLiveAwayScore(), placedOrder.getRequireStake());
+        inputFT1x2info(placedOrder);
         if(isCopySPBPS7SameOdds != cbCopyBetToSPBPS7SameOdds.isSelected()){
             cbCopyBetToSPBPS7SameOdds.click();
         }
@@ -54,18 +50,29 @@ public class SoccerSPBBetSlipPopup {
         }
     }
 
-    public void inputFT1x2info(boolean isHome,boolean isAway, double price, String marketType, String oddsType, String betSelection, int liveHomeScore, int liveAwayScore, double stake){
-        if(isHome){
-            rbHome.click();
-        } else if (isAway){
-            rbAway.click();
-        } else rbDraw.click();
-        ddBetType.selectByVisibleText(marketType);
-        txtOdds.sendKeys(String.format("%.3f",price));
-        ddOddType.selectByVisibleText(oddsType);
-        ddBetSelection.selectByVisibleText(betSelection);
-        txtHomeScore.sendKeys(String.format("%d",liveHomeScore));
-        txtAwayScore.sendKeys(String.format("%d",liveAwayScore));
-        txtStake.sendKeys(String.format("%.2f",stake));
+    private void clickSelection (String selection){
+        switch (selection){
+            case "Home":
+                rbHome.click();
+                return;
+            case "Away":
+                rbAway.click();
+                return;
+            case "Draw":
+                rbDraw.click();
+                return;
+        }
+    }
+
+    public void inputFT1x2info(Order order){
+        clickSelection(order.getSelection());
+        String marketType = String.format("%s - %s",order.getStage(),order.getMarketType());
+        ddMarketType.selectByVisibleText(marketType);
+        txtOdds.sendKeys(String.format("%.3f",order.getPrice()));
+        ddOddType.selectByVisibleText(order.getOddType());
+        ddBetType.selectByVisibleText(order.getBetType());
+        txtHomeScore.sendKeys(String.format("%d",order.getLiveHomeScore()));
+        txtAwayScore.sendKeys(String.format("%d",order.getLiveAwayScore()));
+        txtStake.sendKeys(String.format("%.2f",order.getRequireStake()));
     }
 }

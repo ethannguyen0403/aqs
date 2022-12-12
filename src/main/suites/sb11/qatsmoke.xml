@@ -11,7 +11,7 @@
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
-        <parameter name='username' value='Isa'/>
+        <parameter name='username' value='autoqc'/>
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
@@ -20,12 +20,13 @@
 
         <groups>
             <run>
-                <include name="smoke1" />
+                <include name="smoke" />
             </run>
         </groups>
 
         <classes>
             <class name="testcases.sb11test.trading.BetEntryTest"/>
+            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
         </classes>
     </test>
 </suite>

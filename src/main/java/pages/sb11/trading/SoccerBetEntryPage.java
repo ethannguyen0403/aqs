@@ -125,16 +125,20 @@ public class SoccerBetEntryPage extends BetEntryPage {
      * @param eventName
      * @return
      */
-    public SoccerBetSlipPopup openSPBBetSlip(String accountCode, String eventName){
+    public SoccerSPBBetSlipPopup openSPBBetSlip(String accountCode, String eventName){
         txtAccCode.type(accountCode);
         btnShow.click();
         int rowIndex = getEventRowIndex(eventName);
         int colIndex = colMore;
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
-        return new SoccerBetSlipPopup();
+        return new SoccerSPBBetSlipPopup();
 
     }
 
+    public void placeMoreBet(Order order, boolean issamodd, boolean minusOdd, boolean isPlace){
+        SoccerSPBBetSlipPopup popup =openSPBBetSlip(order.getAccountCode(), order.getEvent().getHome());
+        popup.placeMoreBet(order,issamodd,minusOdd,isPlace);
+    }
     /**
      * Define colum HDP , HOME, AWAY .... by Fultime or  halftime
      * @param isFullTime

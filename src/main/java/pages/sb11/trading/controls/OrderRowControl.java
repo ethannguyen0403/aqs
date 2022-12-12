@@ -28,9 +28,9 @@ public class OrderRowControl extends BaseElement {
         super(locator);
         this._xpath = xpathExpression;
         lblHandicap = Label.xpath(String.format("%s/label",_xpath));
-        rbNegativeHdp = RadioButton.xpath(String.format("%s//input[@id='neghdp0']",_xpath));
+        rbNegativeHdp = RadioButton.xpath(String.format("%s//input[contains(@id,'neghdp')]",_xpath));
         lblNegativeHdp = Label.xpath(String.format("%s//label[contains(@for,'neghdp')]",_xpath));
-        rbPositiveHdp = RadioButton.xpath(String.format("%s//input[@id='poshdp0']",_xpath));
+        rbPositiveHdp = RadioButton.xpath(String.format("%s//input[contains(@id,'poshdp')]",_xpath));
         lblPositiveHdp = Label.xpath(String.format("%s//label[contains(@for,'poshdp')]",_xpath));
         ddbHdpRate = DropDownBox.xpath(String.format("%s/div/div[1]/div[3]/select",_xpath));
         txtPrice= TextBox.xpath(String.format("%s/div/div[1]/div[4]/input",_xpath));
