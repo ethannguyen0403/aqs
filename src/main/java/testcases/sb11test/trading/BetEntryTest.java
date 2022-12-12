@@ -11,7 +11,6 @@ import pages.sb11.trading.*;
 import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.popup.BetListPopup;
 import pages.sb11.trading.popup.SoccerBetSlipPopup;
-import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
@@ -20,7 +19,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static common.ESSConstants.HomePage.EN_US;
 import static common.SBPConstants.*;
 
 public class BetEntryTest extends BaseCaseAQS {
@@ -124,7 +122,8 @@ public class BetEntryTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
 
         log("@Step prepare data: Add event for QA League in today local time and can filter in today in Trading>Bet Entry");
-        Event eventInfo =  welcomePage.createCricketEvent(dateAPI,dateAPI,sport,leagueName);
+        Event eventInfo = null;
+        welcomePage.createEvent(eventInfo);
 
         log("@Step 2: Navigate to Trading > Bet Entry");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);

@@ -18,6 +18,7 @@ public class SBPConstants {
     public final static String CLIENT_STATEMENT = "Client Statement";
     public final static String EVENT_SCHEDULE = "Event Schedule";
     public final static String CONFIRM_BETS = "Confirm Bets";
+    public final static String BET_SETTLEMENT = "Bet Settlement";
     public final static String PLACE_BET_SUCCESS_MSG ="The bet was placed successfully";
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
@@ -29,6 +30,16 @@ public class SBPConstants {
 
         }
     };
+    public static final Map<String, String> SPORT_MAP= new HashMap<String, String>()
+    {
+        {
+            put("Soccer", "1");
+            put("Cricket", "2");
+
+        }
+    };
+
+
 
     public static final Map<String, String> SOCCER_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
