@@ -39,7 +39,7 @@ public class BetEntrytUtils {
      * @return the lstOrder with updated info
      */
     public static List<Order> setOrderIdBasedBetrefIDForListOrder (List<Order> lstOrder){
-         String eventId = lstOrder.get(0).getEvent().getEventId();
+        String eventId = lstOrder.get(0).getEvent().getEventId();
         JSONArray arr = getOrderofEventJson(eventId);
         int orderIndex = 0;
         String betid= "";

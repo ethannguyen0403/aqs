@@ -103,7 +103,6 @@ public class BetEntryTest extends BaseCaseAQS {
 
         log("INFO: Executed completely");
     }
-
     @TestRails(id="863")
     @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
@@ -122,8 +121,7 @@ public class BetEntryTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
 
         log("@Step prepare data: Add event for QA League in today local time and can filter in today in Trading>Bet Entry");
-        Event eventInfo = null;
-        welcomePage.createEvent(eventInfo);
+        Event eventInfo =  welcomePage.createCricketEvent(dateAPI,dateAPI,sport,leagueName);
 
         log("@Step 2: Navigate to Trading > Bet Entry");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
@@ -439,7 +437,7 @@ public class BetEntryTest extends BaseCaseAQS {
         log("@Post-Condition: Cancel Pending bet "+ order.getBetId() +" in Confirm Bet page");
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
         confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date","","",accountCode);
-        confirmBetsPage.deleteOrder(order.getBetId());
+        confirmBetsPage.deleteOrder(order,true);
 
         log("INFO: Executed completely");
     }
