@@ -1,7 +1,6 @@
 package objects;
 
-public class Order {
-    private String sport;
+public class Order {  private String sport;
     private String selection;
     private String marketType;
     private String competitionName;
@@ -34,6 +33,15 @@ public class Order {
     private int handicapWtks;
     private double handicapRuns;
     private boolean isLive;
+    private Event event;
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
 
     public String getSport() {
         return sport;
@@ -330,7 +338,12 @@ public class Order {
         private double _handicapRuns;
         private boolean _isLive;
         private String _sport;
+        private Event _event;
         public Builder() {
+        }
+        public Builder event(Event val) {
+            _event = val;
+            return this;
         }
         public Builder sport(String val) {
             _sport = val;
@@ -509,7 +522,7 @@ public class Order {
         this.handicapWtks = builder._handicapWtks;
         this.isLive = builder._isLive;
         this.sport = builder._sport;
+        this.event = builder._event;
     }
-
 
 }
