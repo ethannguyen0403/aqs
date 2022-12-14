@@ -35,7 +35,7 @@ public class EventScheduleUtils {
                 put("Content-Type",Configs.HEADER_FORM_URLENCODED);
             }
         };
-        return  WSUtils.getGETJSONArraytWithDynamicHeaders(api,null,headers);
+        return  WSUtils.getGETJSONArraytWithDynamicHeaders(api,headers);
     }
 
     /**
@@ -53,10 +53,7 @@ public class EventScheduleUtils {
                 put("Content-Type",Configs.HEADER_FORM_URLENCODED);
             }
         };
-        return  WSUtils.getGETJSONArraytWithDynamicHeaders(api,null,headers);
+        return  WSUtils.getGETJSONArraytWithDynamicHeaders(api,headers);
     }
-
-
-
 
 }

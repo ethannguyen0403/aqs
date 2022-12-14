@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="AQS_QAT_Smoke" verbose="1">
+<suite name="SB11 QAT Smoke" verbose="1">
     <listeners>
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
@@ -11,7 +11,7 @@
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
-        <parameter name='username' value='Isa'/>
+        <parameter name='username' value='autoqc'/>
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
@@ -20,11 +20,12 @@
 
         <groups>
             <run>
-                <include name="smoke1" />
+                <include name="smoke" />
             </run>
         </groups>
 
         <classes>
+            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
             <class name="testcases.sb11test.trading.BetEntryTest"/>
             <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
         </classes>

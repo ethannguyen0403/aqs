@@ -12,7 +12,6 @@ public class SBPConstants {
     public final static String CHART_OF_ACCOUNT = "Chart Of Account";
     public final static String GENERAL_REPORTS = "General Reports";
     public final static String LEDGER_STATEMENT = "Ledger Statement";
-    public final static String JOURNAL_ENTRIES = "Journal Entries";
     public final static String BET_ENTRY = "Bet Entry";
     public final static String SPORT= "Sport";
     public final static String CLIENT_STATEMENT = "Client Statement";
@@ -39,15 +38,14 @@ public class SBPConstants {
         }
     };
 
-    public static final Map<String, Double> CURRENCY_RATE= new HashMap<String, Double>()
+    public static final Map<String, String> SPORT_SIGN_MAP= new HashMap<String, String>()
     {
         {
-            put("AUD", 0.558792);
-            put("GBP", 1.0);
-            put("HKD",0.106772);
+            put("Soccer", "SOC");
+            put("Cricket", "CRI");
+            put("MB", "SOC");
         }
     };
-
 
     public static final Map<String, String> SOCCER_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
