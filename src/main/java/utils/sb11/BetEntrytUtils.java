@@ -30,7 +30,7 @@ public class BetEntrytUtils {
                 put("Content-Type",Configs.HEADER_JSON);
             }
         };
-        return WSUtils.getGETJSONArraytWithDynamicHeaders(api,null,headers);
+        return WSUtils.getGETJSONArraytWithDynamicHeaders(api,headers);
     }
 
     /**

@@ -38,7 +38,14 @@ public class SBPConstants {
         }
     };
 
-
+    public static final Map<String, String> SPORT_SIGN_MAP= new HashMap<String, String>()
+    {
+        {
+            put("Soccer", "SOC");
+            put("Cricket", "CRI");
+            put("MB", "SOC");
+        }
+    };
 
     public static final Map<String, String> SOCCER_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {

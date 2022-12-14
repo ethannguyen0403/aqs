@@ -13,6 +13,7 @@ import pages.sb11.trading.popup.BetListPopup;
 import pages.sb11.trading.popup.SoccerBetSlipPopup;
 import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 import testcases.BaseCaseAQS;
+import utils.sb11.BetEntrytUtils;
 import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
 
@@ -85,6 +86,7 @@ public class BetEntryTest extends BaseCaseAQS {
         log("@Step 6: In the first row Handicap input the required fields (Handicap _,+, handicap point, price, odds type, bet type, live score, stake)");
         log("@Step 7: Click Place Bet without select \"option copy bet to SPBPS7same odds\" and \"copy bet to SPBPS7minus odds\"");
         soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
+        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
 
         log("@Verify 1: User can place Soccer bets successfully with message 'The bet was placed successfully'");
         Assert.assertTrue(soccerBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+soccerBetEntryPage.getSuccessMessage());
