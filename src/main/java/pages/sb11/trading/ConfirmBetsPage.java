@@ -5,6 +5,7 @@ import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Order;
+import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.control.ConfirmPopupControl;
@@ -43,7 +44,7 @@ public class ConfirmBetsPage extends WelcomePage {
     int colTra = 14;
     int colSelect = 15;
     int colDelete = 16;
-    public Table tblOrder = Table.xpath("//app-confirm-bet//div[@id= 'customTable']//table[contains(@aria-label,'bet table')]",colTotal);
+    public Table tblOrder = Table.xpath("//app-confirm-bet//div[@id='customTable']//table[contains(@aria-label,'bet table')]",colTotal);
     public Button btnUpdateBet = Button.xpath("//button[text()='Update Bet']");
     public Button btnDuplcateBetForSPBPS7 = Button.xpath("//button[text()='Duplicate Bet For SPBPS7']");
     public Label lblSelectAll = Label.xpath("//app-confirm-bet//span[text()='Select All']");
@@ -187,7 +188,6 @@ public class ConfirmBetsPage extends WelcomePage {
      */
     public void updateOrder(Order order,boolean isPending){
         fillInfo(order,isPending);
-        selectBet(order,true);
         btnUpdateBet.click();
         waitPageLoad();
     }
@@ -231,7 +231,7 @@ public class ConfirmBetsPage extends WelcomePage {
     private int defineSelectColIndex(boolean isPending){
         if(isPending)
             return colSelect;
-        return colSelect +1;
+        return colSelect + 1;
     }
     private int defineDeleteColIndex(boolean isPending){
         if(isPending)
@@ -245,18 +245,29 @@ public class ConfirmBetsPage extends WelcomePage {
 
     private void fillInfo(Order order,boolean isPendingBet){
         int orderIndex =getOrderIndex(order.getBetId());
-        Icon.xpath(tblOrder.getxPathOfCell(1,defineSelectColIndex(isPendingBet),orderIndex,"input")).click();
+        int colSelect =defineSelectColIndex(isPendingBet);
+        Icon.xpath(tblOrder.getxPathOfCell(1,colSelect,orderIndex,"input")).click();
         System.out.println(String.format("Update order %s  at row %s", order.getOrderId(), orderIndex));
         DropDownBox.xpath(tblOrder.getxPathOfCell(1, colSelection, orderIndex, "select")).selectByVisibleText(order.getSelection());
-        TextBox.xpath(tblOrder.getxPathOfCell(1, colOdds, orderIndex, "input")).sendKeys(String.format("%s",order.getPrice()));
         DropDownBox.xpath(tblOrder.getxPathOfCell(1, colBL, orderIndex, "select")).selectByVisibleText(order.getBetType());
-        TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, orderIndex, "input")).sendKeys(String.format("%s",order.getRequireStake()));
+        //TODO: [Isabella 12/12/20022]find the solution to update value for Odds and stake textbox in this Comfirm bet page
+       // TextBox.xpath(tblOrder.getxPathOfCell(1, colOdds, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getPrice()));
+       /* TextBox txtOdds = TextBox.xpath(tblOrder.getxPathOfCell(1, colOdds, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getPrice()));
+        clearAndUpdateTextBoxValue(txtOdds,String.format("%s",order.getPrice()));*/
+       // TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getRequireStake()));
+     /*   TextBox txtStake =TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, orderIndex, "input[1]"));//.sendKeys(String.format("%s",order.getRequireStake()));
+        clearAndUpdateTextBoxValue(txtStake,String.format("%s",order.getRequireStake()));*/
         if(order.getSport().equalsIgnoreCase("Cricket")){
             TextBox.xpath(tblOrder.getxPathOfCell(1, colHdp, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getHandicapWtks()));
             TextBox.xpath(tblOrder.getxPathOfCell(1, colHdp, orderIndex, "input[2]")).sendKeys(String.format("%s",order.getHandicapRuns()));
         }else {
-            DropDownBox.xpath(tblOrder.getxPathOfCell(1, colHdp, orderIndex, "select")).selectByVisibleText(String.format("%s",order.getHdpPoint()));
+            DropDownBox.xpath(tblOrder.getxPathOfCell(1, colHdp, orderIndex, "select")).selectByVisibleText(String.format("%.2f",order.getHdpPoint()));
         }
+    }
+
+    private void clearAndUpdateTextBoxValue(TextBox txt, String value){
+        txt.doubleClick();
+        txt.sendKeys(value);
     }
     /**
      * To check an orderid display in confirm bet table or not

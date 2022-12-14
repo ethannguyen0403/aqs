@@ -54,6 +54,7 @@ public class GetSoccerEventUtils {
                         .startDate(orderObj.getString("startDate"))
                         .openTime(orderObj.getString("openTime"))
                         .eventId(Long.toString(orderObj.getLong("eventId")))
+                        .sportName(sport)
                         .leagueName(league)
                         .build();
             }
