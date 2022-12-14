@@ -6,12 +6,10 @@ import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
-import objects.Order;
 import objects.Transaction;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
-
-import static common.ESSConstants.HomePage.EN_US;
+import static common.SBPConstants.*;
 
 public class LedgerStatementPage extends WelcomePage {
     public DropDownBox ddCompanyUnit = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Company Unit')]//following::select[1]");
@@ -26,6 +24,10 @@ public class LedgerStatementPage extends WelcomePage {
     int totalCol = 8;
     int colLedger = 2;
     int colCur = 3;
+    int colAmountORG = 4;
+    int colRunBalORG = 5;
+    int colAmountGBP = 8;
+    int colRunBalGBP = 9;
     public Table tbLedger = Table.xpath("//app-ledger-statement//table",totalCol);
 
     Label lblTitle = Label.xpath("//div[contains(@class,'header-filter')]//span[1]");
@@ -45,23 +47,41 @@ public class LedgerStatementPage extends WelcomePage {
         btnShow.click();
     }
 
-    public Transaction verifyLedgerTrans(Transaction trans, String ledgerGroup){
+    public Transaction verifyLedgerTrans(Transaction trans, boolean isDebit, String ledgerGroup){
         int startIndex = getStartRowWithLedgerGroup(ledgerGroup);
         int i = startIndex +1;
         while(true){
             String ledgerAccount = tbLedger.getControlOfCell(1,colLedger,i,null).getText().trim();
-            if(ledgerAccount.equals(trans.getLedgerDebit()))
-                return verifyOrderInfoDisplayCorrectInRow(trans,i);
-            System.out.println(String.format("Skip verity section at row %s because the account code is different with %s", i,ledgerAccount));
+            if (isDebit){
+                if(ledgerAccount.contains(trans.getLedgerDebit()))
+                    return verifyOrderInfoDisplayCorrectInRow(trans, true, i);
+                System.out.println(String.format("Skip verity section at row %s because the account code is different with %s", i,ledgerAccount));
+            } else {
+                if(ledgerAccount.contains(trans.getLedgerCredit()))
+                    return verifyOrderInfoDisplayCorrectInRow(trans, false, i);
+                System.out.println(String.format("Skip verity section at row %s because the account code is different with %s", i,ledgerAccount));
+            }
             i = i +1;
         }
     }
 
-    private Transaction verifyOrderInfoDisplayCorrectInRow(Transaction transaction, int rowIndex){
+    private Transaction verifyOrderInfoDisplayCorrectInRow(Transaction transaction, boolean isDebit, int rowIndex){
         String ledgerAccount = tbLedger.getControlOfCell(1, colLedger, rowIndex, null).getText().trim();
         String cur = tbLedger.getControlOfCell(1, colCur, rowIndex, null).getText().trim();
+        String amountORG = tbLedger.getControlOfCell(1, colAmountORG, rowIndex, null).getText().trim();
+        String amountGBP = tbLedger.getControlOfCell(1, colAmountGBP, rowIndex, null).getText().trim();
 
-        Assert.assertEquals(ledgerAccount, transaction.getLedgerDebit(), "Failed! Account code is incorrect");
+        if (isDebit){
+            Assert.assertTrue(ledgerAccount.contains(transaction.getLedgerDebit()), "Failed! Account code is incorrect");
+            Assert.assertEquals(amountORG, String.format("%.2f", transaction.getAmountDebit()), "Failed! Credit/Debit ORG amount is incorrect");
+            double amountDebitGBP = transaction.getAmountDebit() * CURRENCY_RATE.get(transaction.getLedgerDebitCur());
+            Assert.assertEquals(amountGBP, String.format("%.2f", amountDebitGBP), "Failed! Credit/Debit GBP amount is incorrect");
+        } else {
+            Assert.assertTrue(ledgerAccount.contains(transaction.getLedgerCredit()), "Failed! Account code is incorrect");
+            double amountCreditGBP = transaction.getAmountCredit() * CURRENCY_RATE.get(transaction.getLedgerCredit());
+            Assert.assertEquals(amountORG, String.format("%.2f", amountCreditGBP), "Failed! Credit/Debit ORG amount is incorrect");
+        }
+
         Assert.assertEquals(cur, transaction.getLedgerDebitCur(), "Failed! Cur is incorrect is in correct");
         return transaction;
     }
