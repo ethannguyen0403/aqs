@@ -26,6 +26,7 @@
 
         <classes>
             <class name="testcases.sb11test.trading.BetEntryTest"/>
+            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
         </classes>
     </test>
 </suite>
