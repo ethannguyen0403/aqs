@@ -10,12 +10,12 @@ import pages.sb11.WelcomePage;
 
 public class ClientStatementPage extends WelcomePage {
     int colTotal = 10;
-    int colTotalGrand = 8;
     public int colLevel = 3;
     public int colOpening = 5;
     public int colWinLoss = 6;
     public int colCommission = 7;
     public int colRecPay = 8;
+    public int colMovement = 9;
     public int colClosing = 10;
 
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
@@ -32,7 +32,6 @@ public class ClientStatementPage extends WelcomePage {
     Table tblSuper = Table.xpath("//app-client-detail//table[@id='table-super']",colTotal);
     Table tblMaster = Table.xpath("//app-client-detail//table[@id='table-master']",colTotal);
     Table tblAgent = Table.xpath("//app-client-detail//table[@id='table-agent']",colTotal);
-    //Table tblGrandTotal = Table.xpath("//app-client-detail//table[@id='grand-total']",colTotalGrand);
 
     @Override
     public String getTitlePage ()
@@ -70,6 +69,10 @@ public class ClientStatementPage extends WelcomePage {
         String returnValue = "";
         Label lblCellValue;
         Label lblMasterCode;
+        if (masterCode.equalsIgnoreCase("Total in")) {
+            colIndex = 8;
+            colLevel = 1;
+        }
         int i = 1;
         while (true){
             lblCellValue = Label.xpath(tblMaster.getxPathOfCell(1,colIndex,i,null));
@@ -85,7 +88,6 @@ public class ClientStatementPage extends WelcomePage {
             i = i+1;
         }
     }
-
     public String getAgentCellValue(String agentCode, int colIndex) {
         String returnValue = "";
         Label lblCellValue;
@@ -105,5 +107,40 @@ public class ClientStatementPage extends WelcomePage {
             i = i+1;
         }
     }
+    public String getGrandTotal(String currency) {
+        String returnValue;
+        Label lblCellValue;
+        switch (currency){
+            case "GBP":
+                lblCellValue = Label.xpath("//app-client-detail//table[@id='grand-total']//tr[2]//th[10]");
+                if(!lblCellValue.isDisplayed()){
+                    System.out.println("There's no value display in the GrandTotal GBP table");
+                    return null;
+                } else {
+                    returnValue = lblCellValue.getText();
+                    return returnValue;
+                }
+            default:
+                lblCellValue = Label.xpath("//app-client-detail//table[@id='grand-total']//tr[1]//th[10]");
+                if(!lblCellValue.isDisplayed()){
+                    System.out.println("There's no value display in the GrandTotal HKD table");
+                    return null;
+                } else {
+                    returnValue = lblCellValue.getText();
+                    return returnValue;
+                }
+        }
+    }
 
+    public String reverseValue(String value) {
+        String returnVal = value;
+        if (Float.parseFloat(value) > 0) {
+            returnVal = "-" + value;
+            return returnVal;
+        } else if (Float.parseFloat(value) < 0) {
+            returnVal = value.replace("-","");
+            return returnVal;
+        }
+        return returnVal;
+    }
 }
