@@ -1,4 +1,5 @@
 package testcases;
+
 import com.paltech.driver.DriverManager;
 import com.paltech.driver.DriverProperties;
 import com.paltech.utils.DateUtils;
@@ -29,7 +30,10 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.rmi.UnexpectedException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class BaseCaseAQS {
