@@ -1,6 +1,7 @@
 package testcases.sb11test.generalReports;
 
 import objects.Transaction;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.accounting.JournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
@@ -13,14 +14,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
     @TestRails(id="841")
     @Test(groups = {"smoke1"})
-    public void Bet_Entry_TC841(){
+    @Parameters({"lgDebitAcc","lgCreditAcc","lgDebitCur", "lgCreditCur", "ledgerGroup"})
+    public void Bet_Entry_TC841(String lgDebitAcc, String lgCreditAcc, String lgCreditCur, String lgDebitCur, String ledgerGroup){
         log("@title: Validate transaction Debit of Ledger Type = Expenditure");
         String companyUnit = "Kastraki Limited";
-        String lgDebitAcc = "AutoExpenditureDebit";
-        String lgCreditAcc = "AutoExpenditureCredit";
-        String ledgerGroup = "Auto Ledger Group";
-        String lgDebitCur = "AUD";
-        String lgCreditCur = "AUD";
         String transType = "Others";
         String accountType = "Expenditure";
         String financialYear = "Year 2022-2023";
@@ -54,14 +51,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
     @TestRails(id="842")
     @Test(groups = {"smoke"})
-    public void Bet_Entry_TC842(){
+    @Parameters({"lgDebitAcc","lgCreditAcc","lgDebitCur", "lgCreditCur", "ledgerGroup"})
+    public void Bet_Entry_TC842(String lgDebitAcc, String lgCreditAcc, String lgCreditCur, String lgDebitCur, String ledgerGroup){
         log("@title: Validate transaction Credit of Ledger Type = Expenditure");
         String companyUnit = "Kastraki Limited";
-        String lgDebitAcc = "AutoExpenditureDebit";
-        String lgCreditAcc = "AutoExpenditureCredit";
-        String ledgerGroup = "Auto Ledger Group";
-        String lgDebitCur = "AUD";
-        String lgCreditCur = "AUD";
         String transType = "Others";
         String accountType = "Expenditure";
         String financialYear = "Year 2022-2023";
