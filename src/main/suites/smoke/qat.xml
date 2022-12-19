@@ -18,7 +18,7 @@
         <parameter name="appname" value="aqs"/>
         <groups>
             <run>
-                <include name="smoke3" />
+                <include name="smoke" />
             </run>
         </groups>
 

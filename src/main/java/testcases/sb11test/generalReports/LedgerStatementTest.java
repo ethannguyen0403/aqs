@@ -24,7 +24,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
-        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,"",JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(lgDebitAcc)
@@ -61,7 +61,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
-        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,"",JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(lgDebitAcc)

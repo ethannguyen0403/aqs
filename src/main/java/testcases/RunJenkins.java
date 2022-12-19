@@ -1,28 +1,7 @@
 package testcases;
 
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.AuthCache;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.impl.client.BasicAuthCache;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-
 public class RunJenkins {
-    public static void main(String [] args) throws IOException {
+   /* public static void main(String [] args) throws IOException {
        // http://user:gNouIkl2ca1t@
         String url ="https://jenkins.pal.net.vn/login?from=%2Fview%2FQA%2520Automation%2Fjob%2FQA-Automation%2Fview%2FNESS_AQS%2Fjob%2FTestRail_Test%2Fbuild%3Ftoken%3Disabella_P%40l332211";
         URL obj = new URL(url);
@@ -52,6 +31,6 @@ public class RunJenkins {
         HttpResponse response = httpClient.execute(host, httpGet, localContext);
 
         return EntityUtils.toString(response.getEntity());
-    }
+    }*/
 
 }

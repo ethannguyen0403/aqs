@@ -15,14 +15,7 @@ import static common.ESSConstants.RolePage.ROLE_LIST;
 
 public class RoleTest extends BaseCaseAQS {
 
-    /**
-     * @title: Verify Role Page UI
-     * @steps:   1.  Login with valid Username and Password
-     * 2. Click on Role menu
-     * @expect: Verify that
-     * - Roles list is displayed with correct header
-     * - Permissions list is displayed with correct header
-     */
+
     @TestRails(id = "489")
     @Test(groups = {"smoke"})
     public void RoleTC_001(){
@@ -39,14 +32,7 @@ public class RoleTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    /**
-     * @title: Verify data in Role Page
-     * @steps:   1.  Login with valid Username and Password
-     * 2. Click on Role menu
-     * @expect: Verify that Roles and  Permission display correctly:
-     * - Role: Administrator and Agent
-     * - Permissions: There are 14 permissions in the list
-     */
+
     @TestRails(id = "490")
     @Test(groups = {"smoke"})
     public void RoleTC_002(){
