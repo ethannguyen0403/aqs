@@ -11,15 +11,7 @@ import java.util.ArrayList;
 import static common.ESSConstants.HomePage.MASTERACCOUNT;
 
 public class MasterTest extends BaseCaseAQS {
-    /**
-     * @title: Verify Master Account Page UI
-     * @steps:   1.  Login with valid Username and Password
-     * 2. Click Master Account menu
-     * @expect: Verify Master Account table display with correct content:
-     * - No
-     * - Master Account
-     * - Add button
-     */
+
     @TestRails(id = "493")
     @Test(groups = {"smoke"})
     public void MasterTC_001(){

@@ -3,6 +3,8 @@ package objects;
 public class Transaction {
     private String ledgerDebit;
     private String ledgerCredit;
+    private String ledgerDebitCur;
+    private String ledgerCreditCur;
     private double amountDebit;
     private double amountCredit;
     private String remark;
@@ -18,6 +20,18 @@ public class Transaction {
 
     public void setLedgerCredit(String ledgerCredit) {
         this.ledgerCredit = ledgerCredit;
+    }
+
+    public String getLedgerDebitCur() { return ledgerDebitCur; }
+
+    public void setLedgerDebitCur(String ledgerDebitCur) {
+        this.ledgerDebitCur = ledgerDebitCur;
+    }
+
+    public String getLedgerCreditCur() { return ledgerCreditCur; }
+
+    public void setLedgerCreditCur(String ledgerCreditCur) {
+        this.ledgerCreditCur = ledgerCreditCur;
     }
 
     public double getAmountDebit() { return amountDebit; }
@@ -49,6 +63,8 @@ public class Transaction {
     public static class Builder {
         private String _ledgerDebit;
         private String _ledgerCredit;
+        private String _ledgerDebitCur;
+        private String _ledgerCreditCur;
         private double _amountDebit;
         private double _amountCredit;
         private String _remark;
@@ -64,6 +80,16 @@ public class Transaction {
 
         public Builder ledgerCredit(String val) {
             _ledgerCredit = val;
+            return this;
+        }
+
+        public Builder ledgerDebitCur(String val) {
+            _ledgerDebitCur = val;
+            return this;
+        }
+
+        public Builder ledgerCreditCur(String val) {
+            _ledgerCreditCur = val;
             return this;
         }
 
@@ -99,6 +125,8 @@ public class Transaction {
     public Transaction(Builder builder) {
         this.ledgerDebit = builder._ledgerDebit;
         this.ledgerCredit = builder._ledgerCredit;
+        this.ledgerDebitCur = builder._ledgerDebitCur;
+        this.ledgerCreditCur = builder._ledgerCreditCur;
         this.amountDebit = builder._amountDebit;
         this.amountCredit = builder._amountCredit;
         this.remark = builder._remark;

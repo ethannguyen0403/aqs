@@ -272,14 +272,6 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    /**
-     * @title: Verify order display in Confirm when clicking Confirm link Pending section
-     * @steps:   1. Login the page
-     * 2. Click on AQS menu
-     * 3. Select an order in Pending section and click on Confirm link in Action column
-     * @expect: Verify bet is move to Confirm section
-     */
-
     @TestRails(id = "474")
     @Test(groups = {"smoke_qc"})
     public void BetOrder_010(){

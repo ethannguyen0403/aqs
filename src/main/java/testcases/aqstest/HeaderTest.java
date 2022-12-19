@@ -14,13 +14,6 @@ import static common.ESSConstants.*;
 
 public class HeaderTest extends BaseCaseAQS {
 
-    /**
-     * @title: Verify menu in header section is correctly display
-     * @steps:   1. Login the page
-     * @expect: Verify
-     * - logo: AQS
-     * - Role, Manager,Account,AQS
-     */
     @TestRails(id = "461")
     @Test(groups = {"smoke"})
     public void HeaderTC_001(){
@@ -36,12 +29,6 @@ public class HeaderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    /**
-     * @title: Verify Change Password menu display
-     * @steps:   1. Login the page
-     * 2. Click on profile icon
-     * @expect: Verify Change password icon display
-     */
     @TestRails(id = "462")
     @Test(groups = {"smoke"})
     public void HeaderTC_002(){
@@ -54,18 +41,6 @@ public class HeaderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    /**
-     * @title: Verify Change Password popup display
-     * @steps:   1. Login the page
-     * 2. Click on profile icon
-     * 3. Click on Change Password
-     * @expect: Verify Change password popup display with correct info
-     * - Change Password label and Login_Lable
-     * - Current Password label + textbox
-     * - New Password + Textbox + Hint icon
-     * - Confirm Password + Textbox
-     * Update and Close button
-     */
     @TestRails(id = "463")
     @Test(groups = {"smoke"})
     public void HeaderTC_003(){
@@ -84,16 +59,6 @@ public class HeaderTest extends BaseCaseAQS {
         Assert.assertEquals(changePasswordPage.btnUpdate.getText(),BTN_UPDATE,"FAILED! Update button does not display");
         log("INFO: Executed completely");
     }
-    /**
-     * @title: Verify Can change password success
-     * @steps:   1. Login the page
-     * 2. Click on profile icon
-     * 3. Click on Change Password
-     * 4. Change password
-     * 5. Re-login with new pw
-     * @expect: Verify can change password
-     * Verify can login account with new pw
-     */
     @TestRails(id = "464")
     @Test(groups = {"smoke"})
     @Parameters({"username","password"})

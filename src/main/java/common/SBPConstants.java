@@ -47,6 +47,15 @@ public class SBPConstants {
         }
     };
 
+    public static final Map<String, Double> CURRENCY_RATE= new HashMap<String, Double>()
+    {
+        {
+            put("AUD", 0.558792);
+            put("GBP", 1.0);
+            put("HKD",0.106772);
+        }
+    };
+
     public static final Map<String, String> SOCCER_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
         {
