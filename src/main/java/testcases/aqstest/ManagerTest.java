@@ -12,18 +12,6 @@ import java.util.ArrayList;
 import static common.ESSConstants.HomePage.MANAGER;
 
 public class ManagerTest extends BaseCaseAQS {
-    /**
-     * @title: Verify Manager Page UI
-     * @steps:   1.  Login with valid Username and Password
-     * 2. Click Manager menu
-     * @expect: Verify User Management table display with correct header
-     * - No
-     * - Account Name and Create button
-     * - Full Name
-     * - Role
-     * - Status
-     * - The list account contains the login account
-     */
 
     @TestRails(id = "491")
     @Test(groups = {"smoke3"})

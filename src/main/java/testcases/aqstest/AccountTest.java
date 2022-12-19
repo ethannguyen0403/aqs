@@ -10,15 +10,6 @@ import static common.ESSConstants.HomePage.ACCOUNT;
 
 public class AccountTest extends BaseCaseAQS {
 
-    /**
-     * @title: Verify Account Info Page UI
-     * @steps:   1.  Login with valid Username and Password
-     * 2. Click Account menu
-     * @expect: Validate Account Info table display with correct content:
-     * - Account Name
-     * - Full Name
-     * - Role
-     */
     @TestRails(id = "492")
     @Test(groups = {"smoke"})
     public void AccountTC_001(){

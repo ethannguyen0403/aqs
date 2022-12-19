@@ -8,16 +8,8 @@ import utils.testraildemo.TestRails;
 
 public class LoginTest extends BaseCaseAQS {
 
-    /**
-     * @title: Verify that can login successfully
-     * @steps:   1. Input Username/Password
-     * 2. Click Login button
-     * @expect: Verify can login success
-     * - Username label display
-     * - Profile icon display
-     */
-    @Test(groups = {"smoke4"})
     @TestRails(id = "459")
+    @Test(groups = {"smoke4"})
     @Parameters("username")
     public void LoginTC_001(String username){
         log("@title: Verify that can login successfully");
