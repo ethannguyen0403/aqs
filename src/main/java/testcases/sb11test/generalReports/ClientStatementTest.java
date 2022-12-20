@@ -184,9 +184,9 @@ public class ClientStatementTest extends BaseCaseAQS {
         actualClosingVal = popup.getGrandTotal("HKD",popup.colClosingTotal).replace(",","");
 
         Assert.assertEquals(openingVal,actualOpeningVal,"FAILED! Closing Balance is not calculated correctly, actual:"+openingVal+" and expected:"+actualOpeningVal);
-        Assert.assertEquals(winLossVal,actualWinloseVal,"FAILED! Closing Balance is not calculated correctly, actual:"+winLossVal+" and expected:"+actualWinloseVal);
-        Assert.assertEquals(recPayVal,actualRecPayVal,"FAILED! Closing Balance is not calculated correctly, actual:"+recPayVal+" and expected:"+actualRecPayVal);
-        Assert.assertEquals(movementVal,actualMovementVal,"FAILED! Closing Balance is not calculated correctly, actual:"+movementVal+" and expected:"+actualMovementVal);
+        Assert.assertEquals(winLossVal,actualWinloseVal,"FAILED! WinLose Balance is not calculated correctly, actual:"+winLossVal+" and expected:"+actualWinloseVal);
+        Assert.assertEquals(recPayVal,actualRecPayVal,"FAILED! RecPay Balance is not calculated correctly, actual:"+recPayVal+" and expected:"+actualRecPayVal);
+        Assert.assertEquals(movementVal,actualMovementVal,"FAILED! Movement Balance is not calculated correctly, actual:"+movementVal+" and expected:"+actualMovementVal);
         Assert.assertEquals(closingVal,actualClosingVal,"FAILED! Closing Balance is not calculated correctly, actual:"+closingVal+" and expected:"+actualClosingVal);
         log("INFO: Executed completely");
     }
@@ -201,7 +201,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String actualMovementVal;
         String actualClosingVal;
 
-        log("@title: Validate value of agent (not COM, LED) in main page match with member summary page");
+        log("@title: Validate value of agent COM in main page match with member summary page");
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS, CLIENT_STATEMENT, ClientStatementPage.class);
@@ -209,7 +209,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("@Step 2: Filter a client with client point view");
         clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, "","");
 
-        log("Validate value of agent (not COM, LED) in main page match with member summary page");
+        log("Validate value of agent COM in main page match with member summary page");
         openingVal = clientPage.getAgentCellValue(agentComCode,clientPage.colOpening).replace(",","");
         commissionVal = clientPage.getAgentCellValue(agentComCode,clientPage.colCommission).replace(",","");
         recPayVal = clientPage.getAgentCellValue(agentComCode,clientPage.colRecPay).replace(",","");
@@ -224,9 +224,9 @@ public class ClientStatementTest extends BaseCaseAQS {
         actualClosingVal = popup.getGrandTotal("HKD",popup.colClosingTotal).replace(",","");
 
         Assert.assertEquals(openingVal,actualOpeningVal,"FAILED! Closing Balance is not calculated correctly, actual:"+actualOpeningVal+" and expected:"+openingVal);
-        Assert.assertEquals(commissionVal,actualCommVal,"FAILED! Closing Balance is not calculated correctly, actual:"+actualCommVal+" and expected:"+commissionVal);
-        Assert.assertEquals(recPayVal,actualRecPayVal,"FAILED! Closing Balance is not calculated correctly, actual:"+actualRecPayVal+" and expected:"+recPayVal);
-        Assert.assertEquals(movementVal,actualMovementVal,"FAILED! Closing Balance is not calculated correctly, actual:"+actualMovementVal+" and expected:"+movementVal);
+        Assert.assertEquals(commissionVal,actualCommVal,"FAILED! Commission Balance is not calculated correctly, actual:"+actualCommVal+" and expected:"+commissionVal);
+        Assert.assertEquals(recPayVal,actualRecPayVal,"FAILED! RecPay Balance is not calculated correctly, actual:"+actualRecPayVal+" and expected:"+recPayVal);
+        Assert.assertEquals(movementVal,actualMovementVal,"FAILED! Movement Balance is not calculated correctly, actual:"+actualMovementVal+" and expected:"+movementVal);
         Assert.assertEquals(closingVal,actualClosingVal,"FAILED! Closing Balance is not calculated correctly, actual:"+actualClosingVal+" and expected:"+closingVal);
         log("INFO: Executed completely");
     }
