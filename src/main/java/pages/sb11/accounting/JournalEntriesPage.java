@@ -29,6 +29,7 @@ public class JournalEntriesPage extends WelcomePage {
     public TextBox txtDebitAmount = TextBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::table[1]//input");
     public TextBox txtCreditAmount = TextBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::table[1]//input");
     int totalCol = 7;
+    int colBalance = 5;
     public Table tbDebit = Table.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::table[1]",totalCol);
     public Table tbCredit = Table.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::table[1]",totalCol);
 
@@ -40,9 +41,13 @@ public class JournalEntriesPage extends WelcomePage {
 
     public void addLedgerTransaction(Transaction trans, boolean isSubmit){
         filterLedger(true, "Ledger", trans.getLedgerDebit(), true);
+        double debitBalance = Double.parseDouble(tbDebit.getControlOfCell(1, colBalance, 1, null).getText().trim());
+        trans.setDebitBalance(debitBalance);
         txtDebitAmount.sendKeys(String.format("%.3f",trans.getAmountDebit()));
 
         filterLedger(false, "Ledger", trans.getLedgerCredit(), true);
+        double creditBalance = Double.parseDouble(tbCredit.getControlOfCell(1, colBalance, 1, null).getText().trim());
+        trans.setCreditBalance(creditBalance);
         txtCreditAmount.sendKeys(String.format("%.3f",trans.getAmountCredit()));
 
         txtRemark.sendKeys(trans.getRemark());
@@ -50,6 +55,7 @@ public class JournalEntriesPage extends WelcomePage {
             dtpTrans.selectDate(trans.getTransDate(), "dd/MM/yyyy");
         }
         ddTransactionType.selectByVisibleText(trans.getTransType());
+
         if (isSubmit){
             btnSubmit.click();
         }
@@ -69,8 +75,6 @@ public class JournalEntriesPage extends WelcomePage {
                 btnCreditAdd.click();
             }
         }
-
-
     }
 
     public void addClientBookieTransaction(Transaction trans, String fromType, boolean isSubmit){

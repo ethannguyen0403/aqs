@@ -72,16 +72,23 @@ public class LedgerStatementPage extends WelcomePage {
         String cur = tbLedger.getControlOfCell(1, colCur, rowIndex, null).getText().trim();
         String amountORG = tbLedger.getControlOfCell(1, colAmountORG, rowIndex, null).getText().trim();
         String amountGBP = tbLedger.getControlOfCell(1, colAmountGBP, rowIndex, null).getText().trim();
+        String runBalORG = tbLedger.getControlOfCell(1, colRunBalORG,rowIndex,null).getText().trim();
+        String runBalGBP = tbLedger.getControlOfCell(1, colRunBalGBP,rowIndex,null).getText().trim();
 
         if (isDebit){
             Assert.assertTrue(ledgerAccount.contains(transaction.getLedgerDebit()), "Failed! Account code is incorrect");
             Assert.assertEquals(amountORG, String.format("%.2f", transaction.getAmountDebit()), "Failed! Credit/Debit ORG amount is incorrect");
+            Assert.assertEquals(runBalORG, String.format("%.2f", transaction.getDebitBalance()), "Failed! Debit Balance ORG amount is incorrect");
             double amountDebitGBP = transaction.getAmountDebit() * CURRENCY_RATE.get(transaction.getLedgerDebitCur());
+            double runDebitGBP = transaction.getDebitBalance() * CURRENCY_RATE.get(transaction.getLedgerDebitCur());
             Assert.assertEquals(amountGBP, String.format("%.2f", amountDebitGBP), "Failed! Credit/Debit GBP amount is incorrect");
+            Assert.assertEquals(runBalGBP, String.format("%.2f", runDebitGBP), "Failed! Running Balance GBP amount is incorrect");
         } else {
             Assert.assertTrue(ledgerAccount.contains(transaction.getLedgerCredit()), "Failed! Account code is incorrect");
-            double amountCreditGBP = transaction.getAmountCredit() * CURRENCY_RATE.get(transaction.getLedgerCredit());
+            double amountCreditGBP = transaction.getAmountCredit() * CURRENCY_RATE.get(transaction.getLedgerCreditCur());
+            double runCreditGBP = transaction.getCreditBalance() * CURRENCY_RATE.get(transaction.getLedgerCreditCur());
             Assert.assertEquals(amountORG, String.format("%.2f", amountCreditGBP), "Failed! Credit/Debit ORG amount is incorrect");
+            Assert.assertEquals(runBalGBP, String.format("%.2f", runCreditGBP), "Failed! Credit Balance ORG amount is incorrect");
         }
 
         Assert.assertEquals(cur, transaction.getLedgerDebitCur(), "Failed! Cur is incorrect is in correct");

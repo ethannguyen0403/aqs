@@ -72,4 +72,12 @@ public class LedgerDetailPopup {
         Assert.assertEquals(description, transaction.getRemark(), "Failed! Description is incorrect");
         return transaction;
     }
+
+    private Transaction verifyTransTotal(Transaction transaction,int rowIndex){
+        String totalcredORG = tbLedger.getControlOfCell(1,colCredORG,rowIndex,null).getText().trim();
+        String totaldebORG = tbLedger.getControlOfCell(1,colDebORG,rowIndex,null).getText().trim();
+        String totalcredGBP = tbLedger.getControlOfCell(1, colCredGBP, rowIndex, null).getText().trim();
+        String totaldebGBP = tbLedger.getControlOfCell(1, colDebGBP, rowIndex, null).getText().trim();
+        return transaction;
+    }
 }
