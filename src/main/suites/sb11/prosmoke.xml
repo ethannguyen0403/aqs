@@ -17,7 +17,7 @@
         <parameter name="appname" value="sp11"/>
         <parameter name="accountCode" value="QA2M0A0001"/>
         <parameter name="accountCurrency" value="HKD"/>
-        <parameter name="clientCode" value ="QA2112 - QA Client (No.121 QA Client)"/>
+        <parameter name="clientCode" value ="QA Client (No.121 QA Client)"/>
 
         <groups>
             <run>

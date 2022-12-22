@@ -39,7 +39,7 @@ public class ClientStatementPage extends WelcomePage {
         return this.lblTitle.getText().trim();
     }
 
-    public void filter(String viewBy, String companyUnit, String financialYear, String clients, String fromDate, String toDate){
+    public void filter(String viewBy, String companyUnit, String financialYear, String clients, String fromDate, String toDate) throws InterruptedException {
         ddpViewBy.selectByVisibleText(viewBy);
         ddpCompanyUnit.selectByVisibleText(companyUnit);
         ddpFinancialYear.selectByVisibleText(financialYear);
@@ -49,7 +49,7 @@ public class ClientStatementPage extends WelcomePage {
         if(!toDate.isEmpty())
             dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         btnShow.click();
-        //waitPageLoad();
+        waitSpinnerDisappeared();
     }
 
     public String getSuperCellValue(int colIndex) {
