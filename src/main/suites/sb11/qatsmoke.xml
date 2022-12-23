@@ -17,10 +17,15 @@
         <parameter name="appname" value="sp11"/>
         <parameter name="accountCode" value="2RA0000000"/>
         <parameter name="accountCurrency" value="CAD"/>
+        <parameter name="lgDebitAcc" value="AutoExpenditureDebit"/>
+        <parameter name="lgCreditAcc" value="AutoExpenditureCredit"/>
+        <parameter name="ledgerGroup" value="Auto Ledger Group"/>
+        <parameter name="lgDebitCur" value="AUD"/>
+        <parameter name="lgCreditCur" value="AUD"/>
 
         <groups>
             <run>
-                <include name="smoke" />
+                <include name="smoke1" />
             </run>
         </groups>
 
