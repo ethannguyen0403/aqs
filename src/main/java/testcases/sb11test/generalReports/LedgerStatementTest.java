@@ -14,7 +14,7 @@ import static common.SBPConstants.*;
 public class LedgerStatementTest extends BaseCaseAQS {
 
     @TestRails(id="841")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"lgDebitAcc","lgCreditAcc","lgDebitCur", "lgCreditCur", "ledgerGroup"})
     public void Bet_Entry_TC841(String lgDebitAcc, String lgCreditAcc, String lgCreditCur, String lgDebitCur, String ledgerGroup){
         log("@title: Validate transaction Debit of Ledger Type = Expenditure");

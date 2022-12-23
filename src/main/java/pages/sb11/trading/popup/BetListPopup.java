@@ -128,7 +128,7 @@ public class BetListPopup {
                 expectedHDP = String.format("%s%.2f", hdpSign, expectedOrder.getHdpPoint());
             }
             if (expectedOrder.getLiveHomeScore() == 0 && expectedOrder.getLiveAwayScore() == 0) {
-                expectedLive = String.format("%s : %s", expectedOrder.getLiveHomeScore(), expectedOrder.getLiveAwayScore());
+                expectedLive = String.format("%s:%s", expectedOrder.getLiveHomeScore(), expectedOrder.getLiveAwayScore());
             }
 
         } else {
