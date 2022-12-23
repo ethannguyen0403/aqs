@@ -7,9 +7,6 @@ import objects.Order;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.control.ConfirmPopupControl;
-import testcases.sb11test.trading.BetEntryTest;
-
-import java.util.Locale;
 
 import static common.ESSConstants.HomePage.EN_US;
 import static common.SBPConstants.SPORT_SIGN_MAP;
@@ -190,5 +187,12 @@ public class BetSettlementPage extends WelcomePage {
         if(index == 0)
             return false;
         return true;
+    }
+
+    public void settleAndSendSettlementEmail(Order order){
+        selectOrder(order);
+        btnSettleSendSettlementEmail.scrollToTop();
+        ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
+        confirmPopupControl.confirmYes();
     }
 }

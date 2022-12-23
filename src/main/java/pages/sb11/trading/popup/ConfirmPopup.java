@@ -9,15 +9,11 @@ public class ConfirmPopup {
     public Button btnYes = Button.xpath("//app-confirm//button[contains(text(),'Yes')]");
     public Button btnNo = Button.xpath("//app-confirm//button[contains(text(),'No')]");
 
-    public void clickConfirmPopup(String name){
-        String menu = name.toUpperCase();
-        switch (menu){
-            case "YES":
-                btnYes.click();
-                return;
-            case "NO":
-                btnNo.click();
-                return;
-        }
+    public void confirm(boolean yes){
+        if(yes)
+            btnYes.click();
+        else
+            btnNo.click();
     }
+
 }

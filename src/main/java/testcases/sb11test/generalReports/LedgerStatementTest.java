@@ -12,7 +12,7 @@ import static common.SBPConstants.*;
 public class LedgerStatementTest extends BaseCaseAQS {
 
     @TestRails(id="841")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Bet_Entry_TC841(){
         log("@title: Validate transaction Debit of Ledger Type = Expenditure");
         String companyUnit = "Kastraki Limited";
