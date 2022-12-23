@@ -22,7 +22,10 @@ public class WelcomePage extends Header{
     public AppArlertControl appArlertControl = AppArlertControl.xpath("//app-alert//div[@class='message-box']");
 
     public void waitPageLoad(){
-        lblSpin.isDisplayed(3);
+        lblSpin.isInvisible(3);
+    /*    if(lblSpin.isDisplayed(1)){
+            lblSpin.isDisplayedShort(5);
+        }*/
     }
 
     /**
@@ -43,15 +46,21 @@ public class WelcomePage extends Header{
         }
         return GetSoccerEventUtils.setEventID(event);
     }
-    
+
     private void createEventOfSport(Event event){
         EventSchedulePage eventSchedulePage = navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
         eventSchedulePage.goToSport(event.getSportName());
         eventSchedulePage.showLeague(event.getLeagueName(),event.getEventDate());
         eventSchedulePage.addEvent(event);
     }
-    
+
     public String getSuccessMessage(){
         return appArlertControl.getSuscessMessage();
+    }
+
+    public void waitSpinnerDisappeared() throws InterruptedException {
+        while(lblSpin.isDisplayed()) {
+            lblSpin.waitForControlInvisible();
+        }
     }
 }

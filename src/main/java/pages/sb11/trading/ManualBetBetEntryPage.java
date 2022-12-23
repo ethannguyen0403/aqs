@@ -4,6 +4,7 @@ import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
+import objects.Order;
 import pages.sb11.Header;
 import pages.sb11.trading.popup.ConfirmPopup;
 
@@ -59,15 +60,8 @@ public class ManualBetBetEntryPage extends BetEntryPage {
         txtStake.sendKeys(stake);
         txtWinLose.sendKeys(winLoss);
         btnPlaceBet.click();
-
         ConfirmPopup confirmPopup = new ConfirmPopup();
-        if (isConfirm){
-            confirmPopup.clickConfirmPopup("YES");
-        } else {
-            confirmPopup.clickConfirmPopup("NO");
-        }
-
-        String message = messageSuccess.getText();
-        return message;
+        confirmPopup.confirm(isConfirm);
+        return messageSuccess.getText();
     }
 }

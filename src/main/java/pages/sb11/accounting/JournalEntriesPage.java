@@ -109,6 +109,7 @@ public class JournalEntriesPage extends WelcomePage {
             ddCreditLedger.selectByVisibleText(clientBookieCode);
             ddCreditLevel.selectByVisibleText(level);
             txtCreditAccount.sendKeys(accountCode);
+            txtCreditAccount.sendKeys(accountCode);
             if (isAdd) {
                 btnCreditAdd.click();
             }

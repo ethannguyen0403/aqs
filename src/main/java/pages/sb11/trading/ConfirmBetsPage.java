@@ -50,6 +50,7 @@ public class ConfirmBetsPage extends WelcomePage {
     public Label lblSelectAll = Label.xpath("//app-confirm-bet//span[text()='Select All']");
     public Label lblDeleteSelected = Label.xpath("//app-confirm-bet//span[text()='Delete Selected']");
     public Button btnConfirmBet = Button.xpath("//app-confirm-bet//button[text()='Confirm Bet']");
+    public Button btnUnConfirmSelected = Button.xpath("//app-confirm-bet//button[text()='Unconfirm Selected']");
     public Label lblTotalStake = Label.xpath("//span[contains(@class,'total-stake-pending')]");
 
     public String getTitlePage ()
@@ -90,7 +91,7 @@ public class ConfirmBetsPage extends WelcomePage {
      * @param orderId
      * @return
      */
-    private int getOrderIndex(String orderId){
+    private int getOrderIndexHasId(String orderId){
         int i = 1;
         Label lblOrderID;
         while (true){
@@ -101,6 +102,35 @@ public class ConfirmBetsPage extends WelcomePage {
             }
             if(lblOrderID.getText().contains(orderId)){
                 System.out.println("Found order "+orderId+" at row "+ i);
+                return i;
+            }
+            i = i+1;
+        }
+    }
+
+
+    private int getOrderIndex(String orderId){
+        if(orderId.equalsIgnoreCase("Manual Bet"))
+            return getFirsManualBet();
+        return getOrderIndexHasId(orderId);
+
+    }
+
+    /**
+     * To handle get the first manual bet
+     * @return
+     */
+    private int getFirsManualBet(){
+        int i = 1;
+        Label lblOrderID;
+        while (true){
+            lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1,colEvent,i,null));
+            if(!lblOrderID.isDisplayed()){
+                System.out.println("The Manual Odds does not display in the table");
+                return 0;
+            }
+            if(lblOrderID.getText().contains("Manual Bet")){
+                System.out.println("Found the first manual bet at row "+ i);
                 return i;
             }
             i = i+1;
@@ -182,6 +212,15 @@ public class ConfirmBetsPage extends WelcomePage {
     }
 
     /**
+     * Select an order then click on Confirm Bet button
+     * @param order order id or bet id
+     */
+    public void unConfirmBet(Order order){
+        selectBet(order,true);
+        btnUnConfirmSelected.click();
+        waitPageLoad();
+    }
+    /**
      * Select an order then update the info
      * @param order order id or bet id
      * @param  isPending  the status of bet true is for Bet Pending, false for Bet Confirmed
@@ -191,10 +230,26 @@ public class ConfirmBetsPage extends WelcomePage {
         btnUpdateBet.click();
         waitPageLoad();
     }
+
+    /**
+     * Select the list order then cick on Confirm Bet button
+     * @param lstOrder
+     */
     public void confirmMultipleBets(List<Order> lstOrder){
        selectBets(lstOrder,true);
        btnConfirmBet.click();
     }
+
+    /**
+     * Select an order then click on duplicate Bet For SPSBS7
+     * @param order
+     */
+    public void duplicateBetForSPBS7(Order order)
+    {
+        selectBet(order,true);
+        btnDuplcateBetForSPBPS7.click();
+    }
+
     /**
      * Detete a order
      * @param order order id or bet id
