@@ -1,9 +1,11 @@
 package testcases.sb11test.generalReports;
 
 import com.paltech.utils.DateUtils;
+import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+import pages.sb11.accounting.JournalEntriesPage;
 import pages.sb11.generalReports.ClientStatementPage;
 import pages.sb11.generalReports.ClientSummaryPopup;
 import testcases.BaseCaseAQS;
@@ -16,6 +18,11 @@ public class ClientStatementTest extends BaseCaseAQS {
     String companyUnit = "Kastraki Limited";
     String agentCode = "QASAHK00";
     String agentComCode = "QATE01-COM";
+    String superMasterCode = "QA2112 - ";
+    String clientCreditAcc = "ClientCredit-AutoQC";
+    String clientDebitAcc = "ClientDebit-AutoQC";
+    String level = "Player";
+    String fromType = "Client";
     String openingVal;
     String winLossVal;
     String commissionVal;
@@ -25,13 +32,15 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "309")
-    public void ClientStatementTC_309(String clientCode){
+    public void ClientStatementTC_309(String clientCode) throws InterruptedException {
+        clientCode = superMasterCode + clientCode;
         String actualVal;
 
         log("@title: Validate that Closing of Super = Opening + Win/Loss + Commission + Rec/Pay/CA/RB/Adj");
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS, CLIENT_STATEMENT, ClientStatementPage.class);
+        clientPage.waitSpinnerDisappeared();
 
         log("@Step 2: Filter a client with client point view");
         clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, "","");
@@ -53,11 +62,13 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters("clientCode")
     @TestRails(id = "310")
-    public void ClientStatementTC_310(String clientCode){
+    public void ClientStatementTC_310(String clientCode) throws InterruptedException {
+        clientCode = superMasterCode + clientCode;
         log("@title: Validate that Opening value today is Closing of yesterday");
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS, CLIENT_STATEMENT, ClientStatementPage.class);
+        clientPage.waitSpinnerDisappeared();
 
         log("@Step 2.1: Filter a client with client point view on current date");
         clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, "","");
@@ -81,7 +92,8 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters("clientCode")
     @TestRails(id = "587")
-    public void ClientStatementTC_587(String clientCode){
+    public void ClientStatementTC_587(String clientCode) throws InterruptedException {
+        clientCode = superMasterCode + clientCode;
         String totalGrandMasterVal;
         String totalGrandHKDVal;
 
@@ -89,6 +101,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS, CLIENT_STATEMENT, ClientStatementPage.class);
+        clientPage.waitSpinnerDisappeared();
 
         log("@Step 2: Filter a client with client point view");
         clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, "","");
@@ -104,7 +117,8 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters("clientCode")
     @TestRails(id = "588")
-    public void ClientStatementTC_588(String clientCode){
+    public void ClientStatementTC_588(String clientCode) throws InterruptedException {
+        clientCode = superMasterCode + clientCode;
         String reversedOpeningVal;
         String reversedWinLossVal;
         String reversedCommissionVal;
@@ -116,6 +130,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS, CLIENT_STATEMENT, ClientStatementPage.class);
+        clientPage.waitSpinnerDisappeared();
 
         log("@Step 2: Filter a client with client point view");
         clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, "","");
@@ -154,7 +169,8 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "861")
-    public void ClientStatementTC_861(String clientCode){
+    public void ClientStatementTC_861(String clientCode) throws InterruptedException {
+        clientCode = superMasterCode + clientCode;
         String actualOpeningVal;
         String actualWinloseVal;
         String actualRecPayVal;
@@ -165,6 +181,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS, CLIENT_STATEMENT, ClientStatementPage.class);
+        clientPage.waitSpinnerDisappeared();
 
         log("@Step 2: Filter a client with client point view");
         clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, "","");
@@ -183,18 +200,19 @@ public class ClientStatementTest extends BaseCaseAQS {
         actualMovementVal = popup.getGrandTotal("HKD",popup.colMovementTotal).replace(",","");
         actualClosingVal = popup.getGrandTotal("HKD",popup.colClosingTotal).replace(",","");
 
-        Assert.assertEquals(openingVal,actualOpeningVal,"FAILED! Closing Balance is not calculated correctly, actual:"+openingVal+" and expected:"+actualOpeningVal);
-        Assert.assertEquals(winLossVal,actualWinloseVal,"FAILED! WinLose Balance is not calculated correctly, actual:"+winLossVal+" and expected:"+actualWinloseVal);
-        Assert.assertEquals(recPayVal,actualRecPayVal,"FAILED! RecPay Balance is not calculated correctly, actual:"+recPayVal+" and expected:"+actualRecPayVal);
-        Assert.assertEquals(movementVal,actualMovementVal,"FAILED! Movement Balance is not calculated correctly, actual:"+movementVal+" and expected:"+actualMovementVal);
-        Assert.assertEquals(closingVal,actualClosingVal,"FAILED! Closing Balance is not calculated correctly, actual:"+closingVal+" and expected:"+actualClosingVal);
+        Assert.assertEquals(openingVal,actualOpeningVal,"FAILED! Closing Balance is not calculated correctly, actual:"+actualOpeningVal+" and expected:"+openingVal);
+        Assert.assertEquals(winLossVal,actualWinloseVal,"FAILED! WinLose Balance is not calculated correctly, actual:"+actualWinloseVal+" and expected:"+winLossVal);
+        Assert.assertEquals(recPayVal,actualRecPayVal,"FAILED! RecPay Balance is not calculated correctly, actual:"+actualRecPayVal+" and expected:"+recPayVal);
+        Assert.assertEquals(movementVal,actualMovementVal,"FAILED! Movement Balance is not calculated correctly, actual:"+actualMovementVal+" and expected:"+movementVal);
+        Assert.assertEquals(closingVal,actualClosingVal,"FAILED! Closing Balance is not calculated correctly, actual:"+actualClosingVal+" and expected:"+closingVal);
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "865")
-    public void ClientStatementTC_865(String clientCode){
+    public void ClientStatementTC_865(String clientCode) throws InterruptedException {
+        clientCode = superMasterCode + clientCode;
         String actualOpeningVal;
         String actualCommVal;
         String actualRecPayVal;
@@ -205,6 +223,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS, CLIENT_STATEMENT, ClientStatementPage.class);
+        clientPage.waitSpinnerDisappeared();
 
         log("@Step 2: Filter a client with client point view");
         clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, "","");
@@ -230,4 +249,113 @@ public class ClientStatementTest extends BaseCaseAQS {
         Assert.assertEquals(closingVal,actualClosingVal,"FAILED! Closing Balance is not calculated correctly, actual:"+actualClosingVal+" and expected:"+closingVal);
         log("INFO: Executed completely");
     }
+
+    @Test(groups = {"smoke"})
+    @Parameters({"clientCode"})
+    @TestRails(id = "866")
+    public void ClientStatementTC_866(String clientCode) throws InterruptedException {
+        String actualRecPayVal;
+        String expectedRecPayVal;
+        log("Precondition: Add transaction for the Client account into Debit");
+        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
+        journalEntriesPage.waitSpinnerDisappeared();
+        Transaction transaction = new Transaction.Builder()
+                .clientDebit(clientCode)
+                .clientCredit(clientCode)
+                .amountDebit(1)
+                .amountCredit(1)
+                .remark("Automation Testing Transaction Client: Pre-condition")
+                .transDate("")
+                .transType("Tax Rebate")
+                .level(level)
+                .debitAccountCode(clientDebitAcc)
+                .creditAccountCode(clientCreditAcc)
+                .build();
+        journalEntriesPage.addClientBookieTransaction(transaction, fromType, true);
+        log("@Step 1: Navigate to General Reports > Client Statement");
+        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+        clientPage.waitSpinnerDisappeared();
+        log("@Step 2: Filter the Client with Client Point view");
+        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        log("@Step 3: Open Summary popup of agent of the player");
+        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
+        log("@Verify the balance Rec/Pay/CA/RB/Adj is deducted properly");
+        expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
+        actualRecPayVal = popup.getSummaryCellValue(clientDebitAcc,popup.colRecPay).replace(",","");
+        Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Rec/Pay/CA/RB/Adj balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+
+        log("@Post-condition: Add transaction for the Client account into Credit");
+        popup.closeSummaryPopup();
+        journalEntriesPage = clientPage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
+        journalEntriesPage.waitSpinnerDisappeared();
+        Transaction transactionPost = new Transaction.Builder()
+                .clientDebit(clientCode)
+                .clientCredit(clientCode)
+                .amountDebit(1)
+                .amountCredit(1)
+                .remark("Automation Testing Transaction Client: Post-condition")
+                .transDate("")
+                .transType("Tax Rebate")
+                .level(level)
+                .debitAccountCode(clientCreditAcc)
+                .creditAccountCode(clientDebitAcc)
+                .build();
+        journalEntriesPage.addClientBookieTransaction(transactionPost, fromType, true);
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"smoke"})
+    @Parameters({"clientCode"})
+    @TestRails(id = "867")
+    public void ClientStatementTC_867(String clientCode) throws InterruptedException {
+        String actualRecPayVal;
+        String expectedRecPayVal;
+        log("Precondition: Add transaction for the Client account into Credit");
+        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
+        journalEntriesPage.waitSpinnerDisappeared();
+        Transaction transaction = new Transaction.Builder()
+                .clientDebit(clientCode)
+                .clientCredit(clientCode)
+                .amountDebit(1)
+                .amountCredit(1)
+                .remark("Automation Testing Transaction Client: Pre-condition")
+                .transDate("")
+                .transType("Tax Rebate")
+                .level(level)
+                .debitAccountCode(clientDebitAcc)
+                .creditAccountCode(clientCreditAcc)
+                .build();
+        journalEntriesPage.addClientBookieTransaction(transaction, fromType, true);
+        log("@Step 1: Navigate to General Reports > Client Statement");
+        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+        clientPage.waitSpinnerDisappeared();
+        log("@Step 2: Filter the Client with Client Point view");
+        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        log("@Step 3: Open Summary popup of agent of the player");
+        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
+        log("@Verify the balance Rec/Pay/CA/RB/Adj is deducted properly");
+        expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
+        actualRecPayVal = popup.getSummaryCellValue(clientCreditAcc,popup.colRecPay).replace(",","");
+        Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Rec/Pay/CA/RB/Adj balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+
+        log("@Post-condition: Add transaction for the Client account into Credit");
+        popup.closeSummaryPopup();
+        journalEntriesPage = clientPage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
+        journalEntriesPage.waitSpinnerDisappeared();
+        Transaction transactionPost = new Transaction.Builder()
+                .clientDebit(clientCode)
+                .clientCredit(clientCode)
+                .amountDebit(1)
+                .amountCredit(1)
+                .remark("Automation Testing Transaction Client: Post-condition")
+                .transDate("")
+                .transType("Tax Rebate")
+                .level(level)
+                .debitAccountCode(clientCreditAcc)
+                .creditAccountCode(clientDebitAcc)
+                .build();
+        journalEntriesPage.addClientBookieTransaction(transactionPost, fromType, true);
+        log("INFO: Executed completely");
+    }
+
 }
