@@ -31,7 +31,7 @@ public class ClientStatementPage extends WelcomePage {
 
     Table tblSuper = Table.xpath("//app-client-detail//table[@id='table-super']",colTotal);
     Table tblMaster = Table.xpath("//app-client-detail//table[@id='table-master']",colTotal);
-    Table tblAgent = Table.xpath("//app-client-detail//table[@id='table-agent']",colTotal);
+    //Table tblAgent = Table.xpath("//app-client-detail//div[%s]//table[@id='table-agent']",colTotal);
 
     @Override
     public String getTitlePage ()
@@ -39,7 +39,7 @@ public class ClientStatementPage extends WelcomePage {
         return this.lblTitle.getText().trim();
     }
 
-    public void filter(String viewBy, String companyUnit, String financialYear, String clients, String fromDate, String toDate){
+    public void filter(String viewBy, String companyUnit, String financialYear, String clients, String fromDate, String toDate) throws InterruptedException {
         ddpViewBy.selectByVisibleText(viewBy);
         ddpCompanyUnit.selectByVisibleText(companyUnit);
         ddpFinancialYear.selectByVisibleText(financialYear);
@@ -49,7 +49,7 @@ public class ClientStatementPage extends WelcomePage {
         if(!toDate.isEmpty())
             dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         btnShow.click();
-        //waitPageLoad();
+        waitSpinnerDisappeared();
     }
 
     public String getSuperCellValue(int colIndex) {
@@ -70,7 +70,7 @@ public class ClientStatementPage extends WelcomePage {
         Label lblCellValue;
         Label lblMasterCode;
         if (masterCode.equalsIgnoreCase("Total in")) {
-            colIndex = 8;
+            colIndex = colIndex-2;
             colLevel = 1;
         }
         int i = 1;
@@ -92,20 +92,29 @@ public class ClientStatementPage extends WelcomePage {
         String returnValue = "";
         Label lblCellValue;
         Label lblAgentCode;
+        Label lblFirstColumn;
         int i = 2;
+        int j = 1;
         while (true){
+            String xpath = String.format("//app-client-detail//div[contains(@class,'col-12')][%s]//table[@id='table-agent']",j);
+            Table tblAgent = Table.xpath(xpath,colTotal);
             lblCellValue = Label.xpath(tblAgent.getxPathOfCell(1,colIndex,i,null));
             lblAgentCode = Label.xpath(tblAgent.getxPathOfCell(1,colLevel,i,null));
-            if(!lblCellValue.isDisplayed()){
-                System.out.println("There's no value display in the Master table");
-                return null;
+            lblFirstColumn = Label.xpath(tblAgent.getxPathOfCell(1,1,i,null));
+            if(lblFirstColumn.getText().equalsIgnoreCase("Total in")) {
+                j = j + 1;
+                i = 1;
             }
             if(lblAgentCode.getText().equalsIgnoreCase(agentCode)){
                 returnValue = lblCellValue.getText();
                 return returnValue;
             }
+            if(lblAgentCode.getText().equalsIgnoreCase("Grand Total in")) {
+                break;
+            }
             i = i+1;
         }
+        return returnValue;
     }
     public String getGrandTotal(String currency) {
         String returnValue;
@@ -142,5 +151,31 @@ public class ClientStatementPage extends WelcomePage {
             return returnVal;
         }
         return returnVal;
+    }
+
+    public ClientSummaryPopup openSummaryPopup(String agentCode) {
+        Label lblAgentCode;
+        Label lblFirstColumn;
+        int i = 2;
+        int j = 1;
+        while (true){
+            String xpath = String.format("//app-client-detail//div[contains(@class,'col-12')][%s]//table[@id='table-agent']",j);
+            Table tblAgent = Table.xpath(xpath,colTotal);
+            lblAgentCode = Label.xpath(tblAgent.getxPathOfCell(1,colLevel,i,null));
+            lblFirstColumn = Label.xpath(tblAgent.getxPathOfCell(1,1,i,null));
+            if(lblFirstColumn.getText().equalsIgnoreCase("Total in")) {
+                j = j + 1;
+                i = 1;
+            }
+            if(lblAgentCode.getText().equalsIgnoreCase(agentCode)){
+                lblAgentCode.click();
+                return new ClientSummaryPopup();
+            }
+            if(lblAgentCode.getText().equalsIgnoreCase("Grand Total in")) {
+                break;
+            }
+            i = i+1;
+        }
+        return null;
     }
 }

@@ -10,6 +10,15 @@ public class Transaction {
     private String remark;
     private String transDate;
     private String transType;
+    private String clientDebit;
+    private String clientCredit;
+    private String bookieDebit;
+    private String bookieCredit;
+    private String level;
+    private String creditAccountCode;
+    private String debitAccountCode;
+    private double creditBalance;
+    private double debitBalance;
     public String getLedgerDebit() { return ledgerDebit; }
 
     public void setLedgerDebit(String ledgerDebit) {
@@ -60,6 +69,54 @@ public class Transaction {
         this.transType = transType;
     }
 
+    public String getClientDebit() { return clientDebit; }
+
+    public void setClientDebit(String clientDebit) {
+        this.clientDebit = clientDebit;
+    }
+    public String getClientCredit() { return clientCredit; }
+
+    public void setClientCredit(String clientCredit) {
+        this.clientCredit = clientCredit;
+    }
+    public String getBookieDebit() { return bookieDebit; }
+
+    public void setBookieDebit(String bookieDebit) {
+        this.bookieDebit = bookieDebit;
+    }
+    public String getBookieCredit() { return bookieCredit; }
+
+    public void setBookieCredit(String bookieCredit) {
+        this.bookieCredit = bookieCredit;
+    }
+    public String getLevel() { return level; }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+    public String getCreditAccountCode() { return creditAccountCode; }
+
+    public void setCreditAccountCode(String creditAccountCode) {
+        this.creditAccountCode = creditAccountCode;
+    }
+    public String getDebitAccountCode() { return debitAccountCode; }
+
+    public void setDebitAccountCode(String debitAccountCode) {
+        this.debitAccountCode = debitAccountCode;
+    }
+
+    public double getDebitBalance() { return debitBalance; }
+
+    public void setDebitBalance(double debitBalance) {
+        this.debitBalance = debitBalance;
+    }
+
+    public double getCreditBalance() { return creditBalance; }
+
+    public void setCreditBalance(double creditBalance) {
+        this.creditBalance = creditBalance;
+    }
+
     public static class Builder {
         private String _ledgerDebit;
         private String _ledgerCredit;
@@ -70,6 +127,15 @@ public class Transaction {
         private String _remark;
         private String _transDate;
         private String _transType;
+        private String _clientDebit;
+        private String _clientCredit;
+        private String _bookieDebit;
+        private String _bookieCredit;
+        private String _level;
+        private String _creditAccountCode;
+        private String _debitAccountCode;
+        private double _creditBalance;
+        private double _debitBalance;
         public Builder() {
         }
 
@@ -117,6 +183,45 @@ public class Transaction {
             _transType = val;
             return this;
         }
+        public Builder clientDebit(String val) {
+            _clientDebit = val;
+            return this;
+        }
+
+        public Builder clientCredit(String val) {
+            _clientCredit = val;
+            return this;
+        }
+        public Builder bookieDebit(String val) {
+            _bookieDebit = val;
+            return this;
+        }
+
+        public Builder bookieCredit(String val) {
+            _bookieCredit = val;
+            return this;
+        }
+        public Builder level(String val) {
+            _level = val;
+            return this;
+        }
+
+        public Builder creditAccountCode(String val) {
+            _creditAccountCode = val;
+            return this;
+        }
+        public Builder debitAccountCode(String val) {
+            _debitAccountCode = val;
+            return this;
+        }
+        public Builder creditBalance(double val) {
+            _creditBalance = val;
+            return this;
+        }
+        public Builder debitBalance(double val) {
+            _debitBalance = val;
+            return this;
+        }
         public Transaction build() {
             return new Transaction(this);
         }
@@ -132,6 +237,15 @@ public class Transaction {
         this.remark = builder._remark;
         this.transDate = builder._transDate;
         this.transType = builder._transType;
+        this.clientDebit = builder._clientDebit;
+        this.clientCredit = builder._clientCredit;
+        this.bookieDebit = builder._bookieDebit;
+        this.bookieCredit = builder._bookieCredit;
+        this.level = builder._level;
+        this.creditAccountCode = builder._creditAccountCode;
+        this.debitAccountCode = builder._debitAccountCode;
+        this.creditBalance = builder._creditBalance;
+        this.debitBalance = builder._debitBalance;
     }
 
 

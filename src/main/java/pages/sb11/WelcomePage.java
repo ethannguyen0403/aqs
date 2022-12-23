@@ -46,15 +46,21 @@ public class WelcomePage extends Header{
         }
         return GetSoccerEventUtils.setEventID(event);
     }
-    
+
     private void createEventOfSport(Event event){
         EventSchedulePage eventSchedulePage = navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
         eventSchedulePage.goToSport(event.getSportName());
         eventSchedulePage.showLeague(event.getLeagueName(),event.getEventDate());
         eventSchedulePage.addEvent(event);
     }
-    
+
     public String getSuccessMessage(){
         return appArlertControl.getSuscessMessage();
+    }
+
+    public void waitSpinnerDisappeared() throws InterruptedException {
+        while(lblSpin.isDisplayed()) {
+            lblSpin.waitForControlInvisible();
+        }
     }
 }

@@ -12,6 +12,7 @@ public class SBPConstants {
     public final static String CHART_OF_ACCOUNT = "Chart Of Account";
     public final static String GENERAL_REPORTS = "General Reports";
     public final static String LEDGER_STATEMENT = "Ledger Statement";
+    public final static String JOURNAL_ENTRIES = "Journal Entries";
     public final static String BET_ENTRY = "Bet Entry";
     public final static String SPORT= "Sport";
     public final static String CLIENT_STATEMENT = "Client Statement";
@@ -19,6 +20,7 @@ public class SBPConstants {
     public final static String CONFIRM_BETS = "Confirm Bets";
     public final static String BET_SETTLEMENT = "Bet Settlement";
     public final static String PLACE_BET_SUCCESS_MSG ="The bet was placed successfully";
+    public final static String FINANCIAL_YEAR = "Year 2022-2023";
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
         {
