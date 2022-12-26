@@ -22,10 +22,7 @@ public class WelcomePage extends Header{
     public AppArlertControl appArlertControl = AppArlertControl.xpath("//app-alert//div[@class='message-box']");
 
     public void waitPageLoad(){
-        lblSpin.isInvisible(3);
-    /*    if(lblSpin.isDisplayed(1)){
-            lblSpin.isDisplayedShort(5);
-        }*/
+        lblSpin.waitForControlInvisible();
     }
 
     /**

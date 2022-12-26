@@ -119,15 +119,17 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("Precondition: Init data and Place a new bet on Bet Entry for Soccer to have a pending bet");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String dateAPI =  String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         String league = soccerBetEntryPage.getFirstLeague();
+        // define event info
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         soccerBetEntryPage.showLeague(companyUnit,"",league);
         List<Order> lstOrder = new ArrayList<>();
+        // define order info
         Order order = new Order.Builder()
-                .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
+                .sport(eventInfo.getSportName()).isNegativeHdp(false).hdpPoint(0.25).price(2.05).requireStake(9.00)
                 .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
                 .marketType("HDP")
                 .stage("FT")
@@ -135,7 +137,8 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .event(eventInfo)
                 .build();
         lstOrder.add(order);
-        soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"",lstOrder,false,false,true);
+        soccerBetEntryPage.showLeague(companyUnit,"",eventInfo.getLeagueName());
+        soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
 
         log("@Step 2: Navigate to Trading > Bet Entry");
@@ -301,7 +304,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="869")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     @Parameters({"accountCode","accountCurrency"})
     public void Confirm_Bets_TC869(String accountCode,String accountCurrency){
         log("@title: Validate Pending Cricket Bets display with correct information as Bet Entry page");
@@ -363,7 +366,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="181")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     @Parameters({"accountCode","accountCurrency"})
     public void Confirm_Bets_TC181(String accountCode,String accountCurrency){
         log("@title:Validate bet info is correctly in Confirm Bet and Bet Setlement after update a bets in Confirm status");
@@ -529,14 +532,16 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="942")
-    @Test(groups = {"smoke2"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
-    public void BetEntry_TC942(String accountCode,String accountCurrency){
+    public void Confirm_Bets_TC942(String accountCode,String accountCurrency){
         log("@title:Validate updated bets reflect correctly in the bet list of Bet Settlement page");
         log("Precondition: Using the updated bets in the test case C182");
+        log("Note: Tobe able settled order after place bet > commfirmed and settled => we should place in the event in the past");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
-        String dateAPI =  String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String dateAPI =  String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT +7"));
+        String date =  String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         String league = soccerBetEntryPage.getFirstLeague();
@@ -554,7 +559,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .event(eventInfo)
                 .build();
         lstOrder.add(order);
-        soccerBetEntryPage.showLeague(companyUnit,"",eventInfo.getLeagueName());
+        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
         soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
@@ -701,7 +706,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="186")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     @Parameters({"accountCode","accountCurrency"})
     public void Confirm_Bets_186(String accountCode,String accountCurrency){
         log("@title: Validate can unconfirm the confirmed bets");
@@ -754,7 +759,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="1003")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     @Parameters({"accountCode","accountCurrency"})
     public void Confirm_Bets_1003(String accountCode,String accountCurrency){
         log("@title: Validate can duplicate bets for SPBPS7");
@@ -807,7 +812,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="1042")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     @Parameters({"username","accountCode","accountCurrency"})
     public void Confirm_Bets_1042(String username,String accountCode,String accountCurrency){
         log("@title: Validate manual bet not display when filtering in Pending section after creating");
@@ -897,6 +902,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .selection("home")
                 .event(eventInfo)
                 .betId("Manual Bet")
+                .orderId("Manual Bet")
                 .build();
 
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);

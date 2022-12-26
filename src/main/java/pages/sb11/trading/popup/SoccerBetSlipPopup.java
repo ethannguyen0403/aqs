@@ -9,6 +9,8 @@ import pages.sb11.trading.controls.OrderRowControl;
 import java.text.ParseException;
 import java.util.List;
 
+import static common.SBPConstants.SOCCER_MARKET_TYPE_BET_LIST;
+
 public class SoccerBetSlipPopup {
     public Label lblEventStartTime = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[1]");
     private Label lblLeagueName = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[2]/span[1]");
@@ -73,18 +75,16 @@ public class SoccerBetSlipPopup {
         }
     }
 
-    public List<Order> verifyOrderInfoDisplay(List<Order> expectedOrder, String marketType, String eventDate) throws ParseException {
+    public List<Order> verifyOrderInfoDisplay(List<Order> expectedOrder, String eventDate) throws ParseException {
         String competition = lblLeagueName.getText().trim();
         String eventName = lblEventName.getText().trim();
-        marketType = lblMarketType.getText().trim();
+        String marketType = lblMarketType.getText().trim();
         String selectionType = lblSelectionName.getText().trim();
         String startDate = lblEventStartTime.getText().trim();
-
         String[] dateconvert = startDate.split("\\s");
-
         Assert.assertEquals(competition, expectedOrder.get(0).getCompetitionName(), "Failed! Competition name is incorrect");
         Assert.assertEquals(eventName, expectedOrder.get(0).getHome() + " -vs- " + expectedOrder.get(0).getAway(), "Failed! Event name is incorrect");
-        Assert.assertEquals(marketType, expectedOrder.get(0).getMarketType(), "Failed! Market type is incorrect");
+        Assert.assertEquals(marketType,  SOCCER_MARKET_TYPE_BET_LIST.get(expectedOrder.get(0).getMarketType()), "Failed! Market type is incorrect");
         Assert.assertEquals(selectionType, expectedOrder.get(0).getSelection(), "Failed! Selection type is incorrect");
         Assert.assertEquals(eventDate, dateconvert[0], "Failed! Start date is incorrect");
         return expectedOrder;
