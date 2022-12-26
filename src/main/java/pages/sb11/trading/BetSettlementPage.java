@@ -192,6 +192,7 @@ public class BetSettlementPage extends WelcomePage {
     public void settleAndSendSettlementEmail(Order order){
         selectOrder(order);
         btnSettleSendSettlementEmail.scrollToTop();
+        btnSettleSendSettlementEmail.click();
         ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
         confirmPopupControl.confirmYes();
     }
