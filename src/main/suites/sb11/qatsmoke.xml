@@ -15,8 +15,8 @@
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
-        <parameter name="accountCode" value="2RA0000000"/>
-        <parameter name="accountCurrency" value="CAD"/>
+        <parameter name="accountCode" value="ISA_ACC001"/>
+        <parameter name="accountCurrency" value="HKD"/>
 
         <groups>
             <run>

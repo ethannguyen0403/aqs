@@ -126,10 +126,11 @@ public class BetEntryTest extends BaseCaseAQS {
                 .sportName("Cricket")
                 .leagueName("QA League")
                 .eventDate(dateAPI)
-                .home("QA 01")
-                .away("QA 02")
+                .home("QA Team 01")
+                .away("QA Team 02")
                 .openTime("13:00")
                 .eventStatus("Scheduled")
+                .eventDate(date)
                 .isLive(false)
                 .isN(false)
                 .build();
@@ -235,7 +236,7 @@ public class BetEntryTest extends BaseCaseAQS {
         log("@Verify: Verify info on bet slip display correctly: Competition name, Event Name, Market Type, Selection Type, Start date");
         SoccerBetSlipPopup soccerBetSlipPopup = new SoccerBetSlipPopup();
         String dateconvert = DateUtils.convertDateToNewTimeZone(eventInfo.getEventDate(),"yyyy-MM-dd'T'HH:mm:ss.SSSXXX","","d/MM","");
-        soccerBetSlipPopup.verifyOrderInfoDisplay(lstOrder,SOCCER_MARKET_TYPE_BET_LIST.get(marketType),dateconvert);
+        soccerBetSlipPopup.verifyOrderInfoDisplay(lstOrder,dateconvert);
         log("INFO: Executed completely");
     }
 
