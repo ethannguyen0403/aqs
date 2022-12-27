@@ -26,8 +26,9 @@ import static common.SBPConstants.*;
 public class BetEntryTest extends BaseCaseAQS {
 
     @TestRails(id="862")
+    @Parameters({"accountCode"})
     @Test(groups = {"smoke"})
-    public void Bet_Entry_TC862(){
+    public void Bet_Entry_TC862(String accountCode){
         log("@title: Validate users can place Mixed Sports bets successfully");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Trading > Bet Entry");
@@ -38,11 +39,12 @@ public class BetEntryTest extends BaseCaseAQS {
         betEntryPage.goToMixedSports();
 
         ManualBetBetEntryPage manualBetBetEntryPage = new ManualBetBetEntryPage();
-        String messageSuccess = manualBetBetEntryPage.placeManualBet("Kastraki Limited ","22/11/2022", "JO-TEL-AC-01", "Soccer",
+        String messageSuccess = manualBetBetEntryPage.placeManualBet("Kastraki Limited ","22/11/2022", accountCode, "Soccer",
                 "Manual Bet Testing", null,null,"1.25","10","1",true);
 
         log("Validate user can place Mixed Sports bets successfully with message 'Placed successfully!");
         Assert.assertTrue(messageSuccess.contains(SBPConstants.BetEntryPage.MESSAGE_SUCCESS_MANUAL_BET), "FAILED! Incorrect place bet successful");
+
         log("INFO: Executed completely");
     }
 
@@ -78,6 +80,7 @@ public class BetEntryTest extends BaseCaseAQS {
                 .marketType("HDP")
                 .stage("FT")
                 .selection(eventInfo.getHome())
+                .event(eventInfo)
                 .build();
         lstOrder.add(order);
 
@@ -123,10 +126,11 @@ public class BetEntryTest extends BaseCaseAQS {
                 .sportName("Cricket")
                 .leagueName("QA League")
                 .eventDate(dateAPI)
-                .home("QA 01")
-                .away("QA 02")
+                .home("QA Team 01")
+                .away("QA Team 02")
                 .openTime("13:00")
                 .eventStatus("Scheduled")
+                .eventDate(date)
                 .isLive(false)
                 .isN(false)
                 .build();
@@ -228,10 +232,11 @@ public class BetEntryTest extends BaseCaseAQS {
         log("@Step 4: Input account at precondition on 'Account Code' field");
         log("@Step 5: Click on ... at the selected event, Column FT, HDP, Home");
         soccerBetEntryPage.openBetSlip(lstOrder.get(0).getAccountCode(),lstOrder.get(0).getSelection(),true,"HOME");
+
         log("@Verify: Verify info on bet slip display correctly: Competition name, Event Name, Market Type, Selection Type, Start date");
         SoccerBetSlipPopup soccerBetSlipPopup = new SoccerBetSlipPopup();
         String dateconvert = DateUtils.convertDateToNewTimeZone(eventInfo.getEventDate(),"yyyy-MM-dd'T'HH:mm:ss.SSSXXX","","d/MM","");
-        soccerBetSlipPopup.verifyOrderInfoDisplay(lstOrder,SOCCER_MARKET_TYPE_BET_LIST.get(marketType),dateconvert);
+        soccerBetSlipPopup.verifyOrderInfoDisplay(lstOrder,dateconvert);
         log("INFO: Executed completely");
     }
 

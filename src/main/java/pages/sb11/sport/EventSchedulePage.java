@@ -49,7 +49,9 @@ public class EventSchedulePage extends WelcomePage {
     public void showLeague(String league, String date){
         ddpLeague.selectByVisibleText(league);
         if(!date.isEmpty()){
-            dtpDateTime.selectDate(date,"dd/MM/yyyy");
+            if(!date.equals(txtDateTime.getAttribute("value").trim())){
+                dtpDateTime.selectDate(date,"dd/MM/yyyy");
+            }
         }
         btnShow.click();
         waitPageLoad();

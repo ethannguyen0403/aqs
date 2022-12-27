@@ -112,6 +112,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
     public SoccerBetSlipPopup openBetSlip(String accountCode, String eventName, boolean isFullTime, String type){
         txtAccCode.type(accountCode);
         btnShow.click();
+        waitPageLoad();
         int rowIndex = getEventRowIndex(eventName);
         int colIndex = defineColumn(isFullTime,type);
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
@@ -213,6 +214,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
 
     }
     public String getFirstLeague(){
+
         List<String> lstLeague = getListLeague();
         try {
             // 0 Select, 1 All => get league from index = 2
@@ -228,6 +230,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
      * @return
      */
     public List<String> getListLeague(){
+        ddpLeague.waitForElementToBePresent(ddpSearchBy.getLocator());
         return ddpLeague.getOptions();
     }
 

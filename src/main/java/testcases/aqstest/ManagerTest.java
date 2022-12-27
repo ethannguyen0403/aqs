@@ -14,7 +14,7 @@ import static common.ESSConstants.HomePage.MANAGER;
 public class ManagerTest extends BaseCaseAQS {
 
     @TestRails(id = "491")
-    @Test(groups = {"smoke3"})
+    @Test(groups = {"smoke"})
     @Parameters("username")
     public void ManagerTC_001(String username){
         log("@title: Verify Manager Page UI");

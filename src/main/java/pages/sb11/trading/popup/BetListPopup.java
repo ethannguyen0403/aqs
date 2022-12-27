@@ -107,7 +107,7 @@ public class BetListPopup {
         String betType = tblOrder.getControlOfCell(1, colBetType, rowIndex, null).getText().trim();
         String selection = tblOrder.getControlOfCell(1, colSelection, rowIndex, null).getText().trim();
         String hdp = tblOrder.getControlOfCell(1, colHDP, rowIndex, null).getText().trim();
-        String live = tblOrder.getControlOfCell(1, colLive, rowIndex, null).getText().trim();
+        String live = tblOrder.getControlOfCell(1, colLive, rowIndex, null).getText().trim().replace(" ","");
         String price = tblOrder.getControlOfCell(1, colPrice, rowIndex, null).getText().trim();
         String stake = tblOrder.getControlOfCell(1, colStake, rowIndex, null).getText().trim();
         String cur = tblOrder.getControlOfCell(1, colCUR, rowIndex, null).getText().trim();
@@ -128,7 +128,7 @@ public class BetListPopup {
                 expectedHDP = String.format("%s%.2f", hdpSign, expectedOrder.getHdpPoint());
             }
             if (expectedOrder.getLiveHomeScore() == 0 && expectedOrder.getLiveAwayScore() == 0) {
-                expectedLive = String.format("%s : %s", expectedOrder.getLiveHomeScore(), expectedOrder.getLiveAwayScore());
+                expectedLive = String.format("%s:%s", expectedOrder.getLiveHomeScore(), expectedOrder.getLiveAwayScore()).replace(" ","");
             }
 
         } else {
