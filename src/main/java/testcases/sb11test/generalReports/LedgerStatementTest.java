@@ -88,7 +88,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="843")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"lgDebitAcc","lgCreditAcc","lgDebitCur", "lgCreditCur", "ledgerGroup"})
     public void Bet_Entry_TC843(String lgDebitAcc, String lgCreditAcc, String lgCreditCur, String lgDebitCur, String ledgerGroup){
         log("@title: Validate value calculated correctly for Ledger Type = Expenditure (Debit)");

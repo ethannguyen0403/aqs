@@ -16,7 +16,7 @@
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
         <parameter name="accountCode" value="ISA_ACC001"/>
-        <parameter name="accountCurrency" value="CAD"/>
+        <parameter name="accountCurrency" value="HKD"/>
         <parameter name="lgDebitAcc" value="AutoExpenditureDebit"/>
         <parameter name="lgCreditAcc" value="AutoExpenditureCredit"/>
         <parameter name="ledgerGroup" value="Auto Ledger Group"/>
@@ -31,8 +31,8 @@
 
         <classes>
             <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
-            <class name="testcases.sb11test.trading.BetEntryTest"/> 
-             <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
+            <class name="testcases.sb11test.trading.BetEntryTest"/>
+            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
             <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
         </classes>
     </test>

@@ -9,7 +9,7 @@ import utils.testraildemo.TestRails;
 public class LoginTest extends BaseCaseAQS {
 
     @TestRails(id = "459")
-    @Test(groups = {"smoke4"})
+    @Test(groups = {"smoke"})
     @Parameters("username")
     public void LoginTC_001(String username){
         log("@title: Verify that can login successfully");
