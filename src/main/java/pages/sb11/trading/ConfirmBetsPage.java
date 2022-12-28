@@ -71,6 +71,7 @@ public class ConfirmBetsPage extends WelcomePage {
      * @param accountCode
      */
     public void filter(String companyUnit, String accStartWith, String status, String sport, String betType,String dateType, String fromDate, String toDate, String accountCode){
+        waitPageLoad();
         ddbCompanyUnit.selectByVisibleText(companyUnit);
         txtAccStartWith.sendKeys(accStartWith);
         ddbStatus.selectByVisibleText(status);
