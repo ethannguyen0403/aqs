@@ -9,7 +9,12 @@ import pages.sb11.accounting.JournalEntriesPage;
 import pages.sb11.generalReports.ClientStatementPage;
 import pages.sb11.generalReports.ClientSummaryPopup;
 import testcases.BaseCaseAQS;
+import utils.sb11.AccountSearchUtils;
+import utils.sb11.ClientSystemUtils;
+import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
+
+import java.io.IOException;
 
 import static common.SBPConstants.*;
 
@@ -29,6 +34,10 @@ public class ClientStatementTest extends BaseCaseAQS {
     String recPayVal;
     String movementVal;
     String closingVal;
+    String clientId = null;
+    String accountIdCredit = null;
+    String accountIdDebit = null;
+
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "309")
@@ -253,25 +262,28 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "866")
-    public void ClientStatementTC_866(String clientCode) throws InterruptedException {
+    public void ClientStatementTC_866(String clientCode) throws InterruptedException, IOException {
+        log("@Validate the balance is deducted from the account if a Client account and an amount are inputted into the 'Debit' form");
+        accountIdCredit = AccountSearchUtils.getAccountId(clientCreditAcc);
+        accountIdDebit = AccountSearchUtils.getAccountId(clientDebitAcc);
         String actualRecPayVal;
         String expectedRecPayVal;
+
         log("Precondition: Add transaction for the Client account into Debit");
-        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
-        journalEntriesPage.waitSpinnerDisappeared();
+        String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
                 .clientDebit(clientCode)
                 .clientCredit(clientCode)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Pre-condition")
-                .transDate("")
+                .remark("Automation Testing Transaction Client: " + DateUtils.getMilliSeconds())
+                .transDate(transDate)
                 .transType("Tax Rebate")
                 .level(level)
                 .debitAccountCode(clientDebitAcc)
                 .creditAccountCode(clientCreditAcc)
                 .build();
-        journalEntriesPage.addClientBookieTransaction(transaction, fromType, true);
+        TransactionUtils.addTxn(transaction,accountIdDebit,accountIdCredit,fromType);
         log("@Step 1: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
@@ -283,11 +295,9 @@ public class ClientStatementTest extends BaseCaseAQS {
         expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
         actualRecPayVal = popup.getSummaryCellValue(clientDebitAcc,popup.colRecPay).replace(",","");
         Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Rec/Pay/CA/RB/Adj balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+        popup.closeSummaryPopup();
 
         log("@Post-condition: Add transaction for the Client account into Credit");
-        popup.closeSummaryPopup();
-        journalEntriesPage = clientPage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
-        journalEntriesPage.waitSpinnerDisappeared();
         Transaction transactionPost = new Transaction.Builder()
                 .clientDebit(clientCode)
                 .clientCredit(clientCode)
@@ -300,32 +310,35 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .debitAccountCode(clientCreditAcc)
                 .creditAccountCode(clientDebitAcc)
                 .build();
-        journalEntriesPage.addClientBookieTransaction(transactionPost, fromType, true);
+        TransactionUtils.addTxn(transactionPost,accountIdCredit,accountIdDebit,fromType);
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "867")
-    public void ClientStatementTC_867(String clientCode) throws InterruptedException {
+    public void ClientStatementTC_867(String clientCode) throws InterruptedException, IOException {
+        log("@Validate the balance is added from the account if a Client account and an amount are inputted into the 'Credit' form");
+        accountIdCredit = AccountSearchUtils.getAccountId(clientCreditAcc);
+        accountIdDebit = AccountSearchUtils.getAccountId(clientDebitAcc);
         String actualRecPayVal;
         String expectedRecPayVal;
+
         log("Precondition: Add transaction for the Client account into Credit");
-        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
-        journalEntriesPage.waitSpinnerDisappeared();
+        String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
                 .clientDebit(clientCode)
                 .clientCredit(clientCode)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Pre-condition")
-                .transDate("")
+                .remark("Automation Testing Transaction Client: " + DateUtils.getMilliSeconds())
+                .transDate(transDate)
                 .transType("Tax Rebate")
                 .level(level)
                 .debitAccountCode(clientDebitAcc)
                 .creditAccountCode(clientCreditAcc)
                 .build();
-        journalEntriesPage.addClientBookieTransaction(transaction, fromType, true);
+        TransactionUtils.addTxn(transaction,accountIdDebit,accountIdCredit,fromType);
         log("@Step 1: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
@@ -337,25 +350,22 @@ public class ClientStatementTest extends BaseCaseAQS {
         expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
         actualRecPayVal = popup.getSummaryCellValue(clientCreditAcc,popup.colRecPay).replace(",","");
         Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Rec/Pay/CA/RB/Adj balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+        popup.closeSummaryPopup();
 
         log("@Post-condition: Add transaction for the Client account into Credit");
-        popup.closeSummaryPopup();
-        journalEntriesPage = clientPage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
-        journalEntriesPage.waitSpinnerDisappeared();
         Transaction transactionPost = new Transaction.Builder()
                 .clientDebit(clientCode)
                 .clientCredit(clientCode)
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark("Automation Testing Transaction Client: Post-condition")
-                .transDate("")
+                .transDate(transDate)
                 .transType("Tax Rebate")
                 .level(level)
                 .debitAccountCode(clientCreditAcc)
                 .creditAccountCode(clientDebitAcc)
                 .build();
-        journalEntriesPage.addClientBookieTransaction(transactionPost, fromType, true);
+        TransactionUtils.addTxn(transactionPost,accountIdCredit,accountIdDebit,fromType);
         log("INFO: Executed completely");
     }
-
 }
