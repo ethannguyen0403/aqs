@@ -304,7 +304,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="869")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void Confirm_Bets_TC869(String accountCode,String accountCurrency){
         log("@title: Validate Pending Cricket Bets display with correct information as Bet Entry page");
@@ -366,7 +366,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="181")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void Confirm_Bets_TC181(String accountCode,String accountCurrency){
         log("@title:Validate bet info is correctly in Confirm Bet and Bet Setlement after update a bets in Confirm status");
@@ -411,7 +411,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         CricketBetEntryPage cricketBetEntryPage =betEntryPage.goToCricket();
         cricketBetEntryPage.showLeague(companyUnit,"",eventInfo.getLeagueName());
         cricketBetEntryPage.placeBet(order,true);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+        order =  BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder).get(0);
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
         confirmBetsPage.filter(companyUnit, "", "Pending", eventInfo.getSportName(), "All", "Specific Date", "", "", accountCode);
         confirmBetsPage.confirmBet(order);
@@ -427,7 +427,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         confirmBetsPage.updateOrder(order,false);
 
         log("@Verify 1: Bet info is correctly updated in confirmed bets ");
-        confirmBetsPage.verifyOrder(lstOrder.get(0));
+        confirmBetsPage.verifyOrder(order);
         BetSettlementPage betSettlementPage  = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
         betSettlementPage.filter("Confirmed","","","",accountCode);
 
@@ -706,7 +706,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="186")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void Confirm_Bets_186(String accountCode,String accountCurrency){
         log("@title: Validate can unconfirm the confirmed bets");
@@ -735,6 +735,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         soccerBetEntryPage.showLeague(companyUnit,"",eventInfo.getLeagueName());
         soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+        order = lstOrder.get(0);
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
         confirmBetsPage.filter(companyUnit, "", "Pending", eventInfo.getSportName(), "All", "Specific Date", "", "", accountCode);
         confirmBetsPage.confirmBet(order);
@@ -759,7 +760,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="1003")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void Confirm_Bets_1003(String accountCode,String accountCurrency){
         log("@title: Validate can duplicate bets for SPBPS7");
@@ -788,6 +789,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         soccerBetEntryPage.showLeague(companyUnit,"",eventInfo.getLeagueName());
         soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+        order = lstOrder.get(0);
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
 
         log("@Step 1: Login to SB11");
@@ -812,7 +814,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="1042")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"username","accountCode","accountCurrency"})
     public void Confirm_Bets_1042(String username,String accountCode,String accountCurrency){
         log("@title: Validate manual bet not display when filtering in Pending section after creating");
@@ -843,6 +845,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .selection("home")
                 .event(eventInfo)
                 .betId("Manual Bet")
+                .orderId("Manual Bet")
                 .build();
 
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);

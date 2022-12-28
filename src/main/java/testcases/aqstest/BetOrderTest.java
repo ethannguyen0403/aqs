@@ -182,7 +182,7 @@ public class BetOrderTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "471")
-    @Test(groups = {"smoke_qc"})
+    @Test(groups = {"derepcated"})
     public void BetOrder_007(){
         log("@title: Verify message confirm display when click on BET link in Action column in Confirm section");
         log("@Step 1: Login with valid account");
@@ -199,13 +199,13 @@ public class BetOrderTest extends BaseCaseAQS {
         if(betOrderPage.isNodata(orderLst)){
             log("SKIP: No data to click on Market name to open order log popup in Confirm order");
             return;}
-        ConfirmPopup confirmPopup = betOrderPage.openConfirmPopup(orderLst.get(0).getOrderId());
+        BetSlipPopup betSlipPopup = betOrderPage.openConfirmPopup(orderLst.get(0).getOrderId());
 
         log("@Verify the message confirm display The order already settled! Do you want to continue? With yes no button");
-        Assert.assertEquals(confirmPopup.lblConfirm.getText(), CONFIRM, "FAILED! Confirm title is not displayed!");
+       /* Assert.assertEquals(confirmPopup.lblConfirm.getText(), CONFIRM, "FAILED! Confirm title is not displayed!");
         Assert.assertEquals(confirmPopup.msgConfirm.getText(), "The order already settled! Do you want to continue?", "FAILED! Message is displayed incorrectly!");
         Assert.assertTrue(confirmPopup.btnYes.isDisplayed(),"Failed! Yes button is displayed!");
-        Assert.assertTrue(confirmPopup.btnNo.isDisplayed(),"Failed! No button is displayed!");
+        Assert.assertTrue(confirmPopup.btnNo.isDisplayed(),"Failed! No button is displayed!");*/
         log("INFO: Executed completely");
     }
 
@@ -227,20 +227,16 @@ public class BetOrderTest extends BaseCaseAQS {
         if(betOrderPage.isNodata(orderLst)){
             log("SKIP: No data to click on Market name to open order log popup in Confirm order");
             return;}
-        ConfirmPopup confirmPopup = betOrderPage.openConfirmPopup(orderLst.get(0).getOrderId());
+        BetSlipPopup betSlipPopup = betOrderPage.openConfirmPopup(orderLst.get(0).getOrderId());
 
-        log("@Step 4: Click Yes on confirm message popup");
-        confirmPopup.clickConfirmPopup("YES");
-
-        log("@Verify Bet Slip popup display");
-        BetSlipPopup betSlipPopup = new BetSlipPopup();
+        log("@Verify 1 Bet Slip popup display");
         Assert.assertTrue(betSlipPopup.betSlipPopup.isDisplayed(),"Failed! Bet Slip popup is not displayed");
 
         log("INFO: Executed completely");
     }
 
     @TestRails(id = "473")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"derepcated"})// There is no confirm popup díplay when open bet slip
     public void BetOrder_009(){
         log("@title: Verify Bet Slip popup does not display when unconfirm in Confirm section");
         log("@Step 1: Login with valid account");
@@ -257,7 +253,8 @@ public class BetOrderTest extends BaseCaseAQS {
         if(betOrderPage.isNodata(orderLst)){
             log("SKIP: No data to click on Market name to open order log popup in Confirm order");
             return;}
-        ConfirmPopup confirmPopup = betOrderPage.openConfirmPopup(orderLst.get(0).getOrderId());
+        BetSlipPopup betSlipPopup = betOrderPage.openConfirmPopup(orderLst.get(0).getOrderId());
+       /* ConfirmPopup confirmPopup = betOrderPage.openConfirmPopup(orderLst.get(0).getOrderId());
 
         log("@Step 4: Click No on confirm message popup");
         confirmPopup.clickConfirmPopup("NO");
@@ -267,7 +264,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
         log("Verify 2: Bet Slip popup not display");
         BetSlipPopup betSlipPopup = new BetSlipPopup();
-        Assert.assertFalse(betSlipPopup.betSlipPopup.isDisplayed(),"Failed! Bet Slip popup is still displayed");
+        Assert.assertFalse(betSlipPopup.betSlipPopup.isDisplayed(),"Failed! Bet Slip popup is still displayed");*/
 
         log("INFO: Executed completely");
     }
@@ -362,14 +359,14 @@ public class BetOrderTest extends BaseCaseAQS {
             betOrderPage.filterBetOrders(fromDate, toDate, "Soccer", true);
 
             log(String.format("@Step 3: Click confirm link of order %s in Pending section", orderID));
-            List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI, toDateAPI, "Soccer", CONFIRM);
+            List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI, toDateAPI, "Soccer", PENDING);
             Order order = GetOrdersUtils.getOrderInfoById(orderLst, orderID);
             betOrderPage.clickControlInTable(PENDING, orderID, CONFIRM);
 
             log("@Step 4: In Confirm section, click on Pending link of the order " + orderID);
             betOrderPage.clickControlInTable(CONFIRM, orderID, PENDING);
 
-            log("verify 11 Verify bet is move to Pending section");
+            log("Verify 1 Verify bet is move to Pending section");
             betOrderPage.verifyOrderInfo(order, PENDING);
         }finally {
             log("Post-condition: Move the order from Pending to Cancel section");
