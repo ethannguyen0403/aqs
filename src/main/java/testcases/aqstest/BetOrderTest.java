@@ -28,7 +28,7 @@ public class BetOrderTest extends BaseCaseAQS {
         log("@title: Verify Bet Order Page display by default after login");
         log("@Step 1: Login with valid account");
         log("Verify Menu AQS is active");
-        Assert.assertTrue(betOrderPage.isMenuActive(homePage.menuAQS), "FAILED! Menu AQS is not active");
+        Assert.assertTrue(betOrderPage.isMenuActive(betOrderPage.menuAQS), "FAILED! Menu AQS is not active");
         log("Verify Bet Order title is displayed");
         Assert.assertEquals(betOrderPage.lblBetOrders.getText(),"Bet Orders","FAILED! Bet Orders title is incorrect display");
 
