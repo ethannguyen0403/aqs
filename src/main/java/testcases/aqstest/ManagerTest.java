@@ -16,7 +16,7 @@ public class ManagerTest extends BaseCaseAQS {
     @TestRails(id = "491")
     @Test(groups = {"smoke"})
     @Parameters("username")
-    public void ManagerTC_001(String username){
+    public void ManagerTC_C491(String username){
         log("@title: Verify Manager Page UI");
         log("@Step 1: Login with valid Username and Password");
         log("@Step 2: Click Manager menu");
@@ -32,7 +32,7 @@ public class ManagerTest extends BaseCaseAQS {
         Assert.assertTrue(colUserManagement.contains("Role"), "Failed! Role column is not displayed!");
         Assert.assertTrue(colUserManagement.contains("Status"), "Failed! Status column is not displayed!");
         log("Verify that list account contains the login account");
-        Assert.assertTrue(managerPage.isAccountDisplayed(username.toLowerCase()), "Failed! " + username + " is not displayed!");
+        Assert.assertTrue(managerPage.isAccountDisplayed(username), "Failed! " + username + " is not displayed!");
         log("INFO: Executed completely");
     }
 }

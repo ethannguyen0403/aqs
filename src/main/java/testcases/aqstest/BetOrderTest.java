@@ -24,7 +24,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "465")
     @Test(groups = {"smoke"})
-    public void BetOrder_001(){
+    public void BetOrder_C465(){
         log("@title: Verify Bet Order Page display by default after login");
         log("@Step 1: Login with valid account");
         log("Verify Menu AQS is active");
@@ -37,7 +37,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "466")
     @Test(groups = {"smoke"})
-    public void BetOrder_002(){
+    public void BetOrder_C466(){
         log("@title: Verify Bet Order Page display by default after login");
         log("@Step 1: Login with valid account");
         log("Verify  Order bet form is correctly display");
@@ -61,7 +61,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
    @TestRails(id = "467")
    @Test(groups = {"smoke"})
-    public void BetOrder_003() throws ParseException {
+    public void BetOrder_C467() throws ParseException {
         log("@title: Verify Bet List popup displayed correctly info: popup title, event info, table header");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-3,"d/MM/yyyy","GMT -4"));
@@ -97,7 +97,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "468")
     @Test(groups = {"smoke"})
-    public void BetOrder_004() throws ParseException {
+    public void BetOrder_C468() throws ParseException {
         log("@title: Verify Bet Slip in Pending section display with correct info");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
@@ -128,7 +128,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "469")
     @Test(groups = {"smoke"})
-    public void BetOrder_005(){
+    public void BetOrder_C469(){
         log("@title: Verify control in Bet Slip display correctly");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
@@ -157,7 +157,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "470")
     @Test(groups = {"smoke"})
-    public void BetOrder_006(){
+    public void BetOrder_C470(){
         log("@title: Verify Bet Slip in Cancelled section is disable to place bet");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
@@ -183,7 +183,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "471")
     @Test(groups = {"derepcated"})
-    public void BetOrder_007(){
+    public void BetOrder_C471(){
         log("@title: Verify message confirm display when click on BET link in Action column in Confirm section");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
@@ -211,7 +211,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "472")
     @Test(groups = {"smoke"})
-    public void BetOrder_008(){
+    public void BetOrder_C472(){
         log("@title: Verify Bet Slip popup display when Confirming in Confirm section");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
@@ -237,7 +237,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "473")
     @Test(groups = {"derepcated"})// There is no confirm popup díplay when open bet slip
-    public void BetOrder_009(){
+    public void BetOrder_473(){
         log("@title: Verify Bet Slip popup does not display when unconfirm in Confirm section");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
@@ -271,7 +271,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "474")
     @Test(groups = {"smoke_qc"})
-    public void BetOrder_010(){
+    public void BetOrder_C474(){
         log("@title: Verify order display in Confirm when clicking Confirm link Pending section");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-4,"d/MM/yyyy","GMT -4"));
@@ -302,7 +302,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "475")
     @Test(groups = {"smoke_qc"})
-    public void BetOrder_011(){
+    public void BetOrder_C475(){
         log("@title: Verify order display in Cancelled section when clicking Cancel link Pending section");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-4,"d/MM/yyyy","GMT -4"));
@@ -334,7 +334,7 @@ public class BetOrderTest extends BaseCaseAQS {
     @TestRails(id = "476")
     @Test(groups = {"smoke"})
     @Parameters(("username"))
-    public void BetOrder_012(String username){
+    public void BetOrder_C476(String username){
         log("@title: Verify order display in Pending when clicking Pending link Confirm section");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-4,"d/MM/yyyy","GMT -4"));
@@ -378,7 +378,7 @@ public class BetOrderTest extends BaseCaseAQS {
     @TestRails(id = "477")
     @Test(groups = {"smoke_qc"})
     @Parameters(("username"))
-    public void BetOrder_013(String username){
+    public void BetOrder_C477(String username){
         log("@title: Verify order display in Pending when clicking Pending link Cancelled section");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT -4"));
@@ -420,7 +420,7 @@ public class BetOrderTest extends BaseCaseAQS {
     @TestRails(id = "478")
     @Test(groups = {"smoke_qc"})
     @Parameters(("username"))
-    public void BetOrder_014(String username){
+    public void BetOrder_C478(String username){
         log("@title: Verify order display in Confirm when clicking Confirm link Cancelled section");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-9,"d/MM/yyyy","GMT -4"));
@@ -470,7 +470,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "479")
     @Test(groups = {"smoke"})
-    public void BetOrder_015(){
+    public void BetOrder_C479(){
         log("@title: Verify there is no Pending link in Action column Pending section");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
@@ -498,7 +498,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "480")
     @Test(groups = {"smoke"})
-    public void BetOrder_016(){
+    public void BetOrder_C480(){
         log("@title: Verify there is no Confirm link in Action column Confirm section");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
@@ -526,7 +526,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "481")
     @Test(groups = {"smoke"})
-    public void BetOrder_017(){
+    public void BetOrder_C481(){
         log("@title: Verify there is no Cancel link in Action column Cancelled section");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
@@ -554,7 +554,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "482")
     @Test(groups = {"smoke"})
-    public void BetOrder_018(){
+    public void BetOrder_C482(){
         log("@title: Verify hide a column is worked");
         List<String> listHeader = Arrays.asList("#", "Selection", "Action", "Market","Event Date","Event English","Event Chinese","Agent - Hitter");
 
@@ -577,7 +577,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "483")
     @Test(groups = {"smoke"})
-    public void BetOrder_019(){
+    public void BetOrder_C483(){
         log("@title: Verify hide/unhide all column is worked");
         log("@Step 1: Login with valid account");
         log("@Step 2: Hide all column setting");
@@ -600,7 +600,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "484")
     @Test(groups = {"smoke"})
-    public void BetOrder_020(){
+    public void BetOrder_484(){
         log("@title: Verify pending order info display in UI correctly");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
@@ -622,7 +622,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "485")
     @Test(groups = {"smoke"})
-    public void BetOrder_021(){
+    public void BetOrder_485(){
         log("@title: Verify Confirm order info display in UI correctly");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
@@ -644,7 +644,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "486")
     @Test(groups = {"smoke"})
-    public void BetOrder_022(){
+    public void BetOrder_486(){
         log("@title: Verify Cancelled order info display in UI correctly");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
@@ -666,7 +666,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "487")
     @Test(groups = {"smoke"})
-    public void BetOrder_023(){
+    public void BetOrder_487(){
         log("@title: Verify can open Order log");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
@@ -697,7 +697,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "488")
     @Test(groups = {"smoke"})
-    public void BetOrder_024(){
+    public void BetOrder_488(){
         log("@title: Validate tooltip info display when click on I icon in # column");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
