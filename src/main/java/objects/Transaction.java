@@ -2,7 +2,9 @@ package objects;
 
 public class Transaction {
     private String ledgerDebit;
+    private String ledgerDebitNumber;
     private String ledgerCredit;
+    private String ledgerCreditNumber;
     private String ledgerDebitCur;
     private String ledgerCreditCur;
     private double amountDebit;
@@ -30,6 +32,17 @@ public class Transaction {
 
     public void setLedgerCredit(String ledgerCredit) {
         this.ledgerCredit = ledgerCredit;
+    }
+    public String getLedgerDebitNumber() { return ledgerDebitNumber; }
+
+    public void setLedgerDebitNumber(String ledgerDebitNumber) {
+        this.ledgerDebitNumber = ledgerDebitNumber;
+    }
+
+    public String getLedgerCreditNumber() { return ledgerCreditNumber; }
+
+    public void setLedgerCreditNumber(String ledgerCreditNumber) {
+        this.ledgerCreditNumber = ledgerCreditNumber;
     }
 
     public String getLedgerDebitCur() { return ledgerDebitCur; }
@@ -126,6 +139,8 @@ public class Transaction {
     public static class Builder {
         private String _ledgerDebit;
         private String _ledgerCredit;
+        private String _ledgerDebitNumber;
+        private String _ledgerCreditNumber;
         private String _ledgerDebitCur;
         private String _ledgerCreditCur;
         private double _amountDebit;
@@ -153,6 +168,16 @@ public class Transaction {
 
         public Builder ledgerCredit(String val) {
             _ledgerCredit = val;
+            return this;
+        }
+
+        public Builder ledgerDebitNumber(String val) {
+            _ledgerDebitNumber = val;
+            return this;
+        }
+
+        public Builder ledgerCreditNumber(String val) {
+            _ledgerCreditNumber = val;
             return this;
         }
 
@@ -241,6 +266,8 @@ public class Transaction {
     public Transaction(Builder builder) {
         this.ledgerDebit = builder._ledgerDebit;
         this.ledgerCredit = builder._ledgerCredit;
+        this.ledgerDebitNumber = builder._ledgerDebitNumber;
+        this.ledgerCreditNumber = builder._ledgerCreditNumber;
         this.ledgerDebitCur = builder._ledgerDebitCur;
         this.ledgerCreditCur = builder._ledgerCreditCur;
         this.amountDebit = builder._amountDebit;

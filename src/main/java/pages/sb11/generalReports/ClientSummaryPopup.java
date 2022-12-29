@@ -13,9 +13,12 @@ public class ClientSummaryPopup extends WelcomePage {
     public int colMovementTotal = 6;
     public int colClosingTotal = 7;
     int colAccountCode = 4;
+    int colLedgerAccountCode = 3;
+    public int colLedgerRecPay = 7;
     public int colRecPay = 9;
 
     Table tblSummary = Table.xpath("//app-member-summary//table[@aria-label='table']",summaryColTotal);
+    Table tblLedgerSummary = Table.xpath("//app-ledger-member-summary//table[@aria-label='table']",summaryColTotal);
     Icon closeIcon = Icon.xpath("//span[contains(@class,'close-icon')]");
 //    Row totalHKDRow = Row.xpath("//table[@aria-label='table']//tbody[1]//tr[contains(@class,'total-in')][1]");
 //    Row totalGBPRow = Row.xpath("//table[@aria-label='table']//tbody[1]//tr[contains(@class,'total-in')][2]");
@@ -67,6 +70,26 @@ public class ClientSummaryPopup extends WelcomePage {
             i = i + 1;
         }
     }
+    public String getLedgerSummaryCellValue(String accountCode, int colIndex) {
+        String returnValue = "";
+        Label lblCellValue;
+        Label lblAccountCode;
+        int i = 1;
+        while (true) {
+            lblCellValue = Label.xpath(tblLedgerSummary.getxPathOfCell(1, colIndex, i, null));
+            lblAccountCode = Label.xpath(tblLedgerSummary.getxPathOfCell(1, colLedgerAccountCode, i, null));
+            if (!lblCellValue.isDisplayed()) {
+                System.out.println("Ledger Code is not found in Summary table");
+                return null;
+            }
+            if (lblAccountCode.getText().equalsIgnoreCase(accountCode)) {
+                returnValue = lblCellValue.getText();
+                return returnValue;
+            }
+            i = i + 1;
+        }
+    }
+
     public ClientStatementPage closeSummaryPopup() {
         closeIcon.click();
         return new ClientStatementPage();

@@ -6,10 +6,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.AppUtils;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import static testcases.BaseCaseAQS.environment;
 
 public class AccountSearchUtils {
     private static JSONObject getAccountInfoJson(String accountCode){
@@ -20,7 +21,7 @@ public class AccountSearchUtils {
                 put("Content-Type", Configs.HEADER_JSON);
             }
         };
-        String api = "https://ess.beatus88.com/aqs-agent-service/master/account-search/list";
+        String api = environment.getSbpLoginURL() +"aqs-agent-service/master/account-search/list";
         String jsn = String.format("{\n" +
                         "    \"company\": 1,\n" +
                         "    \"code\": \"%s\",\n" +
@@ -43,11 +44,6 @@ public class AccountSearchUtils {
             JSONArray resultArr = accountObj.toJSONArray(accountObj.names());
             if (resultArr.length() > 0) {
                 for (int i = 0; i < resultArr.length(); i++) {
-                    //JSONObject orderObj = resultArr.getJSONObject(i);
-//                    if(orderObj.getString("accountCode").equals(accountCode)){
-//                        accountId = (String.valueOf(orderObj.getInt("accountId")));
-//                        return accountId;
-//                    }
                         if(resultArr.get(i).equals(accountCode)){
                         accountId = (String.valueOf(resultArr.get(i-1)));
                         return accountId;
