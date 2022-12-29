@@ -2,6 +2,7 @@ package pages.ess;
 
 import com.paltech.driver.DriverManager;
 import com.paltech.element.common.*;
+import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Order;
@@ -43,10 +44,16 @@ public class BetOrderPage extends HomePage {
     private int colBookieOrderID = 9;
 
     public void filterBetOrders(String fromDate, String toDate, String sport, boolean isShow){
+        String today = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         if(!fromDate.isEmpty()){
-        dtpFromDate.selectDate(fromDate,"d/MM/yyyy");}
+            if(!fromDate.equalsIgnoreCase(toDate)){
+                dtpFromDate.selectDate(fromDate,"d/MM/yyyy");
+            }
+      }
         if(!toDate.isEmpty()) {
-            dtpToDate.selectDate(toDate, "d/MM/yyyy");
+            if(!toDate.equalsIgnoreCase(today)){
+                dtpToDate.selectDate(toDate, "d/MM/yyyy");
+            }
         }
         ddSport.selectByVisibleContainsText(sport);
      /*   dtpFromDate.currentMonthWithDate(fromDate);
@@ -169,9 +176,9 @@ public class BetOrderPage extends HomePage {
         return new BetSlipPopup();
     }
 
-    public ConfirmPopup openConfirmPopup (String orderID){
+    public BetSlipPopup openConfirmPopup (String orderID){
         getControlOnTableBasedOnOrderID("Confirm",orderID,"Bet").click();
-        return new ConfirmPopup();
+        return new BetSlipPopup();
     }
 
     public BetListPopup openBetList(String orderID,String status){
