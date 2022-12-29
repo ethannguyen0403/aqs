@@ -19,6 +19,7 @@ public class Transaction {
     private String debitAccountCode;
     private double creditBalance;
     private double debitBalance;
+    private String transactionId;
     public String getLedgerDebit() { return ledgerDebit; }
 
     public void setLedgerDebit(String ledgerDebit) {
@@ -117,6 +118,11 @@ public class Transaction {
         this.creditBalance = creditBalance;
     }
 
+    public String getTransactionId() { return transactionId; }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
     public static class Builder {
         private String _ledgerDebit;
         private String _ledgerCredit;
@@ -136,6 +142,7 @@ public class Transaction {
         private String _debitAccountCode;
         private double _creditBalance;
         private double _debitBalance;
+        private String _transactionId;
         public Builder() {
         }
 
@@ -222,6 +229,10 @@ public class Transaction {
             _debitBalance = val;
             return this;
         }
+        public Builder transactionId(String val) {
+            _transactionId = val;
+            return this;
+        }
         public Transaction build() {
             return new Transaction(this);
         }
@@ -246,6 +257,7 @@ public class Transaction {
         this.debitAccountCode = builder._debitAccountCode;
         this.creditBalance = builder._creditBalance;
         this.debitBalance = builder._debitBalance;
+        this.transactionId = builder._transactionId;
     }
 
 
