@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static testcases.BaseCaseAQS.environment;
+
 public class ClientSystemUtils {
     private static JSONArray getClientListJson(String clientCode){
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
@@ -19,7 +21,7 @@ public class ClientSystemUtils {
                 put("Content-Type", Configs.HEADER_JSON);
             }
         };
-        String api = "https://ess.beatus88.com/aqs-agent-service/master/client-list";
+        String api = environment.getSbpLoginURL() +"aqs-agent-service/master/client-list";
         String jsn = String.format("{\n" +
                         "    \"withSuper\": true,\n" +
                         "    \"companyId\": 1,\n" +

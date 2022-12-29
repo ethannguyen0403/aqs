@@ -16,7 +16,7 @@ public class HeaderTest extends BaseCaseAQS {
 
     @TestRails(id = "461")
     @Test(groups = {"smoke"})
-    public void HeaderTC_001(){
+    public void HeaderTC_C461(){
         log("@title: Verify menu in header section is correctly display");
         log("Verify logo AQS is displayed");
         Assert.assertTrue(betOrderPage.iconLogo.isDisplayed(),"FAILED! Logo AQS is not displayed");
@@ -31,7 +31,7 @@ public class HeaderTest extends BaseCaseAQS {
 
     @TestRails(id = "462")
     @Test(groups = {"smoke"})
-    public void HeaderTC_002(){
+    public void HeaderTC_C462(){
         log("@title: Verify Change Password menu display");
         log("@Step 1: Click on profile icon");
         betOrderPage.ddlMenu.clickMenu(CHANGE_PASSWORD);
@@ -43,7 +43,7 @@ public class HeaderTest extends BaseCaseAQS {
 
     @TestRails(id = "463")
     @Test(groups = {"smoke"})
-    public void HeaderTC_003(){
+    public void HeaderTC_C466(){
         log("@title: Verify Change Password menu display");
         log("@Step 1: Click on profile icon");
         log("@Step 2: Click on Change Password");
@@ -62,7 +62,7 @@ public class HeaderTest extends BaseCaseAQS {
     @TestRails(id = "464")
     @Test(groups = {"smoke"})
     @Parameters({"username","password"})
-    public void HeaderTC_004(String username, String password) throws Exception {
+    public void HeaderTC_C464(String username, String password) throws Exception {
         log("@title: Verify Can change password success");
         log("@Step 1: Click on profile icon");
         log("@Step 2: Click on Change Password");
