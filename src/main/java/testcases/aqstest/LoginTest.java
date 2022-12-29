@@ -11,7 +11,7 @@ public class LoginTest extends BaseCaseAQS {
     @TestRails(id = "459")
     @Test(groups = {"smoke"})
     @Parameters("username")
-    public void LoginTC_001(String username){
+    public void LoginTC_C459(String username){
         log("@title: Verify that can login successfully");
         log("@Step 1: Login with valid account");
         log("Verify that can login successfully");
