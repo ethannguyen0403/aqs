@@ -88,7 +88,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="843")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Bet_Entry_TC843(){
         log("@title: Validate value calculated correctly for Ledger Type = Expenditure (Debit)");
         log("@Step 1: Login to SB11 site");
@@ -122,7 +122,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="844")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     public void Bet_Entry_TC844(){
         log("@title: Validate value calculated correctly for Ledger Type = Expenditure (Credit)");
         log("@Step 1: Login to SB11 site");
@@ -130,8 +130,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit(debitExpAcc)
-                .ledgerCredit(creditExpAcc)
+                .ledgerDebit(debitAstAcc)
+                .ledgerCredit(creditAstAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
                 .amountDebit(1)
