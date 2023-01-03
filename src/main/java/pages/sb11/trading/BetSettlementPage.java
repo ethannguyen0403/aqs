@@ -1,6 +1,7 @@
 package pages.sb11.trading;
 
 import com.paltech.element.common.*;
+import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Order;
@@ -63,11 +64,15 @@ public class BetSettlementPage extends WelcomePage {
        ddbStatus.selectByVisibleText(status);
        if(!fromDate.isEmpty())
        {
-           dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+           if(fromDate.equals(String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7")))){
+               dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+           }
        }
        if(!toDate.isEmpty())
        {
-            dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+           if(toDate.equals(String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7")))){
+               dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+           }
        }
         if(!accStartWith.isEmpty())
         {
@@ -103,7 +108,9 @@ public class BetSettlementPage extends WelcomePage {
 
     private void selectOrder(Order order){
         int rowIndex =getOrderIndex(order.getBetId());
-        Icon.xpath(tblOrder.getxPathOfCell(1,colSelect,rowIndex,"input")).click();
+        CheckBox cb = CheckBox.xpath(tblOrder.getxPathOfCell(1,colSelect,rowIndex,"input"));
+        cb.scrollToThisControl(false);
+        cb.click();
     }
 
     /**
@@ -195,5 +202,15 @@ public class BetSettlementPage extends WelcomePage {
         btnSettleSendSettlementEmail.click();
         ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
         confirmPopupControl.confirmYes();
+    }
+    public void sendBetListEmail(Order order){
+        selectOrder(order);
+        btnSendBetListEmail.scrollToTop();
+        btnSendBetListEmail.click();
+    }
+    public void exportSelectedBEt(Order order){
+        selectOrder(order);
+        btnExportSelectedBet.scrollToTop();
+        btnExportSelectedBet.click();
     }
 }
