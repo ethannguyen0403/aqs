@@ -24,12 +24,12 @@ public class LoginPage {
     }
 
     public WelcomePage login(String username, String password){
-        openLoginFormOld();
-        //openLoginForm();
+       // openLoginFormOld();
+        openLoginForm();
         txtUsername.sendKeys(username);
         txtPassword.sendKeys(password);
         if(txtCode.isDisplayed()){
-            String today= DateUtils.getDate(0,"yyyyMMd","GMT+7");
+            String today= DateUtils.getDate(0,"yyyyMd","GMT+7");
             String code = String.format("%s%s@))*",today,username);
             txtCode.sendKeys(code);
         }
