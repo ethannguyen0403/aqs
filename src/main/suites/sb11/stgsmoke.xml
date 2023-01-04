@@ -26,8 +26,10 @@
         </groups>
 
         <classes>
+            <class name="testcases.sb11test.trading.BetSettlementTest"/>
+            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
             <class name="testcases.sb11test.trading.BetEntryTest"/>
-          <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
+            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
             <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
         </classes>
     </test>

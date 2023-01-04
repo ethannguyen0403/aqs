@@ -9,7 +9,7 @@ public class LoginPage {
     public TextBox txtUsername = TextBox.xpath("//input[@formcontrolname='username']");
     public TextBox txtPassword = TextBox.xpath("//input[@formcontrolname='password']");
     public TextBox txtCode = TextBox.xpath("//input[@formcontrolname='code']");
-    public Button btnLogin = Button.xpath("//button[contains(@class,'btn btn-block btn-lg btn-landing')]");
+    public Button btnLogin = Button.xpath("//button[contains(text(),'Login')]");
     public Button btnCopyRight = Button.xpath("//em[contains(@class, 'far fa-copyright')]");
     private Label tabEurope = Label.xpath("//app-login-camouflage//div[contains(@class,'justify-content-center')]/button[2]");
     private Label lblClick = Label.xpath("//app-login-camouflage//carousel//div[@class='carousel-inner']/slide[2]//div[contains(@class,'content-text content-col-3')]/div[5]//span");
@@ -25,11 +25,11 @@ public class LoginPage {
     }
     public BetOrderPage login(String username,String password){
         openLoginFormOld();
-    //    openLoginForm();
+//        openLoginForm();
         txtUsername.sendKeys(username);
         txtPassword.sendKeys(password);
         if(txtCode.isDisplayed()){
-            String today= DateUtils.getDate(0,"yyyyMMd","GMT+7");
+            String today= DateUtils.getDate(0,"yyyyMd","GMT+7");
             String code = String.format("%s%s@))*",today,username);
             txtCode.sendKeys(code);
         }
