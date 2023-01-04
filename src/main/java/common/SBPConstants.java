@@ -52,9 +52,10 @@ public class SBPConstants {
     public static final Map<String, Double> CURRENCY_RATE= new HashMap<String, Double>()
     {
         {
-            put("AUD", 0.558792);
+            put("AUD", 0.563004);
             put("GBP", 1.0);
-            put("HKD",0.106772);
+            put("HKD",0.106288);
+            put("INR",0.010019);
         }
     };
 
