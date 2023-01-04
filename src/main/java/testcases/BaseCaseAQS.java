@@ -51,7 +51,7 @@ public class BaseCaseAQS {
     public static BrowserMobProxy browserMobProxy;
     public static String PROJECT_ID="2";
     public static APIClient client;
-    private static boolean isAddTestRailResult =true;
+    private static boolean isAddTestRailResult =false;
     private static  List<Long> lstCases= new ArrayList<>();
     public static String aqsLoginURL;
     public static String sb11LoginURL;
@@ -61,6 +61,7 @@ public class BaseCaseAQS {
         try{
             context = new ClassPathXmlApplicationContext("resources/settings/AQSSetting.xml");
             report = new ExtentReports("", true);
+
         } catch(Exception ex) {
             throw new NullPointerException(String.format("ERROR: Exception occurs beforeSuite by '%s'", ex.getMessage()));
         }
