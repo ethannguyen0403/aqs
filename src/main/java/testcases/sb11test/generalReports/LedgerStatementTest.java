@@ -117,6 +117,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
         log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
         LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
+
         log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
         log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
         ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
