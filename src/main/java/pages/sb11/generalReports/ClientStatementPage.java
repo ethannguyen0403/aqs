@@ -7,6 +7,7 @@ import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
 import pages.sb11.WelcomePage;
+import pages.sb11.generalReports.popup.ClientSummaryPopup;
 
 public class ClientStatementPage extends WelcomePage {
     int colTotal = 10;

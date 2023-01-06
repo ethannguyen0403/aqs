@@ -760,7 +760,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="1003")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"accountCode","accountCurrency"})
     public void Confirm_Bets_1003(String accountCode,String accountCurrency){
         log("@title: Validate can duplicate bets for SPBPS7");
