@@ -1,8 +1,10 @@
-package pages.sb11.generalReports;
+package pages.sb11.generalReports.popup;
 
+import com.paltech.driver.DriverManager;
 import com.paltech.element.common.*;
 import controls.Table;
 import pages.sb11.WelcomePage;
+import pages.sb11.generalReports.ClientStatementPage;
 
 public class ClientSummaryPopup extends WelcomePage {
     int summaryColTotal = 11;
@@ -14,14 +16,13 @@ public class ClientSummaryPopup extends WelcomePage {
     public int colClosingTotal = 7;
     int colAccountCode = 4;
     int colLedgerAccountCode = 3;
+    int colWinLose = 8;
     public int colLedgerRecPay = 7;
     public int colRecPay = 9;
 
     Table tblSummary = Table.xpath("//app-member-summary//table[@aria-label='table']",summaryColTotal);
     Table tblLedgerSummary = Table.xpath("//app-ledger-member-summary//table[@aria-label='table']",summaryColTotal);
     Icon closeIcon = Icon.xpath("//span[contains(@class,'close-icon')]");
-//    Row totalHKDRow = Row.xpath("//table[@aria-label='table']//tbody[1]//tr[contains(@class,'total-in')][1]");
-//    Row totalGBPRow = Row.xpath("//table[@aria-label='table']//tbody[1]//tr[contains(@class,'total-in')][2]");
 
     public String getGrandTotal(String currency, int colIndex) {
         String returnValue;
@@ -93,6 +94,22 @@ public class ClientSummaryPopup extends WelcomePage {
     public ClientStatementPage closeSummaryPopup() {
         closeIcon.click();
         return new ClientStatementPage();
+    }
+
+    public ClientSummaryWinlosePopup openWinLoseSummaryPopup(String accountCode) {
+        Label lblAccountCode;
+        Label lblWinlose;
+        int i = 1;
+        while (true){
+            lblAccountCode = Label.xpath(tblSummary.getxPathOfCell(1,colAccountCode,i,null));
+            lblWinlose = Label.xpath(tblSummary.getxPathOfCell(1,colWinLose,i,null) + "//a");
+            if(lblAccountCode.getText().equalsIgnoreCase(accountCode)){
+                lblWinlose.click();
+                DriverManager.getDriver().switchToWindow();
+                return new ClientSummaryWinlosePopup();
+            }
+            i = i+1;
+        }
     }
 
 }
