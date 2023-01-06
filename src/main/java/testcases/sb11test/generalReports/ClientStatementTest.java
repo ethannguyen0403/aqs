@@ -1,14 +1,17 @@
 package testcases.sb11test.generalReports;
 
 import com.paltech.utils.DateUtils;
+import objects.Order;
 import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.generalReports.ClientStatementPage;
-import pages.sb11.generalReports.ClientSummaryPopup;
+import pages.sb11.generalReports.popup.ClientSummaryPopup;
+import pages.sb11.generalReports.popup.ClientSummaryWinlosePopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.AccountSearchUtils;
+import utils.sb11.BetEntrytUtils;
 import utils.sb11.ChartOfAccountUtils;
 import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
@@ -1006,5 +1009,38 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
         log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"smoke1"})
+    @Parameters({"clientCode"})
+    @TestRails(id = "882")
+    public void ClientStatementTC_882(String clientCode) throws IOException, InterruptedException {
+        String expectedRecPayVal;
+        String actualRecPayVal;
+        welcomePage.waitSpinnerDisappeared();
+        String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        Order order = new Order.Builder()
+                .price(1.5).requireStake(15)
+                .oddType("HK").accountCode(clientCreditAcc)
+                .createDate(transDate)
+                .eventDate(transDate + " 23:59:00")
+                .selection("Home " + DateUtils.getMilliSeconds())
+                .build();
+        int companyId = BetEntrytUtils.getCompanyID(companyUnit);
+        String accountId = AccountSearchUtils.getAccountId(clientCreditAcc);
+        BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_MAP.get("Soccer"),order);
+//        log("@Step 1: Navigate to General Reports > Client Statement");
+//        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+//        clientPage.waitSpinnerDisappeared();
+//        log("@Step 2: Filter the Client with Client Point view");
+//        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+//        log("@Step 3: Open Summary popup of agent");
+//        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
+//        log("@Verify the balance Rec/Pay/CA/RB/Adj is deducted properly");
+//
+//        ClientSummaryWinlosePopup winlosePopup = popup.openWinLoseSummaryPopup(clientCreditAcc);
+//        actualRecPayVal = winlosePopup.getGrandTotal(winlosePopup.colWinLoseTotal);
+//
+//        log("INFO: Executed completely");
     }
 }
