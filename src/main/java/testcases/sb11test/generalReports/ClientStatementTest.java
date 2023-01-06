@@ -252,6 +252,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, "","");
 
         log("Validate value of agent COM in main page match with member summary page");
+        //TODO:
         openingVal = clientPage.getAgentCellValue(agentComCode,clientPage.colOpening).replace(",","");
         commissionVal = clientPage.getAgentCellValue(agentComCode,clientPage.colCommission).replace(",","");
         recPayVal = clientPage.getAgentCellValue(agentComCode,clientPage.colRecPay).replace(",","");
