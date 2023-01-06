@@ -94,7 +94,7 @@ public class BaseCaseAQS {
     public void beforeClass(String browser, String env) {
         environment = (Environment) context.getBean(env);
         driverProperties = (DriverProperties) context.getBean(browser);
-        System.out.println(String.format("RUNNING ON %s under the link %s", env.toUpperCase(), environment.getAqsLoginURL()));
+     //   System.out.println(String.format("RUNNING ON %s under the link %s", env.toUpperCase(), environment.getAqsLoginURL()));
         aqsLoginURL = environment.getAqsLoginURL();
         sb11LoginURL = environment.getSbpLoginURL();
     }
@@ -102,15 +102,14 @@ public class BaseCaseAQS {
    @Parameters({"appname","username", "password", "isLogin","isProxy"})
     @BeforeMethod(alwaysRun = true)
     public static void beforeMethod(String appname,String username, String password, boolean isLogin, boolean isProxy, Method method, ITestResult resultI,ITestContext ctx) throws Exception {
-       System.out.println("*** Map test case in script with test case in TestRail ***");
       if(isAddTestRailResult){
+          System.out.println("*** Map test case in script with test case in TestRail ***");
           Method m = method;
           if (m.isAnnotationPresent(TestRails.class)) {
               TestRails ta = m.getAnnotation(TestRails.class);
               ctx.setAttribute("caseId",ta.id());
           }
       }
-
         System.out.println("*****************************************Beginning TC's " + method.getName() +"****************************************************");
         logger = report.startTest(method.getName(), method.getClass().getName());
         driverProperties.setMethodName(method.getName());
