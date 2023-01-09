@@ -10,13 +10,11 @@ import pages.sb11.generalReports.ClientStatementPage;
 import pages.sb11.generalReports.popup.ClientSummaryPopup;
 import pages.sb11.generalReports.popup.ClientSummaryWinlosePopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.AccountSearchUtils;
-import utils.sb11.BetEntrytUtils;
-import utils.sb11.ChartOfAccountUtils;
-import utils.sb11.TransactionUtils;
+import utils.sb11.*;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 import static common.SBPConstants.*;
 
@@ -75,6 +73,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("@Step 2: Filter a client with client point view");
         clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, "","");
 
+        //TODO need enhancement as currently is workingaround by remove "," out of string before calculate
         log("Validate Closing of Super = Opening + Win/Loss + Commission + Rec/Pay/CA/RB/Adj");
         openingVal = clientPage.getSuperCellValue(clientPage.colOpening).replace(",","");
         winLossVal = clientPage.getSuperCellValue(clientPage.colWinLoss).replace(",","");
@@ -1015,9 +1014,10 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke1"})
     @Parameters({"clientCode"})
     @TestRails(id = "882")
-    public void ClientStatementTC_882(String clientCode) throws IOException, InterruptedException {
-        String expectedRecPayVal;
+    public void ClientStatementTC_882(String clientCode) throws IOException, InterruptedException, ParseException {
+        String expectedRecPayVal = "5.0";
         String actualRecPayVal;
+        log("Precondition: Add Manual Bet and settle with win/loss value = 5.0");
         welcomePage.waitSpinnerDisappeared();
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Order order = new Order.Builder()
@@ -1030,18 +1030,25 @@ public class ClientStatementTest extends BaseCaseAQS {
         int companyId = BetEntrytUtils.getCompanyID(companyUnit);
         String accountId = AccountSearchUtils.getAccountId(clientCreditAcc);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_MAP.get("Soccer"),order);
-//        log("@Step 1: Navigate to General Reports > Client Statement");
-//        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-//        clientPage.waitSpinnerDisappeared();
-//        log("@Step 2: Filter the Client with Client Point view");
-//        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
-//        log("@Step 3: Open Summary popup of agent");
-//        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
-//        log("@Verify the balance Rec/Pay/CA/RB/Adj is deducted properly");
-//
-//        ClientSummaryWinlosePopup winlosePopup = popup.openWinLoseSummaryPopup(clientCreditAcc);
-//        actualRecPayVal = winlosePopup.getGrandTotal(winlosePopup.colWinLoseTotal);
-//
-//        log("INFO: Executed completely");
+        welcomePage.waitSpinnerDisappeared();
+        int betId = BetSettlementUtils.getConfirmedBetId(accountId,SPORT_MAP.get("Soccer"),order);
+        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId,SPORT_MAP.get("Soccer"),order);
+        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId,SPORT_MAP.get("Soccer"));
+
+        log("@Step 1: Navigate to General Reports > Client Statement");
+        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+        clientPage.waitSpinnerDisappeared();
+        log("@Step 2: Filter the Client with Client Point view");
+        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        log("@Step 3: Open Summary popup of agent");
+        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
+        log("@Verify the balance Rec/Pay/CA/RB/Adj is deducted properly");
+
+        ClientSummaryWinlosePopup winlosePopup = popup.openWinLoseSummaryPopup(clientCreditAcc);
+        actualRecPayVal = String.format("%.2f",winlosePopup.getGrandTotal(winlosePopup.colWinLoseTotal)) ;
+
+        Assert.assertEquals(expectedRecPayVal,actualRecPayVal,"FAILED! Win/Loss balance is not deducted correctly, actual: "+actualRecPayVal+ " and expected: "+expectedRecPayVal);
+
+        log("INFO: Executed completely");
     }
 }
