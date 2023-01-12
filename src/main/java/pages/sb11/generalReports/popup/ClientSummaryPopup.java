@@ -112,4 +112,39 @@ public class ClientSummaryPopup extends WelcomePage {
         }
     }
 
+    public ClientMemberTransactionPopup openMemberTransactionPopup(String accountCode) {
+        Label lblAccountCode;
+        int i = 1;
+        while (true){
+            lblAccountCode = Label.xpath(tblSummary.getxPathOfCell(1,colAccountCode,i,null));
+            if(lblAccountCode.getText().equalsIgnoreCase(accountCode)){
+                lblAccountCode.click();
+                DriverManager.getDriver().switchToWindow();
+                return new ClientMemberTransactionPopup();
+            }
+            i = i+1;
+        }
+    }
+
+    public ClientLedgerRecPayPopup openLedgerRecPaySummaryPopup(String accountCode, int colIndex) {
+        Label lblCellValue;
+        Label lblAccountCode;
+        int i = 1;
+        while (true) {
+            lblCellValue = Label.xpath(tblLedgerSummary.getxPathOfCell(1, colIndex, i, null) + "//a");
+            lblAccountCode = Label.xpath(tblLedgerSummary.getxPathOfCell(1, colLedgerAccountCode, i, null));
+            if (!lblCellValue.isDisplayed()) {
+                System.out.println("Ledger Code is not found in Summary table");
+                return null;
+            }
+            if (lblAccountCode.getText().equalsIgnoreCase(accountCode)) {
+                lblCellValue.click();
+                DriverManager.getDriver().switchToWindow();
+                return new ClientLedgerRecPayPopup();
+            }
+            i = i + 1;
+        }
+    }
+
+
 }
