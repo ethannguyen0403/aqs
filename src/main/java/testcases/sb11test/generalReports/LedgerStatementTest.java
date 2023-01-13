@@ -296,7 +296,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="849")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Ledger_Statement_TC849(){
         log("@title: Validate transaction Debit of Ledger Type = Liability");
         log("@Step 1: Login to SB11 site");
@@ -327,10 +327,11 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="850")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Ledger_Statement_TC850(){
         log("@title: Validate transaction Credit of Ledger Type = Liability");
         log("@Step 1: Login to SB11 site");
+        log("@Step Precondition: Get Credit/Debit amount on Ledger Statement page");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
@@ -347,7 +348,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .build();
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
-        journalEntriesPage.addLedgerTransaction(transaction,true);
+        journalEntriesPage.addLedgerTransaction(transaction,false);
         log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         ledgerStatementPage.showLedger(companyUnit,financialYear,"Liability",lgLiabilityGroup,"","");
@@ -356,6 +357,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         ledgerStatementPage.verifyLedgerTrans(transaction, false, lgLiabilityGroup);
         log("INFO: Executed completely");
     }
+
 
 
 }

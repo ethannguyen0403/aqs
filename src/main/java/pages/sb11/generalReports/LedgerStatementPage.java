@@ -12,6 +12,7 @@ import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.LedgerDetailPopup;
 
 import static common.SBPConstants.*;
+import static testcases.BaseCaseAQS.welcomePage;
 
 public class LedgerStatementPage extends WelcomePage {
     public DropDownBox ddCompanyUnit = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Company Unit')]//following::select[1]");
@@ -101,11 +102,20 @@ public class LedgerStatementPage extends WelcomePage {
         return transaction;
     }
 
-    public LedgerDetailPopup openLedgerDetail (String ledgername){
-        int rowIndex = getLedgerRowIndex(ledgername);
+    public LedgerDetailPopup openLedgerDetail (String ledgerName){
+        int rowIndex = getLedgerRowIndex(ledgerName);
         int colIndex = colLedger;
         tbLedger.getControlOfCell(1,colIndex, rowIndex,"a").click();
         return new LedgerDetailPopup();
+    }
+
+    public double getCreditDebitAmount(String ledgerName){
+        int rowIndex = getLedgerRowIndex(ledgerName);
+        String amountCreDeb = tbLedger.getControlOfCell(1, colAmountORG, rowIndex, null).getText().trim();
+        if (amountCreDeb.isEmpty()){
+            amountCreDeb = String.valueOf(0);
+        }
+        return Double.parseDouble(amountCreDeb);
     }
 
     private int getLedgerRowIndex(String ledgername){
