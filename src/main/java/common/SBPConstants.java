@@ -1,6 +1,8 @@
 package common;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SBPConstants {
@@ -68,6 +70,13 @@ public class SBPConstants {
 
     public static class BetEntryPage {
         public final static String MESSAGE_SUCCESS_MANUAL_BET ="Place Successful !";
+    }
+
+    public static class BetSettlement{
+        public final static List<String> LST_MESSAGE_SETTLE_SENT_MAIL = Arrays.asList("Bet(s) is settled successfully.",
+                "Statement Email has been sent to your mail box.");
+        public final static List<String> BET_LIST_STATEMENT_EMAIL = Arrays.asList("Bet List [Current]",
+                "Description", "Selection", "HDP", "Live", "Prive","Stake", "Win/Lose","Type","Date");
     }
 
 }
