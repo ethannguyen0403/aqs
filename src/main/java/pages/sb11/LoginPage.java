@@ -15,6 +15,7 @@ public class LoginPage {
     private Label lblClick = Label.xpath("//app-login-camouflage//div[contains(@class,'main-content')]/div/div/div[5]//span");
     private void openLoginForm(){
         tabEurope.click();
+        lblClick.waitForControlInvisible(1,1);
         lblClick.click();
         txtUsername.isDisplayed(1);
     }
@@ -24,8 +25,8 @@ public class LoginPage {
     }
 
     public WelcomePage login(String username, String password){
-       openLoginFormOld();
-        //openLoginForm();
+      //openLoginFormOld();
+        openLoginForm();
         txtUsername.sendKeys(username);
         txtPassword.sendKeys(password);
         if(txtCode.isDisplayed()){

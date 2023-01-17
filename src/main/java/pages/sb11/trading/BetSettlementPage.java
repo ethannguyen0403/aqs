@@ -15,17 +15,17 @@ import static common.SBPConstants.SPORT_SIGN_MAP;
 public class BetSettlementPage extends WelcomePage {
     Label lblTitle = Label.xpath("//app-bet-settlement//div[@class='container-fluid cbody']//div[contains(@class,'main-box-header')]");
     public DropDownBox ddbStatus = DropDownBox.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[1]//div[contains(@class,'card-body')]/div[1]//select");
-    public DropDownBox ddbMatchDeate = DropDownBox.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[1]//div[contains(@class,'card-body')]/div[2]//select");
+    public DropDownBox ddbMatchDate = DropDownBox.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[1]//div[contains(@class,'card-body')]/div[2]//select");
     public TextBox txtFromDate = TextBox.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[1]//div[contains(@class,'card-body')]//div[contains(text(),'From Date')]//following::input[1]");
     public TextBox txtToDate = TextBox.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[1]//div[contains(@class,'card-body')]//div[contains(text(),'To Date')]//following::input[1]");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
     public TextBox txtAccStartWith = TextBox.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[1]//div[contains(@class,'card-body')]//div[contains(text(),'Acc Starts With')]//following::input[1]");
     public TextBox txtAccountCode = TextBox.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[1]//div[contains(@class,'card-body')]//div[contains(text(),'Account Code')]//following::input[1]");
-    public Button btnSearch = Button.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[1]//div[contains(@class,'card-body')]/div[4]//button[contains(@class,'icon-search-custom')]");
-    public Link lnkShowAccount = Link.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[1]//div[contains(@class,'card-body')]//span[contains(text(),'Show Account')]");
-    public Link lnkMorFilter = Link.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[1]//div[contains(@class,'card-body')]//span[contains(text(),'More Filters')]");
-    public Link lnkResetAllFilter = Link.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[1]//div[contains(@class,'card-body')]//span[contains(text(),'Reset All Filters')]");
+    public Button btnSearch = Button.xpath("//app-bet-settlement//div[@class='container-fluid cbody']//button[contains(@class,'icon-search-custom')]");
+    public Link lnkShowAccount = Link.xpath("//app-bet-settlement//div[@class='container-fluid cbody']//span[contains(text(),'Show Account')]");
+    public Link lnkMorFilter = Link.xpath("//app-bet-settlement//div[@class='container-fluid cbody']//span[contains(text(),'More Filters')]");
+    public Link lnkResetAllFilter = Link.xpath("//app-bet-settlement//div[@class='container-fluid cbody']//span[contains(text(),'Reset All Filters')]");
     public Button btnSettleSendSettlementEmail = Button.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[2]//div[contains(@class,' d-inline-block')]/div[2]//button[1]");
     public Button btnSendBetListEmail = Button.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[2]//div[contains(@class,' d-inline-block')]/div[2]//button[2]");
     public Button btnExportSelectedBet = Button.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[2]//div[contains(@class,' d-inline-block')]/div[2]//button[3]");
@@ -64,6 +64,9 @@ public class BetSettlementPage extends WelcomePage {
        ddbStatus.selectByVisibleText(status);
        if(!fromDate.isEmpty())
        {
+           if(ddbMatchDate.isDisplayed()) {
+               ddbMatchDate.selectByVisibleText("Specific Date");
+           }
            if(fromDate.equals(String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7")))){
                dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
            }
@@ -137,9 +140,19 @@ public class BetSettlementPage extends WelcomePage {
         return true;
     }
 
+    public String getWinlossAmountofOrder(Order order) throws InterruptedException {
+        int rowindex = getOrderIndex(order.getBetId());
+        String stake = tblOrder.getControlOfCell(1, colWinLoss,rowindex,null).getText();
+        if(!stake.isEmpty() || stake.equals("")){
+            //wait for the bet is settled in 3s
+            Thread.sleep(3000);
+        }
+        return stake;
+    }
+
     /**
-     *
-     * @param order
+     * Verify order in Bet Settlement page
+     * @param order order info
      */
     public void verifyOrderInfo(Order order){
         int rowindex = getOrderIndex(order.getBetId());

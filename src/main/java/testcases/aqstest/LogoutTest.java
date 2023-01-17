@@ -17,9 +17,10 @@ public class LogoutTest extends BaseCaseAQS {
         loginAQSPage.btnCopyRight.click();
 
         log("Verify that can logout successfully");
-        Assert.assertTrue(loginAQSPage.btnLogin.isDisplayed(), "FAILED! Login button does not display");
-        Assert.assertTrue(loginAQSPage.txtUsername.isDisplayed(),"FAILED! Username field does not display");
-        Assert.assertTrue(loginAQSPage.txtPassword.isDisplayed(),"FAILED! Password field does not display");
+        Assert.assertFalse(loginAQSPage.btnLogin.isDisplayed(), "FAILED! Login button does not display");
+        Assert.assertFalse(loginAQSPage.txtUsername.isDisplayed(),"FAILED! Username field does not display");
+        Assert.assertFalse(loginAQSPage.txtPassword.isDisplayed(),"FAILED! Password field does not display");
+        Assert.assertTrue(loginAQSPage.tabHome.isDisplayed(),"FAILED! Tab Home is displat");
         log("INFO: Executed completely");
     }
 }

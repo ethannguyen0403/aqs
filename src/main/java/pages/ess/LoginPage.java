@@ -11,6 +11,7 @@ public class LoginPage {
     public TextBox txtCode = TextBox.xpath("//input[@formcontrolname='code']");
     public Button btnLogin = Button.xpath("//button[contains(text(),'Login')]");
     public Button btnCopyRight = Button.xpath("//em[contains(@class, 'far fa-copyright')]");
+    public Label tabHome = Label.xpath("//app-login-camouflage//div[contains(@class,'justify-content-center')]/button[1]");
     private Label tabEurope = Label.xpath("//app-login-camouflage//div[contains(@class,'justify-content-center')]/button[2]");
     private Label lblClick = Label.xpath("//app-login-camouflage//carousel//div[@class='carousel-inner']/slide[2]//div[contains(@class,'content-text content-col-3')]/div[5]//span");
     private void openLoginForm(){
@@ -24,8 +25,8 @@ public class LoginPage {
         btnCopyRight.click();
     }
     public BetOrderPage login(String username,String password){
-        openLoginFormOld();
-//        openLoginForm();
+       // openLoginFormOld();
+      openLoginForm();
         txtUsername.sendKeys(username);
         txtPassword.sendKeys(password);
         if(txtCode.isDisplayed()){

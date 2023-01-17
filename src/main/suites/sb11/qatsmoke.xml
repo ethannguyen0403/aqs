@@ -16,11 +16,14 @@
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
         <parameter name="accountCode" value="ISA_ACC001"/>
+        <parameter name="emailAddress" value="isaacc001@yopmail.com"/>
+        <parameter name="clientName" value="Auto_Client"/>
         <parameter name="accountCurrency" value="HKD"/>
         <parameter name="clientCode" value ="QA Client (No.121 QA Client)"/>
         <groups>
             <run>
-                <include name="smoke1" />
+                <include name="smoke" />
+                <include name="smoke_qc" /> <!--For test case only run on QAT and STG-->
             </run>
         </groups>
 

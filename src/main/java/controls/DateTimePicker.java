@@ -131,7 +131,7 @@ public class DateTimePicker extends BaseElement {
             if(!row.isDisplayed()){
                 return ;
             }
-            for (int j=2; j <= tblCalender._columnNumber+1; j ++){
+            for (int j=1; j <= tblCalender._columnNumber+1; j ++){
                 Cell e = row.getCellByName(name, j);
                 if(Objects.nonNull(e)) {
 
