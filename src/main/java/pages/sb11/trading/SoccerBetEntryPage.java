@@ -16,10 +16,9 @@ public class SoccerBetEntryPage extends BetEntryPage {
     private Label lblTitle = Label.xpath("//app-bet-entry-soccer//app-common-header-sport//div[contains(@class,'main-box-header')]/div[1]/span");
     private Label lblGoto = Label.xpath("//app-bet-entry-soccer//app-common-header-sport//div[contains(@class,'main-box-header')]/div[2]/span");
     private TextBox txtAccCode = TextBox.id("account-code");
-    private DropDownBox ddpCompanyUnit = DropDownBox.id("company-unit");
+    private DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bet-entry-soccer//div[contains(@class,'filter-body')]/div[1]//select");
     private DropDownBox ddpLeague = DropDownBox.id("league");
     private DropDownBox ddpSearchBy = DropDownBox.xpath("//select[@class='form-control']");
-    private TextBox txtAccountCode = TextBox.id("account-code");
     private TextBox txtDate = TextBox.xpath("//app-bet-entry-soccer//input[@name='fromDate']");
     private Button btnShow = Button.xpath("//app-bet-entry-soccer//button[contains(@class,'btn-show')]");
     private DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
@@ -52,7 +51,9 @@ public class SoccerBetEntryPage extends BetEntryPage {
         if(!date.isEmpty()){
             dtpDate.selectDate(date,"dd/MM/yyyy");
         }
-        ddpLeague.selectByVisibleText(league);
+        if(!league.isEmpty()) {
+            ddpLeague.selectByVisibleText(league);
+        }
         btnShow.click();
         //waitPageLoad();
     }

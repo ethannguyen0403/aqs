@@ -68,9 +68,9 @@ public class BetEntryTest extends BaseCaseAQS {
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
 
         log("@Step Precondition: Get the first Event of Frist League of Today Soccer");
+        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
-        soccerBetEntryPage.showLeague(companyUnit,"",league);
 
         log("@Step Precondition: Define order to place bet");
         List<Order> lstOrder = new ArrayList<>();
@@ -94,7 +94,7 @@ public class BetEntryTest extends BaseCaseAQS {
         log("@Verify 1: User can place Soccer bets successfully with message 'The bet was placed successfully'");
         Assert.assertTrue(soccerBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+soccerBetEntryPage.getSuccessMessage());
 
-        log("@Step 7: Click 'Bets' at SPB column of event at step 5 > observe");
+        log("@Step 7: Click 'Bets' at SPB column of event at step 5 > observe" +order.getBetId());
         BetListPopup betListPopup = soccerBetEntryPage.openBetList(eventInfo.getHome());
 
         log("@Verify 2: Bets information is displayed correctly in Bet List");
@@ -104,7 +104,7 @@ public class BetEntryTest extends BaseCaseAQS {
 
         log("@Post-Condition: Cancel Pending bet "+ lstOrder.get(0).getBetId() +" in Confirm Bet page");
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date","","",accountCode);
+        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,"",accountCode);
         confirmBetsPage.deleteOrder(lstOrder.get(0),true);
 
         log("INFO: Executed completely");
@@ -259,9 +259,10 @@ public class BetEntryTest extends BaseCaseAQS {
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
 
         log("@Step Precondition: Get the first Event of Frist League of Today Soccer");
+        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
+        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
-        soccerBetEntryPage.showLeague(companyUnit,"",league);
 
         log("@Step Precondition: Define order to place bet");
         List<Order> lstOrder = new ArrayList<>();
@@ -298,7 +299,7 @@ public class BetEntryTest extends BaseCaseAQS {
 
         log("@Post-Condition: Cancel Pending bet "+ lstOrder.get(0).getBetId() + " + " + lstOrder.get(1).getBetId()+" in Confirm Bet page");
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date","","",accountCode);
+        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,"",accountCode);
         confirmBetsPage.deleteSelectedOrders(lstOrder,true);
 
         log("INFO: Executed completely");
@@ -316,6 +317,7 @@ public class BetEntryTest extends BaseCaseAQS {
 
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Trading > Bet Entry");
+        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
 
@@ -323,9 +325,9 @@ public class BetEntryTest extends BaseCaseAQS {
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
 
         log("@Step Precondition: Get the first Event of Frist League of Today Soccer");
+        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
-        soccerBetEntryPage.showLeague(companyUnit,"",league);
 
         log("@Step Precondition: Define order to place bet");
         List<Order> lstOrder = new ArrayList<>();
@@ -363,7 +365,7 @@ public class BetEntryTest extends BaseCaseAQS {
 
         log("@Post-Condition: Cancel Pending bet "+ lstOrder.get(0).getBetId() + " + " + lstOrder.get(1).getBetId()+" in Confirm Bet page");
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date","","",accountCode);
+        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,"",accountCode);
         confirmBetsPage.deleteSelectedOrders(lstOrder,true);
         log("INFO: Executed completely");
     }
@@ -381,6 +383,7 @@ public class BetEntryTest extends BaseCaseAQS {
 
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Trading > Bet Entry");
+        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
 
@@ -388,9 +391,9 @@ public class BetEntryTest extends BaseCaseAQS {
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
 
         log("@Step Precondition: Get the first Event of First League of Today Soccer");
+        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
-        soccerBetEntryPage.showLeague(companyUnit,"",league);
 
         log("@Step Precondition: Define order to place bet");
         Order order = new Order.Builder()
@@ -448,7 +451,7 @@ public class BetEntryTest extends BaseCaseAQS {
 
         log("@Post-Condition: Cancel Pending bet "+ order.getBetId() +" in Confirm Bet page");
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date","","",accountCode);
+        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,"",accountCode);
         confirmBetsPage.deleteOrder(order,true);
 
         log("INFO: Executed completely");
