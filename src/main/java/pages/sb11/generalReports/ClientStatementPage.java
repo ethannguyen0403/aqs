@@ -6,8 +6,11 @@ import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.ClientSummaryPopup;
+
+import java.util.ArrayList;
 
 public class ClientStatementPage extends WelcomePage {
     int colTotal = 10;
@@ -178,5 +181,16 @@ public class ClientStatementPage extends WelcomePage {
             i = i+1;
         }
         return null;
+    }
+
+    public boolean verifyValueIsOpposite(ArrayList lstActual, ArrayList lstExpect) {
+        String reverseVal;
+        boolean isOpposite = false;
+            for (int i = 0; i < lstActual.size(); i++) {
+                reverseVal = reverseValue(lstActual.get(i).toString());
+                Assert.assertEquals(reverseVal,lstExpect.get(i).toString());
+                isOpposite = true;
+            }
+            return isOpposite;
     }
 }
