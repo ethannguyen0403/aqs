@@ -19,16 +19,11 @@
         <parameter name="emailAddress" value="isaacc001@yopmail.com"/>
         <parameter name="clientName" value="Auto_Client"/>
         <parameter name="accountCurrency" value="HKD"/>
-        <parameter name="lgDebitAcc" value="AutoExpenditureDebit"/>
-        <parameter name="lgCreditAcc" value="AutoExpenditureCredit"/>
-        <parameter name="ledgerGroup" value="Auto Ledger Group"/>
-        <parameter name="lgDebitCur" value="AUD"/>
-        <parameter name="lgCreditCur" value="AUD"/>
         <parameter name="clientCode" value ="QA Client (No.121 QA Client)"/>
         <groups>
             <run>
                 <include name="smoke" />
-                <include name="smoke_qc2" /> <!--For test case only run on QAT and STG-->
+                <include name="smoke_qc" /> <!--For test case only run on QAT and STG-->
             </run>
         </groups>
 

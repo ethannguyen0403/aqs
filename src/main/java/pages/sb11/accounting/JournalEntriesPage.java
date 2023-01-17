@@ -41,13 +41,13 @@ public class JournalEntriesPage extends WelcomePage {
 
     public void addLedgerTransaction(Transaction trans, boolean isSubmit){
         filterLedger(true, "Ledger", trans.getLedgerDebit(), true);
-        double debitBalance = Double.parseDouble(tbDebit.getControlOfCell(1, colBalance, 1, null).getText().trim());
+        double debitBalance = Math.abs(Double.parseDouble(tbDebit.getControlOfCell(1, colBalance, 1, null).getText().trim()));
         System.out.println("Debit Balance is " + debitBalance);
         trans.setDebitBalance(debitBalance);
         txtDebitAmount.sendKeys(String.format("%.3f",trans.getAmountDebit()));
 
         filterLedger(false, "Ledger", trans.getLedgerCredit(), true);
-        double creditBalance = Double.parseDouble(tbCredit.getControlOfCell(1, colBalance, 1, null).getText().trim());
+        double creditBalance = Math.abs(Double.parseDouble(tbCredit.getControlOfCell(1, colBalance, 1, null).getText().trim()));
         System.out.println("Credit Balance is " + creditBalance);
         trans.setCreditBalance(creditBalance);
         txtCreditAmount.sendKeys(String.format("%.3f",trans.getAmountCredit()));

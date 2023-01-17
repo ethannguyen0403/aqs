@@ -12,11 +12,12 @@ import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.LedgerDetailPopup;
 
 import static common.SBPConstants.*;
+import static testcases.BaseCaseAQS.welcomePage;
 
 public class LedgerStatementPage extends WelcomePage {
     public DropDownBox ddCompanyUnit = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Company Unit')]//following::select[1]");
     public DropDownBox ddFinancialYear = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Financial Year')]//following::select[1]");
-    public DropDownBox ddLedgerGroup = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Ledger Group')]//following::select[1]");
+    public DropDownBox ddLedgerGroup = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Detail Type')]//following::select[1]");
     public DropDownBox ddLedgerName = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Account Type')]//following::select[1]");
     public TextBox txtFromDate = TextBox.name("fromDate");
     public TextBox txtToDate = TextBox.name("toDate");
@@ -28,6 +29,7 @@ public class LedgerStatementPage extends WelcomePage {
     int colCur = 3;
     int colAmountORG = 4;
     int colRunBalORG = 5;
+    int colRunBalCTORG = 6;
     int colAmountGBP = 8;
     int colRunBalGBP = 9;
     public Table tbLedger = Table.xpath("//app-ledger-statement//table",totalCol);
@@ -73,23 +75,26 @@ public class LedgerStatementPage extends WelcomePage {
         String amountORG = tbLedger.getControlOfCell(1, colAmountORG, rowIndex, null).getText().trim();
         String amountGBP = tbLedger.getControlOfCell(1, colAmountGBP, rowIndex, null).getText().trim();
         String runBalORG = tbLedger.getControlOfCell(1, colRunBalORG,rowIndex,null).getText().trim();
+        String runBalCTORG = tbLedger.getControlOfCell(1,colRunBalCTORG,rowIndex,null).getText().trim();
         String runBalGBP = tbLedger.getControlOfCell(1, colRunBalGBP,rowIndex,null).getText().trim();
 
         if (isDebit){
             Assert.assertTrue(ledgerAccount.contains(transaction.getLedgerDebit()), "Failed! Account code is incorrect");
             Assert.assertEquals(amountORG, String.format("%.2f", transaction.getAmountDebit()), "Failed! Credit/Debit ORG amount is incorrect");
-            Assert.assertEquals(runBalORG, String.format("%.2f", transaction.getDebitBalance()), "Failed! Debit Balance ORG amount is incorrect");
+            Assert.assertEquals(runBalORG, String.format("%.2f", transaction.getDebitBalance() + transaction.getAmountDebit()), "Failed! Debit Balance ORG amount is incorrect");
+            Assert.assertEquals(runBalCTORG, String.format("%.2f", transaction.getDebitBalance() + transaction.getAmountDebit()), "Failed! Debit Balance CT ORG amount is incorrect");
             double amountDebitGBP = transaction.getAmountDebit() * CURRENCY_RATE.get(transaction.getLedgerDebitCur());
-            double runDebitGBP = transaction.getDebitBalance() * CURRENCY_RATE.get(transaction.getLedgerDebitCur());
+            double runDebitGBP = (transaction.getDebitBalance() + transaction.getAmountDebit()) * CURRENCY_RATE.get(transaction.getLedgerDebitCur());
             Assert.assertEquals(amountGBP, String.format("%.2f", amountDebitGBP), "Failed! Credit/Debit GBP amount is incorrect");
             Assert.assertEquals(runBalGBP, String.format("%.2f", runDebitGBP), "Failed! Running Balance GBP amount is incorrect");
             Assert.assertEquals(cur, transaction.getLedgerDebitCur(), "Failed! Debit Currency is incorrect is in correct");
         } else {
             Assert.assertTrue(ledgerAccount.contains(transaction.getLedgerCredit()), "Failed! Account code is incorrect");
             Assert.assertEquals(amountORG, String.format("%.2f", transaction.getAmountCredit()), "Failed! Credit/Debit ORG amount is incorrect");
-            Assert.assertEquals(runBalORG, String.format("%.2f", transaction.getCreditBalance()), "Failed! Credit Balance ORG amount is incorrect");
+            Assert.assertEquals(runBalORG, String.format("%.2f", transaction.getCreditBalance() + transaction.getAmountCredit()), "Failed! Credit Balance ORG amount is incorrect");
+            Assert.assertEquals(runBalCTORG, String.format("%.2f", transaction.getCreditBalance() + transaction.getAmountCredit()), "Failed! Debit Balance CT ORG amount is incorrect");
             double amountCreditGBP = transaction.getAmountCredit() * CURRENCY_RATE.get(transaction.getLedgerCreditCur());
-            double runCreditGBP = transaction.getCreditBalance() * CURRENCY_RATE.get(transaction.getLedgerCreditCur());
+            double runCreditGBP = (transaction.getCreditBalance() + transaction.getAmountCredit()) * CURRENCY_RATE.get(transaction.getLedgerCreditCur());
             Assert.assertEquals(amountGBP, String.format("%.2f", amountCreditGBP), "Failed! Credit/Debit ORG amount is incorrect");
             Assert.assertEquals(runBalGBP, String.format("%.2f", runCreditGBP), "Failed! Credit Balance ORG amount is incorrect");
             Assert.assertEquals(cur, transaction.getLedgerCreditCur(), "Failed! Credit Currency is incorrect is in correct");
@@ -97,11 +102,20 @@ public class LedgerStatementPage extends WelcomePage {
         return transaction;
     }
 
-    public LedgerDetailPopup openLedgerDetail (String ledgername){
-        int rowIndex = getLedgerRowIndex(ledgername);
+    public LedgerDetailPopup openLedgerDetail (String ledgerName){
+        int rowIndex = getLedgerRowIndex(ledgerName);
         int colIndex = colLedger;
         tbLedger.getControlOfCell(1,colIndex, rowIndex,"a").click();
         return new LedgerDetailPopup();
+    }
+
+    public double getCreditDebitAmount(String ledgerName){
+        int rowIndex = getLedgerRowIndex(ledgerName);
+        String amountCreDeb = tbLedger.getControlOfCell(1, colAmountORG, rowIndex, null).getText().trim();
+        if (amountCreDeb.isEmpty()){
+            amountCreDeb = String.valueOf(0);
+        }
+        return Double.parseDouble(amountCreDeb);
     }
 
     private int getLedgerRowIndex(String ledgername){
@@ -130,7 +144,7 @@ public class LedgerStatementPage extends WelcomePage {
                 System.out.println("The ledger group "+ledgerGroup+" does not display in the list");
                 return 0;
             }
-            if(lblLedgerGroup.getText().equalsIgnoreCase(ledgerGroup))
+            if(lblLedgerGroup.getText().contains(ledgerGroup))
                 return i;
             i = i +1;
         }
