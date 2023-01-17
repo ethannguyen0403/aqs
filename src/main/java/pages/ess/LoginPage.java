@@ -24,8 +24,8 @@ public class LoginPage {
         btnCopyRight.click();
     }
     public BetOrderPage login(String username,String password){
-        openLoginFormOld();
-//        openLoginForm();
+       // openLoginFormOld();
+      openLoginForm();
         txtUsername.sendKeys(username);
         txtPassword.sendKeys(password);
         if(txtCode.isDisplayed()){
