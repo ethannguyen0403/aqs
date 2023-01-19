@@ -17,6 +17,8 @@ import utils.testraildemo.TestRails;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import static common.SBPConstants.*;
 
@@ -151,12 +153,6 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "588")
     public void ClientStatementTC_588(String clientCode) throws InterruptedException {
         clientCode = superMasterCode + clientCode;
-        String reversedOpeningVal;
-        String reversedWinLossVal;
-        String reversedCommissionVal;
-        String reversedRecPayVal;
-        String reversedMovementVal;
-        String reversedClosingVal;
 
         log("@title: Validate values are the same but opposite each other when viewing by Company Point and Client Point");
         log("@Step 1: Login with valid account");
@@ -175,12 +171,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         recPayVal = clientPage.getSuperCellValue(clientPage.colRecPay).replace(",","");
         movementVal = clientPage.getSuperCellValue(clientPage.colMovement).replace(",","");
         closingVal = clientPage.getSuperCellValue(clientPage.colClosing).replace(",","");
-        reversedOpeningVal = clientPage.reverseValue(openingVal);
-        reversedWinLossVal = clientPage.reverseValue(winLossVal);
-        reversedCommissionVal = clientPage.reverseValue(commissionVal);
-        reversedRecPayVal = clientPage.reverseValue(recPayVal);
-        reversedMovementVal = clientPage.reverseValue(movementVal);
-        reversedClosingVal = clientPage.reverseValue(closingVal);
+        ArrayList <String> lstActual = new ArrayList<>();
+        Collections.addAll(lstActual,openingVal,winLossVal,commissionVal,recPayVal,movementVal,closingVal);
 
         clientPage.filter("Company Point", companyUnit, FINANCIAL_YEAR, clientCode, "","");
         openingVal = clientPage.getSuperCellValue(clientPage.colOpening).replace(",","");
@@ -189,13 +181,10 @@ public class ClientStatementTest extends BaseCaseAQS {
         recPayVal = clientPage.getSuperCellValue(clientPage.colRecPay).replace(",","");
         movementVal = clientPage.getSuperCellValue(clientPage.colMovement).replace(",","");
         closingVal = clientPage.getSuperCellValue(clientPage.colClosing).replace(",","");
+        ArrayList <String> lstExpected = new ArrayList<>();
+        Collections.addAll(lstExpected,openingVal,winLossVal,commissionVal,recPayVal,movementVal,closingVal);
 
-        Assert.assertEquals(openingVal,reversedOpeningVal,"FAILED! Closing Balance is not calculated correctly, actual:"+openingVal+" and expected:"+reversedOpeningVal);
-        Assert.assertEquals(winLossVal,reversedWinLossVal,"FAILED! Closing Balance is not calculated correctly, actual:"+winLossVal+" and expected:"+reversedWinLossVal);
-        Assert.assertEquals(commissionVal,reversedCommissionVal,"FAILED! Closing Balance is not calculated correctly, actual:"+commissionVal+" and expected:"+reversedCommissionVal);
-        Assert.assertEquals(recPayVal,reversedRecPayVal,"FAILED! Closing Balance is not calculated correctly, actual:"+recPayVal+" and expected:"+reversedRecPayVal);
-        Assert.assertEquals(movementVal,reversedMovementVal,"FAILED! Closing Balance is not calculated correctly, actual:"+movementVal+" and expected:"+reversedMovementVal);
-        Assert.assertEquals(closingVal,reversedClosingVal,"FAILED! Closing Balance is not calculated correctly, actual:"+closingVal+" and expected:"+reversedClosingVal);
+        Assert.assertTrue(clientPage.verifyValueIsOpposite(lstActual,lstExpected),"FAILED! Closing Balance is not calculated correctly");
         log("INFO: Executed completely");
     }
 
