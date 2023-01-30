@@ -42,7 +42,7 @@ public class WelcomePage extends Header{
             createEventOfSport(event);
         }else {
             if(!eventInfo.getHome().equals(event.getHome())){
-                createEventOfSport (event);
+                createEventOfSport(event);
             }
         }
         return GetSoccerEventUtils.setEventID(event);

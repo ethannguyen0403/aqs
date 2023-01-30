@@ -62,18 +62,20 @@ public class BetSettlementPage extends WelcomePage {
      */
     public void filter(String status, String fromDate, String toDate, String accStartWith, String accountCode){
        ddbStatus.selectByVisibleText(status);
+       String currentFromDate = txtFromDate.getAttribute("value");
+       String currentToDate = txtFromDate.getAttribute("value");
        if(!fromDate.isEmpty())
        {
            if(ddbMatchDate.isDisplayed()) {
                ddbMatchDate.selectByVisibleText("Specific Date");
            }
-           if(fromDate.equals(String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7")))){
+           if(!fromDate.equals(currentFromDate)){
                dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
            }
        }
        if(!toDate.isEmpty())
        {
-           if(toDate.equals(String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7")))){
+           if(!toDate.equals(currentToDate)){
                dtpToDate.selectDate(toDate,"dd/MM/yyyy");
            }
        }
@@ -140,14 +142,18 @@ public class BetSettlementPage extends WelcomePage {
         return true;
     }
 
-    public String getWinlossAmountofOrder(Order order) throws InterruptedException {
+    public String getWinlossAmountofOrder(Order order)  {
         int rowindex = getOrderIndex(order.getBetId());
-        String stake = tblOrder.getControlOfCell(1, colWinLoss,rowindex,null).getText();
-        if(!stake.isEmpty() || stake.equals("")){
+        String winloss = tblOrder.getControlOfCell(1, colWinLoss,rowindex,null).getText();
+        if(winloss.equals("")){
             //wait for the bet is settled in 3s
-            Thread.sleep(3000);
+            try {
+                Thread.sleep(20000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        return stake;
+        return winloss;
     }
 
     /**
@@ -217,6 +223,8 @@ public class BetSettlementPage extends WelcomePage {
         confirmPopupControl.confirmYes();
     }
     public void sendBetListEmail(Order order){
+        //to wait the order is have win loss result
+        getWinlossAmountofOrder(order);
         selectOrder(order);
         btnSendBetListEmail.scrollToTop();
         btnSendBetListEmail.click();

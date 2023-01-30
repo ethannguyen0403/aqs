@@ -1,10 +1,14 @@
 package pages.sb11.sport;
 
 import com.paltech.element.common.*;
+import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Event;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import pages.sb11.control.ConfirmPopupControl;
+import pages.sb11.popup.ConfirmPopup;
 import pages.sb11.trading.CricketBetEntryPage;
 import pages.sb11.trading.SoccerBetEntryPage;
 
@@ -28,15 +32,27 @@ public class EventSchedulePage extends WelcomePage {
     Table tblEvent = Table.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//table",totalTblEventCol);
     Button btnAdd = Button.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//div[contains(@class,'modal-footer')]//button[contains(@class,'btn-show')][1]");
     Button btnSubmit = Button.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//div[contains(@class,'modal-footer')]//button[contains(@class,'btn-show')][2]");
-    TextBox txtEventNumbe = TextBox.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//div[contains(@class,'modal-footer')]//input");
+    TextBox txtEventNumber = TextBox.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//div[contains(@class,'modal-footer')]//input");
     Label lblClear = Label.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//div[contains(@class,'modal-footer')]//span[contains(@class,'text-clear')]");
     RadioButton rbHome = RadioButton.xpath("//app-schedule-list//div[@class='league-header']//input[@id='homeTeamCheck']");
     RadioButton rbAway = RadioButton.xpath("//app-schedule-list//div[@class='league-header']//input[@id='homeTeamCheck']");
-    Link lnkShowLeagure = Link.xpath("//app-schedule-list//div[@class='league-header']//span[contains(@class,'text-show-league')]");
+    Link lnkShowLeague = Link.xpath("//app-schedule-list//div[@class='league-header']//span[contains(@class,'text-show-league')]");
     TextBox txtScheduleListDateTime = TextBox.xpath("//app-schedule-list//div[@class='league-header']//input[contains(@class,'league-date')]");
+    TextBox txtTeam = TextBox.xpath("//app-schedule-list//div[@class='card-body league-card-body']//input[contains(@class,'team-name-input')]");
     DateTimePicker dtpScheduleListDateTime= DateTimePicker.xpath(txtScheduleListDateTime,"//bs-days-calendar-view");
     Button btnShowSchedule = Button.xpath("//app-schedule-list//div[@class='league-header']//button[contains(@class,'show-btn-league')]");
     int totalEventScheduleColumn = 11;
+    int colNum =1;
+    int coli = 2;
+    int colDate = 3;
+    int colHomeTeamEventTbl= 4;
+    int colAwayTeamEventTbl= 5;
+    int colTimeEventTbl= 6;
+    int colLiveEventTbl= 7;
+    int colNEventTbl= 8;
+    int colTVEventTbl= 9;
+    int colStatusEventTbl= 10;
+    int colActionEventTbl = 11;
     Table tblEventBody = Table.xpath("//app-schedule-list//div[contains(@class,'event-body')]//table",totalEventScheduleColumn);
     Table tblLeagueBody = Table.xpath("//app-schedule-list//div[contains(@class,'league-body')]//table",totalEventScheduleColumn);
     public void goToSport(String sport){
@@ -61,6 +77,13 @@ public class EventSchedulePage extends WelcomePage {
         fillEventInfo(event,1);
         btnSubmit.click();
     }
+    public void deleteEvent(Event event){
+        showScheduleList(true, event.getHome(),event.getEventDate());
+        int index = getEventIndex(event);
+        Icon.xpath(tblEventBody.getxPathOfCell(1,colActionEventTbl,index,"i[contains(@class,'fa-times-circle')]")).click();
+        ConfirmPopup popup = new ConfirmPopup();
+        popup.confirm(true);
+    }
 
     private void fillEventInfo(Event event, int rowIndex){
         DropDownBox ddpHomeTeam = DropDownBox.xpath(tblEvent.getxPathOfCell(1,colHomeTeam,rowIndex,"select"));
@@ -77,6 +100,68 @@ public class EventSchedulePage extends WelcomePage {
         if(cbN.isSelected() != event.isN())
             cbN.click();
         ddpStatus.selectByVisibleText(event.getEventStatus());
+    }
+
+    public void showScheduleList(boolean isHomeTeam, String teamName, String date){
+        if (isHomeTeam)
+            rbHome.click();
+        else
+            rbAway.click();
+        if(!teamName.isEmpty()){
+            txtTeam.sendKeys(teamName);
+        }
+        if(!date.isEmpty()){
+            if(date.equals(String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7")))){
+                dtpScheduleListDateTime.selectDate(date,"dd/MM/yyyy");
+            }
+        }
+        btnShowSchedule.click();
+    }
+
+    private int getEventIndex(Event event){
+        int leagueIndex = tblEventBody.getRowIndexContainValue(event.getLeagueName(),colN,null);
+        if(leagueIndex==0){
+            return 0;
+        }
+        int index = leagueIndex +1;
+        while (true){
+
+        }
+    }
+    public boolean verifyEventInSchedulelist(Event event){
+        int leagueIndex = tblEventBody.getRowIndexContainValue(event.getLeagueName(),colN,null);
+        Assert.assertTrue( leagueIndex!=0,"Failed! Not found league name "+event.getLeagueName()+" int Schedule list");
+        int index = leagueIndex +1;
+        TextBox txtDate ;
+        TextBox txtTime ;
+        while (true){
+            txtDate = TextBox.xpath(tblEventBody.getxPathOfCell(1,colDate,index,"input"));
+            if(!txtDate.isDisplayed())
+            {
+                return false;
+            }
+            String time  = TextBox.xpath(tblEventBody.getxPathOfCell(1,colTimeEventTbl,index,"input")).getAttribute("value").trim();
+            String date = txtDate.getAttribute("value").trim();
+            if(!date.equals( event.getEventDate()) || !time.equals(event.getOpenTime())){
+                index = index + 1;
+                continue;
+            }
+            else {
+                Assert.assertEquals(date, event.getEventDate(),"Failed! Event Date is incorrect");
+                Assert.assertEquals(time, event.getOpenTime(),"Failed!Time is incorrect");
+                String homeTeam = Label.xpath(tblEventBody.getxPathOfCell(1,colHomeTeamEventTbl,index,null)).getText();
+                String awayTeam = Label.xpath(tblEventBody.getxPathOfCell(1,colAwayTeamEventTbl,index,null)).getText();
+                boolean isLive = CheckBox.xpath(tblEventBody.getxPathOfCell(1,colLiveEventTbl,index,"input")).isSelected();
+                boolean isN = CheckBox.xpath(tblEventBody.getxPathOfCell(1,colLiveEventTbl,index,"input")).isSelected();
+                String status = DropDownBox.xpath(tblEventBody.getxPathOfCell(1, colStatusEventTbl,index,"select")).getFirstSelectedOption();
+                Assert.assertEquals(homeTeam,event.getHome(),"Failed! Home Team is incorrect");
+                Assert.assertEquals(awayTeam,event.getAway(),"Failed! Home Team is incorrect");
+                Assert.assertEquals(isLive,event.isLive(),"FAiled! Event is incorrect");
+                Assert.assertEquals(isN, event.isN(),"Failed, N is incorrect");
+                Assert.assertEquals(status,event.getEventStatus(),"Failed! Status is incorrect");
+            }
+            index = index + 1;
+        }
     }
 
 }

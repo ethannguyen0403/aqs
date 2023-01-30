@@ -4,9 +4,7 @@ import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
-import objects.Order;
-import pages.sb11.Header;
-import pages.sb11.trading.popup.ConfirmPopup;
+import pages.sb11.popup.ConfirmPopup;
 
 public class ManualBetBetEntryPage extends BetEntryPage {
     Label lblTitle = Label.xpath("//app-bet-entry-mixed-sport//div[contains(@class,'main-box-header')]/div[1]/span");

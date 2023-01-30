@@ -40,6 +40,11 @@ public class JournalEntriesPage extends WelcomePage {
     }
 
     public void addLedgerTransaction(Transaction trans, boolean isSubmit){
+        //TODO: Assign Johnny: Should revise the input parameters of this function as following step:
+        /* a transaction should include object: Debit(AccountType), Credit(AccountType), Remark(String), Date(String), Transaction Type(String)
+        AccountType is a Parent Object. Ledger, Bookie, Client will be extent AccountType Object
+         */
+
         filterLedger(true, "Ledger", trans.getLedgerDebit(), true);
         double debitBalance = Math.abs(Double.parseDouble(tbDebit.getControlOfCell(1, colBalance, 1, null).getText().trim()));
         System.out.println("Debit Balance is " + debitBalance);
@@ -66,6 +71,8 @@ public class JournalEntriesPage extends WelcomePage {
     private void filterLedger (boolean isDebit,String fromType, String ledgername, boolean isAdd){
         if (isDebit){
             ddDebitFrom.selectByVisibleContainsText(fromType);
+            ddDebitLedger.getNumberOfItems();
+            ddDebitLedger.getOptions();
             ddDebitLedger.selectByVisibleContainsText(ledgername);
             if(isAdd){
                 btnDebitAdd.click();

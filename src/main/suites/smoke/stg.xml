@@ -18,6 +18,7 @@
         <groups>
             <run>
                 <include name="smoke" />
+                <include name="smoke_qc0" />
             </run>
         </groups>
 

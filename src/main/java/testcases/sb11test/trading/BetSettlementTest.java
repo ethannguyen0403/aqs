@@ -190,7 +190,7 @@ public class BetSettlementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="204")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetSettlement_TC204(String accountCode,String accountCurrency){
         log("@title: Validate that user can send Bets List email successfully");
@@ -204,7 +204,8 @@ public class BetSettlementTest extends BaseCaseAQS {
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
-Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,"",league);
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
@@ -219,19 +220,19 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         order = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder).get(0);
 
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date","","",accountCode);
+        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,"",accountCode);
         confirmBetsPage.confirmBet(order);
 
         log("@Step 2:Navigate to Trading > Bet Settlement > Search bet of the account at precondition in Confirmed mode");
         BetSettlementPage betSettlementPage  = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed","","","",accountCode);
+        betSettlementPage.filter("Confirmed",date,"","",accountCode);
 
         log("@Step 3.Select the bet and click Send Bet List Email > observe");
         betSettlementPage.sendBetListEmail(order);
 
         log("@Verify 1 .User can send Bet List email successfully with message 'Statement Email has been sent to your mail box'");
-        Assert.assertTrue(soccerBetEntryPage.getSuccessMessage().contains("Statement Email has been sent to your mail box"),
-                "Failed! Success message after place bet is incorrect Actual is "+soccerBetEntryPage.getSuccessMessage());
+        Assert.assertTrue(betSettlementPage.getSuccessMessage().contains("Statement Email has been sent to your mail box"),
+                "Failed! Success message after place bet is incorrect Actual is "+betSettlementPage.getSuccessMessage());
 
         log("@Post-condition: delete confirm bet");
         betSettlementPage.deleteOrder(order);
