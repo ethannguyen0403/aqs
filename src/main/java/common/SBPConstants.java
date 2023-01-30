@@ -13,6 +13,8 @@ public class SBPConstants {
     public final static String ACCOUNTING = "Accounting";
     public final static String CHART_OF_ACCOUNT = "Chart Of Account";
     public final static String GENERAL_REPORTS = "General Reports";
+    public final static String SOCCER = "Soccer";
+    public final static String PT_RISK_CONTROL = "PT Risk Control";
     public final static String LEDGER_STATEMENT = "Ledger Statement";
     public final static String JOURNAL_ENTRIES = "Journal Entries";
     public final static String BET_ENTRY = "Bet Entry";
