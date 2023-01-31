@@ -13,6 +13,7 @@ import pages.sb11.trading.popup.SoccerBetSlipPopup;
 import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 
 import java.util.List;
+import java.util.Random;
 
 public class SoccerBetEntryPage extends BetEntryPage {
     private Label lblTitle = Label.xpath("//app-bet-entry-soccer//app-common-header-sport//div[contains(@class,'main-box-header')]/div[1]/span");
@@ -253,6 +254,20 @@ public class SoccerBetEntryPage extends BetEntryPage {
         try {
             // 0 Select, 1 All => get league from index = 2
             return lstLeague.get(2);
+        }catch (Exception e){
+            System.out.println("There is NO League on day "+ txtDate.getText());
+            return null;
+        }
+    }
+
+    public String getRandomLeague(){
+        List<String> lstLeague = getListLeague();
+        try {
+            Random rd = new Random();
+            int lstNumb = lstLeague.size();
+            String league = lstLeague.get(rd.nextInt(lstNumb-2)+2);
+            // 0 Select, 1 All => get league from index = 2
+            return league;
         }catch (Exception e){
             System.out.println("There is NO League on day "+ txtDate.getText());
             return null;
