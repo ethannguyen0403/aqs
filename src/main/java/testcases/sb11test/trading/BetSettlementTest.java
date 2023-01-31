@@ -140,7 +140,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("@title: Validate that user can export file successfully");
         log("Precondition: User has permission to access Bet Settlement page \n" +
                 "Having an account with Confirmed bet settle Win/Lose");
-//        String dowloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "Bet_Settlement.xlsx";
+        String dowloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "Bet_Settlement.xlsx";
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
 
@@ -176,14 +176,14 @@ public class BetSettlementTest extends BaseCaseAQS {
         betSettlementPage.exportSelectedBEt(order);
 
         log("@Verify: User can export file successfully with exported file name: Bet_Settlement");
-//        Assert.assertTrue(FileUtils.doesFileNameExist(dowloadPath), "Failed to download Expected document");
-//
-//        log("@Post-condition: delete download file");
-//        try {
-//            FileUtils.removeFile(dowloadPath);
-//        } catch (IOException e) {
-//            log(e.getMessage());
-//        }
+        Assert.assertTrue(FileUtils.doesFileNameExist(dowloadPath), "Failed to download Expected document");
+
+        log("@Post-condition: delete download file");
+        try {
+            FileUtils.removeFile(dowloadPath);
+        } catch (IOException e) {
+            log(e.getMessage());
+        }
         log("@Post-condition: delete confirm bet");
         betSettlementPage.deleteOrder(order);
         log("INFO: Executed completely");
