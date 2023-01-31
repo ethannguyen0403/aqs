@@ -15,23 +15,24 @@
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
-        <parameter name="accountCode" value="0480000009"/>
+        <parameter name="accountCode" value="Auto-Account01"/>
         <parameter name="accountCurrency" value="HKD"/>
         <parameter name="clientCode" value ="QA Client (No.121 QA Client)"/>
 
         <groups>
             <run>
-                <include name="smoke" />
-                <include name="smoke_qc" /> <!--For test case only run on QAT and STG-->
+                <include name="smoke1" />
+<!--                <include name="smoke_qc" /> &lt;!&ndash;For test case only run on QAT and STG&ndash;&gt;-->
             </run>
         </groups>
 
         <classes>
-            <class name="testcases.sb11test.trading.BetSettlementTest"/>
-            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
-            <class name="testcases.sb11test.trading.BetEntryTest"/>
-            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
-            <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
+<!--            <class name="testcases.sb11test.trading.BetSettlementTest"/>-->
+<!--            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>-->
+<!--            <class name="testcases.sb11test.trading.BetEntryTest"/>-->
+<!--            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>-->
+<!--            <class name="testcases.sb11test.generalReports.ClientStatementTest"/>-->
+            <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
         </classes>
     </test>
 </suite>

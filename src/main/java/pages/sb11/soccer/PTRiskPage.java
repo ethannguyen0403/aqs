@@ -57,6 +57,10 @@ public class PTRiskPage extends WelcomePage {
         clientCode = out[1].replace(" ","");
         while (true) {
             Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div[%s]//label[1]",i));
+            if (!lblSelectValue.isDisplayed()) {
+                System.out.println("Cannot find out client in list of Client: " + clientCode);
+                break;
+            }
             if(lblSelectValue.getText().replace(" ","").equalsIgnoreCase(clientCode)) {
                 lblSelectValue.click();
                 btnSetSelection.click();
@@ -70,6 +74,10 @@ public class PTRiskPage extends WelcomePage {
         int i = 1;
         while (true) {
             Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div[%s]//label[1]",i));
+            if (!lblSelectValue.isDisplayed()) {
+                System.out.println("Cannot find out league in list of Leagues: " + leagueName);
+                break;
+            }
             if(lblSelectValue.getText().equalsIgnoreCase(leagueName)) {
                 lblSelectValue.click();
                 btnSetSelection.click();
@@ -86,7 +94,7 @@ public class PTRiskPage extends WelcomePage {
         return new PTRiskBetListPopup();
     }
 
-    public boolean verifyForecastCorrect(String fullWinVal, String haflWinVal, String fullLoseVal, boolean isHDP) {
+    public boolean isForecastCorrect(String fullWinVal, String haflWinVal, String fullLoseVal, boolean isHDP) {
         boolean forecastCorrect = false;
         int rowTotalScoreCol = 13;
         if (isHDP) {

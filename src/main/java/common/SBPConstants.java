@@ -25,6 +25,7 @@ public class SBPConstants {
     public final static String BET_SETTLEMENT = "Bet Settlement";
     public final static String PLACE_BET_SUCCESS_MSG ="The bet was placed successfully";
     public final static String FINANCIAL_YEAR = "Year 2022-2023";
+    public final static String COMPANY_UNIT = "Kastraki Limited";
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
         {
