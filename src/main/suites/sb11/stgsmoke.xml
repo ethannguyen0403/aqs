@@ -22,16 +22,16 @@
         <groups>
             <run>
                 <include name="smoke1" />
-<!--                <include name="smoke_qc" /> &lt;!&ndash;For test case only run on QAT and STG&ndash;&gt;-->
+                <include name="smoke_qc" /> &lt;!&ndash;For test case only run on QAT and STG&ndash;&gt;
             </run>
         </groups>
 
         <classes>
-<!--            <class name="testcases.sb11test.trading.BetSettlementTest"/>-->
-<!--            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>-->
-<!--            <class name="testcases.sb11test.trading.BetEntryTest"/>-->
-<!--            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>-->
-<!--            <class name="testcases.sb11test.generalReports.ClientStatementTest"/>-->
+            <class name="testcases.sb11test.trading.BetSettlementTest"/>
+            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
+            <class name="testcases.sb11test.trading.BetEntryTest"/>
+            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
+            <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
         </classes>
     </test>
