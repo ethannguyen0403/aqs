@@ -10,10 +10,8 @@ import org.json.JSONObject;
 import utils.AppUtils;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+
 import static testcases.BaseCaseAQS.environment;
 
 public class GetSoccerEventUtils {
@@ -46,6 +44,38 @@ public class GetSoccerEventUtils {
             JSONArray resultArr  = jsonObject.getJSONArray(league);
             if(resultArr.length()>0) {
                 JSONObject orderObj = resultArr.getJSONObject(0);
+                return new Event.Builder()
+                        .leagueName(league)
+                        .home(orderObj.getString("homeTeamName"))
+                        .away(orderObj.getString("awayTeamName"))
+                        .eventDate(orderObj.getString("eventDate"))
+                        .startDate(orderObj.getString("startDate"))
+                        .openTime(orderObj.getString("openTime"))
+                        .eventId(Long.toString(orderObj.getLong("eventId")))
+                        .sportName(sport)
+                        .leagueName(league)
+                        .build();
+            }
+        }
+        return null;
+    }
+
+    public static Event getRandomEvent(String fromDate, String toDate, String sport, String league) {
+        Random rd = new Random();
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = getEventsAPIJson(fromDate, toDate, sport);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        if(Objects.nonNull(jsonObject)){
+            if(!jsonObject.has(league))
+                return null;
+            JSONArray resultArr  = jsonObject.getJSONArray(league);
+            int arrLength = resultArr.length();
+            if(resultArr.length()>0) {
+                int numb = rd.nextInt(arrLength-0)+0;
+                JSONObject orderObj = resultArr.getJSONObject(numb);
                 return new Event.Builder()
                         .leagueName(league)
                         .home(orderObj.getString("homeTeamName"))
