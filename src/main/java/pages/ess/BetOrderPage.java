@@ -10,6 +10,7 @@ import org.testng.Assert;
 import pages.ess.popup.*;
 
 import java.util.List;
+import java.util.Objects;
 
 import static common.ESSConstants.HomePage.EN_US;
 import static common.ESSConstants.HomePage.NORECORD;
@@ -33,6 +34,7 @@ public class BetOrderPage extends HomePage {
     public Table tbCancelled = Table.xpath("//div[contains(@class, 'CANCELLED')]//following::table[1]", 9);
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
+    public CheckBox cbAutoRefresh = CheckBox.id("defaultCheck1");
     private int colNo =1;
     private int colSelection =2;
     private int colAction =3;
@@ -200,6 +202,22 @@ public class BetOrderPage extends HomePage {
         waitSpinLoad();
     }
 
+    public void waitOrderDisplay(String status, String orderID, String controlName) {
+        Link lnkOrder = getControlOnTableBasedOnOrderID(status,orderID,controlName );
+        if(Objects.isNull(lnkOrder)){
+            try {
+                Thread.sleep(40000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void enableAutoRefresh(){
+        if(!cbAutoRefresh.isSelected()){
+            cbAutoRefresh.click();
+        }
+    }
     public Link getControlOnTableBasedOnOrderID(String status, String orderID,String controlName){
         Table table = getTableByStatus(status);
         String _controlName = controlName.toUpperCase();

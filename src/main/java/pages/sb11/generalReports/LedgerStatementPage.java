@@ -56,20 +56,18 @@ public class LedgerStatementPage extends WelcomePage {
         int i = startIndex +1;
         while(true){
             String ledgerAccount = tbLedger.getControlOfCell(1,colLedger,i,null).getText().trim();
-            if (isDebit){
-                if(ledgerAccount.contains(trans.getLedgerDebit()))
+            if(ledgerAccount.contains(trans.getLedgerDebit())){
+                System.out.println(String.format("Found transaction %s at row %s", ledgerAccount,i));
+                if (isDebit)
                     return verifyTransactionDisplayCorrectInRow(trans, true, i);
-                System.out.println(String.format("Skip verity section at row %s because the account code is different with %s", i,ledgerAccount));
-            } else {
-                if(ledgerAccount.contains(trans.getLedgerCredit()))
-                    return verifyTransactionDisplayCorrectInRow(trans, false, i);
-                System.out.println(String.format("Skip verity section at row %s because the account code is different with %s", i,ledgerAccount));
+                return verifyTransactionDisplayCorrectInRow(trans, false, i);
             }
             i = i +1;
         }
     }
 
     private Transaction verifyTransactionDisplayCorrectInRow(Transaction transaction, boolean isDebit, int rowIndex){
+        // TODO: Johnny Use API to get OP Rate of according currency instead of init data in Constant class
         String ledgerAccount = tbLedger.getControlOfCell(1, colLedger, rowIndex, null).getText().trim();
         String cur = tbLedger.getControlOfCell(1, colCur, rowIndex, null).getText().trim();
         String amountORG = tbLedger.getControlOfCell(1, colAmountORG, rowIndex, null).getText().trim();
@@ -104,8 +102,7 @@ public class LedgerStatementPage extends WelcomePage {
 
     public LedgerDetailPopup openLedgerDetail (String ledgerName){
         int rowIndex = getLedgerRowIndex(ledgerName);
-        int colIndex = colLedger;
-        tbLedger.getControlOfCell(1,colIndex, rowIndex,"a").click();
+        tbLedger.getControlOfCell(1,colLedger, rowIndex,"a").click();
         return new LedgerDetailPopup();
     }
 

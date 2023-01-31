@@ -1,5 +1,6 @@
 package testcases.aqstest;
 
+import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
 import common.ESSConstants;
 import objects.Order;
@@ -7,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.ess.popup.*;
+import retrofit2.http.DELETE;
 import testcases.BaseCaseAQS;
 import utils.aqs.GetOrdersUtils;
 import utils.aqs.PlaceOrderUtils;
@@ -18,6 +20,7 @@ import java.util.*;
 import static common.ESSConstants.BetOrderPage.*;
 import static common.ESSConstants.OrderLog.TABLE_HEADER;
 import static common.ESSConstants.OrderLog.TABLE_HEADER_BET_LIST;
+import static utils.aqs.PlaceOrderUtils.placeCricket;
 import static utils.aqs.PlaceOrderUtils.placeOverUnder;
 
 public class BetOrderTest extends BaseCaseAQS {
@@ -723,12 +726,13 @@ public class BetOrderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id="207")
     @Test(groups = {"smoke_qc"})
     @Parameters(("username"))
-    public void BetOrder_025(String username){
-        log("@title: Validate can add order by API");
+    public void BetOrder_207(String username){
+        log("@title: Validate AQS shows automatically whenever there are new Soccer orders (AQS-2205)");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT -4"));
         String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
         String orderID = "9fbe42d5-4308-46ec-isa805-autoid" + DateUtils.getMilliSeconds();
         Map<String, String> headersParam = new HashMap<String, String>()
@@ -739,23 +743,101 @@ public class BetOrderTest extends BaseCaseAQS {
                 put("Content-Type", "application/json");
             }
         };
-        log(String.format("@Step 1: Place "+orderID+" order by API",fromDate,toDate));
+
+        log("@Step 1: Filter Soccer from yesterday to today");
+        betOrderPage.filterBetOrders(fromDate,toDate,"Soccer",true);
+        log("@Step 2: Check on Auto refresh checkbox");
+        betOrderPage.enableAutoRefresh();
+
+        log(String.format("@Step 1: Create a new order by API: order %s:",orderID));
         PlaceOrderUtils.prepareOrder(orderID,headersParam);
         placeOverUnder(orderID, headersParam);
-        log(String.format("@Step 2: Filter Soccer data from %s to %s and get an order in pending section",fromDate,toDate));
-        betOrderPage.filterBetOrders("","","Soccer", true);
 
-        log(String.format("Verify 1: The order place by API display in Pending section"));
+        log(String.format("Verify 1: Validate the newly created order show automatically in Pending section with the info as while creating "));
+        betOrderPage.waitOrderDisplay(PENDING,orderID,"BETS");
         Assert.assertTrue(betOrderPage.getControlOnTableBasedOnOrderID(PENDING,orderID,"BETS").isDisplayed(),"FAILED! The order "+orderID+"" +
                 " not display in Pending list after creating by API");
 
-        log(String.format("@Step 3: Cancle "+orderID+" order by API",fromDate,toDate));
+        log("@Post-condition: Cancel "+orderID+" order by API");
         PlaceOrderUtils.cancelOrder(orderID,headersParam);
-        betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
 
-        log(String.format("Verify 1: The order cacnel by API display in Cancelled section"));
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id="208")
+    @Test(groups = {"smoke_qc"})
+    @Parameters(("username"))
+    public void BetOrder_0208(String username){
+        log("@title:Validate AQS orders automatically disappeared when orders are auto cancelled (AQS-2205)");
+        log("@Step 1: Login with valid account");
+        String fromDate = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT -4"));
+        String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
+        String orderID = "9fbe42d5-4308-46ec-isa805-autoid" + DateUtils.getMilliSeconds();
+        Map<String, String> headersParam = new HashMap<String, String>()
+        {
+            {
+                put("Operator-Name",username) ;
+                put("Agent-Name", "Simulator");
+                put("Content-Type", "application/json");
+            }
+        };
+        log("@Step Precondition: There is an account that has permission to view orders\n" +
+                "There is a confirmed order");
+        log(String.format("@Precondition:1 Create a new order by API: order %s:",orderID));
+        PlaceOrderUtils.prepareOrder(orderID,headersParam);
+        placeOverUnder(orderID, headersParam);
+
+        log("@Step 1: Filter Soccer from yesterday to today");
+        betOrderPage.filterBetOrders(fromDate,toDate,"Soccer",true);
+        log("@Step 2: Check on Auto refresh checkbox");
+        betOrderPage.enableAutoRefresh();
+
+        log(String.format("@Precondition: In Pending section, click on Confirm link of an order %s",orderID));
+        betOrderPage.clickControlInTable(PENDING, orderID, CONFIRM);
+
+        log(String.format("@Step 2: Cancel the orders by API: %s",orderID));
+        PlaceOrderUtils.cancelOrder(orderID,headersParam);
+        betOrderPage.waitOrderDisplay(CANCELLED,orderID,"BETS");
+
+        log(String.format("@Verify 1: Validate the order disappears automatically from the 'Confirm' section\n" +
+                "Validate the order appears automatically in the Cancelled section"));
+        Assert.assertFalse(Objects.isNull(betOrderPage.getControlOnTableBasedOnOrderID(CONFIRM,orderID,"BETS")),"FAILED! The order "+orderID+"" +
+                " display in Confirmed list after cancelled by API");
         Assert.assertTrue(betOrderPage.getControlOnTableBasedOnOrderID(CANCELLED,orderID,"BETS").isDisplayed(),"FAILED! The order "+orderID+"" +
-                " not display in Cancelled list after cancelling by API");
+                " not display in Cancel list after cancelled by API");
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id="870")
+    @Test(groups = {"smoke_api"})
+    @Parameters(("username"))
+    public void BetOrder_C870(String username){
+        //TODO: This test case need to check with dev the api when creating Cricket Order: need info like order id like soccer, and the endpoint to cancel the cricket order
+        log("@title: Validate AQS shows automatically whenever there are new Cricket orders");
+        log("@Step 1: Login with valid account");
+        String orderID = "9fbe42d5-4308-46ec-crịc805-autoid" + DateUtils.getMilliSeconds();
+        Map<String, String> headersParam = new HashMap<String, String>()
+        {
+            {
+                put("Operator-Name",username) ;
+                put("Agent-Name", "Simulator");
+                put("Content-Type", "application/json");
+            }
+        };
+        log(String.format("@Step 1: Login to AQS >> AQS >> Select sport as Cricket"));
+        betOrderPage.filterBetOrders("","","Cricket",true);
+        log(String.format("@Step 1: Create a new Cricket order using API request %s:",orderID));
+        PlaceOrderUtils.prepareOrder(orderID,headersParam);
+        placeCricket(orderID, headersParam);
+
+        log(String.format("Verify 1: Validate the newly created order show automatically in Pending section with the info as while creating "));
+        betOrderPage.waitOrderDisplay(PENDING,orderID,"BETS");
+        Assert.assertTrue(betOrderPage.getControlOnTableBasedOnOrderID(PENDING,orderID,"BETS").isDisplayed(),"FAILED! The order "+orderID+"" +
+                " not display in Pending list after creating by API");
+
+        log("@Post-condition: Cancel "+orderID+" order by API");
+        PlaceOrderUtils.cancelOrder(orderID,headersParam);
+
         log("INFO: Executed completely");
     }
 }

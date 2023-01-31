@@ -3,8 +3,10 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
 import controls.Table;
+import objects.Event;
 import objects.Order;
 import pages.sb11.trading.popup.BetListPopup;
 import pages.sb11.trading.popup.SoccerBetSlipPopup;
@@ -49,8 +51,12 @@ public class SoccerBetEntryPage extends BetEntryPage {
      */
     public void showLeague(String companyUnit, String date, String league){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
+        String currentDate = txtDate.getAttribute("value");
         if(!date.isEmpty()){
-            dtpDate.selectDate(date,"dd/MM/yyyy");
+            if(!date.equals(currentDate)){
+                dtpDate.selectDate(date,"dd/MM/yyyy");
+            }
+
         }
         if(!league.isEmpty()) {
             ddpLeague.selectByVisibleText(league);
@@ -60,7 +66,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
     }
 
     /**
-     * To check the Leagure display in the table
+     * To check the League display in the table
      * @param leagueName
      * @return
      */
@@ -77,9 +83,36 @@ public class SoccerBetEntryPage extends BetEntryPage {
                 System.out.println("Found the league "+leagueName+" in the table");
                 return true;
             }
-
             i = i +1;
         }
+    }
+    /**
+     * To check the League display in the table
+     * @param event
+     * @return
+     */
+    public boolean isEventExist(Event event){
+        Label lblTime;
+        int i = 1;
+            while (true) {
+                lblTime = Label.xpath(tblEvent.getxPathOfCell(1,colEvent,i,null));
+                if(!lblTime.isDisplayed()) {
+                    System.out.println("Can NOT found the event "+event.getHome()+" & "+ event.getAway()+" in the table");
+                    return false;
+                }
+                // Get the row contains the event time
+                String time = lblTime.getText().trim();
+                if (!time.equals(event.getOpenTime())) {
+                    continue;
+                } else {
+                    String eventName = Label.xpath(tblEvent.getxPathOfCell(1, colEvent, i, null)).getText().trim();
+                    if (eventName.equals(event.getHome())) {
+                        return true;
+                    }
+                }
+                i = i + 1;
+            }
+
     }
     /**
      * To check the Leagure display in the table
@@ -113,7 +146,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
      */
     public SoccerBetSlipPopup openBetSlip(String accountCode, String eventName, boolean isFullTime, String type){
         txtAccCode.type(accountCode);
-        tblEvent.click();
+        btnShow.click();
         waitPageLoad();
         int rowIndex = getEventRowIndex(eventName);
         int colIndex = defineColumn(isFullTime,type);

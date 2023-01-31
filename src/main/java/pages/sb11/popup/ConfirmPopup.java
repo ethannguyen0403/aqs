@@ -1,4 +1,4 @@
-package pages.sb11.trading.popup;
+package pages.sb11.popup;
 
 import com.paltech.element.common.Button;
 import com.paltech.element.common.Label;

@@ -585,4 +585,23 @@ public class Table extends BaseElement {
         logEndAction(String.format("Debug: There is no value '%s' you want", name));
         return null;
     }
+
+    public int getRowIndexContainValue(String value, int colNumber,String subTag){
+        Label lbl;
+        int i = 1;
+        while (true) {
+            lbl = Label.xpath(getxPathOfCell(1,colNumber,i,subTag));
+            if(!lbl.isDisplayed()) {
+                System.out.println(String.format("Not found the value in the column in the table"));
+                return 0;
+            }
+            // Get the row contains the event time
+           lbl.getText().trim();
+            if (lbl.getText().equals(value)) {
+                System.out.println(String.format("Found the value in the column in the table"));
+                return i;
+            }
+            i = i + 1;
+        }
+    }
 }

@@ -2,6 +2,7 @@ package pages.sb11.generalReports.popup;
 
 import com.paltech.element.common.Button;
 import com.paltech.element.common.Label;
+import com.paltech.utils.DoubleUtils;
 import controls.Table;
 import objects.Transaction;
 import org.testng.Assert;
@@ -37,18 +38,14 @@ public class LedgerDetailPopup {
     }
 
     public Transaction verifyLedgerTrans(Transaction trans, boolean isDebit, String description){
-        int startIndex = 1;
-        int i = startIndex +1;
+        int i = 1;
         while(true){
             String txnDate = tbLedger.getControlOfCell(1,colDescription,i,null).getText().trim();
-            if (isDebit){
-                if(txnDate.contains(description))
+            if(txnDate.contains(description))
+            {
+                if (isDebit)
                     return verifyTransInfoDisplayCorrectInRow(trans, true, i);
-                System.out.println(String.format("Skip verify section at row %s because the description is different with %s", i,description));
-            } else {
-                if(txnDate.contains(description))
-                    return verifyTransInfoDisplayCorrectInRow(trans, false, i);
-                System.out.println(String.format("Skip verify section at row %s because the description is different with %s", i,description));
+                return verifyTransInfoDisplayCorrectInRow(trans, false, i);
             }
             i = i +1;
         }
@@ -68,8 +65,8 @@ public class LedgerDetailPopup {
             Assert.assertTrue(txnDate.contains(transaction.getTransDate()), "Failed! Txn Date is incorrect");
             Assert.assertEquals(debitORG, String.format("%.2f", transaction.getAmountDebit()), "Failed! Debit ORG amount is incorrect");
             Assert.assertEquals(runBalORG, String.format("%.2f", transaction.getDebitBalance() + transaction.getAmountDebit()), "Failed! Running Balance ORG amount is incorrect");
-            double amountDebitGBP = transaction.getAmountDebit() * CURRENCY_RATE.get(transaction.getLedgerDebitCur());
-            double runDebitGBP = (transaction.getDebitBalance() + transaction.getAmountDebit()) * CURRENCY_RATE.get(transaction.getLedgerDebitCur());
+            double amountDebitGBP = DoubleUtils.roundUpWithTwoPlaces(transaction.getAmountDebit() * CURRENCY_RATE.get(transaction.getLedgerDebitCur()));
+            double runDebitGBP = DoubleUtils.roundUpWithTwoPlaces(transaction.getDebitBalance() + transaction.getAmountDebit()) * CURRENCY_RATE.get(transaction.getLedgerDebitCur());
             Assert.assertEquals(debitGBP, String.format("%.2f", amountDebitGBP), "Failed! Debit GBP amount is incorrect");
             Assert.assertEquals(runBalGBP, String.format("%.2f", runDebitGBP), "Failed! Running Balance GBP amount is incorrect");
             verifyTransTotal(transaction,true);
@@ -81,6 +78,7 @@ public class LedgerDetailPopup {
             double runCreditGBP = (transaction.getCreditBalance() + transaction.getAmountCredit()) * CURRENCY_RATE.get(transaction.getLedgerCreditCur());
             Assert.assertEquals(creditGBP, String.format("%.2f", amountCreditGBP), "Failed! Credit GBP amount is incorrect");
             Assert.assertEquals(runBalGBP, String.format("%.2f", runCreditGBP), "Failed! Credit Balance GBP amount is incorrect");
+            //TODO: Assign to Johnny:  Wrong VP at Total Row when have more transactions. Should sum all transactions and compare with total row
             verifyTransTotal(transaction,false);
         }
         Assert.assertEquals(description, transaction.getRemark(), "Failed! Description is incorrect");
