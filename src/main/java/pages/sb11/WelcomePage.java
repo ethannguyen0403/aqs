@@ -34,6 +34,12 @@ public class WelcomePage extends Header{
      * @param event
      */
     public Event createEvent(Event event){
+        // to add wait page load to call the end point GetSoccerEventUtils.getFirstEvent
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         // Get all list Event of a League by APU and check exist event or not
         String date = DateUtils.formatDate(event.getEventDate(),"dd/MM/yyyy","yyyy-MM-dd");
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(date,date,event.getSportName(),event.getLeagueName());

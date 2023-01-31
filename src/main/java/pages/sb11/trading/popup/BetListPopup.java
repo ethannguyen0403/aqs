@@ -56,6 +56,7 @@ public class BetListPopup {
             if(!accountCode.equals(lstOrder.get(orderIndex).getAccountCode()))
             {
                 System.out.println(String.format("Skip verity %s section at row %s because the account code is different with %s", marketType,i,accountCode));
+                i = i +1;
                 continue;
             }else {
                 verifyOrderInfoDisplayCorrectInRow(lstOrder.get(orderIndex),createDate,i);
