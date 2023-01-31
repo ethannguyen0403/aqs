@@ -17,12 +17,13 @@ import utils.testraildemo.TestRails;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import static common.SBPConstants.*;
 
 public class ClientStatementTest extends BaseCaseAQS {
     String viewBy = "Client Point";
-    String companyUnit = "Kastraki Limited";
     String agentCode = "QASAHK00";
     String agentComCode = "QATE01-COM";
     String agentLedCode = "QATE00-LED";
@@ -73,7 +74,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         clientPage.waitSpinnerDisappeared();
 
         log("@Step 2: Filter a client with client point view");
-        clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, "","");
+        clientPage.filter(viewBy, COMPANY_UNIT, FINANCIAL_YEAR, clientCode, "","");
 
         //TODO need enhancement as currently is workingaround by remove "," out of string before calculate
         log("Validate Closing of Super = Opening + Win/Loss + Commission + Rec/Pay/CA/RB/Adj");
@@ -102,13 +103,13 @@ public class ClientStatementTest extends BaseCaseAQS {
         clientPage.waitSpinnerDisappeared();
 
         log("@Step 2.1: Filter a client with client point view on current date");
-        clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, "","");
+        clientPage.filter(viewBy, COMPANY_UNIT, FINANCIAL_YEAR, clientCode, "","");
 
         log("@Step 2.2: Get Opening value");
         openingVal = clientPage.getSuperCellValue(clientPage.colOpening).replace(",","");
 
         log("@Step 3: Filter a client with client point view on current date - 1");
-        clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, DateUtils.getDateBeforeCurrentDate(1,"dd/MM/yyyy"),
+        clientPage.filter(viewBy, COMPANY_UNIT, FINANCIAL_YEAR, clientCode, DateUtils.getDateBeforeCurrentDate(1,"dd/MM/yyyy"),
                 DateUtils.getDateBeforeCurrentDate(1,"dd/MM/yyyy"));
 
         log("@Step 3.1: Get Closing value");
@@ -135,7 +136,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         clientPage.waitSpinnerDisappeared();
 
         log("@Step 2: Filter a client with client point view");
-        clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, "","");
+        clientPage.filter(viewBy, COMPANY_UNIT, FINANCIAL_YEAR, clientCode, "","");
 
         log("Validate total in HKD of Master match with Grand Total in HKD at bottom");
         //TODO need enhancement as currently is workingaround by remove "," out of string before assert
@@ -151,12 +152,6 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "588")
     public void ClientStatementTC_588(String clientCode) throws InterruptedException {
         clientCode = superMasterCode + clientCode;
-        String reversedOpeningVal;
-        String reversedWinLossVal;
-        String reversedCommissionVal;
-        String reversedRecPayVal;
-        String reversedMovementVal;
-        String reversedClosingVal;
 
         log("@title: Validate values are the same but opposite each other when viewing by Company Point and Client Point");
         log("@Step 1: Login with valid account");
@@ -165,7 +160,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         clientPage.waitSpinnerDisappeared();
 
         log("@Step 2: Filter a client with client point view");
-        clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, "","");
+        clientPage.filter(viewBy, COMPANY_UNIT, FINANCIAL_YEAR, clientCode, "","");
 
         //TODO need enhancement as currently is workingaround by remove "," out of string before reverse and assert
         log("Verify Closing of Super = Opening + Win/Loss + Commission + Rec/Pay/CA/RB/Adj");
@@ -175,27 +170,20 @@ public class ClientStatementTest extends BaseCaseAQS {
         recPayVal = clientPage.getSuperCellValue(clientPage.colRecPay).replace(",","");
         movementVal = clientPage.getSuperCellValue(clientPage.colMovement).replace(",","");
         closingVal = clientPage.getSuperCellValue(clientPage.colClosing).replace(",","");
-        reversedOpeningVal = clientPage.reverseValue(openingVal);
-        reversedWinLossVal = clientPage.reverseValue(winLossVal);
-        reversedCommissionVal = clientPage.reverseValue(commissionVal);
-        reversedRecPayVal = clientPage.reverseValue(recPayVal);
-        reversedMovementVal = clientPage.reverseValue(movementVal);
-        reversedClosingVal = clientPage.reverseValue(closingVal);
+        ArrayList <String> lstActual = new ArrayList<>();
+        Collections.addAll(lstActual,openingVal,winLossVal,commissionVal,recPayVal,movementVal,closingVal);
 
-        clientPage.filter("Company Point", companyUnit, FINANCIAL_YEAR, clientCode, "","");
+        clientPage.filter("Company Point", COMPANY_UNIT, FINANCIAL_YEAR, clientCode, "","");
         openingVal = clientPage.getSuperCellValue(clientPage.colOpening).replace(",","");
         winLossVal = clientPage.getSuperCellValue(clientPage.colWinLoss).replace(",","");
         commissionVal = clientPage.getSuperCellValue(clientPage.colCommission).replace(",","");
         recPayVal = clientPage.getSuperCellValue(clientPage.colRecPay).replace(",","");
         movementVal = clientPage.getSuperCellValue(clientPage.colMovement).replace(",","");
         closingVal = clientPage.getSuperCellValue(clientPage.colClosing).replace(",","");
+        ArrayList <String> lstExpected = new ArrayList<>();
+        Collections.addAll(lstExpected,openingVal,winLossVal,commissionVal,recPayVal,movementVal,closingVal);
 
-        Assert.assertEquals(openingVal,reversedOpeningVal,"FAILED! Closing Balance is not calculated correctly, actual:"+openingVal+" and expected:"+reversedOpeningVal);
-        Assert.assertEquals(winLossVal,reversedWinLossVal,"FAILED! Closing Balance is not calculated correctly, actual:"+winLossVal+" and expected:"+reversedWinLossVal);
-        Assert.assertEquals(commissionVal,reversedCommissionVal,"FAILED! Closing Balance is not calculated correctly, actual:"+commissionVal+" and expected:"+reversedCommissionVal);
-        Assert.assertEquals(recPayVal,reversedRecPayVal,"FAILED! Closing Balance is not calculated correctly, actual:"+recPayVal+" and expected:"+reversedRecPayVal);
-        Assert.assertEquals(movementVal,reversedMovementVal,"FAILED! Closing Balance is not calculated correctly, actual:"+movementVal+" and expected:"+reversedMovementVal);
-        Assert.assertEquals(closingVal,reversedClosingVal,"FAILED! Closing Balance is not calculated correctly, actual:"+closingVal+" and expected:"+reversedClosingVal);
+        Assert.assertTrue(clientPage.verifyValueIsOpposite(lstActual,lstExpected),"FAILED! Closing Balance is not calculated correctly");
         log("INFO: Executed completely");
     }
 
@@ -217,7 +205,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         clientPage.waitSpinnerDisappeared();
 
         log("@Step 2: Filter a client with client point view");
-        clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, "","");
+        clientPage.filter(viewBy, COMPANY_UNIT, FINANCIAL_YEAR, clientCode, "","");
 
         //TODO need enhancement as currently is workingaround by remove "," out of string before assert
         log("Validate value of agent (not COM, LED) in main page match with member summary page");
@@ -260,7 +248,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         clientPage.waitSpinnerDisappeared();
 
         log("@Step 2: Filter a client with client point view");
-        clientPage.filter(viewBy, companyUnit, FINANCIAL_YEAR, clientCode, "","");
+        clientPage.filter(viewBy, COMPANY_UNIT, FINANCIAL_YEAR, clientCode, "","");
 
         log("Validate value of agent COM in main page match with member summary page");
         //TODO need enhancement as currently is workingaround by remove "," out of string before assert
@@ -315,7 +303,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent of the player");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
         log("@Verify the balance is deducted from the Client account properly");
@@ -371,7 +359,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent of the player");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
         log("@Verify the balance is added to the Client account properly");
@@ -435,7 +423,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent of the ledger");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
         log("@Validate the balance is added to the account Asset 'Debit' correctly");
@@ -498,7 +486,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent of the ledger");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
         log("@Validate the balance is deducted from the account Asset 'Credit' correctly");
@@ -561,7 +549,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent of the ledger");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
         log("@Validate the balance is deducted from the account Liability 'Debit' correctly");
@@ -624,7 +612,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent of the ledger");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
         log("@Validate the balance is added to the account Liability 'Credit' correctly");
@@ -687,7 +675,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent of the ledger");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
         log("@Validate the balance is deducted from the account Capital 'Debit' correctly");
@@ -750,7 +738,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent of the ledger");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
         log("@Validate the balance is added from the account Capital 'Credit' correctly");
@@ -813,7 +801,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent of the ledger");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
         log("@Validate the balance is deducted from the account Income 'Debit' correctly");
@@ -875,7 +863,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent of the ledger");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
         log("@Validate the balance is added from the account Income 'Credit' correctly");
@@ -938,7 +926,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent of the ledger");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
         log("@Validate the balance is added from the account Expenditure 'Debit' correctly");
@@ -1001,7 +989,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent of the ledger");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
         log("@Validate the balance is deducted from the account Expenditure 'Credit' correctly");
@@ -1043,7 +1031,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .eventDate(transDate + " 23:59:00")
                 .selection("Home " + DateUtils.getMilliSeconds())
                 .build();
-        int companyId = BetEntrytUtils.getCompanyID(companyUnit);
+        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
         String accountId = AccountSearchUtils.getAccountId(clientCreditAcc);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_MAP.get("Soccer"),order);
         welcomePage.waitSpinnerDisappeared();
@@ -1055,7 +1043,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
         log("@Step 4: Open win lose summary popup of player");
@@ -1086,7 +1074,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .eventDate(transDate + " 23:59:00")
                 .selection("Home " + DateUtils.getMilliSeconds())
                 .build();
-        int companyId = BetEntrytUtils.getCompanyID(companyUnit);
+        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
         String accountId = AccountSearchUtils.getAccountId(clientDebitAcc);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_MAP.get("Soccer"),order);
         welcomePage.waitSpinnerDisappeared();
@@ -1098,7 +1086,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
         log("@Verify the balance Total Running is calculated properly");
@@ -1149,7 +1137,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,companyUnit,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent ledger");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
         log("@Step 4: Open RecPay summary popup of player by click on link");
