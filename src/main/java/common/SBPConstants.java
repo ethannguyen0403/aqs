@@ -16,6 +16,7 @@ public class SBPConstants {
     public final static String SOCCER = "Soccer";
     public final static String PT_RISK_CONTROL = "PT Risk Control";
     public final static String LEDGER_STATEMENT = "Ledger Statement";
+    public final static String BOOKIE_STATEMENT = "Bookie Statement";
     public final static String JOURNAL_ENTRIES = "Journal Entries";
     public final static String BET_ENTRY = "Bet Entry";
     public final static String SPORT= "Sport";
