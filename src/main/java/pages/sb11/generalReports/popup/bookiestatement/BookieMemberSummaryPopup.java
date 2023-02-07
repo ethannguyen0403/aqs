@@ -1,4 +1,4 @@
-package pages.sb11.generalReports.popup;
+package pages.sb11.generalReports.popup.bookiestatement;
 
 import com.paltech.element.common.Icon;
 import com.paltech.element.common.Label;
@@ -7,7 +7,10 @@ import controls.Table;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.BookieStatementPage;
 
-public class BookieMemberSummaryPopup extends WelcomePage {
+import java.util.ArrayList;
+import java.util.List;
+
+public class BookieMemberSummaryPopup {
     int colTotalMember = 11;
     public int colTotal = 3;
     public int colTotalWinLose = 4;
@@ -15,9 +18,24 @@ public class BookieMemberSummaryPopup extends WelcomePage {
     public int colTotalRPCRBA = 6;
     public int colTotalOpenRPCRBA = 7;
     public int colTotalOpenBalance = 8;
-    Table tblTotalDetail = Table.xpath("//div[@class='p-4 table-responsive ng-star-inserted']//table[@aria-label='table']",colTotal);
-    Table tblMemberDetail = Table.xpath("//div[@class='infinite-scroll p-4 table-responsive table-scroll']//table[@aria-label='table']",colTotalMember);
-    Icon closeIcon = Icon.xpath("//span[@class='cursor-pointer close-icon ml-3']");
+
+    int summaryColTotal = 11;
+    public int colOpeningTotal = 3;
+    public int colWinLoseTotal = 4;
+    public int colComissionTotal = 4;
+    public int colRecPayTotal = 5;
+    public int colMovementTotal = 6;
+    public int colClosingTotal = 7;
+    int colAccountCode = 4;
+    int colLedgerAccountCode = 3;
+    int colWinLose = 8;
+    public int colLedgerRecPay = 7;
+    public int colRecPay = 9;
+
+    Table tblTotalDetail = Table.xpath("//app-member-summary//div[@class='p-4 table-responsive ng-star-inserted']//table[@aria-label='table']",colTotal);
+    Table tblMemberDetail = Table.xpath("//app-member-summary//div[@class='infinite-scroll p-4 table-responsive table-scroll']//table[@aria-label='table']",colTotalMember);
+    Icon closeIcon = Icon.xpath("//span[contains(@class,'close-icon')]");
+
 
     public String getTotalCellValue(int colIndex, boolean isHKD) {
         String returnValue;
@@ -79,4 +97,26 @@ public class BookieMemberSummaryPopup extends WelcomePage {
             }
         }/**/
     }
+
+    public List<String> getMemeberSummaryData(String accountCode){
+        List<String> lstData = new ArrayList<>();
+
+        Label lblAccountCode;
+        int i = 1;
+        while (true) {
+            lblAccountCode = Label.xpath(tblMemberDetail.getxPathOfCell(1, colAccountCode, i, null));
+            if (!lblAccountCode.isDisplayed()) {
+                System.out.println("Account Code is not found in Summary table");
+                return null;
+            }
+            if (lblAccountCode.getText().equalsIgnoreCase(accountCode)) {
+                for(int col = 1; col <= summaryColTotal; col ++){
+                    lstData.add(Label.xpath(tblMemberDetail.getxPathOfCell(1, col, i, null)).getText());
+                }
+                return lstData;
+            }
+            i = i + 1;
+        }
+    }
+
 }

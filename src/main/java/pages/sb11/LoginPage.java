@@ -11,8 +11,8 @@ public class LoginPage {
     public TextBox txtCode = TextBox.xpath("//input[@formcontrolname='code']");
     public Button btnLogin = Button.xpath("//button[contains(@class,'btn-login')]");
     public Button btnCopyRight = Button.xpath("//em[contains(@class, 'far fa-copyright')]");
-    private Label tabEurope = Label.xpath("//app-login-camouflage//div[contains(@class,'top-panel')]//ul/li/span[text()='EUROPE']");
-    private Label lblClick = Label.xpath("//app-login-camouflage//div[contains(@class,'main-content')]/div/div/div[5]//span");
+    Label tabEurope = Label.xpath("//app-login-camouflage//div[contains(@class,'top-panel')]//ul/li/span[text()='EUROPE']");
+    Label lblClick = Label.xpath("//app-login-camouflage//div[contains(@class,'main-content')]/div/div/div[5]//span");
     private void openLoginForm(){
         tabEurope.click();
         lblClick.waitForControlInvisible(1,1);
@@ -36,7 +36,9 @@ public class LoginPage {
         }
         btnLogin.click();
         txtUsername.isDisplayedShort(10);
-        return new WelcomePage();
+        WelcomePage welcomePage = new WelcomePage();
+        welcomePage.waitSpinnerDisappeared();
+        return welcomePage;
     }
 
 }

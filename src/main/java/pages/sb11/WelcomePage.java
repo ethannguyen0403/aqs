@@ -17,7 +17,7 @@ import java.util.Objects;
 import static common.SBPConstants.*;
 
 public class WelcomePage extends Header{
-    Label lblSpin = Label.xpath("//div[contains(@class,'la-ball-clip-rotate')]");
+
     private Label lblTitle = Label.xpath("//span[@class='text-white']");
     public String getTitlePage ()
     {
@@ -25,15 +25,18 @@ public class WelcomePage extends Header{
     }
     public AppArlertControl appArlertControl = AppArlertControl.xpath("//app-alert//div[@class='message-box']");
 
-    public void waitPageLoad(){
-        lblSpin.waitForControlInvisible();
-    }
 
     /**
      * This method create the event if League does not have any event
      * @param event
      */
     public Event createEvent(Event event){
+        // to add wait page load to call the end point GetSoccerEventUtils.getFirstEvent
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         // Get all list Event of a League by APU and check exist event or not
         String date = DateUtils.formatDate(event.getEventDate(),"dd/MM/yyyy","yyyy-MM-dd");
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(date,date,event.getSportName(),event.getLeagueName());
@@ -62,7 +65,7 @@ public class WelcomePage extends Header{
         return appArlertControl.getListSuccessMessage();
     }
 
-    public void waitSpinnerDisappeared() throws InterruptedException {
+    public void waitSpinnerDisappeared() {
         while(lblSpin.isDisplayed()) {
             lblSpin.waitForControlInvisible();
         }

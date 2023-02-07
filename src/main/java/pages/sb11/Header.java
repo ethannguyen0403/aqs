@@ -19,7 +19,15 @@ public class Header {
     public Icon iconLogo = Icon.xpath("//span[contains(@class,'main-icon')]");
     public DropDownList ddlMenu = DropDownList.xpath("//div[contains(@class,'dropdown')]", "//ul[contains(@class,'dropdown-content ng-star-inserted')]/li");
     public HeaderMenuControl headerMenuControl = HeaderMenuControl.xpath("//div[@id='navbarTogglerDemo02']/ul[contains(@class,'navbar-nav')]");
-
+    Label lblSpin = Label.xpath("//div[contains(@class,'la-ball-clip-rotate')]");
+    public void waitPageLoad(){
+        lblSpin.waitForControlInvisible();
+    }
+    public void waitSpinnerDisappeared() {
+        while(lblSpin.isDisplayed()) {
+            lblSpin.waitForControlInvisible();
+        }
+    }
     public LoginPage logout(){
         btnLogout.click();
         LoginPage loginPage = new LoginPage();
@@ -41,6 +49,7 @@ public class Header {
      */
     public <T> T navigatePage(String menu, String submenu, Class<T> expectedPage) {
         headerMenuControl.clickSubMenu(menu,submenu);
+        waitSpinnerDisappeared();
         return PageFactory.initElements(DriverManager.getDriver(), expectedPage);
     }
 

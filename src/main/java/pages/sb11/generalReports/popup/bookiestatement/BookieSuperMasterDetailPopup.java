@@ -1,4 +1,4 @@
-package pages.sb11.generalReports.popup;
+package pages.sb11.generalReports.popup.bookiestatement;
 
 import com.paltech.element.common.Icon;
 import com.paltech.element.common.Label;
@@ -6,7 +6,7 @@ import controls.Table;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.BookieStatementPage;
 
-public class BookieSuperMasterDetailPopup extends WelcomePage {
+public class BookieSuperMasterDetailPopup  {
     int summaryColTotal = 7;
     public int colOpeningBalance = 2;
     public int colOpeningRPCRBA = 3;
