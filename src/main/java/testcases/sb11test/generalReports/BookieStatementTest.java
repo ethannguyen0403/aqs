@@ -114,7 +114,7 @@ public class BookieStatementTest extends BaseCaseAQS {
 
     @Test(groups = {"smoke"})
     @TestRails(id = "184")
-    public void BookieStatementTC_184() throws InterruptedException, IOException {
+    public void BookieStatementTC_184() throws IOException {
         String bookieName = "QA Bookie";
         String bookieCode = "QA01";
         String superMasterCode = "SM-QA1-QA Test";
@@ -151,7 +151,7 @@ public class BookieStatementTest extends BaseCaseAQS {
         BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
 
         log("@Step 3: Filter with Bookie has made transaction");
-        bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Super Master","","",bookieCode);
+        bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Super Master","","",bookieCode,"");
         log("@Step 4: Click on Super Master RPCRBA link");
         BookieSuperMasterDetailPopup bookiePopup = bookieStatementPage.openBookieSuperMasterDetailPopup(superMasterCode);
         rpcrbaVal = bookiePopup.getSuperMasterCellValue(bookiePopup.colRPCRBA, true);
