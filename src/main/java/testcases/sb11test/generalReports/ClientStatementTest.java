@@ -76,7 +76,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("@Step 2: Filter a client with client point view");
         clientPage.filter(viewBy, COMPANY_UNIT, FINANCIAL_YEAR, clientCode, "","");
 
-        //TODO need enhancement as currently is workingaround by remove "," out of string before calculate
+        //TODO need enhancement as currently is working around by remove "," out of string before calculate
         log("Validate Closing of Super = Opening + Win/Loss + Commission + Rec/Pay/CA/RB/Adj");
         openingVal = clientPage.getSuperCellValue(clientPage.colOpening).replace(",","");
         winLossVal = clientPage.getSuperCellValue(clientPage.colWinLoss).replace(",","");

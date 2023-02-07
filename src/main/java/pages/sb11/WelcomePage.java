@@ -68,7 +68,7 @@ public class WelcomePage extends Header{
         return appArlertControl.getListSuccessMessage();
     }
 
-    public void waitSpinnerDisappeared() throws InterruptedException {
+    public void waitSpinnerDisappeared() {
         while(lblSpin.isDisplayed()) {
             lblSpin.waitForControlInvisible();
         }

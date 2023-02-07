@@ -20,6 +20,8 @@ public class SBPConstants {
     public final static String BET_ENTRY = "Bet Entry";
     public final static String SPORT= "Sport";
     public final static String CLIENT_STATEMENT = "Client Statement";
+    public final static String BOOKIE_STATEMENT = "Bookie Statement";
+    public final static String SPP = "SPP";
     public final static String EVENT_SCHEDULE = "Event Schedule";
     public final static String CONFIRM_BETS = "Confirm Bets";
     public final static String BET_SETTLEMENT = "Bet Settlement";

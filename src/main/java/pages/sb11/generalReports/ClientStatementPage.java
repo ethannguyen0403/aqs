@@ -11,6 +11,7 @@ import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.ClientSummaryPopup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClientStatementPage extends WelcomePage {
     int colTotal = 10;
@@ -43,7 +44,7 @@ public class ClientStatementPage extends WelcomePage {
         return this.lblTitle.getText().trim();
     }
 
-    public void filter(String viewBy, String companyUnit, String financialYear, String clients, String fromDate, String toDate) throws InterruptedException {
+    public void filter(String viewBy, String companyUnit, String financialYear, String clients, String fromDate, String toDate){
         ddpViewBy.selectByVisibleText(viewBy);
         ddpCompanyUnit.selectByVisibleText(companyUnit);
         ddpFinancialYear.selectByVisibleText(financialYear);
@@ -55,7 +56,6 @@ public class ClientStatementPage extends WelcomePage {
         btnShow.click();
         waitSpinnerDisappeared();
     }
-
     public String getSuperCellValue(int colIndex) {
         String returnValue = "";
         Label lblCellValue;
@@ -68,7 +68,6 @@ public class ClientStatementPage extends WelcomePage {
             return returnValue;
         }
     }
-
     public String getMasterCellValue(String masterCode, int colIndex) {
         String returnValue = "";
         Label lblCellValue;
@@ -144,7 +143,6 @@ public class ClientStatementPage extends WelcomePage {
                 }
         }
     }
-
     public String reverseValue(String value) {
         String returnVal = value;
         if (Float.parseFloat(value) > 0) {
@@ -156,7 +154,6 @@ public class ClientStatementPage extends WelcomePage {
         }
         return returnVal;
     }
-
     public ClientSummaryPopup openSummaryPopup(String agentCode) {
         Label lblAgentCode;
         Label lblFirstColumn;
@@ -182,7 +179,6 @@ public class ClientStatementPage extends WelcomePage {
         }
         return null;
     }
-
     public boolean verifyValueIsOpposite(ArrayList lstActual, ArrayList lstExpect) {
         String reverseVal;
         boolean isOpposite = false;
@@ -192,5 +188,9 @@ public class ClientStatementPage extends WelcomePage {
                 isOpposite = true;
             }
             return isOpposite;
+    }
+    public List<String> getMemberSummary(String agentCode, String accountCode){
+        ClientSummaryPopup clientSummaryPopup = openSummaryPopup(agentCode);
+        return clientSummaryPopup.getMemeberSummaryData(accountCode);
     }
 }

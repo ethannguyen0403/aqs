@@ -1,15 +1,18 @@
-package pages.sb11.generalReports.popup;
+package pages.sb11.generalReports.popup.bookiestatement;
 
 import com.paltech.driver.DriverManager;
-import com.paltech.element.common.*;
+import com.paltech.element.common.Icon;
+import com.paltech.element.common.Label;
 import controls.Table;
-import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.ClientStatementPage;
+import pages.sb11.generalReports.popup.ClientLedgerRecPayPopup;
+import pages.sb11.generalReports.popup.ClientMemberTransactionPopup;
+import pages.sb11.generalReports.popup.ClientSummaryWinlosePopup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientSummaryPopup {
+public class BookieSummaryPopup {
     int summaryColTotal = 11;
     public int colOpeningTotal = 3;
     public int colWinLoseTotal = 4;
