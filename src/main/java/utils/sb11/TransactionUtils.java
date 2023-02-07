@@ -15,7 +15,8 @@ import java.util.Objects;
 import static testcases.BaseCaseAQS.environment;
 
 public class TransactionUtils {
-    private static void sendClientBookieTransactionJson(Transaction trans, String accountIdFrom, String accountIdTo, String fromType) throws IOException {
+    private static void sendClientBookieTransactionJson(Transaction trans, String accountIdFrom, String accountIdTo, String fromType, String typeId) throws IOException {
+        String jsn;
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
         Map<String, String> headersParam = new HashMap<String, String>() {
             {
@@ -24,42 +25,83 @@ public class TransactionUtils {
             }
         };
         String api = environment.getSbpLoginURL() + "aqs-agent-service/payment/transaction-submission";
-        String jsn = String.format("[{\n" +
-                        "    \"accountId\": \"%s\",\n" +
-                        "    \"accountCode\": \"%s\",\n" +
-                        "    \"type\": \"%s\",\n" +
-                        "    \"currencyCode\": \"HKD\",\n" +
-                        "    \"accountLedgerType\": \"\",\n" +
-                        "    \"prefix\": \"-\",\n" +
-                        "    \"cashBalance\": 318.9505,\n" +
-                        "    \"companyId\": 1,\n" +
-                        "    \"isValidAmount\": true,\n" +
-                        "    \"amount\": \"%s\",\n" +
-                        "    \"remark\": \"%s\",\n" +
-                        "    \"transactionType\": \"PT Rebate\",\n" +
-                        "    \"typeId\": \"14566\",\n" +
-                        "    \"transactionDate\": \"%s\",\n" +
-                        "    \"transaction\": \"Withdraw\"\n" +
-                        "  },\n" +
-                        "  {\n" +
-                        "    \"accountId\": \"%s\",\n" +
-                        "    \"accountCode\": \"%s\",\n" +
-                        "    \"type\": \"%s\",\n" +
-                        "    \"currencyCode\": \"HKD\",\n" +
-                        "    \"accountLedgerType\": \"\",\n" +
-                        "    \"prefix\": \"\",\n" +
-                        "    \"cashBalance\": 435.72,\n" +
-                        "    \"companyId\": 1,\n" +
-                        "    \"isValidAmount\": true,\n" +
-                        "    \"amount\": \"%s\",\n" +
-                        "    \"remark\": \"%s\",\n" +
-                        "    \"transactionType\": \"PT Rebate\",\n" +
-                        "    \"typeId\": \"14566\",\n" +
-                        "    \"transactionDate\": \"%s\",\n" +
-                        "    \"transaction\": \"Deposit\"\n" +
-                        "  }]\n"
-                , accountIdFrom, trans.getDebitAccountCode(), fromType, trans.getAmountDebit(), trans.getRemark(), trans.getTransDate(),
-                accountIdTo, trans.getCreditAccountCode(), fromType, trans.getAmountCredit(), trans.getRemark(), trans.getTransDate());
+        switch (fromType) {
+            case "Client":
+                jsn = String.format("[{\n" +
+                                "    \"accountId\": \"%s\",\n" +
+                                "    \"accountCode\": \"%s\",\n" +
+                                "    \"type\": \"%s\",\n" +
+                                "    \"currencyCode\": \"HKD\",\n" +
+                                "    \"accountLedgerType\": \"\",\n" +
+                                "    \"prefix\": \"-\",\n" +
+                                "    \"cashBalance\": 318.9505,\n" +
+                                "    \"companyId\": 1,\n" +
+                                "    \"isValidAmount\": true,\n" +
+                                "    \"amount\": \"%s\",\n" +
+                                "    \"remark\": \"%s\",\n" +
+                                "    \"transactionType\": \"PT Rebate\",\n" +
+                                "    \"typeId\": \"%s\",\n" +
+                                "    \"transactionDate\": \"%s\",\n" +
+                                "    \"transaction\": \"Withdraw\"\n" +
+                                "  },\n" +
+                                "  {\n" +
+                                "    \"accountId\": \"%s\",\n" +
+                                "    \"accountCode\": \"%s\",\n" +
+                                "    \"type\": \"%s\",\n" +
+                                "    \"currencyCode\": \"HKD\",\n" +
+                                "    \"accountLedgerType\": \"\",\n" +
+                                "    \"prefix\": \"\",\n" +
+                                "    \"cashBalance\": 435.72,\n" +
+                                "    \"companyId\": 1,\n" +
+                                "    \"isValidAmount\": true,\n" +
+                                "    \"amount\": \"%s\",\n" +
+                                "    \"remark\": \"%s\",\n" +
+                                "    \"transactionType\": \"PT Rebate\",\n" +
+                                "    \"typeId\": \"%s\",\n" +
+                                "    \"transactionDate\": \"%s\",\n" +
+                                "    \"transaction\": \"Deposit\"\n" +
+                                "  }]\n"
+                        , accountIdFrom, trans.getDebitAccountCode(), fromType, trans.getAmountDebit(), trans.getRemark(), typeId, trans.getTransDate(),
+                        accountIdTo, trans.getCreditAccountCode(), fromType, trans.getAmountCredit(), trans.getRemark(), typeId, trans.getTransDate());
+            default:
+                jsn = String.format("[{\n" +
+                                "    \"accountId\": \"%s\",\n" +
+                                "    \"accountCode\": \"%s\",\n" +
+                                "    \"type\": \"%s\",\n" +
+                                "    \"currencyCode\": \"HKD\",\n" +
+                                "    \"accountLedgerType\": \"\",\n" +
+                                "    \"prefix\": \"\",\n" +
+                                "    \"cashBalance\": 318.9505,\n" +
+                                "    \"companyId\": 1,\n" +
+                                "    \"isValidAmount\": true,\n" +
+                                "    \"amount\": \"%s\",\n" +
+                                "    \"remark\": \"%s\",\n" +
+                                "    \"transactionType\": \"PT Rebate\",\n" +
+                                "    \"typeId\": \"%s\",\n" +
+                                "    \"transactionDate\": \"%s\",\n" +
+                                "    \"transaction\": \"Withdraw\"\n" +
+                                "  },\n" +
+                                "  {\n" +
+                                "    \"accountId\": \"%s\",\n" +
+                                "    \"accountCode\": \"%s\",\n" +
+                                "    \"type\": \"%s\",\n" +
+                                "    \"currencyCode\": \"HKD\",\n" +
+                                "    \"accountLedgerType\": \"\",\n" +
+                                "    \"prefix\": \"-\",\n" +
+                                "    \"cashBalance\": 435.72,\n" +
+                                "    \"companyId\": 1,\n" +
+                                "    \"isValidAmount\": true,\n" +
+                                "    \"amount\": \"%s\",\n" +
+                                "    \"remark\": \"%s\",\n" +
+                                "    \"transactionType\": \"PT Rebate\",\n" +
+                                "    \"typeId\": \"%s\",\n" +
+                                "    \"transactionDate\": \"%s\",\n" +
+                                "    \"transaction\": \"Deposit\"\n" +
+                                "  }]\n"
+                        , accountIdFrom, trans.getDebitAccountCode(), fromType, trans.getAmountDebit(), trans.getRemark(), typeId, trans.getTransDate(),
+                        accountIdTo, trans.getCreditAccountCode(), fromType, trans.getAmountCredit(), trans.getRemark(), typeId, trans.getTransDate());
+        }
+
         WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
     }
 
@@ -204,8 +246,8 @@ public class TransactionUtils {
         return WSUtils.getPOSTJSONArrayWithDynamicHeaders(api, jsn, headersParam);
     }
 
-    public static void addClientBookieTxn(Transaction trans, String accountIdFrom, String accountIdTo, String fromType) throws IOException {
-        sendClientBookieTransactionJson(trans, accountIdFrom, accountIdTo, fromType);
+    public static void addClientBookieTxn(Transaction trans, String accountIdFrom, String accountIdTo, String fromType, String typeId) throws IOException {
+        sendClientBookieTransactionJson(trans, accountIdFrom, accountIdTo, fromType, typeId);
     }
 
     public static void addLedgerTxn(Transaction trans, String accountIdFrom, String accountIdTo, String ledgerType) throws IOException {

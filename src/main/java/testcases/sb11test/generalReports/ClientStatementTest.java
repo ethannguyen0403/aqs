@@ -24,45 +24,7 @@ import static common.SBPConstants.*;
 
 public class ClientStatementTest extends BaseCaseAQS {
     String viewBy = "Client Point";
-    String agentCode = "QASAHK00";
-    String agentComCode = "QATE01-COM";
-    String agentLedCode = "QATE00-LED";
     String superMasterCode = "QA2112 - ";
-    String clientCreditAcc = "ClientCredit-AutoQC";
-    String clientDebitAcc = "ClientDebit-AutoQC";
-    String ledgerGroupNameIncome = "QA Ledger Group Income";
-    String ledgerGroupNameExpenditure = "QA Ledger Group Expenditure";
-    String ledgerGroupNameLiability = "QA Ledger Group Liability";
-    String ledgerGroupNameAsset = "QA Ledger Group Asset";
-    String ledgerGroupNameCapital = "QA Ledger Group Capital";
-    String ledgerAssetCreditAcc = "050.000.000.000 - AutoAssetCredit";
-    String ledgerAssetDebitAcc = "055.000.000.000 - AutoAssetDebit";
-    String ledgerLiabilityCreditAcc = "040.000.000.000 - AutoLiabilityCredit";
-    String ledgerLiabilityDebitAcc = "044.000.000.000 - AutoLiabilityDebit";
-    String ledgerCapitalCreditAcc = "030.000.000.000 - AutoCapitalCredit";
-    String ledgerCapitalDebitAcc = "033.000.000.000 - AutoCapitalDebit";
-    String ledgerIncomeCreditAcc = "002.000.000.000 - AutoIncomeCredit";
-    String ledgerIncomeDebitAcc = "002.200.000.000 - AutoIncomeDebit";
-    String ledgerExpenditureCreditAcc = "010.000.000.000 - AutoExpenditureCredit";
-    String ledgerExpenditureDebitAcc = "011.000.000.000 - AutoExpenditureDebit";
-    String level = "Player";
-    String fromType = "Client";
-    String openingVal;
-    String winLossVal;
-    String commissionVal;
-    String recPayVal;
-    String movementVal;
-    String closingVal;
-    String accountIdCredit = null;
-    String accountIdDebit = null;
-    String ledgerCreditAccountId;
-    String ledgerCreditAccountName;
-    String ledgerCreditAccountNumber;
-    String ledgerDebitAccountId;
-    String ledgerDebitAccountName;
-    String ledgerDebitAccountNumber;
-    String ledgerType;
-    String ledgerGroupId;
 
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
@@ -70,6 +32,10 @@ public class ClientStatementTest extends BaseCaseAQS {
     public void ClientStatementTC_309(String clientCode) throws InterruptedException {
         clientCode = superMasterCode + clientCode;
         String actualVal;
+        String openingVal;
+        String winLossVal;
+        String commissionVal;
+        String recPayVal;
 
         log("@title: Validate that Closing of Super = Opening + Win/Loss + Commission + Rec/Pay/CA/RB/Adj");
         log("@Step 1: Login with valid account");
@@ -100,6 +66,9 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "310")
     public void ClientStatementTC_310(String clientCode) throws InterruptedException {
         clientCode = superMasterCode + clientCode;
+        String openingVal;
+        String closingVal;
+
         log("@title: Validate that Opening value today is Closing of yesterday");
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to General Reports > Client Statement");
@@ -156,6 +125,12 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "588")
     public void ClientStatementTC_588(String clientCode) throws InterruptedException {
         clientCode = superMasterCode + clientCode;
+        String openingVal;
+        String winLossVal;
+        String commissionVal;
+        String recPayVal;
+        String movementVal;
+        String closingVal;
 
         log("@title: Validate values are the same but opposite each other when viewing by Company Point and Client Point");
         log("@Step 1: Login with valid account");
@@ -195,7 +170,13 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Parameters({"clientCode"})
     @TestRails(id = "861")
     public void ClientStatementTC_861(String clientCode) throws InterruptedException {
+        String agentCode = "QASAHK00";
         clientCode = superMasterCode + clientCode;
+        String openingVal;
+        String winLossVal;
+        String recPayVal;
+        String movementVal;
+        String closingVal;
         String actualOpeningVal;
         String actualWinloseVal;
         String actualRecPayVal;
@@ -238,7 +219,13 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Parameters({"clientCode"})
     @TestRails(id = "865")
     public void ClientStatementTC_865(String clientCode) throws InterruptedException {
+        String agentComCode = "QATE01-COM";
         clientCode = superMasterCode + clientCode;
+        String openingVal;
+        String commissionVal;
+        String recPayVal;
+        String movementVal;
+        String closingVal;
         String actualOpeningVal;
         String actualCommVal;
         String actualRecPayVal;
@@ -282,8 +269,14 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "866")
     public void ClientStatementTC_866(String clientCode) throws InterruptedException, IOException {
         log("@Validate the balance is deducted from the account if a Client account and an amount are inputted into the 'Debit' form");
+        String agentCode = "QASAHK00";
+        String level = "Player";
+        String fromType = "Client";
+        String typeId;
         String actualRecPayVal;
         String expectedRecPayVal;
+        String accountIdCredit = null;
+        String accountIdDebit = null;
 
         log("Precondition: Add transaction for the Client account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -296,13 +289,14 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .level(level)
-                .debitAccountCode(clientDebitAcc)
-                .creditAccountCode(clientCreditAcc)
+                .debitAccountCode(CLIENT_DEBIT_ACC)
+                .creditAccountCode(CLIENT_CREDIT_ACC)
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        accountIdCredit = AccountSearchUtils.getAccountId(clientCreditAcc);
-        accountIdDebit = AccountSearchUtils.getAccountId(clientDebitAcc);
-        TransactionUtils.addClientBookieTxn(transaction,accountIdDebit,accountIdCredit,fromType);
+        accountIdCredit = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
+        accountIdDebit = AccountSearchUtils.getAccountId(CLIENT_DEBIT_ACC);
+        typeId = ClientSystemUtils.getClientId(clientCode);
+        TransactionUtils.addClientBookieTxn(transaction,accountIdDebit,accountIdCredit,fromType,typeId);
         log("@Step 1: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
@@ -312,7 +306,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
         log("@Verify the balance is deducted from the Client account properly");
         expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
-        actualRecPayVal = popup.getSummaryCellValue(clientDebitAcc,popup.colRecPay).replace(",","");
+        actualRecPayVal = popup.getSummaryCellValue(CLIENT_DEBIT_ACC,popup.colRecPay).replace(",","");
         Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Client Debit balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
         popup.closeSummaryPopup();
 
@@ -326,10 +320,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transDate("")
                 .transType("Tax Rebate")
                 .level(level)
-                .debitAccountCode(clientCreditAcc)
-                .creditAccountCode(clientDebitAcc)
+                .debitAccountCode(CLIENT_CREDIT_ACC)
+                .creditAccountCode(CLIENT_DEBIT_ACC)
                 .build();
-        TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType);
+        TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType,typeId);
         log("INFO: Executed completely");
     }
 
@@ -338,8 +332,14 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "867")
     public void ClientStatementTC_867(String clientCode) throws InterruptedException, IOException {
         log("@Validate the balance is added from the account if a Client account and an amount are inputted into the 'Credit' form");
+        String agentCode = "QASAHK00";
+        String level = "Player";
+        String fromType = "Client";
+        String typeId;
         String actualRecPayVal;
         String expectedRecPayVal;
+        String accountIdCredit = null;
+        String accountIdDebit = null;
 
         log("Precondition: Add transaction for the Client account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -352,13 +352,14 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .level(level)
-                .debitAccountCode(clientDebitAcc)
-                .creditAccountCode(clientCreditAcc)
+                .debitAccountCode(CLIENT_DEBIT_ACC)
+                .creditAccountCode(CLIENT_CREDIT_ACC)
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        accountIdCredit = AccountSearchUtils.getAccountId(clientCreditAcc);
-        accountIdDebit = AccountSearchUtils.getAccountId(clientDebitAcc);
-        TransactionUtils.addClientBookieTxn(transaction,accountIdDebit,accountIdCredit,fromType);
+        accountIdCredit = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
+        accountIdDebit = AccountSearchUtils.getAccountId(CLIENT_DEBIT_ACC);
+        typeId = ClientSystemUtils.getClientId(clientCode);
+        TransactionUtils.addClientBookieTxn(transaction,accountIdDebit,accountIdCredit,fromType,typeId);
         log("@Step 1: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
@@ -368,7 +369,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
         log("@Verify the balance is added to the Client account properly");
         expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
-        actualRecPayVal = popup.getSummaryCellValue(clientCreditAcc,popup.colRecPay).replace(",","");
+        actualRecPayVal = popup.getSummaryCellValue(CLIENT_CREDIT_ACC,popup.colRecPay).replace(",","");
         Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Client Credit balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
         popup.closeSummaryPopup();
 
@@ -382,10 +383,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .level(level)
-                .debitAccountCode(clientCreditAcc)
-                .creditAccountCode(clientDebitAcc)
+                .debitAccountCode(CLIENT_CREDIT_ACC)
+                .creditAccountCode(CLIENT_DEBIT_ACC)
                 .build();
-        TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType);
+        TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType,typeId);
         log("INFO: Executed completely");
     }
 
@@ -394,10 +395,19 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "871")
     public void ClientStatementTC_871(String clientCode) throws IOException, InterruptedException {
         log("@Validate the balance is added to the account if a Ledger type = Asset and an amount are inputted into the 'Debit' form");
+        String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String[] ledgerDebitAccountPart = ledgerAssetDebitAcc.split("-");
-        String[] ledgerCreditAccountPart = ledgerAssetCreditAcc.split("-");
+        String ledgerCreditAccountId;
+        String ledgerCreditAccountName;
+        String ledgerCreditAccountNumber;
+        String ledgerDebitAccountId;
+        String ledgerDebitAccountName;
+        String ledgerDebitAccountNumber;
+        String ledgerType;
+        String ledgerGroupId;
+        String[] ledgerDebitAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
+        String[] ledgerCreditAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
@@ -417,7 +427,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameAsset);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -457,10 +467,19 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "872")
     public void ClientStatementTC_872(String clientCode) throws IOException, InterruptedException {
         log("@Validate the balance is deducted from the account if a Ledger type = Asset and an amount are inputted into the 'Credit' form");
+        String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String[] ledgerDebitAccountPart = ledgerAssetDebitAcc.split("-");
-        String[] ledgerCreditAccountPart = ledgerAssetCreditAcc.split("-");
+        String ledgerCreditAccountId;
+        String ledgerCreditAccountName;
+        String ledgerCreditAccountNumber;
+        String ledgerDebitAccountId;
+        String ledgerDebitAccountName;
+        String ledgerDebitAccountNumber;
+        String ledgerType;
+        String ledgerGroupId;
+        String[] ledgerDebitAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
+        String[] ledgerCreditAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
@@ -480,7 +499,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameAsset);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -520,10 +539,19 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "873")
     public void ClientStatementTC_873(String clientCode) throws IOException, InterruptedException {
         log("@Validate the balance is deducted from the account if a Ledger type = Liability and an amount are inputted into the 'Debit' form");
+        String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String[] ledgerDebitAccountPart = ledgerLiabilityDebitAcc.split("-");
-        String[] ledgerCreditAccountPart = ledgerLiabilityCreditAcc.split("-");
+        String ledgerCreditAccountId;
+        String ledgerCreditAccountName;
+        String ledgerCreditAccountNumber;
+        String ledgerDebitAccountId;
+        String ledgerDebitAccountName;
+        String ledgerDebitAccountNumber;
+        String ledgerType;
+        String ledgerGroupId;
+        String[] ledgerDebitAccountPart = LEDGER_LIABILITY_DEBIT_ACC.split("-");
+        String[] ledgerCreditAccountPart = LEDGER_LIABILITY_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
@@ -543,7 +571,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameLiability);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_LIABILITY);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -583,10 +611,19 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "874")
     public void ClientStatementTC_874(String clientCode) throws IOException, InterruptedException {
         log("@Validate the balance is added from the account if a Ledger type = Liability and an amount are inputted into the 'Credit' form");
+        String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String[] ledgerDebitAccountPart = ledgerLiabilityDebitAcc.split("-");
-        String[] ledgerCreditAccountPart = ledgerLiabilityCreditAcc.split("-");
+        String ledgerCreditAccountId;
+        String ledgerCreditAccountName;
+        String ledgerCreditAccountNumber;
+        String ledgerDebitAccountId;
+        String ledgerDebitAccountName;
+        String ledgerDebitAccountNumber;
+        String ledgerType;
+        String ledgerGroupId;
+        String[] ledgerDebitAccountPart = LEDGER_LIABILITY_DEBIT_ACC.split("-");
+        String[] ledgerCreditAccountPart = LEDGER_LIABILITY_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
@@ -606,7 +643,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameLiability);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_LIABILITY);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -646,10 +683,19 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "875")
     public void ClientStatementTC_875(String clientCode) throws IOException, InterruptedException {
         log("Validate the balance is deducted from the account if a Ledger type = Capital and an amount are inputted into the 'Debit' form");
+        String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String[] ledgerDebitAccountPart = ledgerCapitalDebitAcc.split("-");
-        String[] ledgerCreditAccountPart = ledgerCapitalCreditAcc.split("-");
+        String ledgerCreditAccountId;
+        String ledgerCreditAccountName;
+        String ledgerCreditAccountNumber;
+        String ledgerDebitAccountId;
+        String ledgerDebitAccountName;
+        String ledgerDebitAccountNumber;
+        String ledgerType;
+        String ledgerGroupId;
+        String[] ledgerDebitAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
+        String[] ledgerCreditAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
@@ -669,7 +715,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameCapital);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_CAPITAL);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -709,10 +755,19 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "876")
     public void ClientStatementTC_876(String clientCode) throws IOException, InterruptedException {
         log("@Validate the balance is added from the account if a Ledger type = Capital and an amount are inputted into the 'Credit' form");
+        String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String[] ledgerDebitAccountPart = ledgerCapitalDebitAcc.split("-");
-        String[] ledgerCreditAccountPart = ledgerCapitalCreditAcc.split("-");
+        String ledgerCreditAccountId;
+        String ledgerCreditAccountName;
+        String ledgerCreditAccountNumber;
+        String ledgerDebitAccountId;
+        String ledgerDebitAccountName;
+        String ledgerDebitAccountNumber;
+        String ledgerType;
+        String ledgerGroupId;
+        String[] ledgerDebitAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
+        String[] ledgerCreditAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
@@ -732,7 +787,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameCapital);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_CAPITAL);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -772,10 +827,19 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "877")
     public void ClientStatementTC_877(String clientCode) throws IOException, InterruptedException {
         log("@Validate the balance is deducted from the account if a Ledger type = Income and an amount are inputted into the 'Debit' form");
+        String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String[] ledgerDebitAccountPart = ledgerIncomeDebitAcc.split("-");
-        String[] ledgerCreditAccountPart = ledgerIncomeCreditAcc.split("-");
+        String ledgerCreditAccountId;
+        String ledgerCreditAccountName;
+        String ledgerCreditAccountNumber;
+        String ledgerDebitAccountId;
+        String ledgerDebitAccountName;
+        String ledgerDebitAccountNumber;
+        String ledgerType;
+        String ledgerGroupId;
+        String[] ledgerDebitAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
+        String[] ledgerCreditAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
@@ -795,7 +859,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameIncome);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_INCOME);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -834,10 +898,19 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "878")
     public void ClientStatementTC_878(String clientCode) throws IOException, InterruptedException {
         log("@Validate the balance is added from the account if a Ledger type = Income and an amount are inputted into the 'Credit' form");
+        String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String[] ledgerDebitAccountPart = ledgerIncomeDebitAcc.split("-");
-        String[] ledgerCreditAccountPart = ledgerIncomeCreditAcc.split("-");
+        String ledgerCreditAccountId;
+        String ledgerCreditAccountName;
+        String ledgerCreditAccountNumber;
+        String ledgerDebitAccountId;
+        String ledgerDebitAccountName;
+        String ledgerDebitAccountNumber;
+        String ledgerType;
+        String ledgerGroupId;
+        String[] ledgerDebitAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
+        String[] ledgerCreditAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
@@ -857,7 +930,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameIncome);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_INCOME);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -897,10 +970,19 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "879")
     public void ClientStatementTC_879(String clientCode) throws IOException, InterruptedException {
         log("@Validate the balance is added from the account if a Ledger type = Expenditure and an amount are inputted into the 'Debit' form");
+        String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String[] ledgerDebitAccountPart = ledgerExpenditureDebitAcc.split("-");
-        String[] ledgerCreditAccountPart = ledgerExpenditureCreditAcc.split("-");
+        String ledgerCreditAccountId;
+        String ledgerCreditAccountName;
+        String ledgerCreditAccountNumber;
+        String ledgerDebitAccountId;
+        String ledgerDebitAccountName;
+        String ledgerDebitAccountNumber;
+        String ledgerType;
+        String ledgerGroupId;
+        String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
+        String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
@@ -920,7 +1002,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameExpenditure);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_EXPENDITURE);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -960,10 +1042,19 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "880")
     public void ClientStatementTC_880(String clientCode) throws IOException, InterruptedException {
         log("@Validate the balance is deducted from the account if a Ledger type = Expenditure and an amount are inputted into the 'Credit' form");
+        String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String[] ledgerDebitAccountPart = ledgerExpenditureDebitAcc.split("-");
-        String[] ledgerCreditAccountPart = ledgerExpenditureCreditAcc.split("-");
+        String ledgerCreditAccountId;
+        String ledgerCreditAccountName;
+        String ledgerCreditAccountNumber;
+        String ledgerDebitAccountId;
+        String ledgerDebitAccountName;
+        String ledgerDebitAccountNumber;
+        String ledgerType;
+        String ledgerGroupId;
+        String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
+        String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
@@ -983,7 +1074,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameExpenditure);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_EXPENDITURE);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -1023,6 +1114,7 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "882")
     public void ClientStatementTC_882(String clientCode) throws IOException, InterruptedException, ParseException {
         log("@Validate Win/Lose Summary dialog displays with properly value when clicked on Win/Lose link");
+        String agentCode = "QASAHK00";
         String expectedRecPayVal = "5.00";
         String actualRecPayVal;
         log("Precondition: Add Manual Bet and settle with win/loss value = 5.0");
@@ -1030,13 +1122,13 @@ public class ClientStatementTest extends BaseCaseAQS {
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Order order = new Order.Builder()
                 .price(1.5).requireStake(15)
-                .oddType("HK").accountCode(clientCreditAcc)
+                .oddType("HK").accountCode(CLIENT_CREDIT_ACC)
                 .createDate(transDate)
                 .eventDate(transDate + " 23:59:00")
                 .selection("Home " + DateUtils.getMilliSeconds())
                 .build();
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
-        String accountId = AccountSearchUtils.getAccountId(clientCreditAcc);
+        String accountId = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_MAP.get("Soccer"),order);
         welcomePage.waitSpinnerDisappeared();
         int betId = BetSettlementUtils.getConfirmedBetId(accountId,SPORT_MAP.get("Soccer"),order);
@@ -1051,7 +1143,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("@Step 3: Open Summary popup of agent");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
         log("@Step 4: Open win lose summary popup of player");
-        ClientSummaryWinlosePopup winlosePopup = popup.openWinLoseSummaryPopup(clientCreditAcc);
+        ClientSummaryWinlosePopup winlosePopup = popup.openWinLoseSummaryPopup(CLIENT_CREDIT_ACC);
 
         log("@Validate the WinLose balance show properly");
         actualRecPayVal = winlosePopup.getGrandTotal(winlosePopup.colWinLoseTotal) ;
@@ -1065,6 +1157,7 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "999")
     public void ClientStatementTC_999(String clientCode) throws IOException, InterruptedException, ParseException {
         log("@Validate Member Transactions dialog displays with properly value when clicked on Account link");
+        String agentCode = "QASAHK00";
         String winLoseVal = "5.0";
         String openingRunningVal;
         String actualTotalRunningVal;
@@ -1073,13 +1166,13 @@ public class ClientStatementTest extends BaseCaseAQS {
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Order order = new Order.Builder()
                 .price(1.5).requireStake(15)
-                .oddType("HK").accountCode(clientDebitAcc)
+                .oddType("HK").accountCode(CLIENT_DEBIT_ACC)
                 .createDate(transDate)
                 .eventDate(transDate + " 23:59:00")
                 .selection("Home " + DateUtils.getMilliSeconds())
                 .build();
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
-        String accountId = AccountSearchUtils.getAccountId(clientDebitAcc);
+        String accountId = AccountSearchUtils.getAccountId(CLIENT_DEBIT_ACC);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_MAP.get("Soccer"),order);
         welcomePage.waitSpinnerDisappeared();
         int betId = BetSettlementUtils.getConfirmedBetId(accountId,SPORT_MAP.get("Soccer"),order);
@@ -1094,7 +1187,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("@Step 3: Open Summary popup of agent");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
         log("@Verify the balance Total Running is calculated properly");
-        ClientMemberTransactionPopup transPopup = popup.openMemberTransactionPopup(clientDebitAcc);
+        ClientMemberTransactionPopup transPopup = popup.openMemberTransactionPopup(CLIENT_DEBIT_ACC);
         //TODO need enhancement as currently is workingaround by remove "," out of string before calculate
         openingRunningVal = transPopup.getOpeningRunning(transPopup.colOpeningRunning).replace(",","");
         actualTotalRunningVal = transPopup.getTotalRunning(transPopup.colTotalRunning).replace(",","");
@@ -1109,9 +1202,18 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "1004")
     public void ClientStatementTC_1004(String clientCode) throws IOException, InterruptedException {
         log("@Validate Rec/Pay/CA/RB/Adj Txns dialog displays with properly value when clicked on Rec/Pay/CA/RB/Adj link");
+        String agentLedCode = "QATE00-LED";
         String actualRecPayVal;
-        String[] ledgerDebitAccountPart = ledgerAssetDebitAcc.split("-");
-        String[] ledgerCreditAccountPart = ledgerAssetCreditAcc.split("-");
+        String ledgerCreditAccountId;
+        String ledgerCreditAccountName;
+        String ledgerCreditAccountNumber;
+        String ledgerDebitAccountId;
+        String ledgerDebitAccountName;
+        String ledgerDebitAccountNumber;
+        String ledgerType;
+        String ledgerGroupId;
+        String[] ledgerDebitAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
+        String[] ledgerCreditAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
@@ -1131,7 +1233,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameAsset);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);

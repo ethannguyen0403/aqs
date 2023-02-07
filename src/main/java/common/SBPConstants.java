@@ -28,6 +28,23 @@ public class SBPConstants {
     public final static String PLACE_BET_SUCCESS_MSG ="The bet was placed successfully";
     public final static String FINANCIAL_YEAR = "Year 2022-2023";
     public final static String COMPANY_UNIT = "Kastraki Limited";
+    public final static String CLIENT_CREDIT_ACC = "ClientCredit-AutoQC";
+    public final static String CLIENT_DEBIT_ACC = "ClientDebit-AutoQC";
+    public final static String LEDGER_GROUP_NAME_INCOME = "QA Ledger Group Income";
+    public final static String LEDGER_GROUP_NAME_EXPENDITURE = "QA Ledger Group Expenditure";
+    public final static String LEDGER_GROUP_NAME_LIABILITY = "QA Ledger Group Liability";
+    public final static String LEDGER_GROUP_NAME_ASSET = "QA Ledger Group Asset";
+    public final static String LEDGER_GROUP_NAME_CAPITAL = "QA Ledger Group Capital";
+    public final static String LEDGER_ASSET_CREDIT_ACC = "050.000.000.000 - AutoAssetCredit";
+    public final static String LEDGER_ASSET_DEBIT_ACC = "055.000.000.000 - AutoAssetDebit";
+    public final static String LEDGER_LIABILITY_CREDIT_ACC = "040.000.000.000 - AutoLiabilityCredit";
+    public final static String LEDGER_LIABILITY_DEBIT_ACC = "044.000.000.000 - AutoLiabilityDebit";
+    public final static String LEDGER_CAPITAL_CREDIT_ACC = "030.000.000.000 - AutoCapitalCredit";
+    public final static String LEDGER_CAPITAL_DEBIT_ACC = "033.000.000.000 - AutoCapitalDebit";
+    public final static String LEDGER_INCOME_CREDIT_ACC = "002.000.000.000 - AutoIncomeCredit";
+    public final static String LEDGER_INCOME_DEBIT_ACC = "002.200.000.000 - AutoIncomeDebit";
+    public final static String LEDGER_EXPENDITURE_CREDIT_ACC = "010.000.000.000 - AutoExpenditureCredit";
+    public final static String LEDGER_EXPENDITURE_DEBIT_ACC = "011.000.000.000 - AutoExpenditureDebit";
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
         {
