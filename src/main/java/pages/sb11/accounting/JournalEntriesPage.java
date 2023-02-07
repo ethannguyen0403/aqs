@@ -68,6 +68,42 @@ public class JournalEntriesPage extends WelcomePage {
         }
     }
 
+    public void addTransaction(Transaction trans, String debitAccountType, String creditAccountType, String remark, String transDate, String transType, boolean isSubmit){
+        if (debitAccountType == "Ledger") {
+            filterLedger(true, "Ledger", trans.getLedgerDebit(), true);
+        } else if (debitAccountType == "Bookie") {
+            filterClientBookie("Bookie",true, trans.getBookieDebit(), trans.getLevel(),trans.getDebitAccountCode(),true);
+        } else {
+            filterClientBookie("Client",true, trans.getClientDebit(), trans.getLevel(),trans.getDebitAccountCode(),true);
+        }
+        double debitBalance = Math.abs(Double.parseDouble(tbDebit.getControlOfCell(1, colBalance, 1, null).getText().trim()));
+        System.out.println("Debit Balance is " + debitBalance);
+        trans.setDebitBalance(debitBalance);
+        txtDebitAmount.sendKeys(String.format("%.3f",trans.getAmountDebit()));
+
+        if (creditAccountType == "Ledger") {
+            filterLedger(false, "Ledger", trans.getLedgerCredit(), true);
+        } else if (creditAccountType == "Bookie") {
+            filterClientBookie("Bookie",false, trans.getBookieCredit(), trans.getLevel(),trans.getCreditAccountCode(),true);
+        } else {
+            filterClientBookie("Client",false, trans.getClientCredit(), trans.getLevel(),trans.getCreditAccountCode(),true);
+        }
+        double creditBalance = Math.abs(Double.parseDouble(tbCredit.getControlOfCell(1, colBalance, 1, null).getText().trim()));
+        System.out.println("Credit Balance is " + creditBalance);
+        trans.setCreditBalance(creditBalance);
+        txtCreditAmount.sendKeys(String.format("%.3f",trans.getAmountCredit()));
+
+        txtRemark.sendKeys(remark);
+        if (!transDate.isEmpty()){
+            dtpTrans.selectDate(transDate, "dd/MM/yyyy");
+        }
+        ddTransactionType.selectByVisibleText(transType);
+
+        if (isSubmit){
+            btnSubmit.click();
+        }
+    }
+
     private void filterLedger (boolean isDebit,String fromType, String ledgername, boolean isAdd){
         if (isDebit){
             ddDebitFrom.selectByVisibleContainsText(fromType);
@@ -103,20 +139,37 @@ public class JournalEntriesPage extends WelcomePage {
         }
     }
 
+    public void addBookieClientTransaction(Transaction trans, String fromType, boolean isSubmit){
+        filterClientBookie(fromType,true, trans.getBookieDebit(), trans.getLevel(),trans.getDebitAccountCode(),true);
+        txtDebitAmount.sendKeys(String.format("%.3f",trans.getAmountDebit()));
+
+        filterClientBookie(fromType,false, trans.getBookieCredit(), trans.getLevel(),trans.getCreditAccountCode(),true);
+        txtCreditAmount.sendKeys(String.format("%.3f",trans.getAmountCredit()));
+
+        txtRemark.sendKeys(trans.getRemark());
+        if (!trans.getTransDate().isEmpty()){
+            dtpTrans.selectDate(trans.getTransDate(), "dd/MM/yyyy");
+        }
+        ddTransactionType.selectByVisibleText(trans.getTransType());
+        if (isSubmit){
+            btnSubmit.click();
+        }
+    }
+
     private void filterClientBookie(String fromType, boolean isDebit, String clientBookieCode, String level, String accountCode, boolean isAdd) {
         if (isDebit) {
-            ddDebitFrom.selectByVisibleText(fromType);
-            ddDebitLedger.selectByVisibleText(clientBookieCode);
-            ddDebitLevel.selectByVisibleText(level);
+            ddDebitFrom.selectByVisibleContainsText(fromType);
+            ddDebitLedger.selectByVisibleContainsText(clientBookieCode);
+            ddDebitLevel.selectByVisibleContainsText(level);
             txtDebitAccount.sendKeys(accountCode);
             txtDebitAccount.sendKeys(accountCode);
             if (isAdd) {
                 btnDebitAdd.click();
             }
         } else {
-            ddCreditTo.selectByVisibleText(fromType);
-            ddCreditLedger.selectByVisibleText(clientBookieCode);
-            ddCreditLevel.selectByVisibleText(level);
+            ddCreditTo.selectByVisibleContainsText(fromType);
+            ddCreditLedger.selectByVisibleContainsText(clientBookieCode);
+            ddCreditLevel.selectByVisibleContainsText(level);
             txtCreditAccount.sendKeys(accountCode);
             txtCreditAccount.sendKeys(accountCode);
             if (isAdd) {
