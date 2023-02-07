@@ -18,7 +18,6 @@
         <parameter name="accountCode" value="Auto-Account01"/>
         <parameter name="accountCurrency" value="HKD"/>
         <parameter name="clientCode" value ="QA Client (No.121 QA Client)"/>
-        <parameter name="bookieCode" value ="QA01"/>
         <parameter name="emailAddress" value="isaacc001@yopmail.com"/>
         <groups>
             <run>

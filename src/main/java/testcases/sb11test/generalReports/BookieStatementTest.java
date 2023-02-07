@@ -1,5 +1,7 @@
 package testcases.sb11test.generalReports;
 
+import com.paltech.utils.DateUtils;
+import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -7,20 +9,23 @@ import pages.sb11.generalReports.BookieStatementPage;
 import pages.sb11.generalReports.popup.BookieMemberSummaryPopup;
 import pages.sb11.generalReports.popup.BookieSuperMasterDetailPopup;
 import testcases.BaseCaseAQS;
+import utils.sb11.AccountSearchUtils;
+import utils.sb11.BookieInfoUtils;
+import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
+
+import java.io.IOException;
 
 import static common.SBPConstants.*;
 
 public class BookieStatementTest extends BaseCaseAQS {
-    String bookieName = "QA Bookie";
-    String superMasterCode = "SM-QA1-QA Test";
-    String masterCode = "Ma-QA101-QA Test";
-    String agentCode = "A-QA10101-QA Test";
 
     @Test(groups = {"smoke"})
     @TestRails(id = "183")
-    @Parameters({"bookieCode"})
-    public void BookieStatementTC_183(String bookieCode) throws InterruptedException {
+    public void BookieStatementTC_183() throws InterruptedException {
+        String bookieName = "QA Bookie";
+        String bookieCode = "QA01";
+        String superMasterCode = "SM-QA1-QA Test";
         bookieCode = bookieCode + " - " + bookieName;
         String superGrandTotalHKDVal;
         String superMasterTotalHKDVal;
@@ -60,6 +65,9 @@ public class BookieStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @TestRails(id = "1639")
     public void BookieStatementTC_1639() throws InterruptedException {
+        String bookieName = "QA Bookie";
+        String masterCode = "Ma-QA101-QA Test";
+        String agentCode = "A-QA10101-QA Test";
         String totalVal;
         String winLoseTotalVal;
         String opWinLoseTotalVal;
@@ -101,6 +109,68 @@ public class BookieStatementTest extends BaseCaseAQS {
         Assert.assertEquals(memberTotal,totalMemberGrandVal,"FAILED! Total is not matched between inside/outside, Total Outside: " + memberTotal
                 + " Total Inside: " + totalMemberGrandVal);
 
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"smoke"})
+    @TestRails(id = "184")
+    public void BookieStatementTC_184() throws InterruptedException, IOException {
+        String bookieName = "QA Bookie";
+        String bookieCode = "QA01";
+        String superMasterCode = "SM-QA1-QA Test";
+        String typeId;
+        String rpcrbaVal;
+        String accountSuperIdDebit;
+        String accountSuperIdCredit;
+        String level = "Super";
+        String fromType = "Bookie";
+        String accountCodeDebit = "SM-QA1-QA Test";
+        String accountCodeCredit = "SM-FE9-QA Test";
+
+        log("@title: Validate Payment transaction displays correctly");
+        log("Precondition: Add txn for Bookie Super in Debit");
+        String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        Transaction transaction = new Transaction.Builder()
+                .amountDebit(1)
+                .amountCredit(1)
+                .remark("Automation Testing Transaction Bookie: " + DateUtils.getMilliSeconds())
+                .transDate(transDate)
+                .transType("Tax Rebate")
+                .level(level)
+                .debitAccountCode(accountCodeDebit)
+                .creditAccountCode(accountCodeCredit)
+                .build();
+        welcomePage.waitSpinnerDisappeared();
+        typeId = BookieInfoUtils.getBookieId(bookieName);
+        accountSuperIdDebit = AccountSearchUtils.getAccountId(accountCodeDebit);
+        accountSuperIdCredit = AccountSearchUtils.getAccountId(accountCodeCredit);
+        TransactionUtils.addClientBookieTxn(transaction,accountSuperIdDebit,accountSuperIdCredit,fromType,typeId);
+
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Click General Reports > Bookie Statement");
+        BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
+
+        log("@Step 3: Filter with Bookie has made transaction");
+        bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Super Master","","",bookieCode);
+        log("@Step 4: Click on Super Master RPCRBA link");
+        BookieSuperMasterDetailPopup bookiePopup = bookieStatementPage.openBookieSuperMasterDetailPopup(superMasterCode);
+        rpcrbaVal = bookiePopup.getSuperMasterCellValue(bookiePopup.colRPCRBA, true);
+        log("Validate for Bookie Super account chosen in Debit section, value will show positive amount");
+        Assert.assertEquals(String.format("%.2f",transaction.getAmountDebit()),rpcrbaVal,"FAILED! Amount Debit and RPCRBA Value does not show in positive, Amount Debit:  " + transaction.getAmountDebit()
+                + " RPCRBA: " + rpcrbaVal);
+
+        log("Post-Condition: Add txn for Bookie Super in Credit");
+        Transaction transactionPost = new Transaction.Builder()
+                .amountDebit(1)
+                .amountCredit(1)
+                .remark("Automation Testing Transaction Bookie Post-condition: " + DateUtils.getMilliSeconds())
+                .transDate(transDate)
+                .transType("Tax Rebate")
+                .level(level)
+                .debitAccountCode(accountCodeCredit)
+                .creditAccountCode(accountCodeDebit)
+                .build();
+        TransactionUtils.addClientBookieTxn(transactionPost,accountSuperIdCredit,accountSuperIdDebit,fromType,typeId);
         log("INFO: Executed completely");
     }
 }
