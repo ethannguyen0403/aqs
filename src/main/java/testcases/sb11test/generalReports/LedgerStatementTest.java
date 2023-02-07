@@ -2,11 +2,10 @@ package testcases.sb11test.generalReports;
 
 import com.paltech.utils.DateUtils;
 import objects.Transaction;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.accounting.JournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
-import pages.sb11.generalReports.popup.LedgerDetailPopup;
+import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 

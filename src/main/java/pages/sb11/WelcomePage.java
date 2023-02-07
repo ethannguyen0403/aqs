@@ -17,7 +17,7 @@ import java.util.Objects;
 import static common.SBPConstants.*;
 
 public class WelcomePage extends Header{
-    Label lblSpin = Label.xpath("//div[contains(@class,'la-ball-clip-rotate')]");
+
     private Label lblTitle = Label.xpath("//span[@class='text-white']");
     public String getTitlePage ()
     {
@@ -25,9 +25,6 @@ public class WelcomePage extends Header{
     }
     public AppArlertControl appArlertControl = AppArlertControl.xpath("//app-alert//div[@class='message-box']");
 
-    public void waitPageLoad(){
-        lblSpin.waitForControlInvisible();
-    }
 
     /**
      * This method create the event if League does not have any event

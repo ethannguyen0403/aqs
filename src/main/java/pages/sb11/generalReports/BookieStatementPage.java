@@ -4,8 +4,11 @@ import com.paltech.element.common.*;
 import controls.DateTimePicker;
 import controls.Table;
 import pages.sb11.WelcomePage;
-import pages.sb11.generalReports.popup.BookieMemberSummaryPopup;
-import pages.sb11.generalReports.popup.BookieSuperMasterDetailPopup;
+import pages.sb11.generalReports.popup.bookiestatement.BookieMemberSummaryPopup;
+import pages.sb11.generalReports.popup.bookiestatement.BookieSuperMasterDetailPopup;
+import pages.sb11.generalReports.popup.bookiestatement.BookieSummaryPopup;
+
+import java.util.List;
 
 public class BookieStatementPage extends WelcomePage {
     protected String _xpathTable = null;
@@ -14,22 +17,37 @@ public class BookieStatementPage extends WelcomePage {
     int colAgentCode = 2;
     int colMSlink = 9;
     public int colMember = 10;
-    Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
-    DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bookie-statement//div[@class='company-unit pl-3']//select");
-    DropDownBox ddpFinancialYear = DropDownBox.xpath("//app-bookie-statement//div[@class='financial-year pl-3']//select");
-    DropDownBox ddpAgentType = DropDownBox.xpath("//app-bookie-statement//div[@class='agent-type pl-3']//select");
-    TextBox txtFromDate = TextBox.name("fromDate");
-    TextBox txtToDate = TextBox.name("toDate");
+    int colTotal = 10;
+    public int colLevel = 3;
+    public int colOpening = 5;
+    public int colWinLoss = 6;
+    public int colCommission = 7;
+    public int colRecPay = 8;
+    public int colMovement = 9;
+    public int colClosing = 10;
+
+    Label lblTitle = Label.xpath("//app-bookie-statement//span[contains(@class,'card-header main-box-header')]");
+    DropDownBox ddpViewBy = DropDownBox.xpath("//div[contains(@class,'p-2 pb-4 pr-0 filter')][1]//select");
+    DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bookie-statement//div[contains(@class,'company-unit')]//select");
+    DropDownBox ddpFinancialYear = DropDownBox.xpath("//app-bookie-statement//div[contains(@class,'financial-year')]//select");
+    DropDownBox ddpAgentType = DropDownBox.xpath("//app-bookie-statement//div[contains(@class,'agent-type')]//select");
+    TextBox txtFromDate = TextBox.xpath("//app-bookie-statement//div[contains(@class,'form-date')]//input");
+    TextBox txtToDate = TextBox.xpath("//app-bookie-statement//div[contains(@class,'to-date')]//input");
+    TextBox txtBookieCode = TextBox.xpath("//app-bookie-statement//div[contains(@class,'bookie-code')]//input");
+    DropDownBox ddpCurrency = DropDownBox.xpath("//app-bookie-statement//div[text()='Currency']//following::select[1]");
+    Button btnShow = Button.xpath("//app-bookie-statement//button[contains(@class,'btn-show')]");
     DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
     DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
 
-    TextBox txtBookieCode = TextBox.xpath("//app-bookie-statement//div[@class='bookie-code pl-3']//input");
     Button btnShowBookie = Button.xpath("//app-bookie-statement//div[@class='show-bookie pl-3']//a");
     Button btnConfirmShowBookie = Button.xpath("//app-bookie-statement//div[@class='list-account-bookie ng-star-inserted']//button[text()='Show']");
-    DropDownBox ddpCurrency = DropDownBox.xpath("//app-bookie-statement//div[@class='pl-3']//select");
-    Button btnShow = Button.xpath("//app-bookie-statement//div[@class='pl-3']//button[text()='Show']");
     Table tblSummary = Table.xpath("//table[@aria-label='table']", totalColSummary);
     Icon searchIcon = Icon.xpath("//app-bookie-statement//em[@class = 'fas fa-search']");
+
+    Table tblSuper = Table.xpath("//app-client-detail//table[@id='table-super']",colTotal);
+    Table tblMaster = Table.xpath("//app-client-detail//table[@id='table-master']",colTotal);
+    //Table tblAgent = Table.xpath("//app-client-detail//div[%s]//table[@id='table-agent']",colTotal);
+
 
     @Override
     public String getTitlePage ()
@@ -37,21 +55,27 @@ public class BookieStatementPage extends WelcomePage {
         return this.lblTitle.getText().trim();
     }
 
-    public void filter(String companyUnit, String financialYear, String agentType, String fromDate, String toDate, String bookieCode) throws InterruptedException {
-        ddpCompanyUnit.selectByVisibleText(companyUnit);
-        ddpFinancialYear.selectByVisibleText(financialYear);
-        ddpAgentType.selectByVisibleText(agentType);
+    public void filter( String companyUnit, String financialYear, String agentType, String fromDate, String toDate, String bookieCode, String currency){
+        if(!companyUnit.isEmpty())
+            ddpCompanyUnit.selectByVisibleText(companyUnit);
+        if(!financialYear.isEmpty())
+            ddpFinancialYear.selectByVisibleText(financialYear);
+        if(!agentType.isEmpty())
+            ddpAgentType.selectByVisibleText(agentType);
+        String currentDate = txtFromDate.getAttribute("value");
         if(!fromDate.isEmpty())
-            dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+            if(!currentDate.equals(fromDate))
+                dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+        currentDate = txtFromDate.getAttribute("value");
         if(!toDate.isEmpty())
-            dtpToDate.selectDate(toDate,"dd/MM/yyyy");
-        //btnShowBookie.click();
-        txtBookieCode.sendKeys(bookieCode);
-        searchIcon.click();
-        //filterBookie(bookieCode);
-        btnConfirmShowBookie.click();
-        waitSpinnerDisappeared();
-        //btnShow.click();
+            if(!currentDate.equals(toDate))
+                dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+        if(!bookieCode.isEmpty())
+            txtBookieCode.sendKeys(bookieCode);
+        if(!currency.isEmpty())
+            ddpCurrency.selectByVisibleText(currency);
+        btnShow.click();
+
     }
 
     private void filterBookie(String bookieCode) throws InterruptedException {
@@ -152,5 +176,36 @@ public class BookieStatementPage extends WelcomePage {
                 i+=i;
             }
         }
+    }
+
+    public BookieMemberSummaryPopup openSummaryPopup(String agentCode) {
+        Label lblAgentCode;
+        Label lblFirstColumn;
+        int i = 2;
+        int j = 1;
+        while (true){
+            String xpath = String.format("//app-client-detail//div[contains(@class,'col-12')][%s]//table[@id='table-agent']",j);
+            Table tblAgent = Table.xpath(xpath,colTotal);
+            lblAgentCode = Label.xpath(tblAgent.getxPathOfCell(1,colLevel,i,null));
+            lblFirstColumn = Label.xpath(tblAgent.getxPathOfCell(1,1,i,null));
+            if(lblFirstColumn.getText().equalsIgnoreCase("Total in")) {
+                j = j + 1;
+                i = 1;
+            }
+            if(lblAgentCode.getText().equalsIgnoreCase(agentCode)){
+                lblAgentCode.click();
+                return new BookieMemberSummaryPopup();
+            }
+            if(lblAgentCode.getText().equalsIgnoreCase("Grand Total in")) {
+                break;
+            }
+            i = i+1;
+        }
+        return null;
+    }
+
+    public List<String> getMemberSummary(String masterCode ,String masterBookie, String accountCode){
+        BookieMemberSummaryPopup bookieSummaryPopup = openBookieMemberSummaryDetailPopup(masterBookie,accountCode);
+        return bookieSummaryPopup.getMemeberSummaryData(accountCode);
     }
 }

@@ -1,10 +1,10 @@
-package pages.sb11.generalReports.popup;
+package pages.sb11.generalReports.popup.clientstatement;
 
 import com.paltech.element.common.Label;
 import controls.Table;
 import pages.sb11.WelcomePage;
 
-public class ClientLedgerRecPayPopup extends WelcomePage {
+public class ClientLedgerRecPayPopup {
     int summaryColTotal = 7;
     public int colDifferentOriginal = 2;
 

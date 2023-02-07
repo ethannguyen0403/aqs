@@ -9,10 +9,9 @@ import controls.Table;
 import objects.Transaction;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
-import pages.sb11.generalReports.popup.LedgerDetailPopup;
+import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 
 import static common.SBPConstants.*;
-import static testcases.BaseCaseAQS.welcomePage;
 
 public class LedgerStatementPage extends WelcomePage {
     public DropDownBox ddCompanyUnit = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Company Unit')]//following::select[1]");

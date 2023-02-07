@@ -8,7 +8,7 @@ import controls.DateTimePicker;
 import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
-import pages.sb11.generalReports.popup.ClientSummaryPopup;
+import pages.sb11.generalReports.popup.clientstatement.ClientSummaryPopup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +49,14 @@ public class ClientStatementPage extends WelcomePage {
         ddpCompanyUnit.selectByVisibleText(companyUnit);
         ddpFinancialYear.selectByVisibleText(financialYear);
         ddpClients.selectByVisibleText(clients);
+        String currentDate = txtFromDate.getAttribute("value");
         if(!fromDate.isEmpty())
-            dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+            if(!currentDate.equals(fromDate))
+                dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+        currentDate = txtFromDate.getAttribute("value");
         if(!toDate.isEmpty())
-            dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+            if(!currentDate.equals(toDate))
+                dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         btnShow.click();
         waitSpinnerDisappeared();
     }
@@ -191,6 +195,8 @@ public class ClientStatementPage extends WelcomePage {
     }
     public List<String> getMemberSummary(String agentCode, String accountCode){
         ClientSummaryPopup clientSummaryPopup = openSummaryPopup(agentCode);
-        return clientSummaryPopup.getMemeberSummaryData(accountCode);
+        List<String> lstData = clientSummaryPopup.getMemeberSummaryData(accountCode);
+        clientSummaryPopup.closeSummaryPopup();
+        return lstData;
     }
 }

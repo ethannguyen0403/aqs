@@ -1,4 +1,4 @@
-package pages.sb11.generalReports.popup;
+package pages.sb11.generalReports.popup.clientstatement;
 
 import com.paltech.element.common.Button;
 import com.paltech.element.common.Label;

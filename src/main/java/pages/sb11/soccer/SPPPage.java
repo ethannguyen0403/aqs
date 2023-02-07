@@ -10,6 +10,7 @@ import controls.Table;
 import pages.sb11.WelcomePage;
 import pages.sb11.soccer.popup.spp.SmartGroupPopup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SPPPage extends WelcomePage {
@@ -76,35 +77,71 @@ public class SPPPage extends WelcomePage {
     }
 
     public List<String> getRowDataOfGroup(String groupName){
-        Table tbGroup = getGroupTable(groupName);
-        return tbGroup.getRows(true).get(0);
+       return getGroupTable(groupName);
     }
+
     private SmartGroupPopup clickSmartGroup(){
         lblSmartGroup.click();
         return new SmartGroupPopup();
     }
 
-    /**
-     * This function get the table that contain the expected group name
-     * @param groupName
-     * @return Table
+    /* Start This is work account to get a data in a row of table. Because table element on this page is different (//table/tbody/tr/th)
+    so we have to write other function to cover this case.
      */
-    private Table getGroupTable(String groupName){
+    private List<String> getGroupTable(String groupName){
         int index = 1;
         Table tblGroup;
         String groupCode;
+        String tableXpath;
         while (true){
-            tblGroup = Table.xpath("//app-spp//div[contains(@class,'filter bg-white ')]["+ index +"]/table",totalColumnNumber);
+            tableXpath ="//app-spp//div[contains(@class,'filter bg-white')]["+ index +"]/table";
+            tblGroup = Table.xpath(tableXpath,totalColumnNumber);
             if(!tblGroup.isDisplayed()){
                 System.out.println("**DEBUG: Not found the table group " +groupName);
                 return null;
             }
-            groupCode = tblGroup.getControlOfCell(1,colGroupCode,1,null).getText().trim();
-            if(groupCode.equals(groupName)){
-                return tblGroup;
+            int rowContainsGroupName = getRowContainsGroupName(tableXpath,colGroupCode,groupName);
+            if(rowContainsGroupName != 0){
+                return getDataRowOfAGroupName(tableXpath,rowContainsGroupName);
             }
+            index = index +1;
         }
     }
+
+    // handle for get a row index contains the value
+    private int getRowContainsGroupName(String tblTableXpath,int colIndex,String groupName){
+        String cellXpath;
+        int rowIndex = 1;
+        String groupCode;
+        while (true){
+            cellXpath = String.format("%s%s", tblTableXpath, String.format("//tbody[1]/tr[%s]/th[%s]", rowIndex, colIndex));
+            Label lblCel = Label.xpath(cellXpath);
+            if(!lblCel.isDisplayed())
+                return 0;
+            groupCode = lblCel.getText().trim();
+            if(groupCode.equals(groupName)){
+                return rowIndex;
+            }
+            rowIndex = rowIndex +1;
+        }
+    }
+
+    // handle for get a data on input row
+    private List<String> getDataRowOfAGroupName(String xpathTable,int rowIndex){
+        List<String> lstRowData = new ArrayList<>();
+        String cellXpath;
+        int i = 1;
+        while(true) {
+            cellXpath = String.format("%s%s", xpathTable, String.format("//tbody[1]/tr[%s]/th[%s]", rowIndex, i));
+            Label lblCel = Label.xpath(cellXpath);
+            if(!lblCel.isDisplayed())
+                return lstRowData;
+            lstRowData.add(lblCel.getText().trim());
+            i = i +1;
+        }
+    }
+
+   /* End handle for Table  */
 
     public boolean verifyAmountDataMatch(String actual, String expected){
         double actualDouble = Double.parseDouble(actual);

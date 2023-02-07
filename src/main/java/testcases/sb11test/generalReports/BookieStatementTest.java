@@ -4,8 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.generalReports.BookieStatementPage;
-import pages.sb11.generalReports.popup.BookieMemberSummaryPopup;
-import pages.sb11.generalReports.popup.BookieSuperMasterDetailPopup;
+import pages.sb11.generalReports.popup.bookiestatement.BookieMemberSummaryPopup;
+import pages.sb11.generalReports.popup.bookiestatement.BookieSuperMasterDetailPopup;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 
@@ -37,7 +37,7 @@ public class BookieStatementTest extends BaseCaseAQS {
         BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
 
         log("@Step 3: Filter with Bookie has made transaction");
-        bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Super Master","","",bookieCode);
+        bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Super Master","","",bookieCode,"");
         superMasterTotalHKDVal = bookieStatementPage.getSuperMasterCellValue(superMasterCode, bookieStatementPage.colMasterTotal);
         BookieSuperMasterDetailPopup bookiePopup = bookieStatementPage.openBookieSuperMasterDetailPopup(superMasterCode);
         openBalanceVal = bookiePopup.getSuperMasterCellValue(bookiePopup.colOpeningBalance, true);
@@ -76,7 +76,7 @@ public class BookieStatementTest extends BaseCaseAQS {
         BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
         bookieStatementPage.waitSpinnerDisappeared();
         log("@Step 3: Filter with Bookie has made transaction amd open MS link");
-        bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Agent","","",bookieName);
+        bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Agent","","",bookieName,"");
         BookieMemberSummaryPopup bookieMemberPopup = bookieStatementPage.openBookieMemberSummaryDetailPopup(masterCode,agentCode);
 
         totalVal = bookieMemberPopup.getTotalCellValue(bookieMemberPopup.colTotal,true).replace(",","");

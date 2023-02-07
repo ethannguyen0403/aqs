@@ -1,10 +1,8 @@
-package pages.sb11.generalReports.popup;
+package pages.sb11.generalReports.popup.clientstatement;
 
 import com.paltech.driver.DriverManager;
 import com.paltech.element.common.*;
 import controls.Table;
-import pages.sb11.WelcomePage;
-import pages.sb11.generalReports.ClientStatementPage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,10 +113,8 @@ public class ClientSummaryPopup {
         }
     }
 
-
-    public ClientStatementPage closeSummaryPopup() {
+    public void closeSummaryPopup() {
         closeIcon.click();
-        return new ClientStatementPage();
     }
 
     public ClientSummaryWinlosePopup openWinLoseSummaryPopup(String accountCode) {
