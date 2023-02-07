@@ -30,17 +30,21 @@ public class ClientStatementTest extends BaseCaseAQS {
     String superMasterCode = "QA2112 - ";
     String clientCreditAcc = "ClientCredit-AutoQC";
     String clientDebitAcc = "ClientDebit-AutoQC";
-    String ledgerGroupName = "QA Ledger Group";
-    String ledgerAssetCreditAcc = "005.000.000.000 - AutoAssetCredit";
-    String ledgerAssetDebitAcc = "005.500.000.000 - AutoAssetDebit";
-    String ledgerLiabilityCreditAcc = "004.000.000.000 - AutoLiabilityCredit";
-    String ledgerLiabilityDebitAcc = "004.400.000.000 - AutoLiabilityDebit";
-    String ledgerCapitalCreditAcc = "003.000.000.000 - AutoCapitalCredit";
-    String ledgerCapitalDebitAcc = "003.300.000.000 - AutoCapitalDebit";
+    String ledgerGroupNameIncome = "QA Ledger Group Income";
+    String ledgerGroupNameExpenditure = "QA Ledger Group Expenditure";
+    String ledgerGroupNameLiability = "QA Ledger Group Liability";
+    String ledgerGroupNameAsset = "QA Ledger Group Asset";
+    String ledgerGroupNameCapital = "QA Ledger Group Capital";
+    String ledgerAssetCreditAcc = "050.000.000.000 - AutoAssetCredit";
+    String ledgerAssetDebitAcc = "055.000.000.000 - AutoAssetDebit";
+    String ledgerLiabilityCreditAcc = "040.000.000.000 - AutoLiabilityCredit";
+    String ledgerLiabilityDebitAcc = "044.000.000.000 - AutoLiabilityDebit";
+    String ledgerCapitalCreditAcc = "030.000.000.000 - AutoCapitalCredit";
+    String ledgerCapitalDebitAcc = "033.000.000.000 - AutoCapitalDebit";
     String ledgerIncomeCreditAcc = "002.000.000.000 - AutoIncomeCredit";
     String ledgerIncomeDebitAcc = "002.200.000.000 - AutoIncomeDebit";
-    String ledgerExpenditureCreditAcc = "001.000.000.000 - AutoExpenditureCredit";
-    String ledgerExpenditureDebitAcc = "001.100.000.000 - AutoExpenditureDebit";
+    String ledgerExpenditureCreditAcc = "010.000.000.000 - AutoExpenditureCredit";
+    String ledgerExpenditureDebitAcc = "011.000.000.000 - AutoExpenditureDebit";
     String level = "Player";
     String fromType = "Client";
     String openingVal;
@@ -413,7 +417,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupName);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameAsset);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -476,7 +480,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupName);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameAsset);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -539,7 +543,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupName);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameLiability);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -602,7 +606,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupName);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameLiability);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -665,7 +669,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupName);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameCapital);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -728,7 +732,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupName);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameCapital);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -791,7 +795,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupName);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameIncome);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -853,7 +857,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupName);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameIncome);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -916,7 +920,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupName);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameExpenditure);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -979,7 +983,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupName);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameExpenditure);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
@@ -1127,7 +1131,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .transType("Tax Rebate")
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupName);
+        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNameAsset);
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
