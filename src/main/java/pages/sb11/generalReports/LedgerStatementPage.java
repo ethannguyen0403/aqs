@@ -55,11 +55,16 @@ public class LedgerStatementPage extends WelcomePage {
         int i = startIndex +1;
         while(true){
             String ledgerAccount = tbLedger.getControlOfCell(1,colLedger,i,null).getText().trim();
-            if(ledgerAccount.contains(trans.getLedgerDebit())){
-                System.out.println(String.format("Found transaction %s at row %s", ledgerAccount,i));
-                if (isDebit)
+            if (isDebit){
+                if(ledgerAccount.contains(trans.getLedgerDebit())) {
+                    System.out.println(String.format("Found transaction %s at row %s", ledgerAccount, i));
                     return verifyTransactionDisplayCorrectInRow(trans, true, i);
-                return verifyTransactionDisplayCorrectInRow(trans, false, i);
+                }
+            } else {
+                if (ledgerAccount.contains(trans.getLedgerCredit())){
+                    System.out.println(String.format("Found transaction %s at row %s", ledgerAccount, i));
+                    return verifyTransactionDisplayCorrectInRow(trans, false, i);
+                }
             }
             i = i +1;
         }
