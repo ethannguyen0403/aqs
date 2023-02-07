@@ -16,7 +16,7 @@ public class CricketBetEntryPage extends BetEntryPage {
     private Label lblTitle = Label.xpath("//app-bet-entry-cricket//app-common-header-sport//div[contains(@class,'main-box-header')]/div[1]/span");
     private Label lblGoto = Label.xpath("//app-bet-entry-cricket//app-common-header-sport//div[contains(@class,'main-box-header')]/div[2]/span");
     private TextBox txtAccCode = TextBox.id("account-code");
-    private DropDownBox ddpCompanyUnit = DropDownBox.id("company-unit");
+    private DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bet-entry-cricket//app-common-header-sport//label[contains(text(),'Company Unit')]/following::select[1]");
     private DropDownBox ddpLeague = DropDownBox.id("league");
     private DropDownBox ddpSearchBy = DropDownBox.xpath("//select[@class='form-control']");
     private TextBox txtAccountCode = TextBox.id("account-code");
@@ -55,8 +55,12 @@ public class CricketBetEntryPage extends BetEntryPage {
      */
     public void showLeague(String companyUnit, String date, String league){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
+        String dateValue = txtDate.getAttribute("value");
         if(!date.isEmpty()){
-            dtpDate.selectDate(date,"dd/MM/yyyy");
+            if(!date.equals(dateValue)){
+                dtpDate.selectDate(date,"dd/MM/yyyy");
+            }
+
         }
         ddpLeague.selectByVisibleText(league);
         btnShow.click();

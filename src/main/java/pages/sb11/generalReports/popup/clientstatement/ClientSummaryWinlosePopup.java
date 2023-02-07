@@ -1,4 +1,4 @@
-package pages.sb11.generalReports.popup;
+package pages.sb11.generalReports.popup.clientstatement;
 
 import com.paltech.element.common.Icon;
 import com.paltech.element.common.Label;
@@ -6,7 +6,7 @@ import controls.Table;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.ClientStatementPage;
 
-public class ClientSummaryWinlosePopup extends WelcomePage {
+public class ClientSummaryWinlosePopup {
     int summaryColTotal = 8;
     public int colWinLoseTotal = 4;
 

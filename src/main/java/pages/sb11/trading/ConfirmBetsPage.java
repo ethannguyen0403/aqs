@@ -22,8 +22,8 @@ public class ConfirmBetsPage extends WelcomePage {
     public DropDownBox ddbSport = DropDownBox.id("sport");
     public DropDownBox ddbBetType = DropDownBox.id("betType");
     public DropDownBox ddbDateType = DropDownBox.id("dateType");
-    public TextBox txtFromDate  = TextBox.id("fromDate");
-    public TextBox txtToDate  = TextBox.id("toDate");
+    public TextBox txtFromDate  = TextBox.xpath("//app-confirm-bet//div[@id='fromDate']/input");
+    public TextBox txtToDate  = TextBox.xpath("//app-confirm-bet//div[@id='toDate']/input");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
     public TextBox txtAccountCode = TextBox.id("accountCode");
@@ -78,10 +78,14 @@ public class ConfirmBetsPage extends WelcomePage {
         ddbSport.selectByVisibleText(sport);
         ddbBetType.selectByVisibleText(betType);
         ddbDateType.selectByVisibleText(dateType);
+        String uiDate = txtFromDate.getAttribute("value");
         if(!fromDate.isEmpty())
-            dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+            if(!fromDate.equals(uiDate))
+                dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+        uiDate = txtToDate.getAttribute("value");
         if(!toDate.isEmpty())
-            dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+            if(!toDate.equals(uiDate))
+                dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         txtAccountCode.sendKeys(accountCode);
         btnShow.click();
         waitPageLoad();

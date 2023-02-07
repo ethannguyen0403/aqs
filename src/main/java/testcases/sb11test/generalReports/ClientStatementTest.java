@@ -7,10 +7,10 @@ import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.generalReports.ClientStatementPage;
-import pages.sb11.generalReports.popup.ClientLedgerRecPayPopup;
-import pages.sb11.generalReports.popup.ClientMemberTransactionPopup;
-import pages.sb11.generalReports.popup.ClientSummaryPopup;
-import pages.sb11.generalReports.popup.ClientSummaryWinlosePopup;
+import pages.sb11.generalReports.popup.clientstatement.ClientLedgerRecPayPopup;
+import pages.sb11.generalReports.popup.clientstatement.ClientMemberTransactionPopup;
+import pages.sb11.generalReports.popup.clientstatement.ClientSummaryPopup;
+import pages.sb11.generalReports.popup.clientstatement.ClientSummaryWinlosePopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.*;
 import utils.testraildemo.TestRails;
@@ -46,7 +46,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("@Step 2: Filter a client with client point view");
         clientPage.filter(viewBy, COMPANY_UNIT, FINANCIAL_YEAR, clientCode, "","");
 
-        //TODO need enhancement as currently is workingaround by remove "," out of string before calculate
+        //TODO need enhancement as currently is working around by remove "," out of string before calculate
         log("Validate Closing of Super = Opening + Win/Loss + Commission + Rec/Pay/CA/RB/Adj");
         openingVal = clientPage.getSuperCellValue(clientPage.colOpening).replace(",","");
         winLossVal = clientPage.getSuperCellValue(clientPage.colWinLoss).replace(",","");

@@ -13,7 +13,7 @@ public class ManualBetBetEntryPage extends BetEntryPage {
     public Button btnSearch = Button.xpath("//app-bet-entry-mixed-sport//button[contains(@class,'btn-success')]");
     public DropDownBox ddSport = DropDownBox.xpath("//app-bet-entry-mixed-sport//span[contains(text(),'Sport')]//following::select[1]");
     public TextBox txtDate = TextBox.name("dp");
-    public DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-days-calendar-view");
+    public DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container')]");
     public TextBox txtBetDescription = TextBox.xpath("//app-bet-entry-mixed-sport//span[contains(text(),'Bet Description')]//following::textarea");
     public TextBox txtSelection = TextBox.xpath("//app-bet-entry-mixed-sport//span[contains(text(),'Selection')]//following::input[1]");
     public TextBox txtBetType = TextBox.xpath("//app-bet-entry-mixed-sport//span[contains(text(),'Bet type')]//following::input[1]");
@@ -50,7 +50,11 @@ public class ManualBetBetEntryPage extends BetEntryPage {
         txtAccCode.sendKeys(accCode);
         btnSearch.click();
         ddSport.selectByVisibleText(sport);
-        dtpDate.selectDate(date,"dd/MM/yyyy");
+        String dateValue = txtDate.getAttribute("value").trim();
+        if(!date.isEmpty()) {
+            if (!date.equals(dateValue))
+                dtpDate.selectDate(date, "dd/MM/yyyy");
+        }
         txtBetDescription.sendKeys(betDescription);
         txtSelection.sendKeys(selection);
         txtBetType.sendKeys(betType);
