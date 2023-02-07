@@ -4,11 +4,16 @@ import com.paltech.element.common.*;
 import controls.DateTimePicker;
 import controls.Table;
 import pages.sb11.WelcomePage;
+import pages.sb11.generalReports.popup.BookieMemberSummaryPopup;
 import pages.sb11.generalReports.popup.BookieSuperMasterDetailPopup;
 
 public class BookieStatementPage extends WelcomePage {
+    protected String _xpathTable = null;
     int totalColSummary = 10;
     public int colMasterTotal = 4;
+    int colAgentCode = 2;
+    int colMSlink = 9;
+    public int colMember = 10;
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
     DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bookie-statement//div[@class='company-unit pl-3']//select");
     DropDownBox ddpFinancialYear = DropDownBox.xpath("//app-bookie-statement//div[@class='financial-year pl-3']//select");
@@ -24,6 +29,7 @@ public class BookieStatementPage extends WelcomePage {
     DropDownBox ddpCurrency = DropDownBox.xpath("//app-bookie-statement//div[@class='pl-3']//select");
     Button btnShow = Button.xpath("//app-bookie-statement//div[@class='pl-3']//button[text()='Show']");
     Table tblSummary = Table.xpath("//table[@aria-label='table']", totalColSummary);
+    Icon searchIcon = Icon.xpath("//app-bookie-statement//em[@class = 'fas fa-search']");
 
     @Override
     public String getTitlePage ()
@@ -39,10 +45,13 @@ public class BookieStatementPage extends WelcomePage {
             dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
         if(!toDate.isEmpty())
             dtpToDate.selectDate(toDate,"dd/MM/yyyy");
-        btnShowBookie.click();
-        filterBookie(bookieCode);
-        btnShow.click();
+        //btnShowBookie.click();
+        txtBookieCode.sendKeys(bookieCode);
+        searchIcon.click();
+        //filterBookie(bookieCode);
+        btnConfirmShowBookie.click();
         waitSpinnerDisappeared();
+        //btnShow.click();
     }
 
     private void filterBookie(String bookieCode) throws InterruptedException {
@@ -78,8 +87,34 @@ public class BookieStatementPage extends WelcomePage {
             return new BookieSuperMasterDetailPopup();
         }
     }
+
+    public BookieMemberSummaryPopup openBookieMemberSummaryDetailPopup(String masterCode, String agentCode) {
+        Label lblSuperMasterCode;
+        Label lblAgentCode;
+        Label lblMSLink;
+        String xpathSuperMaster = String.format("//div[@class='content-filter pt-4 row ng-star-inserted']//div//div[contains(.,' %s ')]", masterCode);
+        String xpathAgentCode;
+        String xpathMSLink;
+        lblSuperMasterCode = Label.xpath(xpathSuperMaster);
+        if (!lblSuperMasterCode.isDisplayed()) {
+            System.out.println("Cannot find out Master in list of result table: " + masterCode);
+            return null;
+        } else {
+            int i = 1;
+            while (true) {
+                xpathAgentCode = xpathSuperMaster + "//.." + tblSummary.getxPathOfCell(1, colAgentCode, i, null) + "//a";
+                lblAgentCode = Label.xpath(xpathAgentCode);
+                if (lblAgentCode.getText().equalsIgnoreCase(agentCode)) {
+                    xpathMSLink = xpathSuperMaster + "//.." + tblSummary.getxPathOfCell(1, colMSlink, i, null) + "//a";
+                    lblMSLink = Label.xpath(xpathMSLink);
+                    lblMSLink.click();
+                    return new BookieMemberSummaryPopup();
+                }
+            }
+        }
+    }
+
     public String getSuperMasterCellValue (String superMasterCode, int colIndex) {
-        String returnVal;
         Label lblSuperMasterCode;
         Label lblCellVal;
         String xpath = String.format("//div[@class='content-filter pt-4 row ng-star-inserted']//div//div[contains(.,' %s ')]",superMasterCode);
@@ -91,6 +126,31 @@ public class BookieStatementPage extends WelcomePage {
             xpath = xpath + "//.." + tblSummary.getxPathOfCell(1, colIndex, 1, null);
             lblCellVal = Label.xpath(xpath);
             return lblCellVal.getText();
+        }
+    }
+
+    public String getAgentCellValue (String masterCode, String agentCode, int colIndex) {
+        Label lblMasterCode;
+        Label lblAgentCode;
+        Label lblCellVal;
+        String xpath = String.format("//div[@class='content-filter pt-4 row ng-star-inserted']//div//div[contains(.,' %s ')]",masterCode);
+        lblMasterCode = Label.xpath(xpath);
+        if(!lblMasterCode.isDisplayed()) {
+            System.out.println("Cannot find out Master in list of result table: " + masterCode);
+            return null;
+        } else {
+            String xpathAgentCode;
+            int i = 1;
+            while (true) {
+                xpathAgentCode = xpath + "//.." + tblSummary.getxPathOfCell(1, colAgentCode, i, null) + "//a";
+                lblAgentCode = Label.xpath(xpathAgentCode);
+                if (lblAgentCode.getText().equalsIgnoreCase(agentCode)) {
+                    xpath = xpath + "//.." + tblSummary.getxPathOfCell(1, colIndex, i, null);
+                    lblCellVal = Label.xpath(xpath);
+                    return lblCellVal.getText();
+                }
+                i+=i;
+            }
         }
     }
 }
