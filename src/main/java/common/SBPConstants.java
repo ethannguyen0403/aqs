@@ -100,4 +100,10 @@ public class SBPConstants {
                 "Description", "Selection", "HDP", "Live", "Prive","Stake", "Win/Lose","Type","Date");
     }
 
+    public static class AccountType {
+        public final static String LEDGER = "Ledger";
+        public final static String BOOKIE = "Bookie";
+        public final static String CLIENT = "Client";
+    }
+
 }
