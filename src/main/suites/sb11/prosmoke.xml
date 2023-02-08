@@ -18,7 +18,14 @@
         <parameter name="accountCode" value="QA2M0A0001"/>
         <parameter name="accountCurrency" value="HKD"/>
         <parameter name="clientCode" value ="QA Client (No.121 QA Client)"/>
-
+        <parameter name="bookieCode" value ="QA Bookie"/>
+        <parameter name="emailAddress" value="autoacc001stg@yopmail.com"/>
+        <parameter name="smartGroup" value="Auto QC Group"/>
+        <parameter name="superCode" value="QA2112"/>
+        <parameter name="agentCode" value="QASAHK00"/>
+        <parameter name="" value=""></parameter>
+        <parameter name="bookieMasterCode" value="Ma-QA101-QA Test"/>
+        <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <groups>
             <run>
                 <include name="smoke" />
@@ -26,8 +33,14 @@
         </groups>
 
         <classes>
+            <class name="testcases.sb11test.trading.BetSettlementTest"/>
+            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
             <class name="testcases.sb11test.trading.BetEntryTest"/>
+            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
             <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
+            <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
+            <class name="testcases.sb11test.generalReports.BookieStatementTest"/>
+            <class name="testcases.sb11test.soccer.SPPTest"/>
         </classes>
     </test>
 </suite>

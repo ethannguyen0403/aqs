@@ -3,12 +3,14 @@ package pages.sb11.generalReports;
 import com.paltech.element.common.*;
 import controls.DateTimePicker;
 import controls.Table;
+import javafx.scene.input.KeyCode;
+import org.openqa.selenium.Keys;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.bookiestatement.BookieMemberSummaryPopup;
 import pages.sb11.generalReports.popup.bookiestatement.BookieSuperMasterDetailPopup;
-import pages.sb11.generalReports.popup.bookiestatement.BookieSummaryPopup;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BookieStatementPage extends WelcomePage {
     protected String _xpathTable = null;
@@ -66,12 +68,14 @@ public class BookieStatementPage extends WelcomePage {
         if(!fromDate.isEmpty())
             if(!currentDate.equals(fromDate))
                 dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-        currentDate = txtFromDate.getAttribute("value");
+        currentDate = txtToDate.getAttribute("value");
         if(!toDate.isEmpty())
             if(!currentDate.equals(toDate))
                 dtpToDate.selectDate(toDate,"dd/MM/yyyy");
-        if(!bookieCode.isEmpty())
+        if(!bookieCode.isEmpty()) {
             txtBookieCode.sendKeys(bookieCode);
+            txtBookieCode.sendKeys(Keys.ENTER);
+        }
         if(!currency.isEmpty())
             ddpCurrency.selectByVisibleText(currency);
         btnShow.click();
@@ -112,31 +116,6 @@ public class BookieStatementPage extends WelcomePage {
         }
     }
 
-    public BookieMemberSummaryPopup openBookieMemberSummaryDetailPopup(String masterCode, String agentCode) {
-        Label lblSuperMasterCode;
-        Label lblAgentCode;
-        Label lblMSLink;
-        String xpathSuperMaster = String.format("//div[@class='content-filter pt-4 row ng-star-inserted']//div//div[contains(.,' %s ')]", masterCode);
-        String xpathAgentCode;
-        String xpathMSLink;
-        lblSuperMasterCode = Label.xpath(xpathSuperMaster);
-        if (!lblSuperMasterCode.isDisplayed()) {
-            System.out.println("Cannot find out Master in list of result table: " + masterCode);
-            return null;
-        } else {
-            int i = 1;
-            while (true) {
-                xpathAgentCode = xpathSuperMaster + "//.." + tblSummary.getxPathOfCell(1, colAgentCode, i, null) + "//a";
-                lblAgentCode = Label.xpath(xpathAgentCode);
-                if (lblAgentCode.getText().equalsIgnoreCase(agentCode)) {
-                    xpathMSLink = xpathSuperMaster + "//.." + tblSummary.getxPathOfCell(1, colMSlink, i, null) + "//a";
-                    lblMSLink = Label.xpath(xpathMSLink);
-                    lblMSLink.click();
-                    return new BookieMemberSummaryPopup();
-                }
-            }
-        }
-    }
 
     public String getSuperMasterCellValue (String superMasterCode, int colIndex) {
         Label lblSuperMasterCode;
@@ -178,34 +157,49 @@ public class BookieStatementPage extends WelcomePage {
         }
     }
 
-    public BookieMemberSummaryPopup openSummaryPopup(String agentCode) {
-        Label lblAgentCode;
-        Label lblFirstColumn;
-        int i = 2;
-        int j = 1;
-        while (true){
-            String xpath = String.format("//app-client-detail//div[contains(@class,'col-12')][%s]//table[@id='table-agent']",j);
-            Table tblAgent = Table.xpath(xpath,colTotal);
-            lblAgentCode = Label.xpath(tblAgent.getxPathOfCell(1,colLevel,i,null));
-            lblFirstColumn = Label.xpath(tblAgent.getxPathOfCell(1,1,i,null));
-            if(lblFirstColumn.getText().equalsIgnoreCase("Total in")) {
-                j = j + 1;
-                i = 1;
-            }
-            if(lblAgentCode.getText().equalsIgnoreCase(agentCode)){
-                lblAgentCode.click();
-                return new BookieMemberSummaryPopup();
-            }
-            if(lblAgentCode.getText().equalsIgnoreCase("Grand Total in")) {
-                break;
-            }
-            i = i+1;
+    /**
+     * This action click on MS label to open the popup General Reports>Bookie Statement>Agent Summary>Member Summary of according account code
+     * For example File the table title contains value MA-QA1NS-QA Test and click on MS cell of the row contains the account A-QA1NS01-QA Test
+     * @param masterCode it can be Master Code or Agent Code, the account display on the table Title: MA-QA1NS-QA Test e.g QA Bookie >> MA-QA1NS-QA Test
+     * @param agentCode it is the account in the table: A-QA1NS01-QA Test
+     * @return  General Reports>Bookie Statement>Agent Summary>Member Summary popup
+     */
+    public BookieMemberSummaryPopup openBookieMemberSummaryDetailPopup(String masterCode, String agentCode) {
+        ////app-bookie-statement//div[contains(@class,'content-filter')][2]
+        Table tblBookie = getTableContainsBookieAccount(masterCode);
+        if(Objects.isNull(tblBookie)) {
+            System.out.println("DEBUG!: NO table have the title contains account "+ masterCode);
+            return null;
         }
-        return null;
+        tblBookie.getControlBasedValueOfDifferentColumnOnRow(agentCode,1,colAgentCode,1,null,colMSlink,null,true,false).click();
+        waitSpinnerDisappeared();
+        return new BookieMemberSummaryPopup();
     }
 
-    public List<String> getMemberSummary(String masterCode ,String masterBookie, String accountCode){
-        BookieMemberSummaryPopup bookieSummaryPopup = openBookieMemberSummaryDetailPopup(masterBookie,accountCode);
-        return bookieSummaryPopup.getMemeberSummaryData(accountCode);
+    private Table getTableContainsBookieAccount(String account){
+        int tableIndex = 1;
+        String xpathFilterTable;// ="//app-bookie-statement//div[contains(@class,'content-filter')][1]/div[%s]";
+        Label lblTableTitle;
+        while (true) {
+            xpathFilterTable = String.format("//app-bookie-statement//div[contains(@class,'content-filter')][1]/div[%s]", tableIndex);
+            lblTableTitle = Label.xpath(String.format("%s//div[contains(@class,'title-filter')]", xpathFilterTable));
+            if (!lblTableTitle.isDisplayed())
+                return null;
+            if (lblTableTitle.getText().contains(account))
+                return  Table.xpath(String.format("%s//table", xpathFilterTable), colTotal);
+            tableIndex = tableIndex + 1;
+        }
+    }
+    public List<String> getDataRowofPlayer(String masterCode , String agentCode, String playerAccount){
+        BookieMemberSummaryPopup bookieSummaryPopup = openBookieMemberSummaryDetailPopup(masterCode,agentCode);
+        return bookieSummaryPopup.getDataRowofPlayer(playerAccount);
+    }
+
+    public String getWinLossofPlayer(String masterCode , String agentCode, String playerAccount){
+        BookieMemberSummaryPopup bookieSummaryPopup = openBookieMemberSummaryDetailPopup(masterCode,agentCode);
+        int winlosCol = bookieSummaryPopup.colWinLosePlayer;
+        String winloss =  bookieSummaryPopup.getDataRowofPlayer(playerAccount).get(winlosCol-1);
+        bookieSummaryPopup.closePopup();
+        return winloss;
     }
 }

@@ -25,15 +25,15 @@
         <parameter name="agentCode" value="QASAHK00"/>
         <parameter name="" value=""></parameter>
         <parameter name="bookieMasterCode" value="Ma-QA101-QA Test"/>
+        <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <groups>
             <run>
-                <include name="smokeisa" />
-<!--                <include name="smoke_qc" />-->
+                <include name="smoke" />
+                <include name="smoke_qc" /><!--For test case only run on QAT and STG-->
             </run>
         </groups>
 
         <classes>
-            <class name="testcases.sb11test.soccer.SPPTest"/>
             <class name="testcases.sb11test.trading.BetSettlementTest"/>
             <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
             <class name="testcases.sb11test.trading.BetEntryTest"/>
@@ -41,6 +41,8 @@
             <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
             <class name="testcases.sb11test.generalReports.BookieStatementTest"/>
+            <class name="testcases.sb11test.soccer.SPPTest"/>
+
         </classes>
     </test>
 </suite>

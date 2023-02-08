@@ -3,7 +3,6 @@ package testcases.sb11test.generalReports;
 import com.paltech.utils.DateUtils;
 import objects.Transaction;
 import org.testng.Assert;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.generalReports.BookieStatementPage;
 import pages.sb11.generalReports.popup.bookiestatement.BookieMemberSummaryPopup;
@@ -103,7 +102,7 @@ public class BookieStatementTest extends BaseCaseAQS {
                 Double.parseDouble(openRPCRBATotalVal) + Double.parseDouble(openBalanceTotalVal);
         Assert.assertEquals(String.format("%.2f",expectedVal),totalVal,"FAILED! Grand Total is not matched with sum value, Total: " + totalVal
                 + " expected: " + expectedVal);
-        bookieStatementPage = bookieMemberPopup.closeSuperMasterDetailPopup();
+        bookieMemberPopup.closePopup();
         log("Validate total in amount is matched with amount at Member column in outside");
         memberTotal = bookieStatementPage.getAgentCellValue(masterCode, agentCode,bookieStatementPage.colMember).replace(",","");
         Assert.assertEquals(memberTotal,totalMemberGrandVal,"FAILED! Total is not matched between inside/outside, Total Outside: " + memberTotal
