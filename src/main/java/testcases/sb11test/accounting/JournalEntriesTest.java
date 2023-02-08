@@ -2,6 +2,7 @@ package testcases.sb11test.accounting;
 
 import com.paltech.utils.DateUtils;
 import objects.Transaction;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.sb11.accounting.JournalEntriesPage;
 import testcases.BaseCaseAQS;
@@ -15,22 +16,12 @@ public class JournalEntriesTest extends BaseCaseAQS {
     String companyUnit = "Kastraki Limited";
     String transType = "Others";
     String financialYear = "Year 2022-2023";
-    String bookieDebit = "QA Bookie";
-    String clientDedit = "QA Client (No.121 Client)";
-    String debitAstAcc = "AutoAssetDebit";
-    String creditAstAcc = "AutoAssetCredit";
-    String debitLibAcc = "AutoLiabilityDebit";
-    String creditLibAcc = "AutoLiabilityCredit";
-    String debitCapitalAcc = "AutoCapitalDebit";
-    String creditCapitalAcc = "AutoCapitalCredit";
-    String lgDebitCur = "AUD";
+    String bookieDebit = "Johnny Bookie";
+    String level = "Super";
+    String debitAccCode = "JO 01";
     String lgCreditCur = "AUD";
-    String lgExpenditureGroup = "Auto Expenditure Group";
-    String lgAssetGroup = "Auto Asset Group";
-    String lgLiabilityGroup = "Auto Liability Group";
-    String descExpenditure = "Expenditure Transaction " + DateUtils.getMilliSeconds();
-    String descAsset = "Asset Transaction " + DateUtils.getMilliSeconds();
-    String descLiability = "Liability Transaction " + DateUtils.getMilliSeconds();
+    String creditExpAcc = "AutoExpenditureDebit";
+    String remark = "Auto Testing Transaction " + DateUtils.getMilliSeconds() + ".Please ignore this, Thank you!";
 
     @TestRails(id="864")
     @Test(groups = {"smoke4"})
@@ -38,12 +29,13 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@title: Validate users can make transactions successfully between bookies");
         Transaction transaction = new Transaction.Builder()
                 .bookieDebit(bookieDebit)
-                .clientDebit(clientDedit)
-                .ledgerCredit("JO 01")
-                .ledgerCreditCur("HKD")
+                .level(level)
+                .debitAccountCode(debitAccCode)
+                .ledgerCredit(creditExpAcc)
+                .ledgerCreditCur(lgCreditCur)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Testttt")
+                .remark(remark)
                 .transDate("")
                 .transType(transType)
                 .build();
@@ -58,8 +50,10 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 7: Other information is selected with same condition as From section (Level is 'Super', and Account is a super account link to agent-COM)");
         log("@Step 8: Add two accounts to the below tables, then input amount");
         log("@Step 9: Choose Transaction Date and Transaction Types, input Remark if any. Click Submit");
-        journalEntriesPage.addClientBookieTransaction(transaction,"Bookie",false);
+        journalEntriesPage.addTransaction(transaction,"Bookie","Ledger",transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
 
+        log("Validate Message informs 'Transaction has been created.' is displayed");
+        Assert.assertTrue(journalEntriesPage.messageSuccess.getText().contains("Transaction has been created"), "Failed! Message is displayed incorrectly!");
         log("INFO: Executed completely");
     }
 }
