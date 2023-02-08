@@ -28,7 +28,7 @@ public class SPPPage extends WelcomePage {
     int totalColumnNumber = 15;
     int colGroupCode = 2;
     public int colWL =12;
-    Table tblReport = Table.xpath("//app-spp//div[contains(@class,'filter bg-white ')][1]/table", totalColumnNumber);
+
     @Override
     public String getTitlePage ()
     {
@@ -56,11 +56,11 @@ public class SPPPage extends WelcomePage {
         String currentDate = txtFromDate.getAttribute("value");
         if(!fromDate.isEmpty())
             if(!currentDate.equals(fromDate))
-                txtFromDate.sendKeys(fromDate);
-        currentDate = txtFromDate.getAttribute("value");
+                dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+        currentDate = txtToDate.getAttribute("value");
         if(!toDate.isEmpty())
             if(!currentDate.equals(toDate))
-                txtToDate.sendKeys(fromDate);
+                dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         btnShow.click();
         waitSpinnerDisappeared();
     }

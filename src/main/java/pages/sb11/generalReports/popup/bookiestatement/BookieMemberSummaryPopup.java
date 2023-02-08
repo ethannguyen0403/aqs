@@ -4,14 +4,15 @@ import com.paltech.element.common.Icon;
 import com.paltech.element.common.Label;
 import controls.Row;
 import controls.Table;
-import pages.sb11.WelcomePage;
-import pages.sb11.generalReports.BookieStatementPage;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BookieMemberSummaryPopup {
     int colTotalMember = 11;
+    int colAccountCode = 3;
+    public int colWinLosePlayer = 7;
+
     public int colTotal = 3;
     public int colTotalWinLose = 4;
     public int colTotalOpenWinLose = 5;
@@ -19,23 +20,20 @@ public class BookieMemberSummaryPopup {
     public int colTotalOpenRPCRBA = 7;
     public int colTotalOpenBalance = 8;
 
-    int summaryColTotal = 11;
     public int colOpeningTotal = 3;
     public int colWinLoseTotal = 4;
     public int colComissionTotal = 4;
     public int colRecPayTotal = 5;
     public int colMovementTotal = 6;
     public int colClosingTotal = 7;
-    int colAccountCode = 4;
-    int colLedgerAccountCode = 3;
+
     int colWinLose = 8;
     public int colLedgerRecPay = 7;
     public int colRecPay = 9;
 
-    Table tblTotalDetail = Table.xpath("//app-member-summary//div[@class='p-4 table-responsive ng-star-inserted']//table[@aria-label='table']",colTotal);
-    Table tblMemberDetail = Table.xpath("//app-member-summary//div[@class='infinite-scroll p-4 table-responsive table-scroll']//table[@aria-label='table']",colTotalMember);
+    Table tblTotalDetail = Table.xpath("//app-member-summary//div[contains(@class,'table-responsive')][1]//table",colTotal);
+    Table tblMemberDetail = Table.xpath("//app-member-summary//div[contains(@class,'table-responsive')][2]//table",colTotalMember);
     Icon closeIcon = Icon.xpath("//span[contains(@class,'close-icon')]");
-
 
     public String getTotalCellValue(int colIndex, boolean isHKD) {
         String returnValue;
@@ -66,9 +64,8 @@ public class BookieMemberSummaryPopup {
         }
     }
 
-    public BookieStatementPage closeSuperMasterDetailPopup() {
+    public void closePopup() {
         closeIcon.click();
-        return new BookieStatementPage();
     }
 
     private int getNumberOfRows(String xpathTable, boolean isCountHeaderRow, boolean isMoving){
@@ -98,20 +95,19 @@ public class BookieMemberSummaryPopup {
         }/**/
     }
 
-    public List<String> getMemeberSummaryData(String accountCode){
+    public List<String> getDataRowofPlayer(String accountCode){
         List<String> lstData = new ArrayList<>();
-
         Label lblAccountCode;
         int i = 1;
         while (true) {
-            lblAccountCode = Label.xpath(tblMemberDetail.getxPathOfCell(1, colAccountCode, i, null));
+            lblAccountCode = Label.xpath(tblMemberDetail.getxPathOfCell(i, colAccountCode, 1, null));
             if (!lblAccountCode.isDisplayed()) {
                 System.out.println("Account Code is not found in Summary table");
                 return null;
             }
             if (lblAccountCode.getText().equalsIgnoreCase(accountCode)) {
-                for(int col = 1; col <= summaryColTotal; col ++){
-                    lstData.add(Label.xpath(tblMemberDetail.getxPathOfCell(1, col, i, null)).getText());
+                for(int col = 1; col <= colTotalMember; col ++){
+                    lstData.add(Label.xpath(tblMemberDetail.getxPathOfCell(i, col,1, null)).getText());
                 }
                 return lstData;
             }
