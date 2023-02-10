@@ -1,5 +1,7 @@
 package common;
 
+import utils.sb11.CurrencyRateUtils;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +21,7 @@ public class SBPConstants {
     public final static String LEDGER_STATEMENT = "Ledger Statement";
     public final static String BOOKIE_STATEMENT = "Bookie Statement";
     public final static String JOURNAL_ENTRIES = "Journal Entries";
+    public final static String CURRENCY_RATES = "Currency Rates";
     public final static String BET_ENTRY = "Bet Entry";
     public final static String SPORT= "Sport";
     public final static String CLIENT_STATEMENT = "Client Statement";
@@ -74,15 +77,15 @@ public class SBPConstants {
         }
     };
 
-    public static final Map<String, Double> CURRENCY_RATE= new HashMap<String, Double>()
-    {
-        {
-            put("AUD", 0.573028);
-            put("GBP", 1.0);
-            put("HKD",0.106288);
-            put("INR",0.010019);
-        }
-    };
+//    public static final Map<String, Double> CURRENCY_RATE= new HashMap<String, Double>()
+//    {
+//        {
+//            put("AUD", 0.573028);
+//            put("GBP", 1.0);
+//            put("HKD",0.106288);
+//            put("INR",0.010019);
+//        }
+//    };
 
     public static final Map<String, String> SOCCER_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
