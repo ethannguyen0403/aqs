@@ -63,7 +63,7 @@ public class EventSchedulePage extends WelcomePage {
     }
 
     public void showLeague(String league, String date){
-        ddpLeague.selectByVisibleText(league);
+        ddpLeague.selectByVisibleContainsText(league);
         if(!date.isEmpty()){
             if(!date.equals(txtDateTime.getAttribute("value").trim())){
                 dtpDateTime.selectDate(date,"dd/MM/yyyy");
@@ -92,8 +92,8 @@ public class EventSchedulePage extends WelcomePage {
         CheckBox cbLive = CheckBox.xpath(tblEvent.getxPathOfCell(1,colLive,rowIndex,"input"));
         CheckBox cbN = CheckBox.xpath(tblEvent.getxPathOfCell(1, colN,rowIndex,"input"));
         DropDownBox ddpStatus = DropDownBox.xpath(tblEvent.getxPathOfCell(1,colStatus,rowIndex,"select"));
-        ddpHomeTeam.selectByVisibleText(event.getHome());
-        ddpAwayTeam.selectByVisibleText(event.getAway());
+        ddpHomeTeam.selectByVisibleContainsText(event.getHome());
+        ddpAwayTeam.selectByVisibleContainsText(event.getAway());
         txtTime.sendKeys(event.getOpenTime());
         if(cbLive.isSelected() != event.isLive())
             cbLive.click();
@@ -119,7 +119,7 @@ public class EventSchedulePage extends WelcomePage {
     }
 
     private int getEventIndex(Event event){
-        int leagueIndex = tblEventBody.getRowIndexContainValue(event.getLeagueName(),colN,null);
+        int leagueIndex = tblEventBody.getRowIndexContainValue(event.getLeagueName(),colNum,null);
         if(leagueIndex==0){
             return 0;
         }
@@ -129,7 +129,7 @@ public class EventSchedulePage extends WelcomePage {
         }
     }
     public boolean verifyEventInSchedulelist(Event event){
-        int leagueIndex = tblEventBody.getRowIndexContainValue(event.getLeagueName(),colN,null);
+        int leagueIndex = tblEventBody.getRowIndexContainValue(event.getLeagueName(),colNum,null);
         Assert.assertTrue( leagueIndex!=0,"Failed! Not found league name "+event.getLeagueName()+" int Schedule list");
         int index = leagueIndex +1;
         TextBox txtDate ;
@@ -155,8 +155,8 @@ public class EventSchedulePage extends WelcomePage {
                 boolean isN = CheckBox.xpath(tblEventBody.getxPathOfCell(1,colLiveEventTbl,index,"input")).isSelected();
                 String status = DropDownBox.xpath(tblEventBody.getxPathOfCell(1, colStatusEventTbl,index,"select")).getFirstSelectedOption();
                 Assert.assertEquals(homeTeam,event.getHome(),"Failed! Home Team is incorrect");
-                Assert.assertEquals(awayTeam,event.getAway(),"Failed! Home Team is incorrect");
-                Assert.assertEquals(isLive,event.isLive(),"FAiled! Event is incorrect");
+                Assert.assertEquals(awayTeam,event.getAway(),"Failed! Away Team is incorrect");
+                Assert.assertEquals(isLive,event.isLive(),"FAiled! isLive is incorrect");
                 Assert.assertEquals(isN, event.isN(),"Failed, N is incorrect");
                 Assert.assertEquals(status,event.getEventStatus(),"Failed! Status is incorrect");
             }
