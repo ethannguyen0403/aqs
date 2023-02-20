@@ -32,6 +32,7 @@ public class JournalEntriesPage extends WelcomePage {
     int colBalance = 5;
     public Table tbDebit = Table.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::table[1]",totalCol);
     public Table tbCredit = Table.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::table[1]",totalCol);
+    public Label messageSuccess = Label.xpath("//div[contains(@class, 'message-box')]");
 
     Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
     public String getTitlePage ()
@@ -39,34 +40,34 @@ public class JournalEntriesPage extends WelcomePage {
         return lblTitle.getText().trim();
     }
 
-    public void addLedgerTransaction(Transaction trans, boolean isSubmit){
-        //TODO: Assign Johnny: Should revise the input parameters of this function as following step:
-        /* a transaction should include object: Debit(AccountType), Credit(AccountType), Remark(String), Date(String), Transaction Type(String)
-        AccountType is a Parent Object. Ledger, Bookie, Client will be extent AccountType Object
-         */
-
-        filterLedger(true, "Ledger", trans.getLedgerDebit(), true);
-        double debitBalance = Math.abs(Double.parseDouble(tbDebit.getControlOfCell(1, colBalance, 1, null).getText().trim()));
-        System.out.println("Debit Balance is " + debitBalance);
-        trans.setDebitBalance(debitBalance);
-        txtDebitAmount.sendKeys(String.format("%.3f",trans.getAmountDebit()));
-
-        filterLedger(false, "Ledger", trans.getLedgerCredit(), true);
-        double creditBalance = Math.abs(Double.parseDouble(tbCredit.getControlOfCell(1, colBalance, 1, null).getText().trim()));
-        System.out.println("Credit Balance is " + creditBalance);
-        trans.setCreditBalance(creditBalance);
-        txtCreditAmount.sendKeys(String.format("%.3f",trans.getAmountCredit()));
-
-        txtRemark.sendKeys(trans.getRemark());
-        if (!trans.getTransDate().isEmpty()){
-            dtpTrans.selectDate(trans.getTransDate(), "dd/MM/yyyy");
-        }
-        ddTransactionType.selectByVisibleText(trans.getTransType());
-
-        if (isSubmit){
-            btnSubmit.click();
-        }
-    }
+//    public void addLedgerTransaction(Transaction trans, boolean isSubmit){
+//        //TODO: Assign Johnny: Should revise the input parameters of this function as following step:
+//        /* a transaction should include object: Debit(AccountType), Credit(AccountType), Remark(String), Date(String), Transaction Type(String)
+//        AccountType is a Parent Object. Ledger, Bookie, Client will be extent AccountType Object
+//         */
+//
+//        filterLedger(true, "Ledger", trans.getLedgerDebit(), true);
+//        double debitBalance = Math.abs(Double.parseDouble(tbDebit.getControlOfCell(1, colBalance, 1, null).getText().trim()));
+//        System.out.println("Debit Balance is " + debitBalance);
+//        trans.setDebitBalance(debitBalance);
+//        txtDebitAmount.sendKeys(String.format("%.3f",trans.getAmountDebit()));
+//
+//        filterLedger(false, "Ledger", trans.getLedgerCredit(), true);
+//        double creditBalance = Math.abs(Double.parseDouble(tbCredit.getControlOfCell(1, colBalance, 1, null).getText().trim()));
+//        System.out.println("Credit Balance is " + creditBalance);
+//        trans.setCreditBalance(creditBalance);
+//        txtCreditAmount.sendKeys(String.format("%.3f",trans.getAmountCredit()));
+//
+//        txtRemark.sendKeys(trans.getRemark());
+//        if (!trans.getTransDate().isEmpty()){
+//            dtpTrans.selectDate(trans.getTransDate(), "dd/MM/yyyy");
+//        }
+//        ddTransactionType.selectByVisibleText(trans.getTransType());
+//
+//        if (isSubmit){
+//            btnSubmit.click();
+//        }
+//    }
 
     public void addTransaction(Transaction trans, String debitAccountType, String creditAccountType, String remark, String transDate, String transType, boolean isSubmit){
         if (debitAccountType == "Ledger") {

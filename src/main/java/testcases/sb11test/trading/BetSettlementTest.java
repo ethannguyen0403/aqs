@@ -31,7 +31,7 @@ import static common.SBPConstants.BetSettlement.BET_LIST_STATEMENT_EMAIL;
 
 public class BetSettlementTest extends BaseCaseAQS {
     @TestRails(id="187")
-    @Test(groups = {"smoke3"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetSettlement_TC187(String accountCode,String accountCurrency) throws InterruptedException {
         log("@title: Validate Win/loss amounts are calculated correctly when having Account Percentage setting");
@@ -94,7 +94,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"");
+        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
@@ -116,6 +116,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         confirmBetsPage.confirmBet(order);
 
         log("@Step 3: Update info of precondition bet, change bet type to Lay");
+        confirmBetsPage.filter(companyUnit,"","Confirmed",sport,"All","Specific Date",date,date,accountCode);
         order.setBetType("Lay");
         confirmBetsPage.updateOrder(order,false);
 
@@ -190,7 +191,7 @@ public class BetSettlementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="204")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetSettlement_TC204(String accountCode,String accountCurrency){
         log("@title: Validate that user can send Bets List email successfully");

@@ -599,7 +599,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
@@ -659,7 +659,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI =  String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String dateAPI =  String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
@@ -724,7 +724,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI =  String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String dateAPI =  String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
@@ -778,7 +778,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI =  String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String dateAPI =  String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
@@ -830,7 +830,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         log("Precondition:Have a new Manual bet created #C862");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
-        String description = "Manua bet on " +DateUtils.getDate(0,"yyyymmddhhmmss","GMT+7");
+        String description = "Manual bet on " + DateUtils.getDate(0,"yyyymmddhhmmss","GMT+7");
         String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT+7");
         String dateAPI =  String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Event eventInfo = new Event.Builder()

@@ -10,6 +10,7 @@ import objects.Transaction;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
+import utils.sb11.CurrencyRateUtils;
 
 import static common.SBPConstants.*;
 
@@ -81,22 +82,26 @@ public class LedgerStatementPage extends WelcomePage {
         String runBalGBP = tbLedger.getControlOfCell(1, colRunBalGBP,rowIndex,null).getText().trim();
 
         if (isDebit){
+            double curDebitRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1","2023-2-10","2023-2-10",transaction.getLedgerDebitCur()));
+            double amountDebitGBP = transaction.getAmountDebit() * curDebitRate;
+            double runDebitGBP = (transaction.getDebitBalance() + transaction.getAmountDebit()) * curDebitRate;
+
             Assert.assertTrue(ledgerAccount.contains(transaction.getLedgerDebit()), "Failed! Account code is incorrect");
             Assert.assertEquals(amountORG, String.format("%.2f", transaction.getAmountDebit()), "Failed! Credit/Debit ORG amount is incorrect");
             Assert.assertEquals(runBalORG, String.format("%.2f", transaction.getDebitBalance() + transaction.getAmountDebit()), "Failed! Debit Balance ORG amount is incorrect");
             Assert.assertEquals(runBalCTORG, String.format("%.2f", transaction.getDebitBalance() + transaction.getAmountDebit()), "Failed! Debit Balance CT ORG amount is incorrect");
-            double amountDebitGBP = transaction.getAmountDebit() * CURRENCY_RATE.get(transaction.getLedgerDebitCur());
-            double runDebitGBP = (transaction.getDebitBalance() + transaction.getAmountDebit()) * CURRENCY_RATE.get(transaction.getLedgerDebitCur());
             Assert.assertEquals(amountGBP, String.format("%.2f", amountDebitGBP), "Failed! Credit/Debit GBP amount is incorrect");
             Assert.assertEquals(runBalGBP, String.format("%.2f", runDebitGBP), "Failed! Running Balance GBP amount is incorrect");
             Assert.assertEquals(cur, transaction.getLedgerDebitCur(), "Failed! Debit Currency is incorrect is in correct");
         } else {
+            double curCreditRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1","2023-2-10","2023-2-10",transaction.getLedgerCreditCur()));
+            double amountCreditGBP = transaction.getAmountCredit() * curCreditRate;
+            double runCreditGBP = (transaction.getCreditBalance() + transaction.getAmountCredit()) * curCreditRate;
+
             Assert.assertTrue(ledgerAccount.contains(transaction.getLedgerCredit()), "Failed! Account code is incorrect");
             Assert.assertEquals(amountORG, String.format("%.2f", transaction.getAmountCredit()), "Failed! Credit/Debit ORG amount is incorrect");
             Assert.assertEquals(runBalORG, String.format("%.2f", transaction.getCreditBalance() + transaction.getAmountCredit()), "Failed! Credit Balance ORG amount is incorrect");
             Assert.assertEquals(runBalCTORG, String.format("%.2f", transaction.getCreditBalance() + transaction.getAmountCredit()), "Failed! Debit Balance CT ORG amount is incorrect");
-            double amountCreditGBP = transaction.getAmountCredit() * CURRENCY_RATE.get(transaction.getLedgerCreditCur());
-            double runCreditGBP = (transaction.getCreditBalance() + transaction.getAmountCredit()) * CURRENCY_RATE.get(transaction.getLedgerCreditCur());
             Assert.assertEquals(amountGBP, String.format("%.2f", amountCreditGBP), "Failed! Credit/Debit ORG amount is incorrect");
             Assert.assertEquals(runBalGBP, String.format("%.2f", runCreditGBP), "Failed! Credit Balance ORG amount is incorrect");
             Assert.assertEquals(cur, transaction.getLedgerCreditCur(), "Failed! Credit Currency is incorrect is in correct");

@@ -7,7 +7,10 @@ import pages.sb11.accounting.JournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import testcases.BaseCaseAQS;
+import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
+import utils.sb11.BookieInfoUtils;
+import utils.sb11.ClientSystemUtils;
 
 import static common.SBPConstants.*;
 
@@ -24,6 +27,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
     String creditLibAcc = "AutoLiabilityCredit";
     String debitCapitalAcc = "AutoCapitalDebit";
     String creditCapitalAcc = "AutoCapitalCredit";
+    String debitIncomeAcc = "AutoIncomeDebit";
+    String creditIncomeAcc = "AutoIncomeCredit";
     String lgDebitCur = "AUD";
     String lgCreditCur = "AUD";
     String lgExpenditureGroup = "Auto Expenditure Group";
@@ -34,7 +39,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     String descLiability = "Liability Transaction " + DateUtils.getMilliSeconds();
 
     @TestRails(id="841")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     public void Ledger_Statement_TC841(){
         log("@title: Validate transaction Debit of Ledger Type = Expenditure");
         log("@Step 1: Login to SB11 site");
@@ -65,7 +70,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="842")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     public void Ledger_Statement_TC842(){
         log("@title: Validate transaction Credit of Ledger Type = Expenditure");
         log("@Step 1: Login to SB11 site");
@@ -349,7 +354,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .build();
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
-        journalEntriesPage.addLedgerTransaction(transaction,false);
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         ledgerStatementPage.showLedger(companyUnit,financialYear,"Liability",lgLiabilityGroup,"","");
@@ -360,7 +365,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="853")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Ledger_Statement_TC853(){
         log("@title: Validate transaction Credit of Ledger Type = Capital");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
@@ -389,18 +394,18 @@ public class LedgerStatementTest extends BaseCaseAQS {
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
         log("Step 8: Observe value show on page");
-        ledgerStatementPage.showLedger(companyUnit,financialYear,"Capital",debitCapitalAcc,"","");
+        ledgerStatementPage.showLedger(companyUnit,financialYear,"Capital",creditCapitalAcc,"","");
 
         log("@Verify 1: Result page shows with 2 parts:\n" +
                 "Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed\n" +
                 "Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
-        ledgerStatementPage.verifyLedgerTrans(transaction, false, debitCapitalAcc);
+        ledgerStatementPage.verifyLedgerTrans(transaction, false, creditCapitalAcc);
 
         log("INFO: Executed completely");
     }
 
     @TestRails(id="854")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Ledger_Statement_TC854(){
         log("@title: Validate transaction Debit of Ledger Type = Capital");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
@@ -440,7 +445,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="855")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Ledger_Statement_TC855(){
         log("@title:Validate value calculated correctly for Ledger Type = Capital (Credit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
@@ -481,7 +486,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="856")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Ledger_Statement_TC856(){
         log("@title:Validate value calculated correctly for Ledger Type = Capital (Debit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
@@ -522,13 +527,13 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="857")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Ledger_Statement_TC857(){
         log("@title: Validate transaction Credit of Ledger Type = Income");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Income");
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoIncomeCredit")
-                .ledgerCredit("AutoIncomeDebit")
+                .ledgerDebit(debitIncomeAcc)
+                .ledgerCredit(creditIncomeAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
                 .amountDebit(1)
@@ -551,23 +556,23 @@ public class LedgerStatementTest extends BaseCaseAQS {
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
         log("Step 8: Observe value show on page");
-        ledgerStatementPage.showLedger(companyUnit,financialYear,"Capital",debitCapitalAcc,"","");
+        ledgerStatementPage.showLedger(companyUnit,financialYear,"Capital",creditIncomeAcc,"","");
 
         log("@Verify 1: Result page shows with 2 parts:\n" +
                 "Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed\n" +
                 "Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
-        ledgerStatementPage.verifyLedgerTrans(transaction, false, debitCapitalAcc);
+        ledgerStatementPage.verifyLedgerTrans(transaction, false, transaction.getRemark());
         log("INFO: Executed completely");
     }
 
     @TestRails(id="858")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Ledger_Statement_TC858(){
         log("@title: Validate transaction Debit of Ledger Type = Income");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Income");
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoIncomeDebit")
-                .ledgerCredit("AutoIncomeDebit")
+                .ledgerDebit(debitIncomeAcc)
+                .ledgerCredit(creditIncomeAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
                 .amountDebit(1)
@@ -590,7 +595,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
         log("Step 8: Observe value show on page");
-        ledgerStatementPage.showLedger(companyUnit,financialYear,"Capital",debitCapitalAcc,"","");
+        ledgerStatementPage.showLedger(companyUnit,financialYear,"Capital",debitIncomeAcc,"","");
         LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
 
         log("@Verify 1: Result page shows with 2 parts:\n" +
@@ -602,13 +607,13 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="859")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Ledger_Statement_TC859(){
         log("@title:Validate value calculated correctly for Ledger Type = Income (Credit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Income");
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoIncomeCredit")
-                .ledgerCredit("AutoIncomeDebit")
+                .ledgerDebit(debitIncomeAcc)
+                .ledgerCredit(creditIncomeAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
                 .amountDebit(1)
@@ -631,7 +636,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
         log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction\n");
-        ledgerStatementPage.showLedger(companyUnit,financialYear,"Capital",debitCapitalAcc,"","");
+        ledgerStatementPage.showLedger(companyUnit,financialYear,"Capital",creditIncomeAcc,"","");
         LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
 
         log("@Verify 1: Original Currency: Debit show value = 0 in black, Credit show value = 10 in blue, Running Bal = Opening Balance (+Credit - Debit) value\n" +
@@ -642,13 +647,13 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="860")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Ledger_Statement_TC860(){
         log("@title:Validate value calculated correctly for Ledger Type = Income (Debit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Income");
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoIncomeDebit")
-                .ledgerCredit("AutoIncomeDebit")
+                .ledgerDebit(debitIncomeAcc)
+                .ledgerCredit(creditIncomeAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
                 .amountDebit(1)
@@ -671,7 +676,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
         log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-        ledgerStatementPage.showLedger(companyUnit,financialYear,"Capital",debitCapitalAcc,"","");
+        ledgerStatementPage.showLedger(companyUnit,financialYear,"Capital",debitIncomeAcc,"","");
         LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
 
         log("@Verify 1: Original Currency: Debit show value = 10 in red, Credit show value = 0 in black, Running Bal = Opening Balance (+ Credit - Debit) value\n" +
@@ -679,6 +684,29 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 "Amounts in GBP will get value from Original Currency then convert to GBP to show\n" +
                 "\n");
         ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
+
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"smoke2"})
+    public void TEsstttt(){
+        Transaction transaction = new Transaction.Builder()
+                .ledgerDebit(debitExpAcc)
+                .ledgerCredit(creditExpAcc)
+                .ledgerDebitCur(lgDebitCur)
+                .ledgerCreditCur(lgCreditCur)
+                .amountDebit(1)
+                .amountCredit(1)
+                .remark(descExpenditure)
+                .transDate("")
+                .transType(transType)
+                .build();
+//        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+//        ledgerStatementPage.showLedger(companyUnit,financialYear,"Expenditure",lgExpenditureGroup,"","");
+        String typeId = BookieInfoUtils.getBookieId("Tim Bookie Name");
+        String typeID = ClientSystemUtils.getClientId("Johnny Client Bet");
+        String transID = String.valueOf(TransactionUtils.getTransactionId(transaction,"Ledger"));
+        log("Transaction ID is " + transID);
 
         log("INFO: Executed completely");
     }
