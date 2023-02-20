@@ -11,9 +11,13 @@ import objects.Order;
 import pages.sb11.trading.popup.BetListPopup;
 import pages.sb11.trading.popup.SoccerBetSlipPopup;
 import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
+import utils.sb11.BetEntrytUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Random;
+import java.util.TimeZone;
 
 public class SoccerBetEntryPage extends BetEntryPage {
     private Label lblTitle = Label.xpath("//app-bet-entry-soccer//app-common-header-sport//div[contains(@class,'main-box-header')]/div[1]/span");
@@ -63,7 +67,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
             ddpLeague.selectByVisibleText(league);
         }
         btnShow.click();
-        //waitPageLoad();
+        waitPageLoad();
     }
 
     /**
@@ -94,6 +98,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
      */
     public boolean isEventExist(Event event){
         Label lblTime;
+        String expectedEventName = String.format("%s\n%s",event.getHome(), event.getAway());
         int i = 1;
             while (true) {
                 lblTime = Label.xpath(tblEvent.getxPathOfCell(1,colEvent,i,null));
@@ -101,13 +106,13 @@ public class SoccerBetEntryPage extends BetEntryPage {
                     System.out.println("Can NOT found the event "+event.getHome()+" & "+ event.getAway()+" in the table");
                     return false;
                 }
-                // Get the row contains the event time
-                String time = lblTime.getText().trim();
-                if (!time.equals(event.getOpenTime())) {
-                    continue;
-                } else {
-                    String eventName = Label.xpath(tblEvent.getxPathOfCell(1, colEvent, i, null)).getText().trim();
-                    if (eventName.equals(event.getHome())) {
+                String eventName = lblTime.getText().trim();
+                if (eventName.equals(expectedEventName)){
+                    System.out.println("Found the event "+event.getHome()+" & "+ event.getAway()+" in the table at row "+ i);
+                    String time = Label.xpath(tblEvent.getxPathOfCell(1, colTime, i, null)).getText().trim();
+                    String date = BetEntrytUtils.convertToDate(event.getEventDate(),"dd/MM");
+                    if (time.equals(String.format("%s\n%s",date, event.getOpenTime()))) {
+                        System.out.println("Date time of event "+event.getHome()+" & "+ event.getAway()+" in correct: Expected is "+ i);
                         return true;
                     }
                 }

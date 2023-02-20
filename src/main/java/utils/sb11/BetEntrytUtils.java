@@ -8,14 +8,25 @@ import org.json.JSONObject;
 import utils.AppUtils;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static testcases.BaseCaseAQS.environment;
 
 public class BetEntrytUtils {
+
+    public static String convertToDate(String date, String format) {
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat(format);
+            Date  d = formatter.parse(date);
+            return formatter.format(d);
+        } catch (ParseException var3) {
+            var3.printStackTrace();
+            return null;
+        }
+    }
+
 
     /**
      * Get all order of the event by API
