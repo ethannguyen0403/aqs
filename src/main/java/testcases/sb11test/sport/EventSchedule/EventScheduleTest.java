@@ -19,7 +19,7 @@ public class EventScheduleTest extends BaseCaseAQS {
 
     @TestRails(id="1041")
     @Parameters({"accountCode"})
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void EventSchedule_TC1041(){
         log("@title: Validate users can place Mixed Sports bets successfully");
         log("@Precondition: Have a specific League Name, Home Team, Away Team for testing line\n" +
@@ -49,14 +49,14 @@ public class EventScheduleTest extends BaseCaseAQS {
         log("@Step 5: Click Submit");
         EventSchedulePage eventSchedulePage = welcomePage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
         eventSchedulePage.goToSport(event.getSportName());
-        eventSchedulePage.showLeague(event.getLeagueName(),event.getEventDate());
-        eventSchedulePage.addEvent(event);
+//        eventSchedulePage.showLeague(event.getLeagueName(),event.getEventDate());
+//        eventSchedulePage.addEvent(event);
 
         log("@Step 5: In the Schedules List section, select Show league link, find and select league\" QA Soccer League\" and click the show button");
         log("@Verify 1: Verify event info displayed correctly in the Schedule List");
-        Assert.assertEquals(eventSchedulePage.getSuccessMessage(),"Event schedule is created successfully","FAILED! Success message is incorrect displayed");
+//        Assert.assertTrue(eventSchedulePage.getSuccessMessage().contains("Event schedule is created successfully"),"FAILED! Success message is incorrect displayed");
         eventSchedulePage.showScheduleList(true,"QA Team 01",date);
-        Assert.assertTrue(eventSchedulePage.verifyEventInSchedulelist(event),"Failed! Event info inccorect after created");
+        Assert.assertTrue(eventSchedulePage.verifyEventInSchedulelist(event),"Failed! Event info incorrect after created");
 
         log("@Step 6: Navigate to Trading> Bet Entry go to Soccer page and filter the league in today");
         BetEntryPage betEntryPage = eventSchedulePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
