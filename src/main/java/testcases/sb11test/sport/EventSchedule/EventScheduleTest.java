@@ -21,7 +21,7 @@ public class EventScheduleTest extends BaseCaseAQS {
     @Parameters({"accountCode"})
     @Test(groups = {"smoke"})
     public void EventSchedule_TC1041(){
-        log("@title: Validate users can place Mixed Sports bets successfully");
+        log("@title: Validate the events is added in Schedule list and show correctly in Bet entry");
         log("@Precondition: Have a specific League Name, Home Team, Away Team for testing line\n" +
                 "League: QA Soccer League No Bet\n" +
                 "Home Team: Team Home Test\n" +
