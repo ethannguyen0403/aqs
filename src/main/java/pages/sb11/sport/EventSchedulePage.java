@@ -63,7 +63,9 @@ public class EventSchedulePage extends WelcomePage {
     }
 
     public void showLeague(String league, String date){
-        ddpLeague.selectByVisibleContainsText(league);
+        //To wait page completely loaded the list league
+        waitPageLoad();
+        ddpLeague.selectByVisibleText(league);
         if(!date.isEmpty()){
             if(!date.equals(txtDateTime.getAttribute("value").trim())){
                 dtpDateTime.selectDate(date,"dd/MM/yyyy");
@@ -78,8 +80,11 @@ public class EventSchedulePage extends WelcomePage {
         btnSubmit.click();
     }
     public void deleteEvent(Event event){
+        goToSport(event.getSportName());
         showScheduleList(true, event.getHome(),event.getEventDate());
         int index = getEventIndex(event);
+        if(index == 0)
+            System.out.println("Not found the event in the list for deleting");
         Icon.xpath(tblEventBody.getxPathOfCell(1,colActionEventTbl,index,"i[contains(@class,'fa-times-circle')]")).click();
         ConfirmPopup popup = new ConfirmPopup();
         popup.confirm(true);
@@ -92,8 +97,8 @@ public class EventSchedulePage extends WelcomePage {
         CheckBox cbLive = CheckBox.xpath(tblEvent.getxPathOfCell(1,colLive,rowIndex,"input"));
         CheckBox cbN = CheckBox.xpath(tblEvent.getxPathOfCell(1, colN,rowIndex,"input"));
         DropDownBox ddpStatus = DropDownBox.xpath(tblEvent.getxPathOfCell(1,colStatus,rowIndex,"select"));
-        ddpHomeTeam.selectByVisibleContainsText(event.getHome());
-        ddpAwayTeam.selectByVisibleContainsText(event.getAway());
+        ddpHomeTeam.selectByVisibleText(event.getHome());
+        ddpAwayTeam.selectByVisibleText(event.getAway());
         txtTime.sendKeys(event.getOpenTime());
         if(cbLive.isSelected() != event.isLive())
             cbLive.click();
@@ -110,58 +115,129 @@ public class EventSchedulePage extends WelcomePage {
         if(!teamName.isEmpty()){
             txtTeam.sendKeys(teamName);
         }
+
         if(!date.isEmpty()){
-            if(date.equals(String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7")))){
+            if(!date.equals(txtScheduleListDateTime.getAttribute("value").trim())){
                 dtpScheduleListDateTime.selectDate(date,"dd/MM/yyyy");
             }
         }
         btnShowSchedule.click();
+        waitSpinnerDisappeared();
     }
 
     private int getEventIndex(Event event){
-        int leagueIndex = tblEventBody.getRowIndexContainValue(event.getLeagueName(),colNum,null);
-        if(leagueIndex==0){
-            return 0;
-        }
-        int index = leagueIndex +1;
+        int i = 1;
+        Label lblLeagueName ;
+//        int leagueIndex = tblEventBody.getRowIndexContainValue(event.getLeagueName(),1,null);
+//        Assert.assertTrue( leagueIndex!=0,"Failed! Not found league name "+event.getLeagueName()+" int Schedule list");
+        int index = i;
+        TextBox txtDate ;
         while (true){
-
+            lblLeagueName = Label.xpath(tblEventBody.getxPathOfCell(1,1,i,null));
+            if(!lblLeagueName.isDisplayed())
+            {
+                System.out.println("Failed! Not found league name "+event.getLeagueName()+" int Schedule list");
+                return 0;
+            }
+            // if display the expect league name
+            if(lblLeagueName.getText().equals(event.getLeagueName())){
+                index = i + 1;
+                while (true){
+                    txtDate = TextBox.xpath(tblEventBody.getxPathOfCell(1,colDate,index,"input"));
+                    if(!txtDate.isDisplayed())
+                    {
+                        break;
+                    }
+                    String time  = TextBox.xpath(tblEventBody.getxPathOfCell(1,colTimeEventTbl,index,"input")).getAttribute("value").trim();
+                    String date = txtDate.getAttribute("value").trim();
+                    String homeTeam = Label.xpath(tblEventBody.getxPathOfCell(1,colHomeTeamEventTbl,index,null)).getText();
+                    String awayTeam = Label.xpath(tblEventBody.getxPathOfCell(1,colAwayTeamEventTbl,index,null)).getText();
+                    if(homeTeam.equals(event.getHome()) && awayTeam.equals(event.getAway())){
+                        if(date.equals( event.getEventDate()) || time.equals(event.getOpenTime())){
+                          return index;
+                        }
+                        index = index + 1;
+                        continue;
+                    }
+                }
+            }
+            i = index + 1;
         }
     }
     public boolean verifyEventInSchedulelist(Event event){
-        int leagueIndex = tblEventBody.getRowIndexContainValue(event.getLeagueName(),colNum,null);
-        Assert.assertTrue( leagueIndex!=0,"Failed! Not found league name "+event.getLeagueName()+" int Schedule list");
-        int index = leagueIndex +1;
+        int index = getEventIndex(event);
+        if(index == 0)
+        {
+            System.out.println("Not fount the event in the list");
+            return false;
+        }
+        TextBox txtDate  = TextBox.xpath(tblEventBody.getxPathOfCell(1,colDate,index,"input"));
+        String time  = TextBox.xpath(tblEventBody.getxPathOfCell(1,colTimeEventTbl,index,"input")).getAttribute("value").trim();
+        String date = txtDate.getAttribute("value").trim();
+        Assert.assertEquals(date, event.getEventDate(),"Failed! Event Date is incorrect");
+        Assert.assertEquals(time, event.getOpenTime(),"Failed!Time is incorrect");
+        String homeTeam = Label.xpath(tblEventBody.getxPathOfCell(1,colHomeTeamEventTbl,index,null)).getText();
+        String awayTeam = Label.xpath(tblEventBody.getxPathOfCell(1,colAwayTeamEventTbl,index,null)).getText();
+        boolean isLive = CheckBox.xpath(tblEventBody.getxPathOfCell(1,colLiveEventTbl,index,"input")).isSelected();
+        boolean isN = CheckBox.xpath(tblEventBody.getxPathOfCell(1,colLiveEventTbl,index,"input")).isSelected();
+        String status = DropDownBox.xpath(tblEventBody.getxPathOfCell(1, colStatusEventTbl,index,"select")).getFirstSelectedOption();
+        Assert.assertEquals(homeTeam,event.getHome(),"Failed! Home Team is incorrect");
+        Assert.assertEquals(awayTeam,event.getAway(),"Failed! Home Team is incorrect");
+        Assert.assertEquals(isLive,event.isLive(),"FAiled! Event is incorrect");
+        Assert.assertEquals(isN, event.isN(),"Failed, N is incorrect");
+        Assert.assertEquals(status,event.getEventStatus(),"Failed! Status is incorrect");
+        return true;
+
+    /*    int i = 1;
+        Label lblLeagueName ;
+//        int leagueIndex = tblEventBody.getRowIndexContainValue(event.getLeagueName(),1,null);
+//        Assert.assertTrue( leagueIndex!=0,"Failed! Not found league name "+event.getLeagueName()+" int Schedule list");
+        int index = i;
         TextBox txtDate ;
-        TextBox txtTime ;
+        boolean foundLeague = false;
         while (true){
-            txtDate = TextBox.xpath(tblEventBody.getxPathOfCell(1,colDate,index,"input"));
-            if(!txtDate.isDisplayed())
+            lblLeagueName = Label.xpath(tblEventBody.getxPathOfCell(1,1,i,null));
+            if(!lblLeagueName.isDisplayed())
             {
+                System.out.println("Failed! Not found league name "+event.getLeagueName()+" int Schedule list");
                 return false;
             }
-            String time  = TextBox.xpath(tblEventBody.getxPathOfCell(1,colTimeEventTbl,index,"input")).getAttribute("value").trim();
-            String date = txtDate.getAttribute("value").trim();
-            if(!date.equals( event.getEventDate()) || !time.equals(event.getOpenTime())){
-                index = index + 1;
-                continue;
+            // if display the expect league name
+            if(lblLeagueName.getText().equals(event.getLeagueName())){
+                index = i + 1;
+                while (true){
+                    txtDate = TextBox.xpath(tblEventBody.getxPathOfCell(1,colDate,index,"input"));
+                    if(!txtDate.isDisplayed())
+                    {
+                        break;
+                    }
+                    String time  = TextBox.xpath(tblEventBody.getxPathOfCell(1,colTimeEventTbl,index,"input")).getAttribute("value").trim();
+                    String date = txtDate.getAttribute("value").trim();
+                    if(!date.equals( event.getEventDate()) || !time.equals(event.getOpenTime())){
+                        index = index + 1;
+                        continue;
+                    }
+                    // Only check the row with correct data
+                    Assert.assertEquals(date, event.getEventDate(),"Failed! Event Date is incorrect");
+                    Assert.assertEquals(time, event.getOpenTime(),"Failed!Time is incorrect");
+                    String homeTeam = Label.xpath(tblEventBody.getxPathOfCell(1,colHomeTeamEventTbl,index,null)).getText();
+                    String awayTeam = Label.xpath(tblEventBody.getxPathOfCell(1,colAwayTeamEventTbl,index,null)).getText();
+                    boolean isLive = CheckBox.xpath(tblEventBody.getxPathOfCell(1,colLiveEventTbl,index,"input")).isSelected();
+                    boolean isN = CheckBox.xpath(tblEventBody.getxPathOfCell(1,colLiveEventTbl,index,"input")).isSelected();
+                    String status = DropDownBox.xpath(tblEventBody.getxPathOfCell(1, colStatusEventTbl,index,"select")).getFirstSelectedOption();
+                    Assert.assertEquals(homeTeam,event.getHome(),"Failed! Home Team is incorrect");
+                    Assert.assertEquals(awayTeam,event.getAway(),"Failed! Home Team is incorrect");
+                    Assert.assertEquals(isLive,event.isLive(),"FAiled! Event is incorrect");
+                    Assert.assertEquals(isN, event.isN(),"Failed, N is incorrect");
+                    Assert.assertEquals(status,event.getEventStatus(),"Failed! Status is incorrect");
+                    return true;
+                }
             }
-            else {
-                Assert.assertEquals(date, event.getEventDate(),"Failed! Event Date is incorrect");
-                Assert.assertEquals(time, event.getOpenTime(),"Failed!Time is incorrect");
-                String homeTeam = Label.xpath(tblEventBody.getxPathOfCell(1,colHomeTeamEventTbl,index,null)).getText();
-                String awayTeam = Label.xpath(tblEventBody.getxPathOfCell(1,colAwayTeamEventTbl,index,null)).getText();
-                boolean isLive = CheckBox.xpath(tblEventBody.getxPathOfCell(1,colLiveEventTbl,index,"input")).isSelected();
-                boolean isN = CheckBox.xpath(tblEventBody.getxPathOfCell(1,colLiveEventTbl,index,"input")).isSelected();
-                String status = DropDownBox.xpath(tblEventBody.getxPathOfCell(1, colStatusEventTbl,index,"select")).getFirstSelectedOption();
-                Assert.assertEquals(homeTeam,event.getHome(),"Failed! Home Team is incorrect");
-                Assert.assertEquals(awayTeam,event.getAway(),"Failed! Away Team is incorrect");
-                Assert.assertEquals(isLive,event.isLive(),"FAiled! isLive is incorrect");
-                Assert.assertEquals(isN, event.isN(),"Failed, N is incorrect");
-                Assert.assertEquals(status,event.getEventStatus(),"Failed! Status is incorrect");
+            if(foundLeague){
+                return true;
             }
-            index = index + 1;
-        }
+            i = index + 1;
+        }*/
     }
 
 }

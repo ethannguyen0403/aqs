@@ -21,7 +21,7 @@ public class EventScheduleTest extends BaseCaseAQS {
     @Parameters({"accountCode"})
     @Test(groups = {"smoke"})
     public void EventSchedule_TC1041(){
-        log("@title: Validate users can place Mixed Sports bets successfully");
+        log("@title: Validate the events is added in Schedule list and show correctly in Bet entry");
         log("@Precondition: Have a specific League Name, Home Team, Away Team for testing line\n" +
                 "League: QA Soccer League No Bet\n" +
                 "Home Team: Team Home Test\n" +
@@ -65,10 +65,10 @@ public class EventScheduleTest extends BaseCaseAQS {
 
         log("@Verify 2: League info is correctly displayed in Bet Entry page");
         Assert.assertTrue(soccerBetEntryPage.isLeagueExist(leagueName),"FAILED! League "+ leagueName+" does not display in the list");
-        Assert.assertTrue(soccerBetEntryPage.isEventExist(event), "FAILED! Event "+event.getHome() +" &"+ event.getAway()+" under league "+ leagueName+" does not display in the list");
+        Assert.assertTrue(soccerBetEntryPage.isEventExist(event), "FAILED! Event "+event.getHome() +" & "+ event.getAway()+" under league "+ leagueName+" does not display in the list");
 
         log("@Step 5: Postcondition: Delete the event");
-        eventSchedulePage = betEntryPage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
+        eventSchedulePage = soccerBetEntryPage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
         eventSchedulePage.deleteEvent(event);
         log("INFO: Executed completely");
     }
