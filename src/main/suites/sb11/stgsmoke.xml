@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="AQS_STG_Smoke" verbose="1">
+<suite name="SB11_STG_Smoke" verbose="1">
     <listeners>
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
@@ -28,7 +28,7 @@
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <groups>
             <run>
-                <include name="smoke" />
+                <include name="smoke1" />
                 <include name="smoke_qc" /><!--For test case only run on QAT and STG-->
             </run>
         </groups>
@@ -43,7 +43,6 @@
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
             <class name="testcases.sb11test.generalReports.BookieStatementTest"/>
             <class name="testcases.sb11test.soccer.SPPTest"/>
-
         </classes>
     </test>
 </suite>

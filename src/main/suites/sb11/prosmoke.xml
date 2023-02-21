@@ -15,7 +15,7 @@
         <parameter name='password' value='p8PEjV0gJOnWf9U0aEgGEA=='/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
-        <parameter name="accountCode" value="QA2M0A0001"/>
+        <parameter name="accountCode" value="Auto-Account01"/>
         <parameter name="accountCurrency" value="HKD"/>
         <parameter name="clientCode" value ="QA Client (No.121 QA Client)"/>
         <parameter name="bookieCode" value ="QA Bookie"/>
@@ -33,6 +33,7 @@
         </groups>
 
         <classes>
+            <class name="testcases.sb11test.sport.EventSchedule.EventScheduleTest"/>
             <class name="testcases.sb11test.trading.BetSettlementTest"/>
             <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
             <class name="testcases.sb11test.trading.BetEntryTest"/>
