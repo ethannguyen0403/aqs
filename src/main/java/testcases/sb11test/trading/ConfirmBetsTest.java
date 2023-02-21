@@ -32,7 +32,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         String league = soccerBetEntryPage.getFirstLeague();
@@ -76,7 +76,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
@@ -122,7 +122,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI =  String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String dateAPI =  String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
@@ -167,7 +167,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         String league = soccerBetEntryPage.getFirstLeague();
@@ -221,7 +221,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
@@ -265,7 +265,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         String league = soccerBetEntryPage.getFirstLeague();
@@ -317,7 +317,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
         Event eventInfo = new Event.Builder()
                 .sportName("Cricket")
                 .leagueName("QA League")
@@ -380,7 +380,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
         // define event info
         Event eventInfo = new Event.Builder()
                 .sportName("Soccer")
@@ -456,7 +456,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
@@ -501,7 +501,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
