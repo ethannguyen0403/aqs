@@ -24,7 +24,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     String remark = "Auto Testing Transaction " + DateUtils.getMilliSeconds() + ".Please ignore this, Thank you!";
 
     @TestRails(id="864")
-    @Test(groups = {"smoke4"})
+    @Test(groups = {"smoke"})
     public void Journal_Entries_864(){
         log("@title: Validate users can make transactions successfully between bookies");
         Transaction transaction = new Transaction.Builder()
