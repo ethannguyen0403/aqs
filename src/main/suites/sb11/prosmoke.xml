@@ -29,6 +29,7 @@
         <groups>
             <run>
                 <include name="smoke" />
+                <include name="smoke_qc" /><!--For test case only run on QAT and STG-->
             </run>
         </groups>
 
@@ -37,11 +38,12 @@
             <class name="testcases.sb11test.trading.BetSettlementTest"/>
             <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
             <class name="testcases.sb11test.trading.BetEntryTest"/>
-            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
             <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
             <class name="testcases.sb11test.generalReports.BookieStatementTest"/>
             <class name="testcases.sb11test.soccer.SPPTest"/>
+            <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
+            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
         </classes>
     </test>
 </suite>
