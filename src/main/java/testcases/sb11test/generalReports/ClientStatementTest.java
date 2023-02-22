@@ -534,7 +534,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "873")
     public void ClientStatementTC_873(String clientCode) throws IOException, InterruptedException {
@@ -606,7 +606,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "874")
     public void ClientStatementTC_874(String clientCode) throws IOException, InterruptedException {
@@ -678,7 +678,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "875")
     public void ClientStatementTC_875(String clientCode) throws IOException, InterruptedException {
@@ -750,7 +750,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "876")
     public void ClientStatementTC_876(String clientCode) throws IOException, InterruptedException {
@@ -822,7 +822,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "877")
     public void ClientStatementTC_877(String clientCode) throws IOException, InterruptedException {
@@ -893,7 +893,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
         log("INFO: Executed completely");
     }
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "878")
     public void ClientStatementTC_878(String clientCode) throws IOException, InterruptedException {
@@ -965,7 +965,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "879")
     public void ClientStatementTC_879(String clientCode) throws IOException, InterruptedException {
@@ -1037,7 +1037,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "880")
     public void ClientStatementTC_880(String clientCode) throws IOException, InterruptedException {
