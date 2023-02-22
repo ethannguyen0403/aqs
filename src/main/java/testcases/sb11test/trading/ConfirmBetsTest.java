@@ -37,7 +37,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         String league = soccerBetEntryPage.getFirstLeague();
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
-        soccerBetEntryPage.showLeague(companyUnit,"",league);
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
@@ -79,8 +79,8 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -125,9 +125,9 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String dateAPI =  String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
-Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         // define order info
         Order order = new Order.Builder()
@@ -172,7 +172,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         String league = soccerBetEntryPage.getFirstLeague();
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
@@ -224,8 +224,8 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -459,8 +459,8 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -504,8 +504,8 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -553,9 +553,9 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String date =  String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
-Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         // define order info
         Order order = new Order.Builder()
@@ -602,8 +602,8 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -662,9 +662,9 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String dateAPI =  String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
-Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         // define order info
         Order order = new Order.Builder()
@@ -727,9 +727,9 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String dateAPI =  String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
-Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         // define order info
         Order order = new Order.Builder()
@@ -781,9 +781,9 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String dateAPI =  String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
-Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         // define order info
         Order order = new Order.Builder()
