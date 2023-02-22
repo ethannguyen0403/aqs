@@ -76,7 +76,7 @@ public class BaseCaseAQS {
             //data.put("suite_id",true);
             data.put("include_all", false);
             //data.put("name", "Test Run of suite " + ctx.getName() +" on"+ DateUtils.getDateFollowingGMT("GMT+7","dd-MM-YYYY hh:mm:ss"));
-            data.put("name", "Test Run " + ctx.getName() + DateUtils.getDateFollowingGMT("GMT+7","YYYY.MM.dd"));
+            data.put("name", "Test Run " + ctx.getName() + " " + DateUtils.getDateFollowingGMT("GMT+7","YYYY.MM.dd"));
             // data.put("milestone_id",1);
 
             JSONObject c = (JSONObject) client.sendPost("add_run/" + PROJECT_ID, data);
