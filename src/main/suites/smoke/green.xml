@@ -6,7 +6,7 @@
         <listener class-name="utils.testraildemo.Listener"/>
     </listeners>
 
-    <test name="AQS_PRO_Smoke_Chrome">
+    <test name="AQS">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='pro'/>
         <parameter name='language' value='en'/>
