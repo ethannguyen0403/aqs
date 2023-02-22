@@ -5,7 +5,7 @@
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
-    <test name="SB11 PRO Smoke">
+    <test name="SB11">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='pro'/>
         <parameter name='language' value='en'/>
