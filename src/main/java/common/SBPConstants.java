@@ -49,6 +49,11 @@ public class SBPConstants {
     public final static String LEDGER_INCOME_DEBIT_ACC = "002.200.000.000 - AutoIncomeDebit";
     public final static String LEDGER_EXPENDITURE_CREDIT_ACC = "010.000.000.000 - AutoExpenditureCredit";
     public final static String LEDGER_EXPENDITURE_DEBIT_ACC = "011.000.000.000 - AutoExpenditureDebit";
+    public final static String LEDGER_PARENT_NAME_ASSET = "QA Ledger Group Asset";
+    public final static String LEDGER_PARENT_NAME_EXPENDITURE = "QA Ledger Group Expenditure";
+    public final static String LEDGER_PARENT_NAME_LIABILITY = "QA Ledger Group Liability";
+    public final static String LEDGER_PARENT_NAME_INCOME = "QA Ledger Group Income";
+    public final static String LEDGER_PARENT_NAME_CAPITAL = "QA Ledger Group Capital";
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
         {
