@@ -53,7 +53,7 @@ public class ClientStatementPage extends WelcomePage {
         if(!fromDate.isEmpty())
             if(!currentDate.equals(fromDate))
                 dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-        currentDate = txtFromDate.getAttribute("value");
+        currentDate = txtToDate.getAttribute("value");
         if(!toDate.isEmpty())
             if(!currentDate.equals(toDate))
                 dtpToDate.selectDate(toDate,"dd/MM/yyyy");
@@ -174,6 +174,7 @@ public class ClientStatementPage extends WelcomePage {
             }
             if(lblAgentCode.getText().equalsIgnoreCase(agentCode)){
                 lblAgentCode.click();
+                waitSpinnerDisappeared();
                 return new ClientSummaryPopup();
             }
             if(lblAgentCode.getText().equalsIgnoreCase("Grand Total in")) {
