@@ -56,7 +56,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
     public void showLeague(String companyUnit, String date, String league){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
         //String currentDate = txtDate.getAttribute("value");
-        String currentDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7"));
+        String currentDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
         if(!date.isEmpty()){
             if(!date.equals(currentDate)){
                 dtpDate.selectDate(date,"dd/MM/yyyy");

@@ -59,6 +59,7 @@ public class BaseCaseAQSTestRails {
         ctx.getName();
 
         if(isAddTestRailResult) {
+
             System.out.println("Add New Test Run in TestRails" );
             client = new APIClient("https://demotestrailmerito.testrail.io");
             client.setUser("isabella.huynh@pal.net.vn");
