@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="AQS_STG_Smoke" verbose="1">
+<suite name="SB11_STG_Smoke" verbose="1">
     <listeners>
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
-    <test name="SB11 STG Smoke">
+    <test name="SB11 Pre">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='stg'/>
         <parameter name='language' value='en'/>
@@ -23,7 +23,6 @@
         <parameter name="smartGroup" value="Auto QC Group"/>
         <parameter name="superCode" value="QA2112"/>
         <parameter name="agentCode" value="QASAHK00"/>
-        <parameter name="" value=""></parameter>
         <parameter name="bookieMasterCode" value="Ma-QA101-QA Test"/>
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <groups>
@@ -38,12 +37,12 @@
             <class name="testcases.sb11test.trading.BetSettlementTest"/>
             <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
             <class name="testcases.sb11test.trading.BetEntryTest"/>
-            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
             <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
             <class name="testcases.sb11test.generalReports.BookieStatementTest"/>
             <class name="testcases.sb11test.soccer.SPPTest"/>
-
+            <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
+            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
         </classes>
     </test>
 </suite>

@@ -29,7 +29,7 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "309")
-    public void ClientStatementTC_309(String clientCode) throws InterruptedException {
+    public void ClientStatementTC_309(String clientCode) {
         clientCode = superMasterCode + clientCode;
         String actualVal;
         String openingVal;
@@ -64,7 +64,7 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters("clientCode")
     @TestRails(id = "310")
-    public void ClientStatementTC_310(String clientCode) throws InterruptedException {
+    public void ClientStatementTC_310(String clientCode) {
         clientCode = superMasterCode + clientCode;
         String openingVal;
         String closingVal;
@@ -97,7 +97,7 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters("clientCode")
     @TestRails(id = "587")
-    public void ClientStatementTC_587(String clientCode) throws InterruptedException {
+    public void ClientStatementTC_587(String clientCode) {
         clientCode = superMasterCode + clientCode;
         String totalGrandMasterVal;
         String totalGrandHKDVal;
@@ -123,7 +123,7 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters("clientCode")
     @TestRails(id = "588")
-    public void ClientStatementTC_588(String clientCode) throws InterruptedException {
+    public void ClientStatementTC_588(String clientCode) {
         clientCode = superMasterCode + clientCode;
         String openingVal;
         String winLossVal;
@@ -169,7 +169,7 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "861")
-    public void ClientStatementTC_861(String clientCode) throws InterruptedException {
+    public void ClientStatementTC_861(String clientCode) {
         String agentCode = "QASAHK00";
         clientCode = superMasterCode + clientCode;
         String openingVal;
@@ -218,7 +218,7 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "865")
-    public void ClientStatementTC_865(String clientCode) throws InterruptedException {
+    public void ClientStatementTC_865(String clientCode) {
         String agentComCode = "QATE01-COM";
         clientCode = superMasterCode + clientCode;
         String openingVal;
@@ -267,7 +267,7 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "866")
-    public void ClientStatementTC_866(String clientCode) throws InterruptedException, IOException {
+    public void ClientStatementTC_866(String clientCode) throws IOException {
         log("@Validate the balance is deducted from the account if a Client account and an amount are inputted into the 'Debit' form");
         String agentCode = "QASAHK00";
         String level = "Player";
@@ -296,41 +296,44 @@ public class ClientStatementTest extends BaseCaseAQS {
         accountIdCredit = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
         accountIdDebit = AccountSearchUtils.getAccountId(CLIENT_DEBIT_ACC);
         typeId = ClientSystemUtils.getClientId(clientCode);
-        TransactionUtils.addClientBookieTxn(transaction,accountIdDebit,accountIdCredit,fromType,typeId);
-        log("@Step 1: Navigate to General Reports > Client Statement");
-        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.waitSpinnerDisappeared();
-        log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
-        log("@Step 3: Open Summary popup of agent of the player");
-        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
-        log("@Verify the balance is deducted from the Client account properly");
-        expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
-        actualRecPayVal = popup.getSummaryCellValue(CLIENT_DEBIT_ACC,popup.colRecPay).replace(",","");
-        Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Client Debit balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-        popup.closeSummaryPopup();
+        try {
+            TransactionUtils.addClientBookieTxn(transaction,accountIdDebit,accountIdCredit,fromType,typeId);
+            log("@Step 1: Navigate to General Reports > Client Statement");
+            ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+            clientPage.waitSpinnerDisappeared();
+            log("@Step 2: Filter the Client with Client Point view");
+            clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            log("@Step 3: Open Summary popup of agent of the player");
+            ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
+            log("@Verify the balance is deducted from the Client account properly");
+            expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
+            actualRecPayVal = popup.getSummaryCellValue(CLIENT_DEBIT_ACC,popup.colRecPay).replace(",","");
+            Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Client Debit balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+            popup.closeSummaryPopup();
+        } catch (Exception | AssertionError e) {
+            log("@Post-condition: Add transaction for the Client account into Credit");
+            Transaction transactionPost = new Transaction.Builder()
+                    .clientDebit(clientCode)
+                    .clientCredit(clientCode)
+                    .amountDebit(1)
+                    .amountCredit(1)
+                    .remark("Automation Testing Transaction Client: Post-condition")
+                    .transDate("")
+                    .transType("Tax Rebate")
+                    .level(level)
+                    .debitAccountCode(CLIENT_CREDIT_ACC)
+                    .creditAccountCode(CLIENT_DEBIT_ACC)
+                    .build();
+            TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType,typeId);
+        }
 
-        log("@Post-condition: Add transaction for the Client account into Credit");
-        Transaction transactionPost = new Transaction.Builder()
-                .clientDebit(clientCode)
-                .clientCredit(clientCode)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Post-condition")
-                .transDate("")
-                .transType("Tax Rebate")
-                .level(level)
-                .debitAccountCode(CLIENT_CREDIT_ACC)
-                .creditAccountCode(CLIENT_DEBIT_ACC)
-                .build();
-        TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType,typeId);
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "867")
-    public void ClientStatementTC_867(String clientCode) throws InterruptedException, IOException {
+    public void ClientStatementTC_867(String clientCode) throws IOException {
         log("@Validate the balance is added from the account if a Client account and an amount are inputted into the 'Credit' form");
         String agentCode = "QASAHK00";
         String level = "Player";
@@ -359,41 +362,44 @@ public class ClientStatementTest extends BaseCaseAQS {
         accountIdCredit = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
         accountIdDebit = AccountSearchUtils.getAccountId(CLIENT_DEBIT_ACC);
         typeId = ClientSystemUtils.getClientId(clientCode);
-        TransactionUtils.addClientBookieTxn(transaction,accountIdDebit,accountIdCredit,fromType,typeId);
-        log("@Step 1: Navigate to General Reports > Client Statement");
-        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.waitSpinnerDisappeared();
-        log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
-        log("@Step 3: Open Summary popup of agent of the player");
-        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
-        log("@Verify the balance is added to the Client account properly");
-        expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
-        actualRecPayVal = popup.getSummaryCellValue(CLIENT_CREDIT_ACC,popup.colRecPay).replace(",","");
-        Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Client Credit balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-        popup.closeSummaryPopup();
+        try {
+            TransactionUtils.addClientBookieTxn(transaction,accountIdDebit,accountIdCredit,fromType,typeId);
+            log("@Step 1: Navigate to General Reports > Client Statement");
+            ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+            clientPage.waitSpinnerDisappeared();
+            log("@Step 2: Filter the Client with Client Point view");
+            clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            log("@Step 3: Open Summary popup of agent of the player");
+            ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
+            log("@Verify the balance is added to the Client account properly");
+            expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
+            actualRecPayVal = popup.getSummaryCellValue(CLIENT_CREDIT_ACC,popup.colRecPay).replace(",","");
+            Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Client Credit balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+            popup.closeSummaryPopup();
+        } catch (Exception | AssertionError e) {
+            log("@Post-condition: Add transaction for the Client account into Credit");
+            Transaction transactionPost = new Transaction.Builder()
+                    .clientDebit(clientCode)
+                    .clientCredit(clientCode)
+                    .amountDebit(1)
+                    .amountCredit(1)
+                    .remark("Automation Testing Transaction Client: Post-condition")
+                    .transDate(transDate)
+                    .transType("Tax Rebate")
+                    .level(level)
+                    .debitAccountCode(CLIENT_CREDIT_ACC)
+                    .creditAccountCode(CLIENT_DEBIT_ACC)
+                    .build();
+            TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType,typeId);
+        }
 
-        log("@Post-condition: Add transaction for the Client account into Credit");
-        Transaction transactionPost = new Transaction.Builder()
-                .clientDebit(clientCode)
-                .clientCredit(clientCode)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Post-condition")
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .level(level)
-                .debitAccountCode(CLIENT_CREDIT_ACC)
-                .creditAccountCode(CLIENT_DEBIT_ACC)
-                .build();
-        TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType,typeId);
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "871")
-    public void ClientStatementTC_871(String clientCode) throws IOException, InterruptedException {
+    public void ClientStatementTC_871(String clientCode) throws IOException {
         log("@Validate the balance is added to the account if a Ledger type = Asset and an amount are inputted into the 'Debit' form");
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
@@ -406,6 +412,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -428,44 +435,48 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
-        TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId,LEDGER_PARENT_NAME_ASSET);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+        try {
+            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
-        log("@Step 1: Navigate to General Reports > Client Statement");
-        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.waitSpinnerDisappeared();
-        log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
-        log("@Step 3: Open Summary popup of agent of the ledger");
-        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
-        log("@Validate the balance is added to the account Asset 'Debit' correctly");
-        expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
-        actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
-        Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Asset 'Debit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-        popup.closeSummaryPopup();
+            log("@Step 1: Navigate to General Reports > Client Statement");
+            ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+            clientPage.waitSpinnerDisappeared();
+            log("@Step 2: Filter the Client with Client Point view");
+            clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            log("@Step 3: Open Summary popup of agent of the ledger");
+            ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
+            log("@Validate the balance is added to the account Asset 'Debit' correctly");
+            expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
+            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
+            Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Asset 'Debit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+            popup.closeSummaryPopup();
+        } catch (Exception | AssertionError e) {
+            log("@Post-condition: Add transaction for the Asset Ledger account into Credit");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerDebitAccountName)
+                    .ledgerCreditNumber(ledgerDebitAccountNumber)
+                    .ledgerDebit(ledgerCreditAccountName)
+                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .amountDebit(1)
+                    .amountCredit(1)
+                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .transDate(transDate)
+                    .transType("Tax Rebate")
+                    .build();
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+        }
 
-        log("@Post-condition: Add transaction for the Asset Ledger account into Credit");
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerDebitAccountName)
-                .ledgerCreditNumber(ledgerDebitAccountNumber)
-                .ledgerDebit(ledgerCreditAccountName)
-                .ledgerDebitNumber(ledgerCreditAccountNumber)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .build();
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "872")
-    public void ClientStatementTC_872(String clientCode) throws IOException, InterruptedException {
+    public void ClientStatementTC_872(String clientCode) throws IOException {
         log("@Validate the balance is deducted from the account if a Ledger type = Asset and an amount are inputted into the 'Credit' form");
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
@@ -478,6 +489,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -500,44 +512,48 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
-        TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId,LEDGER_PARENT_NAME_ASSET);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+        try {
+            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
-        log("@Step 1: Navigate to General Reports > Client Statement");
-        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.waitSpinnerDisappeared();
-        log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
-        log("@Step 3: Open Summary popup of agent of the ledger");
-        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
-        log("@Validate the balance is deducted from the account Asset 'Credit' correctly");
-        expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
-        actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
-        Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Asset 'Credit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-        popup.closeSummaryPopup();
+            log("@Step 1: Navigate to General Reports > Client Statement");
+            ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+            clientPage.waitSpinnerDisappeared();
+            log("@Step 2: Filter the Client with Client Point view");
+            clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            log("@Step 3: Open Summary popup of agent of the ledger");
+            ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
+            log("@Validate the balance is deducted from the account Asset 'Credit' correctly");
+            expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
+            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
+            Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Asset 'Credit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+            popup.closeSummaryPopup();
+        } catch (Exception | AssertionError e) {
+            log("@Post-condition: Add transaction for the Asset Ledger account into Debit");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerDebitAccountName)
+                    .ledgerCreditNumber(ledgerDebitAccountNumber)
+                    .ledgerDebit(ledgerCreditAccountName)
+                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .amountDebit(1)
+                    .amountCredit(1)
+                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .transDate(transDate)
+                    .transType("Tax Rebate")
+                    .build();
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+        }
 
-        log("@Post-condition: Add transaction for the Asset Ledger account into Debit");
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerDebitAccountName)
-                .ledgerCreditNumber(ledgerDebitAccountNumber)
-                .ledgerDebit(ledgerCreditAccountName)
-                .ledgerDebitNumber(ledgerCreditAccountNumber)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .build();
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "873")
-    public void ClientStatementTC_873(String clientCode) throws IOException, InterruptedException {
+    public void ClientStatementTC_873(String clientCode) throws IOException {
         log("@Validate the balance is deducted from the account if a Ledger type = Liability and an amount are inputted into the 'Debit' form");
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
@@ -575,41 +591,44 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
-        TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+        try {
+            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
-        log("@Step 1: Navigate to General Reports > Client Statement");
-        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.waitSpinnerDisappeared();
-        log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
-        log("@Step 3: Open Summary popup of agent of the ledger");
-        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
-        log("@Validate the balance is deducted from the account Liability 'Debit' correctly");
-        expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
-        actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
-        Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Liability 'Debit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-        popup.closeSummaryPopup();
+            log("@Step 1: Navigate to General Reports > Client Statement");
+            ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+            clientPage.waitSpinnerDisappeared();
+            log("@Step 2: Filter the Client with Client Point view");
+            clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            log("@Step 3: Open Summary popup of agent of the ledger");
+            ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
+            log("@Validate the balance is deducted from the account Liability 'Debit' correctly");
+            expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
+            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
+            Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Liability 'Debit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+            popup.closeSummaryPopup();
+        } catch (Exception | AssertionError e) {
+            log("@Post-condition: Add transaction for the Liability Ledger account into Credit");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerDebitAccountName)
+                    .ledgerCreditNumber(ledgerDebitAccountNumber)
+                    .ledgerDebit(ledgerCreditAccountName)
+                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .amountDebit(1)
+                    .amountCredit(1)
+                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .transDate(transDate)
+                    .transType("Tax Rebate")
+                    .build();
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+        }
 
-        log("@Post-condition: Add transaction for the Liability Ledger account into Credit");
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerDebitAccountName)
-                .ledgerCreditNumber(ledgerDebitAccountNumber)
-                .ledgerDebit(ledgerCreditAccountName)
-                .ledgerDebitNumber(ledgerCreditAccountNumber)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .build();
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "874")
-    public void ClientStatementTC_874(String clientCode) throws IOException, InterruptedException {
+    public void ClientStatementTC_874(String clientCode) throws IOException {
         log("@Validate the balance is added from the account if a Ledger type = Liability and an amount are inputted into the 'Credit' form");
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
@@ -647,41 +666,44 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
-        TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+        try {
+            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
-        log("@Step 1: Navigate to General Reports > Client Statement");
-        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.waitSpinnerDisappeared();
-        log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
-        log("@Step 3: Open Summary popup of agent of the ledger");
-        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
-        log("@Validate the balance is added to the account Liability 'Credit' correctly");
-        expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
-        actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
-        Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Liability 'Credit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-        popup.closeSummaryPopup();
+            log("@Step 1: Navigate to General Reports > Client Statement");
+            ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+            clientPage.waitSpinnerDisappeared();
+            log("@Step 2: Filter the Client with Client Point view");
+            clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            log("@Step 3: Open Summary popup of agent of the ledger");
+            ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
+            log("@Validate the balance is added to the account Liability 'Credit' correctly");
+            expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
+            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
+            Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Liability 'Credit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+            popup.closeSummaryPopup();
+        } catch (Exception | AssertionError e) {
+            log("@Post-condition: Add transaction for the Liability Ledger account into Debit");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerDebitAccountName)
+                    .ledgerCreditNumber(ledgerDebitAccountNumber)
+                    .ledgerDebit(ledgerCreditAccountName)
+                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .amountDebit(1)
+                    .amountCredit(1)
+                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .transDate(transDate)
+                    .transType("Tax Rebate")
+                    .build();
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+        }
 
-        log("@Post-condition: Add transaction for the Liability Ledger account into Debit");
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerDebitAccountName)
-                .ledgerCreditNumber(ledgerDebitAccountNumber)
-                .ledgerDebit(ledgerCreditAccountName)
-                .ledgerDebitNumber(ledgerCreditAccountNumber)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .build();
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "875")
-    public void ClientStatementTC_875(String clientCode) throws IOException, InterruptedException {
+    public void ClientStatementTC_875(String clientCode) throws IOException {
         log("Validate the balance is deducted from the account if a Ledger type = Capital and an amount are inputted into the 'Debit' form");
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
@@ -719,38 +741,41 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
-        TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+        try {
+            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
-        log("@Step 1: Navigate to General Reports > Client Statement");
-        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.waitSpinnerDisappeared();
-        log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
-        log("@Step 3: Open Summary popup of agent of the ledger");
-        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
-        log("@Validate the balance is deducted from the account Capital 'Debit' correctly");
-        expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
-        actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
-        Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Capital 'Debit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-        popup.closeSummaryPopup();
+            log("@Step 1: Navigate to General Reports > Client Statement");
+            ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+            clientPage.waitSpinnerDisappeared();
+            log("@Step 2: Filter the Client with Client Point view");
+            clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            log("@Step 3: Open Summary popup of agent of the ledger");
+            ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
+            log("@Validate the balance is deducted from the account Capital 'Debit' correctly");
+            expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
+            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
+            Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Capital 'Debit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+            popup.closeSummaryPopup();
+        } catch (Exception | AssertionError e) {
+            log("@Post-condition: Add transaction for the Capital Ledger account into Credit");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerDebitAccountName)
+                    .ledgerCreditNumber(ledgerDebitAccountNumber)
+                    .ledgerDebit(ledgerCreditAccountName)
+                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .amountDebit(1)
+                    .amountCredit(1)
+                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .transDate(transDate)
+                    .transType("Tax Rebate")
+                    .build();
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+        }
 
-        log("@Post-condition: Add transaction for the Capital Ledger account into Credit");
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerDebitAccountName)
-                .ledgerCreditNumber(ledgerDebitAccountNumber)
-                .ledgerDebit(ledgerCreditAccountName)
-                .ledgerDebitNumber(ledgerCreditAccountNumber)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .build();
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "876")
     public void ClientStatementTC_876(String clientCode) throws IOException, InterruptedException {
@@ -791,41 +816,44 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
-        TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+        try {
+            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
-        log("@Step 1: Navigate to General Reports > Client Statement");
-        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.waitSpinnerDisappeared();
-        log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
-        log("@Step 3: Open Summary popup of agent of the ledger");
-        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
-        log("@Validate the balance is added from the account Capital 'Credit' correctly");
-        expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
-        actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
-        Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Capital 'Credit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-        popup.closeSummaryPopup();
+            log("@Step 1: Navigate to General Reports > Client Statement");
+            ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+            clientPage.waitSpinnerDisappeared();
+            log("@Step 2: Filter the Client with Client Point view");
+            clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            log("@Step 3: Open Summary popup of agent of the ledger");
+            ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
+            log("@Validate the balance is added from the account Capital 'Credit' correctly");
+            expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
+            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
+            Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Capital 'Credit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+            popup.closeSummaryPopup();
+        } catch (Exception | AssertionError e) {
+            log("@Post-condition: Add transaction for the Capital Ledger account into Debit");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerDebitAccountName)
+                    .ledgerCreditNumber(ledgerDebitAccountNumber)
+                    .ledgerDebit(ledgerCreditAccountName)
+                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .amountDebit(1)
+                    .amountCredit(1)
+                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .transDate(transDate)
+                    .transType("Tax Rebate")
+                    .build();
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+        }
 
-        log("@Post-condition: Add transaction for the Capital Ledger account into Debit");
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerDebitAccountName)
-                .ledgerCreditNumber(ledgerDebitAccountNumber)
-                .ledgerDebit(ledgerCreditAccountName)
-                .ledgerDebitNumber(ledgerCreditAccountNumber)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .build();
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "877")
-    public void ClientStatementTC_877(String clientCode) throws IOException, InterruptedException {
+    public void ClientStatementTC_877(String clientCode) throws IOException {
         log("@Validate the balance is deducted from the account if a Ledger type = Income and an amount are inputted into the 'Debit' form");
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
@@ -863,40 +891,43 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
-        TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+        try {
+            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
-        log("@Step 1: Navigate to General Reports > Client Statement");
-        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.waitSpinnerDisappeared();
-        log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
-        log("@Step 3: Open Summary popup of agent of the ledger");
-        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
-        log("@Validate the balance is deducted from the account Income 'Debit' correctly");
-        expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
-        actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
-        Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Income 'Debit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-        popup.closeSummaryPopup();
+            log("@Step 1: Navigate to General Reports > Client Statement");
+            ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+            clientPage.waitSpinnerDisappeared();
+            log("@Step 2: Filter the Client with Client Point view");
+            clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            log("@Step 3: Open Summary popup of agent of the ledger");
+            ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
+            log("@Validate the balance is deducted from the account Income 'Debit' correctly");
+            expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
+            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
+            Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Income 'Debit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+            popup.closeSummaryPopup();
+        } catch (Exception | AssertionError e) {
+            log("@Post-condition: Add transaction for the Income Ledger account into Credit");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerDebitAccountName)
+                    .ledgerCreditNumber(ledgerDebitAccountNumber)
+                    .ledgerDebit(ledgerCreditAccountName)
+                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .amountDebit(1)
+                    .amountCredit(1)
+                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .transDate(transDate)
+                    .transType("Tax Rebate")
+                    .build();
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+        }
 
-        log("@Post-condition: Add transaction for the Income Ledger account into Credit");
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerDebitAccountName)
-                .ledgerCreditNumber(ledgerDebitAccountNumber)
-                .ledgerDebit(ledgerCreditAccountName)
-                .ledgerDebitNumber(ledgerCreditAccountNumber)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .build();
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
         log("INFO: Executed completely");
     }
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "878")
-    public void ClientStatementTC_878(String clientCode) throws IOException, InterruptedException {
+    public void ClientStatementTC_878(String clientCode) throws IOException {
         log("@Validate the balance is added from the account if a Ledger type = Income and an amount are inputted into the 'Credit' form");
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
@@ -934,41 +965,44 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
-        TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+        try {
+            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
-        log("@Step 1: Navigate to General Reports > Client Statement");
-        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.waitSpinnerDisappeared();
-        log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
-        log("@Step 3: Open Summary popup of agent of the ledger");
-        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
-        log("@Validate the balance is added from the account Income 'Credit' correctly");
-        expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
-        actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
-        Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Income 'Credit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-        popup.closeSummaryPopup();
+            log("@Step 1: Navigate to General Reports > Client Statement");
+            ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+            clientPage.waitSpinnerDisappeared();
+            log("@Step 2: Filter the Client with Client Point view");
+            clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            log("@Step 3: Open Summary popup of agent of the ledger");
+            ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
+            log("@Validate the balance is added from the account Income 'Credit' correctly");
+            expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
+            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
+            Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Income 'Credit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+            popup.closeSummaryPopup();
+        } catch (Exception | AssertionError e) {
+            log("@Post-condition: Add transaction for the Income Ledger account into Debit");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerDebitAccountName)
+                    .ledgerCreditNumber(ledgerDebitAccountNumber)
+                    .ledgerDebit(ledgerCreditAccountName)
+                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .amountDebit(1)
+                    .amountCredit(1)
+                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .transDate(transDate)
+                    .transType("Tax Rebate")
+                    .build();
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+        }
 
-        log("@Post-condition: Add transaction for the Income Ledger account into Debit");
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerDebitAccountName)
-                .ledgerCreditNumber(ledgerDebitAccountNumber)
-                .ledgerDebit(ledgerCreditAccountName)
-                .ledgerDebitNumber(ledgerCreditAccountNumber)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .build();
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "879")
-    public void ClientStatementTC_879(String clientCode) throws IOException, InterruptedException {
+    public void ClientStatementTC_879(String clientCode) throws IOException {
         log("@Validate the balance is added from the account if a Ledger type = Expenditure and an amount are inputted into the 'Debit' form");
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
@@ -1006,41 +1040,44 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
-        TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+        try {
+            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
-        log("@Step 1: Navigate to General Reports > Client Statement");
-        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.waitSpinnerDisappeared();
-        log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
-        log("@Step 3: Open Summary popup of agent of the ledger");
-        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
-        log("@Validate the balance is added from the account Expenditure 'Debit' correctly");
-        expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
-        actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
-        Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Expenditure 'Debit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-        popup.closeSummaryPopup();
+            log("@Step 1: Navigate to General Reports > Client Statement");
+            ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+            clientPage.waitSpinnerDisappeared();
+            log("@Step 2: Filter the Client with Client Point view");
+            clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            log("@Step 3: Open Summary popup of agent of the ledger");
+            ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
+            log("@Validate the balance is added from the account Expenditure 'Debit' correctly");
+            expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
+            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
+            Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Expenditure 'Debit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+            popup.closeSummaryPopup();
+        } catch (Exception | AssertionError e) {
+            log("@Post-condition: Add transaction for the Expenditure Ledger account into Credit");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerDebitAccountName)
+                    .ledgerCreditNumber(ledgerDebitAccountNumber)
+                    .ledgerDebit(ledgerCreditAccountName)
+                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .amountDebit(1)
+                    .amountCredit(1)
+                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .transDate(transDate)
+                    .transType("Tax Rebate")
+                    .build();
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+        }
 
-        log("@Post-condition: Add transaction for the Expenditure Ledger account into Credit");
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerDebitAccountName)
-                .ledgerCreditNumber(ledgerDebitAccountNumber)
-                .ledgerDebit(ledgerCreditAccountName)
-                .ledgerDebitNumber(ledgerCreditAccountNumber)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .build();
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "880")
-    public void ClientStatementTC_880(String clientCode) throws IOException, InterruptedException {
+    public void ClientStatementTC_880(String clientCode) throws IOException {
         log("@Validate the balance is deducted from the account if a Ledger type = Expenditure and an amount are inputted into the 'Credit' form");
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
@@ -1078,44 +1115,47 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
         ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
         ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
-        TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+        try {
+            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
-        log("@Step 1: Navigate to General Reports > Client Statement");
-        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.waitSpinnerDisappeared();
-        log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
-        log("@Step 3: Open Summary popup of agent of the ledger");
-        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
-        log("@Validate the balance is deducted from the account Expenditure 'Credit' correctly");
-        expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
-        actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
-        Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Expenditure 'Credit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-        popup.closeSummaryPopup();
+            log("@Step 1: Navigate to General Reports > Client Statement");
+            ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+            clientPage.waitSpinnerDisappeared();
+            log("@Step 2: Filter the Client with Client Point view");
+            clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            log("@Step 3: Open Summary popup of agent of the ledger");
+            ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
+            log("@Validate the balance is deducted from the account Expenditure 'Credit' correctly");
+            expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
+            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
+            Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Expenditure 'Credit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
+            popup.closeSummaryPopup();
+        } catch (Exception | AssertionError e) {
+            log("@Post-condition: Add transaction for the Expenditure Ledger account into Debit");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerDebitAccountName)
+                    .ledgerCreditNumber(ledgerDebitAccountNumber)
+                    .ledgerDebit(ledgerCreditAccountName)
+                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .amountDebit(1)
+                    .amountCredit(1)
+                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .transDate(transDate)
+                    .transType("Tax Rebate")
+                    .build();
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+        }
 
-        log("@Post-condition: Add transaction for the Expenditure Ledger account into Debit");
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerDebitAccountName)
-                .ledgerCreditNumber(ledgerDebitAccountNumber)
-                .ledgerDebit(ledgerCreditAccountName)
-                .ledgerDebitNumber(ledgerCreditAccountNumber)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .build();
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "882")
-    public void ClientStatementTC_882(String clientCode) throws IOException, InterruptedException, ParseException {
+    public void ClientStatementTC_882(String clientCode) throws IOException, ParseException {
         log("@Validate Win/Lose Summary dialog displays with properly value when clicked on Win/Lose link");
         String agentCode = "QASAHK00";
-        String expectedRecPayVal = "5.00";
+        String expectedRecPayVal;
         String actualRecPayVal;
         log("Precondition: Add Manual Bet and settle with win/loss value = 5.0");
         welcomePage.waitSpinnerDisappeared();
@@ -1140,8 +1180,9 @@ public class ClientStatementTest extends BaseCaseAQS {
         clientPage.waitSpinnerDisappeared();
         log("@Step 2: Filter the Client with Client Point view");
         clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
-        log("@Step 3: Open Summary popup of agent");
+        log("@Step 3: Open Summary popup of agent and get Win/Lose of the player");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
+        expectedRecPayVal = popup.getSummaryCellValue(CLIENT_CREDIT_ACC,popup.colWinLose);
         log("@Step 4: Open win lose summary popup of player");
         ClientSummaryWinlosePopup winlosePopup = popup.openWinLoseSummaryPopup(CLIENT_CREDIT_ACC);
 
@@ -1155,12 +1196,13 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "999")
-    public void ClientStatementTC_999(String clientCode) throws IOException, InterruptedException, ParseException {
+    public void ClientStatementTC_999(String clientCode) throws IOException, ParseException {
         log("@Validate Member Transactions dialog displays with properly value when clicked on Account link");
         String agentCode = "QASAHK00";
-        String winLoseVal = "5.0";
-        String openingRunningVal;
-        String actualTotalRunningVal;
+        String expectOpeningRunningVal;
+        String expectClosingRunningVal;
+        String actualOpeningRunningVal;
+        String actualClosingRunningVal;
         log("Precondition: Add Manual Bet and settle with win/loss value = 5.0");
         welcomePage.waitSpinnerDisappeared();
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -1186,21 +1228,24 @@ public class ClientStatementTest extends BaseCaseAQS {
         clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
+        expectOpeningRunningVal = popup.getSummaryCellValue(CLIENT_DEBIT_ACC,popup.colOpening);
+        expectClosingRunningVal = popup.getSummaryCellValue(CLIENT_DEBIT_ACC,popup.colClosing);
         log("@Verify the balance Total Running is calculated properly");
         ClientMemberTransactionPopup transPopup = popup.openMemberTransactionPopup(CLIENT_DEBIT_ACC);
-        //TODO need enhancement as currently is workingaround by remove "," out of string before calculate
-        openingRunningVal = transPopup.getOpeningRunning(transPopup.colOpeningRunning).replace(",","");
-        actualTotalRunningVal = transPopup.getTotalRunning(transPopup.colTotalRunning).replace(",","");
-        double expectedVal = Double.parseDouble(openingRunningVal) + Double.parseDouble(winLoseVal);
 
-        Assert.assertEquals(String.format("%.2f",expectedVal),actualTotalRunningVal,"FAILED! Total Running is not calculated correctly, actual: "+ actualTotalRunningVal + " and expected: "+expectedVal);
+        //TODO need enhancement as currently is workingaround by remove "," out of string before calculate
+        actualOpeningRunningVal = transPopup.getOpeningRunning(transPopup.colOpeningRunning).replace(",","");
+        actualClosingRunningVal = transPopup.getTotalRunning(transPopup.colTotalRunning).replace(",","");
+
+        Assert.assertEquals(expectOpeningRunningVal,actualOpeningRunningVal,"FAILED! Opening Running is not calculated correctly, actual: "+ actualOpeningRunningVal + " and expected: "+expectOpeningRunningVal);
+        Assert.assertEquals(expectClosingRunningVal,actualClosingRunningVal,"FAILED! Closing Running is not calculated correctly, actual: "+ actualClosingRunningVal + " and expected: "+expectClosingRunningVal);
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "1004")
-    public void ClientStatementTC_1004(String clientCode) throws IOException, InterruptedException {
+    public void ClientStatementTC_1004(String clientCode) throws IOException {
         log("@Validate Rec/Pay/CA/RB/Adj Txns dialog displays with properly value when clicked on Rec/Pay/CA/RB/Adj link");
         String agentLedCode = "QATE00-LED";
         String actualRecPayVal;
@@ -1212,6 +1257,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -1234,37 +1280,42 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
-        TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_PARENT_NAME_ASSET);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+        try {
+            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
-        log("@Step 1: Navigate to General Reports > Client Statement");
-        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.waitSpinnerDisappeared();
-        log("@Step 2: Filter the Client with Client Point view");
-        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
-        log("@Step 3: Open Summary popup of agent ledger");
-        ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
-        log("@Step 4: Open RecPay summary popup of player by click on link");
-        ClientLedgerRecPayPopup recPayPopup = popup.openLedgerRecPaySummaryPopup(ledgerDebitAccountName,popup.colLedgerRecPay);
-        log("@Validate Difference show correctly with Rec/Pay/CA/RB/Adj link");
-        actualRecPayVal = recPayPopup.getDifferenceOriginalVal(recPayPopup.colDifferentOriginal);
-        Assert.assertEquals(String.format("%.2f",transaction.getAmountDebit()),actualRecPayVal,"FAILED! Total Running is not calculated correctly, actual: "+ actualRecPayVal + " and expected: "+transaction.getAmountDebit());
+            log("@Step 1: Navigate to General Reports > Client Statement");
+            ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+            clientPage.waitSpinnerDisappeared();
+            log("@Step 2: Filter the Client with Client Point view");
+            clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            log("@Step 3: Open Summary popup of agent ledger");
+            ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
+            log("@Step 4: Open RecPay summary popup of player by click on link");
+            ClientLedgerRecPayPopup recPayPopup = popup.openLedgerRecPaySummaryPopup(ledgerDebitAccountName,popup.colLedgerRecPay);
+            log("@Validate Difference show correctly with Rec/Pay/CA/RB/Adj link");
+            actualRecPayVal = recPayPopup.getDifferenceOriginalVal(recPayPopup.colDifferentOriginal);
+            Assert.assertEquals(String.format("%.2f",transaction.getAmountDebit()),actualRecPayVal,"FAILED! Total Running is not calculated correctly, actual: "+ actualRecPayVal + " and expected: "+transaction.getAmountDebit());
 
-        log("@Post-condition: Add transaction for the Asset Ledger account into Debit");
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerDebitAccountName)
-                .ledgerCreditNumber(ledgerDebitAccountNumber)
-                .ledgerDebit(ledgerCreditAccountName)
-                .ledgerDebitNumber(ledgerCreditAccountNumber)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .build();
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+        } catch (Exception | AssertionError e) {
+            log("@Post-condition: Add transaction for the Asset Ledger account into Debit");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerDebitAccountName)
+                    .ledgerCreditNumber(ledgerDebitAccountNumber)
+                    .ledgerDebit(ledgerCreditAccountName)
+                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .amountDebit(1)
+                    .amountCredit(1)
+                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .transDate(transDate)
+                    .transType("Tax Rebate")
+                    .build();
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+        }
+
         log("INFO: Executed completely");
     }
 

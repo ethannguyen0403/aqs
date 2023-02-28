@@ -51,7 +51,7 @@ public class BaseCaseAQS {
     public static BrowserMobProxy browserMobProxy;
     public static String PROJECT_ID="2";
     public static APIClient client;
-    private static boolean isAddTestRailResult =false;
+    private static boolean isAddTestRailResult =true;
     private static  List<Long> lstCases= new ArrayList<>();
     public static String aqsLoginURL;
     public static String sb11LoginURL;
@@ -75,7 +75,8 @@ public class BaseCaseAQS {
             Map data = new HashMap();
             //data.put("suite_id",true);
             data.put("include_all", false);
-            data.put("name", "Test Run of suite " + ctx.getName() +" on"+ DateUtils.getDateFollowingGMT("GMT+7","dd-MM-YYYY hh:mm:ss"));
+            //data.put("name", "Test Run of suite " + ctx.getName() +" on"+ DateUtils.getDateFollowingGMT("GMT+7","dd-MM-YYYY hh:mm:ss"));
+            data.put("name", "Test Run " + ctx.getName() + " " + DateUtils.getDateFollowingGMT("GMT+7","YYYY.MM.dd"));
             // data.put("milestone_id",1);
 
             JSONObject c = (JSONObject) client.sendPost("add_run/" + PROJECT_ID, data);

@@ -63,6 +63,7 @@ public class TransactionUtils {
                                 "  }]\n"
                         , accountIdFrom, trans.getDebitAccountCode(), fromType, trans.getAmountDebit(), trans.getRemark(), typeId, trans.getTransDate(),
                         accountIdTo, trans.getCreditAccountCode(), fromType, trans.getAmountCredit(), trans.getRemark(), typeId, trans.getTransDate());
+                break;
             default:
                 jsn = String.format("[{\n" +
                                 "    \"accountId\": \"%s\",\n" +
@@ -100,6 +101,7 @@ public class TransactionUtils {
                                 "  }]\n"
                         , accountIdFrom, trans.getDebitAccountCode(), fromType, trans.getAmountDebit(), trans.getRemark(), typeId, trans.getTransDate(),
                         accountIdTo, trans.getCreditAccountCode(), fromType, trans.getAmountCredit(), trans.getRemark(), typeId, trans.getTransDate());
+                break;
         }
 
         WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);

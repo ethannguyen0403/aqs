@@ -5,7 +5,7 @@
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
-    <test name="AQS_STG_Smoke_Chrome">
+    <test name="AQS Pre">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='stg'/>
         <parameter name='language' value='en'/>
@@ -18,7 +18,7 @@
         <groups>
             <run>
                 <include name="smoke" />
-                <include name="smoke_qc0" />
+                <include name="smoke_qc" />
             </run>
         </groups>
 
@@ -30,7 +30,5 @@
             <class name="testcases.aqstest.RoleTest"/>
             <class name="testcases.aqstest.ManagerTest"/>
         </classes>
-
-
     </test>
 </suite>

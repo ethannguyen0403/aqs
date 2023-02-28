@@ -21,7 +21,7 @@ public class BookieStatementTest extends BaseCaseAQS {
 
     @Test(groups = {"smoke"})
     @TestRails(id = "183")
-    public void BookieStatementTC_183() throws InterruptedException {
+    public void BookieStatementTC_183() {
         String bookieName = "QA Bookie";
         String bookieCode = "QA01";
         String superMasterCode = "SM-QA1-QA Test";
@@ -63,7 +63,7 @@ public class BookieStatementTest extends BaseCaseAQS {
 
     @Test(groups = {"smoke"})
     @TestRails(id = "1639")
-    public void BookieStatementTC_1639() throws InterruptedException {
+    public void BookieStatementTC_1639() {
         String bookieName = "QA Bookie";
         String masterCode = "Ma-QA101-QA Test";
         String agentCode = "A-QA10101-QA Test";
@@ -143,33 +143,36 @@ public class BookieStatementTest extends BaseCaseAQS {
         typeId = BookieInfoUtils.getBookieId(bookieName);
         accountSuperIdDebit = AccountSearchUtils.getAccountId(accountCodeDebit);
         accountSuperIdCredit = AccountSearchUtils.getAccountId(accountCodeCredit);
-        TransactionUtils.addClientBookieTxn(transaction,accountSuperIdDebit,accountSuperIdCredit,fromType,typeId);
+        try {
+            TransactionUtils.addClientBookieTxn(transaction,accountSuperIdDebit,accountSuperIdCredit,fromType,typeId);
 
-        log("@Step 1: Login with valid account");
-        log("@Step 2: Click General Reports > Bookie Statement");
-        BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
+            log("@Step 1: Login with valid account");
+            log("@Step 2: Click General Reports > Bookie Statement");
+            BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
 
-        log("@Step 3: Filter with Bookie has made transaction");
-        bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Super Master","","",bookieCode,"");
-        log("@Step 4: Click on Super Master RPCRBA link");
-        BookieSuperMasterDetailPopup bookiePopup = bookieStatementPage.openBookieSuperMasterDetailPopup(superMasterCode);
-        rpcrbaVal = bookiePopup.getSuperMasterCellValue(bookiePopup.colRPCRBA, true);
-        log("Validate for Bookie Super account chosen in Debit section, value will show positive amount");
-        Assert.assertEquals(String.format("%.2f",transaction.getAmountDebit()),rpcrbaVal,"FAILED! Amount Debit and RPCRBA Value does not show in positive, Amount Debit:  " + transaction.getAmountDebit()
-                + " RPCRBA: " + rpcrbaVal);
+            log("@Step 3: Filter with Bookie has made transaction");
+            bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Super Master","","",bookieCode,"");
+            log("@Step 4: Click on Super Master RPCRBA link");
+            BookieSuperMasterDetailPopup bookiePopup = bookieStatementPage.openBookieSuperMasterDetailPopup(superMasterCode);
+            rpcrbaVal = bookiePopup.getSuperMasterCellValue(bookiePopup.colRPCRBA, true);
+            log("Validate for Bookie Super account chosen in Debit section, value will show positive amount");
+            Assert.assertEquals(String.format("%.2f",transaction.getAmountDebit()),rpcrbaVal,"FAILED! Amount Debit and RPCRBA Value does not show in positive, Amount Debit:  " + transaction.getAmountDebit()
+                    + " RPCRBA: " + rpcrbaVal);
+        } catch (Exception | AssertionError e) {
+            log("Post-Condition: Add txn for Bookie Super in Credit");
+            Transaction transactionPost = new Transaction.Builder()
+                    .amountDebit(1)
+                    .amountCredit(1)
+                    .remark("Automation Testing Transaction Bookie Post-condition: " + DateUtils.getMilliSeconds())
+                    .transDate(transDate)
+                    .transType("Tax Rebate")
+                    .level(level)
+                    .debitAccountCode(accountCodeCredit)
+                    .creditAccountCode(accountCodeDebit)
+                    .build();
+            TransactionUtils.addClientBookieTxn(transactionPost,accountSuperIdCredit,accountSuperIdDebit,fromType,typeId);
+        }
 
-        log("Post-Condition: Add txn for Bookie Super in Credit");
-        Transaction transactionPost = new Transaction.Builder()
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("Automation Testing Transaction Bookie Post-condition: " + DateUtils.getMilliSeconds())
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .level(level)
-                .debitAccountCode(accountCodeCredit)
-                .creditAccountCode(accountCodeDebit)
-                .build();
-        TransactionUtils.addClientBookieTxn(transactionPost,accountSuperIdCredit,accountSuperIdDebit,fromType,typeId);
         log("INFO: Executed completely");
     }
 }

@@ -55,7 +55,7 @@ public class DateTimePicker extends BaseElement {
             logEndAction(String.format("Error: Date parameter '%s' is empty || month %s  is more than 0 || date %s is > 31", month, date, date));
             return;
         }
-        logStartAction(String.format("click date '%s' on Calender", date));
+       // logStartAction(String.format("click date '%s' on Calender", date));
         txtDate.isDisplayed();
         txtDate.isInvisible(2);
         txtDate.click();
@@ -75,7 +75,7 @@ public class DateTimePicker extends BaseElement {
      * @param date it should be 1 to 28
      */
     public void currentMonthWithDate(String date) {
-        logStartAction(String.format("click date '%s' of current month on Calender", date));
+//        logStartAction(String.format("click date '%s' of current month on Calender", date));
         txtDate.click();
         this.clickDay(date, true);
     }
@@ -91,7 +91,7 @@ public class DateTimePicker extends BaseElement {
             logEndAction(String.format("Error: Date parameter '%s' is empty || month %s  is less than 1 || date %s is > 31", month, date, date));
             return;
         }
-        logStartAction(String.format("click date '%s' on Calender", date));
+//        logStartAction(String.format("click date '%s' on Calender", date));
         txtDate.click();
         if (month == 0) {
             currentMonthWithDate(date);

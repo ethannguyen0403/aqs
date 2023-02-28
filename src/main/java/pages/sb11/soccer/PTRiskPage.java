@@ -25,7 +25,7 @@ public class PTRiskPage extends WelcomePage {
     Button btnClearAll = Button.xpath("//div[@class='modal-content']//div[@class='group-btn']//span[text()='Clear All']");
     Button btnSetSelection = Button.xpath("//div[@class='modal-content']//div[@class='group-btn']//button[text()=' Set Selection ']");
     Label lblFilterList = Label.xpath("//div[@class='modal-content']//div[@class='list-item-filter']//label[%s]");
-    Button btnShow = Button.xpath("//app-pt-risk-control//div[@class='pl-5']//button[text()='Show']");
+    Button btnShow = Button.xpath("//app-pt-risk-control//button[text()='Show']");
     @Override
     public String getTitlePage ()
     {
