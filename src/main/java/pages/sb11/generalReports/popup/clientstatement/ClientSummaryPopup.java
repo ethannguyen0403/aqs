@@ -17,9 +17,11 @@ public class ClientSummaryPopup {
     public int colClosingTotal = 7;
     int colAccountCode = 4;
     int colLedgerAccountCode = 3;
-    int colWinLose = 8;
+    public int colWinLose = 8;
     public int colLedgerRecPay = 7;
     public int colRecPay = 9;
+    public int colOpening = 7;
+    public int colClosing = 11;
 
     Table tblSummary = Table.xpath("//app-member-summary//table[@aria-label='table']",summaryColTotal);
     Table tblLedgerSummary = Table.xpath("//app-ledger-member-summary//table[@aria-label='table']",summaryColTotal);
@@ -148,18 +150,20 @@ public class ClientSummaryPopup {
     }
 
     public ClientLedgerRecPayPopup openLedgerRecPaySummaryPopup(String accountCode, int colIndex) {
-        Label lblCellValue;
+        Label lblCellValueA;
+        Label lblCellValueSpan;
         Label lblAccountCode;
         int i = 1;
         while (true) {
-            lblCellValue = Label.xpath(tblLedgerSummary.getxPathOfCell(1, colIndex, i, null) + "//a");
+            lblCellValueA = Label.xpath(tblLedgerSummary.getxPathOfCell(1, colIndex, i, null) + "//a");
+            lblCellValueSpan = Label.xpath(tblLedgerSummary.getxPathOfCell(1, colIndex, i, null) + "//span");
             lblAccountCode = Label.xpath(tblLedgerSummary.getxPathOfCell(1, colLedgerAccountCode, i, null));
-            if (!lblCellValue.isDisplayed()) {
+            if (!lblCellValueA.isDisplayed() && !lblCellValueSpan.isDisplayed()) {
                 System.out.println("Ledger Code is not found in Summary table");
                 return null;
             }
             if (lblAccountCode.getText().equalsIgnoreCase(accountCode)) {
-                lblCellValue.click();
+                lblCellValueA.click();
                 DriverManager.getDriver().switchToWindow();
                 return new ClientLedgerRecPayPopup();
             }

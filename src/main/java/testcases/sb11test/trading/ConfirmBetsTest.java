@@ -104,7 +104,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("@Step 4. Click on the 'Bets' link at 'SPB' column of the event at the precondition and observe");
         betEntryPage= confirmBetsPage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,league);
+        soccerBetEntryPage.showLeague(companyUnit,"",league);
         BetListPopup betListPopup = soccerBetEntryPage.openBetList(eventInfo.getHome());
 
         log("@Verify: Bet has been deleted does not show in Bet List - Bet Entry page");
@@ -125,9 +125,9 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String dateAPI =  String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
-Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         // define order info
         Order order = new Order.Builder()
@@ -172,7 +172,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         String league = soccerBetEntryPage.getFirstLeague();
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
@@ -224,8 +224,8 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -241,17 +241,17 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
         confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,"",accountCode);
-        confirmBetsPage.confirmBet(order);
+        confirmBetsPage.confirmBet(lstOrder.get(0));
 
         log("@Step 2:Navigate to Trading > Confirm Bets");
         log("@Step 3: Input account code that used to placed bet and selected Status Confirmed");
         confirmBetsPage.filter(companyUnit,"","Confirmed",sport,"All","Specific Date",date,"",accountCode);
 
         log("@Step 4.Click on 'X' button of the bet at the precondition and observe");
-        confirmBetsPage.deleteOrder(order,false);
+        confirmBetsPage.deleteOrder(lstOrder.get(0),false);
 
         log("@Verify Users can delete confirmed bet by clicking on 'X' button and it will be no longer displayed");
-        Assert.assertFalse(confirmBetsPage.isOrderDisplayInTheTable(order),"Failed! The order still displayed after deleteing");
+        Assert.assertFalse(confirmBetsPage.isOrderDisplayInTheTable(lstOrder.get(0)),"Failed! The order still displayed after deleteing");
 
         log("INFO: Executed completely");
     }
@@ -270,23 +270,23 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         String league = soccerBetEntryPage.getFirstLeague();
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
-        soccerBetEntryPage.showLeague(companyUnit,date,league);
+        soccerBetEntryPage.showLeague(companyUnit,"",league);
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
                 .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
                 .marketType("HDP")
                 .stage("FT")
-                .event(eventInfo)
                 .selection(eventInfo.getHome())
+                .event(eventInfo)
                 .build();
         Order order1 = new Order.Builder()
                 .sport(sport).isNegativeHdp(true).hdpPoint(1.75).price(2.15).requireStake(10.00)
                 .oddType("HK").betType("Lay").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
                 .marketType("HDP")
                 .stage("FT")
-                .event(eventInfo)
                 .selection(eventInfo.getHome())
+                .event(eventInfo)
                 .build();
         lstOrder.add(order);
         lstOrder.add(order1);
@@ -351,7 +351,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         lstOrder.add(order);
         eventInfo = welcomePage.createEvent(eventInfo);
         CricketBetEntryPage cricketBetEntryPage =betEntryPage.goToCricket();
-        cricketBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
+        cricketBetEntryPage.showLeague(companyUnit,"",eventInfo.getLeagueName());
         cricketBetEntryPage.placeBet(order,true);
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
 
@@ -416,7 +416,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         lstOrder.add(order);
         eventInfo = welcomePage.createEvent(eventInfo);
         CricketBetEntryPage cricketBetEntryPage =betEntryPage.goToCricket();
-        cricketBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
+        cricketBetEntryPage.showLeague(companyUnit,"",eventInfo.getLeagueName());
         cricketBetEntryPage.placeBet(order,true);
         order =  BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder).get(0);
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
@@ -649,7 +649,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
     }
 
     @TestRails(id="182")
-    @Test(groups = {"smokesanity"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void Confirm_Bets_182(String accountCode,String accountCurrency){
         log("@title: Validate updated bets reflect correctly in the bet list of Bet Entry page");
@@ -664,7 +664,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         // define order info
         Order order = new Order.Builder()
@@ -672,11 +672,11 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
                 .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
                 .marketType("HDP")
                 .stage("FT")
-                .event(eventInfo)
                 .selection(eventInfo.getHome())
+                .event(eventInfo)
                 .build();
         lstOrder.add(order);
-        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
+        soccerBetEntryPage.showLeague(companyUnit,"",eventInfo.getLeagueName());
         soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
@@ -699,7 +699,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         log("@Verify 1: Validate the bet is updated with new values accordingly");
         betEntryPage = confirmBetsPage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,league);
+        soccerBetEntryPage.showLeague(companyUnit,"",league);
         BetListPopup betListPopup = soccerBetEntryPage.openBetList(eventInfo.getHome());
 
         log("@Verify 2: Bets information is displayed correctly in Bet List");
@@ -729,7 +729,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         // define order info
         Order order = new Order.Builder()
@@ -741,7 +741,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
                 .event(eventInfo)
                 .build();
         lstOrder.add(order);
-        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
+        soccerBetEntryPage.showLeague(companyUnit,"",eventInfo.getLeagueName());
         soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         order = lstOrder.get(0);
@@ -795,7 +795,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
                 .event(eventInfo)
                 .build();
         lstOrder.add(order);
-        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
+        soccerBetEntryPage.showLeague(companyUnit,"",eventInfo.getLeagueName());
         soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         order = lstOrder.get(0);
