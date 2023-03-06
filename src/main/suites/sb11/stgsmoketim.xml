@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="SB11_STG_Smoke" verbose="1">
+    <listeners>
+        <listener class-name="com.paltech.utils.ExtentReporterNG"/>
+    </listeners>
+
+    <test name="SB11 Pre">
+        <parameter name='browser' value='window10.local.chrome'/>
+        <parameter name='env' value='stg'/>
+        <parameter name='language' value='en'/>
+        <parameter name='isLogin' value='true'/>
+        <parameter name='isProxy' value='false'/>
+        <parameter name='username' value='AutoQC'/>
+        <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
+        <parameter name='isThrown' value='true'/>
+        <parameter name="appname" value="sp11"/>
+        <parameter name="accountCode" value="Auto-Account01"/>
+        <parameter name="accountCurrency" value="HKD"/>
+        <parameter name="clientCode" value ="QA Client (No.121 QA Client)"/>
+        <parameter name="bookieCode" value ="QA Bookie"/>
+        <parameter name="emailAddress" value="autoacc001stg@yopmail.com"/>
+        <parameter name="smartGroup" value="Auto QC Group"/>
+        <parameter name="superCode" value="QA2112"/>
+        <parameter name="agentCode" value="QASAHK00"/>
+        <parameter name="bookieMasterCode" value="Ma-QA101-QA Test"/>
+        <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
+        <groups>
+            <run>
+                <include name="smoke" />
+                <include name="smoke_qc" /><!--For test case only run on QAT and STG-->
+            </run>
+        </groups>
+
+        <classes>
+            <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
+<!--            <class name="testcases.sb11test.generalReports.BookieStatementTest"/>-->
+<!--            <class name="testcases.sb11test.soccer.PTRiskControlTest"/>-->
+        </classes>
+    </test>
+</suite>
