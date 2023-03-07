@@ -592,7 +592,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
     @TestRails(id="185")
     @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
-    public void BetEntry_TC185(String accountCode,String accountCurrency){
+    public void Confirm_Bets_TC185(String accountCode,String accountCurrency){
         log("@title: Validate can confirm bets and the confirmed bets will show in Bet Settlement page");
         log("Precondition: User has permission to access Confirm Bets page" +
                 "Having at least an account that is having bet which is not confirmed yet\n");
@@ -636,7 +636,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         log("Step 8: Filter with account at pre-condition and Status is Confirmed");
         log("Step 9: Observe confirmed bet at step 4");
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed","","","",lstOrder.get(0).getAccountCode());
+        betSettlementPage.filter("Confirmed",date,"","",lstOrder.get(0).getAccountCode());
 
         log("@Veirfy 2 : Confirmed bets is shown in Bet Settlement page correctly");
         betSettlementPage.verifyOrderInfo(lstOrder.get(0));
@@ -930,13 +930,13 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
 
         log("@Step 3:Filter 'Sports' = All and input the account at the precondition to the 'Account Code' field and the status is Confirm");
         log("@Step 4:Click 'Show' and observe the bet at precondition");
-        confirmBetsPage.filter(companyUnit, "", "Confirmed", eventInfo.getSportName(), "All", "Specific Date", "", "", accountCode);
+        confirmBetsPage.filter(companyUnit, "", "Confirmed", eventInfo.getSportName(), "All", "Specific Date", date, "", accountCode);
 
         log("@Verify 1: Verify manual bet display when fingering Confirm status with correctly info");
         confirmBetsPage.verifyOrder(order);
 
         log("@Post-Condition: Cancel Manual bet");
-        confirmBetsPage.filter(companyUnit, "", "Confirmed", eventInfo.getSportName(), "All", "Specific Date", "", "", accountCode);
+        confirmBetsPage.filter(companyUnit, "", "Confirmed", eventInfo.getSportName(), "All", "Specific Date", date, "", accountCode);
         confirmBetsPage.deleteOrder(order,false);
 
         log("INFO: Executed completely");

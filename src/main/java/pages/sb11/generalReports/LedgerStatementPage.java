@@ -12,8 +12,6 @@ import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import utils.sb11.CurrencyRateUtils;
 
-import static common.SBPConstants.*;
-
 public class LedgerStatementPage extends WelcomePage {
     public DropDownBox ddCompanyUnit = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Company Unit')]//following::select[1]");
     public DropDownBox ddFinancialYear = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Financial Year')]//following::select[1]");

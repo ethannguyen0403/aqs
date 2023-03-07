@@ -98,16 +98,20 @@ public class ConfirmBetsPage extends WelcomePage {
      */
     private int getOrderIndexHasId(String orderId){
         int i = 1;
+        Label lblEventCell;
         Label lblOrderID;
         while (true){
-            lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1,colEvent,i,"span[@class='text-secondary']"));
-            if(!lblOrderID.isDisplayed()){
+            lblEventCell = Label.xpath(tblOrder.getxPathOfCell(1,colEvent,i,null));
+            if(!lblEventCell.isDisplayed()){
                 System.out.println("The order id "+ orderId +" does not display in the table");
                 return 0;
             }
-            if(lblOrderID.getText().contains(orderId)){
-                System.out.println("Found order "+orderId+" at row "+ i);
-                return i;
+            lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1,colEvent,i,"span[@class='text-secondary']"));
+            if(lblOrderID.isDisplayed()){
+                if(lblOrderID.getText().contains(orderId)){
+                    System.out.println("Found order "+orderId+" at row "+ i);
+                    return i;
+                }
             }
             i = i+1;
         }
