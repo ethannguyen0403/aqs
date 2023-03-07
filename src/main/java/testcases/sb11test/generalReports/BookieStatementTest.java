@@ -25,7 +25,7 @@ public class BookieStatementTest extends BaseCaseAQS {
         String bookieName = "QA Bookie";
         String bookieCode = "QA01";
         String superMasterCode = "SM-QA1-QA Test";
-        bookieCode = bookieCode + " - " + bookieName;
+//        bookieCode = bookieCode + " - " + bookieName;
         String superGrandTotalHKDVal;
         String superMasterTotalHKDVal;
         String openBalanceVal;
@@ -41,7 +41,8 @@ public class BookieStatementTest extends BaseCaseAQS {
         BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
 
         log("@Step 3: Filter with Bookie has made transaction");
-        bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Super Master","","",bookieCode,"");
+        bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Super Master",DateUtils.getDateBeforeCurrentDate(1,"dd/MM/yyyy"),
+                "",bookieCode,"");
         superMasterTotalHKDVal = bookieStatementPage.getSuperMasterCellValue(superMasterCode, bookieStatementPage.colMasterTotal);
         BookieSuperMasterDetailPopup bookiePopup = bookieStatementPage.openBookieSuperMasterDetailPopup(superMasterCode);
         openBalanceVal = bookiePopup.getSuperMasterCellValue(bookiePopup.colOpeningBalance, true);
@@ -83,7 +84,8 @@ public class BookieStatementTest extends BaseCaseAQS {
         BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
         bookieStatementPage.waitSpinnerDisappeared();
         log("@Step 3: Filter with Bookie has made transaction amd open MS link");
-        bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Agent","","",bookieName,"");
+        bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Agent",DateUtils.getDateBeforeCurrentDate(1,"dd/MM/yyyy"),
+                "",bookieName,"");
         BookieMemberSummaryPopup bookieMemberPopup = bookieStatementPage.openBookieMemberSummaryDetailPopup(masterCode,agentCode);
 
         totalVal = bookieMemberPopup.getTotalCellValue(bookieMemberPopup.colTotal,true).replace(",","");

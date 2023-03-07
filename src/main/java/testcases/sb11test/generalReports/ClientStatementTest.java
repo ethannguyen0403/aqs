@@ -566,6 +566,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_LIABILITY_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_LIABILITY_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -588,9 +589,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_LIABILITY);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId,LEDGER_GROUP_NAME_LIABILITY);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
@@ -641,6 +643,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_LIABILITY_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_LIABILITY_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -663,9 +666,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_LIABILITY);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_LIABILITY);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
@@ -716,6 +720,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -738,9 +743,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_CAPITAL);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_CAPITAL);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
@@ -791,6 +797,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -813,9 +820,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_CAPITAL);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_CAPITAL);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
@@ -866,6 +874,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -888,9 +897,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_INCOME);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_INCOME);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
@@ -940,6 +950,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -962,9 +973,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_INCOME);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_INCOME);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
@@ -1015,6 +1027,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -1037,9 +1050,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_EXPENDITURE);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_EXPENDITURE);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
@@ -1090,6 +1104,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -1112,9 +1127,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_EXPENDITURE);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_EXPENDITURE);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
