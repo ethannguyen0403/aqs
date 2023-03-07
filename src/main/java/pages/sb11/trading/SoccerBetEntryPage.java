@@ -1,8 +1,5 @@
 package pages.sb11.trading;
-import com.paltech.element.common.Button;
-import com.paltech.element.common.DropDownBox;
-import com.paltech.element.common.Label;
-import com.paltech.element.common.TextBox;
+import com.paltech.element.common.*;
 import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
 import controls.Table;
@@ -248,7 +245,9 @@ public class SoccerBetEntryPage extends BetEntryPage {
      */
     public BetListPopup openBetList(String eventName){
         int rowIndex = getEventRowIndex(eventName);
-        tblEvent.getControlOfCell(1,colSPB, rowIndex,"span").click();
+        Link lblBetListIcon =(Link)tblEvent.getControlOfCell(1,colSPB, rowIndex,"span");
+        lblBetListIcon.waitForElementToBePresent(lblBetListIcon.getLocator(),1);
+        lblBetListIcon.click();
         BetListPopup soccerBetListPopup = new BetListPopup();
         soccerBetListPopup.icRefresh.isDisplayed();
         return soccerBetListPopup;
