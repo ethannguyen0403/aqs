@@ -24,10 +24,10 @@ public class PTRiskBetListPopup extends WelcomePage {
         String returnValue = "";
         Label lblCellValue;
         Label lblAccountCode;
-        int i = 2;
+        int i = 1;
         while (true){
             lblCellValue = Label.xpath(tblBetList.getxPathOfCell(1,colIndex,i,null));
-            lblAccountCode = Label.xpath(tblBetList.getxPathOfCell(1,colAccountCode,i,null));
+            lblAccountCode = Label.xpath(tblBetList.getxPathOfCell(1,colAccountCode,i,"span"));
             if(!lblCellValue.isDisplayed()){
                 System.out.println("There's no value display in the Bet List table");
                 return null;
