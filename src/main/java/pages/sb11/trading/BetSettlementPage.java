@@ -62,19 +62,19 @@ public class BetSettlementPage extends WelcomePage {
      */
     public void filter(String status, String fromDate, String toDate, String accStartWith, String accountCode){
        ddbStatus.selectByVisibleText(status);
-       String currentFromDate = txtFromDate.getAttribute("value");
-       String currentToDate = txtFromDate.getAttribute("value");
        if(!fromDate.isEmpty())
        {
            if(ddbMatchDate.isDisplayed()) {
-               ddbMatchDate.selectByVisibleText("Specific Date");
+               ddbMatchDate.selectByVisibleContainsText("Specific Date");
            }
+           String currentFromDate = txtFromDate.getAttribute("value");
            if(!fromDate.equals(currentFromDate)){
                dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
            }
        }
        if(!toDate.isEmpty())
        {
+           String currentToDate = txtFromDate.getAttribute("value");
            if(!toDate.equals(currentToDate)){
                dtpToDate.selectDate(toDate,"dd/MM/yyyy");
            }

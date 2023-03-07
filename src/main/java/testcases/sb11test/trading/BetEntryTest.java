@@ -27,7 +27,7 @@ public class BetEntryTest extends BaseCaseAQS {
 
     @TestRails(id="862")
     @Parameters({"accountCode"})
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_passed"})
     public void Bet_Entry_TC862(String accountCode){
         log("@title: Validate users can place Mixed Sports bets successfully");
         log("@Step 1: Login to SB11 site");
@@ -146,7 +146,7 @@ public class BetEntryTest extends BaseCaseAQS {
         CricketBetEntryPage cricketBetEntryPage =betEntryPage.goToCricket();
 
         log("@Step Precondition: Get the first Event of Frist League of Today Cricket");
-        cricketBetEntryPage.showLeague(companyUnit,"",eventInfo.getLeagueName());
+        cricketBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
 
         log("@Step Precondition: Define order to place bet");
         Order order = new Order.Builder()
@@ -192,7 +192,7 @@ public class BetEntryTest extends BaseCaseAQS {
     }
 
     @TestRails(id="191")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_passed"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetEntry_TC191(String accountCode,String accountCurrency) throws ParseException {
         log("@title: Validate Bet Slip info display correctly when open Soccer> FT>HDP>Home");
@@ -232,17 +232,15 @@ public class BetEntryTest extends BaseCaseAQS {
 
         log("@Step 4: Input account at precondition on 'Account Code' field");
         log("@Step 5: Click on ... at the selected event, Column FT, HDP, Home");
-        soccerBetEntryPage.openBetSlip(lstOrder.get(0).getAccountCode(),lstOrder.get(0).getSelection(),true,"HOME");
+        SoccerBetSlipPopup soccerBetSlipPopup = soccerBetEntryPage.openBetSlip(lstOrder.get(0).getAccountCode(),lstOrder.get(0).getSelection(),true,"HOME");
 
         log("@Verify: Verify info on bet slip display correctly: Competition name, Event Name, Market Type, Selection Type, Start date");
-        SoccerBetSlipPopup soccerBetSlipPopup = new SoccerBetSlipPopup();
-        String dateconvert = DateUtils.convertDateToNewTimeZone(eventInfo.getEventDate(),"yyyy-MM-dd'T'HH:mm:ss.SSSXXX","","d/MM","");
-        soccerBetSlipPopup.verifyOrderInfoDisplay(lstOrder,dateconvert);
+        soccerBetSlipPopup.verifyOrderInfoDisplay(lstOrder, eventInfo.getEventDate());
         log("INFO: Executed completely");
     }
 
     @TestRails(id="341")
-    @Test(groups = {"smoke_qc"})
+    @Test(groups = {"smoke_qc_passed"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetEntry_TC341(String accountCode,String accountCurrency){
         log("@title: Validate can place bet for soccer with option copy bet to SPBPS7 as same odds\n");

@@ -1,27 +1,23 @@
 package testcases.sb11test.trading;
 
-import com.code88.utils.FileUtils;
 import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
-import common.SBPConstants;
+import com.paltech.utils.FileUtils;
 import objects.Event;
 import objects.Order;
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import pages.sb11.trading.*;
 import pages.sb11.trading.BetEntryPage;
-import pages.sb11.trading.popup.BetListPopup;
+import pages.sb11.trading.BetSettlementPage;
+import pages.sb11.trading.ConfirmBetsPage;
+import pages.sb11.trading.SoccerBetEntryPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.BetEntrytUtils;
 import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.rmi.UnexpectedException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -191,7 +187,7 @@ public class BetSettlementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="204")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetSettlement_TC204(String accountCode,String accountCurrency){
         log("@title: Validate that user can send Bets List email successfully");
