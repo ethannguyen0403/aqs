@@ -24,7 +24,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     String superMasterCode = "QA2112 - ";
     Double percent = 0.5;
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     @Parameters({"clientCode","accountCode","accountCurrency"})
     @TestRails(id = "1386")
     public void ClientStatementTC_1386(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
@@ -56,6 +56,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
                 .build();
         lstOrder.add(order);
         soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
+        soccerBetEntryPage.waitSpinnerDisappeared();
 
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to Soccer > PT Risk Control");
@@ -73,7 +74,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         Assert.assertTrue(ptPage.isForecastCorrect("10","-3","-6",true));
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     @Parameters({"clientCode","accountCode","accountCurrency"})
     @TestRails(id = "192")
     public void ClientStatementTC_192(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
@@ -105,6 +106,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
                 .build();
         lstOrder.add(order);
         soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
+        soccerBetEntryPage.waitSpinnerDisappeared();
 
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to Soccer > PT Risk Control");
@@ -154,6 +156,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
                 .build();
         lstOrder.add(order);
         soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
+        soccerBetEntryPage.waitSpinnerDisappeared();
 
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to Soccer > PT Risk Control");
@@ -203,6 +206,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
                 .build();
         lstOrder.add(order);
         soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
+        soccerBetEntryPage.waitSpinnerDisappeared();
 
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to Soccer > PT Risk Control");
