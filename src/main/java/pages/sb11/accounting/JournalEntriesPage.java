@@ -107,7 +107,8 @@ public class JournalEntriesPage extends WelcomePage {
 
     private void filterLedger (boolean isDebit,String fromType, String ledgername, boolean isAdd){
         if (isDebit){
-            ddDebitFrom.selectByVisibleContainsText(fromType);
+            ddDebitFrom.selectByVisibleText(fromType);
+            waitSpinnerDisappeared();
             ddDebitLedger.getNumberOfItems();
             ddDebitLedger.getOptions();
             ddDebitLedger.selectByVisibleContainsText(ledgername);
@@ -115,7 +116,7 @@ public class JournalEntriesPage extends WelcomePage {
                 btnDebitAdd.click();
             }
         } else {
-            ddCreditTo.selectByVisibleContainsText(fromType);
+            ddCreditTo.selectByVisibleText(fromType);
             ddCreditLedger.selectByVisibleContainsText(ledgername);
             if(isAdd){
                 btnCreditAdd.click();
@@ -159,18 +160,20 @@ public class JournalEntriesPage extends WelcomePage {
 
     private void filterClientBookie(String fromType, boolean isDebit, String clientBookieCode, String level, String accountCode, boolean isAdd) {
         if (isDebit) {
-            ddDebitFrom.selectByVisibleContainsText(fromType);
+            ddDebitFrom.selectByVisibleText(fromType);
+            waitSpinnerDisappeared();
             ddDebitLedger.selectByVisibleContainsText(clientBookieCode);
-            ddDebitLevel.selectByVisibleContainsText(level);
+            ddDebitLevel.selectByVisibleText(level);
             txtDebitAccount.sendKeys(accountCode);
             txtDebitAccount.sendKeys(accountCode);
             if (isAdd) {
                 btnDebitAdd.click();
             }
         } else {
-            ddCreditTo.selectByVisibleContainsText(fromType);
+            ddCreditTo.selectByVisibleText(fromType);
+            waitSpinnerDisappeared();
             ddCreditLedger.selectByVisibleContainsText(clientBookieCode);
-            ddCreditLevel.selectByVisibleContainsText(level);
+            ddCreditLevel.selectByVisibleText(level);
             txtCreditAccount.sendKeys(accountCode);
             txtCreditAccount.sendKeys(accountCode);
             if (isAdd) {
