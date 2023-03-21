@@ -108,15 +108,16 @@ public class JournalEntriesPage extends WelcomePage {
     private void filterLedger (boolean isDebit,String fromType, String ledgername, boolean isAdd){
         if (isDebit){
             ddDebitFrom.selectByVisibleText(fromType);
-            waitSpinnerDisappeared();
             ddDebitLedger.getNumberOfItems();
             ddDebitLedger.getOptions();
+            waitSpinnerDisappeared();
             ddDebitLedger.selectByVisibleContainsText(ledgername);
             if(isAdd){
                 btnDebitAdd.click();
             }
         } else {
             ddCreditTo.selectByVisibleText(fromType);
+            waitSpinnerDisappeared();
             ddCreditLedger.selectByVisibleContainsText(ledgername);
             if(isAdd){
                 btnCreditAdd.click();
