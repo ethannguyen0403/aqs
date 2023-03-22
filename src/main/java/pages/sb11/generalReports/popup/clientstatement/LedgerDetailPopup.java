@@ -61,7 +61,7 @@ public class LedgerDetailPopup {
         String runBalGBP = tbLedger.getControlOfCell(1, colRunGBP, rowIndex, null).getText().trim();
 
         if (isDebit){
-            double curDebitRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1","","",transaction.getLedgerDebitCur()));
+            double curDebitRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1",transaction.getLedgerDebitCur()));
             double amountDebitGBP = DoubleUtils.roundUpWithTwoPlaces(transaction.getAmountDebit() * curDebitRate);
             double runDebitGBP = DoubleUtils.roundUpWithTwoPlaces(transaction.getDebitBalance() + transaction.getAmountDebit()) * curDebitRate;
 
@@ -73,7 +73,7 @@ public class LedgerDetailPopup {
             Assert.assertEquals(runBalGBP, String.format("%.2f", runDebitGBP), "Failed! Running Balance GBP amount is incorrect");
             verifyTransTotal(transaction,true);
         } else {
-            double curCreditRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1","","",transaction.getLedgerCreditCur()));
+            double curCreditRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1",transaction.getLedgerCreditCur()));
             double amountCreditGBP = transaction.getAmountCredit() * curCreditRate;
             double runCreditGBP = (transaction.getCreditBalance() + transaction.getAmountCredit()) * curCreditRate;
 
@@ -100,14 +100,14 @@ public class LedgerDetailPopup {
         String totalrunGBP = tbLedger.getControlOfCell(1,colRunTotalGBP,totalRow,null).getText().trim();
 
         if (isDebit){
-            double curDebitRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1","","",transaction.getLedgerDebitCur()));
+            double curDebitRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1",transaction.getLedgerDebitCur()));
             Assert.assertEquals(totalcredORG, "0.00", "Failed! Credit ORG amount is incorrect");
             Assert.assertEquals(totaldebORG, String.format("%.2f", transaction.getAmountDebit()), "Failed! Debit ORG amount is incorrect");
             Assert.assertEquals(totalrunORG, String.format("%.2f", transaction.getDebitBalance()), "Failed! Running Balance ORG amount is incorrect");
             double runDebitGBP = transaction.getDebitBalance() * curDebitRate;
             Assert.assertEquals(totalrunGBP, String.format("%.2f", runDebitGBP), "Failed! Running Balance ORG amount is incorrect");
         } else {
-            double curCreditRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1","","",transaction.getLedgerCreditCur()));
+            double curCreditRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1",transaction.getLedgerCreditCur()));
             Assert.assertEquals(totalcredORG, String.format("%.2f", transaction.getAmountCredit()), "Failed! Credit ORG amount is incorrect");
             Assert.assertEquals(totaldebORG, "0.00", "Failed! Debit ORG amount is incorrect");
             Assert.assertEquals(totalcredGBP, String.format("%.2f", transaction.getAmountCredit()), "Failed! Credit ORG amount is incorrect");
