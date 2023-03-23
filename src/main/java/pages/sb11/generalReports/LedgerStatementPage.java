@@ -83,7 +83,7 @@ public class LedgerStatementPage extends WelcomePage {
         String runBalGBP = tbLedger.getControlOfCell(1, colRunBalGBP,rowIndex,null).getText().trim();
 
         if (isDebit){
-            double curDebitRate = parseDouble(CurrencyRateUtils.getOpRate("1","","",transaction.getLedgerDebitCur()));
+            double curDebitRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1",transaction.getLedgerDebitCur()));
             double amountDebitGBP = transaction.getAmountDebit() * curDebitRate;
             double runDebitGBP = (transaction.getDebitBalance() + transaction.getAmountDebit()) * curDebitRate;
 
@@ -95,7 +95,7 @@ public class LedgerStatementPage extends WelcomePage {
             Assert.assertEquals(runBalGBP, String.format("%.2f", runDebitGBP), "Failed! Running Balance GBP amount is incorrect");
             Assert.assertEquals(cur, transaction.getLedgerDebitCur(), "Failed! Debit Currency is incorrect is in correct");
         } else {
-            double curCreditRate = parseDouble(CurrencyRateUtils.getOpRate("1","","",transaction.getLedgerCreditCur()));
+            double curCreditRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1",transaction.getLedgerCreditCur()));
             double amountCreditGBP = transaction.getAmountCredit() * curCreditRate;
             double runCreditGBP = (transaction.getCreditBalance() + transaction.getAmountCredit()) * curCreditRate;
 

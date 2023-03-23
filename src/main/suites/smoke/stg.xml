@@ -11,7 +11,7 @@
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
-        <parameter name='username' value='autoqc'/>
+        <parameter name='username' value='AutoQC'/>
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="aqs"/>
