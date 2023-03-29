@@ -84,7 +84,7 @@ public class BetSettlementUtils {
                         "      \"winLose\": 5,\n" +
                         "      \"pt\": 0,\n" +
                         "      \"originalOdds\": %s,\n" +
-                        "      \"oddsFormat\": %s,\n" +
+                        "      \"oddsFormat\": \"%s\",\n" +
                         "      \"originalOddsFormat\": \"%s\",\n" +
                         "      \"source\": \"MB\",\n" +
                         "      \"wagerId\": %s,\n" +
