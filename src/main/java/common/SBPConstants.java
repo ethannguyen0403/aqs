@@ -14,9 +14,15 @@ public class SBPConstants {
     public final static String CLIENT_SYSTEM = "Client System";
     public final static String TRADING = "Trading";
     public final static String ACCOUNTING = "Accounting";
+    public final static String ROLE = "Role";
+    public final static String USER = "User";
     public final static String CHART_OF_ACCOUNT = "Chart Of Account";
     public final static String GENERAL_REPORTS = "General Reports";
     public final static String SOCCER = "Soccer";
+    public final static String ROLE_MANAGEMENT = "Role Management";
+    public final static String TRADING_PERMISSION = "Trading Permission";
+    public final static String LEAGUE_SEASON_TEAM_INFO = "League/Season/Team Info";
+    public final static String USER_MANAGEMENT = "User Management";
     public final static String PT_RISK_CONTROL = "PT Risk Control";
     public final static String LEDGER_STATEMENT = "Ledger Statement";
     public final static String BOOKIE_STATEMENT = "Bookie Statement";
@@ -54,6 +60,7 @@ public class SBPConstants {
     public final static String LEDGER_PARENT_NAME_LIABILITY = "QA Ledger Group Liability";
     public final static String LEDGER_PARENT_NAME_INCOME = "QA Ledger Group Income";
     public final static String LEDGER_PARENT_NAME_CAPITAL = "QA Ledger Group Capital";
+    public final static List<String> TABLE_HEADER = Arrays.asList("Role", "User", "Sport", "Soccer","Accounting","Trading","Master","General Reports","Invoice","Financial Reports");
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
         {
@@ -114,6 +121,16 @@ public class SBPConstants {
         public final static String LEDGER = "Ledger";
         public final static String BOOKIE = "Bookie";
         public final static String CLIENT = "Client";
+    }
+
+    public static class TradingPermission{
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "i", "Username", "Auto-assigned All", "Permission", "Customers");
+    }
+
+    public static class LeagueSeasonTeamInfo{
+        public final static List<String> LEAGUE_TABLE_HEADER = Arrays.asList("#", "i", "C", "League Name", "IsMain", "IsCup", "Edit", "");
+        public final static List<String> SEASON_TABLE_HEADER = Arrays.asList("#", "i", "Season Name", "Start Date", "End Date", "Edit", "");
+        public final static List<String> TEAM_TABLE_HEADER = Arrays.asList("#", "i", "Team Name", "Country", "Edit", "", "Under League");
     }
 
 }

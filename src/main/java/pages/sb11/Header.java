@@ -7,9 +7,8 @@ import com.paltech.element.common.Label;
 import controls.DropDownList;
 import controls.sb11.HeaderMenuControl;
 import org.openqa.selenium.support.PageFactory;
-import pages.ess.ChangePasswordPopup;
-
-import static common.ESSConstants.CHANGE_PASSWORD;
+import org.testng.Assert;
+import pages.sb11.popup.ChangePasswordPopup;
 
 public class Header {
     public Icon icBell = Icon.xpath("//div[@id='navbarSupportedContent']//div[contains(@class,'fa-bell')]");
@@ -31,10 +30,10 @@ public class Header {
     public LoginPage logout(){
         btnLogout.click();
         LoginPage loginPage = new LoginPage();
-        loginPage.btnCopyRight.isDisplayed();
+        Assert.assertTrue(loginPage.tabEurope.isDisplayed(),"FAILED! Camouflag page is not displayed");
         return loginPage;
     }
-    public ChangePasswordPopup openChangePasswordPopup(){
+    public pages.sb11.popup.ChangePasswordPopup openChangePasswordPopup(){
         lblChangePassword.click();
         return new ChangePasswordPopup();
     }
