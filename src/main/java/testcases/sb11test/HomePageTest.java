@@ -1,22 +1,20 @@
 package testcases.sb11test;
 
 import com.paltech.utils.StringUtils;
-import common.ESSConstants;
 import common.SBPConstants;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import pages.ess.RolePage;
 import pages.sb11.popup.ChangePasswordPopup;
 import testcases.BaseCaseAQS;
 
 import static common.ESSConstants.*;
 
-public class HeaderTest extends BaseCaseAQS {
+public class HomePageTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @Parameters("username")
-    public void HeaderTC_001(){
+    public void Homepage_TC_001(){
         log("@title: Validate menu in header section is correctly display");
         log("@Step 1: Login with valid account");
         log(" Validate logo: 123sbasia display");
@@ -28,7 +26,7 @@ public class HeaderTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @Parameters("username")
-    public void HeaderTC_002(){
+    public void Homepage_TC_002(){
         log("@title: Validate Change Password popup display");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on Change Password");
@@ -47,7 +45,7 @@ public class HeaderTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @Parameters({"username","password"})
-    public void HeaderTC_003(String username, String password) throws Exception {
+    public void Homepage_TC_003(String username, String password) throws Exception {
         log("@title: Validate that changing password is worked correctly");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on Change Password");
