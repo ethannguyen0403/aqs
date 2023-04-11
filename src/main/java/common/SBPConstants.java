@@ -137,6 +137,7 @@ public class SBPConstants {
 
     public static class ResultEntry{
         public final static List<String> RESULT_SOCCER_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "HT Score", "FT Score", "HT Corner", "FT Corner", "HT Card", "FT Card");
+        public final static List<String> RESULT_CRICKET_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "Team A", "Team B", "IsHdp FB", "Result", "Runs", "Wkts", "Runs", "Wkts");
     }
 
 }
