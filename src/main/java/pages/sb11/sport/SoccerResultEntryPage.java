@@ -5,7 +5,7 @@ import controls.DateTimePicker;
 import controls.Table;
 import pages.sb11.WelcomePage;
 
-public class ResultEntryPage extends WelcomePage {
+public class SoccerResultEntryPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
     public String getTitlePage ()
     {
@@ -31,5 +31,19 @@ public class ResultEntryPage extends WelcomePage {
             btnSoccer.click();
         if(sport.equals("Cricket"))
             btnCricket.click();
+    }
+
+    public void filterResult(String type, String date, String league, String orderBy, String status, boolean isShow){
+        ddpType.selectByVisibleText(type);
+        if(!date.isEmpty()){
+            dtpDateTime.selectDate(date,"dd/MM/yyyy");
+            btnShowLeagues.click();
+        }
+        ddpLeague.selectByVisibleText(league);
+        ddpOrderBy.selectByVisibleText(orderBy);
+        ddpStatus.selectByVisibleText(status);
+        if (isShow){
+            btnShow.click();
+        }
     }
 }
