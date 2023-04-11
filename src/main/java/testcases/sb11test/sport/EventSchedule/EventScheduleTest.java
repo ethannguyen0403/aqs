@@ -48,14 +48,13 @@ public class EventScheduleTest extends BaseCaseAQS {
         log("@Step 4: Select home team and away team then input time: 13:00,and other fields: Live, No, TV");
         log("@Step 5: Click Submit");
         EventSchedulePage eventSchedulePage = welcomePage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
-        eventSchedulePage.goToSport(event.getSportName());
         eventSchedulePage.showLeague(event.getLeagueName(),event.getEventDate());
         eventSchedulePage.addEvent(event);
 
         log("@Step 5: In the Schedules List section, select Show league link, find and select league\" QA Soccer League\" and click the show button");
         log("@Verify 1: Verify event info displayed correctly in the Schedule List");
         Assert.assertTrue(eventSchedulePage.getSuccessMessage().contains("Event schedule is created successfully"),"FAILED! Success message is incorrect displayed");
-        eventSchedulePage.showScheduleList(true,"QA Team 01",date);
+        eventSchedulePage.showScheduleList(leagueName,true,"QA Team 01",date);
         Assert.assertTrue(eventSchedulePage.verifyEventInSchedulelist(event),"Failed! Event info incorrect after created");
 
         log("@Step 6: Navigate to Trading> Bet Entry go to Soccer page and filter the league in today");
