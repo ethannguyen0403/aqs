@@ -55,11 +55,12 @@ public class EventSchedulePage extends WelcomePage {
     int colActionEventTbl = 11;
     Table tblEventBody = Table.xpath("//app-schedule-list//div[contains(@class,'event-body')]//table",totalEventScheduleColumn);
     Table tblLeagueBody = Table.xpath("//app-schedule-list//div[contains(@class,'league-body')]//table",totalEventScheduleColumn);
+    public DropDownBox ddGoTo = DropDownBox.xpath("//span[contains(text(),'Go To')]//following::select[1]");
     public void goToSport(String sport){
         if(sport.equals("Soccer"))
             btnSoccer.click();
         if(sport.equals("Cricket"))
-            btnCricket.click();
+            ddGoTo.selectByVisibleText("Cricket");
     }
 
     public void showLeague(String league, String date){
