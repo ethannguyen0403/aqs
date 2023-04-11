@@ -238,16 +238,7 @@ public class Table extends BaseElement {
      * @return BaseElement
      */
     public BaseElement getControlOfCell(int tBodyOrder, int columnOrder, int rowOrder, String subTag){
-        if(columnOrder < 1 || rowOrder < 1){
-            System.out.println(String.format("Error: columnOrder or rowOrder is  %s or %s to be more than or equal to 1", columnOrder, rowOrder));
-            return null;
-        }
-        String cellXpath;
-        if (subTag == null){
-            cellXpath = String.format("%s%s%s", this._xpathTable, String.format("//tbody[%s]/tr[%s]/", tBodyOrder, rowOrder), String.format("td[%s]", columnOrder));
-        } else {
-            cellXpath = String.format("%s%s%s//%s", this._xpathTable, String.format("//tbody[%s]/tr[%s]/", tBodyOrder, rowOrder), String.format("td[%s]", columnOrder), subTag);
-        }
+        String cellXpath = getxPathOfCell(tBodyOrder,columnOrder,rowOrder,subTag);
         return Link.xpath(cellXpath);
     }
 
@@ -266,9 +257,9 @@ public class Table extends BaseElement {
         }
         String cellXpath;
         if (subTag == null){
-            cellXpath = String.format("%s%s%s", this._xpathTable, String.format("//tbody[%s]/tr[%s]/", tBodyOrder, rowOrder), String.format("td[%s]", columnOrder));
+            cellXpath = String.format("%s%s", this._xpathTable, String.format("//tbody[%s]//tr[%s]//td[%s]", tBodyOrder, rowOrder ,columnOrder));
         } else {
-            cellXpath = String.format("%s%s%s//%s", this._xpathTable, String.format("//tbody[%s]/tr[%s]/", tBodyOrder, rowOrder), String.format("td[%s]", columnOrder), subTag);
+            cellXpath = String.format("%s%s//%s", this._xpathTable, String.format("//tbody[%s]//tr[%s]//td[%s]", tBodyOrder, rowOrder, columnOrder), subTag);
         }
         return cellXpath;
     }

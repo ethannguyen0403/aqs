@@ -1,16 +1,12 @@
 package pages.sb11.sport;
 
 import com.paltech.element.common.*;
-import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Event;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
-import pages.sb11.control.ConfirmPopupControl;
 import pages.sb11.popup.ConfirmPopup;
-import pages.sb11.trading.CricketBetEntryPage;
-import pages.sb11.trading.SoccerBetEntryPage;
 
 public class EventSchedulePage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
@@ -30,6 +26,7 @@ public class EventSchedulePage extends WelcomePage {
     int colTv = 7;
     int colStatus = 8;
     Table tblEvent = Table.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//table",totalTblEventCol);
+    Table tblLeague = Table.xpath("//app-schedule-list//table[contains(@class,'tbl-create-event-schedule')]",3);
     Button btnAdd = Button.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//div[contains(@class,'modal-footer')]//button[contains(@class,'btn-show')][1]");
     Button btnSubmit = Button.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//div[contains(@class,'modal-footer')]//button[contains(@class,'btn-show')][2]");
     TextBox txtEventNumber = TextBox.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//div[contains(@class,'modal-footer')]//input");
@@ -55,12 +52,9 @@ public class EventSchedulePage extends WelcomePage {
     int colActionEventTbl = 11;
     Table tblEventBody = Table.xpath("//app-schedule-list//div[contains(@class,'event-body')]//table",totalEventScheduleColumn);
     Table tblLeagueBody = Table.xpath("//app-schedule-list//div[contains(@class,'league-body')]//table",totalEventScheduleColumn);
-    public DropDownBox ddGoTo = DropDownBox.xpath("//span[contains(text(),'Go To')]//following::select[1]");
+    DropDownBox ddpSport = DropDownBox.xpath("//app-league-entry//div[@class='league-header']//div[contains(@class,'card-header')]//select");
     public void goToSport(String sport){
-        if(sport.equals("Soccer"))
-            btnSoccer.click();
-        if(sport.equals("Cricket"))
-            ddGoTo.selectByVisibleText("Cricket");
+      ddpSport.selectByVisibleContainsText(sport);
     }
 
     public void showLeague(String league, String date){
@@ -76,13 +70,43 @@ public class EventSchedulePage extends WelcomePage {
         waitPageLoad();
     }
 
+    public void selectLeagueInScheduleList(String league){
+        //To wait page completely loaded the list league
+        lnkShowLeague.click();
+        waitPageLoad();
+        int index = getLeagueRowIndex(league);
+        tblLeague.getControlOfCell(1,2, index,null).click();
+    }
+
+    /**
+     * To check the league display in the table
+     * @param leagueName
+     * @return
+     */
+    public int getLeagueRowIndex(String leagueName){
+        int i = 1;
+        Label lblLeague;
+        while (true){
+            lblLeague = Label.xpath(tblLeague.getxPathOfCell(1,3,i,null));
+            lblLeague.scrollToThisControl(true);
+            if(!lblLeague.isDisplayed()) {
+                System.out.println("Can NOT found the league "+leagueName+" in the table");
+                return 0;
+            }
+            if(lblLeague.getText().contains(leagueName)){
+                System.out.println("Found the league "+leagueName+" in the table");
+                return i;
+            }
+            i = i +1;
+        }
+    }
     public void addEvent(Event event){
         fillEventInfo(event,1);
         btnSubmit.click();
     }
     public void deleteEvent(Event event){
         goToSport(event.getSportName());
-        showScheduleList(true, event.getHome(),event.getEventDate());
+        showScheduleList(event.getLeagueName(),true, event.getHome(),event.getEventDate());
         int index = getEventIndex(event);
         if(index == 0)
             System.out.println("Not found the event in the list for deleting");
@@ -108,7 +132,8 @@ public class EventSchedulePage extends WelcomePage {
         ddpStatus.selectByVisibleText(event.getEventStatus());
     }
 
-    public void showScheduleList(boolean isHomeTeam, String teamName, String date){
+    public void showScheduleList(String league, boolean isHomeTeam, String teamName, String date){
+
         if (isHomeTeam)
             rbHome.click();
         else
@@ -116,12 +141,12 @@ public class EventSchedulePage extends WelcomePage {
         if(!teamName.isEmpty()){
             txtTeam.sendKeys(teamName);
         }
-
         if(!date.isEmpty()){
             if(!date.equals(txtScheduleListDateTime.getAttribute("value").trim())){
                 dtpScheduleListDateTime.selectDate(date,"dd/MM/yyyy");
             }
         }
+        selectLeagueInScheduleList(league);
         btnShowSchedule.click();
         waitSpinnerDisappeared();
     }
