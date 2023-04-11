@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="SB11 QAT Regression" verbose="1">
+    <listeners>
+        <listener class-name="com.paltech.utils.ExtentReporterNG"/>
+    </listeners>
+
+    <test name="SB11 QAT Regression">
+        <parameter name='browser' value='window10.local.chrome'/>
+        <parameter name='env' value='qat'/>
+        <parameter name='language' value='en'/>
+        <parameter name='isLogin' value='true'/>
+        <parameter name='isProxy' value='false'/>
+        <parameter name='username' value='autoqc'/>
+        <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
+        <parameter name='isThrown' value='true'/>
+        <parameter name="appname" value="sp11"/>
+        <parameter name="accountCode" value="ISA_ACC001"/>
+        <parameter name="emailAddress" value="isaacc001@yopmail.com"/>
+        <parameter name="clientName" value="Auto_Client"/>
+        <parameter name="accountCurrency" value="HKD"/>
+        <parameter name="clientCode" value ="QA Client (No.121 QA Client)"/>
+        <groups>
+            <run>
+                <include name="regression1" />
+            </run>
+        </groups>
+
+        <classes>
+<!--            <class name="testcases.sb11test.AuthenticateTest"/>-->
+<!--            <class name="testcases.sb11test.HeaderTest"/>-->
+<!--            <class name="testcases.sb11test.role.RoleManagementTest"/>-->
+<!--            <class name="testcases.sb11test.user.UserManagementTest"/>-->
+<!--            <class name="testcases.sb11test.user.TradingPermissionTest"/>-->
+            <class name="testcases.sb11test.sport.EventSchedule.SoccerLeagueSeasonTeamInfoTest"/>
+        </classes>
+    </test>
+</suite>
+

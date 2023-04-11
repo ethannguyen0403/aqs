@@ -12,6 +12,8 @@ import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import utils.sb11.CurrencyRateUtils;
 
+import static java.lang.Double.parseDouble;
+
 public class LedgerStatementPage extends WelcomePage {
     public DropDownBox ddCompanyUnit = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Company Unit')]//following::select[1]");
     public DropDownBox ddFinancialYear = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Financial Year')]//following::select[1]");
@@ -39,6 +41,7 @@ public class LedgerStatementPage extends WelcomePage {
         ddCompanyUnit.selectByVisibleText(companyUnit);
         ddFinancialYear.selectByVisibleText(financialYear);
         ddLedgerName.selectByVisibleContainsText(accountType);
+        waitSpinnerDisappeared();
         ddLedgerGroup.selectByVisibleContainsText(ledgerGroup);
         if (!fromDate.isEmpty()){
             dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
@@ -80,7 +83,7 @@ public class LedgerStatementPage extends WelcomePage {
         String runBalGBP = tbLedger.getControlOfCell(1, colRunBalGBP,rowIndex,null).getText().trim();
 
         if (isDebit){
-            double curDebitRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1","2023-2-10","2023-2-10",transaction.getLedgerDebitCur()));
+            double curDebitRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1",transaction.getLedgerDebitCur()));
             double amountDebitGBP = transaction.getAmountDebit() * curDebitRate;
             double runDebitGBP = (transaction.getDebitBalance() + transaction.getAmountDebit()) * curDebitRate;
 
@@ -92,7 +95,7 @@ public class LedgerStatementPage extends WelcomePage {
             Assert.assertEquals(runBalGBP, String.format("%.2f", runDebitGBP), "Failed! Running Balance GBP amount is incorrect");
             Assert.assertEquals(cur, transaction.getLedgerDebitCur(), "Failed! Debit Currency is incorrect is in correct");
         } else {
-            double curCreditRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1","2023-2-10","2023-2-10",transaction.getLedgerCreditCur()));
+            double curCreditRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1",transaction.getLedgerCreditCur()));
             double amountCreditGBP = transaction.getAmountCredit() * curCreditRate;
             double runCreditGBP = (transaction.getCreditBalance() + transaction.getAmountCredit()) * curCreditRate;
 
@@ -119,7 +122,7 @@ public class LedgerStatementPage extends WelcomePage {
         if (amountCreDeb.isEmpty()){
             amountCreDeb = String.valueOf(0);
         }
-        return Double.parseDouble(amountCreDeb);
+        return parseDouble(amountCreDeb);
     }
 
     private int getLedgerRowIndex(String ledgername){

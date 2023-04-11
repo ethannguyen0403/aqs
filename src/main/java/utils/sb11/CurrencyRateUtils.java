@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.AppUtils;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -26,17 +27,16 @@ public class CurrencyRateUtils {
         return WSUtils.getGETJSONArraytWithDynamicHeaders(api, headersParam);
     }
 
-    public static String getOpRate(String companyID, String fromDate, String toDate, String currencyCode) {
+    public static String getOpRate(String companyID, String currencyCode) {
         JSONArray jsonArr = null;
         String opRate = null;
         try {
-            String today = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
-            if (fromDate.isEmpty()){
-                fromDate = today;
-            }
-            if (toDate.isEmpty()){
-                toDate = today;
-            }
+            LocalDate currentDate = LocalDate.now();
+            currentDate.getMonth();
+            LocalDate firstDayOfMonthDate  = currentDate.withDayOfMonth(1);
+            LocalDate lastDayOfMonthDate  = currentDate.withDayOfMonth(currentDate.getMonth().length(currentDate.isLeapYear()));
+            String fromDate = String.valueOf(firstDayOfMonthDate);
+            String toDate = String.valueOf(lastDayOfMonthDate);
             jsonArr = getCurrencyRateJson(companyID, fromDate, toDate);
         } catch (Exception e) {
             e.getMessage();

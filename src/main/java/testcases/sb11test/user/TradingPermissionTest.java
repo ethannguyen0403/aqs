@@ -1,0 +1,91 @@
+package testcases.sb11test.user;
+
+import com.paltech.element.common.Icon;
+import common.ESSConstants;
+import common.SBPConstants;
+import org.testng.Assert;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+import pages.sb11.user.TradingPermissionPage;
+import pages.sb11.user.UserManagementPage;
+import pages.sb11.user.popup.ClientAgentPermissionPopup;
+import testcases.BaseCaseAQS;
+
+import static common.SBPConstants.*;
+
+public class TradingPermissionTest extends BaseCaseAQS {
+
+    @Test(groups = {"regression"})
+    public void Trading_Permission_TC_001(){
+        log("@title: Validate User Management page is displayed when navigate");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Click on User > Trading Permission page");
+        TradingPermissionPage tradingPermissionPage = welcomePage.navigatePage(USER,TRADING_PERMISSION,TradingPermissionPage.class);
+        log("Validate the page is displayed with correct title page");
+        Assert.assertTrue(tradingPermissionPage.getTitlePage().contains(TRADING_PERMISSION), "Failed! Trading Permission page is not displayed");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    public void Trading_Permission_TC_002(){
+        log("@title: Validate User Management page is displayed when navigate");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Click on User > Trading Permission page");
+        TradingPermissionPage tradingPermissionPage = welcomePage.navigatePage(USER,TRADING_PERMISSION,TradingPermissionPage.class);
+        log("Validate UI Info display correctly");
+        log("Controls: Company Unit, User Role, Username and Show button");
+        Assert.assertTrue(tradingPermissionPage.ddpCompanyUnit.isDisplayed(),"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertTrue(tradingPermissionPage.ddpUserRole.isDisplayed(),"Failed! User Role dropdown is not displayed!");
+        Assert.assertTrue(tradingPermissionPage.txtUsername.isDisplayed(),"Failed! Username textbox is not displayed!");
+        Assert.assertTrue(tradingPermissionPage.btnShow.isDisplayed(),"Failed! Company Unit dropdown is not displayed!");
+        log("Customer table header columns is correctly display");
+        Assert.assertEquals(tradingPermissionPage.tbTradPermission.getHeaderNameOfRows(), TradingPermission.TABLE_HEADER,"FAILED! Pending table header is incorrect display");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @Parameters("username")
+    public void Trading_Permission_TC_003(String username){
+        log("@title: Validate that can search username succesfully");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Click on User > Trading Permission page");
+        TradingPermissionPage tradingPermissionPage = welcomePage.navigatePage(USER,TRADING_PERMISSION,TradingPermissionPage.class);
+        log("@Step 3: Select Company Unit, User Role and enter an exist username on list");
+        log("@Step 4: Click Show");
+        tradingPermissionPage.filterAccount(COMPANY_UNIT,"All",username);
+        log("Validate searched user is displayed correctly on Customer table");
+        Assert.assertTrue(tradingPermissionPage.isAccountDisplayed(username),"Failed! " + username + " is not displayed!");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @Parameters("username")
+    public void Trading_Permission_TC_004(String username){
+        log("@title: Validate that all Permission is disabled after checking Auto-assigned All");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Click on User > Trading Permission page");
+        TradingPermissionPage tradingPermissionPage = welcomePage.navigatePage(USER,TRADING_PERMISSION,TradingPermissionPage.class);
+        log("@Step 3: Check Auto-assigned All checkbox of any item");
+        tradingPermissionPage.filterAccount(COMPANY_UNIT,"All",username);
+        log("Validate that all Permission is disabled: Client Agent, Client, Smart (M), Smart (A), Smart (G)");
+        tradingPermissionPage.verifyPermissionEnabled(username,false);
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression1"})
+    @Parameters("username")
+    public void Trading_Permission_TC_005(String username){
+        log("@title: Validate that all Permission is disabled after checking Auto-assigned All");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Click on User > Trading Permission page");
+        TradingPermissionPage tradingPermissionPage = welcomePage.navigatePage(USER,TRADING_PERMISSION,TradingPermissionPage.class);
+        log("@Step 3: Uncheck Auto-assigned All checkbox of any item");
+        tradingPermissionPage.filterAccount(COMPANY_UNIT,"All",username);
+        log("Validate that all Permission is enabled and can be clickable");
+        tradingPermissionPage.autoAssignAll(username,true);
+        tradingPermissionPage.verifyPermissionEnabled(username,true);
+        log("INFO: Executed completely");
+        log("Post condition: Enable auto assign");
+        tradingPermissionPage.autoAssignAll(username,true);
+    }
+}

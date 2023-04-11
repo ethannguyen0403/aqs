@@ -20,8 +20,8 @@ public class PTRiskPage extends WelcomePage {
     DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
 
     DropDownBox ddpOrderBy = DropDownBox.id("typeSelected3");
-    Button btnClient = Button.xpath("//app-pt-risk-control//div[@class='row pl-4']//button[text()='  Clients ']");
-    Button btnLeagues = Button.xpath("//app-pt-risk-control//div[@class='row pl-4']//button[text()='  Leagues ']");
+    Button btnClient = Button.xpath("//app-pt-risk-control//div[@class='row pl-4']//button[text()=' Clients ']");
+    Button btnLeagues = Button.xpath("//app-pt-risk-control//div[@class='row pl-4']//button[text()=' Leagues ']");
     Button btnClearAll = Button.xpath("//div[@class='modal-content']//div[@class='group-btn']//span[text()='Clear All']");
     Button btnSetSelection = Button.xpath("//div[@class='modal-content']//div[@class='group-btn']//button[text()=' Set Selection ']");
     Label lblFilterList = Label.xpath("//div[@class='modal-content']//div[@class='list-item-filter']//label[%s]");

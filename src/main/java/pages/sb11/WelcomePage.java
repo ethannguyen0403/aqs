@@ -6,6 +6,7 @@ import com.paltech.element.common.Label;
 import com.paltech.utils.DateUtils;
 import controls.sb11.AppArlertControl;
 import objects.Event;
+import pages.sb11.popup.ChangePasswordPopup;
 import pages.sb11.sport.EventSchedulePage;
 import pages.sb11.yopmail.YopmailMailBoxPage;
 import pages.sb11.yopmail.YopmailPage;
@@ -24,6 +25,7 @@ public class WelcomePage extends Header{
         return lblTitle.getText().trim();
     }
     public AppArlertControl appArlertControl = AppArlertControl.xpath("//app-alert//div[@class='message-box']");
+    public Label lblWelcome = Label.xpath("//app-welcome-page//h2[contains(text(),'Welcome to')]");
 
 
     /**
@@ -87,6 +89,11 @@ public class WelcomePage extends Header{
             contentInfoLst.add(row);
         }
         return contentInfoLst;
+    }
+
+    public String changePassword(String oldPassword, String newPassword, String confirmPassword, boolean isClose){
+        ChangePasswordPopup changePasswordPopup = openChangePasswordPopup();
+        return changePasswordPopup.changePassword(oldPassword,newPassword,confirmPassword,isClose);
     }
 
 

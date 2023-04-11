@@ -84,6 +84,7 @@ public class BetSettlementUtils {
                         "      \"winLose\": 5,\n" +
                         "      \"pt\": 0,\n" +
                         "      \"originalOdds\": %s,\n" +
+                        "      \"oddsFormat\": \"%s\",\n" +
                         "      \"originalOddsFormat\": \"%s\",\n" +
                         "      \"source\": \"MB\",\n" +
                         "      \"wagerId\": %s,\n" +
@@ -107,7 +108,7 @@ public class BetSettlementUtils {
                         "  }\n" +
                         "}"
                 , order.getCreateDate() +"T16:59:00.000+00:00", order.getCreateDate() + "T16:59:00.000+00:00", order.getRequireStake(), order.getSelection(),
-                order.getPrice(), betId, order.getPrice(), order.getOddType(), wagerId, sportId, millis, accountId, betId, wagerId);
+                order.getPrice(), betId, order.getPrice(), order.getOddType(), order.getOddType(), wagerId, sportId, millis, accountId, betId, wagerId);
         WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
     }
 

@@ -15,7 +15,11 @@ import testcases.BaseCaseAQS;
 import utils.sb11.*;
 import utils.testraildemo.TestRails;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +33,7 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "309")
-    public void ClientStatementTC_309(String clientCode) {
+    public void ClientStatementTC_309(String clientCode) throws ParseException, ScriptException {
         clientCode = superMasterCode + clientCode;
         String actualVal;
         String openingVal;
@@ -46,18 +50,17 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("@Step 2: Filter a client with client point view");
         clientPage.filter(viewBy, COMPANY_UNIT, FINANCIAL_YEAR, clientCode, "","");
 
-        //TODO need enhancement as currently is working around by remove "," out of string before calculate
         log("Validate Closing of Super = Opening + Win/Loss + Commission + Rec/Pay/CA/RB/Adj");
-        openingVal = clientPage.getSuperCellValue(clientPage.colOpening).replace(",","");
-        winLossVal = clientPage.getSuperCellValue(clientPage.colWinLoss).replace(",","");
-        commissionVal = clientPage.getSuperCellValue(clientPage.colCommission).replace(",","");
-        recPayVal = clientPage.getSuperCellValue(clientPage.colRecPay).replace(",","");
-        actualVal = clientPage.getSuperCellValue(clientPage.colClosing).replace(",","");
+        openingVal = clientPage.getSuperCellValue(clientPage.colOpening);
+        winLossVal = clientPage.getSuperCellValue(clientPage.colWinLoss);
+        commissionVal = clientPage.getSuperCellValue(clientPage.colCommission);
+        recPayVal = clientPage.getSuperCellValue(clientPage.colRecPay);
+        actualVal = clientPage.getSuperCellValue(clientPage.colClosing);
 
-        double expectedVal = Double.parseDouble(openingVal) + Double.parseDouble(winLossVal) + Double.parseDouble(commissionVal)
-                + Double.parseDouble(recPayVal);
+        double expectedVal = DecimalFormat.getNumberInstance().parse(openingVal).doubleValue() + DecimalFormat.getNumberInstance().parse(winLossVal).doubleValue() +
+                DecimalFormat.getNumberInstance().parse(commissionVal).doubleValue() + DecimalFormat.getNumberInstance().parse(recPayVal).doubleValue();
 
-        Assert.assertEquals(String.valueOf(expectedVal),actualVal,"FAILED! Closing Balance is not calculated correctly, actual:"+actualVal+" and expected:"+expectedVal);
+        Assert.assertEquals(expectedVal,DecimalFormat.getNumberInstance().parse(actualVal).doubleValue(),"FAILED! Closing Balance is not calculated correctly, actual:"+actualVal+" and expected:"+expectedVal);
         log("INFO: Executed completely");
     }
 
@@ -79,14 +82,14 @@ public class ClientStatementTest extends BaseCaseAQS {
         clientPage.filter(viewBy, COMPANY_UNIT, FINANCIAL_YEAR, clientCode, "","");
 
         log("@Step 2.2: Get Opening value");
-        openingVal = clientPage.getSuperCellValue(clientPage.colOpening).replace(",","");
+        openingVal = clientPage.getSuperCellValue(clientPage.colOpening);
 
         log("@Step 3: Filter a client with client point view on current date - 1");
         clientPage.filter(viewBy, COMPANY_UNIT, FINANCIAL_YEAR, clientCode, DateUtils.getDateBeforeCurrentDate(1,"dd/MM/yyyy"),
                 DateUtils.getDateBeforeCurrentDate(1,"dd/MM/yyyy"));
 
         log("@Step 3.1: Get Closing value");
-        closingVal = clientPage.getSuperCellValue(clientPage.colClosing).replace(",","");
+        closingVal = clientPage.getSuperCellValue(clientPage.colClosing);
 
         log("@Validate that Opening value today is Closing of yesterday");
         Assert.assertEquals(closingVal,openingVal,"FAILED! Closing Balance of previous date is not equal to Opening Balance of current date, " +
@@ -112,9 +115,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         clientPage.filter(viewBy, COMPANY_UNIT, FINANCIAL_YEAR, clientCode, "","");
 
         log("Validate total in HKD of Master match with Grand Total in HKD at bottom");
-        //TODO need enhancement as currently is workingaround by remove "," out of string before assert
-        totalGrandMasterVal = clientPage.getMasterCellValue("Total in", clientPage.colClosing).replace(",","");
-        totalGrandHKDVal = clientPage.getGrandTotal("HKD").replace(",","");
+        totalGrandMasterVal = clientPage.getMasterCellValue("Total in", clientPage.colClosing);
+        totalGrandHKDVal = clientPage.getGrandTotal("HKD");
 
         Assert.assertEquals(totalGrandMasterVal,totalGrandHKDVal,"FAILED! Grand Master value is not equal Grand HKD, Grand Master:"+totalGrandMasterVal+" and Grand HKD:"+totalGrandHKDVal);
         log("INFO: Executed completely");
@@ -192,20 +194,19 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("@Step 2: Filter a client with client point view");
         clientPage.filter(viewBy, COMPANY_UNIT, FINANCIAL_YEAR, clientCode, "","");
 
-        //TODO need enhancement as currently is workingaround by remove "," out of string before assert
         log("Validate value of agent (not COM, LED) in main page match with member summary page");
-        openingVal = clientPage.getAgentCellValue(agentCode,clientPage.colOpening).replace(",","");
-        winLossVal = clientPage.getAgentCellValue(agentCode,clientPage.colWinLoss).replace(",","");
-        recPayVal = clientPage.getAgentCellValue(agentCode,clientPage.colRecPay).replace(",","");
-        movementVal = clientPage.getAgentCellValue(agentCode,clientPage.colMovement).replace(",","");
-        closingVal = clientPage.getAgentCellValue(agentCode,clientPage.colClosing).replace(",","");
+        openingVal = clientPage.getAgentCellValue(agentCode,clientPage.colOpening);
+        winLossVal = clientPage.getAgentCellValue(agentCode,clientPage.colWinLoss);
+        recPayVal = clientPage.getAgentCellValue(agentCode,clientPage.colRecPay);
+        movementVal = clientPage.getAgentCellValue(agentCode,clientPage.colMovement);
+        closingVal = clientPage.getAgentCellValue(agentCode,clientPage.colClosing);
 
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
-        actualOpeningVal = popup.getGrandTotal("HKD",popup.colOpeningTotal).replace(",","");
-        actualWinloseVal = popup.getGrandTotal("HKD",popup.colWinLoseTotal).replace(",","");
-        actualRecPayVal = popup.getGrandTotal("HKD",popup.colRecPayTotal).replace(",","");
-        actualMovementVal = popup.getGrandTotal("HKD",popup.colMovementTotal).replace(",","");
-        actualClosingVal = popup.getGrandTotal("HKD",popup.colClosingTotal).replace(",","");
+        actualOpeningVal = popup.getGrandTotal("HKD",popup.colOpeningTotal);
+        actualWinloseVal = popup.getGrandTotal("HKD",popup.colWinLoseTotal);
+        actualRecPayVal = popup.getGrandTotal("HKD",popup.colRecPayTotal);
+        actualMovementVal = popup.getGrandTotal("HKD",popup.colMovementTotal);
+        actualClosingVal = popup.getGrandTotal("HKD",popup.colClosingTotal);
 
         Assert.assertEquals(openingVal,actualOpeningVal,"FAILED! Closing Balance is not calculated correctly, actual:"+actualOpeningVal+" and expected:"+openingVal);
         Assert.assertEquals(winLossVal,actualWinloseVal,"FAILED! WinLose Balance is not calculated correctly, actual:"+actualWinloseVal+" and expected:"+winLossVal);
@@ -242,19 +243,18 @@ public class ClientStatementTest extends BaseCaseAQS {
         clientPage.filter(viewBy, COMPANY_UNIT, FINANCIAL_YEAR, clientCode, "","");
 
         log("Validate value of agent COM in main page match with member summary page");
-        //TODO need enhancement as currently is workingaround by remove "," out of string before assert
-        openingVal = clientPage.getAgentCellValue(agentComCode,clientPage.colOpening).replace(",","");
-        commissionVal = clientPage.getAgentCellValue(agentComCode,clientPage.colCommission).replace(",","");
-        recPayVal = clientPage.getAgentCellValue(agentComCode,clientPage.colRecPay).replace(",","");
-        movementVal = clientPage.getAgentCellValue(agentComCode,clientPage.colMovement).replace(",","");
-        closingVal = clientPage.getAgentCellValue(agentComCode,clientPage.colClosing).replace(",","");
+        openingVal = clientPage.getAgentCellValue(agentComCode,clientPage.colOpening);
+        commissionVal = clientPage.getAgentCellValue(agentComCode,clientPage.colCommission);
+        recPayVal = clientPage.getAgentCellValue(agentComCode,clientPage.colRecPay);
+        movementVal = clientPage.getAgentCellValue(agentComCode,clientPage.colMovement);
+        closingVal = clientPage.getAgentCellValue(agentComCode,clientPage.colClosing);
 
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentComCode);
-        actualOpeningVal = popup.getGrandTotal("HKD",popup.colOpeningTotal).replace(",","");
-        actualCommVal = popup.getGrandTotal("HKD",popup.colComissionTotal).replace(",","");
-        actualRecPayVal = popup.getGrandTotal("HKD",popup.colRecPayTotal).replace(",","");
-        actualMovementVal = popup.getGrandTotal("HKD",popup.colMovementTotal).replace(",","");
-        actualClosingVal = popup.getGrandTotal("HKD",popup.colClosingTotal).replace(",","");
+        actualOpeningVal = popup.getGrandTotal("HKD",popup.colOpeningTotal);
+        actualCommVal = popup.getGrandTotal("HKD",popup.colComissionTotal);
+        actualRecPayVal = popup.getGrandTotal("HKD",popup.colRecPayTotal);
+        actualMovementVal = popup.getGrandTotal("HKD",popup.colMovementTotal);
+        actualClosingVal = popup.getGrandTotal("HKD",popup.colClosingTotal);
 
         Assert.assertEquals(openingVal,actualOpeningVal,"FAILED! Closing Balance is not calculated correctly, actual:"+actualOpeningVal+" and expected:"+openingVal);
         Assert.assertEquals(commissionVal,actualCommVal,"FAILED! Commission Balance is not calculated correctly, actual:"+actualCommVal+" and expected:"+commissionVal);
@@ -566,6 +566,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_LIABILITY_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_LIABILITY_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -588,9 +589,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_LIABILITY);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId,LEDGER_GROUP_NAME_LIABILITY);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
@@ -641,6 +643,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_LIABILITY_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_LIABILITY_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -663,9 +666,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_LIABILITY);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_LIABILITY);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
@@ -716,6 +720,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -738,9 +743,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_CAPITAL);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_CAPITAL);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
@@ -791,6 +797,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -813,9 +820,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_CAPITAL);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_CAPITAL);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
@@ -866,6 +874,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -888,9 +897,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_INCOME);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_INCOME);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
@@ -940,6 +950,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -962,9 +973,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_INCOME);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_INCOME);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
@@ -1015,6 +1027,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -1037,9 +1050,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_EXPENDITURE);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_EXPENDITURE);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
@@ -1090,6 +1104,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerDebitAccountNumber;
         String ledgerType;
         String ledgerGroupId;
+        String parentId;
         String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
         String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
         ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
@@ -1112,9 +1127,10 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         welcomePage.waitSpinnerDisappeared();
         ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_EXPENDITURE);
-        ledgerType = ChartOfAccountUtils.getLedgerType(ledgerGroupId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(ledgerGroupId,ledgerDebitAccountName);
+        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_EXPENDITURE);
+        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
             TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
 
