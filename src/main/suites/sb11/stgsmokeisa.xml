@@ -34,7 +34,7 @@
 
         <classes>
 
-            <class name="testcases.sb11test.sport.EventSchedule.EventScheduleTest"/>
+            <class name="testcases.sb11test.sport.EventScheduleTest"/>
             <class name="testcases.sb11test.trading.BetSettlementTest"/>
             <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
             <class name="testcases.sb11test.trading.BetEntryTest"/>
