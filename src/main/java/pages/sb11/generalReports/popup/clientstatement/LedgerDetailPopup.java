@@ -39,12 +39,17 @@ public class LedgerDetailPopup {
     public Transaction verifyLedgerTrans(Transaction trans, boolean isDebit, String description){
         int i = 1;
         while(true){
-            String txnDate = tbLedger.getControlOfCell(1,colDescription,i,null).getText().trim();
-            if(txnDate.contains(description))
-            {
-                if (isDebit)
-                    return verifyTransInfoDisplayCorrectInRow(trans, true, i);
-                return verifyTransInfoDisplayCorrectInRow(trans, false, i);
+            if (!tbLedger.getControlOfCell(1,colDescription,i,null).isDisplayed()){
+                System.out.println("Can't find element");
+                return null;
+            } else {
+                String txnDate = tbLedger.getControlOfCell(1,colDescription,i,null).getText().trim();
+                if(txnDate.contains(description))
+                {
+                    if (isDebit)
+                        return verifyTransInfoDisplayCorrectInRow(trans, true, i);
+                    return verifyTransInfoDisplayCorrectInRow(trans, false, i);
+                }
             }
             i = i +1;
         }
