@@ -1,4 +1,4 @@
-package testcases.sb11test.sport.EventSchedule;
+package testcases.sb11test.sport;
 
 import com.paltech.utils.DateUtils;
 import common.SBPConstants;

@@ -29,12 +29,14 @@ public class SBPConstants {
     public final static String JOURNAL_ENTRIES = "Journal Entries";
     public final static String CURRENCY_RATES = "Currency Rates";
     public final static String BET_ENTRY = "Bet Entry";
+    public final static String RESULT_ENTRY = "Result Entry";
     public final static String SPORT= "Sport";
     public final static String CLIENT_STATEMENT = "Client Statement";
     public final static String SPP = "SPP";
     public final static String EVENT_SCHEDULE = "Event Schedule";
     public final static String CONFIRM_BETS = "Confirm Bets";
     public final static String BET_SETTLEMENT = "Bet Settlement";
+    public final static String EVENT_MAPPING = "Event Mapping";
     public final static String PLACE_BET_SUCCESS_MSG ="The bet was placed successfully";
     public final static String FINANCIAL_YEAR = "Year 2022-2023";
     public final static String COMPANY_UNIT = "Kastraki Limited";
@@ -131,6 +133,11 @@ public class SBPConstants {
         public final static List<String> LEAGUE_TABLE_HEADER = Arrays.asList("#", "i", "C", "League Name", "IsMain", "IsCup", "Edit", "");
         public final static List<String> SEASON_TABLE_HEADER = Arrays.asList("#", "i", "Season Name", "Start Date", "End Date", "Edit", "");
         public final static List<String> TEAM_TABLE_HEADER = Arrays.asList("#", "i", "Team Name", "Country", "Edit", "", "Under League");
+    }
+
+    public static class ResultEntry{
+        public final static List<String> RESULT_SOCCER_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "HT Score", "FT Score", "HT Corner", "FT Corner", "HT Card", "FT Card");
+        public final static List<String> RESULT_CRICKET_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "Team A", "Team B", "IsHdp FB", "Result", "Runs", "Wkts", "Runs", "Wkts");
     }
 
 }

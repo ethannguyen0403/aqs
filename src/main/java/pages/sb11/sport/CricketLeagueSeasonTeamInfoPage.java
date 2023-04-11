@@ -6,14 +6,13 @@ import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.Table;
 import pages.sb11.WelcomePage;
-import pages.sb11.sport.popup.CreateSoccerLeaguePopup;
-import pages.sb11.sport.popup.CreateSoccerSeasonPopup;
-import pages.sb11.sport.popup.CreateSoccerTeamPopup;
+import pages.sb11.sport.popup.*;
 
-public class SoccerLeagueSeasonTeamInfoPage extends WelcomePage {
+public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
     int colLeagueName = 4;
     int colSeasonName = 3;
     int colTeamName = 3;
+    int colDeleteLeague = 8;
     public Label lblTitleLeague = Label.xpath("//app-league//div[contains(@class,'main-box-header')]//span[1]");
     public Label lblTitleSeason = Label.xpath("//app-season//div[contains(@class,'main-box-header')]//span[1]");
     public Label lblTitleTeam = Label.xpath("//app-team//div[contains(@class,'main-box-header')]//span[1]");
@@ -32,18 +31,22 @@ public class SoccerLeagueSeasonTeamInfoPage extends WelcomePage {
     public Table tbSeason = Table.xpath("//app-season//div[contains(@class,'main-box-header')]//following::table[1]",7);
     public Table tbTeam = Table.xpath("//app-team//div[contains(@class,'main-box-header')]//following::table[1]",7);
 
-    public CreateSoccerLeaguePopup openAddLeaguePopup(){
-        btnAddLeague.click();
-        return new CreateSoccerLeaguePopup();
+    public void goToCricket(){
+        ddGoTo.selectByVisibleText("Cricket");
     }
 
-    public CreateSoccerSeasonPopup openAddSeasonPopup(String leagueName){
+    public CreateCricketLeaguePopup openAddLeaguePopup(){
+        btnAddLeague.click();
+        return new CreateCricketLeaguePopup();
+    }
+
+    public CreateCricketSeasonPopup openAddSeasonPopup(String leagueName){
         filterLeague("All","All",leagueName);
         btnAddSeason.click();
-        return new CreateSoccerSeasonPopup();
+        return new CreateCricketSeasonPopup();
     }
 
-    public CreateSoccerTeamPopup openAddTeamPopup(String leagueName, String seasonName){
+    public CreateCricketTeamPopup openAddTeamPopup(String leagueName, String seasonName){
         filterLeague("All","All",leagueName);
         if (seasonName != ""){
             selectSeason(seasonName);
@@ -51,7 +54,7 @@ public class SoccerLeagueSeasonTeamInfoPage extends WelcomePage {
         } else {
             btnAddTeam.click();
         }
-        return new CreateSoccerTeamPopup();
+        return new CreateCricketTeamPopup();
     }
 
     public void filterLeague(String typeLeague, String countryLeague, String leagueName){
@@ -59,6 +62,14 @@ public class SoccerLeagueSeasonTeamInfoPage extends WelcomePage {
         ddCountryLeague.selectByVisibleText(countryLeague);
         txtLeagueName.sendKeys(leagueName);
         btnSearchLeague.click();
+    }
+
+    public ConfirmDeleteLeaguePopup openDeleteLeaguePopup(String leagueName){
+        filterLeague("All","All",leagueName);
+        waitSpinnerDisappeared();
+        int index = getRowContainsLeagueName(leagueName);
+        tbLeague.getControlOfCell(1,colDeleteLeague,index,null).click();
+        return new ConfirmDeleteLeaguePopup();
     }
 
     public boolean isLeagueDisplayed(String leagueName){
