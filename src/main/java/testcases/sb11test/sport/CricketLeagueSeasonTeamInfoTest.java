@@ -1,4 +1,4 @@
-package testcases.sb11test.sport.EventSchedule;
+package testcases.sb11test.sport;
 
 import common.SBPConstants;
 import objects.Team;
