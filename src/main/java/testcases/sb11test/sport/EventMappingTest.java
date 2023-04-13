@@ -28,7 +28,21 @@ public class EventMappingTest extends BaseCaseAQS {
         log("@Step 2: Access Sport > Event Mapping");
         EventMappingPage eventMappingPage = welcomePage.navigatePage(SPORT,EVENT_MAPPING, EventMappingPage.class);
         log("Validate Event Mapping page is displayed with correctly title");
-
+        log("Date, Sport, League, Event, Provider, Provider League, Provider Event, Provider Event Date, Submit button and Map button");
+        Assert.assertTrue(eventMappingPage.txtDate.isDisplayed(),"Failed! Date datetime picker is not displayed!");
+        Assert.assertTrue(eventMappingPage.ddSport.isDisplayed(),"Failed! Sport dropdown is not displayed!");
+        Assert.assertTrue(eventMappingPage.ddLeague.isDisplayed(),"Failed! League dropdown is not displayed!");
+        Assert.assertTrue(eventMappingPage.ddEvent.isDisplayed(),"Failed! Event dropdown is not displayed!");
+        Assert.assertTrue(eventMappingPage.ddProvider.isDisplayed(),"Failed! Provider dropdown is not displayed!");
+        Assert.assertTrue(eventMappingPage.ddProviderLeague.isDisplayed(),"Failed! Provider League dropdown is not displayed!");
+        Assert.assertTrue(eventMappingPage.ddProviderEvent.isDisplayed(),"Failed! Provider Event dropdown is not displayed!");
+        Assert.assertTrue(eventMappingPage.txtProviderDate.isDisplayed(),"Failed! Provider Event Date datetime picker is not displayed!");
+        Assert.assertTrue(eventMappingPage.btnSubmit.isDisplayed(),"Failed! Submit button is not displayed!");
+        Assert.assertTrue(eventMappingPage.btnMap.isDisplayed(),"Failed! Map button is not displayed!");
+        log("Event, Provider Event and Mapped List table header columns are correctly display");
+        Assert.assertEquals(eventMappingPage.tbEvent.getHeaderNameOfRows(), EventMapping.EVENT_TABLE_HEADER,"FAILED! Event table header is incorrect display");
+        Assert.assertEquals(eventMappingPage.tbProviderEvent.getHeaderNameOfRows(), EventMapping.PROVIDER_EVENT_TABLE_HEADER,"FAILED! Provider Event table header is incorrect display");
+        Assert.assertEquals(eventMappingPage.tbMappedList.getHeaderNameOfRows(), EventMapping.MAPPED_LIST_TABLE_HEADER,"FAILED! Mapped List table header is incorrect display");
         log("INFO: Executed completely");
     }
 }
