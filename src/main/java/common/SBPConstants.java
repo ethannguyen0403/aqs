@@ -38,6 +38,7 @@ public class SBPConstants {
     public final static String BET_SETTLEMENT = "Bet Settlement";
     public final static String EVENT_MAPPING = "Event Mapping";
     public final static String OPEN_PRICE = "Open Price";
+    public final static String BL_SETTINGS = "BL Settings";
     public final static String PLACE_BET_SUCCESS_MSG ="The bet was placed successfully";
     public final static String FINANCIAL_YEAR = "Year 2022-2023";
     public final static String COMPANY_UNIT = "Kastraki Limited";
@@ -149,6 +150,10 @@ public class SBPConstants {
 
     public static class OpenPrice{
         public final static List<String> TABLE_HEADER = Arrays.asList("#", "Time","i", "Event", "FT - 1x2","H/A","Draw", "FT - Handicap - OP","HDP","Price", "FT - Over/Under - OP","HDP","Price","");
+    }
+
+    public static class BLSettings{
+        public final static List<String> TABLE_HEADER = Arrays.asList("#","i", "Time","Event", "Edit", "TV", "KP", "Live RB");
     }
 
 }
