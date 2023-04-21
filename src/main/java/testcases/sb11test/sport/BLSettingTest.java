@@ -68,4 +68,24 @@ public class BLSettingTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @Test(groups = {"regression1"})
+    public void BLSettingsTC_005(){
+        log("@title: Validate selected League is displayed correctly when clicking Show");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Sport > BL Settings");
+        BLSettingPage blSettingPage = welcomePage.navigatePage(SPORT,BL_SETTINGS, BLSettingPage.class);
+        log("@Step 3:  Select Date and click Show League ");
+        String league = blSettingPage.getFirstLeague();
+        log("@Step 4: Select a league and click Show");
+        blSettingPage.filterResult("",league,"KOT",true);
+        log("@Step 5: Click Edit on an event");
+        blSettingPage.openBLSettingPopup("JS Kabylie");
+        log("@Step 6: Fill full info and click Submit");
+        log("Navigate to Soccer > BBT");
+        log("Filter with event at step 4");
+        log("Validate Event of selected league is displayed correctly on Event table");
+
+        log("INFO: Executed completely");
+    }
+
 }

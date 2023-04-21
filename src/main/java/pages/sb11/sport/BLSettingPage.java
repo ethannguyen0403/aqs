@@ -7,10 +7,14 @@ import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
 import pages.sb11.WelcomePage;
+import pages.sb11.sport.popup.CreateSoccerSeasonPopup;
+import pages.sb11.trading.popup.BLSettingsPopup;
 
 import java.util.List;
 
 public class BLSettingPage extends WelcomePage {
+    int colEventName = 4;
+    int colEdit = 5;
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
     public String getTitlePage ()
     {
@@ -37,6 +41,12 @@ public class BLSettingPage extends WelcomePage {
         }
     }
 
+    public BLSettingsPopup openBLSettingPopup(String eventName){
+        int rowIndex = getRowContainsEvent(eventName);
+        tbBLSettings.getControlOfCell(1,colEventName, rowIndex,"a").click();
+        return new BLSettingsPopup();
+    }
+
     public boolean isLeagueExist(String leagueName){
         int i = 1;
         Label lblLeague;
@@ -49,6 +59,23 @@ public class BLSettingPage extends WelcomePage {
             if(lblLeague.getText().equals(leagueName)){
                 System.out.println("Found the league "+leagueName+" in the table");
                 return true;
+            }
+            i = i +1;
+        }
+    }
+
+    private int getRowContainsEvent(String eventName){
+        int i = 1;
+        Label lblEventName;
+        while (true){
+            lblEventName = Label.xpath(tbBLSettings.getxPathOfCell(1,colEventName,i,null));
+            if(!lblEventName.isDisplayed()){
+                System.out.println("The Event "+eventName+" does not display in the list");
+                return 0;
+            }
+            if(lblEventName.getText().contains(eventName)){
+                System.out.println("Found the league "+eventName+" in the table");
+                return i;
             }
             i = i +1;
         }
