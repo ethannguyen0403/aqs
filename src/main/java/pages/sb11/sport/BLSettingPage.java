@@ -7,14 +7,14 @@ import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
 import pages.sb11.WelcomePage;
+import pages.sb11.sport.popup.CreateSoccerSeasonPopup;
+import pages.sb11.trading.popup.BLSettingsPopup;
 
 import java.util.List;
 
-public class OpenPricePage extends WelcomePage {
-    int colEvent = 3;
-    int colFT12 = 4;
-    int colFTHDP = 5;
-    int colFTOU = 6;
+public class BLSettingPage extends WelcomePage {
+    int colEventName = 4;
+    int colEdit = 5;
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
     public String getTitlePage ()
     {
@@ -23,28 +23,35 @@ public class OpenPricePage extends WelcomePage {
 
     public TextBox txtDate = TextBox.name("dp");
     public DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-days-calendar-view");
-    public Button btnShowLeagues = Button.xpath("//button[text()='Show Leagues']");
+    public Button btnShowLeagues = Button.xpath("//app-bl-settings//button[contains(@class,'btn-show-league')]");
     public Button btnShow = Button.xpath("//button[text()='Show']");
-    public Button btnSubmit = Button.xpath("//button[contains(text(),'Submit')]");
-    public DropDownBox ddpLeague = DropDownBox.id("league");
-    public Table tbOpenPrice = Table.xpath("//div[contains(@class,'main-box-header')]//following::table[1]",13);
+    public DropDownBox ddpLeague = DropDownBox.id("sport");
+    public DropDownBox ddpOrderBy = DropDownBox.id("betType");
+    public Table tbBLSettings = Table.xpath("//div[contains(@class,'main-box-header')]//following::table[1]",8);
 
-    public void filterResult(String date, String league, boolean isShow){
+    public void filterResult(String date, String league, String orderBy, boolean isShow){
         if(!date.isEmpty()){
             dtpDate.selectDate(date,"dd/MM/yyyy");
             btnShowLeagues.click();
         }
         ddpLeague.selectByVisibleText(league);
+        ddpOrderBy.selectByVisibleText(orderBy);
         if (isShow){
             btnShow.click();
         }
+    }
+
+    public BLSettingsPopup openBLSettingPopup(String eventName){
+        int rowIndex = getRowContainsEvent(eventName);
+        tbBLSettings.getControlOfCell(1,colEventName, rowIndex,"a").click();
+        return new BLSettingsPopup();
     }
 
     public boolean isLeagueExist(String leagueName){
         int i = 1;
         Label lblLeague;
         while (true){
-            lblLeague = Label.xpath("//app-open-price//table/tbody/tr[1]");
+            lblLeague = Label.xpath("//app-bl-settings//table/tbody/tr[1]");
             if(!lblLeague.isDisplayed()) {
                 System.out.println("Can NOT found the league "+leagueName+" in the table");
                 return false;
@@ -52,6 +59,23 @@ public class OpenPricePage extends WelcomePage {
             if(lblLeague.getText().equals(leagueName)){
                 System.out.println("Found the league "+leagueName+" in the table");
                 return true;
+            }
+            i = i +1;
+        }
+    }
+
+    private int getRowContainsEvent(String eventName){
+        int i = 1;
+        Label lblEventName;
+        while (true){
+            lblEventName = Label.xpath(tbBLSettings.getxPathOfCell(1,colEventName,i,null));
+            if(!lblEventName.isDisplayed()){
+                System.out.println("The Event "+eventName+" does not display in the list");
+                return 0;
+            }
+            if(lblEventName.getText().contains(eventName)){
+                System.out.println("Found the league "+eventName+" in the table");
+                return i;
             }
             i = i +1;
         }
@@ -71,24 +95,5 @@ public class OpenPricePage extends WelcomePage {
 
     public List<String> getListLeague(){
         return ddpLeague.getOptions();
-    }
-
-    public void fillOpenPrice (String FT12HA, String FT12Draw, String FTHandicapHDP, String FTHandicapPrice, String FTOUHDP, String FTOUPrice, boolean isSubmit){
-
-    }
-
-    public int getEventRowIndex(String eventName){
-        int i = 1;
-        Label lblEvent;
-        while (true){
-            lblEvent = Label.xpath(tbOpenPrice.getxPathOfCell(1,colEvent,i,null));
-            if(!lblEvent.isDisplayed()) {
-                System.out.println("Can NOT found the ledger name "+eventName+" in the table");
-                return 0;
-            }
-            if (lblEvent.getText().contains(eventName))
-                return i;
-            i = i +1;
-        }
     }
 }

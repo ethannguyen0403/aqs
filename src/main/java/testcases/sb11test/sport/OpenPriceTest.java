@@ -1,10 +1,13 @@
 package testcases.sb11test.sport;
 
+import com.paltech.element.common.Label;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.sb11.sport.EventMappingPage;
 import pages.sb11.sport.OpenPricePage;
 import testcases.BaseCaseAQS;
+
+import java.awt.*;
 
 import static common.SBPConstants.*;
 
@@ -54,15 +57,31 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     public void OpenPriceTC_004(){
         log("@title: Validate selected League is displayed correctly when clicking Show");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Open Price");
         OpenPricePage openPricePage = welcomePage.navigatePage(SPORT,OPEN_PRICE, OpenPricePage.class);
         log("@Step 3:  Select Date and click Show League ");
+        String league = openPricePage.getFirstLeague();
         log("@Step 4: Select a league and click Show");
-        openPricePage.filterResult("","All",true);
+        openPricePage.filterResult("",league,true);
+        log("Validate selected League is displayed correctly when clicking Show");
+        Assert.assertTrue(openPricePage.isLeagueExist(league),"FAILED! League "+ league+" does not display in the list");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression1"})
+    public void OpenPriceTC_005(){
+        log("@title: Validate updated Open Price is displayed correctly on BBT page");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Sport > Open Price");
+        OpenPricePage openPricePage = welcomePage.navigatePage(SPORT,OPEN_PRICE, OpenPricePage.class);
+        log("@Step 3:  Select Date and click Show League ");
+        String league = openPricePage.getFirstLeague();
+        log("@Step 4: Select a league and click Show");
+        openPricePage.filterResult("",league,true);
         log("@Step 5: Fill result on any event and click Submit");
         log("@Step 6: Navigate to Soccer > BBT");
         log("@Step 7: Filter with event at step 4");

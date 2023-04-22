@@ -63,7 +63,6 @@ public class CricketResultEntryTest extends BaseCaseAQS {
         Assert.assertTrue(cricketResultEntryPage.ddpStatus.isDisplayed(),"Failed! Status dropdown is not displayed");
         Assert.assertTrue(cricketResultEntryPage.btnShow.isDisplayed(),"Failed! Show button is not displayed");
         log("Result Entry table header columns are correctly display");
-        log("Header is " + cricketResultEntryPage.tbResult.getHeaderNameOfRows());
         Assert.assertEquals(cricketResultEntryPage.tbResult.getHeaderNameOfRows(), ResultEntry.RESULT_CRICKET_TABLE_HEADER,"FAILED! Result table header is incorrect display");
         log("INFO: Executed completely");
     }
