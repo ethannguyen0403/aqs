@@ -62,6 +62,8 @@ public class SoccerBetEntryPage extends BetEntryPage {
         }
         if(!league.isEmpty()) {
             ddpLeague.selectByVisibleText(league);
+            waitPageLoad();
+
         }
         btnShow.click();
         waitPageLoad();

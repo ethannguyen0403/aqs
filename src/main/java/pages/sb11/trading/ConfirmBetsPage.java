@@ -1,5 +1,6 @@
 package pages.sb11.trading;
 
+import com.paltech.driver.DriverManager;
 import com.paltech.element.common.*;
 import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
@@ -180,13 +181,24 @@ public class ConfirmBetsPage extends WelcomePage {
             String liveHomeScore = TextBox.xpath(tblOrder.getxPathOfCell(1, colLive, orderIndex, "input[1]")).getAttribute("value").trim();
             String liveAwayScore =  TextBox.xpath(tblOrder.getxPathOfCell(1, colLive, orderIndex, "input[2]")).getAttribute("value").trim();
             Assert.assertEquals(hdp, String.format("%.2f",order.getHdpPoint()), "Failed!HDP is incorrect");
-            Assert.assertEquals(liveHomeScore, String.format("%d",order.getLiveHomeScore()), "Failed!Home live score is incorrect");
-            Assert.assertEquals(liveAwayScore,String.format("%d", order.getLiveAwayScore()), "Failed!Away live score is incorrect");
+            if(order.getBetId()=="Manual Bet"){
+                Assert.assertEquals(liveHomeScore,"", "Failed! Home live score is incorrect");
+                Assert.assertEquals(liveAwayScore,"", "Failed! Away live score is incorrect");
+            }else {
+            Assert.assertEquals(liveHomeScore, String.format("%d",order.getLiveHomeScore()), "Failed! Home live score is incorrect");
+            Assert.assertEquals(liveAwayScore,String.format("%d", order.getLiveAwayScore()), "Failed! Away live score is incorrect");}
         }
         Assert.assertEquals(league, order.getEvent().getLeagueName(), "Failed! Selection is incorrect");
-        Assert.assertEquals(eventName, String.format("%s\n" + "vs\n" +"%s",order.getEvent().getHome(),order.getEvent().getAway()), "Failed! Event name is incorrect");
-        Assert.assertEquals(orderID, String.format("%s / %s",order.getOrderId(), order.getBetId()), "Failed! Order id and Bet Id is incorrect ");
-        Assert.assertEquals(selection, order.getSelection(), "Failed! Stake is incorrect is in correct");
+        if(order.getBetId()=="Manual Bet"){
+            Assert.assertEquals(eventName,order.getEvent().getHome(), "Failed! Event name is incorrect");
+            selection =  TextBox.xpath(tblOrder.getxPathOfCell(1, colSelection, orderIndex, "input")).getAttribute("value");
+            Assert.assertEquals(selection, order.getSelection(), "Failed! Stake is incorrect is in correct");
+        }else {
+            Assert.assertEquals(eventName, String.format("%s\n" + "vs\n" +"%s",order.getEvent().getHome(),order.getEvent().getAway()), "Failed! Event name is incorrect");
+            Assert.assertEquals(orderID, String.format("%s / %s",order.getOrderId(), order.getBetId()), "Failed! Order id and Bet Id is incorrect ");
+            Assert.assertEquals(selection, order.getSelection(), "Failed! Stake is incorrect is in correct");
+        }
+
         Assert.assertEquals(odds,String.format("%.3f",order.getPrice()), "Failed!Odds is incorrect");
         Assert.assertEquals(oddsType,String.format("(%s)",order.getOddType()), "Failed! Odds Type is incorrect");
         Assert.assertEquals(bl,order.getBetType(), "Failed! Bet Type (Back/Lay )is incorrect");
@@ -279,6 +291,7 @@ public class ConfirmBetsPage extends WelcomePage {
     public void deleteSelectedOrders(List<Order> lstOrder, boolean isPending){
         selectBets(lstOrder,isPending);
         lblDeleteSelected.click();
+        lblDeleteSelected.scrollToTop();
         ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
         confirmPopupControl.confirmYes();
         waitPageLoad();
@@ -308,6 +321,7 @@ public class ConfirmBetsPage extends WelcomePage {
     }
 
     private void fillInfo(Order order,boolean isPendingBet){
+        DriverManager.getDriver().switchToWindow();
         int orderIndex =getOrderIndex(order.getBetId());
         int colSelect =defineSelectColIndex(isPendingBet);
         Icon.xpath(tblOrder.getxPathOfCell(1,colSelect,orderIndex,"input")).click();
