@@ -104,7 +104,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("@Step 4. Click on the 'Bets' link at 'SPB' column of the event at the precondition and observe");
         betEntryPage= confirmBetsPage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,"",league);
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
         BetListPopup betListPopup = soccerBetEntryPage.openBetList(eventInfo.getHome());
 
         log("@Verify: Bet has been deleted does not show in Bet List - Bet Entry page");
@@ -664,7 +664,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
         String league = soccerBetEntryPage.getFirstLeague();
-Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
         // define order info
         Order order = new Order.Builder()
@@ -699,7 +699,7 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         log("@Verify 1: Validate the bet is updated with new values accordingly");
         betEntryPage = confirmBetsPage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,"",league);
+        soccerBetEntryPage.showLeague(companyUnit,date,league);
         BetListPopup betListPopup = soccerBetEntryPage.openBetList(eventInfo.getHome());
 
         log("@Verify 2: Bets information is displayed correctly in Bet List");
@@ -777,8 +777,8 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         log("Having at least an account that is having bet which is not confirmed yet\n");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
-        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI =  String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
+        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT+7"));
+        String dateAPI =  String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT+7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
@@ -890,12 +890,13 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         log("Precondition:Have a manual bet created");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
-        String description = "Manua bet on " +DateUtils.getDate(0,"yyyymmddhhmmss","GMT+7");
+        String description = "Manual bet on " +DateUtils.getDate(0,"yyyymmddhhmmss","GMT+7");
         String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT+7");
+        String yesterdayDate = DateUtils.getDate(-1,"dd/MM/yyyy","GMT+7");
         String dateAPI =  String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Event eventInfo = new Event.Builder()
                 .sportName(sport)
-                .leagueName(username)
+                .leagueName(description)
                 .eventDate(dateAPI)
                 .home("Manual Bet")
                 .away("")
@@ -930,13 +931,13 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
 
         log("@Step 3:Filter 'Sports' = All and input the account at the precondition to the 'Account Code' field and the status is Confirm");
         log("@Step 4:Click 'Show' and observe the bet at precondition");
-        confirmBetsPage.filter(companyUnit, "", "Confirmed", eventInfo.getSportName(), "All", "Specific Date", date, "", accountCode);
+        confirmBetsPage.filter(companyUnit, "", "Confirmed", eventInfo.getSportName(), "All", "Specific Date", yesterdayDate, "", accountCode);
 
         log("@Verify 1: Verify manual bet display when fingering Confirm status with correctly info");
         confirmBetsPage.verifyOrder(order);
 
         log("@Post-Condition: Cancel Manual bet");
-        confirmBetsPage.filter(companyUnit, "", "Confirmed", eventInfo.getSportName(), "All", "Specific Date", date, "", accountCode);
+        confirmBetsPage.filter(companyUnit, "", "Confirmed", eventInfo.getSportName(), "All", "Specific Date", yesterdayDate, "", accountCode);
         confirmBetsPage.deleteOrder(order,false);
 
         log("INFO: Executed completely");

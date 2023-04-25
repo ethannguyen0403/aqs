@@ -46,6 +46,11 @@ public class ManualBetBetEntryPage extends BetEntryPage {
 
     public String placeManualBet(String companyUnit, String date, String accCode, String sport, String betDescription,
                                  String selection, String betType, String odds, String stake, String winLoss, boolean isConfirm){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         ddCompany.selectByVisibleContainsText(companyUnit);
         txtAccCode.sendKeys(accCode);
         btnSearch.click();
