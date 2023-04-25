@@ -37,6 +37,15 @@ public class SBPConstants {
     public final static String CONFIRM_BETS = "Confirm Bets";
     public final static String BET_SETTLEMENT = "Bet Settlement";
     public final static String EVENT_MAPPING = "Event Mapping";
+    public final static String OPEN_PRICE = "Open Price";
+    public final static String BL_SETTINGS = "BL Settings";
+    public final static String MONITOR_BETS = "Monitor Bets";
+    public final static String MATCH_ODDS_LIABILITY = "1x2 Liability";
+    public final static String HANDICAP_LIABILITY = "Handicap Liability";
+    public final static String HANDICAP_CORNER_LIABILITY = "Handicap Corner Liability";
+    public final static String OVER_UNDER_LIABILITY = "Over/Under Liability";
+    public final static String OVER_UNDER_CORNER_LIABILITY = "Over/Under Corner Liability";
+    public final static String BBG_PHONE_BETTING = "BBG - Phone Betting";
     public final static String PLACE_BET_SUCCESS_MSG ="The bet was placed successfully";
     public final static String FINANCIAL_YEAR = "Year 2022-2023";
     public final static String COMPANY_UNIT = "Kastraki Limited";
@@ -138,6 +147,48 @@ public class SBPConstants {
     public static class ResultEntry{
         public final static List<String> RESULT_SOCCER_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "HT Score", "FT Score", "HT Corner", "FT Corner", "HT Card", "FT Card");
         public final static List<String> RESULT_CRICKET_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "Team A", "Team B", "IsHdp FB", "Result", "Runs", "Wkts", "Runs", "Wkts");
+    }
+
+    public static class EventMapping{
+        public final static List<String> EVENT_TABLE_HEADER = Arrays.asList("Date", "League", "Event","","","","","");
+        public final static List<String> PROVIDER_EVENT_TABLE_HEADER = Arrays.asList("", "Date", "League", "Event","","","","");
+        public final static List<String> MAPPED_LIST_TABLE_HEADER = Arrays.asList("i", "Match Date", "League", "Event", "Provider Match Date", "Provider League", "Provider Event", "Provider", "Created Date", "Created By", "Unmap","","","","","","","","","","","");
+    }
+
+    public static class OpenPrice{
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "Time","i", "Event", "FT - 1x2","H/A","Draw", "FT - Handicap - OP","HDP","Price", "FT - Over/Under - OP","HDP","Price","");
+    }
+
+    public static class BLSettings{
+        public final static List<String> TABLE_HEADER = Arrays.asList("#","i", "Time","Event", "Edit", "TV", "KP", "Live RB");
+    }
+
+    public static class MonitorBets{
+        public final static List<String> TABLE_HEADER = Arrays.asList("Info", "AC", "Event", "Selection","HDP","Stake","L","NL","T","Report","");
+    }
+
+    public static class MatchOddsLiability{
+        public final static List<String> TABLE_HEADER = Arrays.asList("Event Date", "Event", "Win %", "Home", "Draw", "Away");
+    }
+
+    public static class HandicapLiability{
+        public final static List<String> TABLE_HEADER = Arrays.asList("Event Date", "Event", "Win %", "Home", "Draw", "Away");
+    }
+
+    public static class HandicapCornerLiability{
+        public final static List<String> TABLE_HEADER = Arrays.asList("Event Date", "Event", "Win %", "Home", "Draw", "Away");
+    }
+
+    public static class OverUnderLiability{
+        public final static List<String> TABLE_HEADER = Arrays.asList("Event Date", "Event", "Win %", "Home", "Draw", "Away");
+    }
+
+    public static class OverUnderCornerLiability{
+        public final static List<String> TABLE_HEADER = Arrays.asList("Event Date", "Event", "Win %", "Home", "Draw", "Away");
+    }
+
+    public static class BBGPhoneBetting{
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "Account Code", "Bet Date", "Bet Type", "Selection", "HDP", "Live", "Price", "Stake", "Win/Lose", "CUR", "Trader");
     }
 
 }
