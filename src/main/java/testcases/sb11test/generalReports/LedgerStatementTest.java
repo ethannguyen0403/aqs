@@ -7,17 +7,20 @@ import pages.sb11.accounting.JournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import testcases.BaseCaseAQS;
+import utils.sb11.CurrencyRateUtils;
 import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 import utils.sb11.BookieInfoUtils;
 import utils.sb11.ClientSystemUtils;
+
+import java.time.LocalDate;
 
 import static common.SBPConstants.*;
 
 public class LedgerStatementTest extends BaseCaseAQS {
 
     String companyUnit = "Kastraki Limited";
-    String transType = "Others";
+    String transType = "Payment Other";
     String financialYear = "Year 2022-2023";
     String debitExpAcc = "AutoExpenditureDebit";
     String creditExpAcc = "AutoExpenditureCredit";
@@ -41,7 +44,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     String descLiability = "Liability Transaction " + DateUtils.getMilliSeconds();
 
     @TestRails(id="841")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Ledger_Statement_TC841(){
         log("@title: Validate transaction Debit of Ledger Type = Expenditure");
         log("@Step 1: Login to SB11 site");
@@ -335,7 +338,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="850")
-    @Test(groups = {"smoke_qc"})
+    @Test(groups = {"smoke"})
     public void Ledger_Statement_TC850(){
         log("@title: Validate transaction Credit of Ledger Type = Liability");
         log("@Step 1: Login to SB11 site");
@@ -688,4 +691,5 @@ public class LedgerStatementTest extends BaseCaseAQS {
         ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
         log("INFO: Executed completely");
     }
+
 }
