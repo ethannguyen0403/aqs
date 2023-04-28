@@ -1,9 +1,6 @@
 package pages.sb11.soccer;
 
-import com.paltech.element.common.Button;
-import com.paltech.element.common.DropDownBox;
-import com.paltech.element.common.Label;
-import com.paltech.element.common.TextBox;
+import com.paltech.element.common.*;
 import com.paltech.utils.DoubleUtils;
 import controls.DateTimePicker;
 import controls.Table;
@@ -14,17 +11,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SPPPage extends WelcomePage {
-    Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
-    DropDownBox ddpReportBy = DropDownBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[1]//select");
-    DropDownBox ddpPunterType = DropDownBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[2]//select");
-    DropDownBox ddpSmartMaster = DropDownBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[3]//select");
-    DropDownBox ddpSmartAgent = DropDownBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[4]//select");
-    TextBox txtFromDate = TextBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[5]//input");
-    TextBox txtToDate = TextBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[6]//input");
-    DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
-    DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
-    Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
-    Label lblSmartGroup = Label.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][2]/div[4]");
+    public Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
+    public DropDownBox ddSport = DropDownBox.xpath("//div[contains(text(),'Sport')]//following::select[1]");
+    public DropDownBox ddpReportBy = DropDownBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[1]//select");
+    public DropDownBox ddpPunterType = DropDownBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[2]//select");
+    public DropDownBox ddpSmartMaster = DropDownBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[3]//select");
+    public DropDownBox ddpSmartAgent = DropDownBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[4]//select");
+    public TextBox txtFromDate = TextBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[5]//input");
+    public TextBox txtToDate = TextBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[6]//input");
+    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
+    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
+    public CheckBox cbShowTaxAmount = CheckBox.id("defaultCheck1");
+    public Button btnShowBetTypes = Button.xpath("//label[contains(text(),'Show Bet Types')]");
+    public Button btnShowLeagues = Button.xpath("//label[contains(text(),'Show Leagues')]");
+    public Button btnSmartGroup = Button.xpath("//label[contains(text(),'Smart Group')]");
+    public Button btnReset = Button.xpath("//label[contains(text(),'Reset All Filters')]");
+    public Button btnMoreFilters = Button.xpath("//label[contains(text(),'More Filters')]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
+    public Label lblSmartGroup = Label.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][2]/div[4]");
+    public Table tblSPP = Table.xpath("//app-spp//table",15);
     int totalColumnNumber = 15;
     int colGroupCode = 2;
     public int colWL =12;
