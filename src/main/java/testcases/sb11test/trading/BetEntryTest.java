@@ -27,7 +27,7 @@ public class BetEntryTest extends BaseCaseAQS {
 
     @TestRails(id="862")
     @Parameters({"accountCode"})
-    @Test(groups = {"smoke_passed"})
+    @Test(groups = {"smoke"})
     public void Bet_Entry_TC862(String accountCode){
         log("@title: Validate users can place Mixed Sports bets successfully");
         log("@Step 1: Login to SB11 site");
@@ -192,7 +192,7 @@ public class BetEntryTest extends BaseCaseAQS {
     }
 
     @TestRails(id="191")
-    @Test(groups = {"smoke_passed"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetEntry_TC191(String accountCode,String accountCurrency) throws ParseException {
         log("@title: Validate Bet Slip info display correctly when open Soccer> FT>HDP>Home");
@@ -240,7 +240,7 @@ public class BetEntryTest extends BaseCaseAQS {
     }
 
     @TestRails(id="341")
-    @Test(groups = {"smoke_qc_passed"})
+    @Test(groups = {"smoke_qc"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetEntry_TC341(String accountCode,String accountCurrency){
         log("@title: Validate can place bet for soccer with option copy bet to SPBPS7 as same odds\n");
