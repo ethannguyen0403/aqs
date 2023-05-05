@@ -7,10 +7,14 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.accounting.JournalEntriesPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.ChartOfAccountUtils;
+import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
-import static common.SBPConstants.ACCOUNTING;
-import static common.SBPConstants.JOURNAL_ENTRIES;
+import java.io.IOException;
+
+import static common.SBPConstants.*;
+import static common.SBPConstants.LEDGER_PARENT_NAME_ASSET;
 
 public class JournalEntriesTest extends BaseCaseAQS {
 
@@ -53,4 +57,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         Assert.assertTrue(journalEntriesPage.messageSuccess.getText().contains("Transaction has been created"), "Failed! Message is displayed incorrectly!");
         log("INFO: Executed completely");
     }
+
+
+
 }

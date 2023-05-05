@@ -227,6 +227,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2123")
     public void PTRiskControlTC_001(){
         log("@title: Validate PT Risk Control page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -238,6 +239,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2124")
     public void PTRiskControlTC_002(){
         log("@title: Validate UI on PT Risk Control is correctly displayed");
         log("@Step 1: Login with valid account");
@@ -262,6 +264,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @Parameters({"accountCode","accountCurrency"})
+    @TestRails(id = "2125")
     public void PTRiskControlTC_003(String accountCode,String accountCurrency){
         log("@title: Validate Full Time Handicap bet is displayed correctly on PT Risk Control > Handicap tab");
         log("@Pre-condition: Having an Full Time Handicap bet which have been placed on Bet Entry");

@@ -7,6 +7,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.popup.ChangePasswordPopup;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import static common.ESSConstants.*;
 
@@ -14,6 +15,7 @@ public class HomePageTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @Parameters("username")
+    @TestRails(id = "2061")
     public void Homepage_TC_001(){
         log("@title: Validate menu in header section is correctly display");
         log("@Step 1: Login with valid account");
@@ -26,6 +28,7 @@ public class HomePageTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @Parameters("username")
+    @TestRails(id = "2062")
     public void Homepage_TC_002(){
         log("@title: Validate Change Password popup display");
         log("@Step 1: Login with valid account");
@@ -45,6 +48,7 @@ public class HomePageTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @Parameters({"username","password"})
+    @TestRails(id = "2063")
     public void Homepage_TC_003(String username, String password) throws Exception {
         log("@title: Validate that changing password is worked correctly");
         log("@Step 1: Login with valid account");

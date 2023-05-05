@@ -5,12 +5,14 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.sb11.sport.SoccerResultEntryPage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
 
 public class SoccerResultEntryTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2085")
     public void Soccer_ResultEntry_TC001(){
         log("@title: Validate Result Entry for Soccer is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -24,6 +26,7 @@ public class SoccerResultEntryTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2086")
     public void Soccer_ResultEntry_TC002(){
         log("@title: Validate UI on Soccer  Result Entry  is correctly displayed");
         log("@Step 1: Login with valid account");
@@ -52,8 +55,9 @@ public class SoccerResultEntryTest extends BaseCaseAQS {
 
 
     @Test(groups = {"regression1"})
+    @TestRails(id = "2089")
     public void Soccer_ResultEntry_TC003(){
-        log("@title: Validate UI on Soccer  Result Entry  is correctly displayed");
+        log("@title: Validate League list is displayed correctly when clicking Show Leagues ");
         String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Result Entry");

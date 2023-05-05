@@ -194,5 +194,6 @@ public class SBPConstants {
 
     public static class SPPPage{
         public final static List<String> TABLE_HEADER = Arrays.asList("#", "Group Code","MP","PT%","Bets","Wins","Lose","Draw","MB","Avg Stake","Turnover","W/L","W/L [HKD]","Win%","CUR");
+        public final static List<String> TABLE_HEADER_WITH_TAX = Arrays.asList("#", "Group Code","MP","PT%","Bets","Wins","Lose","Draw","MB","Avg Stake","Turnover","W/L","Tax","Net W/L","W/L [HKD]","Win%","CUR");
     }
 }

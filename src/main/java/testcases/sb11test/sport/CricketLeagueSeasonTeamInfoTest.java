@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import pages.sb11.sport.CricketLeagueSeasonTeamInfoPage;
 import testcases.BaseCaseAQS;
 import pages.sb11.sport.popup.*;
+import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.LEAGUE_SEASON_TEAM_INFO;
 import static common.SBPConstants.SPORT;
@@ -19,6 +20,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     String teamName = "QA Cricket Auto Team";
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2073")
     public void Cricket_League_Season_Team_Info_TC_001(){
         log("@title: Validate League/Season/Team Info for Cricket is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -34,6 +36,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2074")
     public void Cricket_League_Season_Team_Info_TC_002(){
         log("@title:Validate UI on League/Season/Team Info for Cricket is correctly displayed");
         log("@Step 1: Login with valid account");
@@ -62,6 +65,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2078")
     public void Cricket_League_Season_Team_Info_TC_003(){
         log("@title: Validate that can add new Cricket League successfully");
         log("@Step 1: Login with valid account");
@@ -79,6 +83,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2079")
     public void Cricket_League_Season_Team_Info_TC_004(){
         log("@title: Validate that can add new Cricket season successfully");
         log("@Step 1: Login with valid account");
@@ -95,6 +100,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2080")
     public void Cricket_League_Season_Team_Info_TC_005(){
         log("@title: Validate that can add new Cricket Team successfully");
         log("@Step 1: Login with valid account");

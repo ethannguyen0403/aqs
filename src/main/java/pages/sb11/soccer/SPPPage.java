@@ -13,10 +13,10 @@ import java.util.List;
 public class SPPPage extends WelcomePage {
     public Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
     public DropDownBox ddSport = DropDownBox.xpath("//div[contains(text(),'Sport')]//following::select[1]");
-    public DropDownBox ddpReportBy = DropDownBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[1]//select");
-    public DropDownBox ddpPunterType = DropDownBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[2]//select");
-    public DropDownBox ddpSmartMaster = DropDownBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[3]//select");
-    public DropDownBox ddpSmartAgent = DropDownBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[4]//select");
+    public DropDownBox ddpReportBy = DropDownBox.xpath("//div[contains(text(),'Report By')]//following::select[1]");
+    public DropDownBox ddpPunterType = DropDownBox.xpath("//div[contains(text(),'Punter Type')]//following::select[1]");
+    public DropDownBox ddpSmartMaster = DropDownBox.xpath("//div[contains(text(),'Smart Master')]//following::select[1]");
+    public DropDownBox ddpSmartAgent = DropDownBox.xpath("//div[contains(text(),'Smart Agent')]//following::select[1]");
     public TextBox txtFromDate = TextBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[5]//input");
     public TextBox txtToDate = TextBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[6]//input");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
@@ -49,7 +49,9 @@ public class SPPPage extends WelcomePage {
      * @param fromDate
      * @param toDate
      */
-    public void filter(String reportBy, String punterType, String smartMaster, String smartAgent, String fromDate, String toDate){
+    public void filter(String sport, String reportBy, String punterType, String smartMaster, String smartAgent, String fromDate, String toDate){
+        if(!sport.isEmpty())
+            ddSport.selectByVisibleText(sport);
         if(!reportBy.isEmpty())
             ddpReportBy.selectByVisibleText(reportBy);
         if(!punterType.isEmpty())

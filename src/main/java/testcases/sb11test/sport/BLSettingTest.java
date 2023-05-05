@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import pages.sb11.sport.BLSettingPage;
 import pages.sb11.sport.OpenPricePage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
 
@@ -23,6 +24,7 @@ public class BLSettingTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2097")
     public void BLSettingsTC_002(){
         log("@title: Validate UI on Open Price is correctly displayed");
         log("@Step 1: Login with valid account");
@@ -41,6 +43,7 @@ public class BLSettingTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2098")
     public void BLSettingsTC_003(){
         log("@title: Validate League list is displayed correctly when clicking Show Leagues");
         log("@Step 1: Login with valid account");
@@ -54,6 +57,7 @@ public class BLSettingTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2099")
     public void BLSettingsTC_004(){
         log("@title: Validate selected League is displayed correctly when clicking Show");
         log("@Step 1: Login with valid account");
@@ -69,6 +73,7 @@ public class BLSettingTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression1"})
+    @TestRails(id = "2100")
     public void BLSettingsTC_005(){
         log("@title: Validate selected League is displayed correctly when clicking Show");
         log("@Step 1: Login with valid account");

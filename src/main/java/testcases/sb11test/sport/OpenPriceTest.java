@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import pages.sb11.sport.EventMappingPage;
 import pages.sb11.sport.OpenPricePage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import java.awt.*;
 
@@ -14,6 +15,7 @@ import static common.SBPConstants.*;
 public class OpenPriceTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2092")
     public void OpenPriceTC_001(){
         log("@title: Validate Open Price page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -25,6 +27,7 @@ public class OpenPriceTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2093")
     public void OpenPriceTC_002(){
         log("@title: Validate UI on Open Price is correctly displayed");
         log("@Step 1: Login with valid account");
@@ -44,6 +47,7 @@ public class OpenPriceTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2094")
     public void OpenPriceTC_003(){
         log("@title: Validate League list is displayed correctly when clicking Show Leagues");
         log("@Step 1: Login with valid account");
@@ -58,6 +62,7 @@ public class OpenPriceTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2095")
     public void OpenPriceTC_004(){
         log("@title: Validate selected League is displayed correctly when clicking Show");
         log("@Step 1: Login with valid account");
@@ -73,6 +78,7 @@ public class OpenPriceTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression1"})
+    @TestRails(id = "2096")
     public void OpenPriceTC_005(){
         log("@title: Validate updated Open Price is displayed correctly on BBT page");
         log("@Step 1: Login with valid account");
