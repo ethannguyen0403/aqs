@@ -5,12 +5,14 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.sb11.soccer.OverUnderLiabilityPage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
 
 public class OverUnderLiabilityTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2115")
     public void OverUnderLiabilityTC_001(){
         log("@title: Validate Over/Under Liability page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -22,6 +24,7 @@ public class OverUnderLiabilityTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression1"})
+    @TestRails(id = "2116")
     public void OverUnderLiabilityTC_002(){
         log("@title: Validate Over/Under Liability page is displayed when navigate");
         log("@Step 1: Login with valid account");

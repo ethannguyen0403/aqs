@@ -13,6 +13,9 @@ public class PTRiskBetListPopup extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
     Button btnClose = Button.xpath("//div[@class='pt-risk-modal']//span[contains(@class,'close-icon')]");
     Table tblBetList = Table.xpath("//table[@aria-label='group table']",totalCol);
+    Label lblHandicap = Label.xpath("//span[text()='Handicap']");
+    Label lblOverUnder = Label.xpath("//span[text()='Over Under']");
+    Label lblHalftime = Label.xpath("//span[text()='Half-time']");
     @Override
     public String getTitlePage ()
     {
@@ -44,4 +47,6 @@ public class PTRiskBetListPopup extends WelcomePage {
         btnClose.click();
         return new PTRiskPage();
     }
+
+
 }

@@ -5,11 +5,13 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 public class AuthenticateTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @Parameters("username")
+    @TestRails(id = "2059")
     public void LoginTC_001(String username){
         log("@title: Verify that can login successfully");
         log("@Step 1: Login with valid account");
@@ -22,6 +24,7 @@ public class AuthenticateTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @Parameters("username")
+    @TestRails(id = "2060")
     public void LogoutTC_001(){
         log("@title: Verify that can login successfully");
         log("@Step 1: Login with valid account");

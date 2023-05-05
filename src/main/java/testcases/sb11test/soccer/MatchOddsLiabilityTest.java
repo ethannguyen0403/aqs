@@ -13,6 +13,7 @@ import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.BetEntrytUtils;
 import utils.sb11.GetSoccerEventUtils;
+import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import static common.SBPConstants.*;
 public class MatchOddsLiabilityTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2106")
     public void MatchOddsLiabilityTC_001(){
         log("@title: Validate 1x2 Liability page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -33,6 +35,7 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2107")
     public void MatchOddsLiabilityTC_002(){
         log("@title: Validate 1x2 Liability page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -66,9 +69,10 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String marketType = "1x2";
+        String smartType = "Group";
 
-        String date = String.format(DateUtils.getDate(1,"d/MM/yyyy","UTC+7:00"));
-        String dateAPI = String.format(DateUtils.getDate(1,"yyyy-MM-dd","UTC+7:00"));
+        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","UTC+7:00"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","UTC+7:00"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
@@ -92,16 +96,15 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
                 .away((eventInfo.getAway()))
                 .event(eventInfo)
                 .build();
-        SoccerSPBBetSlipPopup soccerSPBBetSlipPopup = soccerBetEntryPage.openSPBBetSlip(accountCode,eventInfo.getHome());
-        soccerSPBBetSlipPopup.placeMoreBet(order,false,false,false);
+//        SoccerSPBBetSlipPopup soccerSPBBetSlipPopup = soccerBetEntryPage.openSPBBetSlip(accountCode,eventInfo.getHome());
+//        soccerSPBBetSlipPopup.placeMoreBet(order,false,false,false);
 
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > 1x2 Liability");
         MatchOddsLiabilityPage matchOddsLiabilityPage = welcomePage.navigatePage(SOCCER,MATCH_ODDS_LIABILITY, MatchOddsLiabilityPage.class);
         log("@Step 3: Filter with event that having bet at Pre-condition ");
-
         log("@Step 4: Click Show");
-        
+        matchOddsLiabilityPage.filterResult(companyUnit, sport, smartType,false,"All",date,date,"All",true);
         log("Validate 1x2 bet from Bet Entry is displayed correctly on 1x2 Liability report");
 
         log("INFO: Executed completely");

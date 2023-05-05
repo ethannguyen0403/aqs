@@ -5,11 +5,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.sb11.soccer.OverUnderCornerLiabilityPage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
 
 public class OverUnderCornerLiabilityTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
+    @TestRails(id = "2118")
     public void OverUnderCornerLiabilityTC_001(){
         log("@title: Validate Over/Under Corner Liability page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -21,6 +23,7 @@ public class OverUnderCornerLiabilityTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression1"})
+    @TestRails(id = "2119")
     public void OverUnderCornerLiabilityTC_002(){
         log("@title: Validate Over/Under Corner Liability page is displayed when navigate");
         log("@Step 1: Login with valid account");

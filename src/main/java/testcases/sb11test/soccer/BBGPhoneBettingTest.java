@@ -4,11 +4,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.sb11.soccer.BBGPhoneBettingPage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
 
 public class BBGPhoneBettingTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
+    @TestRails(id = "2121")
     public void BBGPhoneBettingTC_001(){
         log("@title: Validate BBG-Phone Betting page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -20,6 +22,7 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2122")
     public void BBGPhoneBettingTC_002(){
         log("@title: Validate BBG-Phone Betting page is displayed when navigate");
         log("@Step 1: Login with valid account");

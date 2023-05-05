@@ -5,12 +5,14 @@ import org.testng.annotations.Test;
 import pages.sb11.sport.EventMappingPage;
 import pages.sb11.sport.SoccerLeagueSeasonTeamInfoPage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
 
 public class EventMappingTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2090")
     public void EventMappingTC_001(){
         log("@title: Validate Event Mapping page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -22,6 +24,7 @@ public class EventMappingTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2091")
     public void EventMappingTC_002(){
         log("@title: Validate Event Mapping page is displayed when navigate");
         log("@Step 1: Login with valid account");

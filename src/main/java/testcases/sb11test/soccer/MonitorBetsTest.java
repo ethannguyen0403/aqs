@@ -7,6 +7,7 @@ import pages.sb11.soccer.MonitorBetsPage;
 import pages.sb11.soccer.PendingBetsPage;
 import pages.sb11.soccer.PerformanceByMonthPage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import java.sql.DriverManager;
 
@@ -27,6 +28,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     String accCur = "HKD";
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2101")
     public void MonitorBetsTC_001(){
         log("@title: Validate Monitor Bets page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -38,6 +40,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2102")
     public void MonitorBetsTC_002(){
         log("@title: Validate UI on Monitor Bets is correctly displayed");
         log("@Step 1: Login with valid account");
@@ -69,6 +72,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression1"})
+    @TestRails(id = "2103")
     public void MonitorBetsTC_003(){
         log("@title: Validate Performance By Month is displayed correctly when clicking account at AC column");
         log("@Step 1: Login with valid account");
@@ -86,6 +90,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2104")
     public void MonitorBetsTC_004(){
         log("@title: Validate Pending Bets is displayed correctly when clicking currency at Stake column");
         log("@Step 1: Login with valid account");
@@ -103,6 +108,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2105")
     public void MonitorBetsTC_005(){
         log("@title: Validate Last 12 Days Performance is displayed correctly when clicking data on T column");
         log("@Step 1: Login with valid account");

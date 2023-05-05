@@ -4,11 +4,13 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.sb11.soccer.HandicapLiabilityPage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
 
 public class HandicapLiabilityTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
+    @TestRails(id = "2109")
     public void HandicapLiabilityTC_001(){
         log("@title: Validate Handicap Liability page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -19,7 +21,8 @@ public class HandicapLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
+    @TestRails(id = "2110")
     public void HandicapLiabilityTC_002(){
         log("@title: Validate Handicap Liability page is displayed when navigate");
         log("@Step 1: Login with valid account");

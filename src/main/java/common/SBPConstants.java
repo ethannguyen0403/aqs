@@ -46,6 +46,7 @@ public class SBPConstants {
     public final static String OVER_UNDER_LIABILITY = "Over/Under Liability";
     public final static String OVER_UNDER_CORNER_LIABILITY = "Over/Under Corner Liability";
     public final static String BBG_PHONE_BETTING = "BBG - Phone Betting";
+
     public final static String PLACE_BET_SUCCESS_MSG ="The bet was placed successfully";
     public final static String FINANCIAL_YEAR = "Year 2022-2023";
     public final static String COMPANY_UNIT = "Kastraki Limited";
@@ -191,4 +192,8 @@ public class SBPConstants {
         public final static List<String> TABLE_HEADER = Arrays.asList("#", "Account Code", "Bet Date", "Bet Type", "Selection", "HDP", "Live", "Price", "Stake", "Win/Lose", "CUR", "Trader");
     }
 
+    public static class SPPPage{
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "Group Code","MP","PT%","Bets","Wins","Lose","Draw","MB","Avg Stake","Turnover","W/L","W/L [HKD]","Win%","CUR");
+        public final static List<String> TABLE_HEADER_WITH_TAX = Arrays.asList("#", "Group Code","MP","PT%","Bets","Wins","Lose","Draw","MB","Avg Stake","Turnover","W/L","Tax","Net W/L","W/L [HKD]","Win%","CUR");
+    }
 }

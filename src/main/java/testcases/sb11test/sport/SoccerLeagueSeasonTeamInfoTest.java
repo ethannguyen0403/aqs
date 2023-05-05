@@ -8,6 +8,7 @@ import testcases.BaseCaseAQS;
 import pages.sb11.sport.popup.CreateSoccerLeaguePopup;
 import pages.sb11.sport.popup.CreateSoccerSeasonPopup;
 import pages.sb11.sport.popup.CreateSoccerTeamPopup;
+import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
 
@@ -18,6 +19,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     String teamName = "QA Soccer Auto Team";
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2071")
     public void Soccer_League_Season_Team_Info_TC_001(){
         log("@title: Validate League/Season/Team Info for Soccer is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -31,6 +33,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2072")
     public void Soccer_League_Season_Team_Info_TC_002(){
         log("@title:Validate UI on League/Season/Team Info for Soccer is correctly displayed");
         log("@Step 1: Login with valid account");
@@ -58,6 +61,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2075")
     public void Soccer_League_Season_Team_Info_TC_003(){
         log("@title: Validate that can add new Soccer League successfully");
         log("@Step 1: Login with valid account");
@@ -74,6 +78,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2076")
     public void Soccer_League_Season_Team_Info_TC_004(){
         log("@title: Validate that can add new Soccer season successfully");
         log("@Step 1: Login with valid account");
@@ -89,6 +94,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2077")
     public void Soccer_League_Season_Team_Info_TC_005(){
         log("@title: Validate that can add new Soccer Team successfully");
         log("@Step 1: Login with valid account");

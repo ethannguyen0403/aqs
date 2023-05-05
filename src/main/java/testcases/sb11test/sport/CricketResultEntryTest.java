@@ -7,12 +7,14 @@ import org.testng.annotations.Test;
 import pages.sb11.sport.CricketResultEntryPage;
 import pages.sb11.sport.EventSchedulePage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
 
 public class CricketResultEntryTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2087")
     public void Cricket_ResultEntry_TC001(){
         log("@title: Validate Result Entry for Cricket is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -26,6 +28,7 @@ public class CricketResultEntryTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression1"})
+    @TestRails(id = "2088")
     public void Cricket_ResultEntry_TC002(){
         log("@title: Validate UI on Cricket  Result Entry  is correctly displayed");
         log("@Step 1: Login with valid account");
