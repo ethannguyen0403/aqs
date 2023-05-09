@@ -1258,7 +1258,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     @Parameters({"clientCode"})
     @TestRails(id = "1004")
     public void ClientStatementTC_1004(String clientCode) throws IOException {
