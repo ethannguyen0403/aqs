@@ -34,10 +34,10 @@ public class TradingPermissionTest extends BaseCaseAQS {
         TradingPermissionPage tradingPermissionPage = welcomePage.navigatePage(USER,TRADING_PERMISSION,TradingPermissionPage.class);
         log("Validate UI Info display correctly");
         log("Controls: Company Unit, User Role, Username and Show button");
-        Assert.assertTrue(tradingPermissionPage.ddpCompanyUnit.isDisplayed(),"Failed! Company Unit dropdown is not displayed!");
-        Assert.assertTrue(tradingPermissionPage.ddpUserRole.isDisplayed(),"Failed! User Role dropdown is not displayed!");
-        Assert.assertTrue(tradingPermissionPage.txtUsername.isDisplayed(),"Failed! Username textbox is not displayed!");
-        Assert.assertTrue(tradingPermissionPage.btnShow.isDisplayed(),"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertEquals(tradingPermissionPage.ddpCompanyUnit.getOptions(), COMPANY_UNIT_LIST,"FAILED! Company Unit dropdown is not displayed!");
+        Assert.assertTrue(tradingPermissionPage.ddpUserRole.getOptions().contains("Administrator"), "FAILED! Company Unit dropdown is not displayed!");
+        Assert.assertEquals(tradingPermissionPage.lblUsername.getText(), "Username","FAILED! Username textbox is not displayed!");
+        Assert.assertEquals(tradingPermissionPage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
         log("Customer table header columns is correctly display");
         Assert.assertEquals(tradingPermissionPage.tbTradPermission.getHeaderNameOfRows(), TradingPermission.TABLE_HEADER,"FAILED! Pending table header is incorrect display");
         log("INFO: Executed completely");
@@ -72,7 +72,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @Parameters("username")
     public void Trading_Permission_TC_005(String username){
         log("@title: Validate that all Permission is disabled after checking Auto-assigned All");

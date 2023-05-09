@@ -22,6 +22,7 @@ public class BLSettingPage extends WelcomePage {
     }
 
     public TextBox txtDate = TextBox.name("dp");
+    public Label lblDate = Label.xpath("//label[(text()='Date')]");
     public DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-days-calendar-view");
     public Button btnShowLeagues = Button.xpath("//app-bl-settings//button[contains(@class,'btn-show-league')]");
     public Button btnShow = Button.xpath("//button[text()='Show']");

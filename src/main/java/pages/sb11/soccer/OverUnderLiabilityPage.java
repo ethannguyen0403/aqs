@@ -21,6 +21,10 @@ public class OverUnderLiabilityPage extends WelcomePage {
     public TextBox txtToDate = TextBox.name("toDate");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
+    public DropDownBox ddpSport = DropDownBox.xpath("//div[contains(text(),'Sport')]//following::select[1]");
+    public Label lblPTBets = Label.xpath("//span[contains(text(),'PT-Bets')]");
+    public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
+    public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
 
     public Label lblShowBetType = Label.xpath("//div[contains(text(),'Show Bet Types')]");
     public Label lblShowLeagues = Label.xpath("//div[contains(text(),'Show Leagues')]");

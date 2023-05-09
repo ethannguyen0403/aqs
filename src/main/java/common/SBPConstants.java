@@ -73,6 +73,16 @@ public class SBPConstants {
     public final static String LEDGER_PARENT_NAME_INCOME = "QA Ledger Group Income";
     public final static String LEDGER_PARENT_NAME_CAPITAL = "QA Ledger Group Capital";
     public final static List<String> TABLE_HEADER = Arrays.asList("Role", "User", "Sport", "Soccer","Accounting","Trading","Master","General Reports","Invoice","Financial Reports");
+    public final static List<String> COMPANY_UNIT_LIST = Arrays.asList("Kastraki Limited", "SK1122", "IB 01", "Fair");
+    public final static List<String> COUNTRY_LIST = Arrays.asList("All", "Afghanistan","Africa","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Antigua and Barbuda","Argentina","Armenia","Aruba","Asia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia-Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei Darussalam","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde Islands","Cayman Islands","Central African Republic","Chad","Chile","China","Chinese Taipei","Colombia","Comoros Island","Congo","Cook Islands","Costa Rica","Croatia","Cuba","Curacao","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Dubai","East Timor","Ecuador","Egypt","El Salvador","England","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","EuroCup","Europe","Faroe Islands","FIFA","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Grenada","Guadeloupe","Guam","Guatemala","Guinea","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","International","Iran","Iraq","Ireland Republic","Israel","Israeli-Palestinian","Italy","Ivory Cost","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Korea North","Korea South","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macao","Macedonia FYR","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","North America","North Ireland","Norway","Oceania","Oman","Other","Others","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Romania","Russia","Rwanda","Samoa","San Marino","Saudi Arabia","Scotland","Senegal","Serbia","Serbia and Montenegro","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South America","Spain","Sri Lanka","St. Kitts and Nevis","St. Lucia","St. Vincent and the Grenadines","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Tahiti","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad And Tobago","Tunisia","Turkey","Turkmenistan","UEFA","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","US Virgin Islands","USA","Uzbekistan","Vanuatu","Venezuela","Vietnam","Wales","World","WorldCup","Yemen","Yugoslavia","Zambia","Zanzibar","Zimbabwe");
+    public final static List<String> TYPE_LIST = Arrays.asList("Normal","Account");
+    public final static List<String> ORDER_BY_LIST = Arrays.asList("KOT","League");
+    public final static List<String> STATUS_LIST = Arrays.asList("All","Pending","Settled","Void All","Void FT Only");
+    public final static List<String> SPORT_LIST = Arrays.asList("Soccer","Cricket","Basketball","Tennis");
+    public final static List<String> PROVIDER_LIST = Arrays.asList("Pinnacle","Bet ISN","PS7","Fair999");
+    public final static List<String> LIVE_NONLIVE_LIST = Arrays.asList("ALL","Live","Non-Live");
+    public final static List<String> CURRENCY_LIST = Arrays.asList("ALL","AUD","CAD","CNY","AED","EUR","HKD","INR","IDR","JPY","MYR","KPW","PKR","PHP","SGD","ZAR","KRW","LKR","GBP","TWD","THB","USD","VND");
+    public final static List<String> STAKE_LIST = Arrays.asList("ALL","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
         {
@@ -143,11 +153,13 @@ public class SBPConstants {
         public final static List<String> LEAGUE_TABLE_HEADER = Arrays.asList("#", "i", "C", "League Name", "IsMain", "IsCup", "Edit", "");
         public final static List<String> SEASON_TABLE_HEADER = Arrays.asList("#", "i", "Season Name", "Start Date", "End Date", "Edit", "");
         public final static List<String> TEAM_TABLE_HEADER = Arrays.asList("#", "i", "Team Name", "Country", "Edit", "", "Under League");
+        public final static List<String> SOCCER_TYPE = Arrays.asList("All","Is Main League", "Is Cup League", "Normal");
     }
 
     public static class ResultEntry{
         public final static List<String> RESULT_SOCCER_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "HT Score", "FT Score", "HT Corner", "FT Corner", "HT Card", "FT Card");
         public final static List<String> RESULT_CRICKET_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "Team A", "Team B", "IsHdp FB", "Result", "Runs", "Wkts", "Runs", "Wkts");
+
     }
 
     public static class EventMapping{
@@ -166,10 +178,16 @@ public class SBPConstants {
 
     public static class MonitorBets{
         public final static List<String> TABLE_HEADER = Arrays.asList("Info", "AC", "Event", "Selection","HDP","Stake","L","NL","T","Report","");
+        public final static List<String> SPORT_LIST = Arrays.asList("All","Soccer","Cricket","Basketball","Tennis");
+        public final static List<String> SMART_TYPE_LIST = Arrays.asList("Master","Group");
+        public final static List<String> PUNTER_TYPE_LIST = Arrays.asList("Smart Punter","Normal Punter");
+        public final static List<String> BET_PLACED_IN = Arrays.asList("Last 5 Min","Last 10 Min","Last 15 Min","Last 1 Hour","Last 3 Hour", "Last 6 Hour", "Last 9 Hour", "Last 12 Hour","All Hour");
+        public final static List<String> BET_COUNT = Arrays.asList("Last 10 Bets","Last 50 Bets","Last 100 Bets","Last 200 Bets","Last 300 Bets");
     }
 
     public static class MatchOddsLiability{
         public final static List<String> TABLE_HEADER = Arrays.asList("Event Date", "Event", "Win %", "Home", "Draw", "Away");
+        public final static List<String> SMART_TYPE_LIST = Arrays.asList("Group","Master");
     }
 
     public static class HandicapLiability{
@@ -197,3 +215,4 @@ public class SBPConstants {
         public final static List<String> TABLE_HEADER_WITH_TAX = Arrays.asList("#", "Group Code","MP","PT%","Bets","Wins","Lose","Draw","MB","Avg Stake","Turnover","W/L","Tax","Net W/L","W/L [HKD]","Win%","CUR");
     }
 }
+

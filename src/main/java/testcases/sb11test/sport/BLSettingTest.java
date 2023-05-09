@@ -32,11 +32,11 @@ public class BLSettingTest extends BaseCaseAQS {
         BLSettingPage blSettingPage = welcomePage.navigatePage(SPORT,BL_SETTINGS, BLSettingPage.class);
         log("Validate UI on BL Settings is correctly displayed");
         log("Date, Show League button, Leagues and Show button");
-        Assert.assertTrue(blSettingPage.txtDate.isDisplayed(),"Failed! Date datetime picker is not displayed!");
-        Assert.assertTrue(blSettingPage.btnShowLeagues.isDisplayed(),"Failed! Show League button is not displayed!");
-        Assert.assertTrue(blSettingPage.ddpLeague.isDisplayed(),"Failed! League dropdown is not displayed!");
-        Assert.assertTrue(blSettingPage.ddpOrderBy.isDisplayed(),"Failed! Order By dropdown is not displayed!");
-        Assert.assertTrue(blSettingPage.btnShow.isDisplayed(),"Failed! Show button is not displayed!");
+        Assert.assertEquals(blSettingPage.lblDate.getText(), "Date","Failed! Date datetime picker is not displayed!");
+        Assert.assertEquals(blSettingPage.btnShowLeagues.getText(),"Show Leagues","Failed! Show League button is not displayed!");
+        Assert.assertTrue(blSettingPage.ddpLeague.getOptions().contains("All"),"Failed! League dropdown is not displayed!");
+        Assert.assertEquals(blSettingPage.ddpOrderBy.getOptions(),ORDER_BY_LIST,"Failed! Order By dropdown is not displayed!");
+        Assert.assertEquals(blSettingPage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
         log("Validate BL Settings table header columns is correctly display");
         Assert.assertEquals(blSettingPage.tbBLSettings.getHeaderNameOfRows(), BLSettings.TABLE_HEADER,"FAILED! BL Settings table header is incorrect display");
         log("INFO: Executed completely");

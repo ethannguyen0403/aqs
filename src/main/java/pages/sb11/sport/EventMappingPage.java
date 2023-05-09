@@ -29,4 +29,6 @@ public class EventMappingPage extends WelcomePage {
     public Table tbEvent = Table.xpath("//div[contains(@class,'main-box-header')]//following::table[1]",4);
     public Table tbProviderEvent = Table.xpath("//div[contains(@class,'main-box-header')]//following::table[2]",4);
     public Table tbMappedList = Table.xpath("//div[contains(@class,'main-box-header')]//following::table[3]",11);
+    public Label lblDate = Label.xpath("//label[(text()='Date')]");
+    public Label lblProviderEventDate = Label.xpath("//label[(text()='Provider Event Date')]");
 }

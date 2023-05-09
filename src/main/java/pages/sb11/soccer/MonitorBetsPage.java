@@ -28,6 +28,7 @@ public class MonitorBetsPage extends WelcomePage {
     public DropDownBox ddpCurrency = DropDownBox.id("currency");
     public DropDownBox ddpStake = DropDownBox.id("stake");
     public CheckBox cbTodayEvent = CheckBox.id("todayEvent");
+    public Label lblTodayEvent = Label.xpath("//label[contains(text(),'Today Event(s)')]");
     public Label lblShowBetType = Label.xpath("//div[contains(text(),'Show Bet Types')]");
     public Label lblShowLeagues = Label.xpath("//div[contains(text(),'Show Leagues')]");
     public Label lblShowMaster = Label.xpath("//div[contains(text(),'Show Masters')]");

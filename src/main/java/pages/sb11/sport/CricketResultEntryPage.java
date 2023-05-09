@@ -20,6 +20,7 @@ public class CricketResultEntryPage extends WelcomePage {
     public DropDownBox ddpOrderBy = DropDownBox.id("betType");
     public DropDownBox ddpStatus = DropDownBox.id("status");
     public TextBox txtDateTime = TextBox.id("date");
+    public Label lblDate = Label.xpath("//label[contains(text(),'Date')]");
     public DateTimePicker dtpDateTime = DateTimePicker.xpath(txtDateTime,"//bs-days-calendar-view");
     public Table tbResult = Table.xpath("//app-bet-entry//div[contains(@class,'main-box-header')]//following::table[1]",10);
     public DropDownBox ddGoTo = DropDownBox.xpath("//span[contains(text(),'Go To')]//following::select[1]");
