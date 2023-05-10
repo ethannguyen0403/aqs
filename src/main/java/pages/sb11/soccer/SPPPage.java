@@ -1,5 +1,6 @@
 package pages.sb11.soccer;
 
+import com.paltech.driver.DriverManager;
 import com.paltech.element.common.*;
 import com.paltech.utils.DoubleUtils;
 import controls.DateTimePicker;
@@ -30,6 +31,7 @@ public class SPPPage extends WelcomePage {
     public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Label lblSmartGroup = Label.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][2]/div[4]");
     public Table tblSPP = Table.xpath("//app-spp//table",15);
+    public Table tblSPPTax = Table.xpath("//app-spp//table",17);
     public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
     public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
     public Label lblShowTaxAmount = Label.xpath("//label[contains(text(),'Show Tax Amount')]");
@@ -73,6 +75,14 @@ public class SPPPage extends WelcomePage {
                 dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         btnShow.click();
         waitSpinnerDisappeared();
+    }
+
+    public LeaguePerformancePage openLeaguePerformance(String groupName){
+        String tableXpath ="//app-spp//div[contains(@class,'filter bg-white')][1]/table";
+        int rowIndex = getRowContainsGroupName(tableXpath,colGroupCode,groupName);
+        tblSPP.getControlOfCellSPP(1,colGroupCode, rowIndex,null).click();
+        DriverManager.getDriver().switchToWindow();
+        return new LeaguePerformancePage();
     }
 
     /**

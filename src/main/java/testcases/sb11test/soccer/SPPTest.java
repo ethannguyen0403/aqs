@@ -7,6 +7,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.generalReports.BookieStatementPage;
 import pages.sb11.generalReports.ClientStatementPage;
+import pages.sb11.soccer.LeaguePerformancePage;
 import pages.sb11.soccer.SPPPage;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
@@ -117,7 +118,7 @@ public class SPPTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2131")
     public void SPP_TC_003(){
         log("@title: Validate Tax column is displayed after checking Show Tax Amount");
@@ -127,10 +128,36 @@ public class SPPTest extends BaseCaseAQS {
         SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
         log("@Step 3: Filter with valid data");
         sppPage.filter("Soccer", "Group","Smart Group","[All]","[All]",date,date);
-        log("@Step 3: Check on Show Tax Amount checkbox");
+        log("@Step 4: Check on Show Tax Amount checkbox");
         sppPage.cbShowTaxAmount.click();
         log("Validate Tax column is displayed after checking Show Tax Amount");
-        Assert.assertEquals(sppPage.tblSPP.getHeaderNameOfRows(), SBPConstants.SPPPage.TABLE_HEADER_WITH_TAX,"FAILED! SPP Bets table header is incorrect display");
+        Assert.assertEquals(sppPage.tblSPPTax.getHeaderNameOfRows(), SBPConstants.SPPPage.TABLE_HEADER_WITH_TAX,"FAILED! SPP Bets table header is incorrect display");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression1"})
+    @TestRails(id = "2132")
+    public void SPP_TC_004(){
+        String groupName = "QAFS-SG1";
+        log("@title: Validate Tax column is displayed after checking Show Tax Amount");
+        String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
+        String todate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Soccer > SPP");
+        SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
+        log("@Step 3: Filter with valid data");
+        sppPage.filter("Soccer", "Group","Smart Group","[All]","[All]",fromdate,todate);
+        log("@Step 4: Click on any group code");
+        LeaguePerformancePage leaguePerformancePage = sppPage.openLeaguePerformance(groupName);
+        log("Validate League Performance is displayed correctly title");
+        Assert.assertTrue(leaguePerformancePage.getTitlePage().contains("League Performance"), "Failed! League Performance page is not displayed");
+        log("Validate 5 tables should displayed with format");
+        String fromDateconvert = DateUtils.formatDate(fromdate,"dd/MM/yyyy","yyyy-MM-dd");
+        String toDateconvert = DateUtils.formatDate(todate,"dd/MM/yyyy","yyyy-MM-dd");
+        Assert.assertEquals(leaguePerformancePage.getTableHeader("In Range"), groupName + " - League Performance for " + fromDateconvert + " To " + toDateconvert);
+        Assert.assertEquals(leaguePerformancePage.getTableHeader("1 Month"), groupName + "  - League Performance for Last 1 Month");
+        Assert.assertEquals(leaguePerformancePage.getTableHeader("3 Months"), groupName + "  - League Performance for Last 3 Months");
+        Assert.assertEquals(leaguePerformancePage.getTableHeader("6 Months"), groupName + "  - League Performance for Last 6 Months");
+        Assert.assertEquals(leaguePerformancePage.getTableHeader("1 Year"), groupName + "  - League Performance for Last 1 Year");
         log("INFO: Executed completely");
     }
 }
