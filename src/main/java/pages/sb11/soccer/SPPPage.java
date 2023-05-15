@@ -6,6 +6,7 @@ import com.paltech.utils.DoubleUtils;
 import controls.DateTimePicker;
 import controls.Table;
 import pages.sb11.WelcomePage;
+import pages.sb11.soccer.popup.PTPerformancePopup;
 import pages.sb11.soccer.popup.spp.SmartGroupPopup;
 
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ public class SPPPage extends WelcomePage {
     int totalColumnNumber = 15;
     int colGroupCode = 2;
     public int colWL =12;
+    int colMP = 3;
+    public int colPT = 4;
 
     @Override
     public String getTitlePage ()
@@ -83,6 +86,21 @@ public class SPPPage extends WelcomePage {
         tblSPP.getControlOfCellSPP(1,colGroupCode, rowIndex,null).click();
         DriverManager.getDriver().switchToWindow();
         return new LeaguePerformancePage();
+    }
+
+    public PerformanceByMonthPage openPerfByMonth (String groupName){
+        String tableXpath ="//app-spp//div[contains(@class,'filter bg-white')][1]/table";
+        int rowIndex = getRowContainsGroupName(tableXpath,colGroupCode,groupName);
+        tblSPP.getControlOfCellSPP(1,colMP, rowIndex,null).click();
+        DriverManager.getDriver().switchToWindow();
+        return new PerformanceByMonthPage();
+    }
+
+    public PTPerformancePopup openAccountPTPerf (String groupName){
+        String tableXpath ="//app-spp//div[contains(@class,'filter bg-white')][1]/table";
+        int rowIndex = getRowContainsGroupName(tableXpath,colGroupCode,groupName);
+        tblSPP.getControlOfCellSPP(1,colPT, rowIndex,null).click();
+        return new PTPerformancePopup();
     }
 
     /**

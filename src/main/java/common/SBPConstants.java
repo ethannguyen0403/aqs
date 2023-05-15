@@ -33,6 +33,8 @@ public class SBPConstants {
     public final static String SPORT= "Sport";
     public final static String CLIENT_STATEMENT = "Client Statement";
     public final static String SPP = "SPP";
+    public final static String BBT = "BBT (Bets By Team)";
+    public final static String BBG = "BBG (Bets By Group)";
     public final static String EVENT_SCHEDULE = "Event Schedule";
     public final static String CONFIRM_BETS = "Confirm Bets";
     public final static String BET_SETTLEMENT = "Bet Settlement";
@@ -214,5 +216,17 @@ public class SBPConstants {
         public final static List<String> TABLE_HEADER = Arrays.asList("#", "Group Code","MP","PT%","Bets","Wins","Lose","Draw","MB","Avg Stake","Turnover","W/L","W/L [HKD]","Win%","CUR");
         public final static List<String> TABLE_HEADER_WITH_TAX = Arrays.asList("#", "Group Code","MP","PT%","Bets","Wins","Lose","Draw","MB","Avg Stake","Turnover","W/L","Tax","Net W/L","W/L [HKD]","Win%","CUR");
     }
+
+    public static class BBTPage{
+        public final static List<String> SMART_TYPE_LIST = Arrays.asList("Group","Master","Agent");
+        public final static List<String> REPORT_TYPE_LIST = Arrays.asList("Pending Bets","Settled Bets");
+    }
+
+    public static class BBGPage{
+        public final static List<String> SMART_TYPE_LIST = Arrays.asList("Group","Master","Agent");
+        public final static List<String> REPORT_TYPE_LIST = Arrays.asList("Pending Bets","Settled Bets");
+        public final static List<String> WIN_LOSE_TYPE_LIST = Arrays.asList("All", "Win Bets", "Lose Bets", "Draw Bets");
+    }
 }
+
 
