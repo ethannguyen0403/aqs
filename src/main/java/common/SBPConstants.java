@@ -227,6 +227,10 @@ public class SBPConstants {
         public final static List<String> REPORT_TYPE_LIST = Arrays.asList("Pending Bets","Settled Bets");
         public final static List<String> WIN_LOSE_TYPE_LIST = Arrays.asList("All", "Win Bets", "Lose Bets", "Draw Bets");
     }
+
+    public static class CurrencyRates{
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "i","Currency Name","CUR","OP Rate");
+    }
 }
 
 
