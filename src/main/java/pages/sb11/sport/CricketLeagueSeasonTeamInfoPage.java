@@ -30,6 +30,8 @@ public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
     public Table tbLeague = Table.xpath("//app-league//div[contains(@class,'main-box-header')]//following::table[1]",8);
     public Table tbSeason = Table.xpath("//app-season//div[contains(@class,'main-box-header')]//following::table[1]",7);
     public Table tbTeam = Table.xpath("//app-team//div[contains(@class,'main-box-header')]//following::table[1]",7);
+    public Label lblLeagueName = Label.xpath("//div[contains(text(),'League Name')]");
+    public Label lblTeamName = Label.xpath("//div[contains(text(),'Team Name')]");
 
     public void goToCricket(){
         ddGoTo.selectByVisibleText("Cricket");

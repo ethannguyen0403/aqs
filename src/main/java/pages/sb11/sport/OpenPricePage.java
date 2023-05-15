@@ -22,6 +22,7 @@ public class OpenPricePage extends WelcomePage {
     }
 
     public TextBox txtDate = TextBox.name("dp");
+    public Label lblDate = Label.xpath("//label[(text()='Date')]");
     public DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-days-calendar-view");
     public Button btnShowLeagues = Button.xpath("//button[text()='Show Leagues']");
     public Button btnShow = Button.xpath("//button[text()='Show']");

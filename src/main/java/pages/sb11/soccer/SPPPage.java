@@ -1,10 +1,12 @@
 package pages.sb11.soccer;
 
+import com.paltech.driver.DriverManager;
 import com.paltech.element.common.*;
 import com.paltech.utils.DoubleUtils;
 import controls.DateTimePicker;
 import controls.Table;
 import pages.sb11.WelcomePage;
+import pages.sb11.soccer.popup.PTPerformancePopup;
 import pages.sb11.soccer.popup.spp.SmartGroupPopup;
 
 import java.util.ArrayList;
@@ -17,22 +19,28 @@ public class SPPPage extends WelcomePage {
     public DropDownBox ddpPunterType = DropDownBox.xpath("//div[contains(text(),'Punter Type')]//following::select[1]");
     public DropDownBox ddpSmartMaster = DropDownBox.xpath("//div[contains(text(),'Smart Master')]//following::select[1]");
     public DropDownBox ddpSmartAgent = DropDownBox.xpath("//div[contains(text(),'Smart Agent')]//following::select[1]");
-    public TextBox txtFromDate = TextBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[5]//input");
-    public TextBox txtToDate = TextBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[6]//input");
+    public TextBox txtFromDate = TextBox.name("fromDate");
+    public TextBox txtToDate = TextBox.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][1]/div[7]//input");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
     public CheckBox cbShowTaxAmount = CheckBox.id("defaultCheck1");
     public Button btnShowBetTypes = Button.xpath("//label[contains(text(),'Show Bet Types')]");
     public Button btnShowLeagues = Button.xpath("//label[contains(text(),'Show Leagues')]");
     public Button btnSmartGroup = Button.xpath("//label[contains(text(),'Smart Group')]");
-    public Button btnReset = Button.xpath("//label[contains(text(),'Reset All Filters')]");
-    public Button btnMoreFilters = Button.xpath("//label[contains(text(),'More Filters')]");
+    public Button btnReset = Button.xpath("//div[contains(text(),'Reset All Filters')]");
+    public Button btnMoreFilters = Button.xpath("//button[contains(text(),'More Filters')]");
     public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Label lblSmartGroup = Label.xpath("//div[contains(@class,'container-fluid py-5 cbody')]//div[contains(@class,'card-body border')][2]/div[4]");
     public Table tblSPP = Table.xpath("//app-spp//table",15);
+    public Table tblSPPTax = Table.xpath("//app-spp//table",17);
+    public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
+    public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
+    public Label lblShowTaxAmount = Label.xpath("//label[contains(text(),'Show Tax Amount')]");
     int totalColumnNumber = 15;
     int colGroupCode = 2;
     public int colWL =12;
+    int colMP = 3;
+    public int colPT = 4;
 
     @Override
     public String getTitlePage ()
@@ -70,6 +78,29 @@ public class SPPPage extends WelcomePage {
                 dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         btnShow.click();
         waitSpinnerDisappeared();
+    }
+
+    public LeaguePerformancePage openLeaguePerformance(String groupName){
+        String tableXpath ="//app-spp//div[contains(@class,'filter bg-white')][1]/table";
+        int rowIndex = getRowContainsGroupName(tableXpath,colGroupCode,groupName);
+        tblSPP.getControlOfCellSPP(1,colGroupCode, rowIndex,null).click();
+        DriverManager.getDriver().switchToWindow();
+        return new LeaguePerformancePage();
+    }
+
+    public PerformanceByMonthPage openPerfByMonth (String groupName){
+        String tableXpath ="//app-spp//div[contains(@class,'filter bg-white')][1]/table";
+        int rowIndex = getRowContainsGroupName(tableXpath,colGroupCode,groupName);
+        tblSPP.getControlOfCellSPP(1,colMP, rowIndex,null).click();
+        DriverManager.getDriver().switchToWindow();
+        return new PerformanceByMonthPage();
+    }
+
+    public PTPerformancePopup openAccountPTPerf (String groupName){
+        String tableXpath ="//app-spp//div[contains(@class,'filter bg-white')][1]/table";
+        int rowIndex = getRowContainsGroupName(tableXpath,colGroupCode,groupName);
+        tblSPP.getControlOfCellSPP(1,colPT, rowIndex,null).click();
+        return new PTPerformancePopup();
     }
 
     /**
