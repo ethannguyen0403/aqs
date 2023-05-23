@@ -81,7 +81,7 @@ public class ClientStatementPage extends WelcomePage {
             colLevel = 1;
         }
         int i = 1;
-        while (true){
+        while (i < 50){
             lblCellValue = Label.xpath(tblMaster.getxPathOfCell(1,colIndex,i,null));
             lblMasterCode = Label.xpath(tblMaster.getxPathOfCell(1,colLevel,i,null));
             if(!lblCellValue.isDisplayed()){
@@ -94,6 +94,7 @@ public class ClientStatementPage extends WelcomePage {
             }
             i = i+1;
         }
+        return returnValue;
     }
     public String getAgentCellValue(String agentCode, int colIndex) {
         String returnValue = "";
@@ -102,7 +103,7 @@ public class ClientStatementPage extends WelcomePage {
         Label lblFirstColumn;
         int i = 2;
         int j = 1;
-        while (true){
+        while (i < 50){
             String xpath = String.format("//app-client-detail//div[contains(@class,'col-12')][%s]//table[@class='table table-bordered table-custom table-hover table-striped text-center bg-white mb-0 fbody ng-star-inserted']",j);
             Table tblAgent = Table.xpath(xpath,colTotal);
             lblCellValue = Label.xpath(tblAgent.getxPathOfCell(1,colIndex,i,null));
@@ -163,8 +164,8 @@ public class ClientStatementPage extends WelcomePage {
         Label lblFirstColumn;
         int i = 2;
         int j = 1;
-        while (true){
-            String xpath = String.format("//app-client-detail//div[contains(@class,'col-12')][%s]//table[@class='table table-bordered table-custom table-hover table-striped text-center bg-white mb-0 fbody ng-star-inserted']",j);
+        while (i < 50){
+            String xpath = String.format("//app-client-detail//div[contains(@class,'col-12')][%s]//table[@class='table-custom table-hover table-striped text-center bg-white mb-0 fbody ng-star-inserted']",j);
             Table tblAgent = Table.xpath(xpath,colTotal);
             lblAgentCode = Label.xpath(tblAgent.getxPathOfCell(1,colLevel,i,null));
             lblFirstColumn = Label.xpath(tblAgent.getxPathOfCell(1,1,i,null));

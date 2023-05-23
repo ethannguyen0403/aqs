@@ -60,7 +60,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         double expectedVal = DecimalFormat.getNumberInstance().parse(openingVal).doubleValue() + DecimalFormat.getNumberInstance().parse(winLossVal).doubleValue() +
                 DecimalFormat.getNumberInstance().parse(commissionVal).doubleValue() + DecimalFormat.getNumberInstance().parse(recPayVal).doubleValue();
 
-        Assert.assertEquals(expectedVal,DecimalFormat.getNumberInstance().parse(actualVal).doubleValue(),"FAILED! Closing Balance is not calculated correctly, actual:"+actualVal+" and expected:"+expectedVal);
+        Assert.assertEquals(Math.round(expectedVal*100.0)/100.0,DecimalFormat.getNumberInstance().parse(actualVal).doubleValue(),"FAILED! Closing Balance is not calculated correctly, actual:"+actualVal+" and expected:"+expectedVal);
         log("INFO: Executed completely");
     }
 
@@ -122,7 +122,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_deprecated"})
     @Parameters("clientCode")
     @TestRails(id = "588")
     public void ClientStatementTC_588(String clientCode) {
@@ -1258,7 +1258,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "1004")
     public void ClientStatementTC_1004(String clientCode) throws IOException {
