@@ -19,6 +19,7 @@ public class SoccerResultEntryPage extends WelcomePage {
     public DropDownBox ddpLeague = DropDownBox.id("sport");
     public DropDownBox ddpOrderBy = DropDownBox.id("betType");
     public DropDownBox ddpStatus = DropDownBox.id("status");
+    public Label lblDate = Label.xpath("//label[contains(text(),'Date')]");
     public TextBox txtDateTime = TextBox.id("date");
     public DateTimePicker dtpDateTime = DateTimePicker.xpath(txtDateTime,"//bs-days-calendar-view");
     public Table tbResult = Table.xpath("//app-bet-entry//div[contains(@class,'main-box-header')]//following::table[1]",12);

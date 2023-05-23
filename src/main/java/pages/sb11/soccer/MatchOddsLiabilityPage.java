@@ -17,6 +17,10 @@ public class MatchOddsLiabilityPage extends WelcomePage {
     public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
     public DropDownBox ddpSmartType = DropDownBox.xpath("//div[contains(text(),'Smart Type')]//following::select[1]");
     public CheckBox cbPTBets = CheckBox.xpath("//div[contains(text(),'Show Only')]//following::input[1]");
+    public DropDownBox ddpSport = DropDownBox.xpath("//div[contains(text(),'Sport')]//following::select[1]");
+    public Label lblPTBets = Label.xpath("//span[contains(text(),'PT-Bets')]");
+    public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
+    public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
     public DropDownBox ddpLiveNonLive = DropDownBox.xpath("//div[contains(text(),'Live/NonLive')]//following::select[1]");
     public DropDownBox ddpStake = DropDownBox.xpath("//div[contains(text(),'Stake')]//following::select[1]");
     public TextBox txtFromDate = TextBox.name("fromDate");

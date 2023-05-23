@@ -36,13 +36,13 @@ public class SoccerResultEntryTest extends BaseCaseAQS {
         soccerResultEntryPage.goToSport("Soccer");
         log("Validate UI Info display correctly");
         log("Type, Date, Show League button, Leagues, Order By, Status and Show button");
-        Assert.assertTrue(soccerResultEntryPage.ddpType.isDisplayed(),"Failed! Type dropdown is not displayed");
-        Assert.assertTrue(soccerResultEntryPage.txtDateTime.isDisplayed(),"Failed! Date datetimepicker is not displayed");
-        Assert.assertTrue(soccerResultEntryPage.btnShowLeagues.isDisplayed(),"Failed! Show Leagues button is not displayed");
-        Assert.assertTrue(soccerResultEntryPage.ddpLeague.isDisplayed(),"Failed! League dropdown is not displayed");
-        Assert.assertTrue(soccerResultEntryPage.ddpOrderBy.isDisplayed(),"Failed! Order By dropdown is not displayed");
-        Assert.assertTrue(soccerResultEntryPage.ddpStatus.isDisplayed(),"Failed! Status dropdown is not displayed");
-        Assert.assertTrue(soccerResultEntryPage.btnShow.isDisplayed(),"Failed! Show button is not displayed");
+        Assert.assertEquals(soccerResultEntryPage.ddpType.getOptions(),TYPE_LIST,"Failed! Type dropdown is not displayed");
+        Assert.assertEquals(soccerResultEntryPage.lblDate.getText(),"Date","Failed! Date datetimepicker is not displayed");
+        Assert.assertEquals(soccerResultEntryPage.btnShowLeagues.getText(),"Show Leagues","Failed! Show Leagues button is not displayed");
+        Assert.assertEquals(soccerResultEntryPage.ddpLeague.getOptions().contains("All"),"Failed! League dropdown is not displayed");
+        Assert.assertEquals(soccerResultEntryPage.ddpOrderBy.getOptions(),ORDER_BY_LIST,"Failed! Order By dropdown is not displayed");
+        Assert.assertEquals(soccerResultEntryPage.ddpStatus.getOptions(),STATUS_LIST,"Failed! Status dropdown is not displayed");
+        Assert.assertEquals(soccerResultEntryPage.btnShow.getText(),"Show","Failed! Show button is not displayed");
         log("2 notes are displayed correctly");
         soccerResultEntryPage.filterResult("Normal","","All","KOT","All",true);
 
