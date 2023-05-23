@@ -20,12 +20,12 @@ public class PTRiskPage extends WelcomePage {
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
 
     public DropDownBox ddpOrderBy = DropDownBox.id("typeSelected3");
-    public Button btnBetTypes = Button.xpath("//app-pt-risk-control//div[@class='row pl-4']//button[text()=' Bet Types ']");
-    public Button btnClient = Button.xpath("//app-pt-risk-control//div[@class='row pl-4']//button[text()=' Clients ']");
-    public Button btnLeagues = Button.xpath("//app-pt-risk-control//div[@class='row pl-4']//button[text()=' Leagues ']");
-    public Button btnEvents = Button.xpath("//app-pt-risk-control//div[@class='row pl-4']//button[text()=' Events ']");
-    public Button btnSmartMaster = Button.xpath("//app-pt-risk-control//div[@class='row pl-4']//button[text()=' Smart Master ']");
-    public Button btnSmartAgent = Button.xpath("//app-pt-risk-control//div[@class='row pl-4']//button[text()=' Smart Agent ']");
+    public Button btnBetTypes = Button.xpath("//app-pt-risk-control//button[text()=' Bet Types ']");
+    public Button btnClient = Button.xpath("//app-pt-risk-control//button[text()=' Clients ']");
+    public Button btnLeagues = Button.xpath("//app-pt-risk-control//button[text()=' Leagues ']");
+    public Button btnEvents = Button.xpath("//app-pt-risk-control//button[text()=' Events ']");
+    public Button btnSmartMaster = Button.xpath("//app-pt-risk-control//button[text()=' Smart Master ']");
+    public Button btnSmartAgent = Button.xpath("//app-pt-risk-control//button[text()=' Smart Agent ']");
     public Button btnClearAll = Button.xpath("//div[@class='modal-content']//div[@class='group-btn']//span[text()='Clear All']");
     public Button btnSetSelection = Button.xpath("//div[@class='modal-content']//div[@class='group-btn']//button[text()=' Set Selection ']");
     public Label lblFilterList = Label.xpath("//div[@class='modal-content']//div[@class='list-item-filter']//label[%s]");
