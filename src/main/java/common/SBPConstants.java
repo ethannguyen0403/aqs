@@ -242,6 +242,12 @@ public class SBPConstants {
         public final static List<String> TABLE_HEADER_PARENT = Arrays.asList("#", "Parent Account Number","Parent Account Name", "");
         public final static List<String> TABLE_HEADER_SUB_ACCOUNT = Arrays.asList("#", "Sub-Account Number","Sub-Account Name","Client Ledger PM","CUR","");
     }
+
+    public static class JournalEntries{
+        public final static List<String> TYPE_LIST = Arrays.asList("Client","Bookie","Ledger");
+        public final static List<String> TRANSACTION_TYPE_LIST = Arrays.asList("Choose One","Payment Bookie","Payment Client","Payment Feed","Payment Operational","Payment Other","Payment Provider",
+                "Received Bookie","Received Client","Received Comm/Rebate","Received Dividend/Share","Received Feed","Received Other","Contra Bookie","Contra Client","Contra Bookie Client","Contra CUR");
+    }
 }
 
 
