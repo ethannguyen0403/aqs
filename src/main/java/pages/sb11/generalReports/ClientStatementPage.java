@@ -164,19 +164,19 @@ public class ClientStatementPage extends WelcomePage {
         Label lblFirstColumn;
         int i = 2;
         int j = 1;
-        while (i < 50){
-            String xpath = String.format("//app-client-detail//div[contains(@class,'col-12')][%s]//table[@class='table-custom table-hover table-striped text-center bg-white mb-0 fbody ng-star-inserted']",j);
+        while (i < 20){
+            String xpath = String.format("(//app-client-detail//div[@id='client-statement-summary']//div[@class='row px-custom mt-3 ng-star-inserted'][2]//table)[%s]",j);
             Table tblAgent = Table.xpath(xpath,colTotal);
             lblAgentCode = Label.xpath(tblAgent.getxPathOfCell(1,colLevel,i,null));
             lblFirstColumn = Label.xpath(tblAgent.getxPathOfCell(1,1,i,null));
-            if(lblFirstColumn.getText().equalsIgnoreCase("Total in")) {
-                j = j + 1;
-                i = 1;
-            }
             if(lblAgentCode.getText().equalsIgnoreCase(agentCode)){
                 lblAgentCode.click();
                 waitSpinnerDisappeared();
                 return new ClientSummaryPopup();
+            }
+            if(lblFirstColumn.getText().equalsIgnoreCase("Total in")) {
+                j = j + 1;
+                i = 1;
             }
             if(lblAgentCode.getText().equalsIgnoreCase("Grand Total in")) {
                 break;

@@ -26,7 +26,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     String superMasterCode = "QA2112 - ";
     Double percent = 0.5;
 
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"clientCode","accountCode","accountCurrency"})
     @TestRails(id = "1386")
     public void ClientStatementTC_1386(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
@@ -76,7 +76,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         Assert.assertTrue(ptPage.isForecastCorrect("10","-3","-6",true));
     }
 
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"clientCode","accountCode","accountCurrency"})
     @TestRails(id = "192")
     public void ClientStatementTC_192(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
