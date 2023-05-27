@@ -15,7 +15,7 @@ public class EventSchedulePage extends WelcomePage {
     DropDownBox ddpLeague = DropDownBox.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-header']//div[@class='filter-league']//select");
     TextBox txtDateTime = TextBox.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-header']//div[@class='card-body']//input");
     DateTimePicker dtpDateTime = DateTimePicker.xpath(txtDateTime,"//bs-days-calendar-view");
-    Button btnShow = Button.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-header']//div[@class='card-body']//button[contains(@class,'btn-show')]");
+    public Button btnShow = Button.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-header']//div[@class='card-body']//button[contains(@class,'btn-show')]");
     int totalTblEventCol = 8;
     int colD = 1;
     int colHomeTeam = 2;
@@ -37,8 +37,9 @@ public class EventSchedulePage extends WelcomePage {
     TextBox txtScheduleListDateTime = TextBox.xpath("//app-schedule-list//div[@class='league-header']//input[contains(@class,'league-date')]");
     TextBox txtTeam = TextBox.xpath("//app-schedule-list//div[@class='card-body league-card-body']//input[contains(@class,'team-name-input')]");
     DateTimePicker dtpScheduleListDateTime= DateTimePicker.xpath(txtScheduleListDateTime,"//bs-days-calendar-view");
-    Button btnShowSchedule = Button.xpath("//app-schedule-list//div[@class='league-header']//button[contains(@class,'show-btn-league')]");
+    public Button btnShowSchedule = Button.xpath("//app-schedule-list//div[@class='league-header']//button[contains(@class,'show-btn-league')]");
     int totalEventScheduleColumn = 11;
+    int totalLeagueColumn = 8;
     int colNum =1;
     int coli = 2;
     int colDate = 3;
@@ -50,9 +51,17 @@ public class EventSchedulePage extends WelcomePage {
     int colTVEventTbl= 9;
     int colStatusEventTbl= 10;
     int colActionEventTbl = 11;
-    Table tblEventBody = Table.xpath("//app-schedule-list//div[contains(@class,'event-body')]//table",totalEventScheduleColumn);
-    Table tblLeagueBody = Table.xpath("//app-schedule-list//div[contains(@class,'league-body')]//table",totalEventScheduleColumn);
+    public Table tblEventBody = Table.xpath("//app-schedule-list//table",totalEventScheduleColumn);
+    public Table tblLeagueBody = Table.xpath("//app-league-entry//table",totalLeagueColumn);
     DropDownBox ddpSport = DropDownBox.xpath("//app-league-entry//div[@class='league-header']//div[contains(@class,'card-header')]//select");
+    public Label lblLeagueEntry = Label.xpath("//app-league-entry//div[contains(@class,'card-header')]//span[1]");
+    public Label lblScheduleList = Label.xpath("//app-schedule-list//div[contains(@class,'card-header')]//span[1]");
+    public Label lblLeague = Label.xpath("//span[text()='League']");
+    public Label lblDateTime = Label.xpath("//span[text()='Date Time']");
+    public Label lblHome = Label.xpath("//label[text()='Home']");
+    public Label lblAway = Label.xpath("//label[text()='Away']");
+    public Label lblTeam = Label.xpath("//span[text()='Team']");
+    public Button btnShowLeague = Button.xpath("//span[text()='Show League']");
     public void goToSport(String sport){
       ddpSport.selectByVisibleContainsText(sport);
     }

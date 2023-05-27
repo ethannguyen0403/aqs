@@ -227,6 +227,28 @@ public class SBPConstants {
         public final static List<String> REPORT_TYPE_LIST = Arrays.asList("Pending Bets","Settled Bets");
         public final static List<String> WIN_LOSE_TYPE_LIST = Arrays.asList("All", "Win Bets", "Lose Bets", "Draw Bets");
     }
+
+    public static class CurrencyRates{
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "i","Currency Name","CUR","OP Rate");
+    }
+
+    public static class EventSchedule{
+        public final static List<String> TABLE_HEADER_LEAGUE_LIST = Arrays.asList("D","Home Team","Away Team","Time","Live","N","Tv","Status");
+        public final static List<String> TABLE_HEADER_SCHEDULE_LIST = Arrays.asList("#", "i","Date","Home Team","Away Team","Time","Live","N","Tv","Status","Action");
+    }
+
+    public static class ChartOfAccount{
+        public final static List<String> TABLE_HEADER_DETAIL = Arrays.asList("#","Chart Code","Detail Type Name","Account Type","");
+        public final static List<String> TABLE_HEADER_PARENT = Arrays.asList("#", "Parent Account Number","Parent Account Name", "");
+        public final static List<String> TABLE_HEADER_SUB_ACCOUNT = Arrays.asList("#", "Sub-Account Number","Sub-Account Name","Client Ledger PM","CUR","");
+    }
+
+    public static class JournalEntries{
+        public final static List<String> TYPE_LIST = Arrays.asList("Client","Bookie","Ledger");
+        public final static List<String> TRANSACTION_TYPE_LIST = Arrays.asList("Choose One","Payment Bookie","Payment Client","Payment Feed","Payment Operational","Payment Other","Payment Provider",
+                "Received Bookie","Received Client","Received Comm/Rebate","Received Dividend/Share","Received Feed","Received Other","Contra Bookie","Contra Client","Contra Bookie Client","Contra CUR");
+    }
 }
+
 
 
