@@ -325,6 +325,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .creditAccountCode(CLIENT_DEBIT_ACC)
                     .build();
             TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType,typeId);
+            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -391,6 +392,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .creditAccountCode(CLIENT_DEBIT_ACC)
                     .build();
             TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType,typeId);
+            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -468,6 +470,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -545,6 +548,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -622,6 +626,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -699,6 +704,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -776,6 +782,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -853,6 +860,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -930,6 +938,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -1006,6 +1015,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -1083,6 +1093,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -1160,6 +1171,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -1330,6 +1342,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
