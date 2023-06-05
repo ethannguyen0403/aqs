@@ -13,6 +13,7 @@ import static common.SBPConstants.*;
 public class BLSettingTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2096")
     public void BLSettingsTC_001(){
         log("@title: Validate BL Settings page is displayed when navigate");
         log("@Step 1: Login with valid account");

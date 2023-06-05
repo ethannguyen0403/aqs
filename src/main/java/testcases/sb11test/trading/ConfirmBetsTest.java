@@ -257,7 +257,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="881")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     @Parameters({"accountCode","accountCurrency"})
     public void Confirm_Bets_TC881(String accountCode,String accountCurrency){
         log("@title: Validate can delete multiple Pending Bets");
@@ -943,4 +943,83 @@ Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league
         log("INFO: Executed completely");
     }
 
+    @Test(groups = {"regression"})
+    @TestRails(id = "2185")
+    public void Confirm_Bets_TC_001(){
+        log("@title: Validate Confirm Bets page is displayed when navigate");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Trading > Confirm Bets");
+        ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING,CONFIRM_BETS, ConfirmBetsPage.class);
+        log("Validate Confirm Bets page is displayed with correctly title");
+        Assert.assertTrue(confirmBetsPage.getTitlePage().contains(CONFIRM_BETS), "Failed! Confirm Bets page is not displayed");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2186")
+    public void Confirm_Bets_TC_002(){
+        log("@title: Validate UI on Confirm Bets is correctly displayed");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Trading > Confirm Bets");
+        ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING,CONFIRM_BETS, ConfirmBetsPage.class);
+        log("Validate UI Info display correctly");
+        log("Dropdown: Company Unit, Status, Sports, Bet Types, Date Type");
+        Assert.assertEquals(confirmBetsPage.ddbCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertEquals(confirmBetsPage.ddbStatus.getOptions(),ConfirmBets.STATUS_LIST,"Failed! Status dropdown is not displayed!");
+        Assert.assertEquals(confirmBetsPage.ddbSport.getOptions(),ConfirmBets.SPORT_LIST,"Failed! Sport dropdown is not displayed!");
+        Assert.assertEquals(confirmBetsPage.ddbBetType.getOptions(),ConfirmBets.BET_TYPE_LIST,"Failed! Bet Types dropdown is not displayed!");
+        Assert.assertEquals(confirmBetsPage.ddbDateType.getOptions(),ConfirmBets.DATE_TYPE_LIST,"Failed! Date Type dropdown is not displayed!");
+        log("Textbox: Acc Starts With, Account Code");
+        Assert.assertEquals(confirmBetsPage.lblAccStartWith.getText(),"Acc Starts With","Failed! Acc Start With textbox is not displayed!");
+        Assert.assertEquals(confirmBetsPage.lblAccountCode.getText(),"Account Code","Failed! Account Code textbox is not displayed!");
+        log("Button: Show button");
+        Assert.assertEquals(confirmBetsPage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        log("Validate there are 3 tables displayed");
+        Assert.assertEquals(confirmBetsPage.tblOrder.getHeaderNameOfRows(),ConfirmBets.TABLE_HEADER_ORDER,"Failed! Order table is not displayed!");
+        Assert.assertEquals(confirmBetsPage.tblPending.getHeaderNameOfRows(),ConfirmBets.TABLE_HEADER_PENDING,"Failed! Pending Accounts table is not displayed!");
+        Assert.assertEquals(confirmBetsPage.tblConfirm.getHeaderNameOfRows(),ConfirmBets.TABLE_HEADER_CONFIRMED,"Failed! Confirmed Accounts table is not displayed!");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2187")
+    @Parameters({"accountCode"})
+    public void Confirm_Bets_TC_003(String accountCode){
+        String sport="Soccer";
+        String companyUnit = "Kastraki Limited";
+        log("@title: Validate Total Stake is matched correctly with all bet stake on Pending list");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Trading > Confirm Bets");
+        ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING,CONFIRM_BETS, ConfirmBetsPage.class);
+        log("@Step 3: Select Status is Pending");
+        log("@Step 4: Enter account at pre-condition");
+        log("@Step 5: Click Show");
+        confirmBetsPage.filter(companyUnit, "", "Pending", sport, "All", "All Dates","","", accountCode);
+        log("Validate Total Stake is matched correctly with all bet stake on Pending list");
+        String totalPendingStake = confirmBetsPage.lblTotalStake.getText();
+        confirmBetsPage.isTotalStakeMatched(totalPendingStake);
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2188")
+    @Parameters({"accountCode"})
+    public void Confirm_Bets_TC_004(String accountCode){
+        String sport="Soccer";
+        String companyUnit = "Kastraki Limited";
+        log("@title: Validate Total Confirmed Stake is matched correctly with all bet stake on Pending list");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Trading > Confirm Bets");
+        ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING,CONFIRM_BETS, ConfirmBetsPage.class);
+        log("@Step 3: Select Status is Confirmed");
+        log("@Step 4: Enter account at pre-condition");
+        log("@Step 5: Click Show");
+        confirmBetsPage.filter(companyUnit, "", "Confirmed", sport, "All", "All Dates","","", accountCode);
+        log("Validate Total Stake is matched correctly with all bet stake on Pending list");
+        String totalConfirmedStake = confirmBetsPage.lblTotalStake.getText();
+        confirmBetsPage.isTotalStakeMatched(totalConfirmedStake);
+        log("INFO: Executed completely");
+    }
+
 }
+
