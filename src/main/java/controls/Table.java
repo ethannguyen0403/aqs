@@ -327,6 +327,44 @@ public class Table extends BaseElement {
         }/**/
     }
 
+    public int getNumberOfRowsPopup(boolean isMoving){
+        return getNumberOfRowsPopup(true, isMoving);
+    }
+
+    public int getNumberOfRowsPopup(boolean isCountHeaderRow, boolean isMoving){
+        int numberRows = 0;
+        if(isCountHeaderRow){
+            Row row = Row.xpath(String.format("%s%s", this._xpathTable, "/thead/tr[1]"));
+            if (row.isDisplayed(3)){
+                numberRows +=1;
+            } else {
+                return numberRows;
+            }
+        }
+        //Isabella improve get total row quickly
+		/*String rowXpath = String.format("%s%s", this._xpathTable, "//tbody/tr");
+		Row r  = Row.xpath(rowXpath);
+		if (!r.isDisplayed(3))
+			return numberRows;
+		numberRows = numberRows +r.getWebElements().size();
+		return numberRows;*/
+
+        String rowXpath = String.format("%s%s", this._xpathTable, "//tbody/perfect-scrollbar/div/div[1]/tr[%d]");
+        int i = 1;
+        while (true){
+            Row iRow = Row.xpath(String.format(rowXpath, i));
+            if (!iRow.isDisplayed(3)){
+                return numberRows;
+            } else{
+                numberRows +=1;
+                i++;
+                if (isMoving) {
+                    iRow.scrollDownInDistance();
+                }
+            }
+        }/**/
+    }
+
     /**
      * Getting the 1st control of a row by a same text. It will return the 1st control on a row you input
      * @param comparedText a text of control you want to get
