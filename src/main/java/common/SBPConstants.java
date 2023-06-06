@@ -27,9 +27,12 @@ public class SBPConstants {
     public final static String LEDGER_STATEMENT = "Ledger Statement";
     public final static String BOOKIE_STATEMENT = "Bookie Statement";
     public final static String JOURNAL_ENTRIES = "Journal Entries";
+    public final static String JOURNAL_REPORTS = "Journal Reports";
+    public final static String SMART_SYSTEM = "Smart System";
     public final static String CURRENCY_RATES = "Currency Rates";
     public final static String BET_ENTRY = "Bet Entry";
     public final static String RESULT_ENTRY = "Result Entry";
+    public final static String BALANCE_CURRENT = "Balance [Current]";
     public final static String SPORT= "Sport";
     public final static String CLIENT_STATEMENT = "Client Statement";
     public final static String SPP = "SPP";
@@ -41,6 +44,7 @@ public class SBPConstants {
     public final static String EVENT_MAPPING = "Event Mapping";
     public final static String OPEN_PRICE = "Open Price";
     public final static String BL_SETTINGS = "BL Settings";
+    public final static String PHONE_BETTING = "Phone Betting";
     public final static String MONITOR_BETS = "Monitor Bets";
     public final static String MATCH_ODDS_LIABILITY = "1x2 Liability";
     public final static String HANDICAP_LIABILITY = "Handicap Liability";
@@ -76,6 +80,7 @@ public class SBPConstants {
     public final static String LEDGER_PARENT_NAME_CAPITAL = "QA Ledger Group Capital";
     public final static List<String> TABLE_HEADER = Arrays.asList("Role", "User", "Sport", "Soccer","Accounting","Trading","Master","General Reports","Invoice","Financial Reports");
     public final static List<String> COMPANY_UNIT_LIST = Arrays.asList("Kastraki Limited", "SK1122", "IB 01", "Fair");
+    public final static List<String> FINANCIAL_YEAR_LIST = Arrays.asList("Year 2020-2021","Year 2021-2022","Year 2022-2023");
     public final static List<String> COUNTRY_LIST = Arrays.asList("All", "Afghanistan","Africa","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Antigua and Barbuda","Argentina","Armenia","Aruba","Asia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia-Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei Darussalam","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde Islands","Cayman Islands","Central African Republic","Chad","Chile","China","Chinese Taipei","Colombia","Comoros Island","Congo","Cook Islands","Costa Rica","Croatia","Cuba","Curacao","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Dubai","East Timor","Ecuador","Egypt","El Salvador","England","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","EuroCup","Europe","Faroe Islands","FIFA","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Grenada","Guadeloupe","Guam","Guatemala","Guinea","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","International","Iran","Iraq","Ireland Republic","Israel","Israeli-Palestinian","Italy","Ivory Cost","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Korea North","Korea South","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macao","Macedonia FYR","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","North America","North Ireland","Norway","Oceania","Oman","Other","Others","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Romania","Russia","Rwanda","Samoa","San Marino","Saudi Arabia","Scotland","Senegal","Serbia","Serbia and Montenegro","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South America","Spain","Sri Lanka","St. Kitts and Nevis","St. Lucia","St. Vincent and the Grenadines","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Tahiti","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad And Tobago","Tunisia","Turkey","Turkmenistan","UEFA","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","US Virgin Islands","USA","Uzbekistan","Vanuatu","Venezuela","Vietnam","Wales","World","WorldCup","Yemen","Yugoslavia","Zambia","Zanzibar","Zimbabwe");
     public final static List<String> TYPE_LIST = Arrays.asList("Normal","Account");
     public final static List<String> ORDER_BY_LIST = Arrays.asList("KOT","League");
@@ -245,9 +250,29 @@ public class SBPConstants {
 
     public static class JournalEntries{
         public final static List<String> TYPE_LIST = Arrays.asList("Client","Bookie","Ledger");
-        public final static List<String> TRANSACTION_TYPE_LIST = Arrays.asList("Choose One","Payment Bookie","Payment Client","Payment Feed","Payment Operational","Payment Other","Payment Provider",
+        public final static List<String> TRANSACTION_TYPE_LIST = Arrays.asList("[Choose One]","Payment Bookie","Payment Client","Payment Feed","Payment Operational","Payment Other","Payment Provider",
                 "Received Bookie","Received Client","Received Comm/Rebate","Received Dividend/Share","Received Feed","Received Other","Contra Bookie","Contra Client","Contra Bookie Client","Contra CUR");
     }
+
+    public static class JournalReports{
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "Transaction Type","Transaction ID","Transaction Date","Created By","Created Date","Memo/Description","Account Name",
+                "Account Type","CUR","Foreign Debit","Foreign Credit","Debit in HKD","Credit in HKD");
+        public final static List<String> DATE_TYPE = Arrays.asList("Created Date","Transaction Date");
+        public final static List<String> TRANSACTION_TYPE_LIST = Arrays.asList("[All]","Payment Bookie","Payment Client","Payment Feed","Payment Operational","Payment Other","Payment Provider",
+                "Received Bookie","Received Client","Received Comm/Rebate","Received Dividend/Share","Received Feed","Received Other","Contra Bookie","Contra Client","Contra Bookie Client","Contra CUR","Others");
+        public final static List<String> ACCOUNT_TYPE = Arrays.asList("Client","Bookie","Ledger","All");
+    }
+
+    public static class ConfirmBets{
+        public final static List<String> STATUS_LIST = Arrays.asList("Pending","Confirmed");
+        public final static List<String> SPORT_LIST = Arrays.asList("All","Soccer","Cricket","Basketball","Tennis","American Football","Ice Hockey");
+        public final static List<String> DATE_TYPE_LIST = Arrays.asList("All Dates","Specific Date");
+        public final static List<String> BET_TYPE_LIST = Arrays.asList("All");
+        public final static List<String> TABLE_HEADER_ORDER = Arrays.asList("#","Event Date","Country","League","Event","Bet Date","Selection","Hdp","Live","Odds","B/L","Stake","BT","Trad","","","");
+        public final static List<String> TABLE_HEADER_PENDING = Arrays.asList("Pending Accounts");
+        public final static List<String> TABLE_HEADER_CONFIRMED = Arrays.asList("Confirmed Accounts");
+    }
+
 }
 
 
