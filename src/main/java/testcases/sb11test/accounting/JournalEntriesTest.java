@@ -91,9 +91,9 @@ public class JournalEntriesTest extends BaseCaseAQS {
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("Validate UI Info display correctly");
         log("Dropdown: From/To, Client, Bookie, Ledger, Currency, Level and Transaction Type");
-        Assert.assertEquals(journalEntriesPage.ddpCompanyUnit,COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed");
-        Assert.assertEquals(journalEntriesPage.ddDebitFrom,JournalEntries.TYPE_LIST,"Failed! Debit type list dropdown is not displayed");
-        Assert.assertEquals(journalEntriesPage.ddCreditTo,JournalEntries.TYPE_LIST,"Failed! Credit type list dropdown is not displayed");
+        Assert.assertEquals(journalEntriesPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed");
+        Assert.assertEquals(journalEntriesPage.ddDebitFrom.getOptions(),JournalEntries.TYPE_LIST,"Failed! Debit type list dropdown is not displayed");
+        Assert.assertEquals(journalEntriesPage.ddCreditTo.getOptions(),JournalEntries.TYPE_LIST,"Failed! Credit type list dropdown is not displayed");
         Assert.assertTrue(journalEntriesPage.ddCreditLedger.getOptions().contains(clientCode),"Failed! Credit Client dropdown is not displayed");
         Assert.assertTrue(journalEntriesPage.ddDebitLedger.getOptions().contains(clientCode),"Failed! Debit Client dropdown is not displayed");
         Assert.assertTrue(journalEntriesPage.ddCreditBookieClient.getOptions().contains(bookieCode),"Failed! Credit Bookie dropdown is not displayed");
@@ -189,7 +189,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @TestRails(id="2164")
     @Test(groups = {"smoke"})
     @Parameters({"clientCode","bookieSuperMasterCode"})
-    public void Journal_Entries_TC_005(String clientCode, String bookieSuperMasterCode){
+    public void Journal_Entries_TC_005(){
         log("@title: Validate transaction Debit of Ledger Type = Expenditure");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");

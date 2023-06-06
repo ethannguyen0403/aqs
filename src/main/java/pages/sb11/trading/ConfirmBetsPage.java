@@ -17,19 +17,19 @@ import static common.ESSConstants.HomePage.EN_US;
 
 public class ConfirmBetsPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
-    public DropDownBox ddbCompanyUnit = DropDownBox.id("company");
+    public DropDownBox ddbCompanyUnit = DropDownBox.xpath("//label[text()='Company Unit']//following::select[1]");
     public TextBox txtAccStartWith = TextBox.id("acc-starts-with");
     public DropDownBox ddbStatus = DropDownBox.id("status");
     public DropDownBox ddbSport = DropDownBox.id("sport");
     public DropDownBox ddbBetType = DropDownBox.id("betType");
     public DropDownBox ddbDateType = DropDownBox.id("dateType");
-    public TextBox txtFromDate  = TextBox.xpath("//app-confirm-bet//div[@id='fromDate']/input");
-    public TextBox txtToDate  = TextBox.xpath("//app-confirm-bet//div[@id='toDate']/input");
+    public TextBox txtFromDate  = TextBox.xpath("//div[@id='fromDate']/input");
+    public TextBox txtToDate  = TextBox.xpath("//div[@id='toDate']/input");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
     public TextBox txtAccountCode = TextBox.id("accountCode");
     public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
-    int colTotal = 16;
+    int colTotal = 17;
     int colEventDate = 2;
     int colCountry = 3;
     int colLeague = 4;
@@ -45,7 +45,10 @@ public class ConfirmBetsPage extends WelcomePage {
     int colTra = 14;
     int colSelect = 15;
     int colDelete = 16;
-    public Table tblOrder = Table.xpath("//app-confirm-bet//div[@id='customTable']//table[contains(@aria-label,'bet table')]",colTotal);
+//    public Table tblOrder = Table.xpath("//app-confirm-bet//div[@id='customTable']//table[contains(@aria-label,'bet table')]",colTotal);
+    public Table tblOrder = Table.xpath("//table[contains(@aria-label,'bet table')]",colTotal);
+    public Table tblPending = Table.xpath("//table[@aria-label='Pending acc']",1);
+    public Table tblConfirm = Table.xpath("//table[@aria-label='Confirmed acc']",1);
     public Button btnUpdateBet = Button.xpath("//button[text()='Update Bet']");
     public Button btnDuplcateBetForSPBPS7 = Button.xpath("//button[text()='Duplicate Bet For SPBPS7']");
     public Label lblSelectAll = Label.xpath("//app-confirm-bet//span[text()='Select All']");
@@ -53,6 +56,8 @@ public class ConfirmBetsPage extends WelcomePage {
     public Button btnConfirmBet = Button.xpath("//app-confirm-bet//button[text()='Confirm Bet']");
     public Button btnUnConfirmSelected = Button.xpath("//app-confirm-bet//button[text()='Unconfirm Selected']");
     public Label lblTotalStake = Label.xpath("//span[contains(@class,'total-stake-pending')]");
+    public Label lblAccStartWith = Label.xpath("//label[text()='Acc Starts With']");
+    public Label lblAccountCode = Label.xpath("//label[text()='Account Code']");
 
     public String getTitlePage ()
     {
@@ -145,6 +150,26 @@ public class ConfirmBetsPage extends WelcomePage {
             }
             i = i+1;
         }
+    }
+
+    private double calTotalStake(){
+        int i = 1;
+        int totalRows = tblOrder.getNumberOfRows(false,false);
+        double total = 0;
+
+        while (i<=totalRows) {
+            double stake = Double.parseDouble(TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, i, "input")).getAttribute("value").trim());
+            total = total + stake;
+            i = i + 1;
+        }
+        return total;
+    }
+
+    public boolean isTotalStakeMatched(String totalStake){
+        String totalStakeOrder = String.valueOf(calTotalStake());
+        if (totalStake.contains(totalStakeOrder))
+            return true;
+        return false;
     }
 
     /**
