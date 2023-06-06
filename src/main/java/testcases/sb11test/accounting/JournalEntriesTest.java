@@ -115,7 +115,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     }
 
     @TestRails(id="2162")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"regression"})
     @Parameters({"bookieCode","bookieSuperMasterCode"})
     public void Journal_Entries_TC_003(String bookieCode, String bookieSuperMasterCode){
         log("@title: Validate users can make transactions successfully between bookies");
@@ -151,7 +151,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     }
 
     @TestRails(id="2163")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"regression"})
     @Parameters({"clientCode","bookieSuperMasterCode"})
     public void Journal_Entries_TC_004(String clientCode, String bookieSuperMasterCode){
         log("@title: Validate users can make transactions successfully between client");
@@ -187,7 +187,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     }
 
     @TestRails(id="2164")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"regression"})
     @Parameters({"clientCode","bookieSuperMasterCode"})
     public void Journal_Entries_TC_005(){
         log("@title: Validate transaction Debit of Ledger Type = Expenditure");
