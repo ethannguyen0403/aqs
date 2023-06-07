@@ -13,6 +13,7 @@ import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.BetEntrytUtils;
 import utils.sb11.GetSoccerEventUtils;
+import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import static common.SBPConstants.*;
 public class MatchOddsLiabilityTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2106")
     public void MatchOddsLiabilityTC_001(){
         log("@title: Validate 1x2 Liability page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -33,6 +35,7 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2107")
     public void MatchOddsLiabilityTC_002(){
         log("@title: Validate 1x2 Liability page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -40,18 +43,19 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
         MatchOddsLiabilityPage matchOddsLiabilityPage = welcomePage.navigatePage(SOCCER,MATCH_ODDS_LIABILITY, MatchOddsLiabilityPage.class);
         log(" Validate UI Info display correctly");
         log("Company Unit, Smart Type, Show Only PT-Bets,Live/NonLive, From Date, To Date, Stake");
-        Assert.assertTrue(matchOddsLiabilityPage.ddpCompanyUnit.isDisplayed(),"Failed! Company Unit dropdown is not displayed");
-        Assert.assertTrue(matchOddsLiabilityPage.ddpSmartType.isDisplayed(),"Failed! Smart Type dropdown is not displayed");
-        Assert.assertTrue(matchOddsLiabilityPage.cbPTBets.isDisplayed(),"Failed! PT Bets checkbox is not displayed");
-        Assert.assertTrue(matchOddsLiabilityPage.txtFromDate.isDisplayed(),"Failed! From Date datetime picker is not displayed");
-        Assert.assertTrue(matchOddsLiabilityPage.txtToDate.isDisplayed(),"Failed! To Date datetime picker is not displayed");
-        Assert.assertTrue(matchOddsLiabilityPage.ddpStake.isDisplayed(),"Failed! Stake dropdown is not displayed");
+        Assert.assertEquals(matchOddsLiabilityPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed");
+        Assert.assertEquals(matchOddsLiabilityPage.ddpSport.getOptions(),SPORT_LIST,"Failed! Sport dropdown is not displayed");
+        Assert.assertEquals(matchOddsLiabilityPage.ddpSmartType.getOptions(),MatchOddsLiability.SMART_TYPE_LIST,"Failed! Smart Type dropdown is not displayed");
+        Assert.assertEquals(matchOddsLiabilityPage.lblPTBets.getText(),"PT-Bets","Failed! PT Bets checkbox is not displayed");
+        Assert.assertEquals(matchOddsLiabilityPage.lblFromDate.getText(),"From Date","Failed! From Date datetime picker is not displayed");
+        Assert.assertEquals(matchOddsLiabilityPage.lblToDate.getText(),"To Date","Failed! To Date datetime picker is not displayed");
+        Assert.assertEquals(matchOddsLiabilityPage.ddpStake.getOptions(),STAKE_LIST,"Failed! Stake dropdown is not displayed");
         log("Show Bet Types, Show Leagues, Show Groups, Show Events and Show button");
-        Assert.assertTrue(matchOddsLiabilityPage.lblShowBetType.isDisplayed(),"Failed! Show Bet Types button is not displayed");
-        Assert.assertTrue(matchOddsLiabilityPage.lblShowLeagues.isDisplayed(),"Failed! Show Leagues button is not displayed");
-        Assert.assertTrue(matchOddsLiabilityPage.lblShowGroups.isDisplayed(),"Failed! Show Groups button is not displayed");
-        Assert.assertTrue(matchOddsLiabilityPage.lblShowEvents.isDisplayed(),"Failed! Show Events button is not displayed");
-        Assert.assertTrue(matchOddsLiabilityPage.btnShow.isDisplayed(),"Failed! Show button is not displayed");
+        Assert.assertEquals(matchOddsLiabilityPage.lblShowBetType.getText(),"Show Bet Types","Failed! Show Bet Types button is not displayed");
+        Assert.assertEquals(matchOddsLiabilityPage.lblShowLeagues.getText(), "Show Leagues","Failed! Show Leagues button is not displayed");
+        Assert.assertEquals(matchOddsLiabilityPage.lblShowGroups.getText(),"Show Groups","Failed! Show Groups button is not displayed");
+        Assert.assertEquals(matchOddsLiabilityPage.lblShowEvents.getText(),"Show Events","Failed! Show Events button is not displayed");
+        Assert.assertEquals(matchOddsLiabilityPage.btnShow.getText(),"Show","Failed! Show button is not displayed");
         log("Event table header columns is correctly display");
         Assert.assertEquals(matchOddsLiabilityPage.tblOrder.getHeaderNameOfRows(), MatchOddsLiability.TABLE_HEADER,"FAILED! 1x2 Liability Bets table header is incorrect display");
         log("INFO: Executed completely");
@@ -66,9 +70,10 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String marketType = "1x2";
+        String smartType = "Group";
 
-        String date = String.format(DateUtils.getDate(1,"d/MM/yyyy","UTC+7:00"));
-        String dateAPI = String.format(DateUtils.getDate(1,"yyyy-MM-dd","UTC+7:00"));
+        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","UTC+7:00"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","UTC+7:00"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
@@ -92,16 +97,15 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
                 .away((eventInfo.getAway()))
                 .event(eventInfo)
                 .build();
-        SoccerSPBBetSlipPopup soccerSPBBetSlipPopup = soccerBetEntryPage.openSPBBetSlip(accountCode,eventInfo.getHome());
-        soccerSPBBetSlipPopup.placeMoreBet(order,false,false,false);
+//        SoccerSPBBetSlipPopup soccerSPBBetSlipPopup = soccerBetEntryPage.openSPBBetSlip(accountCode,eventInfo.getHome());
+//        soccerSPBBetSlipPopup.placeMoreBet(order,false,false,false);
 
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > 1x2 Liability");
         MatchOddsLiabilityPage matchOddsLiabilityPage = welcomePage.navigatePage(SOCCER,MATCH_ODDS_LIABILITY, MatchOddsLiabilityPage.class);
         log("@Step 3: Filter with event that having bet at Pre-condition ");
-
         log("@Step 4: Click Show");
-        
+        matchOddsLiabilityPage.filterResult(companyUnit, sport, smartType,false,"All",date,date,"All",true);
         log("Validate 1x2 bet from Bet Entry is displayed correctly on 1x2 Liability report");
 
         log("INFO: Executed completely");

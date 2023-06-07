@@ -23,11 +23,13 @@ public class SoccerLeagueSeasonTeamInfoPage extends WelcomePage {
     public TextBox txtLeagueName = TextBox.xpath("//app-league//div[contains(text(),'League Name')]//following::input[1]");
     public Button btnSearchLeague = Button.xpath("//app-league//div[contains(text(),'League Name')]//following::button[1]");
     public DropDownBox ddCountryTeam = DropDownBox.xpath("//app-team//div[contains(text(),'Country')]//following::select[1]");
+    public Label lblLeagueName = Label.xpath("//div[contains(text(),'League Name')]");
     public TextBox txtTeamName = TextBox.xpath("//app-team//div[contains(text(),'Team Name')]//following::input[1]");
     public Button btnSearchTeam = Button.xpath("//app-league//div[contains(text(),'League Name')]//following::button[1]");
     public Button btnAddLeague = Button.xpath("//app-league//div[contains(@class,'main-box-header')]//span[1]//following::button[1]");
     public Button btnAddSeason = Button.xpath("//app-season//div[contains(@class,'main-box-header')]//span[1]//following::button[1]");
     public Button btnAddTeam = Button.xpath("//app-team//div[contains(@class,'main-box-header')]//span[1]//following::button[1]");
+    public Label lblTeamName = Label.xpath("//div[contains(text(),'Team Name')]");
     public Table tbLeague = Table.xpath("//app-league//div[contains(@class,'main-box-header')]//following::table[1]",8);
     public Table tbSeason = Table.xpath("//app-season//div[contains(@class,'main-box-header')]//following::table[1]",7);
     public Table tbTeam = Table.xpath("//app-team//div[contains(@class,'main-box-header')]//following::table[1]",7);

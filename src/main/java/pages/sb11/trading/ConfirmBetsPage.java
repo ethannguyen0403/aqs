@@ -46,6 +46,8 @@ public class ConfirmBetsPage extends WelcomePage {
     int colSelect = 15;
     int colDelete = 16;
     public Table tblOrder = Table.xpath("//div[@id='customTable']//table[contains(@aria-label,'bet table')]",colTotal);
+    public Table tblPending = Table.xpath("//table[@aria-label='Pending acc']",1);
+    public Table tblConfirm = Table.xpath("//table[@aria-label='Confirmed acc']",1);
     public Button btnUpdateBet = Button.xpath("//button[text()='Update Bet']");
     public Button btnDuplcateBetForSPBPS7 = Button.xpath("//button[text()='Duplicate Bet For SPBPS7']");
     public Label lblSelectAll = Label.xpath("//span[text()='Select All']");
@@ -53,6 +55,8 @@ public class ConfirmBetsPage extends WelcomePage {
     public Button btnConfirmBet = Button.xpath("//button[text()='Confirm Bet']");
     public Button btnUnConfirmSelected = Button.xpath("/button[text()='Unconfirm Selected']");
     public Label lblTotalStake = Label.xpath("//span[contains(@class,'total-stake-pending')]");
+    public Label lblAccStartWith = Label.xpath("//label[text()='Acc Starts With']");
+    public Label lblAccountCode = Label.xpath("//label[text()='Account Code']");
 
     public String getTitlePage ()
     {

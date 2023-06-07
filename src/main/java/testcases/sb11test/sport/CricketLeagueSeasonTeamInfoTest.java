@@ -7,9 +7,10 @@ import org.testng.annotations.Test;
 import pages.sb11.sport.CricketLeagueSeasonTeamInfoPage;
 import testcases.BaseCaseAQS;
 import pages.sb11.sport.popup.*;
+import utils.testraildemo.TestRails;
 
-import static common.SBPConstants.LEAGUE_SEASON_TEAM_INFO;
-import static common.SBPConstants.SPORT;
+import static common.SBPConstants.*;
+import static common.SBPConstants.COUNTRY_LIST;
 
 public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
 
@@ -19,6 +20,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     String teamName = "QA Cricket Auto Team";
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2073")
     public void Cricket_League_Season_Team_Info_TC_001(){
         log("@title: Validate League/Season/Team Info for Cricket is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -34,6 +36,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2074")
     public void Cricket_League_Season_Team_Info_TC_002(){
         log("@title:Validate UI on League/Season/Team Info for Cricket is correctly displayed");
         log("@Step 1: Login with valid account");
@@ -42,16 +45,16 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         cricketLeagueSeasonTeamInfoPage.goToCricket();
         log("Validate the page is displayed with correct title page");
         log("League list table: Type, Country, League Name and Add button");
-        Assert.assertTrue(cricketLeagueSeasonTeamInfoPage.ddTypeLeague.isDisplayed(),"Failed! League Type dropdown is not displayed!");
-        Assert.assertTrue(cricketLeagueSeasonTeamInfoPage.ddCountryLeague.isDisplayed(),"Failed! League Country dropdown is not displayed!");
-        Assert.assertTrue(cricketLeagueSeasonTeamInfoPage.txtLeagueName.isDisplayed(),"Failed! League Name textbox is not displayed!");
+        Assert.assertEquals(cricketLeagueSeasonTeamInfoPage.ddTypeLeague.getOptions(), SBPConstants.LeagueSeasonTeamInfo.SOCCER_TYPE,"Failed! League Type dropdown is not displayed!");
+        Assert.assertEquals(cricketLeagueSeasonTeamInfoPage.ddCountryLeague.getOptions(), COUNTRY_LIST,"Failed! League Country dropdown is not displayed!");
+        Assert.assertEquals(cricketLeagueSeasonTeamInfoPage.lblLeagueName.getText(),"League Name","Failed! League Name textbox is not displayed!");
         Assert.assertTrue(cricketLeagueSeasonTeamInfoPage.btnAddLeague.isDisplayed(),"Failed! Add League button is not displayed!");
         Assert.assertTrue(cricketLeagueSeasonTeamInfoPage.btnSearchLeague.isDisplayed(),"Failed! Search League button is not displayed!");
         log("Season table: Add button");
         Assert.assertTrue(cricketLeagueSeasonTeamInfoPage.btnAddSeason.isDisplayed(),"Failed! Add Season button is not displayed!");
         log("Team List table: Country, Team Name, Add button");
-        Assert.assertTrue(cricketLeagueSeasonTeamInfoPage.ddCountryTeam.isDisplayed(),"Failed! Team Country dropdown is not displayed!");
-        Assert.assertTrue(cricketLeagueSeasonTeamInfoPage.txtTeamName.isDisplayed(),"Failed! Team Name textbox is not displayed!");
+        Assert.assertEquals(cricketLeagueSeasonTeamInfoPage.ddCountryTeam.getOptions(), COUNTRY_LIST,"Failed! Team Country dropdown is not displayed!");
+        Assert.assertEquals(cricketLeagueSeasonTeamInfoPage.lblTeamName.getText(),"League Name","Failed! Team Name textbox is not displayed!");
         Assert.assertTrue(cricketLeagueSeasonTeamInfoPage.btnAddTeam.isDisplayed(),"Failed! Add Team button is not displayed!");
         Assert.assertTrue(cricketLeagueSeasonTeamInfoPage.btnSearchTeam.isDisplayed(),"Failed! Search Team button is not displayed!");
         log("League list, Season and Team List table header columns are correctly displayed");
@@ -62,6 +65,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2078")
     public void Cricket_League_Season_Team_Info_TC_003(){
         log("@title: Validate that can add new Cricket League successfully");
         log("@Step 1: Login with valid account");
@@ -79,6 +83,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2079")
     public void Cricket_League_Season_Team_Info_TC_004(){
         log("@title: Validate that can add new Cricket season successfully");
         log("@Step 1: Login with valid account");
@@ -95,6 +100,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2080")
     public void Cricket_League_Season_Team_Info_TC_005(){
         log("@title: Validate that can add new Cricket Team successfully");
         log("@Step 1: Login with valid account");

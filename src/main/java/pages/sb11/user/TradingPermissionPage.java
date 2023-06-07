@@ -22,6 +22,7 @@ public class TradingPermissionPage extends WelcomePage {
     }
     public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
     public DropDownBox ddpUserRole = DropDownBox.xpath("//div[contains(text(),'User Role')]//following::select[1]");
+    public Label lblUsername = Label.xpath("//div[contains(text(),'Username')]");
     public TextBox txtUsername = TextBox.name("user-name");
     public Button btnShow = Button.xpath("//app-trading-permission//button[text()='Show']");
     public Table tbTradPermission = Table.xpath("//app-trading-permission//table",colTotal);

@@ -468,5 +468,61 @@ public class BetEntryTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @Test(groups = {"regression"})
+    @TestRails(id = "2189")
+    public void BetEntry_TC_001(){
+        log("Validate Bet Entry page for Soccer is displayed when navigate");
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Trading > Bet Entry");
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        log("@Step 3: Click on 'Soccer' > select any League > click Show");
+        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
+        log("Validate Soccer Bet Entry page for Soccer is displayed with correctly title");
+        Assert.assertTrue(soccerBetEntryPage.getTitlePage().contains("Soccer"), "Failed! Soccer Bet Entry page is not displayed");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression"})
+    @TestRails(id = "2190")
+    public void BetEntry_TC_002(){
+        log("Validate UI on Bet Entry for Soccer is correctly displayed");
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Trading > Bet Entry");
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        log("@Step 3: Click on 'Soccer' > select any League > click Show");
+        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
+        log("Validate UI Info display correctly");
+
+        log("Validate Soccer event table is displayed correctly after clicking Show");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2191")
+    public void BetEntry_TC_003(){
+        log("Validate Bet Entry page for Cricket is displayed when navigate");
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Trading > Bet Entry");
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        log("@Step 3: Click on 'Cricket' > select any League > click Show");
+        CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
+        log("Validate Cricket Bet Entry page for Soccer is displayed with correctly title");
+        Assert.assertTrue(cricketBetEntryPage.getTitlePage().contains("Cricket"), "Failed! Cricket Bet Entry page is not displayed");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2191")
+    public void BetEntry_TC_005(){
+        log("Validate Bet Entry page for Mixed Sport is displayed when navigate");
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Trading > Bet Entry");
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        log("@Step 3: Click on 'Mixed Sport' > select any League > click Show");
+        ManualBetBetEntryPage manualBetBetEntryPage = betEntryPage.goToMixedSports();
+        log("Validate Manual Bet Entry page for Soccer is displayed with correctly title");
+        Assert.assertTrue(manualBetBetEntryPage.getTitlePage().contains("Manual Bet"), "Failed! Manual Bet Entry page is not displayed");
+        log("INFO: Executed completely");
+    }
+
 
 }

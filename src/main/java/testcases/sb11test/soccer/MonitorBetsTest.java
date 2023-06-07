@@ -7,6 +7,7 @@ import pages.sb11.soccer.MonitorBetsPage;
 import pages.sb11.soccer.PendingBetsPage;
 import pages.sb11.soccer.PerformanceByMonthPage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import java.sql.DriverManager;
 
@@ -27,6 +28,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     String accCur = "HKD";
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2101")
     public void MonitorBetsTC_001(){
         log("@title: Validate Monitor Bets page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -38,6 +40,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2102")
     public void MonitorBetsTC_002(){
         log("@title: Validate UI on Monitor Bets is correctly displayed");
         log("@Step 1: Login with valid account");
@@ -45,16 +48,16 @@ public class MonitorBetsTest extends BaseCaseAQS {
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("Validate UI on BL Settings is correctly displayed");
         log("Smart Type, Punter Type, Bet Placed In, Bet Count, Live/NonLive, Currency, Stake");
-        Assert.assertTrue(monitorBetsPage.ddpSport.isDisplayed(),"Failed! Dropdown Sport is not displayed");
-        Assert.assertTrue(monitorBetsPage.ddpSmartType.isDisplayed(),"Failed! Dropdown Smart Type is not displayed");
-        Assert.assertTrue(monitorBetsPage.ddpPunterType.isDisplayed(),"Failed! Dropdown Punter Type is not displayed");
-        Assert.assertTrue(monitorBetsPage.ddpBetPlacedIN.isDisplayed(),"Failed! Dropdown Bet Placed In is not displayed");
-        Assert.assertTrue(monitorBetsPage.ddpBetCount.isDisplayed(),"Failed! Dropdown Bet Count is not displayed");
-        Assert.assertTrue(monitorBetsPage.ddpLRBRule.isDisplayed(),"Failed! Dropdown LRB-Rule is not displayed");
-        Assert.assertTrue(monitorBetsPage.cbTodayEvent.isDisplayed(),"Failed! Today Events(s) checkbox is not displayed");
-        Assert.assertTrue(monitorBetsPage.ddpLiveNonLive.isDisplayed(),"Failed! Dropdown Live/NonLive is not displayed");
-        Assert.assertTrue(monitorBetsPage.ddpCurrency.isDisplayed(),"Failed! Dropdown Currency is not displayed");
-        Assert.assertTrue(monitorBetsPage.ddpStake.isDisplayed(),"Failed! Dropdown Stake is not displayed");
+        Assert.assertEquals(monitorBetsPage.ddpSport.getOptions(),MonitorBets.SPORT_LIST,"Failed! Dropdown Sport is not displayed");
+        Assert.assertEquals(monitorBetsPage.ddpSmartType.getOptions(), MonitorBets.SMART_TYPE_LIST,"Failed! Dropdown Smart Type is not displayed");
+        Assert.assertEquals(monitorBetsPage.ddpPunterType.getOptions(),MonitorBets.PUNTER_TYPE_LIST,"Failed! Dropdown Punter Type is not displayed");
+        Assert.assertEquals(monitorBetsPage.ddpBetPlacedIN.getOptions(),MonitorBets.BET_PLACED_IN,"Failed! Dropdown Bet Placed In is not displayed");
+        Assert.assertEquals(monitorBetsPage.ddpBetCount.getOptions(),MonitorBets.BET_COUNT,"Failed! Dropdown Bet Count is not displayed");
+        Assert.assertEquals(monitorBetsPage.ddpLRBRule.getOptions(),"[LRB-Rule]","Failed! Dropdown LRB-Rule is not displayed");
+        Assert.assertEquals(monitorBetsPage.lblTodayEvent.getText(),"Today Event(s)","Failed! Today Events(s) checkbox is not displayed");
+        Assert.assertEquals(monitorBetsPage.ddpLiveNonLive.getOptions(),LIVE_NONLIVE_LIST,"Failed! Dropdown Live/NonLive is not displayed");
+        Assert.assertEquals(monitorBetsPage.ddpCurrency.getOptions(),CURRENCY_LIST,"Failed! Dropdown Currency is not displayed");
+        Assert.assertEquals(monitorBetsPage.ddpStake.getOptions(),STAKE_LIST,"Failed! Dropdown Stake is not displayed");
         log("Show Bet Types, Show Masters, Show Traders, Show Leagues, Show Events, Reset All Filters and Show button");
         Assert.assertTrue(monitorBetsPage.lblShowBetType.isDisplayed(),"Failed! Show Bet Types label is not displayed");
         Assert.assertTrue(monitorBetsPage.lblShowLeagues.isDisplayed(),"Failed! Show Leagues label is not displayed");
@@ -62,13 +65,14 @@ public class MonitorBetsTest extends BaseCaseAQS {
         Assert.assertTrue(monitorBetsPage.lblShowEvents.isDisplayed(),"Failed! Show Events label is not displayed");
         Assert.assertTrue(monitorBetsPage.lblShowTraders.isDisplayed(),"Failed! Show Traders label is not displayed");
         Assert.assertTrue(monitorBetsPage.lblResetAllFilters.isDisplayed(),"Failed! Reset All Filters label is not displayed");
-        Assert.assertTrue(monitorBetsPage.btnShow.isDisplayed(),"Failed! Show button is not displayed");
+        Assert.assertEquals(monitorBetsPage.btnShow.getText(),"Show","Failed! Show button is not displayed");
         log("Validate Monitor Bets table header columns is correctly display");
         Assert.assertEquals(monitorBetsPage.tblOrder.getHeaderNameOfRows(), MonitorBets.TABLE_HEADER,"FAILED! Monitor Bets table header is incorrect display");
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression1"})
+    @TestRails(id = "2103")
     public void MonitorBetsTC_003(){
         log("@title: Validate Performance By Month is displayed correctly when clicking account at AC column");
         log("@Step 1: Login with valid account");
@@ -86,6 +90,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2104")
     public void MonitorBetsTC_004(){
         log("@title: Validate Pending Bets is displayed correctly when clicking currency at Stake column");
         log("@Step 1: Login with valid account");
@@ -103,6 +108,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2105")
     public void MonitorBetsTC_005(){
         log("@title: Validate Last 12 Days Performance is displayed correctly when clicking data on T column");
         log("@Step 1: Login with valid account");

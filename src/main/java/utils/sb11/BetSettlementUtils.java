@@ -92,6 +92,7 @@ public class BetSettlementUtils {
                         "      \"runs\": 0,\n" +
                         "      \"wtks\": 0,\n" +
                         "      \"betCreateType\": \"BET_ENTRY\",\n" +
+                        "      \"type\": \"BACK\",\n" +
                         "      \"selected\": true\n" +
                         "    }\n" +
                         "  ],\n" +

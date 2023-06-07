@@ -19,6 +19,7 @@ import java.util.TimeZone;
 public class SoccerBetEntryPage extends BetEntryPage {
     private Label lblTitle = Label.xpath("//app-bet-entry-header//app-common-header-sport//div[contains(@class,'main-box-header')]/div[1]/span");
     private Label lblGoto = Label.xpath("//app-bet-entry-header//app-common-header-sport//div[contains(@class,'main-box-header')]/div[2]/span");
+    public Label lblDate = Label.xpath("//label[text()='Date']");
     private TextBox txtAccCode = TextBox.id("account-code");
     private DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bet-entry-header//div[contains(@class,'filter-body')]/div[1]//select");
     private DropDownBox ddpLeague = DropDownBox.id("league");

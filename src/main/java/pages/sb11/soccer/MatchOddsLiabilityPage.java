@@ -5,6 +5,8 @@ import controls.DateTimePicker;
 import controls.Table;
 import pages.sb11.WelcomePage;
 
+import javax.swing.*;
+
 public class MatchOddsLiabilityPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
     public String getTitlePage ()
@@ -15,6 +17,10 @@ public class MatchOddsLiabilityPage extends WelcomePage {
     public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
     public DropDownBox ddpSmartType = DropDownBox.xpath("//div[contains(text(),'Smart Type')]//following::select[1]");
     public CheckBox cbPTBets = CheckBox.xpath("//div[contains(text(),'Show Only')]//following::input[1]");
+    public DropDownBox ddpSport = DropDownBox.xpath("//div[contains(text(),'Sport')]//following::select[1]");
+    public Label lblPTBets = Label.xpath("//span[contains(text(),'PT-Bets')]");
+    public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
+    public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
     public DropDownBox ddpLiveNonLive = DropDownBox.xpath("//div[contains(text(),'Live/NonLive')]//following::select[1]");
     public DropDownBox ddpStake = DropDownBox.xpath("//div[contains(text(),'Stake')]//following::select[1]");
     public TextBox txtFromDate = TextBox.name("fromDate");
@@ -29,7 +35,7 @@ public class MatchOddsLiabilityPage extends WelcomePage {
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
     public Table tblOrder = Table.xpath("//app-match-odds-liability//table",6);
 
-    public void filterResult(String companyUnit, String smartType, boolean isPTBets, String liveNonLive, String fromDate, String toDate, String stake, boolean isShow){
+    public void filterResult(String companyUnit, String sport, String smartType, boolean isPTBets, String liveNonLive, String fromDate, String toDate, String stake, boolean isShow){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
         ddpSmartType.selectByVisibleText(smartType);
         if (isPTBets){
@@ -47,6 +53,11 @@ public class MatchOddsLiabilityPage extends WelcomePage {
     }
     public void showEvents (String eventName){
         lblShowEvents.click();
+        DropDownBox ddpEvents = DropDownBox.xpath("//div[contains(@class,'card-columns')]");
+
+
     }
-    
+
+
+
 }

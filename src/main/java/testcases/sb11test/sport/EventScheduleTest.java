@@ -6,6 +6,7 @@ import objects.Event;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+import pages.sb11.accounting.ChartOfAccountPage;
 import pages.sb11.sport.EventSchedulePage;
 import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.SoccerBetEntryPage;
@@ -69,6 +70,84 @@ public class EventScheduleTest extends BaseCaseAQS {
         log("@Step 5: Postcondition: Delete the event");
         eventSchedulePage = soccerBetEntryPage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
         eventSchedulePage.deleteEvent(event);
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2081")
+    public void EventSchedule_TC001(){
+        log("@title: Validate Event Schedule for Soccer is displayed when navigate");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Sport > Event Schedule");
+        EventSchedulePage eventSchedulePage = welcomePage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
+        log("Validate the page is displayed with 2 tables:Event Schedule Soccer and Schedule List");
+        Assert.assertTrue(eventSchedulePage.lblLeagueEntry.getText().contains("Soccer"), "Failed! League Entry table is not displayed");
+        Assert.assertTrue(eventSchedulePage.lblScheduleList.getText().contains("Schedule List"), "Failed! Schedule List table is not displayed");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2082")
+    public void EventSchedule_TC002(){
+        log("@title: Validate UI on Soccer Event Schedule is correctly displayed");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Sport > Event Schedule");
+        EventSchedulePage eventSchedulePage = welcomePage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
+        log("Validate UI Info display correctly");
+        log("Event Schedule table: League, Date Time and Show button");
+        Assert.assertEquals(eventSchedulePage.lblLeague.getText(),"League","Failed! League dropdown is not displayed!");
+        Assert.assertEquals(eventSchedulePage.lblDateTime.getText(),"Date Time","Failed! Date Time datetime picker is not displayed!");
+        Assert.assertEquals(eventSchedulePage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        log("Schedule List table: Home, Away, Team, Show League, Datetime and Show button");
+        Assert.assertEquals(eventSchedulePage.lblHome.getText(),"Home","Failed! Home radio button is not displayed!");
+        Assert.assertEquals(eventSchedulePage.lblAway.getText(),"Away","Failed! Away radio button is not displayed!");
+        Assert.assertEquals(eventSchedulePage.lblTeam.getText(),"Team","Failed! Team searchbox is not displayed!");
+        Assert.assertEquals(eventSchedulePage.btnShowLeague.getText(),"Show League","Failed! Show League button is not displayed!");
+        Assert.assertEquals(eventSchedulePage.btnShowSchedule.getText(),"Show","Failed! Show button is not displayed!");
+        log("Event Schedule and Schedule List table header columns are correctly display");
+        Assert.assertEquals(eventSchedulePage.tblLeagueBody.getHeaderNameOfRows(), EventSchedule.TABLE_HEADER_LEAGUE_LIST,"FAILED! League table header is incorrect display");
+        Assert.assertEquals(eventSchedulePage.tblEventBody.getHeaderNameOfRows(), EventSchedule.TABLE_HEADER_SCHEDULE_LIST,"FAILED! Schedule table header is incorrect display");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2083")
+    public void EventSchedule_TC003(){
+        log("@title: Validate Event Schedule for Cricket is displayed when navigate");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Sport > Event Schedule");
+        EventSchedulePage eventSchedulePage = welcomePage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
+        log("@Step 3: Select Cricket Sport");
+        eventSchedulePage.goToSport("Cricket");
+        log("Validate the page is displayed with 2 tables:Event Schedule Soccer and Schedule List");
+        Assert.assertTrue(eventSchedulePage.lblLeagueEntry.getText().contains("Cricket"), "Failed! League Entry table is not displayed");
+        Assert.assertTrue(eventSchedulePage.lblScheduleList.getText().contains("Schedule List"), "Failed! Schedule List table is not displayed");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2084")
+    public void EventSchedule_TC004(){
+        log("@title: Validate UI on Cricket Event Schedule is correctly displayed");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Sport > Event Schedule");
+        EventSchedulePage eventSchedulePage = welcomePage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
+        log("@Step 3: Select Cricket Sport");
+        eventSchedulePage.goToSport("Cricket");
+        log("Validate UI Info display correctly");
+        log("Event Schedule table: League, Date Time and Show button");
+        Assert.assertEquals(eventSchedulePage.lblLeague.getText(),"League","Failed! League dropdown is not displayed!");
+        Assert.assertEquals(eventSchedulePage.lblDateTime.getText(),"Date Time","Failed! Date Time datetime picker is not displayed!");
+        Assert.assertEquals(eventSchedulePage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        log("Schedule List table: Home, Away, Team, Show League, Datetime and Show button");
+        Assert.assertEquals(eventSchedulePage.lblHome.getText(),"Home","Failed! Home radio button is not displayed!");
+        Assert.assertEquals(eventSchedulePage.lblAway.getText(),"Away","Failed! Away radio button is not displayed!");
+        Assert.assertEquals(eventSchedulePage.lblTeam.getText(),"Team","Failed! Team searchbox is not displayed!");
+        Assert.assertEquals(eventSchedulePage.btnShowLeague.getText(),"Show League","Failed! Show League button is not displayed!");
+        Assert.assertEquals(eventSchedulePage.btnShowSchedule.getText(),"Show","Failed! Show button is not displayed!");
+        log("Event Schedule and Schedule List table header columns are correctly display");
+        Assert.assertEquals(eventSchedulePage.tblLeagueBody.getHeaderNameOfRows(), EventSchedule.TABLE_HEADER_LEAGUE_LIST,"FAILED! League table header is incorrect display");
+        Assert.assertEquals(eventSchedulePage.tblEventBody.getHeaderNameOfRows(), EventSchedule.TABLE_HEADER_SCHEDULE_LIST,"FAILED! Schedule table header is incorrect display");
         log("INFO: Executed completely");
     }
 

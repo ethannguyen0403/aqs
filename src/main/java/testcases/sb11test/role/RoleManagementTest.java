@@ -4,12 +4,14 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.sb11.role.RoleManagementPage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
 
 public class RoleManagementTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2064")
     public void Role_Management_TC_001(){
         log("@title: Validate Role Management page is displayed when navigate");
         log("@Step 1: Login with valid account");

@@ -8,6 +8,7 @@ import testcases.BaseCaseAQS;
 import pages.sb11.sport.popup.CreateSoccerLeaguePopup;
 import pages.sb11.sport.popup.CreateSoccerSeasonPopup;
 import pages.sb11.sport.popup.CreateSoccerTeamPopup;
+import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
 
@@ -18,6 +19,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     String teamName = "QA Soccer Auto Team";
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2071")
     public void Soccer_League_Season_Team_Info_TC_001(){
         log("@title: Validate League/Season/Team Info for Soccer is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -30,7 +32,8 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression1"})
+    @TestRails(id = "2072")
     public void Soccer_League_Season_Team_Info_TC_002(){
         log("@title:Validate UI on League/Season/Team Info for Soccer is correctly displayed");
         log("@Step 1: Login with valid account");
@@ -38,16 +41,16 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         SoccerLeagueSeasonTeamInfoPage soccerLeagueSeasonTeamInfoPage = welcomePage.navigatePage(SPORT,LEAGUE_SEASON_TEAM_INFO, SoccerLeagueSeasonTeamInfoPage.class);
         log("Validate the page is displayed with correct title page");
         log("League list table: Type, Country, League Name and Add button");
-        Assert.assertTrue(soccerLeagueSeasonTeamInfoPage.ddTypeLeague.isDisplayed(),"Failed! League Type dropdown is not displayed!");
-        Assert.assertTrue(soccerLeagueSeasonTeamInfoPage.ddCountryLeague.isDisplayed(),"Failed! League Country dropdown is not displayed!");
-        Assert.assertTrue(soccerLeagueSeasonTeamInfoPage.txtLeagueName.isDisplayed(),"Failed! League Name textbox is not displayed!");
+        Assert.assertEquals(soccerLeagueSeasonTeamInfoPage.ddTypeLeague.getOptions(), LeagueSeasonTeamInfo.SOCCER_TYPE,"Failed! League Type dropdown is not displayed!");
+        Assert.assertEquals(soccerLeagueSeasonTeamInfoPage.ddCountryLeague.getOptions(), COUNTRY_LIST,"Failed! League Country dropdown is not displayed!");
+        Assert.assertEquals(soccerLeagueSeasonTeamInfoPage.lblLeagueName.getText(),"League Name","Failed! League Name textbox is not displayed!");
         Assert.assertTrue(soccerLeagueSeasonTeamInfoPage.btnAddLeague.isDisplayed(),"Failed! Add League button is not displayed!");
         Assert.assertTrue(soccerLeagueSeasonTeamInfoPage.btnSearchLeague.isDisplayed(),"Failed! Search League button is not displayed!");
         log("Season table: Add button");
         Assert.assertTrue(soccerLeagueSeasonTeamInfoPage.btnAddSeason.isDisplayed(),"Failed! Add Season button is not displayed!");
         log("Team List table: Country, Team Name, Add button");
-        Assert.assertTrue(soccerLeagueSeasonTeamInfoPage.ddCountryTeam.isDisplayed(),"Failed! Team Country dropdown is not displayed!");
-        Assert.assertTrue(soccerLeagueSeasonTeamInfoPage.txtTeamName.isDisplayed(),"Failed! Team Name textbox is not displayed!");
+        Assert.assertEquals(soccerLeagueSeasonTeamInfoPage.ddCountryTeam.getOptions(), COUNTRY_LIST,"Failed! Team Country dropdown is not displayed!");
+        Assert.assertEquals(soccerLeagueSeasonTeamInfoPage.lblTeamName.getText(),"League Name","Failed! Team Name textbox is not displayed!");
         Assert.assertTrue(soccerLeagueSeasonTeamInfoPage.btnAddTeam.isDisplayed(),"Failed! Add Team button is not displayed!");
         Assert.assertTrue(soccerLeagueSeasonTeamInfoPage.btnSearchTeam.isDisplayed(),"Failed! Search Team button is not displayed!");
         log("League list, Season and Team List table header columns are correctly displayed");
@@ -58,6 +61,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2075")
     public void Soccer_League_Season_Team_Info_TC_003(){
         log("@title: Validate that can add new Soccer League successfully");
         log("@Step 1: Login with valid account");
@@ -74,6 +78,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2076")
     public void Soccer_League_Season_Team_Info_TC_004(){
         log("@title: Validate that can add new Soccer season successfully");
         log("@Step 1: Login with valid account");
@@ -89,6 +94,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2077")
     public void Soccer_League_Season_Team_Info_TC_005(){
         log("@title: Validate that can add new Soccer Team successfully");
         log("@Step 1: Login with valid account");

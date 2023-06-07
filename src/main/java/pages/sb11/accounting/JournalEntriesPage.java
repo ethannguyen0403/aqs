@@ -11,10 +11,15 @@ import org.openqa.selenium.Keys;
 import pages.sb11.WelcomePage;
 
 public class JournalEntriesPage extends WelcomePage {
+    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
     public DropDownBox ddDebitFrom = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::select[1]");
     public DropDownBox ddCreditTo = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::select[1]");
     public DropDownBox ddDebitLedger = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::select[2]");
     public DropDownBox ddCreditLedger = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::select[2]");
+    public DropDownBox ddDebitBookieClient = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::select[3]");
+    public DropDownBox ddCreditBookieClient = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::select[3]");
+    public DropDownBox ddDebitCurrency = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::select[4]");
+    public DropDownBox ddCreditCurrency = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::select[4]");
     public DropDownBox ddDebitLevel = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::select[5]");
     public DropDownBox ddCreditLevel = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::select[5]");
     public TextBox txtDebitAccount = TextBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::input[1]");
@@ -33,6 +38,9 @@ public class JournalEntriesPage extends WelcomePage {
     public Table tbDebit = Table.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::table[1]",totalCol);
     public Table tbCredit = Table.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::table[1]",totalCol);
     public Label messageSuccess = Label.xpath("//div[contains(@class, 'message-box')]");
+    public Label lblAccountDebit = Label.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::span[text()='Account'][1]");
+    public Label lblAccountCredit = Label.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::span[text()='Account'][1]");
+    public Label lblRemark = Label.xpath("//span[text()='Remark']");
 
     Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
     public String getTitlePage ()

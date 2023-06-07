@@ -242,6 +242,11 @@ public class Table extends BaseElement {
         return Link.xpath(cellXpath);
     }
 
+    public BaseElement getControlOfCellSPP(int tBodyOrder, int columnOrder, int rowOrder, String subTag){
+        String cellXpath = getxPathOfCellSPP(tBodyOrder,columnOrder,rowOrder,subTag);
+        return Link.xpath(cellXpath);
+    }
+
     /**
      * getting a control at column and row
      * @param tBodyOrder beginning value is 1
@@ -260,6 +265,20 @@ public class Table extends BaseElement {
             cellXpath = String.format("%s%s", this._xpathTable, String.format("//tbody[%s]//tr[%s]//td[%s]", tBodyOrder, rowOrder ,columnOrder));
         } else {
             cellXpath = String.format("%s%s//%s", this._xpathTable, String.format("//tbody[%s]//tr[%s]//td[%s]", tBodyOrder, rowOrder, columnOrder), subTag);
+        }
+        return cellXpath;
+    }
+
+    public String getxPathOfCellSPP(int tBodyOrder,int columnOrder, int rowOrder,String subTag){
+        if(columnOrder < 1 || rowOrder < 1){
+            System.out.println(String.format("Error: columnOrder or rowOrder is  %s or %s to be more than or equal to 1", columnOrder, rowOrder));
+            return null;
+        }
+        String cellXpath;
+        if (subTag == null){
+            cellXpath = String.format("%s%s", this._xpathTable, String.format("//tbody[%s]//tr[%s]//th[%s]", tBodyOrder, rowOrder ,columnOrder));
+        } else {
+            cellXpath = String.format("%s%s//%s", this._xpathTable, String.format("//tbody[%s]//tr[%s]//th[%s]", tBodyOrder, rowOrder, columnOrder), subTag);
         }
         return cellXpath;
     }
@@ -293,6 +312,44 @@ public class Table extends BaseElement {
 		return numberRows;*/
 
         String rowXpath = String.format("%s%s", this._xpathTable, "//tbody/tr[%d]");
+        int i = 1;
+        while (true){
+            Row iRow = Row.xpath(String.format(rowXpath, i));
+            if (!iRow.isDisplayed(3)){
+                return numberRows;
+            } else{
+                numberRows +=1;
+                i++;
+                if (isMoving) {
+                    iRow.scrollDownInDistance();
+                }
+            }
+        }/**/
+    }
+
+    public int getNumberOfRowsPopup(boolean isMoving){
+        return getNumberOfRowsPopup(true, isMoving);
+    }
+
+    public int getNumberOfRowsPopup(boolean isCountHeaderRow, boolean isMoving){
+        int numberRows = 0;
+        if(isCountHeaderRow){
+            Row row = Row.xpath(String.format("%s%s", this._xpathTable, "/thead/tr[1]"));
+            if (row.isDisplayed(3)){
+                numberRows +=1;
+            } else {
+                return numberRows;
+            }
+        }
+        //Isabella improve get total row quickly
+		/*String rowXpath = String.format("%s%s", this._xpathTable, "//tbody/tr");
+		Row r  = Row.xpath(rowXpath);
+		if (!r.isDisplayed(3))
+			return numberRows;
+		numberRows = numberRows +r.getWebElements().size();
+		return numberRows;*/
+
+        String rowXpath = String.format("%s%s", this._xpathTable, "//tbody/perfect-scrollbar/div/div[1]/tr[%d]");
         int i = 1;
         while (true){
             Row iRow = Row.xpath(String.format(rowXpath, i));

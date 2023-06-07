@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import pages.sb11.sport.EventMappingPage;
 import pages.sb11.sport.OpenPricePage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import java.awt.*;
 
@@ -14,6 +15,7 @@ import static common.SBPConstants.*;
 public class OpenPriceTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2092")
     public void OpenPriceTC_001(){
         log("@title: Validate Open Price page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -25,6 +27,7 @@ public class OpenPriceTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2093")
     public void OpenPriceTC_002(){
         log("@title: Validate UI on Open Price is correctly displayed");
         log("@Step 1: Login with valid account");
@@ -33,10 +36,10 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("Validate UI on Open Price is correctly displayed");
         log("Date, Show League button, Leagues and Show button");
         openPricePage.filterResult("","All",true);
-        Assert.assertTrue(openPricePage.txtDate.isDisplayed(),"Failed! Date datetime picker is not displayed!");
-        Assert.assertTrue(openPricePage.btnShowLeagues.isDisplayed(),"Failed! Show League button is not displayed!");
-        Assert.assertTrue(openPricePage.ddpLeague.isDisplayed(),"Failed! League dropdown is not displayed!");
-        Assert.assertTrue(openPricePage.btnShow.isDisplayed(),"Failed! Show button is not displayed!");
+        Assert.assertEquals(openPricePage.lblDate.getText(),"Date","Failed! Date datetime picker is not displayed!");
+        Assert.assertEquals(openPricePage.btnShowLeagues.getText(),"Show Leagues","Failed! Show League button is not displayed!");
+        Assert.assertTrue(openPricePage.ddpLeague.getOptions().contains("All"),"Failed! League dropdown is not displayed!");
+        Assert.assertEquals(openPricePage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
         log("Event table header columns is correctly display");
         log("Header is " + openPricePage.tbOpenPrice.getHeaderNameOfRows());
         Assert.assertEquals(openPricePage.tbOpenPrice.getHeaderNameOfRows(), OpenPrice.TABLE_HEADER,"FAILED! Open Price table header is incorrect display");
@@ -44,6 +47,7 @@ public class OpenPriceTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2094")
     public void OpenPriceTC_003(){
         log("@title: Validate League list is displayed correctly when clicking Show Leagues");
         log("@Step 1: Login with valid account");
@@ -58,6 +62,7 @@ public class OpenPriceTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2095")
     public void OpenPriceTC_004(){
         log("@title: Validate selected League is displayed correctly when clicking Show");
         log("@Step 1: Login with valid account");
@@ -73,6 +78,7 @@ public class OpenPriceTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression1"})
+    @TestRails(id = "2096")
     public void OpenPriceTC_005(){
         log("@title: Validate updated Open Price is displayed correctly on BBT page");
         log("@Step 1: Login with valid account");
