@@ -121,6 +121,25 @@ public class ConfirmBetsPage extends WelcomePage {
             i = i+1;
         }
     }
+    private double calTotalStake(){
+        int i = 1;
+        int totalRows = tblOrder.getNumberOfRows(false,false);
+        double total = 0;
+
+        while (i<=totalRows) {
+            double stake = Double.parseDouble(TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, i, "input")).getAttribute("value").trim());
+            total = total + stake;
+            i = i + 1;
+        }
+        return total;
+    }
+
+    public boolean isTotalStakeMatched(String totalStake){
+        String totalStakeOrder = String.valueOf(calTotalStake());
+        if (totalStake.contains(totalStakeOrder))
+            return true;
+        return false;
+    }
 
 
     private int getOrderIndex(String orderId){
