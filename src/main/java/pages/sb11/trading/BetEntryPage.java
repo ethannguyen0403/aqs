@@ -17,9 +17,9 @@ import static org.apache.commons.lang3.BooleanUtils.and;
 
 public class BetEntryPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
-    public Button btnSoccer = Button.xpath("//app-bet-entry//span[contains(text(),'Soccer')]");
-    public Button btnCricket = Button.xpath("//app-bet-entry//span[contains(text(),'Cricket')]");
-    public Button btnMixedSport = Button.xpath("//app-bet-entry//span[contains(text(),'Mixed Sports')]");
+    public Button btnSoccer = Button.xpath("//app-bet-entry//input[@name='btnSoccer']");
+    public Button btnCricket = Button.xpath("//app-bet-entry//input[@name='btnCricket']");
+    public Button btnMixedSport = Button.xpath("//app-bet-entry//input[@name='btnMixedSports']");
     private DropDownBox ddbSport = DropDownBox.id("navigate-page");
     public String getTitlePage ()
     {

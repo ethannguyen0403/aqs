@@ -41,7 +41,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     String descLiability = "Liability Transaction " + DateUtils.getMilliSeconds();
 
     @TestRails(id="841")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void Ledger_Statement_TC841(){
         log("@title: Validate transaction Debit of Ledger Type = Expenditure");
         log("@Step 1: Login to SB11 site");

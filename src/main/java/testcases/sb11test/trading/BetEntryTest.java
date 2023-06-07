@@ -121,8 +121,8 @@ public class BetEntryTest extends BaseCaseAQS {
         log("Having a Cricket event which has been created on Event Schedule > Cricket");
         String companyUnit = "Kastraki Limited";
         log("@Step 1: Login to SB11 site");
-        String date = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         Event eventInfo = new Event.Builder()
                 .sportName("Cricket")
                 .leagueName("QA League")
@@ -185,7 +185,7 @@ public class BetEntryTest extends BaseCaseAQS {
 
         log("@Post-Condition: Cancel Pending bet "+ order.getBetId() +" in Confirm Bet page");
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending",eventInfo.getSportName(),"All","Specific Date","","",accountCode);
+        confirmBetsPage.filter(companyUnit,"","Pending",eventInfo.getSportName(),"All","Specific Date",date,"",accountCode);
         confirmBetsPage.deleteOrder(order,true);
 
         log("INFO: Executed completely");
@@ -371,7 +371,7 @@ public class BetEntryTest extends BaseCaseAQS {
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
         confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,"",accountCode);
         confirmBetsPage.deleteOrder(lstOrder.get(0),true);
-        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date","","",accountSPBPS7);
+        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,"",accountSPBPS7);
         confirmBetsPage.deleteOrder(lstOrder.get(1),true);
 
 
@@ -424,7 +424,8 @@ public class BetEntryTest extends BaseCaseAQS {
                 .build();
 
         log("@Step 4: Input account at precondition on 'Account Code' field");
-        log("@Step 5: Click (+) at More column of according event > select handicap value with inputting odds and stake");
+        log("@Step 5: At the event "+ eventInfo.getHome()+" Click (+) at More column of according event > select handicap value with inputting odds and stake");
+        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
         SoccerSPBBetSlipPopup soccerSPBBetSlipPopup = soccerBetEntryPage.openSPBBetSlip(accountCode,eventInfo.getHome());
 
         log("@Step 6: Click Place Bet with Tick on option \"Tick here to Copy Bet to SPBPS7 Minus 0.01 Odds\"");
