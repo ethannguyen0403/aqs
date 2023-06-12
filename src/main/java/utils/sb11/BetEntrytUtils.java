@@ -1,5 +1,6 @@
 package utils.sb11;
 
+import com.google.common.collect.Lists;
 import com.paltech.constant.Configs;
 import com.paltech.utils.WSUtils;
 import objects.Order;
@@ -55,16 +56,17 @@ public class BetEntrytUtils {
         String eventId = lstOrder.get(0).getEvent().getEventId();
         JSONArray arr = getOrderofEventJson(eventId);
         int orderIndex = 0;
+        List<Order> lstOrderReverse = Lists.reverse(lstOrder);
         String betid= "";
         if(arr.length()>0) {
             for(int i =0; i < arr.length(); i ++) {
                 if(orderIndex >= lstOrder.size())
-                    return lstOrder;
+                    return Lists.reverse(lstOrderReverse);
                 JSONObject orderObj = arr.getJSONObject(i);
-                if(orderObj.getString("account").equals(lstOrder.get(orderIndex).getAccountCode())) {
-                    lstOrder.get(orderIndex).setBetId(Long.toString(orderObj.getLong("betrefid")));
-                    lstOrder.get(orderIndex).setOrderId(orderObj.getString("orderId"));
-                    lstOrder.get(orderIndex).setCreateDate(orderObj.getString("entriDate"));
+                if(orderObj.getString("account").equals(lstOrderReverse.get(orderIndex).getAccountCode())) {
+                    lstOrderReverse.get(orderIndex).setBetId(Long.toString(orderObj.getLong("betrefid")));
+                    lstOrderReverse.get(orderIndex).setOrderId(orderObj.getString("orderId"));
+                    lstOrderReverse.get(orderIndex).setCreateDate(orderObj.getString("entriDate"));
                     orderIndex = orderIndex +1;
                 }
             }
