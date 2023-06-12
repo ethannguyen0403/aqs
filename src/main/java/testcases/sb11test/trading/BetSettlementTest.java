@@ -347,4 +347,38 @@ public class BetSettlementTest extends BaseCaseAQS {
 
         log("INFO: Executed completely");
     }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2195")
+    public void BetSettlement_TC001(){
+        log("Validate Bet Settlement page is displayed when navigate");
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Trading > Bet Settlement");
+        BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        log("Validate Bet Settlement page is displayed with correctly title");
+        Assert.assertEquals(betSettlementPage.getTitlePage(),BET_SETTLEMENT,"Failed! Bet Settlement page is not displayed");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2196")
+    public void BetSettlement_TC002(){
+        log("Validate UI on Bet Settlement is correctly displayed");
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Trading > Bet Settlement");
+        BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        log("Validate UI Info display correctly");
+        log("Dropdown: Status, Match Date");
+        Assert.assertEquals(betSettlementPage.ddbStatus.getOptions(),BetSettlement.STATUS_LIST,"Failed! Status dropdown is not displayed!");
+        Assert.assertEquals(betSettlementPage.ddbMatchDate.getOptions(),BetSettlement.MATCH_DATE,"Failed! Match Date dropdown is not displayed!");
+        log("Textbox: Acc Starts With, Account Code");
+        Assert.assertEquals(betSettlementPage.lblAccStart.getText(),"Acc Starts With","Failed! Acc Starts With textbox is not displayed!");
+        Assert.assertEquals(betSettlementPage.lblAccCode.getText(),"Account Code","Failed! Account Code textbox is not displayed!");
+        log("Button: Search, Show Account, More Filters, Reset All Filters");
+        Assert.assertTrue(betSettlementPage.btnSearch.isDisplayed(),"Failed! Search button is not displayed!");
+        Assert.assertEquals(betSettlementPage.lnkShowAccount.getText(),"Show Account","Failed! Show Account button is not displayed!");
+        Assert.assertEquals(betSettlementPage.lnkMoreFilter.getText(),"More Filters","Failed! More Filters button is not displayed!");
+        Assert.assertEquals(betSettlementPage.lnkResetAllFilter.getText(),"Reset All Filters","Failed! Reset All Filters button is not displayed!");
+        log("INFO: Executed completely");
+    }
 }

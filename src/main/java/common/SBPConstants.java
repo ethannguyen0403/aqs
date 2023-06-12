@@ -31,7 +31,9 @@ public class SBPConstants {
     public final static String SMART_SYSTEM = "Smart System";
     public final static String CURRENCY_RATES = "Currency Rates";
     public final static String BET_ENTRY = "Bet Entry";
+    public final static String TRANSACTION_VERIFICATION = "Transaction Verification";
     public final static String RESULT_ENTRY = "Result Entry";
+    public final static String ACCOUNT_PERCENT = "Account Percent";
     public final static String BALANCE_CURRENT = "Balance [Current]";
     public final static String SPORT= "Sport";
     public final static String CLIENT_STATEMENT = "Client Statement";
@@ -137,6 +139,10 @@ public class SBPConstants {
 
     public static class BetEntryPage {
         public final static String MESSAGE_SUCCESS_MANUAL_BET ="Place Successful !";
+        public final static List<String> TABLE_HEADER = Arrays.asList("Time", "Event", "Full Time", "Half Time"," ", "HDP", "Home", "Away", "GOAL", "Over", "Under", "HDP", "Home", "Away", "GOAL", "Over", "Under", "More", "SPB");
+        public final static List<String> SPORT_LIST = Arrays.asList("Soccer","Cricket");
+        public final static List<String> BET_TYPE = Arrays.asList("Back","Lay");
+        public final static List<String> ODD_TYPE = Arrays.asList("HK","ID","MY","EU");
     }
 
     public static class BetSettlement{
@@ -144,6 +150,8 @@ public class SBPConstants {
                 "Statement Email has been sent to your mail box.");
         public final static List<String> BET_LIST_STATEMENT_EMAIL = Arrays.asList("Bet List [Current]",
                 "Description", "Selection", "HDP", "Live", "Prive","Stake", "Win/Lose","Type","Date");
+        public final static List<String> STATUS_LIST = Arrays.asList("Confirmed","Settled");
+        public final static List<String> MATCH_DATE = Arrays.asList("[All Dates]","Specific Date");
     }
 
     public static class AccountType {
@@ -154,6 +162,10 @@ public class SBPConstants {
 
     public static class TradingPermission{
         public final static List<String> TABLE_HEADER = Arrays.asList("#", "i", "Username", "Auto-assigned All", "Permission", "Customers");
+    }
+
+    public static class BookieInfo{
+        public final static List<String> STATUS_LIST = Arrays.asList("All", "Active","Closed","In-active");
     }
 
     public static class LeagueSeasonTeamInfo{
@@ -181,6 +193,15 @@ public class SBPConstants {
 
     public static class BLSettings{
         public final static List<String> TABLE_HEADER = Arrays.asList("#","i", "Time","Event", "Edit", "TV", "KP", "Live RB");
+    }
+
+    public static class TransactionVerification{
+        public final static List<String> WEBSITE = Arrays.asList("Pinnacle","BetISN","Fair999");
+    }
+
+    public static class AccountPercent{
+        public final static List<String> TYPE_LIST = Arrays.asList("[All]","With Percent","Without Percent");
+        public final static List<String> TABLE_HEADER = Arrays.asList("#","i","Account Code","Actual WinLoss %","CUR","Client Name");
     }
 
     public static class MonitorBets{
