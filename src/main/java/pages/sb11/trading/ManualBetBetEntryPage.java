@@ -25,6 +25,16 @@ public class ManualBetBetEntryPage extends BetEntryPage {
     public Button btnClear = Button.xpath("//app-bet-entry-mixed-sport//span[contains(text(),'CLEAR')]");
     public Button btnPlaceBet = Button.xpath("//app-bet-entry-mixed-sport//button[contains(text(),'Place bet')]");
     public Label messageSuccess = Label.xpath("//app-alert//div[@class='message-box']");
+    public Label lblDate = Label.xpath("//span[text()='Date']");
+    public Label lblAccountCode = Label.xpath("//span[contains(text(),'Account Code')]");
+    public Label lblClient = Label.xpath("//span[text()='Client']");
+    public Label lblBalance = Label.xpath("//span[text()='Balance']");
+    public Label lblBetDescription = Label.xpath("//span[text()='Bet Description']");
+    public Label lblSelection = Label.xpath("//span[text()='Selection']");
+    public Label lblBetType = Label.xpath("//span[text()='Bet type']");
+    public Label lblOdds = Label.xpath("//span[text()='Odds']");
+    public Label lblStake = Label.xpath("//span[text()='Stake']");
+    public Label lblWinLoss = Label.xpath("//span[text()='Win/Loss or Comm Amount']");
     public String getTitlePage ()
     {
         return lblTitle.getText().trim();

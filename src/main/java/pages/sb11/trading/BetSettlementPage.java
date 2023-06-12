@@ -24,13 +24,15 @@ public class BetSettlementPage extends WelcomePage {
     public TextBox txtAccountCode = TextBox.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[1]//div[contains(@class,'card-body')]//div[contains(text(),'Account Code')]//following::input[1]");
     public Button btnSearch = Button.xpath("//app-bet-settlement//div[@class='container-fluid cbody']//button[contains(@class,'icon-search-custom')]");
     public Link lnkShowAccount = Link.xpath("//app-bet-settlement//div[@class='container-fluid cbody']//span[contains(text(),'Show Account')]");
-    public Link lnkMorFilter = Link.xpath("//app-bet-settlement//div[@class='container-fluid cbody']//span[contains(text(),'More Filters')]");
+    public Link lnkMoreFilter = Link.xpath("//app-bet-settlement//div[@class='container-fluid cbody']//span[contains(text(),'More Filters')]");
     public Link lnkResetAllFilter = Link.xpath("//app-bet-settlement//div[@class='container-fluid cbody']//span[contains(text(),'Reset All Filters')]");
     public Button btnSettleSendSettlementEmail = Button.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[2]//div[contains(@class,' d-inline-block')]/div[2]//button[1]");
     public Button btnSendBetListEmail = Button.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[2]//div[contains(@class,' d-inline-block')]/div[2]//button[2]");
     public Button btnExportSelectedBet = Button.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[2]//div[contains(@class,' d-inline-block')]/div[2]//button[3]");
     public Button btnUpdate = Button.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[2]//div[contains(@class,' d-inline-block')]/div[2]//button[4]");
     public Button btnDelete = Button.xpath("//app-bet-settlement//div[@class='container-fluid cbody']/div[2]//div[contains(@class,' d-inline-block')]/div[2]//button[5]");
+    public Label lblAccStart = Label.xpath("//div[contains(text(),'Acc Starts With')]");
+    public Label lblAccCode = Label.xpath("//div[contains(text(),'Account Code')]");
 
     int colTotal = 14;
     int coli = 2;

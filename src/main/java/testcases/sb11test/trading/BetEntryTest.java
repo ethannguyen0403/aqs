@@ -480,7 +480,7 @@ public class BetEntryTest extends BaseCaseAQS {
         Assert.assertTrue(soccerBetEntryPage.getTitlePage().contains("Soccer"), "Failed! Soccer Bet Entry page is not displayed");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression1"})
     @TestRails(id = "2190")
     public void BetEntry_TC_002(){
         log("Validate UI on Bet Entry for Soccer is correctly displayed");
@@ -490,8 +490,16 @@ public class BetEntryTest extends BaseCaseAQS {
         log("@Step 3: Click on 'Soccer' > select any League > click Show");
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
         log("Validate UI Info display correctly");
-
-        log("Validate Soccer event table is displayed correctly after clicking Show");
+        log("Dropdown: Company Unit, Choose League, Search By");
+        Assert.assertEquals(soccerBetEntryPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertTrue(soccerBetEntryPage.ddpLeague.getOptions().contains("Club Friendly"),"Failed! League dropdown is not displayed!");
+        Assert.assertTrue(soccerBetEntryPage.ddpSearchBy.getOptions().contains("Code"),"Failed! Search By dropdown is not displayed!");
+        log("Textbox: Account Code");
+        Assert.assertTrue(soccerBetEntryPage.lblAccountCode.getText().contains("Account Code"),"Failed! Account Code textbox is not displayed!");
+        log("Datetimepicker: Date");
+        Assert.assertEquals(soccerBetEntryPage.lblDate.getText(),"Date","Failed! Date datetimepicker is not displayed!");
+        log("Button: Show button");
+        Assert.assertEquals(soccerBetEntryPage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
         log("INFO: Executed completely");
     }
 
@@ -509,8 +517,31 @@ public class BetEntryTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @Test(groups = {"regression1"})
+    @TestRails(id = "2192")
+    public void BetEntry_TC_004(){
+        log("Validate UI on Bet Entry for Cricket is correctly displayed");
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Trading > Bet Entry");
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        log("@Step 3: Click on 'Cricket' > select any League > click Show");
+        CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
+        log("Validate UI Info display correctly");
+        log("Dropdown: Company Unit, Choose League, Search By");
+        Assert.assertEquals(cricketBetEntryPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertTrue(cricketBetEntryPage.ddpLeague.getOptions().contains("Club Friendly"),"Failed! League dropdown is not displayed!");
+        Assert.assertTrue(cricketBetEntryPage.ddpSearchBy.getOptions().contains("Code"),"Failed! Search By dropdown is not displayed!");
+        log("Textbox: Account Code");
+        Assert.assertTrue(cricketBetEntryPage.lblAccountCode.getText().contains("Account Code"),"Failed! Account Code textbox is not displayed!");
+        log("Datetimepicker: Date");
+        Assert.assertEquals(cricketBetEntryPage.lblDate.getText(),"Date","Failed! Date datetimepicker is not displayed!");
+        log("Button: Show button");
+        Assert.assertEquals(cricketBetEntryPage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        log("INFO: Executed completely");
+    }
+
     @Test(groups = {"regression"})
-    @TestRails(id = "2191")
+    @TestRails(id = "2193")
     public void BetEntry_TC_005(){
         log("Validate Bet Entry page for Mixed Sport is displayed when navigate");
         log("@Step 1: Login to SB11 site");
@@ -523,5 +554,37 @@ public class BetEntryTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-
+    @Test(groups = {"regression1"})
+    @TestRails(id = "2194")
+    public void BetEntry_TC_006(){
+        log("Validate UI on Bet Entry for Mixed Sport is correctly displayed");
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Trading > Bet Entry");
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        log("@Step 3: Click on 'Mixed Sport' > select any League > click Show");
+        ManualBetBetEntryPage manualBetBetEntryPage = betEntryPage.goToMixedSports();
+        log("Validate UI Info display correctly");
+        log("Dropdown: Company Unit, Sport, Selection, OddsType");
+        Assert.assertEquals(manualBetBetEntryPage.ddCompany.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertEquals(manualBetBetEntryPage.ddSport.getOptions(), SBPConstants.BetEntryPage.SPORT_LIST,"Failed! Sport dropdown is not displayed!");
+        Assert.assertEquals(manualBetBetEntryPage.ddBetType.getOptions(), SBPConstants.BetEntryPage.BET_TYPE,"Failed! Bet type dropdown is not displayed!");
+        Assert.assertEquals(manualBetBetEntryPage.ddBetType.getOptions(), SBPConstants.BetEntryPage.ODD_TYPE,"Failed! Odd type dropdown is not displayed!");
+        log("Textbox: Account Code, Bet Description, Selection, Bet type, Odds, Stake, WinLoss");
+        Assert.assertTrue(manualBetBetEntryPage.lblAccountCode.getText().contains("Account Code"),"Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(manualBetBetEntryPage.lblClient.getText(),"Client","Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(manualBetBetEntryPage.lblBalance.getText(),"Balance","Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(manualBetBetEntryPage.lblBetDescription.getText(),"Bet Description","Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(manualBetBetEntryPage.lblSelection.getText(),"Selection","Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(manualBetBetEntryPage.lblBetType.getText(),"Bet type","Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(manualBetBetEntryPage.lblOdds.getText(),"Odds","Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(manualBetBetEntryPage.lblStake.getText(),"Stake","Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(manualBetBetEntryPage.lblWinLoss.getText(),"Win/Loss or Comm Amount","Failed! Account Code textbox is not displayed!");
+        log("Datetimepicker: Date");
+        Assert.assertEquals(manualBetBetEntryPage.lblDate.getText(),"Date","Failed! Date datetimepicker is not displayed!");
+        log("Button: Show button, Place Bet button");
+        Assert.assertTrue(manualBetBetEntryPage.btnSearch.isDisplayed(),"Failed! Search button is not displayed!");
+        Assert.assertEquals(manualBetBetEntryPage.btnPlaceBet,"Place bet","Failed! Place bet button is not displayed!");
+        log("INFO: Executed completely");
+    }
 }
+
