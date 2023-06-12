@@ -28,7 +28,6 @@ public class SoccerBetEntryPage extends BetEntryPage {
     private TextBox txtDate = TextBox.xpath("//app-bet-entry-header//input[@name='fromDate']");
     public Button btnShow = Button.xpath("//app-bet-entry-header//button[contains(@class,'btn-show')]");
     private DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
-    private Button btnMore = Button.xpath("");
     int totalCol =16;
     private int colTime = 1;
     private int colEvent = 2;
