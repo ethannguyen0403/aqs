@@ -17,16 +17,16 @@ import java.util.Random;
 import java.util.TimeZone;
 
 public class SoccerBetEntryPage extends BetEntryPage {
-    private Label lblTitle = Label.xpath("//app-bet-entry-header//div[contains(@class,'main-box-header')]/div[1]/span");
-    private Label lblGoto = Label.xpath("//app-bet-entry-header//div[contains(@class,'main-box-header')]/div[2]/span");
+    private Label lblTitle = Label.xpath("//app-bet-entry-header//app-common-header-sport//div[contains(@class,'main-box-header')]/div[1]/span");
+    private Label lblGoto = Label.xpath("//app-bet-entry-header//app-common-header-sport//div[contains(@class,'main-box-header')]/div[2]/span");
     public Label lblDate = Label.xpath("//label[text()='Date']");
     public Label lblAccountCode = Label.xpath("//label[contains(text(),'Account Code')]");
     private TextBox txtAccCode = TextBox.id("account-code");
-    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bet-entry-header//div[contains(@class,'filter-body')]/div[1]//select");
-    public DropDownBox ddpLeague = DropDownBox.id("league");
-    public DropDownBox ddpSearchBy = DropDownBox.xpath("//select[@class='form-control']");
+    private DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bet-entry-header//div[contains(@class,'filter-body')]/div[1]//select");
+    private DropDownBox ddpLeague = DropDownBox.id("league");
+    private DropDownBox ddpSearchBy = DropDownBox.xpath("//select[@class='form-control']");
     private TextBox txtDate = TextBox.xpath("//app-bet-entry-header//input[@name='fromDate']");
-    public Button btnShow = Button.xpath("//app-bet-entry-header//button[contains(@class,'btn-show')]");
+    private Button btnShow = Button.xpath("//app-bet-entry-header//button[contains(@class,'btn-show')]");
     private DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
     private Button btnMore = Button.xpath("");
     int totalCol =16;
@@ -80,7 +80,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
         int i = 1;
         Label lblLeague;
         while (true){
-            lblLeague = Label.xpath("//app-bet-entry-header//table/tbody/td");
+            lblLeague = Label.xpath("//table/tbody/td");
             if(!lblLeague.isDisplayed()) {
                 System.out.println("Can NOT found the league "+leagueName+" in the table");
                 return false;

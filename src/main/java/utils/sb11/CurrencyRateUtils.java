@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.AppUtils;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -31,13 +30,8 @@ public class CurrencyRateUtils {
         JSONArray jsonArr = null;
         String opRate = null;
         try {
-            LocalDate currentDate = LocalDate.now();
-            currentDate.getMonth();
-            LocalDate firstDayOfMonthDate  = currentDate.withDayOfMonth(1);
-            LocalDate lastDayOfMonthDate  = currentDate.withDayOfMonth(currentDate.getMonth().length(currentDate.isLeapYear()));
-            String fromDate = String.valueOf(firstDayOfMonthDate);
-            String toDate = String.valueOf(lastDayOfMonthDate);
-            jsonArr = getCurrencyRateJson(companyID, fromDate, toDate);
+            String fromDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT+7");
+            jsonArr = getCurrencyRateJson(companyID, fromDate, fromDate);
         } catch (Exception e) {
             e.getMessage();
         }

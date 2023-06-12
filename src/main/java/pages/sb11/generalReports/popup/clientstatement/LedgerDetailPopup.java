@@ -6,6 +6,7 @@ import com.paltech.utils.DoubleUtils;
 import controls.Table;
 import objects.Transaction;
 import org.testng.Assert;
+import pages.sb11.generalReports.LedgerStatementPage;
 import utils.sb11.CurrencyRateUtils;
 
 public class LedgerDetailPopup {
@@ -32,8 +33,9 @@ public class LedgerDetailPopup {
     /**
      * Click on close icon on the top right of the popup
      */
-    public void close(){
+    public LedgerStatementPage closePopup(){
         btnClose.click();
+        return new LedgerStatementPage();
     }
 
     public Transaction verifyLedgerTrans(Transaction trans, boolean isDebit, String description){
@@ -44,7 +46,7 @@ public class LedgerDetailPopup {
                 return null;
             } else {
                 String txnDate = tbLedger.getControlOfCell(1,colDescription,i,null).getText().trim();
-                if(txnDate.contains(description))
+                if(txnDate.equalsIgnoreCase(description))
                 {
                     if (isDebit)
                         return verifyTransInfoDisplayCorrectInRow(trans, true, i);
@@ -97,6 +99,13 @@ public class LedgerDetailPopup {
 
     private Transaction verifyTransTotal(Transaction transaction, boolean isDebit){
         int totalRow = getTotalRow();
+        String sumCredORG = sumAllTransactionByColumn(totalRow, colCredORG);
+        String sumDebORG = sumAllTransactionByColumn(totalRow, colDebORG);
+        String lastRunORG = getLastRunningBalance(totalRow, colRunORG);
+        String sumCredGBP = sumAllTransactionByColumn(totalRow, colCredGBP);
+        String sumDebGBP = sumAllTransactionByColumn(totalRow, colDebGBP);
+        String lastRunGBP = getLastRunningBalance(totalRow, colRunGBP);
+
         String totalcredORG = tbLedger.getControlOfCell(1,colCredTotalORG,totalRow,null).getText().trim();
         String totaldebORG = tbLedger.getControlOfCell(1,colDebTotalORG,totalRow,null).getText().trim();
         String totalrunORG = tbLedger.getControlOfCell(1,colRunTotalORG,totalRow,null).getText().trim();
@@ -105,21 +114,33 @@ public class LedgerDetailPopup {
         String totalrunGBP = tbLedger.getControlOfCell(1,colRunTotalGBP,totalRow,null).getText().trim();
 
         if (isDebit){
-            double curDebitRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1",transaction.getLedgerDebitCur()));
-            Assert.assertEquals(totalcredORG, "0.00", "Failed! Credit ORG amount is incorrect");
-            Assert.assertEquals(totaldebORG, String.format("%.2f", transaction.getAmountDebit()), "Failed! Debit ORG amount is incorrect");
-            Assert.assertEquals(totalrunORG, String.format("%.2f", transaction.getDebitBalance()), "Failed! Running Balance ORG amount is incorrect");
-            double runDebitGBP = transaction.getDebitBalance() * curDebitRate;
-            Assert.assertEquals(totalrunGBP, String.format("%.2f", runDebitGBP), "Failed! Running Balance ORG amount is incorrect");
+            Assert.assertEquals(totaldebORG, sumDebORG, "Failed! Debit ORG amount is incorrect");
+            Assert.assertEquals(totaldebGBP, sumDebGBP, "Failed! Debit ORG amount is incorrect");
+            Assert.assertEquals(totalrunORG, lastRunORG, "Failed! Running Balance ORG amount is incorrect");
+            Assert.assertEquals(totalrunGBP, lastRunGBP, "Failed! Running Balance GBP amount is incorrect");
         } else {
-            double curCreditRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1",transaction.getLedgerCreditCur()));
-            Assert.assertEquals(totalcredORG, String.format("%.2f", transaction.getAmountCredit()), "Failed! Credit ORG amount is incorrect");
-            Assert.assertEquals(totaldebORG, "0.00", "Failed! Debit ORG amount is incorrect");
-            Assert.assertEquals(totalcredGBP, String.format("%.2f", transaction.getAmountCredit()), "Failed! Credit ORG amount is incorrect");
-            double runCreditGBP = transaction.getCreditBalance() * curCreditRate;
-            Assert.assertEquals(totaldebGBP, String.format("%.2f", runCreditGBP), "Failed! Debit ORG amount is incorrect");
+            Assert.assertEquals(totalcredORG, sumCredORG, "Failed! Debit ORG amount is incorrect");
+            Assert.assertEquals(totalcredGBP, sumCredGBP, "Failed! Debit ORG amount is incorrect");
+            Assert.assertEquals(totalrunORG, lastRunORG, "Failed! Running Balance ORG amount is incorrect");
+            Assert.assertEquals(totalrunGBP, lastRunGBP, "Failed! Running Balance GBP amount is incorrect");
         }
         return transaction;
+    }
+
+    private String sumAllTransactionByColumn(int totalRow, int colIndex) {
+        double sumValue = 0;
+        for(int i = 1; i < totalRow; i++) {
+            String amount = tbLedger.getControlOfCell(1,colIndex,i,null).getText().trim();
+            if (!amount.isEmpty()) {
+                sumValue += Double.parseDouble(amount);
+            }
+        }
+        return String.format("%.2f", sumValue);
+    }
+
+    private String getLastRunningBalance(int totalRow, int colIndex) {
+        String amount = tbLedger.getControlOfCell(1,colIndex,totalRow-1,null).getText().trim();
+        return amount;
     }
 
     private int getTotalRow(){
