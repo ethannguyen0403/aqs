@@ -30,8 +30,8 @@ public class BetSettlementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetSettlement_TC187(String accountCode,String accountCurrency) throws InterruptedException {
-        log("@title: Validate Win/loss amounts are calculated correctly when having Account Percentage setting");
-        log("Precondition: User has permission to access Bet Settlement page\n" +
+        log("@title: Validate Win/loss amounts are calculated correctly when having Account Percentage setting\");\n" +
+                "        log(\"Precondition: User has permission to access Bet Settlement page\\n" +
                 "Having an account with Confirmed bet settle Win/Lose and configuring Account Percentage");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";

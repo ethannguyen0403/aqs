@@ -18,7 +18,7 @@ public class SoccerBetSlipPopup {
     public Label lblMarketType = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[2]/span[3]");
     private Button btnClose = Button.xpath("//app-match-odd-bet-slip//div[contains(@class,'close-btn ')]");
     private Label lblSelectionName = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'place-form ')]/label");
-    private String xPathrderRowControl = "//app-match-odd-bet-slip//div[contains(@class,'place-form ')]//div[contains(@class,'order-row')]";
+    private String xPathrderRowControl = "//app-entry-bet-slip-group-fields-form//div[contains(@class,'place-form ')]//div[contains(@class,'order-row')]";
     private CheckBox cbCopyBetToSPBPS7SameOdds = CheckBox.xpath("//input[@id='sameOdd']");
     private Label lblCopyBetToSPBPS7SameOdds = Label.xpath("//input[@for='sameOdd']");
     private CheckBox cbCopyBetToSPBPS7MinusOdds = CheckBox.xpath("//input[@id='minusOdd']");

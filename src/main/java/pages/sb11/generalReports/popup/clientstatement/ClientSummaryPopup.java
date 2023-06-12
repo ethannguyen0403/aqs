@@ -79,7 +79,7 @@ public class ClientSummaryPopup {
         Label lblCellValue;
         Label lblAccountCode;
         int i = 1;
-        while (true) {
+        while (i < 50) {
             lblCellValue = Label.xpath(tblLedgerSummary.getxPathOfCell(1, colIndex, i, null));
             lblAccountCode = Label.xpath(tblLedgerSummary.getxPathOfCell(1, colLedgerAccountCode, i, null));
             if (!lblCellValue.isDisplayed()) {
@@ -92,6 +92,7 @@ public class ClientSummaryPopup {
             }
             i = i + 1;
         }
+        return null;
     }
 
     public List<String> getMemeberSummaryData(String accountCode){

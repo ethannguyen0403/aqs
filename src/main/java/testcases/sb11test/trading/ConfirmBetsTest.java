@@ -257,7 +257,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="881")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void Confirm_Bets_TC881(String accountCode,String accountCurrency){
         log("@title: Validate can delete multiple Pending Bets");
