@@ -16,12 +16,12 @@ public class BetSettlementPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[@class='container-fluid cbody']//div[contains(@class,'main-box-header')]");
     public DropDownBox ddbStatus = DropDownBox.xpath("//select[@name='dropStatus']");
     public DropDownBox ddbMatchDate = DropDownBox.xpath("//select[@name='dropMatchDate']");
-    public TextBox txtFromDate = TextBox.xpath("//input[@name='txtAccStartsWith']");
-    public TextBox txtToDate = TextBox.xpath("//input[@name='txtAccountCode']");
+    public TextBox txtFromDate = TextBox.xpath("//div[text()=' From Date ']//..//input");
+    public TextBox txtToDate = TextBox.xpath("//div[text()=' To Date ']//..//input");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
-    public TextBox txtAccStartWith = TextBox.xpath("//div[@class='container-fluid cbody']/div[1]//div[contains(@class,'card-body')]//div[contains(text(),'Acc Starts With')]//following::input[1]");
-    public TextBox txtAccountCode = TextBox.xpath("//div[@class='container-fluid cbody']/div[1]//div[contains(@class,'card-body')]//div[contains(text(),'Account Code')]//following::input[1]");
+    public TextBox txtAccStartWith = TextBox.xpath("//input[@name='txtAccStartsWith']");
+    public TextBox txtAccountCode = TextBox.xpath("//input[@name='txtAccountCode']");
     public Button btnSearch = Button.xpath("//div[@class='container-fluid cbody']//button[contains(@class,'icon-search-custom')]");
     public Link lnkShowAccount = Link.xpath("//span[contains(@class='cursor-pointer show-acc')]");
     public Link lnkMorFilter = Link.xpath("//button[contains(@containerclass,'dropdown-list-btn')]");

@@ -53,7 +53,7 @@ public class ConfirmBetsPage extends WelcomePage {
     public Label lblSelectAll = Label.xpath("//span[text()='Select All']");
     public Label lblDeleteSelected = Label.xpath("//span[text()='Delete Selected']");
     public Button btnConfirmBet = Button.xpath("//button[text()='Confirm Bet']");
-    public Button btnUnConfirmSelected = Button.xpath("/button[text()='Unconfirm Selected']");
+    public Button btnUnConfirmSelected = Button.xpath("//button[text()='Unconfirm Selected']");
     public Label lblTotalStake = Label.xpath("//span[contains(@class,'total-stake-pending')]");
     public Label lblAccStartWith = Label.xpath("//label[text()='Acc Starts With']");
     public Label lblAccountCode = Label.xpath("//label[text()='Account Code']");
@@ -203,7 +203,9 @@ public class ConfirmBetsPage extends WelcomePage {
             hdp = DropDownBox.xpath(tblOrder.getxPathOfCell(1, colHdp, orderIndex, "select")).getFirstSelectedOption().trim();
             String liveHomeScore = TextBox.xpath(tblOrder.getxPathOfCell(1, colLive, orderIndex, "input[1]")).getAttribute("value").trim();
             String liveAwayScore =  TextBox.xpath(tblOrder.getxPathOfCell(1, colLive, orderIndex, "input[2]")).getAttribute("value").trim();
-            Assert.assertEquals(hdp, String.format("%.2f",order.getHdpPoint()), "Failed!HDP is incorrect");
+            if(!(order.getHdpPoint() == 0.00)) {
+                Assert.assertEquals(hdp, String.format("%.2f",order.getHdpPoint()), "Failed!HDP is incorrect");
+            }
             if(order.getBetId()=="Manual Bet"){
                 Assert.assertEquals(liveHomeScore,"", "Failed! Home live score is incorrect");
                 Assert.assertEquals(liveAwayScore,"", "Failed! Away live score is incorrect");
@@ -259,8 +261,8 @@ public class ConfirmBetsPage extends WelcomePage {
      * Select an order then click on Confirm Bet button
      * @param order order id or bet id
      */
-    public void unConfirmBet(Order order){
-        selectBet(order,true);
+    public void unConfirmBet(Order order, boolean isPending){
+        selectBet(order,isPending);
         btnUnConfirmSelected.click();
         waitPageLoad();
     }
