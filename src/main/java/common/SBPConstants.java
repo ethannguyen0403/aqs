@@ -166,6 +166,8 @@ public class SBPConstants {
 
     public static class BookieInfo{
         public final static List<String> STATUS_LIST = Arrays.asList("All", "Active","Closed","In-active");
+        public final static List<String> CURRENCY_LIST = Arrays.asList("All","AUD","CAD","CNY","AED","EUR","HKD","INR","IDR","JPY","MYR","KPW","PKR","PHP","SGD","ZAR","KRW","LKR","GBP","TWD","THB","USD","VND");
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "i", "Code", "Bookie Name", "CUR", "Support By","Edit","","","# InCharge","# Groups");
     }
 
     public static class LeagueSeasonTeamInfo{
@@ -193,6 +195,14 @@ public class SBPConstants {
 
     public static class BLSettings{
         public final static List<String> TABLE_HEADER = Arrays.asList("#","i", "Time","Event", "Edit", "TV", "KP", "Live RB");
+    }
+
+    public static class ClientSystem{
+        public final static List<String> STATUS_LIST = Arrays.asList("All", "Active","Closed","In-active");
+        public final static List<String> CURRENCY_LIST = Arrays.asList("All","AUD","CAD","CNY","AED","EUR","HKD","INR","IDR","JPY","MYR","KPW","PKR","PHP","SGD","ZAR","KRW","LKR","GBP","TWD","THB","USD","VND");
+        public final static List<String> CLIENT_LIST = Arrays.asList("With Super","Without Super");
+        public final static List<String> TABLE_HEADER_CLIENT = Arrays.asList("#","i", "Client Name","CUR","Edit","Created Date");
+        public final static List<String> TABLE_HEADER_SUPER_MASTER = Arrays.asList("Super Master","CUR","Edit","","#Master","#Agents","#Memb","#Comm","#Ledger","List");
     }
 
     public static class TransactionVerification{
