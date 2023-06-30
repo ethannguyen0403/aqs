@@ -6,6 +6,10 @@ import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.Table;
 import pages.sb11.WelcomePage;
+import pages.sb11.master.popup.AccountListPopup;
+import pages.sb11.master.popup.AgentListPopup;
+import pages.sb11.master.popup.MasterListPopup;
+import pages.sb11.master.popup.MemberListPopup;
 
 public class ClientSystemPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
@@ -29,6 +33,10 @@ public class ClientSystemPage extends WelcomePage {
     public Table tbClient = Table.xpath("//div[@class='d-inline-block col-6']",6);
     public Table tbSuperMaster = Table.xpath("//div[@class='col-6 d-inline-block']",10);
     int colClientName = 3;
+    int colMaster = 5;
+    int colAgent = 6;
+    int colMember = 7;
+    int colList = 10;
 
     public void filterClient (String companyUnit, String clientList, String clientName, String currency, String status){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
@@ -52,6 +60,30 @@ public class ClientSystemPage extends WelcomePage {
     public void exportClientList(){
         btnExportToExcel.scrollToTop();
         btnExportToExcel.click();
+    }
+
+    public MasterListPopup openMasterList(String clientCode){
+        int rowIndex = getClientCodeRowIndex(clientCode);
+        tbSuperMaster.getControlOfCell(1,colMaster,rowIndex,null).click();
+        return new MasterListPopup();
+    }
+
+    public AgentListPopup openAgentList(String clientCode){
+        int rowIndex = getClientCodeRowIndex(clientCode);
+        tbSuperMaster.getControlOfCell(1,colAgent,rowIndex,null).click();
+        return new AgentListPopup();
+    }
+
+    public AccountListPopup openAccountList(String clientCode){
+        int rowIndex = getClientCodeRowIndex(clientCode);
+        tbSuperMaster.getControlOfCell(1,colMember,rowIndex,null).click();
+        return new AccountListPopup();
+    }
+
+    public MemberListPopup openMemberList(String clientCode){
+        int rowIndex = getClientCodeRowIndex(clientCode);
+        tbSuperMaster.getControlOfCell(1,colList,rowIndex,null).click();
+        return new MemberListPopup();
     }
 
     private int getClientCodeRowIndex(String clientCode){
