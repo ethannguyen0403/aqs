@@ -20,7 +20,7 @@ import static common.SBPConstants.LEDGER_PARENT_NAME_ASSET;
 
 public class JournalEntriesTest extends BaseCaseAQS {
 
-    String transType = "Others";
+    String transType = "Payment Other";
     String level = "Super";
     String remark = "Auto Testing Transaction " + DateUtils.getMilliSeconds() + ".Please ignore this, Thank you!";
     String clientCode = "QA Client (No.121 QA Client)";
