@@ -21,10 +21,15 @@ public class LedgerStatementPage extends WelcomePage {
     public DropDownBox ddLedgerName = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Account Type')]//following::select[1]");
     public TextBox txtFromDate = TextBox.name("fromDate");
     public TextBox txtToDate = TextBox.name("toDate");
+    public Label lblFromDate = Label.xpath("//div[text()='From Date']");
+    public Label lblToDate = Label.xpath("//div[text()='To Date']");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
     public Button btnShow = Button.xpath("//app-ledger-statement//button[contains(text(),'Show')]");
-    int totalCol = 8;
+    public Button btnExportToExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
+    public Button getBtnExportToPDF = Button.xpath("//button[contains(text(),'Export To PDF')]");
+
+    int totalCol = 12;
     int colLedger = 2;
     int colCur = 3;
     int colAmountORG = 4;

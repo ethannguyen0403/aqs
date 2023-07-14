@@ -6,10 +6,10 @@ import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.Table;
 import pages.sb11.WelcomePage;
-import pages.sb11.master.popup.AccountListPopup;
-import pages.sb11.master.popup.AgentListPopup;
-import pages.sb11.master.popup.MasterListPopup;
-import pages.sb11.master.popup.MemberListPopup;
+import pages.sb11.master.clientsystempopup.AccountListPopup;
+import pages.sb11.master.clientsystempopup.AgentListPopup;
+import pages.sb11.master.clientsystempopup.MasterListPopup;
+import pages.sb11.master.clientsystempopup.MemberListPopup;
 
 public class ClientSystemPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
