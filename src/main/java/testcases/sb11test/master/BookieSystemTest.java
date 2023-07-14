@@ -4,6 +4,9 @@ import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.master.*;
+import pages.sb11.master.bookiesystempopup.AccountListPopup;
+import pages.sb11.master.bookiesystempopup.AgentListPopup;
+import pages.sb11.master.bookiesystempopup.MasterListPopup;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 
@@ -11,7 +14,9 @@ import static common.SBPConstants.*;
 
 public class BookieSystemTest extends BaseCaseAQS {
 
-    @Test(groups = {"smoke"})
+    String companyUnit = "Kastraki Limited";
+
+    @Test(groups = {"regression"})
     @TestRails(id = "2214")
     public void Bookie_System_TC_001(){
         log("@title: Validate Bookie System page for Super is displayed when navigate");
@@ -25,7 +30,7 @@ public class BookieSystemTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2215")
     @Parameters({"bookieCode"})
     public void Bookie_System_TC_002(String bookieCode){
@@ -51,7 +56,25 @@ public class BookieSystemTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"regression"})
+    @TestRails(id = "2215")
+    @Parameters({"superCode","bookieCode"})
+    public void Bookie_System_TC_003(String superCode, String bookieCode){
+        log("@title: Validate Master List popup is displayed when clicking data on #Master column");
+        log("@Step 1: Login with valid account");
+        log("Step 2: Click Master > Client System");
+        BookieSystemPage bookieSystemPage = welcomePage.navigatePage(MASTER, BOOKIE_SYSTEM,BookieSystemPage.class);
+        log("Step 3: Click Super");
+        BookieSuperPage bookieSuperPage = bookieSystemPage.goToSuper();
+        bookieSuperPage.filterSuperCode(companyUnit,bookieCode,"");
+        log("Step 4:  Click value of client at pre-condition at #Master column");
+        MasterListPopup masterListPopup = bookieSuperPage.openMasterList(superCode);
+        log("Validate Master List popup is displayed with correctly title");
+        Assert.assertTrue(masterListPopup.getTitlePage().contains("Master List"),"Failed! Master List popup is displayed!");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
     @TestRails(id = "2217")
     public void Bookie_System_TC_004(){
         log("@title: Validate Bookie System page for Master is displayed when navigate");
@@ -65,7 +88,7 @@ public class BookieSystemTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2218")
     @Parameters({"bookieCode"})
     public void Bookie_System_TC_005(String bookieCode){
@@ -92,7 +115,25 @@ public class BookieSystemTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"regression"})
+    @TestRails(id = "2219")
+    @Parameters({"superCode","bookieCode","masterCode"})
+    public void Bookie_System_TC_006(String superCode, String bookieCode, String masterCode){
+        log("@title: Validate Agent List popup is displayed when clicking data on #Agent column");
+        log("@Step 1: Login with valid account");
+        log("Step 2: Click Master > Client System");
+        BookieSystemPage bookieSystemPage = welcomePage.navigatePage(MASTER, BOOKIE_SYSTEM,BookieSystemPage.class);
+        log("Step 3: Click Agent");
+        BookieMasterPage bookieMasterPage = bookieSystemPage.goToMaster();
+        bookieMasterPage.filterMasterCode(companyUnit,bookieCode,superCode,"");
+        log("Step 4:  Click value of client at pre-condition at #Agent column");
+        AgentListPopup agentListPopup = bookieMasterPage.openAgentList(masterCode);
+        log("Validate Agent List popup is displayed with correctly title");
+        Assert.assertTrue(agentListPopup.getTitlePage().contains("Agent List"),"Failed! Agent List popup is displayed!");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
     @TestRails(id = "2220")
     public void Bookie_System_TC_007(){
         log("@title: Validate Bookie System page for Agent is displayed when navigate");
@@ -105,7 +146,7 @@ public class BookieSystemTest extends BaseCaseAQS {
         Assert.assertTrue(bookieAgentPage.getTitlePage().contains("Agent"),"FAILED! Page Title is incorrect display");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"smoke"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2221")
     @Parameters({"bookieCode"})
     public void Bookie_System_TC_008(String bookieCode){
@@ -130,6 +171,24 @@ public class BookieSystemTest extends BaseCaseAQS {
         Assert.assertEquals(bookieAgentPage.btnAddAgent.getText(),"Add Agent","Failed! Add Agent button is not displayed!");
         log("Validate Agent list table is displayed with correct header");
         Assert.assertEquals(bookieAgentPage.tbAgent.getHeaderNameOfRows(),BookieSystem.TABLE_HEADER_AGENT,"Failed! Agent list table is displayed with incorrect header");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2222")
+    @Parameters({"superCode","bookieCode","masterCode"})
+    public void Bookie_System_TC_009(String superCode, String bookieCode, String masterCode, String agentCode){
+        log("@title: Validate Agent List popup is displayed when clicking data on #Agent column");
+        log("@Step 1: Login with valid account");
+        log("Step 2: Click Master > Client System");
+        BookieSystemPage bookieSystemPage = welcomePage.navigatePage(MASTER, BOOKIE_SYSTEM,BookieSystemPage.class);
+        log("Step 3: Click Agent");
+        BookieAgentPage bookieAgentPage = bookieSystemPage.goToAgent();
+        bookieAgentPage.filterAgentCode(companyUnit,bookieCode,superCode,masterCode,"");
+        log("Step 4:  Click value of client at pre-condition at #Agent column");
+        AccountListPopup accountListPopup = bookieAgentPage.openAccountList(agentCode);
+        log("Validate Account List popup is displayed with correctly title");
+        Assert.assertTrue(accountListPopup.getTitlePage().contains("Account List"),"Failed! Account List popup is displayed!");
         log("INFO: Executed completely");
     }
 }

@@ -5,6 +5,8 @@ import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.Table;
+import pages.sb11.master.bookiesystempopup.AgentListPopup;
+import pages.sb11.master.bookiesystempopup.MasterListPopup;
 
 public class BookieMasterPage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
@@ -27,4 +29,37 @@ public class BookieMasterPage {
     public Label lblMasterCode = Label.xpath("//div[contains(text(),'Master Code')]");
 
     public Table tbMaster = Table.xpath("//table",10);
+    int colMasterCode = 4;
+    int colAgent = 10;
+
+    public void filterMasterCode (String companyUnit, String bookieCode, String superCode, String masterCode){
+        ddpCompanyUnit.selectByVisibleText(companyUnit);
+        ddpBookie.selectByVisibleText(bookieCode);
+        ddpSuper.selectByVisibleText(superCode);
+        if (!masterCode.isEmpty())
+            txtMasterCode.sendKeys(masterCode);
+        btnSearch.click();
+    }
+
+    public AgentListPopup openAgentList(String masterCode){
+        int rowIndex = getMasterCodeRowIndex(masterCode);
+        tbMaster.getControlOfCell(1,colAgent,rowIndex,null).click();
+        return new AgentListPopup();
+    }
+
+    private int getMasterCodeRowIndex(String masterCode){
+        int i = 1;
+        Label lblMasterCode;
+        while (true){
+            lblMasterCode = Label.xpath(tbMaster.getxPathOfCell(1,colMasterCode,i,null));
+            if(!lblMasterCode.isDisplayed()){
+                System.out.println("The Master Code "+masterCode+" does not display in the list");
+                return 0;
+            }
+            if(lblMasterCode.getText().contains(masterCode))
+                return i;
+            i = i +1;
+        }
+    }
+
 }

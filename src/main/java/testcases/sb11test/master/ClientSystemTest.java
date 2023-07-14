@@ -5,12 +5,11 @@ import com.paltech.utils.FileUtils;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import pages.sb11.master.BookieInfoPage;
 import pages.sb11.master.ClientSystemPage;
-import pages.sb11.master.popup.AccountListPopup;
-import pages.sb11.master.popup.AgentListPopup;
-import pages.sb11.master.popup.MasterListPopup;
-import pages.sb11.master.popup.MemberListPopup;
+import pages.sb11.master.clientsystempopup.AccountListPopup;
+import pages.sb11.master.clientsystempopup.AgentListPopup;
+import pages.sb11.master.clientsystempopup.MasterListPopup;
+import pages.sb11.master.clientsystempopup.MemberListPopup;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 
@@ -23,7 +22,7 @@ public class ClientSystemTest extends BaseCaseAQS {
     String companyUnit = "Kastraki Limited";
     String clientList = "With Super";
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2206")
     public void Client_System_TC_001(){
         log("@title: Verify that can login successfully");
@@ -35,7 +34,7 @@ public class ClientSystemTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2207")
     public void Client_System_TC_002(){
         log("@title: Validate UI on Client System is correctly displayed");

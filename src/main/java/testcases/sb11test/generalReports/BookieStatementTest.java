@@ -62,7 +62,7 @@ public class BookieStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     @TestRails(id = "1639")
     public void BookieStatementTC_1639() {
         String bookieName = "QA Bookie";
