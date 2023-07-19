@@ -27,41 +27,41 @@
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <groups>
             <run>
-                <include name="regression1" />
+                <include name="regression" />
             </run>
         </groups>
 
         <classes>
-<!--                        <class name="testcases.sb11test.AuthenticateTest"/>-->
-<!--                        <class name="testcases.sb11test.HomePageTest"/>-->
-<!--                        <class name="testcases.sb11test.role.RoleManagementTest"/>-->
-<!--                        <class name="testcases.sb11test.user.UserManagementTest"/>-->
-<!--                        <class name="testcases.sb11test.user.TradingPermissionTest"/>-->
-<!--                        <class name="testcases.sb11test.sport.SoccerLeagueSeasonTeamInfoTest"/>-->
-<!--                        <class name="testcases.sb11test.sport.CricketLeagueSeasonTeamInfoTest"/>-->
-<!--                        <class name="testcases.sb11test.sport.SoccerResultEntryTest"/>-->
-<!--                        <class name="testcases.sb11test.sport.CricketResultEntryTest"/>-->
-<!--                        <class name="testcases.sb11test.sport.EventMappingTest"/>-->
-<!--                        <class name="testcases.sb11test.sport.EventScheduleTest"/>-->
-<!--                        <class name="testcases.sb11test.sport.OpenPriceTest"/>-->
-<!--                        <class name="testcases.sb11test.sport.BLSettingTest"/>-->
-<!--                        <class name="testcases.sb11test.soccer.MonitorBetsTest"/>-->
-<!--                        <class name="testcases.sb11test.soccer.MatchOddsLiabilityTest"/>-->
-<!--                        <class name="testcases.sb11test.soccer.PTRiskControlTest"/>-->
-<!--                        <class name="testcases.sb11test.soccer.SPPTest"/>-->
-<!--                        <class name="testcases.sb11test.soccer.BBTTest"/>-->
-<!--                        <class name="testcases.sb11test.soccer.BBGTest"/>-->
-<!--                        <class name="testcases.sb11test.accounting.CurrencyRatesTest"/>-->
-<!--                        <class name="testcases.sb11test.accounting.ChartOfAccountTest"/>-->
-<!--                        <class name="testcases.sb11test.accounting.JournalEntriesTest"/>-->
-<!--                        <class name="testcases.sb11test.accounting.JournalReportsTest"/>-->
-<!--                        <class name="testcases.sb11test.accounting.BalanceCurrentTest"/>-->
-<!--                        <class name="testcases.sb11test.trading.SmartSystemTest"/>-->
-<!--                        <class name="testcases.sb11test.trading.PhoneBettingTest"/>-->
-<!--                        <class name="testcases.sb11test.trading.ConfirmBetsTest"/>-->
-<!--            <class name="testcases.sb11test.trading.BetEntryTest"/>-->
-<!--            <class name="testcases.sb11test.trading.BetSettlementTest"/>-->
-<!--            <class name="testcases.sb11test.trading.TransactionVerificationTest"/>-->
+            <class name="testcases.sb11test.AuthenticateTest"/>
+            <class name="testcases.sb11test.HomePageTest"/>
+            <class name="testcases.sb11test.role.RoleManagementTest"/>
+            <class name="testcases.sb11test.user.UserManagementTest"/>
+            <class name="testcases.sb11test.user.TradingPermissionTest"/>
+            <class name="testcases.sb11test.sport.SoccerLeagueSeasonTeamInfoTest"/>
+            <class name="testcases.sb11test.sport.CricketLeagueSeasonTeamInfoTest"/>
+            <class name="testcases.sb11test.sport.SoccerResultEntryTest"/>
+            <class name="testcases.sb11test.sport.CricketResultEntryTest"/>
+            <class name="testcases.sb11test.sport.EventMappingTest"/>
+            <class name="testcases.sb11test.sport.EventScheduleTest"/>
+            <class name="testcases.sb11test.sport.OpenPriceTest"/>
+            <class name="testcases.sb11test.sport.BLSettingTest"/>
+            <class name="testcases.sb11test.soccer.MonitorBetsTest"/>
+            <class name="testcases.sb11test.soccer.MatchOddsLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
+            <class name="testcases.sb11test.soccer.SPPTest"/>
+            <class name="testcases.sb11test.soccer.BBTTest"/>
+            <class name="testcases.sb11test.soccer.BBGTest"/>
+            <class name="testcases.sb11test.accounting.CurrencyRatesTest"/>
+            <class name="testcases.sb11test.accounting.ChartOfAccountTest"/>
+            <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
+            <class name="testcases.sb11test.accounting.JournalReportsTest"/>
+            <class name="testcases.sb11test.accounting.BalanceCurrentTest"/>
+            <class name="testcases.sb11test.trading.SmartSystemTest"/>
+            <class name="testcases.sb11test.trading.PhoneBettingTest"/>
+            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
+            <class name="testcases.sb11test.trading.BetEntryTest"/>
+            <class name="testcases.sb11test.trading.BetSettlementTest"/>
+            <class name="testcases.sb11test.trading.TransactionVerificationTest"/>
             <class name="testcases.sb11test.trading.AccountPercentTest"/>
         </classes>
     </test>
