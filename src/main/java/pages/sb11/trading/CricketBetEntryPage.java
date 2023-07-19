@@ -18,12 +18,12 @@ public class CricketBetEntryPage extends BetEntryPage {
     public Label lblDate = Label.xpath("//label[text()='Date']");
     public Label lblAccountCode = Label.xpath("//label[contains(text(),'Account Code')]");
     private TextBox txtAccCode = TextBox.id("account-code");
-    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bet-entry-cricket//app-common-header-sport//label[contains(text(),'Company Unit')]/following::select[1]");
+    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bet-entry-header//label[contains(text(),'Company Unit')]/following::select[1]");
     public DropDownBox ddpLeague = DropDownBox.id("league");
     public DropDownBox ddpSearchBy = DropDownBox.xpath("//select[@class='form-control']");
     private TextBox txtAccountCode = TextBox.id("account-code");
-    private TextBox txtDate = TextBox.xpath("//app-bet-entry-cricket//input[@name='fromDate']");
-    public Button btnShow = Button.xpath("//app-bet-entry-cricket//button[contains(@class,'btn-show')]");
+    private TextBox txtDate = TextBox.xpath("//app-bet-entry-header//input[@name='fromDate']");
+    public Button btnShow = Button.xpath("//app-bet-entry-header//button[contains(@class,'btn-show')]");
     private DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
     int totalCol =16;
     private int colTime = 1;
@@ -41,7 +41,7 @@ public class CricketBetEntryPage extends BetEntryPage {
     private int colDNBAway = 13;
     private int colCPB = 14;
 
-    public Table tblEvent = Table.xpath("//app-bet-entry-cricket//table",totalCol);
+    public Table tblEvent = Table.xpath("//app-bet-entry-table//table",totalCol);
     //app-bet-entry-soccer
 
     public String getTitlePage ()

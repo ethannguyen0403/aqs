@@ -382,7 +382,7 @@ public class BetEntryTest extends BaseCaseAQS {
     @Test(groups = {"smoke_qc"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetEntry_TC868(String accountCode,String accountCurrency){
-        log("@title: Validate can place bet for soccer with option copy bet to SPBPS7 as same odds");
+        log("@title: Validate users can place other market type of Soccer with correct info in Bet Slip");
         log("Precondition: User has permission to access Bet Entry page");
         log("Precondition:Having a valid account that can place bets (e.g. "+accountCode);
         String sport="Soccer";
@@ -428,7 +428,8 @@ public class BetEntryTest extends BaseCaseAQS {
         soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
         SoccerSPBBetSlipPopup soccerSPBBetSlipPopup = soccerBetEntryPage.openSPBBetSlip(accountCode,eventInfo.getHome());
 
-        log("@Step 6: Click Place Bet with Tick on option \"Tick here to Copy Bet to SPBPS7 Minus 0.01 Odds\"");
+        log("@Step 6: Un-ticke on 2 option \"Tick here to Copy Bets to SPBPS7 as Same Odds\"\n" +
+                "\"Tick here to Copy Bets to SPBPS7 Minus 0.01 Odds\" and click Place bet");
         soccerSPBBetSlipPopup.placeMoreBet(order,false,false,true);
 
         log("@Verify 1: User can place Soccer bets successfully with message 'The bet was placed successfully'");
@@ -481,7 +482,7 @@ public class BetEntryTest extends BaseCaseAQS {
         Assert.assertTrue(soccerBetEntryPage.getTitlePage().contains("Soccer"), "Failed! Soccer Bet Entry page is not displayed");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2190")
     public void BetEntry_TC_002(){
         log("Validate UI on Bet Entry for Soccer is correctly displayed");

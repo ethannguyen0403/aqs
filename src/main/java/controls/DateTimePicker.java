@@ -123,36 +123,37 @@ public class DateTimePicker extends BaseElement {
             logEndAction("Error: Month or date parameter is empty");
             return ;
         }
-        String rowXpath = String.format("%s%s", tblCalender._xpathTable, "/tbody/tr[%s]");
-        int i = 1;
-        int rows = 6;//tblCalenderDate.getNumberOfRows(false,isMoved);
-        while(i <= rows) {
-            Row row = Row.xpath(String.format(rowXpath, i));
-            if(!row.isDisplayed()){
-                return ;
-            }
-            for (int j=1; j <= tblCalender._columnNumber+1; j ++){
-                Cell e = row.getCellByName(name, j);
-                if(Objects.nonNull(e)) {
-
-                    if (Label.xpath(e.getLocator().toString().split("By.xpath: ")[1] + "//span[@class='is-other-month']").isDisplayed()) {
-                        continue;
-                    }
-                    //Label lbl = Label.xpath(e.getLocator().toString().split("By.xpath: ")[1]+"//span");
-                    if (Label.xpath(e.getLocator().toString().split("By.xpath: ")[1] + "//span").isDisplayed()) {
-                        e.click();
-                        logEndAction(String.format("clicked date '%s' on Calendar", name));
-                        return;
-                    }
-                }
-            }
-
-            // moving to next row after getting the row in case row of this table are hidden visible view
-            if (isMoved){
-                row.scrollDownInDistance();
-            }
-            i += 1;
-        }
+//        String rowXpath = String.format("%s%s", tblCalender._xpathTable, "/tbody/tr[%s]");
+//        int i = 1;
+//        int rows = 6;//tblCalenderDate.getNumberOfRows(false,isMoved);
+//        while(i <= rows) {
+//            Row row = Row.xpath(String.format(rowXpath, i));
+//            if(!row.isDisplayed()){
+//                return ;
+//            }
+//            for (int j=1; j <= tblCalender._columnNumber+1; j ++){
+//                Cell e = row.getCellByName(name, j);
+//                if(Objects.nonNull(e)) {
+//
+//                    if (Label.xpath(e.getLocator().toString().split("By.xpath: ")[1] + "//span[@class='is-other-month']").isDisplayed()) {
+//                        continue;
+//                    }
+//                    //Label lbl = Label.xpath(e.getLocator().toString().split("By.xpath: ")[1]+"//span");
+//                    if (Label.xpath(e.getLocator().toString().split("By.xpath: ")[1] + "//span").isDisplayed()) {
+//                        e.click();
+//                        logEndAction(String.format("clicked date '%s' on Calendar", name));
+//                        return;
+//                    }
+//                }
+//            }
+//
+//            // moving to next row after getting the row in case row of this table are hidden visible view
+//            if (isMoved){
+//                row.scrollDownInDistance();
+//            }
+//            i += 1;
+//        }
+        //bs-days-calendar-view//table[contains(@class, 'days weeks')]/tbody//span[text()='1' and not(contains(@class, 'is-other-month'))]
         logEndAction(String.format("Debug: There is no value '%s' you want", name));
         return ;
     }
