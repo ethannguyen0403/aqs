@@ -71,9 +71,7 @@ public class EventSchedulePage extends WelcomePage {
         waitPageLoad();
         ddpLeague.selectByVisibleText(league);
         if(!date.isEmpty()){
-            if(!date.equals(txtDateTime.getAttribute("value").trim())){
-                dtpDateTime.selectDate(date,"dd/MM/yyyy");
-            }
+            dtpDateTime.selectDate(date,"dd/MM/yyyy");
         }
         btnShow.click();
         waitPageLoad();

@@ -7,19 +7,19 @@ import pages.sb11.trading.SoccerBetEntryPage;
 import java.util.List;
 
 public class SoccerSPBBetSlipPopup {
-    private Label lblTitle = Label.xpath("//app-more-bet-option//div[contains(@class,'main-box-header')]//span[1]");
-    private Label lblEvent = Label.xpath("//app-more-bet-option//div[contains(@class,'form-check')]/div[1]/label");
-    private Label lblHomeName = Label.xpath("//app-more-bet-option//div[contains(@class,'form-check')]/div[1]/span[1]");
-    private Label lblAway = Label.xpath("//app-more-bet-option//div[contains(@class,'form-check')]/div[1]/span[2]");
-    private Label lblBetType = Label.xpath("//app-more-bet-option//div[contains(@class,'form-check')]/div[2]//label");
-    private DropDownBox ddMarketType = DropDownBox.xpath("//app-more-bet-option//label[contains(text(),'Bet Type')]//following::select[1]");
-    private Label lblSelection = Label.xpath("//app-more-bet-option//div[contains(@class,'form-check')]/div[3]//label");
-    private TextBox txtOdds = TextBox.xpath("//app-more-bet-option//label[contains(text(),'Odds')]//following::input[1]");
-    private DropDownBox ddOddType = DropDownBox.xpath("//app-more-bet-option//label[contains(text(),'Odds')]//following::select");
-    private DropDownBox ddBetType = DropDownBox.xpath("//app-more-bet-option//label[contains(text(),'Selection')]//following::select[1]");
-    private TextBox txtHomeScore = TextBox.xpath("//app-more-bet-option//label[contains(text(),'Live Score')]//following::input[1]");
-    private TextBox txtAwayScore = TextBox.xpath("//app-more-bet-option//label[contains(text(),'Live Score')]//following::input[2]");
-    private TextBox txtStake = TextBox.xpath("//app-more-bet-option//label[contains(text(),'Stake')]//following::input[1]");
+    private Label lblTitle = Label.xpath("//app-entry-bet-slip-more-option-form//div[contains(@class,'main-box-header')]//span[1]");
+    private Label lblEvent = Label.xpath("//app-entry-bet-slip-more-option-form//div[contains(@class,'form-check')]/div[1]/label");
+    private Label lblHomeName = Label.xpath("//app-entry-bet-slip-more-option-form//div[contains(@class,'form-check')]/div[1]/span[1]");
+    private Label lblAway = Label.xpath("//app-entry-bet-slip-more-option-form//div[contains(@class,'form-check')]/div[1]/span[2]");
+    private Label lblBetType = Label.xpath("//app-entry-bet-slip-more-option-form//div[contains(@class,'form-check')]/div[2]//label");
+    private DropDownBox ddMarketType = DropDownBox.xpath("//app-entry-bet-slip-more-option-form//label[contains(text(),'Bet Type')]//following::select[1]");
+    private Label lblSelection = Label.xpath("//app-entry-bet-slip-more-option-form//div[contains(@class,'form-check')]/div[3]//label");
+    private TextBox txtOdds = TextBox.xpath("//app-entry-bet-slip-more-option-form//label[text()=' Odds']//following::input[1]");
+    private DropDownBox ddOddType = DropDownBox.xpath("//app-entry-bet-slip-more-option-form//label[contains(text(),'Odds')]//following::select");
+    private DropDownBox ddBetType = DropDownBox.xpath("//app-entry-bet-slip-more-option-form//label[contains(text(),'Selection')]//following::select[1]");
+    private TextBox txtHomeScore = TextBox.xpath("//app-entry-bet-slip-more-option-form//label[contains(text(),'Live Score')]//following::input[1]");
+    private TextBox txtAwayScore = TextBox.xpath("//app-entry-bet-slip-more-option-form//label[contains(text(),'Live Score')]//following::input[2]");
+    private TextBox txtStake = TextBox.xpath("//app-entry-bet-slip-more-option-form//label[contains(text(),'Stake')]//following::input[1]");
     private RadioButton rbHome = RadioButton.id("radHome");
     private RadioButton rbAway = RadioButton.id("radAway");
     private RadioButton rbDraw = RadioButton.id("radDraw");
@@ -27,8 +27,8 @@ public class SoccerSPBBetSlipPopup {
     private Label lblCopyBetToSPBPS7SameOdds = Label.xpath("//label[@for='sameOddMore']");
     private CheckBox cbCopyBetToSPBPS7MinusOdds = CheckBox.xpath("//input[@id='minusOddMore']");
     private Label lblCopyBetToSPBPS7MinusOdds = Label.xpath("//label[@for='minusOddMore']");
-    private Button btnPlaceBet = Button.xpath("//app-more-bet-option//button[contains(text(),'Place Bet')]");
-    private Button btnClose = Button.xpath("//app-more-bet-option//div[contains(@class,'main-box-header')]//span[2]");
+    private Button btnPlaceBet = Button.xpath("//app-entry-bet-slip-more-option-form//button[contains(text(),'Place Bet')]");
+    private Button btnClose = Button.xpath("//app-entry-bet-slip-more-option-form//div[contains(@class,'main-box-header')]//span[2]");
 
     /**
      * Click on close icon on the top right of the popup

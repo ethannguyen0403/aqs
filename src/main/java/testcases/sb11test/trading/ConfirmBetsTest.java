@@ -526,7 +526,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "942")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode", "accountCurrency"})
     public void Confirm_Bets_TC942(String accountCode, String accountCurrency) {
         log("@title:Validate updated bets reflect correctly in the bet list of Bet Settlement page");
@@ -573,7 +573,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "185")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode", "accountCurrency"})
     public void Confirm_Bets_TC185(String accountCode, String accountCurrency) {
         log("@title: Validate can confirm bets and the confirmed bets will show in Bet Settlement page");
