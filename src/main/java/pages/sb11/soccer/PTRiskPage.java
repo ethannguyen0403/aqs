@@ -94,7 +94,7 @@ public class PTRiskPage extends WelcomePage {
     }
 
     public PTRiskBetListPopup openBetList(String homeName) throws InterruptedException {
-        Label homeNameXpath = Label.xpath(String.format("//app-pt-risk-control//th[@id='team-infor']//div[text()='%s']",homeName));
+        Label homeNameXpath = Label.xpath(String.format("//app-pt-risk-control//th[@id='team-infor']//div[text()=\"%s\"]",homeName));
         homeNameXpath.click();
         waitSpinnerDisappeared();
         return new PTRiskBetListPopup();

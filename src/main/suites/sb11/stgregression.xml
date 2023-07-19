@@ -16,13 +16,15 @@
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
         <parameter name="accountCode" value="Auto-Account01"/>
+        <parameter name="accountId" value="860411"/>
         <parameter name="accountCurrency" value="HKD"/>
         <parameter name="clientCode" value ="QA Client (No.121 QA Client)"/>
         <parameter name="bookieCode" value ="QA Bookie"/>
         <parameter name="emailAddress" value="autoacc001stg@yopmail.com"/>
         <parameter name="smartGroup" value="Auto QC Group"/>
-        <parameter name="superCode" value="QA2112"/>
-        <parameter name="agentCode" value="QASAHK00"/>
+        <parameter name="superCode" value="SM-01U-QA Client"/>
+        <parameter name="masterCode" value="Ma-01U00-QA Client"/>
+        <parameter name="agentCode" value="A-01U0000-QA Client"/>
         <parameter name="bookieMasterCode" value="Ma-QA101-QA Test"/>
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <groups>
@@ -63,6 +65,9 @@
             <class name="testcases.sb11test.trading.BetSettlementTest"/>
             <class name="testcases.sb11test.trading.TransactionVerificationTest"/>
             <class name="testcases.sb11test.trading.AccountPercentTest"/>
+            <class name="testcases.sb11test.master.BookieInfoTest"/>
+            <class name="testcases.sb11test.master.ClientSystemTest"/>
+            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
         </classes>
     </test>
 </suite>

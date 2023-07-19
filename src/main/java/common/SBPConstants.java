@@ -12,6 +12,12 @@ public class SBPConstants {
     public final static String MASTER = "Master";
     public final static String BOOKIE_INFO = "Bookie Info";
     public final static String CLIENT_SYSTEM = "Client System";
+    public final static String BOOKIE_SYSTEM = "Bookie System";
+    public final static String ACCOUNT_SEARCH = "Account Search";
+    public final static String ACCOUNT_LIST = "Account List";
+    public final static String MISSED_ACCOUNTS = "Missed Accounts";
+    public final static String AUTO_CREATED_ACCOUNTS = "Auto-created Accounts";
+    public final static String ADDRESS_BOOK = "Address Book";
     public final static String TRADING = "Trading";
     public final static String ACCOUNTING = "Accounting";
     public final static String ROLE = "Role";
@@ -120,16 +126,6 @@ public class SBPConstants {
         }
     };
 
-//    public static final Map<String, Double> CURRENCY_RATE= new HashMap<String, Double>()
-//    {
-//        {
-//            put("AUD", 0.573028);
-//            put("GBP", 1.0);
-//            put("HKD",0.106288);
-//            put("INR",0.010019);
-//        }
-//    };
-
     public static final Map<String, String> SOCCER_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
         {
@@ -164,8 +160,28 @@ public class SBPConstants {
         public final static List<String> TABLE_HEADER = Arrays.asList("#", "i", "Username", "Auto-assigned All", "Permission", "Customers");
     }
 
+    public static class AutoCreatedAccounts{
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "Account Code", "Bookie", "Client", "Created Date");
+    }
+
+    public static class LedgerStatement{
+        public final static List<String> ACCOUNT_TYPE = Arrays.asList("All","Asset","Income","Liability","Expenditure","Capital");
+        public final static List<String> TABLE_HEADER = Arrays.asList(" ", "Amounts are shown in Original Currency"," ", "Amounts are shown in HKD", "#", "Ledger", "CUR", "Credit/Debit", "Running Bal.", "Running Bal. [CT]"," ", "Credit/Debit", "Running Bal.");
+    }
+
     public static class BookieInfo{
         public final static List<String> STATUS_LIST = Arrays.asList("All", "Active","Closed","In-active");
+        public final static List<String> CURRENCY_LIST = Arrays.asList("All","AUD","CAD","CNY","AED","EUR","HKD","INR","IDR","JPY","MYR","KPW","PKR","PHP","SGD","ZAR","KRW","LKR","GBP","TWD","THB","USD","VND");
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "i", "Code", "Bookie Name", "CUR", "Support By","Edit","","","# InCharge","# Groups");
+    }
+
+    public static class BookieSystem{
+        public final static List<String> STATUS_LIST = Arrays.asList("All", "Active","Closed","In-active");
+        public final static List<String> CURRENCY_LIST = Arrays.asList("All","AUD","CAD","CNY","AED","EUR","HKD","INR","IDR","JPY","MYR","KPW","PKR","PHP","SGD","ZAR","KRW","LKR","GBP","TWD","THB","USD","VND");
+        public final static List<String> TABLE_HEADER_SUPER = Arrays.asList("#", "i", "Bookie", "Super Code", "CUR", "Client","Support By","Edit","","# Master");
+        public final static List<String> TABLE_HEADER_MASTER = Arrays.asList("#", "i", "Bookie", "Master Code", "CUR", "Client","Support By","Edit","","# Agent");
+        public final static List<String> TABLE_HEADER_AGENT = Arrays.asList("#", "i", "Bookie", "Agent Code", "CUR", "Client","Type","Support By","Edit","","# Members");
+        public final static List<String> GO_TO_LIST = Arrays.asList("Super","Master","Agent");
     }
 
     public static class LeagueSeasonTeamInfo{
@@ -191,8 +207,32 @@ public class SBPConstants {
         public final static List<String> TABLE_HEADER = Arrays.asList("#", "Time","i", "Event", "FT - 1x2","H/A","Draw", "FT - Handicap - OP","HDP","Price", "FT - Over/Under - OP","HDP","Price","");
     }
 
+    public static class AccountSearch{
+        public final static List<String> TYPE_LIST = Arrays.asList("Account Code","Account Id");
+    }
+
+    public static class AccountList{
+        public final static List<String> TYPE_LIST = Arrays.asList("Client","Bookie");
+        public final static List<String> CURRENCY_LIST = Arrays.asList("[All]","AUD","CAD","CNY","AED","EUR","HKD","INR","IDR","JPY","MYR","KPW","PKR","PHP","SGD","ZAR","KRW","LKR","GBP","TWD","THB","USD","VND");
+        public final static List<String> STATUS_LIST = Arrays.asList("[All]", "Active","Closed","In-Active");
+        public final static List<String> CREATION_TYPE_LIST = Arrays.asList("[All]", "Manual","System");
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "i", "Account Code","Bookie","Client","CUR","Edit","Credit Limit","SL","SNL","BL","BNL","FL","FNL","TL","TNL","OL","ONL","Edit PT","");
+    }
+
     public static class BLSettings{
         public final static List<String> TABLE_HEADER = Arrays.asList("#","i", "Time","Event", "Edit", "TV", "KP", "Live RB");
+    }
+
+    public static class AddressBook{
+        public final static List<String> TABLE_HEADER = Arrays.asList("#","Account Code","CUR","To (Name, Email)","CC (Name, Email)","BCC (Name, Email)","Edit");
+    }
+
+    public static class ClientSystem{
+        public final static List<String> STATUS_LIST = Arrays.asList("All", "Active","Closed","In-active");
+        public final static List<String> CURRENCY_LIST = Arrays.asList("All","AUD","CAD","CNY","AED","EUR","HKD","INR","IDR","JPY","MYR","KPW","PKR","PHP","SGD","ZAR","KRW","LKR","GBP","TWD","THB","USD","VND");
+        public final static List<String> CLIENT_LIST = Arrays.asList("With Super","Without Super");
+        public final static List<String> TABLE_HEADER_CLIENT = Arrays.asList("#","i", "Client Name","CUR","Edit","Created Date");
+        public final static List<String> TABLE_HEADER_SUPER_MASTER = Arrays.asList("Super Master","CUR","Edit","","#Master","#Agents","#Memb","#Comm","#Ledger","List");
     }
 
     public static class TransactionVerification{

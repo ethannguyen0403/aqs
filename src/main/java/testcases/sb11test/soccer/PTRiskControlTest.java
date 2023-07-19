@@ -29,7 +29,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode","accountCode","accountCurrency"})
     @TestRails(id = "1386")
-    public void ClientStatementTC_1386(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
+    public void PTRiskControlTC_1386(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
         welcomePage.waitSpinnerDisappeared();
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
@@ -79,7 +79,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode","accountCode","accountCurrency"})
     @TestRails(id = "192")
-    public void ClientStatementTC_192(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
+    public void PTRiskControlTC_192(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
         welcomePage.waitSpinnerDisappeared();
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
@@ -129,7 +129,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode","accountCode","accountCurrency"})
     @TestRails(id = "1387")
-    public void ClientStatementTC_1387(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
+    public void PTRiskControlTC_1387(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
         welcomePage.waitSpinnerDisappeared();
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
@@ -179,7 +179,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode","accountCode","accountCurrency"})
     @TestRails(id = "1388")
-    public void ClientStatementTC_1388(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
+    public void PTRiskControlTC_1388(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
         welcomePage.waitSpinnerDisappeared();
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);

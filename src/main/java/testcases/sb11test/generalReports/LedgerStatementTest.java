@@ -2,10 +2,12 @@ package testcases.sb11test.generalReports;
 
 import com.paltech.utils.DateUtils;
 import objects.Transaction;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.sb11.accounting.JournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
+import pages.sb11.master.AddressBookPage;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 
@@ -1079,6 +1081,59 @@ public class LedgerStatementTest extends BaseCaseAQS {
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
             throw new Error("FAILED Test!", e);
         }
+    }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2769")
+    public void Ledger_Statement_TC_001(){
+        log("@title: Validate Ledger Statement page is displayed when navigate");
+        log("@Step 1: Login with valid account");
+        log("Step 2: Click General Reports > Ledger Statement");
+        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        log("Validate Ledger Statement page is displayed with correctly title");
+        Assert.assertTrue(ledgerStatementPage.getTitlePage().contains(LEDGER_STATEMENT),"FAILED! Page Title is incorrect display");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2770")
+    public void Ledger_Statement_TC_002(){
+        String detailType = "000.000.001.000 - QA Ledger Group Income";
+        log("@title: Validate UI on Ledger Statement is correctly displayed");
+        log("@Step 1: Login with valid account");
+        log("Step 2: Click General Reports > Ledger Statement");
+        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        log("Validate UI Info display correctly");
+        log("Dropdown: Company Unit, Financial Year, Account Type, Detail Type");
+        Assert.assertEquals(ledgerStatementPage.ddCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertEquals(ledgerStatementPage.ddFinancialYear.getOptions(),FINANCIAL_YEAR_LIST,"Failed! Financial year dropdown is not displayed!");
+        Assert.assertEquals(ledgerStatementPage.ddLedgerName.getOptions(),LedgerStatement.ACCOUNT_TYPE,"Failed! Account Type dropdown is not displayed!");
+        Assert.assertTrue(ledgerStatementPage.ddLedgerGroup.getOptions().contains(detailType),"Failed! Detail Type dropdown is not displayed!");
+        log("Datetime picker: From Date, To Date");
+        Assert.assertEquals(ledgerStatementPage.lblFromDate.getText(),"From Date","Failed! From Date datetimepicker is not displayed!");
+        Assert.assertEquals(ledgerStatementPage.lblToDate.getText(),"To Date","Failed! To Date datetimepicker is not displayed!");
+        log("Button: Show, Export To Excel, Export to PDF");
+        Assert.assertEquals(ledgerStatementPage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(ledgerStatementPage.btnExportToExcel.getText(),"Export To Excel","Failed! Export To Excel button is not displayed!");
+        Assert.assertEquals(ledgerStatementPage.getBtnExportToPDF.getText(),"Export To PDF","Failed! Export To PDF button is not displayed!");
+        log("Validate Ledger Statement table is displayed with correctly header column");
+        log("Header is " + ledgerStatementPage.tbLedger.getHeaderNameOfRows());
+        Assert.assertEquals(ledgerStatementPage.tbLedger.getHeaderNameOfRows(),LedgerStatement.TABLE_HEADER,"Failed! Ledger Statement table is displayed with incorrectly header column");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression1"})
+    @TestRails(id = "2770")
+    public void Ledger_Statement_TC_003(){
+        log("@title: Validate can export Ledger Statement to Excel file successfully");
+        log("@Step 1: Login with valid account");
+        log("Step 2: Click General Reports > Ledger Statement");
+        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        log("@Step 3: Click Export To Excel");
+
+        log("Validate can export Ledger Statement to Excel file successfully");
+
+        log("INFO: Executed completely");
     }
 
 }
