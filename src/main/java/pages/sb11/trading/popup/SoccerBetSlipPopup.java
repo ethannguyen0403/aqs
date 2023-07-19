@@ -12,13 +12,13 @@ import java.util.List;
 import static common.SBPConstants.SOCCER_MARKET_TYPE_BET_LIST;
 
 public class SoccerBetSlipPopup {
-    public Label lblEventStartTime = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[1]");
-    private Label lblLeagueName = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[2]/span[1]");
-    private Label lblEventName = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[2]/span[2]");
-    public Label lblMarketType = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[2]/span[3]");
-    private Button btnClose = Button.xpath("//app-match-odd-bet-slip//div[contains(@class,'close-btn ')]");
-    private Label lblSelectionName = Label.xpath("//app-match-odd-bet-slip//div[contains(@class,'place-form ')]/label");
-    private String xPathrderRowControl = "//app-entry-bet-slip-group-fields-form//div[contains(@class,'place-form ')]//div[contains(@class,'order-row')]";
+    public Label lblEventStartTime = Label.xpath("//app-entry-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[1]");
+    private Label lblLeagueName = Label.xpath("//app-entry-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[2]/span[1]");
+    private Label lblEventName = Label.xpath("//app-entry-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[2]/span[2]");
+    public Label lblMarketType = Label.xpath("//app-entry-bet-slip//div[contains(@class,'box-dialog-header')]/div/div[2]/span[4]");
+    private Button btnClose = Button.xpath("//app-entry-bet-slip//div[contains(@class,'close-btn ')]");
+    private Label lblSelectionName = Label.xpath("//app-entry-bet-slip//div[contains(@class,'place-form ')]/label");
+    private String xPathrderRowControl = "//app-entry-bet-slip//div[contains(@class,'place-form ')]//div[contains(@class,'order-row')]";
     private CheckBox cbCopyBetToSPBPS7SameOdds = CheckBox.xpath("//input[@id='sameOdd']");
     private Label lblCopyBetToSPBPS7SameOdds = Label.xpath("//input[@for='sameOdd']");
     private CheckBox cbCopyBetToSPBPS7MinusOdds = CheckBox.xpath("//input[@id='minusOdd']");

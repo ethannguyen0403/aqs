@@ -23,9 +23,7 @@ public class Header {
         lblSpin.waitForControlInvisible();
     }
     public void waitSpinnerDisappeared() {
-        while(lblSpin.isDisplayed()) {
-            lblSpin.waitForControlInvisible();
-        }
+        lblSpin.waitForControlInvisible();
     }
     public LoginPage logout(){
         btnLogout.click();

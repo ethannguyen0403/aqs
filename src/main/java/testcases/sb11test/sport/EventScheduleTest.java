@@ -52,13 +52,13 @@ public class EventScheduleTest extends BaseCaseAQS {
         eventSchedulePage.showLeague(event.getLeagueName(),event.getEventDate());
         eventSchedulePage.addEvent(event);
 
-        log("@Step 5: In the Schedules List section, select Show league link, find and select league\" QA Soccer League\" and click the show button");
+        log("@Step 6: In the Schedules List section, select Show league link, find and select league\" QA Soccer League\" and click the show button");
         log("@Verify 1: Verify event info displayed correctly in the Schedule List");
         Assert.assertTrue(eventSchedulePage.getSuccessMessage().contains("Event schedule is created successfully"),"FAILED! Success message is incorrect displayed");
         eventSchedulePage.showScheduleList(leagueName,true,"QA Team 01",date);
         Assert.assertTrue(eventSchedulePage.verifyEventInSchedulelist(event),"Failed! Event info incorrect after created");
 
-        log("@Step 6: Navigate to Trading> Bet Entry go to Soccer page and filter the league in today");
+        log("@Step 7: Navigate to Trading> Bet Entry go to Soccer page and filter the league in today");
         BetEntryPage betEntryPage = eventSchedulePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,leagueName);
@@ -67,7 +67,7 @@ public class EventScheduleTest extends BaseCaseAQS {
         Assert.assertTrue(soccerBetEntryPage.isLeagueExist(leagueName),"FAILED! League "+ leagueName+" does not display in the list");
         Assert.assertTrue(soccerBetEntryPage.isEventExist(event), "FAILED! Event "+event.getHome() +" & "+ event.getAway()+" under league "+ leagueName+" does not display in the list");
 
-        log("@Step 5: Postcondition: Delete the event");
+        log("@Postcondition: Delete the event");
         eventSchedulePage = soccerBetEntryPage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
         eventSchedulePage.deleteEvent(event);
         log("INFO: Executed completely");
