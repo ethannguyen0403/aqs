@@ -23,7 +23,6 @@
         <parameter name="smartGroup" value="Auto QC Group"/>
         <parameter name="superCode" value="QA2112"/>
         <parameter name="agentCode" value="QASAHK00"/>
-        <parameter name="" value=""></parameter>
         <parameter name="bookieMasterCode" value="Ma-QA101-QA Test"/>
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <groups>

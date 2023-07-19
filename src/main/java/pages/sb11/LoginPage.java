@@ -19,13 +19,8 @@ public class LoginPage {
         lblClick.click();
         txtUsername.isDisplayed(1);
     }
-    private void openLoginFormOld(){
-       btnCopyRight.isDisplayed(2);
-        btnCopyRight.click();
-    }
 
     public WelcomePage login(String username, String password){
-      //openLoginFormOld();
         openLoginForm();
         txtUsername.sendKeys(username);
         txtPassword.sendKeys(password);

@@ -16,7 +16,7 @@ import pages.sb11.trading.popup.BetSlipPopup;
 import static org.apache.commons.lang3.BooleanUtils.and;
 
 public class BetEntryPage extends WelcomePage {
-    Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
+    Label lblTitle = Label.xpath("//app-bet-entry-header//div[contains(@class,'main-box-header')]/div[1]/span");
 //    public Button btnSoccer = Button.xpath("//app-bet-entry//span[contains(text(),'Soccer')]");
     public Button btnSoccer = Button.name("btnSoccer");
     public Button btnCricket = Button.name("btnCricket");
