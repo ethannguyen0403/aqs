@@ -25,6 +25,19 @@ public class HeaderMenuControl extends BaseElement {
     }
 
     private Label getSubMenuLabel(String menu, String subMenu){
+        Label lblMainMenu  = Label.xpath(String.format("%s//span[text()='%s']",_xpath, menu));
+        if(!lblMainMenu.isDisplayed()) {
+            System.out.println("DEBUG! The menu " + menu + " does not display");
+            return null;
+        }
+        lblMainMenu.click();
+        Label lblSubMenu =Label.xpath(String.format("%s//div[contains(@class,'dropdown-menu')]//span[contains(text(),'%s')]",_xpath,subMenu));
+        if(!lblSubMenu.isDisplayed()){
+            System.out.println("DEBUG! The sub menu "+subMenu+" under menu "+menu+" does not display");
+            return null;
+        }
+        return lblSubMenu;
+        /*
         int index = getMenuIndex(menu);
         Label lblMenu = Label.xpath(String.format("%s//li[%s]",_xpath,index));
         lblMenu.click();
@@ -40,7 +53,7 @@ public class HeaderMenuControl extends BaseElement {
                 return lblSubMenu;
             }
             i = i+1;
-        }
+        }*/
     }
 
 
@@ -62,6 +75,7 @@ public class HeaderMenuControl extends BaseElement {
     private int getMenuIndex(String menu) {
         int i = 1;
         Label lblMenu;
+        Label.xpath(String.format("%s//li[%s]",_xpath, i));
         while (true) {
             lblMenu = Label.xpath(String.format("%s//li[%s]",_xpath, i));
             if (!lblMenu.isDisplayed()) {
