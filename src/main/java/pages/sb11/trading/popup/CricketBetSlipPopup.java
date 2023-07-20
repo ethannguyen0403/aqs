@@ -6,21 +6,21 @@ import objects.Order;
 import static common.ESSConstants.HomePage.EN_US;
 
 public class CricketBetSlipPopup {
-    private Label lblTitle = Label.xpath("//app-cricket-bet-slip//div[contains(@class,'main-box-header')]//span[1]");
-    private Label lblEvent = Label.xpath("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[1]/label");
-    private Label lblHomeName = Label.xpath("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[1]/span[1]");
-    private Label lblAway = Label.xpath("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[1]/span[2]");
-    private Label lblBetType = Label.xpath("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[2]//label");
-    private Label lblBetTypeValue = Label.xpath("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[2]//label/following::span[1]");
-    private Label lblSelection = Label.xpath("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[3]//label");
-    private Label lblSelectionValue = Label.xpath("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[3]//label/following::span[1]");
-    private Button btnClose = Button.xpath("//app-cricket-bet-slip//div[contains(@class,'main-box-header')]//span[2]");
-    private Label lblHandicapWtks = Label.xpath("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[4]//label[1]");
-    private TextBox txtHandicapWtks = TextBox.xpath("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[4]//label[1]/following::input[1]");
-    private Label lblHandicapRuns = Label.xpath("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[4]//label[2]");
-    private TextBox txtHandicapRuns = TextBox.xpath("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[4]//label[2]/following::input[1]");
-    private Label lblRuns = Label.xpath("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[4]//label");
-    private TextBox txtRuns = TextBox.xpath("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[4]//label/following::input[1]");
+    private Label lblTitle = Label.xpath("//app-entry-bet-slip//div[contains(@class,'main-box-header')]//span[1]");
+    private Label lblEvent = Label.xpath("//app-entry-bet-slip//div[contains(@class,'form-check')]/div[1]/label");
+    private Label lblHomeName = Label.xpath("//app-entry-bet-slip//div[contains(@class,'form-check')]/div[1]/span[1]");
+    private Label lblAway = Label.xpath("//app-entry-bet-slip//div[contains(@class,'form-check')]/div[1]/span[2]");
+    private Label lblBetType = Label.xpath("//app-entry-bet-slip//div[contains(@class,'form-check')]/div[2]//label");
+    private Label lblBetTypeValue = Label.xpath("//app-entry-bet-slip//div[contains(@class,'form-check')]/div[2]//label/following::span[1]");
+    private Label lblSelection = Label.xpath("//app-entry-bet-slip//div[contains(@class,'form-check')]/div[3]//label");
+    private Label lblSelectionValue = Label.xpath("//app-entry-bet-slip//div[contains(@class,'form-check')]/div[3]//label/following::span[1]");
+    private Button btnClose = Button.xpath("//app-entry-bet-slip//div[contains(@class,'main-box-header')]//span[2]");
+    private Label lblHandicapWtks = Label.xpath("//app-handicap-wtks-runs-field//label[1]");
+    private TextBox txtHandicapWtks = TextBox.xpath("//app-handicap-wtks-runs-field//input[1]");
+    private Label lblHandicapRuns = Label.xpath("//app-handicap-wtks-runs-field//label[2]");
+    private TextBox txtHandicapRuns = TextBox.xpath("//app-handicap-wtks-runs-field//input[2]");
+    private Label lblRuns = Label.xpath("//app-handicap-normal-field//label");
+    private TextBox txtRuns = TextBox.xpath("//app-handicap-normal-field//input");
     private Label lblOdds ;
     private TextBox txtOdds ;
     private DropDownBox ddbOddType ;
@@ -41,15 +41,15 @@ public class CricketBetSlipPopup {
         int startDivIndex = 4;
         if(_marketType.equals("OU")|| _marketType.equals("MATCH-HDP"))
             startDivIndex = 5;
-        lblOdds = Label.xpath(String.format("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[%s]//label",startDivIndex));
-        txtOdds = TextBox.xpath(String.format("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[%s]//label/following::input[1]",startDivIndex));
-        ddbOddType = DropDownBox.xpath(String.format("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[%s]//label/following::select[1]",startDivIndex));
-        ddbBetType = DropDownBox.xpath(String.format("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[%s]//label/following::select[2]",startDivIndex));
-        lblIsLive = Label.xpath(String.format("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[%s]//label",startDivIndex+1));
-        cbIsLive = CheckBox.xpath(String.format("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[%s]//label/following::input[1]",startDivIndex+1));
-        lblStake = Label.xpath(String.format("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[%s]//label",startDivIndex+2));
-        txtStake = TextBox.xpath(String.format("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[%s]//label/following::input[1]",startDivIndex+2));
-        btnPlaceBet = Button.xpath(String.format("//app-cricket-bet-slip//div[contains(@class,'form-check')]/div[%s]//button",startDivIndex+3));
+        lblOdds = Label.xpath("//app-group-odds-bet-type-field//label/following::input[1]");
+        txtOdds = TextBox.xpath("//app-group-odds-bet-type-field//label/following::input[1]");
+        ddbOddType = DropDownBox.xpath("//app-group-odds-bet-type-field//label/following::select[1]");
+        ddbBetType = DropDownBox.xpath("//app-group-odds-bet-type-field//label/following::select[2]");
+        lblIsLive = Label.xpath("//app-live-checkbox-field//label");
+        cbIsLive = CheckBox.xpath("//app-live-checkbox-field//input");
+        lblStake = Label.xpath("//app-stake-field//label");
+        txtStake = TextBox.xpath("//app-stake-field//input");
+        btnPlaceBet = Button.xpath("//app-entry-bet-slip//button[contains(text(),'Place Bet')]");
     }
 
 
