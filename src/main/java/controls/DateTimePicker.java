@@ -123,6 +123,12 @@ public class DateTimePicker extends BaseElement {
             logEndAction("Error: Month or date parameter is empty");
             return ;
         }
+        Label lblDay = Label.xpath(String.format("%s//span[text()='%s' and not(contains(@class, 'is-other-month'))]",tblCalender._xpathTable,name));
+        if(!lblDay.isDisplayed()) {
+            logEndAction(String.format("Debug: There is no value '%s' you want", name));
+            return;
+        }
+        lblDay.click();
 //        String rowXpath = String.format("%s%s", tblCalender._xpathTable, "/tbody/tr[%s]");
 //        int i = 1;
 //        int rows = 6;//tblCalenderDate.getNumberOfRows(false,isMoved);
@@ -153,9 +159,8 @@ public class DateTimePicker extends BaseElement {
 //            }
 //            i += 1;
 //        }
-        //bs-days-calendar-view//table[contains(@class, 'days weeks')]/tbody//span[text()='1' and not(contains(@class, 'is-other-month'))]
-        logEndAction(String.format("Debug: There is no value '%s' you want", name));
-        return ;
+
+
     }
 
     public void selectDate(String input,String format)

@@ -39,7 +39,9 @@ public class CricketBetEntryPage extends BetEntryPage {
     private int colOEEven = 11;
     private int colDNBHome = 12;
     private int colDNBAway = 13;
-    private int colCPB = 14;
+    private int colIniningTotalRunsYes = 14;
+    private int colIniningTotalRunsNo = 15;
+    private int colCPB = 16;
 
     public Table tblEvent = Table.xpath("//app-bet-entry-table//table",totalCol);
     //app-bet-entry-soccer
@@ -59,10 +61,8 @@ public class CricketBetEntryPage extends BetEntryPage {
         ddpCompanyUnit.selectByVisibleText(companyUnit);
         String dateValue = txtDate.getAttribute("value");
         if(!date.isEmpty()){
-            if(!date.equals(dateValue)){
-                dtpDate.selectDate(date,"dd/MM/yyyy");
-            }
-
+            dtpDate.selectDate(date,"dd/MM/yyyy");
+            waitPageLoad();
         }
         ddpLeague.selectByVisibleText(league);
         btnShow.click();

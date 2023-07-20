@@ -34,10 +34,12 @@ public class BetEntryPage extends WelcomePage {
     }
     public CricketBetEntryPage goToCricket(){
         btnCricket.click();
+        waitPageLoad();
         return new CricketBetEntryPage();
     }
     public ManualBetBetEntryPage goToMixedSports(){
         btnMixedSport.click();
+        waitPageLoad();
         return new ManualBetBetEntryPage();
     }
     public <T> T goToSport(String sport,  Class<T> expectedPage) {
