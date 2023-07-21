@@ -39,6 +39,8 @@ public class GetSoccerEventUtils {
             e.printStackTrace();
         }
         if(Objects.nonNull(jsonObject)){
+            if(league.isEmpty())
+                league = jsonObject.keys().next();
             if(!jsonObject.has(league))
                 return null;
             JSONArray resultArr  = jsonObject.getJSONArray(league);

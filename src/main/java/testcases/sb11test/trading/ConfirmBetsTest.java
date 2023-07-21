@@ -74,9 +74,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, "All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, league);
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(SOCCER).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
@@ -87,6 +85,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .event(eventInfo)
                 .build();
         lstOrder.add(order);
+        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, order.getEvent().getLeagueName());
         soccerBetEntryPage.placeBet(accountCode, eventInfo.getHome(), true, "Home", lstOrder, false, false, true);
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
@@ -99,7 +98,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("@Step 4. Click on the 'Bets' link at 'SPB' column of the event at the precondition and observe");
         betEntryPage = confirmBetsPage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, league);
+        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, order.getEvent().getLeagueName());
         BetListPopup betListPopup = soccerBetEntryPage.openBetList(eventInfo.getHome());
 
         log("@Verify: Bet has been deleted does not show in Bet List - Bet Entry page");
@@ -118,10 +117,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, "All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, league);
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, league);
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
         List<Order> lstOrder = new ArrayList<>();
         // define order info
         Order order = new Order.Builder()
@@ -162,10 +158,8 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, "All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, league);
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, league);
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
+        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(SOCCER).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
@@ -215,10 +209,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, "All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, league);
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, league);
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(SOCCER).isNegativeHdp(false).hdpPoint(0.25).price(2.05).requireStake(9.00)
@@ -229,6 +220,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .event(eventInfo)
                 .build();
         lstOrder.add(order);
+        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
         soccerBetEntryPage.placeBet(accountCode, eventInfo.getHome(), true, "Home", lstOrder, false, false, true);
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
@@ -258,10 +250,9 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, "All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, league);
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, "", league);
+
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
+        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(SOCCER).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
@@ -341,7 +332,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         lstOrder.add(order);
         eventInfo = welcomePage.createEvent(eventInfo);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-        cricketBetEntryPage.showLeague(COMPANY_UNIT, "", eventInfo.getLeagueName());
+        cricketBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
         cricketBetEntryPage.placeBet(order, true);
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
 
@@ -405,7 +396,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         lstOrder.add(order);
         eventInfo = welcomePage.createEvent(eventInfo);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-        cricketBetEntryPage.showLeague(COMPANY_UNIT, "", eventInfo.getLeagueName());
+        cricketBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
         cricketBetEntryPage.placeBet(order, true);
         order = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder).get(0);
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
@@ -446,9 +437,8 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, "All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, league);
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
+        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(SOCCER).isNegativeHdp(false).hdpPoint(0.25).price(2.05).requireStake(9.00)
@@ -489,9 +479,8 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, "All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, league);
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
+        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(SOCCER).isNegativeHdp(false).hdpPoint(1.75).price(2.05).requireStake(9.50)
@@ -534,11 +523,10 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("Note: Tobe able settled order after place bet > commfirmed and settled => we should place in the event in the past");
         String dateAPI = String.format(DateUtils.getDate(-2, "yyyy-MM-dd", "GMT +7"));
         String date = String.format(DateUtils.getDate(-2, "dd/MM/yyyy", "GMT +7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, "All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, league);
+        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         // define order info
         Order order = new Order.Builder()
@@ -581,11 +569,10 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 "Having at least an account that is having bet which is not confirmed yet\n");
         String date = String.format(DateUtils.getDate(-1, "d/MM/yyyy", "GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, "All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, league);
+        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(SOCCER).isNegativeHdp(false).hdpPoint(0.25).price(2.05).requireStake(9.00)
@@ -639,11 +626,12 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("Precondition:Having a valid account that can place bets (e.g. " + accountCode);
         String date = String.format(DateUtils.getDate(-1, "d/MM/yyyy", "GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, "All");
+        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
         String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, league);
+
         List<Order> lstOrder = new ArrayList<>();
         // define order info
         Order order = new Order.Builder()
@@ -702,11 +690,10 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("Having at least an account that is having bet which is already confirmed\n");
         String date = String.format(DateUtils.getDate(-1, "d/MM/yyyy", "GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, "All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, league);
+        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         // define order info
         Order order = new Order.Builder()
@@ -754,11 +741,10 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("Having at least an account that is having bet which is not confirmed yet\n");
         String date = String.format(DateUtils.getDate(-1, "d/MM/yyyy", "GMT+7"));
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT+7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, "All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, league);
+        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         // define order info
         Order order = new Order.Builder()
