@@ -83,14 +83,10 @@ public class ConfirmBetsPage extends WelcomePage {
         ddbSport.selectByVisibleText(sport);
         ddbBetType.selectByVisibleText(betType);
         ddbDateType.selectByVisibleText(dateType);
-        String uiDate = txtFromDate.getAttribute("value");
         if(!fromDate.isEmpty())
-            if(!fromDate.equals(uiDate))
-                dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-        uiDate = txtToDate.getAttribute("value");
+            dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
         if(!toDate.isEmpty())
-            if(!toDate.equals(uiDate))
-                dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+            dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         txtAccountCode.sendKeys(accountCode);
         btnShow.click();
         waitPageLoad();

@@ -38,11 +38,10 @@ public class BetSettlementTest extends BaseCaseAQS {
 
         String date = String.format(DateUtils.getDate(1,"d/MM/yyyy","UTC+7:00"));
         String dateAPI = String.format(DateUtils.getDate(1,"yyyy-MM-dd","UTC+7:00"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
@@ -88,11 +87,10 @@ public class BetSettlementTest extends BaseCaseAQS {
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(sport).isNegativeHdp(true).hdpPoint(0.25).price(1.050).requireStake(12)
@@ -143,11 +141,10 @@ public class BetSettlementTest extends BaseCaseAQS {
 
         String date = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
@@ -197,12 +194,10 @@ public class BetSettlementTest extends BaseCaseAQS {
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        soccerBetEntryPage.showLeague(companyUnit,"",league);
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
@@ -246,12 +241,10 @@ public class BetSettlementTest extends BaseCaseAQS {
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
-
+        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
@@ -299,11 +292,10 @@ public class BetSettlementTest extends BaseCaseAQS {
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
