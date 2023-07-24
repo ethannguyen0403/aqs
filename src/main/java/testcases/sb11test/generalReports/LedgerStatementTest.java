@@ -1,6 +1,8 @@
 package testcases.sb11test.generalReports;
 
+import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
+import com.paltech.utils.FileUtils;
 import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -10,6 +12,8 @@ import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import pages.sb11.master.AddressBookPage;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
+
+import java.io.IOException;
 
 import static common.SBPConstants.*;
 
@@ -1115,24 +1119,54 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("Button: Show, Export To Excel, Export to PDF");
         Assert.assertEquals(ledgerStatementPage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
         Assert.assertEquals(ledgerStatementPage.btnExportToExcel.getText(),"Export To Excel","Failed! Export To Excel button is not displayed!");
-        Assert.assertEquals(ledgerStatementPage.getBtnExportToPDF.getText(),"Export To PDF","Failed! Export To PDF button is not displayed!");
+        Assert.assertEquals(ledgerStatementPage.btnExportToPDF.getText(),"Export To PDF","Failed! Export To PDF button is not displayed!");
         log("Validate Ledger Statement table is displayed with correctly header column");
         log("Header is " + ledgerStatementPage.tbLedger.getHeaderNameOfRows());
         Assert.assertEquals(ledgerStatementPage.tbLedger.getHeaderNameOfRows(),LedgerStatement.TABLE_HEADER,"Failed! Ledger Statement table is displayed with incorrectly header column");
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2770")
     public void Ledger_Statement_TC_003(){
+        String dowloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "ledger-statement.xlsx";
         log("@title: Validate can export Ledger Statement to Excel file successfully");
         log("@Step 1: Login with valid account");
         log("Step 2: Click General Reports > Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         log("@Step 3: Click Export To Excel");
-
+        ledgerStatementPage.showLedger(companyUnit,financialYear,"Income",lgIncomeGroup,"","");
+        ledgerStatementPage.exportExcel();
         log("Validate can export Ledger Statement to Excel file successfully");
+        Assert.assertTrue(FileUtils.doesFileNameExist(dowloadPath), "Failed to download Expected document");
+        log("@Post-condition: delete download file");
+        try {
+            FileUtils.removeFile(dowloadPath);
+        } catch (IOException e) {
+            log(e.getMessage());
+        }
+        log("INFO: Executed completely");
+    }
 
+    @Test(groups = {"regression1"})
+    @TestRails(id = "2768")
+    public void Ledger_Statement_TC_004(){
+        String dowloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "download.pdf";
+        log("@title: Validate can export Ledger Statement to PDF file successfully");
+        log("@Step 1: Login with valid account");
+        log("Step 2: Click General Reports > Ledger Statement");
+        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        log("@Step 3: Click Export To PDF");
+        ledgerStatementPage.showLedger(companyUnit,financialYear,"Income",lgIncomeGroup,"","");
+        ledgerStatementPage.exportPDF();
+        log("Validate can export Ledger Statement to Excel file successfully");
+        Assert.assertTrue(FileUtils.doesFileNameExist(dowloadPath), "Failed to download Expected document");
+        log("@Post-condition: delete download file");
+        try {
+            FileUtils.removeFile(dowloadPath);
+        } catch (IOException e) {
+            log(e.getMessage());
+        }
         log("INFO: Executed completely");
     }
 
