@@ -5,6 +5,8 @@ import common.SBPConstants;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.sb11.soccer.BBGPage;
+import pages.sb11.soccer.popup.bbg.BBGLastDaysPerformacesPopup;
+import pages.sb11.soccer.popup.bbg.BetByTeamPricePopup;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 
@@ -53,4 +55,57 @@ public class BBGTest extends BaseCaseAQS {
         Assert.assertEquals(bbgPage.btnShow.getText(),"Show","Failed! Show button is not displayed");
         log("INFO: Executed completely");
     }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2149")
+    public void BBG_TC_2149(){
+        log("@title: Validate League Performance page is displayed successfully when clicking on Price");
+        String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
+        String todate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
+        log("@Step 1: Access Soccer > BBG");
+        BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+
+        log("@Step 3: Filter with valid data");
+        bbgPage.filter("Soccer",COMPANY_UNIT,"Group", "Pending Bets",fromdate,todate,"All","All");
+
+        log("@Step 3:Click on any Price");
+        String smartGroup = bbgPage.getFristSmartGroupName();
+        BetByTeamPricePopup bbtPopup = bbgPage.clickFirstPriceCell();
+
+        log("Verify 1 Validate League Performance is displayed correctly title");
+        Assert.assertEquals(bbtPopup.getTitlePage(),"Bets By Team  League Performance","Failed! Popup title is incorrect");
+
+        log("Verify 2  Validate 2 tables should display with format: [smart group name] - League Performance for Last 1 Month");
+        Assert.assertEquals(bbtPopup.lblLast1Month.getText(),String.format("%s - League Performance for Last 1 Month",smartGroup),"Failed! League Performance for Last 1 Month title is incorrect");
+
+        log("Verify 3  Validate 2 tables should display with format: [smart group name] - League Performance for Last 3 Month");
+        Assert.assertEquals(bbtPopup.lblLast3Month.getText(),String.format("%s - League Performance for Last 3 Month",smartGroup),"Failed! League Performance for Last 3 Month title is incorrect");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2150")
+    public void BBG_TC_2150(){
+        log("@title:Validate Last 12 Days Performance page is displayed successfully when clicking on Trader");
+        String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
+        String todate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
+        log("@Step 1: Access Soccer > BBG");
+        BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+
+        log("@Step 3: Filter with valid data");
+        bbgPage.filter("Soccer",COMPANY_UNIT,"Group", "Pending Bets",fromdate,todate,"All","All");
+
+        log("@Step 3:Click on any Trader");
+        String smartGroupCurrency = bbgPage.getFristSmartGroupCurrency();
+        String smartGroup = bbgPage.getFristSmartGroupName();
+        BBGLastDaysPerformacesPopup bbtPopup = bbgPage.clickFirstTraderCell();
+
+        log("Verify 1 Validate League Performance is displayed correctly title");
+        Assert.assertEquals(bbtPopup.getTitlePage(),"BBG  Last 12 Days Performance","Failed! Popup title is incorrect");
+
+        log("Verify 2  Validate 2 tables should display with format: [smart group name] - League Performance for Last 1 Month");
+        Assert.assertEquals(bbtPopup.lblLast1Month.getText(),String.format("%s -%s",smartGroupCurrency,smartGroup),"Failed! League Performance for Last 1 Month title is incorrect");
+        log("INFO: Executed completely");
+    }
+
 }
