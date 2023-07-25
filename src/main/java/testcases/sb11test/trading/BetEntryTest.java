@@ -393,15 +393,13 @@ public class BetEntryTest extends BaseCaseAQS {
         log("@Step 2: Navigate to Trading > Bet Entry");
         String date = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+
+        log("@Step Precondition: Get the first Event of First League of Today Soccer");
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
 
         log("@Step 3: Click on 'Soccer' > select any League > click Show");
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-
-        log("@Step Precondition: Get the first Event of First League of Today Soccer");
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
 
         log("@Step Precondition: Define order to place bet");
         Order order = new Order.Builder()
