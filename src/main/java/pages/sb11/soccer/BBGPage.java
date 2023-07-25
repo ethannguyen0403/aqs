@@ -7,6 +7,9 @@ import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
 import pages.sb11.WelcomePage;
+import pages.sb11.soccer.controls.BetByGroupTableControl;
+import pages.sb11.soccer.popup.bbg.BBGLastDaysPerformacesPopup;
+import pages.sb11.soccer.popup.bbg.BetByTeamPricePopup;
 
 public class BBGPage extends WelcomePage {
     public Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
@@ -14,7 +17,7 @@ public class BBGPage extends WelcomePage {
     {
         return this.lblTitle.getText().trim();
     }
-
+    private String xPathBetByGroupTableControl = "//app-bets-by-group-table//div[contains(@class,'table-contain')]";
     public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
     public DropDownBox ddpReportType = DropDownBox.xpath("//div[contains(text(),'Report Type')]//following::select[1]");
     public DropDownBox ddpSmartType = DropDownBox.xpath("//div[contains(text(),'Smart Type')]//following::select[1]");
@@ -35,6 +38,7 @@ public class BBGPage extends WelcomePage {
     public Button btnShowEvent = Button.xpath("//div[contains(text(),'Show Events')]");
     public Button btnResetAllFilter = Button.xpath("//span[contains(text(),'Reset All Filters')]");
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    BetByGroupTableControl  firstBetByGroupTableControl = BetByGroupTableControl.xpath(String.format("%s[%d]", xPathBetByGroupTableControl, 1));
 
     int totalColumnNumber = 13;
     public Table tblBBG = Table.xpath("//app-bbg//table",totalColumnNumber);
@@ -62,5 +66,38 @@ public class BBGPage extends WelcomePage {
             ddpCurrency.selectByVisibleText(currency);
         btnShow.click();
         waitSpinnerDisappeared();
+    }
+
+    public BetByTeamPricePopup clickPrice(String account){
+        BetByGroupTableControl bbgTable = findAccount(account);
+        bbgTable.clickPriceColumn(account);
+        return new BetByTeamPricePopup();
+    }
+    public String getFristSmartGroupName() {
+       return firstBetByGroupTableControl.getSmartGroupName();
+    }
+    public String  getFristSmartGroupCurrency() {
+        return firstBetByGroupTableControl.getSmartGroupCurr();
+    }
+
+    public BetByTeamPricePopup clickFirstPriceCell(){
+       firstBetByGroupTableControl.clickPriceColumn("");
+       return new BetByTeamPricePopup();
+    }
+    public BBGLastDaysPerformacesPopup clickFirstTraderCell(){
+        firstBetByGroupTableControl.clickTraderColumn("");
+        return new BBGLastDaysPerformacesPopup();
+    }
+    private BetByGroupTableControl findAccount(String account){
+        int i = 1;
+        BetByGroupTableControl betByGroupTableControl;
+        while (true){
+            betByGroupTableControl = BetByGroupTableControl.xpath(String.format("%s[%d]", xPathBetByGroupTableControl, i));
+            if(!betByGroupTableControl.isDisplayed())
+                return null;
+            if(betByGroupTableControl.getRowIndexContainAccount(account)!= 0)
+                return betByGroupTableControl;
+            i = i+1;
+        }
     }
 }

@@ -3,6 +3,8 @@ package testcases.sb11test.sport;
 import com.paltech.element.common.Label;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.sb11.soccer.BBTPage;
+import pages.sb11.sport.BLSettingPage;
 import pages.sb11.sport.EventMappingPage;
 import pages.sb11.sport.OpenPricePage;
 import testcases.BaseCaseAQS;
@@ -79,7 +81,7 @@ public class OpenPriceTest extends BaseCaseAQS {
 
     @Test(groups = {"regression1"})
     @TestRails(id = "2096")
-    public void OpenPriceTC_005(){
+    public void OpenPriceTC_2096(){
         log("@title: Validate updated Open Price is displayed correctly on BBT page");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Open Price");
@@ -89,8 +91,11 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("@Step 4: Select a league and click Show");
         openPricePage.filterResult("",league,true);
         log("@Step 5: Fill result on any event and click Submit");
+
         log("@Step 6: Navigate to Soccer > BBT");
+        BBTPage bbtPage = openPricePage.navigatePage(SOCCER,BBT, BBTPage.class);
         log("@Step 7: Filter with event at step 4");
+
         log("Validate League list is displayed correctly");
         log("INFO: Executed completely");
     }
