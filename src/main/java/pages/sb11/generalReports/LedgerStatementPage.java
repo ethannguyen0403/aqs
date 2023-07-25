@@ -6,6 +6,7 @@ import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
+import objects.Order;
 import objects.Transaction;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
@@ -27,7 +28,7 @@ public class LedgerStatementPage extends WelcomePage {
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
     public Button btnShow = Button.xpath("//app-ledger-statement//button[contains(text(),'Show')]");
     public Button btnExportToExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
-    public Button getBtnExportToPDF = Button.xpath("//button[contains(text(),'Export To PDF')]");
+    public Button btnExportToPDF = Button.xpath("//button[contains(text(),'Export To PDF')]");
 
     int totalCol = 12;
     int colLedger = 2;
@@ -75,6 +76,16 @@ public class LedgerStatementPage extends WelcomePage {
             }
             i = i +1;
         }
+    }
+
+    public void exportExcel(){
+        btnExportToExcel.scrollToTop();
+        btnExportToExcel.click();
+    }
+
+    public void exportPDF(){
+        btnExportToPDF.scrollToTop();
+        btnExportToPDF.click();
     }
 
     private Transaction verifyTransactionDisplayCorrectInRow(Transaction transaction, boolean isDebit, int rowIndex){
