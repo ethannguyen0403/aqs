@@ -8,7 +8,9 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.soccer.MatchOddsLiabilityPage;
 import pages.sb11.trading.BetEntryPage;
+import pages.sb11.trading.ConfirmBetsPage;
 import pages.sb11.trading.SoccerBetEntryPage;
+import pages.sb11.trading.popup.BetListPopup;
 import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.BetEntrytUtils;
@@ -62,8 +64,8 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression1"})
-    @Parameters({"accountCode","accountCurrency"})
-    public void MatchOddsLiabilityTC_003(String accountCode, String accountCurrency){
+    @Parameters({"accountCode","accountCurrency","smartGroup"})
+    public void MatchOddsLiabilityTC_003(String accountCode, String accountCurrency, String smartGroup){
         log("@title: Validate 1x2 Liability page is displayed when navigate");
         log("Precondition: User has permission to access Bet Settlement page\n" +
                 "Having an account with Confirmed bet settle Win/Lose and configuring Account Percentage");
@@ -72,13 +74,12 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
         String marketType = "1x2";
         String smartType = "Group";
 
-        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","UTC+7:00"));
-        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","UTC+7:00"));
+        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         Order order = new Order.Builder()
                 .sport(sport)
                 .hdpPoint(0.00)
@@ -97,8 +98,14 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
                 .away((eventInfo.getAway()))
                 .event(eventInfo)
                 .build();
-//        SoccerSPBBetSlipPopup soccerSPBBetSlipPopup = soccerBetEntryPage.openSPBBetSlip(accountCode,eventInfo.getHome());
-//        soccerSPBBetSlipPopup.placeMoreBet(order,false,false,false);
+        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
+        SoccerSPBBetSlipPopup soccerSPBBetSlipPopup = soccerBetEntryPage.openSPBBetSlip(accountCode,eventInfo.getHome());
+        soccerSPBBetSlipPopup.placeMoreBet(order,false,false,true);
+
+        log("Get Bet ID of placed bet");
+        BetListPopup betListPopup = soccerBetEntryPage.openBetList(eventInfo.getHome());
+        order.setBetId(betListPopup.getBetID(order,marketType));
+        betListPopup.close();
 
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > 1x2 Liability");
@@ -106,8 +113,14 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
         log("@Step 3: Filter with event that having bet at Pre-condition ");
         log("@Step 4: Click Show");
         matchOddsLiabilityPage.filterResult(companyUnit, sport, smartType,false,"All",date,date,"All",true);
+        matchOddsLiabilityPage.filterGroups(smartGroup);
         log("Validate 1x2 bet from Bet Entry is displayed correctly on 1x2 Liability report");
+        matchOddsLiabilityPage.isOrderExist(order,smartGroup);
 
+        log("@Post-Condition: Cancel Pending bet "+ order.getBetId() +" in Confirm Bet page");
+        ConfirmBetsPage confirmBetsPage = matchOddsLiabilityPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.deleteOrder(order,true);
         log("INFO: Executed completely");
     }
 }
