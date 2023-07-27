@@ -1,5 +1,6 @@
 package testcases.sb11test.soccer;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.paltech.utils.DateUtils;
 import objects.Event;
 import objects.Order;
@@ -10,6 +11,7 @@ import pages.sb11.soccer.MatchOddsLiabilityPage;
 import pages.sb11.soccer.PTRiskPage;
 import pages.sb11.soccer.popup.PTRiskBetListPopup;
 import pages.sb11.trading.BetEntryPage;
+import pages.sb11.trading.ConfirmBetsPage;
 import pages.sb11.trading.SoccerBetEntryPage;
 import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 import testcases.BaseCaseAQS;
@@ -325,6 +327,82 @@ public class PTRiskControlTest extends BaseCaseAQS {
         ptRiskPage.btnCopy.click();
         log("Message success should display correctly as \"Copied!\"");
         Assert.assertEquals(ptRiskPage.messageSuccess.getText(),"Copied","Failed! Copy button is not worked");
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id = "2126")
+    @Test(groups = {"regression1"})
+    @Parameters({"accountCode","accountCurrency"})
+    public void PTRiskControlTC_2126(String accountCode,String accountCurrency){
+        log("@title: Validate Full Time Over Under bet is displayed correctly on PT Risk Control > Over Under tab");
+        log("@Precondition Step:  Having an Full Time Over Under bet which have been placed on Bet Entry");
+        int dateNo = -1;
+        String companyUnit = "Kastraki Limited";
+        String date = String.format(DateUtils.getDate(dateNo,"d/MM/yyyy","GMT +7"));
+
+        log("@Precondition Step:  Having Half time Handicap bet which have been placed on Bet Entry");
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        List<Order> lstOrder = betEntryPage.placeSoccerBet(companyUnit,"Soccer","",dateNo,"Over",true,false,
+                1,2.12,"HK","Back",0,0,5.5,accountCode,accountCurrency,"GOAL",false,false );
+        log("@Step 1: Access Soccer > PT Risk Control");
+        PTRiskPage ptRiskPage = welcomePage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
+        log("@Step 2: Filter with event that having bet at Pre-condition");
+        ptRiskPage.filter("",COMPANY_UNIT,"Normal","All",date,date, lstOrder.get(0).getEvent().getLeagueName());
+
+        log("@Step 3: Click on event name");
+        PTRiskBetListPopup ptRiskBetListPopup = ptRiskPage.openBetList(lstOrder.get(0).getEvent().getHome());
+
+        log("@Step 4: Click Over Under tab");
+        ptRiskBetListPopup.activeTab("Over Under");
+
+        log("@Verify 1: Validate Full Time Over Under bet is displayed correctly on PT Risk Control > Over Under tab");
+        Assert.assertTrue(ptRiskBetListPopup.verifyOrder(lstOrder.get(0)),"Failed Order info is incorrect");
+
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id = "2127")
+    @Test(groups = {"regression1"})
+    @Parameters({"accountCode","accountCurrency"})
+    public void PTRiskControlTC_2127(String accountCode,String accountCurrency){
+        log("@title: Validate Half time Handicap bet is displayed and disappear when place bet in Bet Entry then removed" );
+        int dateNo = -1;
+        String companyUnit = "Kastraki Limited";
+        String date = String.format(DateUtils.getDate(dateNo,"d/MM/yyyy","GMT +7"));
+
+        log("@Precondition Step:  Having Half time Handicap bet which have been placed on Bet Entry");
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        List<Order> lstOrder = betEntryPage.placeSoccerBet(companyUnit,"Soccer","",dateNo,"Home",false,true,
+                0.5,2.12,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
+
+        log("@Step 1: Access Soccer > PT Risk Control");
+        PTRiskPage ptRiskPage = betEntryPage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
+
+        log("@Step 2: Filter with the event that has bet at Pre-condition");
+        ptRiskPage.filter("",COMPANY_UNIT,"Normal","All",date,date, lstOrder.get(0).getEvent().getLeagueName());
+
+        log("@Step 3: Click on the event name");
+        PTRiskBetListPopup ptRiskBetListPopup = ptRiskPage.openBetList(lstOrder.get(0).getEvent().getHome());
+
+        log("@Step 4: Click the Half-time tab and verify bet info is correctly");
+        ptRiskBetListPopup.activeTab("Half-time");
+
+        log("Verify 1: Verify Half time Handicap bet info is correct when the bet is placed from Bet Entry");
+        Assert.assertTrue(ptRiskBetListPopup.verifyOrder(lstOrder.get(0)),"Failed Order info is incorrect");
+        ptRiskBetListPopup.closeBetListPopup();
+
+        log("@Step 5: Access Trading > Confirm Bet");
+        ConfirmBetsPage confirmBetsPage = ptRiskPage.navigatePage(TRADING,CONFIRM_BETS,ConfirmBetsPage.class);
+        confirmBetsPage.filter(companyUnit,"","Pending","Soccer","","",date,date,accountCode);
+        log("@Step 6: Filter the account place bet and remove this bet");
+        confirmBetsPage.deleteOrder(lstOrder.get(0),true);
+
+        log("@Step 7: Access Soccer > PT Risk Control and filter the event and click on the event then check on Haft-Time info");
+        ptRiskPage = confirmBetsPage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
+
+        log("Verify 1: verify Bet is removed when bet is removed in Confirm bet");
+        ptRiskBetListPopup = ptRiskPage.openBetList(lstOrder.get(0).getEvent().getHome());
+        Assert.assertTrue(ptRiskBetListPopup.verifyOrder(lstOrder.get(0)),"Failed! The order info is still display");
         log("INFO: Executed completely");
     }
 }

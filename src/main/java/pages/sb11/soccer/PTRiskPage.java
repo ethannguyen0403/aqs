@@ -5,6 +5,7 @@ import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
+import objects.Order;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.soccer.popup.PTRiskBetListPopup;
@@ -38,7 +39,7 @@ public class PTRiskPage extends WelcomePage {
         return this.lblTitle.getText().trim();
     }
 
-    public void filter(String clientCode, String companyUnit, String reportType, String liveNonlive, String fromDate, String toDate, String leagueName) throws InterruptedException {
+    public void filter(String clientCode, String companyUnit, String reportType, String liveNonlive, String fromDate, String toDate, String leagueName)  {
         ddpCompanyUnit.selectByVisibleText(companyUnit);
         ddpReportType.selectByVisibleText(reportType);
         waitSpinnerDisappeared();
@@ -58,6 +59,8 @@ public class PTRiskPage extends WelcomePage {
     }
 
     private void filterClient(String clientCode) {
+        if (!clientCode.isEmpty())
+            return;
         int i = 1;
         String out[] = clientCode.split("-");
         clientCode = out[1].replace(" ","");
@@ -93,12 +96,13 @@ public class PTRiskPage extends WelcomePage {
         }
     }
 
-    public PTRiskBetListPopup openBetList(String homeName) throws InterruptedException {
+    public PTRiskBetListPopup openBetList(String homeName) {
         Label homeNameXpath = Label.xpath(String.format("//app-pt-risk-control//th[@id='team-infor']//div[text()=\"%s\"]",homeName));
         homeNameXpath.click();
         waitSpinnerDisappeared();
         return new PTRiskBetListPopup();
     }
+
 
     public boolean isForecastCorrect(String fullWinVal, String haflWinVal, String fullLoseVal, boolean isHDP) {
         boolean forecastCorrect = false;
@@ -130,4 +134,5 @@ public class PTRiskPage extends WelcomePage {
         }
         return forecastCorrect;
     }
+
 }
