@@ -63,12 +63,11 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @Parameters({"accountCode","accountCurrency","smartGroup"})
     public void MatchOddsLiabilityTC_003(String accountCode, String accountCurrency, String smartGroup){
-        log("@title: Validate 1x2 Liability page is displayed when navigate");
-        log("Precondition: User has permission to access Bet Settlement page\n" +
-                "Having an account with Confirmed bet settle Win/Lose and configuring Account Percentage");
+        log("@title: Validate 1x2 bet from Bet Entry is displayed correctly on 1x2 Liability report");
+        log("Precondition: Having an 1x2 bet which have been placed on Bet Entry");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String marketType = "1x2";
