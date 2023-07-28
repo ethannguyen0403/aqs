@@ -3,6 +3,7 @@ package pages.sb11.soccer;
 import com.paltech.element.common.*;
 import controls.DateTimePicker;
 import controls.Table;
+import objects.Order;
 import pages.sb11.WelcomePage;
 
 import javax.swing.*;
@@ -31,12 +32,17 @@ public class MatchOddsLiabilityPage extends WelcomePage {
     public Label lblShowBetType = Label.xpath("//div[contains(text(),'Show Bet Types')]");
     public Label lblShowLeagues = Label.xpath("//div[contains(text(),'Show Leagues')]");
     public Label lblShowGroups = Label.xpath("//div[contains(text(),'Show Groups')]");
+    public Button btnShowGroups = Button.xpath("//div[contains(text(),'Show Groups')]");
     public Label lblShowEvents = Label.xpath("//div[contains(text(),'Show Events')]");
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
-    public Table tblOrder = Table.xpath("//app-match-odds-liability//table",6);
+    public Button btnSetSelection = Button.xpath("//button[contains(text(),'Set Selection')]");
+    public Table tblOrder = Table.xpath("//table",6);
+    public Table tbOrderByGroup;
+    int colEvent = 2;
 
     public void filterResult(String companyUnit, String sport, String smartType, boolean isPTBets, String liveNonLive, String fromDate, String toDate, String stake, boolean isShow){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
+        ddpSport.selectByVisibleText(sport);
         ddpSmartType.selectByVisibleText(smartType);
         if (isPTBets){
             cbPTBets.click();
@@ -50,14 +56,51 @@ public class MatchOddsLiabilityPage extends WelcomePage {
         if (isShow){
             btnShow.click();
         }
-    }
-    public void showEvents (String eventName){
-        lblShowEvents.click();
-        DropDownBox ddpEvents = DropDownBox.xpath("//div[contains(@class,'card-columns')]");
-
-
+        waitSpinnerDisappeared();
     }
 
+    public void filterGroups(String groupCode){
+        CheckBox cbGroup = CheckBox.xpath("//div[contains(@class,'card-columns')]//span[text()='"+groupCode+"']//preceding::input[1]");
+        btnShowGroups.click();
+        waitSpinnerDisappeared();
+        cbGroup.click();
+        btnSetSelection.click();
+        btnShow.click();
+    }
+
+    public boolean isOrderExist (Order order,String groupCode){
+        int rowIndex = getRowWithEventName(groupCode,order.getHome(),order.getAway());
+        while(true){
+            if(!tblOrder.getControlOfCell(1,colEvent,rowIndex,null).isDisplayed()) {
+                System.out.println("Not found order in the table");
+                return false;
+            }
+            String eventName = tblOrder.getControlOfCell(1,colEvent,rowIndex,null).getText();
+            if(eventName.contains(order.getHome()) && (eventName.contains(order.getAway())))
+                return true;
+            rowIndex = rowIndex + 1;
+        }
+    }
+
+    public void defineTableBasedOnGroups (String groupCode){
+        tbOrderByGroup = Table.xpath("//span[contains(text(),'" + groupCode + "')]//following::table[1]",6);
+    }
+
+    public int getRowWithEventName(String groupCode, String homeTeam, String awayTeam){
+        int i = 1;
+        Label lblEventName;
+        defineTableBasedOnGroups(groupCode);
+        while (true){
+            lblEventName = Label.xpath(tbOrderByGroup.getxPathOfCell(1,colEvent,i,null));
+            if(!lblEventName.isDisplayed()){
+                System.out.println("Event "+ homeTeam + " vs " + awayTeam + " does not display in the list");
+                return 0;
+            }
+            if(lblEventName.getText().contains(homeTeam) && (lblEventName.getText().contains(awayTeam)))
+                return i;
+            i = i +1;
+        }
+    }
 
 
 }
