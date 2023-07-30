@@ -95,11 +95,12 @@ public class SBPConstants {
     public final static List<String> TYPE_LIST = Arrays.asList("Normal","Account");
     public final static List<String> ORDER_BY_LIST = Arrays.asList("KOT","League");
     public final static List<String> STATUS_LIST = Arrays.asList("All","Pending","Settled","Void All","Void FT Only");
-    public final static List<String> SPORT_LIST = Arrays.asList("Soccer","Cricket","Basketball","Tennis");
+    public final static List<String> SPORT_LIST = Arrays.asList("Soccer","Cricket","Basketball","Tennis","American Football","Ice Hockey");
     public final static List<String> PROVIDER_LIST = Arrays.asList("Pinnacle","Bet ISN","PS7","Fair999");
     public final static List<String> LIVE_NONLIVE_LIST = Arrays.asList("ALL","Live","Non-Live");
     public final static List<String> CURRENCY_LIST = Arrays.asList("ALL","AUD","CAD","CNY","AED","EUR","HKD","INR","IDR","JPY","MYR","KPW","PKR","PHP","SGD","ZAR","KRW","LKR","GBP","TWD","THB","USD","VND");
     public final static List<String> STAKE_LIST = Arrays.asList("ALL","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
+    public final static String GMT_7 = "GMT +7";
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
         {
