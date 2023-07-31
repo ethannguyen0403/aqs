@@ -21,11 +21,9 @@ public class BookieStatementTest extends BaseCaseAQS {
 
     @Test(groups = {"smoke"})
     @TestRails(id = "183")
-    public void BookieStatementTC_183() {
-        String bookieName = "QA Bookie";
+    public void BookieStatementTC_183() throws InterruptedException {
         String bookieCode = "QA01";
         String superMasterCode = "SM-QA1-QA Test";
-//        bookieCode = bookieCode + " - " + bookieName;
         String superGrandTotalHKDVal;
         String superMasterTotalHKDVal;
         String openBalanceVal;
@@ -39,7 +37,7 @@ public class BookieStatementTest extends BaseCaseAQS {
         log("@Step 1: Login with valid account");
         log("@Step 2: Click General Reports > Bookie Statement");
         BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
-
+        Thread.sleep(20000);
         log("@Step 3: Filter with Bookie has made transaction");
         bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Super Master",DateUtils.getDateBeforeCurrentDate(1,"dd/MM/yyyy"),
                 "",bookieCode,"");
@@ -64,49 +62,41 @@ public class BookieStatementTest extends BaseCaseAQS {
 
     @Test(groups = {"smoke1"})
     @TestRails(id = "1639")
-    public void BookieStatementTC_1639() {
+    public void BookieStatementTC_1639() throws InterruptedException {
         String bookieName = "QA Bookie";
         String masterCode = "Ma-QA101-QA Test";
         String agentCode = "A-QA10101-QA Test";
-        String totalVal;
-        String winLoseTotalVal;
-        String opWinLoseTotalVal;
-        String rpcrbaTotalVal;
-        String openRPCRBATotalVal;
-        String openBalanceTotalVal;
-        String totalMemberGrandVal;
-        Double expectedVal;
-        String memberTotal;
 
         log("@title: Validate total WL and detailed value are matched each other");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click General Reports > Bookie Statement");
         BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
         bookieStatementPage.waitSpinnerDisappeared();
+        Thread.sleep(20000);
         log("@Step 3: Filter with Bookie has made transaction amd open MS link");
         bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Agent",DateUtils.getDateBeforeCurrentDate(1,"dd/MM/yyyy"),
                 "",bookieName,"");
         BookieMemberSummaryPopup bookieMemberPopup = bookieStatementPage.openBookieMemberSummaryDetailPopup(masterCode,agentCode);
 
-        totalVal = bookieMemberPopup.getTotalCellValue(bookieMemberPopup.colTotal,true).replace(",","");
-        winLoseTotalVal = bookieMemberPopup.getTotalCellValue(bookieMemberPopup.colTotalWinLose,true).replace(",","");
-        opWinLoseTotalVal = bookieMemberPopup.getTotalCellValue(bookieMemberPopup.colTotalOpenWinLose,true).replace(",","");
-        rpcrbaTotalVal = bookieMemberPopup.getTotalCellValue(bookieMemberPopup.colTotalRPCRBA,true).replace(",","");
-        openRPCRBATotalVal = bookieMemberPopup.getTotalCellValue(bookieMemberPopup.colTotalOpenRPCRBA,true).replace(",","");
-        openBalanceTotalVal = bookieMemberPopup.getTotalCellValue(bookieMemberPopup.colTotalOpenBalance,true).replace(",","");
-        totalMemberGrandVal = bookieMemberPopup.getMemberTotalCellValue(bookieMemberPopup.colTotal,true).replace(",","");
+        String totalVal = bookieMemberPopup.getTotalCellValue(bookieMemberPopup.colTotal,true).replace(",","");
+        String winLoseTotalVal = bookieMemberPopup.getTotalCellValue(bookieMemberPopup.colTotalWinLose,true).replace(",","");
+        String opWinLoseTotalVal = bookieMemberPopup.getTotalCellValue(bookieMemberPopup.colTotalOpenWinLose,true).replace(",","");
+        String rpcrbaTotalVal = bookieMemberPopup.getTotalCellValue(bookieMemberPopup.colTotalRPCRBA,true).replace(",","");
+        String openRPCRBATotalVal = bookieMemberPopup.getTotalCellValue(bookieMemberPopup.colTotalOpenRPCRBA,true).replace(",","");
+        String openBalanceTotalVal = bookieMemberPopup.getTotalCellValue(bookieMemberPopup.colTotalOpenBalance,true).replace(",","");
+        String totalMemberGrandVal = bookieMemberPopup.getMemberTotalCellValue(bookieMemberPopup.colTotal,true).replace(",","");
 
         log("Validate the amount of Win/Lose, Op. Win/Lose, R/P/C/RB/A, Op. R/P/C/RB/A, Op. Balance in top table is matched with total in amount in the below table");
         Assert.assertEquals(totalVal,totalMemberGrandVal,"FAILED! Total Amount is not matched with Total Grand Amount in below table: Total Amount: " + totalVal
                 + " Total Grand Amount: " + totalMemberGrandVal);
         log("Validate total in amount = Win/Lose + Op. Win/Lose + R/P/C/RB/A + Op. R/P/C/RB/A + Op. Balance");
-        expectedVal = Double.parseDouble(winLoseTotalVal) + Double.parseDouble(opWinLoseTotalVal) + Double.parseDouble(rpcrbaTotalVal) +
+        double expectedVal = Double.parseDouble(winLoseTotalVal) + Double.parseDouble(opWinLoseTotalVal) + Double.parseDouble(rpcrbaTotalVal) +
                 Double.parseDouble(openRPCRBATotalVal) + Double.parseDouble(openBalanceTotalVal);
         Assert.assertEquals(String.format("%.2f",expectedVal),totalVal,"FAILED! Grand Total is not matched with sum value, Total: " + totalVal
                 + " expected: " + expectedVal);
         bookieMemberPopup.closePopup();
         log("Validate total in amount is matched with amount at Member column in outside");
-        memberTotal = bookieStatementPage.getAgentCellValue(masterCode, agentCode,bookieStatementPage.colMember).replace(",","");
+        String memberTotal = bookieStatementPage.getAgentCellValue(masterCode, agentCode,bookieStatementPage.colMember).replace(",","");
         Assert.assertEquals(memberTotal,totalMemberGrandVal,"FAILED! Total is not matched between inside/outside, Total Outside: " + memberTotal
                 + " Total Inside: " + totalMemberGrandVal);
 
@@ -115,14 +105,10 @@ public class BookieStatementTest extends BaseCaseAQS {
 
     @Test(groups = {"smoke"})
     @TestRails(id = "184")
-    public void BookieStatementTC_184() throws IOException {
+    public void BookieStatementTC_184() throws IOException, InterruptedException {
         String bookieName = "QA Bookie";
         String bookieCode = "QA01";
         String superMasterCode = "SM-QA1-QA Test";
-        String typeId;
-        String rpcrbaVal;
-        String accountSuperIdDebit;
-        String accountSuperIdCredit;
         String level = "Super";
         String fromType = "Bookie";
         String accountCodeDebit = "SM-QA1-QA Test";
@@ -142,9 +128,9 @@ public class BookieStatementTest extends BaseCaseAQS {
                 .creditAccountCode(accountCodeCredit)
                 .build();
         welcomePage.waitSpinnerDisappeared();
-        typeId = BookieInfoUtils.getBookieId(bookieName);
-        accountSuperIdDebit = AccountSearchUtils.getAccountId(accountCodeDebit);
-        accountSuperIdCredit = AccountSearchUtils.getAccountId(accountCodeCredit);
+        String typeId = BookieInfoUtils.getBookieId(bookieName);
+        String accountSuperIdDebit = AccountSearchUtils.getAccountId(accountCodeDebit);
+        String accountSuperIdCredit = AccountSearchUtils.getAccountId(accountCodeCredit);
         try {
             TransactionUtils.addClientBookieTxn(transaction,accountSuperIdDebit,accountSuperIdCredit,fromType,typeId);
 
@@ -153,14 +139,15 @@ public class BookieStatementTest extends BaseCaseAQS {
             BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
 
             log("@Step 3: Filter with Bookie has made transaction");
+            Thread.sleep(20000);
             bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Super Master","","",bookieCode,"");
             log("@Step 4: Click on Super Master RPCRBA link");
             BookieSuperMasterDetailPopup bookiePopup = bookieStatementPage.openBookieSuperMasterDetailPopup(superMasterCode);
-            rpcrbaVal = bookiePopup.getSuperMasterCellValue(bookiePopup.colRPCRBA, true);
+            String rpcrbaVal = bookiePopup.getSuperMasterCellValue(bookiePopup.colRPCRBA, true);
             log("Validate for Bookie Super account chosen in Debit section, value will show positive amount");
             Assert.assertEquals(String.format("%.2f",transaction.getAmountDebit()),rpcrbaVal,"FAILED! Amount Debit and RPCRBA Value does not show in positive, Amount Debit:  " + transaction.getAmountDebit()
                     + " RPCRBA: " + rpcrbaVal);
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("Post-Condition: Add txn for Bookie Super in Credit");
             Transaction transactionPost = new Transaction.Builder()
                     .amountDebit(1)
