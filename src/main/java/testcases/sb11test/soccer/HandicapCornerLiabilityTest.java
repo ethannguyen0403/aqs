@@ -66,11 +66,11 @@ public class HandicapCornerLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @Parameters({"accountCode","accountCurrency","smartGroup"})
     public void HandicapCornerLiabilityTC_003(String accountCode, String accountCurrency, String smartGroup){
-        log("@title: Validate 1x2 bet from Bet Entry is displayed correctly on 1x2 Liability report");
-        log("Precondition: Having an 1x2 bet which have been placed on Bet Entry");
+        log("@title: Validate Handicap Corner bet from Bet Entry is displayed correctly on Handicap Corner Liability report");
+        log("Precondition: Having an Handicap Corner bet which have been placed on Bet Entry");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String marketType = "Handicap - Corners";
@@ -111,13 +111,13 @@ public class HandicapCornerLiabilityTest extends BaseCaseAQS {
         betListPopup.close();
 
         log("@Step 1: Login with valid account");
-        log("@Step 2: Access Soccer > 1x2 Liability");
+        log("@Step 2: Access Soccer > Handicap Corner Liability");
         HandicapCornerLiabilityPage handicapCornerLiabilityPage = soccerBetEntryPage.navigatePage(SOCCER,HANDICAP_CORNER_LIABILITY, HandicapCornerLiabilityPage.class);
         log("@Step 3: Filter with event that having bet at Pre-condition ");
         log("@Step 4: Click Show");
         handicapCornerLiabilityPage.filterResult(companyUnit, smartType,false,"All",date,date,"All",true);
         handicapCornerLiabilityPage.filterGroups(smartGroup);
-        log("Validate 1x2 bet from Bet Entry is displayed correctly on 1x2 Liability report");
+        log("Validate Handicap Corner bet from Bet Entry is displayed correctly on Handicap Corner Liability report");
         handicapCornerLiabilityPage.isOrderExist(order,smartGroup);
 
         log("@Post-Condition: Cancel Pending bet "+ order.getBetId() +" in Confirm Bet page");

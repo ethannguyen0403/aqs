@@ -36,7 +36,7 @@ public class OverUnderLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2116")
     public void OverUnderLiabilityTC_002(){
         log("@title: Validate Over/Under Liability page is displayed when navigate");
@@ -63,11 +63,11 @@ public class OverUnderLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @Parameters({"accountCode","accountCurrency","smartGroup"})
     public void OverUnderLiabilityTC_003(String accountCode, String accountCurrency, String smartGroup){
-        log("@title: Validate Handicap bet from Bet Entry is displayed correctly on Handicap Liability report");
-        log("Precondition: Having an Handicap bet which have been placed on Bet Entry");
+        log("@title: Validate Over/Under bet from Bet Entry is displayed correctly on Over/Under Liability report");
+        log("Precondition: Having an Over/Under bet which have been placed on Bet Entry");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String smartType = "Group";
@@ -92,19 +92,19 @@ public class OverUnderLiabilityTest extends BaseCaseAQS {
                 .build();
         lstOrder.add(order);
 
-        soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
+        soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"OVER",lstOrder,false,false,true);
 
         log("Get Bet ID of placed bet");
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
 
         log("@Step 1: Login with valid account");
-        log("@Step 2: Access Soccer > 1x2 Liability");
-        OverUnderLiabilityPage overUnderLiabilityPage = soccerBetEntryPage.navigatePage(SOCCER,HANDICAP_LIABILITY, OverUnderLiabilityPage.class);
+        log("@Step 2: Access Soccer > Over/Under Liability");
+        OverUnderLiabilityPage overUnderLiabilityPage = soccerBetEntryPage.navigatePage(SOCCER,OVER_UNDER_LIABILITY, OverUnderLiabilityPage.class);
         log("@Step 3: Filter with event that having bet at Pre-condition ");
         log("@Step 4: Click Show");
         overUnderLiabilityPage.filterResult(companyUnit, smartType,false,"All",date,date,"All",true);
         overUnderLiabilityPage.filterGroups(smartGroup);
-        log("Validate Handicap bet from Bet Entry is displayed correctly on Handicap Liability report");
+        log("Validate Over/Under bet from Bet Entry is displayed correctly on Over/Under Liability report");
         overUnderLiabilityPage.isOrderExist(lstOrder,smartGroup);
 
         log("@Post-Condition: Cancel Pending bet "+ lstOrder.get(0).getBetId() +" in Confirm Bet page");
