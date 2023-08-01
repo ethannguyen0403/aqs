@@ -38,7 +38,7 @@
         </repository>
         <repository>
             <id>pal</id>
-            <url>https://artifact.pal.net.vn/repository/maven-releases/</url>
+            <url>https://nexus.techtank9.com/repository/maven-releases/</url>
         </repository>
     </repositories>
     <build>
