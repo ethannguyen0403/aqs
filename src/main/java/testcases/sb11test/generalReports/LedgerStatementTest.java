@@ -21,7 +21,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
     String companyUnit = "Kastraki Limited";
     String transType = "Payment Other";
-    String financialYear = "Year 2022-2023";
+    String financialYear = "Year 2023-2024";
     String debitExpAcc = "AutoExpenditureDebit";
     String creditExpAcc = "AutoExpenditureCredit";
     String debitAstAcc = "AutoAssetDebit";
