@@ -10,12 +10,14 @@ import pages.sb11.user.TradingPermissionPage;
 import pages.sb11.user.UserManagementPage;
 import pages.sb11.user.popup.ClientAgentPermissionPopup;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
 
 public class TradingPermissionTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2066")
     public void Trading_Permission_TC_001(){
         log("@title: Validate User Management page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -27,6 +29,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2067")
     public void Trading_Permission_TC_002(){
         log("@title: Validate User Management page is displayed when navigate");
         log("@Step 1: Login with valid account");
@@ -44,6 +47,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2068")
     @Parameters("username")
     public void Trading_Permission_TC_003(String username){
         log("@title: Validate that can search username succesfully");
@@ -59,6 +63,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2069")
     @Parameters("username")
     public void Trading_Permission_TC_004(String username){
         log("@title: Validate that all Permission is disabled after checking Auto-assigned All");
@@ -73,6 +78,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2070")
     @Parameters("username")
     public void Trading_Permission_TC_005(String username){
         log("@title: Validate that all Permission is disabled after checking Auto-assigned All");

@@ -29,7 +29,7 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2136")
     public void BBT_TC_002() {
         log("@title: Validate BBT page is displayed when navigate");

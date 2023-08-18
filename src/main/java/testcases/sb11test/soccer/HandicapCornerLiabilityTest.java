@@ -67,6 +67,7 @@ public class HandicapCornerLiabilityTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2114")
     @Parameters({"accountCode","accountCurrency","smartGroup"})
     public void HandicapCornerLiabilityTC_003(String accountCode, String accountCurrency, String smartGroup){
         log("@title: Validate Handicap Corner bet from Bet Entry is displayed correctly on Handicap Corner Liability report");
