@@ -59,7 +59,7 @@ public class PTRiskPage extends WelcomePage {
     }
 
     private void filterClient(String clientCode) {
-        if (!clientCode.isEmpty())
+        if (clientCode.isEmpty())
             return;
         int i = 1;
         String out[] = clientCode.split("-");
