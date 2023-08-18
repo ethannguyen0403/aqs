@@ -64,6 +64,7 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2108")
     @Parameters({"accountCode","accountCurrency","smartGroup"})
     public void MatchOddsLiabilityTC_003(String accountCode, String accountCurrency, String smartGroup){
         log("@title: Validate 1x2 bet from Bet Entry is displayed correctly on 1x2 Liability report");

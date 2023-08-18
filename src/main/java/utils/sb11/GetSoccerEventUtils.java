@@ -17,7 +17,7 @@ import static testcases.BaseCaseAQS.environment;
 public class GetSoccerEventUtils {
 
     private static JSONObject getEventsAPIJson(String fromDate, String toDate, String sport) throws UnsupportedEncodingException {
-        String json =  String.format("fromDate=%s 2012:00:00&toDate=%s 2011:59:59&timeZone=Asia/Bangkok&sportName=%s",fromDate,toDate,sport);
+        String json =  String.format("fromDate=%s 12:00:00&toDate=%s 11:59:59&timeZone=Asia/Bangkok&sportName=%s",fromDate,toDate,sport);
         json = json.replace(" ","%");
         String api = String.format("%saqs-bet-entry/entry-bet/event-date?%s",environment.getSbpLoginURL(),json);
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));

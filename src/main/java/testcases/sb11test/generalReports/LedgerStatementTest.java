@@ -1147,7 +1147,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2768")
     public void Ledger_Statement_TC_004(){
         String dowloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "download.pdf";

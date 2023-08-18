@@ -64,7 +64,7 @@ public class ChartOfAccountTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2157")
     public void Chart_Of_Account_TC_003(){
         log("@title: Validate can add new Detail Type successfully");
@@ -84,7 +84,7 @@ public class ChartOfAccountTest extends BaseCaseAQS {
         chartOfAccountPage.deleteDetail(companyUnit,detailType);
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2158")
     public void Chart_Of_Account_TC_004(){
         log("@title: Validate can add new Detail Type successfully");
@@ -104,7 +104,7 @@ public class ChartOfAccountTest extends BaseCaseAQS {
         chartOfAccountPage.deleteDetail(companyUnit,detailType);
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2159")
     public void Chart_Of_Account_TC_005(){
         log("@title: Validate can add new Parent Account successfully");
@@ -124,7 +124,7 @@ public class ChartOfAccountTest extends BaseCaseAQS {
         chartOfAccountPage.deleteParent(companyUnit,detailType,parentAccount);
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2160")
     public void Chart_Of_Account_TC_006(){
         log("@title: Validate can add new Sub Account successfully");

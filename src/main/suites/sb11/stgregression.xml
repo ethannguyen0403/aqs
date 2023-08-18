@@ -49,6 +49,10 @@
             <class name="testcases.sb11test.sport.BLSettingTest"/>
             <class name="testcases.sb11test.soccer.MonitorBetsTest"/>
             <class name="testcases.sb11test.soccer.MatchOddsLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.HandicapLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.HandicapCornerLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.OverUnderLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.OverUnderCornerLiabilityTest"/>
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
             <class name="testcases.sb11test.soccer.SPPTest"/>
             <class name="testcases.sb11test.soccer.BBTTest"/>

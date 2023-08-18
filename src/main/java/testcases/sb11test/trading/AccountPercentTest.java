@@ -44,7 +44,7 @@ public class AccountPercentTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2201")
     @Parameters({"bookieCode","accountCode"})
     public void AccountPercent_TC003(String bookieCode, String accountCode){
