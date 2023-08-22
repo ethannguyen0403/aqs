@@ -23,7 +23,7 @@ public class SPPTest extends BaseCaseAQS {
     @TestRails(id = "1002")
     public void SPP_TC_1002(String accountCode, String smartGroup, String superCode,String clientCode,String agentCode){
          /*NOTE: Create QA Smart Master and QA Smart Agent for STG and PR) for consistent data*/
-        String date = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
+        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
         String clientValue = String.format("%s - %s",superCode, clientCode );
         log("@title: Validate WL in Client Statement matched with SPP page (#AQS-2073)");
         log("Precondition:Group code ’"+smartGroup+" has 1 player "+accountCode+"\n" +
@@ -35,7 +35,7 @@ public class SPPTest extends BaseCaseAQS {
         clientPage.filter("Client Point","Kastraki Limited",FINANCIAL_YEAR,clientValue,date,date);
 
         log("@Step 2: Click the client agent >> find the player >> observe win/loss");
-        String winlosePlayer = clientPage.getMemberSummary(agentCode,accountCode).get(8);
+        String winlosePlayer = clientPage.getMemberSummary(agentCode,accountCode).get(7);
 
         log("@Step 3: Go to SPP >> select all leagues >> select the group");
         log("Step 4: Select the date 15/11/2022 >> click Show");
