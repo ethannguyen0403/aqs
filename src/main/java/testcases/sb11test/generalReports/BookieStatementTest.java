@@ -60,7 +60,7 @@ public class BookieStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @TestRails(id = "1639")
     public void BookieStatementTC_1639() throws InterruptedException {
         String bookieName = "QA Bookie";
