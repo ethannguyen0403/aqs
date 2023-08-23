@@ -54,7 +54,7 @@ public class SoccerResultEntryTest extends BaseCaseAQS {
     }
 
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2089")
     public void Soccer_ResultEntry_TC003(){
         log("@title: Validate League list is displayed correctly when clicking Show Leagues ");
