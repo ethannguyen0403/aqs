@@ -86,11 +86,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger back to = 0");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -139,11 +138,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger back to = 0");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -198,11 +196,11 @@ public class LedgerStatementTest extends BaseCaseAQS {
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
 
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
+
         }
 
     }
@@ -256,11 +254,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
 
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -310,11 +307,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
 
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -363,11 +359,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger back to = 0");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -421,11 +416,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
 
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -478,11 +472,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger back to = 0");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -532,11 +525,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
 
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -586,11 +578,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger back to = 0");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -647,11 +638,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
 
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -708,11 +698,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger back to = 0");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -771,11 +760,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
 
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -832,11 +820,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger back to = 0");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -892,11 +879,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger back to = 0");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -954,11 +940,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger back to = 0");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -1016,11 +1001,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger back to = 0");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
 
     }
@@ -1078,11 +1062,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
 
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
             journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-            throw new Error("FAILED Test!", e);
         }
     }
 

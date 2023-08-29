@@ -33,7 +33,7 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "309")
-    public void ClientStatementTC_309(String clientCode) throws ParseException, ScriptException {
+    public void ClientStatementTC_309(String clientCode) throws ParseException {
         clientCode = superMasterCode + clientCode;
         String actualVal;
         String openingVal;
@@ -310,7 +310,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             actualRecPayVal = popup.getSummaryCellValue(CLIENT_DEBIT_ACC,popup.colRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Client Debit balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
             popup.closeSummaryPopup();
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Add transaction for the Client account into Credit");
             Transaction transactionPost = new Transaction.Builder()
                     .clientDebit(clientCode)
@@ -325,7 +325,6 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .creditAccountCode(CLIENT_DEBIT_ACC)
                     .build();
             TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType,typeId);
-            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -377,7 +376,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             actualRecPayVal = popup.getSummaryCellValue(CLIENT_CREDIT_ACC,popup.colRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Client Credit balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
             popup.closeSummaryPopup();
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Add transaction for the Client account into Credit");
             Transaction transactionPost = new Transaction.Builder()
                     .clientDebit(clientCode)
@@ -392,7 +391,6 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .creditAccountCode(CLIENT_DEBIT_ACC)
                     .build();
             TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType,typeId);
-            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -456,7 +454,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Asset 'Debit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
             popup.closeSummaryPopup();
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Add transaction for the Asset Ledger account into Credit");
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerDebitAccountName)
@@ -470,7 +468,6 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
-            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -534,7 +531,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Asset 'Credit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
             popup.closeSummaryPopup();
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Add transaction for the Asset Ledger account into Debit");
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerDebitAccountName)
@@ -548,7 +545,6 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
-            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -612,7 +608,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Liability 'Debit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
             popup.closeSummaryPopup();
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Add transaction for the Liability Ledger account into Credit");
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerDebitAccountName)
@@ -626,7 +622,6 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
-            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -690,7 +685,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Liability 'Credit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
             popup.closeSummaryPopup();
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Add transaction for the Liability Ledger account into Debit");
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerDebitAccountName)
@@ -704,7 +699,6 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
-            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -768,7 +762,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Capital 'Debit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
             popup.closeSummaryPopup();
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Add transaction for the Capital Ledger account into Credit");
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerDebitAccountName)
@@ -782,7 +776,6 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
-            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -791,7 +784,7 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Test(groups = {"smoke_qc"})
     @Parameters({"clientCode"})
     @TestRails(id = "876")
-    public void ClientStatementTC_876(String clientCode) throws IOException, InterruptedException {
+    public void ClientStatementTC_876(String clientCode) throws IOException {
         log("@Validate the balance is added from the account if a Ledger type = Capital and an amount are inputted into the 'Credit' form");
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
@@ -846,7 +839,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Capital 'Credit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
             popup.closeSummaryPopup();
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Add transaction for the Capital Ledger account into Debit");
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerDebitAccountName)
@@ -860,7 +853,6 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
-            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -924,7 +916,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Income 'Debit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
             popup.closeSummaryPopup();
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Add transaction for the Income Ledger account into Credit");
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerDebitAccountName)
@@ -938,7 +930,6 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
-            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -1001,7 +992,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Income 'Credit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
             popup.closeSummaryPopup();
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Add transaction for the Income Ledger account into Debit");
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerDebitAccountName)
@@ -1015,7 +1006,6 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
-            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -1079,7 +1069,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Expenditure 'Debit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
             popup.closeSummaryPopup();
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Add transaction for the Expenditure Ledger account into Credit");
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerDebitAccountName)
@@ -1093,7 +1083,6 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
-            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -1157,7 +1146,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Expenditure 'Credit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
             popup.closeSummaryPopup();
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Add transaction for the Expenditure Ledger account into Debit");
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerDebitAccountName)
@@ -1171,7 +1160,6 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
-            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
@@ -1328,7 +1316,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             actualRecPayVal = recPayPopup.getDifferenceOriginalVal(recPayPopup.colDifferentOriginal);
             Assert.assertEquals(String.format("%.2f",transaction.getAmountDebit()),actualRecPayVal,"FAILED! Total Running is not calculated correctly, actual: "+ actualRecPayVal + " and expected: "+transaction.getAmountDebit());
 
-        } catch (Exception | AssertionError e) {
+        } finally {
             log("@Post-condition: Add transaction for the Asset Ledger account into Debit");
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerDebitAccountName)
@@ -1342,7 +1330,6 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .transType("Tax Rebate")
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
-            throw new Error("FAILED Test!", e);
         }
 
         log("INFO: Executed completely");
