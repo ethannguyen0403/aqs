@@ -31,40 +31,42 @@ public class ClientStatementPage extends WelcomePage {
     TextBox txtFromDate = TextBox.name("fromDate");
     TextBox txtToDate = TextBox.name("toDate");
     Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
-    DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
-    DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
+    DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate, "//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
+    DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate, "//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
 
-    Table tblSuper = Table.xpath("//app-client-detail//table[@id='table-super']",colTotal);
-    Table tblMaster = Table.xpath("//app-client-detail//table[@id='table-master']",colTotal);
+    Table tblSuper = Table.xpath("//app-client-detail//table[@id='table-super']", colTotal);
+//    Table tblMaster = Table.xpath("//app-client-detail//table[@id='table-master']",colTotal);
     //Table tblAgent = Table.xpath("//app-client-detail//div[%s]//table[@id='table-agent']",colTotal);
 
     @Override
-    public String getTitlePage ()
-    {
+    public String getTitlePage() {
         return this.lblTitle.getText().trim();
     }
 
-    public void filter(String viewBy, String companyUnit, String financialYear, String clients, String fromDate, String toDate){
+    public void filter(String viewBy, String companyUnit, String financialYear, String clients, String fromDate, String toDate) {
         ddpViewBy.selectByVisibleText(viewBy);
         ddpCompanyUnit.selectByVisibleText(companyUnit);
         ddpFinancialYear.selectByVisibleText(financialYear);
         ddpClients.selectByVisibleText(clients);
         String currentDate = txtFromDate.getAttribute("value");
-        if(!fromDate.isEmpty())
-            if(!currentDate.equals(fromDate))
-                dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+        if (!fromDate.isEmpty())
+            if (!currentDate.equals(fromDate))
+                dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
         currentDate = txtToDate.getAttribute("value");
-        if(!toDate.isEmpty())
-            if(!currentDate.equals(toDate))
-                dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+        if (!toDate.isEmpty())
+            if (!currentDate.equals(toDate))
+                dtpToDate.selectDate(toDate, "dd/MM/yyyy");
         btnShow.click();
         waitSpinnerDisappeared();
+        waitPageLoad();
+
     }
+
     public String getSuperCellValue(int colIndex) {
         String returnValue = "";
         Label lblCellValue;
-        lblCellValue = Label.xpath(tblSuper.getxPathOfCell(1,colIndex,1,null));
-        if(!lblCellValue.isDisplayed()){
+        lblCellValue = Label.xpath(tblSuper.getxPathOfCell(1, colIndex, 1, null));
+        if (!lblCellValue.isDisplayed()) {
             System.out.println("There's no value display in the Super table");
             return null;
         } else {
@@ -72,65 +74,41 @@ public class ClientStatementPage extends WelcomePage {
             return returnValue;
         }
     }
+
     public String getMasterCellValue(String masterCode, int colIndex) {
-        String returnValue = "";
-        Label lblCellValue;
-        Label lblMasterCode;
-        if (masterCode.equalsIgnoreCase("Total in")) {
-            colIndex = colIndex-2;
-            colLevel = 1;
+        if (masterCode.equalsIgnoreCase("total in")) {
+            colIndex = colIndex - 2;
+        } else {
+            masterCode = " " + masterCode + " ";
         }
-        int i = 1;
-        while (i < 50){
-            lblCellValue = Label.xpath(tblMaster.getxPathOfCell(1,colIndex,i,null));
-            lblMasterCode = Label.xpath(tblMaster.getxPathOfCell(1,colLevel,i,null));
-            if(!lblCellValue.isDisplayed()){
-                System.out.println("There's no value display in the Master table");
-                return null;
-            }
-            if(lblMasterCode.getText().equalsIgnoreCase(masterCode)){
-                returnValue = lblCellValue.getText();
-                return returnValue;
-            }
-            i = i+1;
+        String xpath = String.format("//table[@id='table-master']//td[text()='%s']//..//td[%s]", masterCode, colIndex);
+        Label lblCellValue = Label.xpath(xpath);
+        if (!lblCellValue.isDisplayed()) {
+            System.out.println("Cannot find out master cell value");
+            return null;
+        } else {
+            return lblCellValue.getText();
         }
-        return returnValue;
     }
+
     public String getAgentCellValue(String agentCode, int colIndex) {
-        String returnValue = "";
-        Label lblCellValue;
-        Label lblAgentCode;
-        Label lblFirstColumn;
-        int i = 2;
-        int j = 1;
-        while (i < 50){
-            String xpath = String.format("//app-client-detail//div[contains(@class,'col-12')][%s]//table[@class='table table-bordered table-custom table-hover table-striped text-center bg-white mb-0 fbody ng-star-inserted']",j);
-            Table tblAgent = Table.xpath(xpath,colTotal);
-            lblCellValue = Label.xpath(tblAgent.getxPathOfCell(1,colIndex,i,null));
-            lblAgentCode = Label.xpath(tblAgent.getxPathOfCell(1,colLevel,i,null));
-            lblFirstColumn = Label.xpath(tblAgent.getxPathOfCell(1,1,i,null));
-            if(lblFirstColumn.getText().equalsIgnoreCase("Total in")) {
-                j = j + 1;
-                i = 1;
-            }
-            if(lblAgentCode.getText().equalsIgnoreCase(agentCode)){
-                returnValue = lblCellValue.getText();
-                return returnValue;
-            }
-            if(lblAgentCode.getText().equalsIgnoreCase("Grand Total in")) {
-                break;
-            }
-            i = i+1;
+        String xpath = String.format("//div[@id='client-statement-summary']//table[not(@id)]//a[text()=' %s']//..//..//td[%s]", agentCode, colIndex);
+        Label lblCellValue = Label.xpath(xpath);
+        if (!lblCellValue.isDisplayed()) {
+            System.out.println("Cannot find out column index of inputted agent");
+            return null;
+        } else {
+            return lblCellValue.getText();
         }
-        return returnValue;
     }
+
     public String getGrandTotal(String currency) {
         String returnValue;
         Label lblCellValue;
-        switch (currency){
+        switch (currency) {
             case "GBP":
                 lblCellValue = Label.xpath("//app-client-detail//table[@id='grand-total']//tr[2]//th[10]");
-                if(!lblCellValue.isDisplayed()){
+                if (!lblCellValue.isDisplayed()) {
                     System.out.println("There's no value display in the GrandTotal GBP table");
                     return null;
                 } else {
@@ -139,7 +117,7 @@ public class ClientStatementPage extends WelcomePage {
                 }
             default:
                 lblCellValue = Label.xpath("//app-client-detail//table[@id='grand-total']//tr[1]//th[10]");
-                if(!lblCellValue.isDisplayed()){
+                if (!lblCellValue.isDisplayed()) {
                     System.out.println("There's no value display in the GrandTotal HKD table");
                     return null;
                 } else {
@@ -148,54 +126,44 @@ public class ClientStatementPage extends WelcomePage {
                 }
         }
     }
+
     public String reverseValue(String value) {
         String returnVal = value;
         if (Float.parseFloat(value) > 0) {
             returnVal = "-" + value;
             return returnVal;
         } else if (Float.parseFloat(value) < 0) {
-            returnVal = value.replace("-","");
+            returnVal = value.replace("-", "");
             return returnVal;
         }
         return returnVal;
     }
+
     public ClientSummaryPopup openSummaryPopup(String agentCode) {
-        Label lblAgentCode;
-        Label lblFirstColumn;
-        int i = 2;
-        int j = 1;
-        while (i < 20){
-            String xpath = String.format("(//app-client-detail//div[@id='client-statement-summary']//div[@class='row px-custom mt-3 ng-star-inserted'][2]//table)[%s]",j);
-            Table tblAgent = Table.xpath(xpath,colTotal);
-            lblAgentCode = Label.xpath(tblAgent.getxPathOfCell(1,colLevel,i,null));
-            lblFirstColumn = Label.xpath(tblAgent.getxPathOfCell(1,1,i,null));
-            if(lblAgentCode.getText().equalsIgnoreCase(agentCode)){
-                lblAgentCode.click();
-                waitSpinnerDisappeared();
-                return new ClientSummaryPopup();
-            }
-            if(lblFirstColumn.getText().equalsIgnoreCase("Total in")) {
-                j = j + 1;
-                i = 1;
-            }
-            if(lblAgentCode.getText().equalsIgnoreCase("Grand Total in")) {
-                break;
-            }
-            i = i+1;
+        String xpath = String.format("//div[@id='client-statement-summary']//table[not(@id)]//a[text()=' %s']//..//..//td[3]", agentCode);
+        Label lblCellAgent = Label.xpath(xpath);
+        if (!lblCellAgent.isDisplayed()) {
+            System.out.println(String.format("Cannot find out agent %s in result", agentCode));
+            return null;
+        } else {
+            lblCellAgent.click();
+            waitSpinnerDisappeared();
+            return new ClientSummaryPopup();
         }
-        return null;
     }
+
     public boolean verifyValueIsOpposite(ArrayList lstActual, ArrayList lstExpect) {
         String reverseVal;
         boolean isOpposite = false;
-            for (int i = 0; i < lstActual.size(); i++) {
-                reverseVal = reverseValue(lstActual.get(i).toString());
-                Assert.assertEquals(reverseVal,lstExpect.get(i).toString());
-                isOpposite = true;
-            }
-            return isOpposite;
+        for (int i = 0; i < lstActual.size(); i++) {
+            reverseVal = reverseValue(lstActual.get(i).toString());
+            Assert.assertEquals(reverseVal, lstExpect.get(i).toString());
+            isOpposite = true;
+        }
+        return isOpposite;
     }
-    public List<String> getMemberSummary(String agentCode, String accountCode){
+
+    public List<String> getMemberSummary(String agentCode, String accountCode) {
         ClientSummaryPopup clientSummaryPopup = openSummaryPopup(agentCode);
         List<String> lstData = clientSummaryPopup.getMemeberSummaryData(accountCode);
         clientSummaryPopup.closeSummaryPopup();

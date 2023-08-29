@@ -57,7 +57,7 @@ public class BLSettingPage extends WelcomePage {
                 System.out.println("Can NOT found the league "+leagueName+" in the table");
                 return false;
             }
-            if(lblLeague.getText().equals(leagueName)){
+            if(lblLeague.getText().equalsIgnoreCase(leagueName)){
                 System.out.println("Found the league "+leagueName+" in the table");
                 return true;
             }

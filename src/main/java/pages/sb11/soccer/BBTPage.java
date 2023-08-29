@@ -1,10 +1,13 @@
 package pages.sb11.soccer;
 
+import com.paltech.driver.DriverManager;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
+import controls.Row;
 import controls.Table;
 import pages.sb11.WelcomePage;
 
@@ -37,12 +40,23 @@ public class BBTPage extends WelcomePage {
     public Button btnMoreFilter = Button.xpath("//div[contains(text(),'More Filters')]");
     public Button btnResetAllFilter = Button.xpath("//span[contains(text(),'Reset All Filters')]");
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
-
+    public Button btnLeagues = Button.xpath("//app-bbt//div[text()='Show Leagues ']");
+    public Button btnClearAll = Button.xpath("//app-bbt//button[text()='Clear All']");
+    public Button btnSetSelection = Button.xpath("//app-filter-data//button[text()='Set Selection ']");
+    private Label lblFirstGroupName = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//a)[1]");
+    private Label lblFirstGroupHDP = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[2])[1]");
+    private Label lblFirstGroupPrice = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[3])[1]");
+    private Label lblFirstGroupLive = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[5])[1]");
+    private Label lblFirstGroupNonLive = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[6])[1]");
+    private Label lblFirstGroupPendingBet = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[7])[1]");
+    private Label lblFirstGroupLast12Day = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[8])[1]");
+    private Label lblFirstGroupS1 = Label.xpath("(//app-league-table//div[contains(@class,'league-time')]//span)[1]");
+    private Label lblFirstGroupS12 = Label.xpath("(//app-league-table//div[contains(@class,'league-time')]//span)[2]");
     int totalColumnNumber = 8;
     public Table tblBBT = Table.xpath("//app-bbt//table",totalColumnNumber);
 
 
-    public void filter(String companyUnit, String sport, String smartType, String reportType, String fromDate, String toDate, String stake, String currency){
+    public void filter(String companyUnit, String sport, String smartType, String reportType, String fromDate, String toDate, String stake, String currency, String league){
         if (!companyUnit.isEmpty())
             ddpCompanyUnit.selectByVisibleText(companyUnit);
         if(!sport.isEmpty())
@@ -51,20 +65,33 @@ public class BBTPage extends WelcomePage {
             ddpSmartType.selectByVisibleText(smartType);
         if(!reportType.isEmpty())
             ddpReportType.selectByVisibleText(reportType);
-        String currentDate = txtFromDate.getAttribute("value");
+        String currentDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
+//        String currentDate = txtFromDate.getAttribute("value");
         if(!fromDate.isEmpty())
             if(!currentDate.equals(fromDate))
                 dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-        currentDate = txtToDate.getAttribute("value");
+                waitSpinnerDisappeared();
+//        currentDate = txtToDate.getAttribute("value");
         if(!toDate.isEmpty())
             if(!currentDate.equals(toDate))
                 dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+                waitSpinnerDisappeared();
         if(!stake.isEmpty())
             ddpStake.selectByVisibleText(stake);
         if(!currency.isEmpty())
             ddpCurrency.selectByVisibleText(currency);
+        if(!league.isEmpty())
+            btnLeagues.click();
+            btnClearAll.click();
+            filterLeague(league);
         btnShow.click();
         waitSpinnerDisappeared();
+    }
+
+    private void filterLeague(String leagueName) {
+        Label lblSelectValue = Label.xpath(String.format("//table[@aria-label='group table']//span[text()=\"%s\"]//..//..//input",leagueName));
+        lblSelectValue.click();
+        btnSetSelection.click();
     }
 
     public List<String> getRowDataOfGroup(String groupName){
@@ -122,4 +149,129 @@ public class BBTPage extends WelcomePage {
             i = i +1;
         }
     }
+
+    public MonthPerformancePage openMonthPerformanceFirstGroup() {
+        if (!lblFirstGroupName.isDisplayed()) {
+            System.out.println("There is no Group available for opening");
+            return null;
+        } else {
+            lblFirstGroupName.click();
+            DriverManager.getDriver().switchToWindow();
+            waitSpinnerDisappeared();
+            return new MonthPerformancePage();
+        }
+    }
+
+    public Last50BetsPage openLast50BetsFirstGroup() {
+        if (!lblFirstGroupHDP.isDisplayed()) {
+            System.out.println("There is no Group available for opening");
+            return null;
+        } else {
+            lblFirstGroupHDP.click();
+            DriverManager.getDriver().switchToWindow();
+            waitSpinnerDisappeared();
+            return new Last50BetsPage();
+        }
+    }
+
+    public LeaguePerformancePage openLeaguePerformanceFirstGroup() {
+        if (!lblFirstGroupPrice.isDisplayed()) {
+            System.out.println("There is no Group available for opening");
+            return null;
+        } else {
+            lblFirstGroupPrice.click();
+            DriverManager.getDriver().switchToWindow();
+            waitSpinnerDisappeared();
+            return new LeaguePerformancePage();
+        }
+    }
+
+    public LiveLast50BetsPage openLiveLast50BetsFirstGroup() {
+        if (!lblFirstGroupLive.isDisplayed()) {
+            System.out.println("There is no Group available for opening");
+            return null;
+        } else {
+            lblFirstGroupLive.click();
+            DriverManager.getDriver().switchToWindow();
+            waitSpinnerDisappeared();
+            return new LiveLast50BetsPage();
+        }
+    }
+
+    public NonLiveLast50BetsPage openNonLiveLast50BetsFirstGroup() {
+        if (!lblFirstGroupNonLive.isDisplayed()) {
+            System.out.println("There is no Group available for opening");
+            return null;
+        } else {
+            lblFirstGroupNonLive.click();
+            DriverManager.getDriver().switchToWindow();
+            waitSpinnerDisappeared();
+            return new NonLiveLast50BetsPage();
+        }
+    }
+
+    public PendingBetsPage openPendingBetFirstGroup() {
+        if (!lblFirstGroupPendingBet.isDisplayed()) {
+            System.out.println("There is no Group available for opening");
+            return null;
+        } else {
+            lblFirstGroupPendingBet.click();
+            DriverManager.getDriver().switchToWindow();
+            waitSpinnerDisappeared();
+            return new PendingBetsPage();
+        }
+    }
+
+    public ReportS1Page openReportS1FirstGroup() {
+        if (!lblFirstGroupS1.isDisplayed()) {
+            System.out.println("There is no Group available for opening");
+            return null;
+        } else {
+            lblFirstGroupS1.click();
+            DriverManager.getDriver().switchToWindow();
+            waitSpinnerDisappeared();
+            return new ReportS1Page();
+        }
+    }
+
+    public ReportS12Page openReportS12FirstGroup() {
+        if (!lblFirstGroupS12.isDisplayed()) {
+            System.out.println("There is no Group available for opening");
+            return null;
+        } else {
+            lblFirstGroupS12.click();
+            DriverManager.getDriver().switchToWindow();
+            waitSpinnerDisappeared();
+            return new ReportS12Page();
+        }
+    }
+
+    public Last12DaysPerformancePage openLast12DayPerformanceFirstGroup() {
+        if (!lblFirstGroupLast12Day.isDisplayed()) {
+            System.out.println("There is no Group available for opening");
+            return null;
+        } else {
+            lblFirstGroupLast12Day.click();
+            DriverManager.getDriver().switchToWindow();
+            waitSpinnerDisappeared();
+            return new Last12DaysPerformancePage();
+        }
+    }
+
+    public List<String> getFirstRowGroupData() {
+        List <String> lstData = new ArrayList<>();
+        if (!lblFirstGroupName.isDisplayed()) {
+            System.out.println("There is no Group available for opening");
+            return null;
+        } else {
+            Row firstGroupRow = Row.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr)[1]//td");
+            for (int i = 0; i < firstGroupRow.getWebElements().size(); i++) {
+                String xpathData = String.format("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr)[1]//td[%s]",i+1);
+                Label lblDataCell = Label.xpath(xpathData);
+                lstData.add(lblDataCell.getText());
+            }
+            return lstData;
+        }
+    }
+
 }

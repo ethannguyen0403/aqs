@@ -73,7 +73,7 @@ public class BLSettingTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2100")
     public void BLSettingsTC_005(){
         log("@title: Validate selected League is displayed correctly when clicking Show");

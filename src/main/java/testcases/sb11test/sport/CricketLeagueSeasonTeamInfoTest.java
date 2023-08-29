@@ -54,7 +54,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         Assert.assertTrue(cricketLeagueSeasonTeamInfoPage.btnAddSeason.isDisplayed(),"Failed! Add Season button is not displayed!");
         log("Team List table: Country, Team Name, Add button");
         Assert.assertEquals(cricketLeagueSeasonTeamInfoPage.ddCountryTeam.getOptions(), COUNTRY_LIST,"Failed! Team Country dropdown is not displayed!");
-        Assert.assertEquals(cricketLeagueSeasonTeamInfoPage.lblTeamName.getText(),"League Name","Failed! Team Name textbox is not displayed!");
+        Assert.assertEquals(cricketLeagueSeasonTeamInfoPage.lblTeamName.getText(),"Team Name","Failed! Team Name textbox is not displayed!");
         Assert.assertTrue(cricketLeagueSeasonTeamInfoPage.btnAddTeam.isDisplayed(),"Failed! Add Team button is not displayed!");
         Assert.assertTrue(cricketLeagueSeasonTeamInfoPage.btnSearchTeam.isDisplayed(),"Failed! Search Team button is not displayed!");
         log("League list, Season and Team List table header columns are correctly displayed");

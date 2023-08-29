@@ -5,7 +5,7 @@ import controls.Table;
 
 public class PendingBetsPage {
     Label lblTitle = Label.xpath("//app-pending-bets//div[contains(@class,'main-box-header')]//span[1]");
-    Label lblTableHeader = Label.xpath("//app-pending-bets//div[(@class='p-2')]//span");
+    Label lblTableHeader = Label.xpath("//app-pending-bets//table//thead//th");
     public String getTitlePage ()
     {
         return lblTitle.getText().trim();

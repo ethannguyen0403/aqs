@@ -71,7 +71,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2103")
     public void MonitorBetsTC_003(){
         log("@title: Validate Performance By Month is displayed correctly when clicking account at AC column");

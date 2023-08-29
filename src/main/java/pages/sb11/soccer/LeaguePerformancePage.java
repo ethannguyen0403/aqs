@@ -6,8 +6,8 @@ import controls.Table;
 public class LeaguePerformancePage {
     Label lblTitle = Label.xpath("//app-league-performance//div[contains(@class,'main-box-header')]//span[1]");
     Label lblTableHeaderInRange = Label.xpath("//app-league-performance/div/div[1]/div[2]/div/span");
-    Label lblTableHeader1Month = Label.xpath("//app-league-performance/div/div[1]/div[3]/div/span");
-    Label lblTableHeader3Months = Label.xpath("//app-league-performance/div/div[1]/div[4]/div/span");
+    public Label lblTableHeader1Month = Label.xpath("//app-league-performance/div//span[contains(text(),'Last 1 Month')]");
+    public Label lblTableHeader3Months = Label.xpath("//app-league-performance/div//span[contains(text(),'Last 3 Month')]");
     Label lblTableHeader6Months = Label.xpath("//app-league-performance/div/div[1]/div[5]/div/span");
     Label lblTableHeader1Year = Label.xpath("//app-league-performance/div/div[1]/div[6]/div/span");
     public String getTitlePage ()
