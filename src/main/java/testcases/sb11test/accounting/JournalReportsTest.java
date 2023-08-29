@@ -60,7 +60,7 @@ public class JournalReportsTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2167")
     public void Journal_Reports_TC_003(){
         log("@title: Validate transaction in Journal Entries should display correctly on Journal Report");

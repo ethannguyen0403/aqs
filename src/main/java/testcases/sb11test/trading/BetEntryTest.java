@@ -516,7 +516,7 @@ public class BetEntryTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2192")
     public void BetEntry_TC_004(){
         log("Validate UI on Bet Entry for Cricket is correctly displayed");
@@ -553,7 +553,7 @@ public class BetEntryTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2194")
     public void BetEntry_TC_006(){
         log("Validate UI on Bet Entry for Mixed Sport is correctly displayed");

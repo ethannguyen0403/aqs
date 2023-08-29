@@ -314,7 +314,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     public void PTRiskControlTC_006(){
         log("@title: Validate that can copy report successfully");
         String date = String.format(DateUtils.getDate(-3,"d/MM/yyyy","GMT +7"));
@@ -331,7 +331,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2126")
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @Parameters({"accountCode","accountCurrency"})
     public void PTRiskControlTC_2126(String accountCode,String accountCurrency){
         log("@title: Validate Full Time Over Under bet is displayed correctly on PT Risk Control > Over Under tab");
@@ -362,7 +362,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2127")
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @Parameters({"accountCode","accountCurrency"})
     public void PTRiskControlTC_2127(String accountCode,String accountCurrency){
         log("@title: Validate Half time Handicap bet is displayed and disappear when place bet in Bet Entry then removed" );

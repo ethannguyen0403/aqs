@@ -191,7 +191,7 @@ public class SmartSystemTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2182")
     public void Smart_System_TC_011(){
         log("@title: Validate Member popup is displayed when clicking on #Member");

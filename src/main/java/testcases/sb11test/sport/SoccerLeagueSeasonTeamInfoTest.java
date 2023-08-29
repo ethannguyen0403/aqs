@@ -32,7 +32,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2072")
     public void Soccer_League_Season_Team_Info_TC_002(){
         log("@title:Validate UI on League/Season/Team Info for Soccer is correctly displayed");
@@ -50,7 +50,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         Assert.assertTrue(soccerLeagueSeasonTeamInfoPage.btnAddSeason.isDisplayed(),"Failed! Add Season button is not displayed!");
         log("Team List table: Country, Team Name, Add button");
         Assert.assertEquals(soccerLeagueSeasonTeamInfoPage.ddCountryTeam.getOptions(), COUNTRY_LIST,"Failed! Team Country dropdown is not displayed!");
-        Assert.assertEquals(soccerLeagueSeasonTeamInfoPage.lblTeamName.getText(),"League Name","Failed! Team Name textbox is not displayed!");
+        Assert.assertEquals(soccerLeagueSeasonTeamInfoPage.lblTeamName.getText(),"Team Name","Failed! Team Name textbox is not displayed!");
         Assert.assertTrue(soccerLeagueSeasonTeamInfoPage.btnAddTeam.isDisplayed(),"Failed! Add Team button is not displayed!");
         Assert.assertTrue(soccerLeagueSeasonTeamInfoPage.btnSearchTeam.isDisplayed(),"Failed! Search Team button is not displayed!");
         log("League list, Season and Team List table header columns are correctly displayed");

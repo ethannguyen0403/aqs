@@ -58,6 +58,8 @@ public class ClientStatementPage extends WelcomePage {
                 dtpToDate.selectDate(toDate, "dd/MM/yyyy");
         btnShow.click();
         waitSpinnerDisappeared();
+        waitPageLoad();
+
     }
 
     public String getSuperCellValue(int colIndex) {

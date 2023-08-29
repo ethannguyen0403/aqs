@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="SB11_STG_Smoke" verbose="1">
+<suite name="SB11_STG_Regression" verbose="1">
     <listeners>
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
-    <test name="SB11 Pre">
+    <test name="SB11 Pre Regression">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='stg'/>
         <parameter name='language' value='en'/>
@@ -49,6 +49,10 @@
             <class name="testcases.sb11test.sport.BLSettingTest"/>
             <class name="testcases.sb11test.soccer.MonitorBetsTest"/>
             <class name="testcases.sb11test.soccer.MatchOddsLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.HandicapLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.HandicapCornerLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.OverUnderLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.OverUnderCornerLiabilityTest"/>
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
             <class name="testcases.sb11test.soccer.SPPTest"/>
             <class name="testcases.sb11test.soccer.BBTTest"/>

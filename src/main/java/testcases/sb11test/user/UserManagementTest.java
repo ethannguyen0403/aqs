@@ -5,12 +5,14 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.user.UserManagementPage;
 import testcases.BaseCaseAQS;
+import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
 
 public class UserManagementTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
+    @TestRails(id = "2065")
     @Parameters("username")
     public void User_Management_TC_001(String username){
         log("@title: Validate User Management page is displayed when navigate");
