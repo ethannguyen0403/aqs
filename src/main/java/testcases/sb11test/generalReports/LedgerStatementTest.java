@@ -83,9 +83,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 2: Amounts in GBP (convert to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerStatementPage.verifyLedgerTrans(transaction, true, lgExpenditureGroup);
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -135,9 +132,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerStatementPage.verifyLedgerTrans(transaction, false, lgExpenditureGroup);
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -190,11 +184,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
-            log("INFO: Executed completely");
             ledgerDetailPopup.closePopup();
-            log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            log("INFO: Executed completely");
 
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
@@ -248,12 +239,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
-            log("INFO: Executed completely");
             ledgerDetailPopup.closePopup();
-            log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-
+            log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -303,10 +290,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerStatementPage.verifyLedgerTrans(transaction, true, lgAssetGroup);
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -356,9 +339,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerStatementPage.verifyLedgerTrans(transaction, false, lgAssetGroup);
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -412,10 +392,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -469,9 +445,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -521,10 +494,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerStatementPage.verifyLedgerTrans(transaction, true, lgLiabilityGroup);
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -575,9 +544,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerStatementPage.verifyLedgerTrans(transaction, false, lgLiabilityGroup);
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -634,10 +600,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerStatementPage.verifyLedgerTrans(transaction, false, transaction.getRemark());
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -695,9 +657,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Amounts in GBP (conver to GBP): Credit/Debit column = value inputted at step 5 in red, Running Bal get value from Original Currency");
             ledgerStatementPage.verifyLedgerTrans(transaction, true, transaction.getRemark());
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -756,10 +715,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Amounts in GBP will get value from Original Currency then convert to GBP to showy");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -817,9 +772,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Amounts in GBP will get value from Original Currency then convert to GBP to show");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -876,9 +828,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerStatementPage.verifyLedgerTrans(transaction, false, transaction.getRemark());
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -935,11 +884,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in red, Running Bal and Running Bal CT displayed\n" +
                     "Amounts in GBP (conver to GBP): Credit/Debit column = value inputted at step 5 in red, Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
-
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -996,11 +941,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Total column is sum of records\n" +
                     "Amounts in GBP will get value from Original Currency then convert to GBP to show");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
-
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
@@ -1058,10 +999,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "\n");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
             log("INFO: Executed completely");
-            log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger back to = 0");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
