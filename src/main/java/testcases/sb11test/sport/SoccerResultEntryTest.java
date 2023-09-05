@@ -13,7 +13,7 @@ public class SoccerResultEntryTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2085")
-    public void Soccer_ResultEntry_TC001(){
+    public void Soccer_ResultEntry_2085(){
         log("@title: Validate Result Entry for Soccer is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Result Entry");
@@ -27,7 +27,7 @@ public class SoccerResultEntryTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2086")
-    public void Soccer_ResultEntry_TC002(){
+    public void Soccer_ResultEntry_2086(){
         log("@title: Validate UI on Soccer  Result Entry  is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Result Entry");
@@ -39,7 +39,7 @@ public class SoccerResultEntryTest extends BaseCaseAQS {
         Assert.assertEquals(soccerResultEntryPage.ddpType.getOptions(),TYPE_LIST,"Failed! Type dropdown is not displayed");
         Assert.assertEquals(soccerResultEntryPage.lblDate.getText(),"Date","Failed! Date datetimepicker is not displayed");
         Assert.assertEquals(soccerResultEntryPage.btnShowLeagues.getText(),"Show Leagues","Failed! Show Leagues button is not displayed");
-        Assert.assertEquals(soccerResultEntryPage.ddpLeague.getOptions().contains("All"),"Failed! League dropdown is not displayed");
+        Assert.assertTrue(soccerResultEntryPage.ddpLeague.getOptions().contains("All"),"Failed! League dropdown is not displayed");
         Assert.assertEquals(soccerResultEntryPage.ddpOrderBy.getOptions(),ORDER_BY_LIST,"Failed! Order By dropdown is not displayed");
         Assert.assertEquals(soccerResultEntryPage.ddpStatus.getOptions(),STATUS_LIST,"Failed! Status dropdown is not displayed");
         Assert.assertEquals(soccerResultEntryPage.btnShow.getText(),"Show","Failed! Show button is not displayed");
@@ -56,7 +56,7 @@ public class SoccerResultEntryTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2089")
-    public void Soccer_ResultEntry_TC003(){
+    public void Soccer_ResultEntry_2089(){
         log("@title: Validate League list is displayed correctly when clicking Show Leagues ");
         String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Login with valid account");
