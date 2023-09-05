@@ -15,7 +15,7 @@ public class CricketResultEntryTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2087")
-    public void Cricket_ResultEntry_TC001(){
+    public void Cricket_ResultEntry_2087(){
         log("@title: Validate Result Entry for Cricket is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Result Entry");
@@ -29,7 +29,7 @@ public class CricketResultEntryTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2088")
-    public void Cricket_ResultEntry_TC002(){
+    public void Cricket_ResultEntry_2088(){
         log("@title: Validate UI on Cricket  Result Entry  is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Precondition: Have a specific League Name, Home Team, Away Team for testing line");

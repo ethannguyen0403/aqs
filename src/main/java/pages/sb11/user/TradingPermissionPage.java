@@ -8,7 +8,7 @@ import pages.sb11.user.popup.*;
 
 public class TradingPermissionPage extends WelcomePage {
     int colTotal = 9;
-    int colUsername = 3;
+    public int colUsername = 3;
     int colAuto = 4;
     int colClientAgent = 5;
     int colClient = 6;
@@ -33,6 +33,7 @@ public class TradingPermissionPage extends WelcomePage {
         ddpUserRole.selectByVisibleText(userRole);
         txtUsername.sendKeys(username);
         btnShow.click();
+        waitSpinnerDisappeared();
     }
 
     public void autoAssignAll(String username, boolean isChecked){
