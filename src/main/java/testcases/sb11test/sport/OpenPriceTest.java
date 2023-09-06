@@ -18,7 +18,7 @@ public class OpenPriceTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2092")
-    public void OpenPriceTC_001(){
+    public void OpenPriceTC_2092(){
         log("@title: Validate Open Price page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Open Price");
@@ -30,12 +30,12 @@ public class OpenPriceTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2093")
-    public void OpenPriceTC_002(){
+    public void OpenPriceTC_2093(){
         log("@title: Validate UI on Open Price is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Open Price");
         OpenPricePage openPricePage = welcomePage.navigatePage(SPORT,OPEN_PRICE, OpenPricePage.class);
-        log("Validate UI on Open Price is correctly displayed");
+        log("Verify 1: Validate UI on Open Price is correctly displayed");
         log("Date, Show League button, Leagues and Show button");
         openPricePage.filterResult("","All",true);
         Assert.assertEquals(openPricePage.lblDate.getText(),"Date","Failed! Date datetime picker is not displayed!");
@@ -50,7 +50,7 @@ public class OpenPriceTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2094")
-    public void OpenPriceTC_003(){
+    public void OpenPriceTC_2094(){
         log("@title: Validate League list is displayed correctly when clicking Show Leagues");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Open Price");
@@ -65,7 +65,7 @@ public class OpenPriceTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2095")
-    public void OpenPriceTC_004(){
+    public void OpenPriceTC_2095(){
         log("@title: Validate selected League is displayed correctly when clicking Show");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Open Price");

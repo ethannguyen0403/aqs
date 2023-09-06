@@ -13,8 +13,8 @@ public class CricketResultEntryPage extends WelcomePage {
     }
     public Button btnSoccer = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Soccer')]");
     public Button btnCricket = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Cricket')]");
-    public Button btnShowLeagues = Button.xpath("//app-bet-entry//button[contains(text(),'Show Leagues')]");
-    public Button btnShow = Button.xpath("//app-bet-entry//button[@class='btn btn-show']");
+    public Button btnShowLeagues = Button.xpath("//button[contains(text(),'Show Leagues')]");
+    public Button btnShow = Button.xpath("//button[@class='btn btn-show']");
     public DropDownBox ddpType = DropDownBox.id("type");
     public DropDownBox ddpLeague = DropDownBox.id("sport");
     public DropDownBox ddpOrderBy = DropDownBox.id("betType");
@@ -22,7 +22,7 @@ public class CricketResultEntryPage extends WelcomePage {
     public TextBox txtDateTime = TextBox.id("date");
     public Label lblDate = Label.xpath("//label[contains(text(),'Date')]");
     public DateTimePicker dtpDateTime = DateTimePicker.xpath(txtDateTime,"//bs-days-calendar-view");
-    public Table tbResult = Table.xpath("//app-bet-entry//div[contains(@class,'main-box-header')]//following::table[1]",10);
+    public Table tbResult = Table.xpath("//div[contains(@class,'main-box-header')]//following::table[1]",10);
     public DropDownBox ddGoTo = DropDownBox.xpath("//span[contains(text(),'Go To')]//following::select[1]");
 
     public void goToSport(String sport){
@@ -30,6 +30,7 @@ public class CricketResultEntryPage extends WelcomePage {
             btnSoccer.click();
         if(sport.equals("Cricket"))
             btnCricket.click();
+        waitSpinnerDisappeared();
     }
 
     public void filterResult(String type, String date, String league, String orderBy, String status, boolean isShow){

@@ -21,7 +21,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2073")
-    public void Cricket_League_Season_Team_Info_TC_001(){
+    public void Cricket_League_Season_Team_Info_TC_2073(){
         log("@title: Validate League/Season/Team Info for Cricket is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on Sport > League/Season/Team Info page");
@@ -37,7 +37,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2074")
-    public void Cricket_League_Season_Team_Info_TC_002(){
+    public void Cricket_League_Season_Team_Info_TC_2074(){
         log("@title:Validate UI on League/Season/Team Info for Cricket is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on Sport > League/Season/Team Info page");
@@ -66,7 +66,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2078")
-    public void Cricket_League_Season_Team_Info_TC_003(){
+    public void Cricket_League_Season_Team_Info_TC_2078(){
         log("@title: Validate that can add new Cricket League successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > League/Season/Team Info");
@@ -84,7 +84,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2079")
-    public void Cricket_League_Season_Team_Info_TC_004(){
+    public void Cricket_League_Season_Team_Info_TC_2079(){
         log("@title: Validate that can add new Cricket season successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > League/Season/Team Info");
@@ -101,7 +101,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2080")
-    public void Cricket_League_Season_Team_Info_TC_005(){
+    public void Cricket_League_Season_Team_Info_TC_2080(){
         log("@title: Validate that can add new Cricket Team successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > League/Season/Team Info");

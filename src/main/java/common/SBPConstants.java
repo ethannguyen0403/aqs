@@ -196,7 +196,7 @@ public class SBPConstants {
 
     public static class ResultEntry{
         public final static List<String> RESULT_SOCCER_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "HT Score", "FT Score", "HT Corner", "FT Corner", "HT Card", "FT Card");
-        public final static List<String> RESULT_CRICKET_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "Team A", "Team B", "IsHdp FB", "Result", "Runs", "Wkts", "Runs", "Wkts");
+        public final static List<String> RESULT_CRICKET_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "Team To Bat First", "Home Team", "Away Team", "IsHdp FB", "Runs", "Wtks", "Runs", "Wtks");
 
     }
 
@@ -207,7 +207,7 @@ public class SBPConstants {
     }
 
     public static class OpenPrice{
-        public final static List<String> TABLE_HEADER = Arrays.asList("#", "Time","i", "Event", "FT - 1x2","H/A","Draw", "FT - Handicap - OP","HDP","Price", "FT - Over/Under - OP","HDP","Price","");
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "Time\ni", "Event", "FT - 1x2\nH/A\nDraw", "FT - Handicap - OP\nHDP\nPrice", "FT - Over/Under - OP\nHDP\nPrice","");
     }
 
     public static class AccountSearch{
