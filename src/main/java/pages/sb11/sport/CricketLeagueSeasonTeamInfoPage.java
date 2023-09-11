@@ -64,6 +64,7 @@ public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
         ddCountryLeague.selectByVisibleText(countryLeague);
         txtLeagueName.sendKeys(leagueName);
         btnSearchLeague.click();
+        waitSpinnerDisappeared();
     }
 
     public ConfirmDeleteLeaguePopup openDeleteLeaguePopup(String leagueName){

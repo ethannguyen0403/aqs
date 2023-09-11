@@ -33,14 +33,14 @@ public class CricketResultEntryTest extends BaseCaseAQS {
         log("@title: Validate UI on Cricket  Result Entry  is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Precondition: Have a specific League Name, Home Team, Away Team for testing line");
-        String leagueName ="Australia NCL Women";
+        String leagueName ="QA League";
         String date = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
         Event event = new Event.Builder()
                 .sportName("Cricket")
                 .leagueName(leagueName)
                 .eventDate(date)
-                .home("Ireland")
-                .away("Nepal")
+                .home("QA Team 01")
+                .away("QA Team 02")
                 .openTime("14:00")
                 .eventStatus("Scheduled")
                 .eventDate(date)
@@ -61,7 +61,7 @@ public class CricketResultEntryTest extends BaseCaseAQS {
         Assert.assertEquals(cricketResultEntryPage.ddpType.getOptions(),TYPE_LIST,"Failed! Type dropdown is not displayed");
         Assert.assertEquals(cricketResultEntryPage.lblDate.getText(),"Date","Failed! Date datetimepicker is not displayed");
         Assert.assertEquals(cricketResultEntryPage.btnShowLeagues.getText(),"Show Leagues","Failed! Show Leagues button is not displayed");
-        Assert.assertEquals(cricketResultEntryPage.ddpLeague.getOptions().contains("All"),"Failed! League dropdown is not displayed");
+        Assert.assertTrue(cricketResultEntryPage.ddpLeague.getOptions().contains("All"),"Failed! League dropdown is not displayed");
         Assert.assertEquals(cricketResultEntryPage.ddpOrderBy.getOptions(),ORDER_BY_LIST,"Failed! Order By dropdown is not displayed");
         Assert.assertEquals(cricketResultEntryPage.ddpStatus.getOptions(),STATUS_LIST,"Failed! Status dropdown is not displayed");
         Assert.assertEquals(cricketResultEntryPage.btnShow.getText(),"Show","Failed! Show button is not displayed");

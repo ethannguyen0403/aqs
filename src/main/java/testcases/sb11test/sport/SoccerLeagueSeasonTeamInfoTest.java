@@ -20,7 +20,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2071")
-    public void Soccer_League_Season_Team_Info_TC_001(){
+    public void Soccer_League_Season_Team_Info_TC_2071(){
         log("@title: Validate League/Season/Team Info for Soccer is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on Sport > League/Season/Team Info page");
@@ -34,7 +34,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2072")
-    public void Soccer_League_Season_Team_Info_TC_002(){
+    public void Soccer_League_Season_Team_Info_TC_2072(){
         log("@title:Validate UI on League/Season/Team Info for Soccer is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on Sport > League/Season/Team Info page");
@@ -62,7 +62,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2075")
-    public void Soccer_League_Season_Team_Info_TC_003(){
+    public void Soccer_League_Season_Team_Info_TC_2075(){
         log("@title: Validate that can add new Soccer League successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > League/Season/Team Info");
@@ -79,7 +79,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2076")
-    public void Soccer_League_Season_Team_Info_TC_004(){
+    public void Soccer_League_Season_Team_Info_TC_2076(){
         log("@title: Validate that can add new Soccer season successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > League/Season/Team Info");
@@ -95,7 +95,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2077")
-    public void Soccer_League_Season_Team_Info_TC_005(){
+    public void Soccer_League_Season_Team_Info_TC_2077(){
         log("@title: Validate that can add new Soccer Team successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > League/Season/Team Info");

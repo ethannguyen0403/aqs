@@ -196,7 +196,7 @@ public class SBPConstants {
 
     public static class ResultEntry{
         public final static List<String> RESULT_SOCCER_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "HT Score", "FT Score", "HT Corner", "FT Corner", "HT Card", "FT Card");
-        public final static List<String> RESULT_CRICKET_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "Team A", "Team B", "IsHdp FB", "Result", "Runs", "Wkts", "Runs", "Wkts");
+        public final static List<String> RESULT_CRICKET_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "Team To Bat First", "Home Team", "Away Team", "IsHdp FB", "Runs", "Wtks", "Runs", "Wtks");
 
     }
 
@@ -207,7 +207,7 @@ public class SBPConstants {
     }
 
     public static class OpenPrice{
-        public final static List<String> TABLE_HEADER = Arrays.asList("#", "Time","i", "Event", "FT - 1x2","H/A","Draw", "FT - Handicap - OP","HDP","Price", "FT - Over/Under - OP","HDP","Price","");
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "Time\ni", "Event", "FT - 1x2\nH/A\nDraw", "FT - Handicap - OP\nHDP\nPrice", "FT - Over/Under - OP\nHDP\nPrice","");
     }
 
     public static class AccountSearch{
@@ -249,10 +249,10 @@ public class SBPConstants {
 
     public static class MonitorBets{
         public final static List<String> TABLE_HEADER = Arrays.asList("Info", "AC", "Event", "Selection","HDP","Stake","L","NL","T","Report","");
-        public final static List<String> SPORT_LIST = Arrays.asList("All","Soccer","Cricket","Basketball","Tennis");
+        public final static List<String> SPORT_LIST = Arrays.asList("All","Soccer","Cricket","Basketball","Tennis","American Football","Ice Hockey");
         public final static List<String> SMART_TYPE_LIST = Arrays.asList("Master","Group");
         public final static List<String> PUNTER_TYPE_LIST = Arrays.asList("Smart Punter","Normal Punter");
-        public final static List<String> BET_PLACED_IN = Arrays.asList("Last 5 Min","Last 10 Min","Last 15 Min","Last 1 Hour","Last 3 Hour", "Last 6 Hour", "Last 9 Hour", "Last 12 Hour","All Hour");
+        public final static List<String> BET_PLACED_IN = Arrays.asList("Last 5 Min","Last 10 Min","Last 15 Min","Last 1 Hour","Last 3 Hour", "Last 6 Hour", "Last 9 Hour", "Last 12 Hour","All Hours");
         public final static List<String> BET_COUNT = Arrays.asList("Last 10 Bets","Last 50 Bets","Last 100 Bets","Last 200 Bets","Last 300 Bets");
     }
 
