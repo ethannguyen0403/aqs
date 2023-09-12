@@ -64,6 +64,7 @@ public class EventSchedulePage extends WelcomePage {
     public Button btnShowLeague = Button.xpath("//span[text()='Show League']");
     public void goToSport(String sport){
       ddpSport.selectByVisibleContainsText(sport);
+      waitPageLoad();
     }
 
     public void showLeague(String league, String date){
