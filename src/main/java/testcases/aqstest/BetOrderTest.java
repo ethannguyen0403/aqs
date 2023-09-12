@@ -579,7 +579,7 @@ public class BetOrderTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "483")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     public void BetOrder_C483(){
         log("@title: Verify hide/unhide all column is worked");
         log("@Step 1: Login with valid account");
