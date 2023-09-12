@@ -26,7 +26,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     String clientCode = "QA Client (No.121 QA Client)";
     String bookieCode = "QA Bookie";
     String companyUnit = "Kastraki Limited";
-    String financialYear = "Year 2022-2023";
+    String financialYear = "Year 2023-2024";
     String lgExpenditureGroup = "QA Ledger Group Expenditure";
     String debitExpAcc = "AutoExpenditureDebit";
     String creditExpAcc = "AutoExpenditureCredit";
@@ -72,7 +72,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2160")
-    public void Journal_Entries_TC_001(){
+    public void Journal_Entries_TC_2160(){
         log("@title: Validate Journal Entries page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Journal Entries");
@@ -84,7 +84,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2161")
-    public void Journal_Entries_TC_002(){
+    public void Journal_Entries_TC_2161(){
         log("@title: Validate UI on Journal Entries is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Journal Entries");
@@ -117,7 +117,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @TestRails(id="2162")
     @Test(groups = {"regression"})
     @Parameters({"bookieCode","bookieSuperMasterCode"})
-    public void Journal_Entries_TC_003(String bookieCode, String bookieSuperMasterCode){
+    public void Journal_Entries_TC_2162(String bookieCode, String bookieSuperMasterCode){
         log("@title: Validate users can make transactions successfully between bookies");
         Transaction transaction = new Transaction.Builder()
                 .bookieDebit(bookieCode)
@@ -153,7 +153,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @TestRails(id="2163")
     @Test(groups = {"regression"})
     @Parameters({"clientCode","bookieSuperMasterCode"})
-    public void Journal_Entries_TC_004(String clientCode, String bookieSuperMasterCode){
+    public void Journal_Entries_TC_2163(String clientCode, String bookieSuperMasterCode){
         log("@title: Validate users can make transactions successfully between client");
         Transaction transaction = new Transaction.Builder()
                 .clientDebit(clientCode)
@@ -189,7 +189,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @TestRails(id="2164")
     @Test(groups = {"regression"})
     @Parameters({"clientCode","bookieSuperMasterCode"})
-    public void Journal_Entries_TC_005(){
+    public void Journal_Entries_TC_2164(){
         log("@title: Validate transaction Debit of Ledger Type = Expenditure");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");

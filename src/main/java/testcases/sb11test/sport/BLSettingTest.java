@@ -1,10 +1,10 @@
 package testcases.sb11test.sport;
 
-import common.SBPConstants;
+import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.sb11.sport.BLSettingPage;
-import pages.sb11.sport.OpenPricePage;
+import pages.sb11.trading.popup.BLSettingsPopup;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 
@@ -14,7 +14,7 @@ public class BLSettingTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2096")
-    public void BLSettingsTC_001(){
+    public void BLSettingsTC_2096(){
         log("@title: Validate BL Settings page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > BL Settings");
@@ -26,7 +26,7 @@ public class BLSettingTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2097")
-    public void BLSettingsTC_002(){
+    public void BLSettingsTC_2097(){
         log("@title: Validate UI on Open Price is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > BL Settings");
@@ -45,7 +45,7 @@ public class BLSettingTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2098")
-    public void BLSettingsTC_003(){
+    public void BLSettingsTC_2098(){
         log("@title: Validate League list is displayed correctly when clicking Show Leagues");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > BL Settings");
@@ -59,7 +59,7 @@ public class BLSettingTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2099")
-    public void BLSettingsTC_004(){
+    public void BLSettingsTC_2099(){
         log("@title: Validate selected League is displayed correctly when clicking Show");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > BL Settings");
@@ -75,22 +75,26 @@ public class BLSettingTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2100")
-    public void BLSettingsTC_005(){
-        log("@title: Validate selected League is displayed correctly when clicking Show");
-        log("@Step 1: Login with valid account");
-        log("@Step 2: Access Sport > BL Settings");
+    public void BLSettingsTC_2100(){
+        log("@title: Validate that BL Settings is displayed correctly on BBT page");
+        log("@Step 1: Access Sport > BL Settings");
         BLSettingPage blSettingPage = welcomePage.navigatePage(SPORT,BL_SETTINGS, BLSettingPage.class);
-        log("@Step 3:  Select Date and click Show League ");
-        String league = blSettingPage.getFirstLeague();
-        log("@Step 4: Select a league and click Show");
-        blSettingPage.filterResult("",league,"KOT",true);
+        log("@Step 2: Select Date and click Show League");
+        log("@Step 3: Select a league and click Show");
+        log("@Step 4: Click Edit on an event");
+        blSettingPage.filterResult("",blSettingPage.getFirstLeague(),"KOT",true);
         log("@Step 5: Click Edit on an event");
-        blSettingPage.openBLSettingPopup("JS Kabylie");
-        log("@Step 6: Fill full info and click Submit");
-        log("Navigate to Soccer > BBT");
-        log("Filter with event at step 4");
-        log("Validate Event of selected league is displayed correctly on Event table");
-
+        String eventName = blSettingPage.getFirstEventNameOfLeague();
+        try {
+            BLSettingsPopup blSettingsPopup = blSettingPage.openBLSettingPopup(eventName);
+            log("@Step 6: Fill full info and click Submit");
+            blSettingsPopup.fillBLSettings("1","KP","RB",true);
+            log("Validate Event of selected league is displayed correctly on Event table");
+            blSettingPage.isEventSettingDisplayCorrect(eventName,"1","KP","RB");
+        } finally {
+            BLSettingsPopup blSettingsPopup = blSettingPage.openBLSettingPopup(eventName);
+            blSettingsPopup.fillBLSettings("-","-","-",true);
+        }
         log("INFO: Executed completely");
     }
 

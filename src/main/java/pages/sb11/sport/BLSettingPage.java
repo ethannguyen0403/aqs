@@ -6,15 +6,19 @@ import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
-import pages.sb11.sport.popup.CreateSoccerSeasonPopup;
 import pages.sb11.trading.popup.BLSettingsPopup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BLSettingPage extends WelcomePage {
-    int colEventName = 4;
+    public int colEventName = 4;
     int colEdit = 5;
+    int colTV = 6;
+    int colKP = 7;
+    int colLiveRB = 8;
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
     public String getTitlePage ()
     {
@@ -43,8 +47,19 @@ public class BLSettingPage extends WelcomePage {
     }
 
     public BLSettingsPopup openBLSettingPopup(String eventName){
-        int rowIndex = getRowContainsEvent(eventName);
-        tbBLSettings.getControlOfCell(1,colEventName, rowIndex,"a").click();
+//        int rowIndex = getRowContainsEvent(eventName);
+        Button btnEdit = null;
+        for (int i = 0; i <= tbBLSettings.getNumberOfRows(false,false);i++){
+            if (!(tbBLSettings.getxPathOfCell(1,colEventName,i,null) == null)){
+                String nameEvent = Label.xpath(tbBLSettings.getxPathOfCell(1,colEventName,i,null)).getText();
+                if (nameEvent.equalsIgnoreCase(eventName)){
+                    btnEdit = Button.xpath(tbBLSettings.getxPathOfCell(1,colEdit,i,null)+"/a");
+                    break;
+                }
+            }
+        }
+        btnEdit.click();
+//        tbBLSettings.getControlOfCell(1,colEdit, rowIndex,"a").click();
         return new BLSettingsPopup();
     }
 
@@ -66,7 +81,7 @@ public class BLSettingPage extends WelcomePage {
     }
 
     private int getRowContainsEvent(String eventName){
-        int i = 1;
+        int i = 2;
         Label lblEventName;
         while (true){
             lblEventName = Label.xpath(tbBLSettings.getxPathOfCell(1,colEventName,i,null));
@@ -96,5 +111,24 @@ public class BLSettingPage extends WelcomePage {
 
     public List<String> getListLeague(){
         return ddpLeague.getOptions();
+    }
+    public String getFirstEventNameOfLeague(){
+        String eventName = null;
+        if (!(tbBLSettings.getxPathOfCell(1,colEventName,2,null) == null)){
+            eventName = Label.xpath(tbBLSettings.getxPathOfCell(1,colEventName,2,null)).getText();
+        } else {
+            System.out.println("There is not event!");
+        }
+        return eventName;
+    }
+
+    public void isEventSettingDisplayCorrect(String eventName, String tvValue, String kpValue, String liveRBValue) {
+        int rowIndex = getRowContainsEvent(eventName);
+        String valueTV = Label.xpath(tbBLSettings.getxPathOfCell(1,colTV,rowIndex,null)).getText();
+        String valueKP = Label.xpath(tbBLSettings.getxPathOfCell(1,colKP,rowIndex,null)).getText();
+        String valueLiveRB = Label.xpath(tbBLSettings.getxPathOfCell(1,colLiveRB,2,null)).getText();
+        Assert.assertTrue(valueTV.equalsIgnoreCase(tvValue),"TV value is not correct!");
+        Assert.assertTrue(valueKP.equalsIgnoreCase(kpValue),"KP value is not correct!");
+        Assert.assertTrue(valueLiveRB.equalsIgnoreCase(liveRBValue),"Live RB value is not correct!");
     }
 }

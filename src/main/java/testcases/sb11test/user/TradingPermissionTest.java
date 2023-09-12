@@ -49,7 +49,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2068")
     @Parameters("username")
-    public void Trading_Permission_TC_003(String username){
+    public void Trading_Permission_TC_2068(String username){
         log("@title: Validate that can search username succesfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on User > Trading Permission page");
@@ -58,14 +58,14 @@ public class TradingPermissionTest extends BaseCaseAQS {
         log("@Step 4: Click Show");
         tradingPermissionPage.filterAccount(COMPANY_UNIT,"All",username);
         log("Validate searched user is displayed correctly on Customer table");
-        Assert.assertTrue(tradingPermissionPage.isAccountDisplayed(username),"Failed! " + username + " is not displayed!");
+        Assert.assertEquals(tradingPermissionPage.tbTradPermission.getColumn(tradingPermissionPage.colUsername,10,false).get(0),username,"Failed! " + username + " is not displayed!");
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression"})
     @TestRails(id = "2069")
     @Parameters("username")
-    public void Trading_Permission_TC_004(String username){
+    public void Trading_Permission_TC_2069(String username){
         log("@title: Validate that all Permission is disabled after checking Auto-assigned All");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on User > Trading Permission page");
@@ -80,18 +80,21 @@ public class TradingPermissionTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2070")
     @Parameters("username")
-    public void Trading_Permission_TC_005(String username){
-        log("@title: Validate that all Permission is disabled after checking Auto-assigned All");
+    public void Trading_Permission_TC_2070(String username){
+        log("@title: Validate that all Permission is enabled after checking Auto-assigned All");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on User > Trading Permission page");
         TradingPermissionPage tradingPermissionPage = welcomePage.navigatePage(USER,TRADING_PERMISSION,TradingPermissionPage.class);
         log("@Step 3: Uncheck Auto-assigned All checkbox of any item");
         tradingPermissionPage.filterAccount(COMPANY_UNIT,"All",username);
         log("Validate that all Permission is enabled and can be clickable");
-        tradingPermissionPage.autoAssignAll(username,true);
-        tradingPermissionPage.verifyPermissionEnabled(username,true);
-        log("INFO: Executed completely");
-        log("Post condition: Enable auto assign");
-        tradingPermissionPage.autoAssignAll(username,true);
+        try{
+            tradingPermissionPage.autoAssignAll(username,true);
+            tradingPermissionPage.verifyPermissionEnabled(username,true);
+            log("INFO: Executed completely");
+            log("Post condition: Enable auto assign");
+        } finally {
+            tradingPermissionPage.autoAssignAll(username,true);
+        }
     }
 }
