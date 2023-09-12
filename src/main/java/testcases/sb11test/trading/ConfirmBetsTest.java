@@ -301,8 +301,8 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .sportName("Cricket")
                 .leagueName("QA League")
                 .eventDate(dateAPI)
-                .home("QA 01")
-                .away("QA 02")
+                .home("QA Team 01")
+                .away("QA Team 02")
                 .openTime("13:00")
                 .eventStatus("Scheduled")
                 .isLive(false)
@@ -361,11 +361,11 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +7"));
         // define event info
         Event eventInfo = new Event.Builder()
-                .sportName("Soccer")
+                .sportName("Cricket")
                 .leagueName("QA League")
                 .eventDate(dateAPI)
-                .home("QA 01")
-                .away("QA 02")
+                .home("QA Team 01")
+                .away("QA Team 02")
                 .openTime("13:00")
                 .eventStatus("Scheduled")
                 .isLive(false)
@@ -408,7 +408,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
 
         log("@Step 4: Find the bet at the precondition > edit any information of the bet (Selection/HDP/Odds/Stake)");
         log("@Step 5: Click on 'Update Bet'");
-        order.setRequireStake(17.50);
+        order.setSelection(eventInfo.getAway());
         confirmBetsPage.updateOrder(order, false);
 
         log("@Verify 1: Bet info is correctly updated in confirmed bets ");

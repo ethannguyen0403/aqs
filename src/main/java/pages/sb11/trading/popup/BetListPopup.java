@@ -142,9 +142,14 @@ public class BetListPopup {
             } else
                 expectedHDP = "";
         }
+        String expectedSelection = expectedOrder.getSelection();
+        if(betType.equalsIgnoreCase("Lay"))
+        {
+            expectedSelection = String.format("%s (Lay)",expectedOrder.getSelection());
+        }
         Assert.assertEquals(accountCode, expectedOrder.getAccountCode(), "Failed! Account code is incorrect");
         Assert.assertEquals(betType, expectedBetType, "Failed! Bet Type is incorrect");
-        Assert.assertEquals(selection, expectedOrder.getSelection(), "Failed! Selection is incorrect");
+        Assert.assertEquals(selection, expectedSelection, "Failed! Selection is incorrect");
         Assert.assertEquals(hdp, expectedHDP, "Failed! HDP is incorrect");
         Assert.assertEquals(live, expectedLive, "Failed! Live Score is incorrect is in correct");
         Assert.assertEquals(price, String.format("%.3f (%s)", expectedOrder.getPrice(), expectedOrder.getOddType()), "Failed! Price is incorrect is in correct");
