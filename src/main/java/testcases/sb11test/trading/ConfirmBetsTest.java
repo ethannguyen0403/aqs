@@ -29,12 +29,10 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("Precondition: Init data and Place a new bet on Bet Entry for Soccer to have a pending bet");
         String date = String.format(DateUtils.getDate(-1, "d/MM/yyyy", "GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, "All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, league);
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, league);
+        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(SOCCER).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
@@ -523,6 +521,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("Note: Tobe able settled order after place bet > commfirmed and settled => we should place in the event in the past");
         String dateAPI = String.format(DateUtils.getDate(-2, "yyyy-MM-dd", "GMT +7"));
         String date = String.format(DateUtils.getDate(-2, "dd/MM/yyyy", "GMT +7"));
+        String todate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", "GMT +7"));
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
@@ -546,13 +545,14 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         confirmBetsPage.confirmBet(order);
 
         log("@Step 1: Login to SB11 >> go to Bet Settlement >> Confirmed");
-        log("@Step 2: Select the bet >>  click 'Settle and Send Settlement Email'");
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed", "", "", "", accountCode);
+        betSettlementPage.filter("Confirmed", date, todate, "", accountCode);
+
+        log("@Step 2: Select the bet >>  click 'Settle and Send Settlement Email'");
         betSettlementPage.settleAndSendSettlementEmail(order);
 
         log("@Step 3: Select status as Settled");
-        betSettlementPage.filter("Settled", "", "", "", accountCode);
+        betSettlementPage.filter("Settled", date, todate ,"", accountCode);
 
         log("@Veirfy 1 : Validate the bet displays with the updated values");
         betSettlementPage.verifyOrderInfo(order);
@@ -630,7 +630,6 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
-        String league = soccerBetEntryPage.getFirstLeague();
 
         List<Order> lstOrder = new ArrayList<>();
         // define order info
@@ -666,7 +665,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("@Verify 1: Validate the bet is updated with new values accordingly");
         betEntryPage = confirmBetsPage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, league);
+        soccerBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
         BetListPopup betListPopup = soccerBetEntryPage.openBetList(eventInfo.getHome());
 
         log("@Verify 2: Bets information is displayed correctly in Bet List");

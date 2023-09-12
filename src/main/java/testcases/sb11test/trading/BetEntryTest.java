@@ -99,7 +99,6 @@ public class BetEntryTest extends BaseCaseAQS {
 
         log("@Verify 2: Bets information is displayed correctly in Bet List");
         lstOrder = betListPopup.verifyListOrderInfoDisplay(lstOrder,"Handicap","");
-        // lstOrder = GetSoccerEventUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder,eventInfo.getEventId());
         betListPopup.close();
 
         log("@Post-Condition: Cancel Pending bet "+ lstOrder.get(0).getBetId() +" in Confirm Bet page");
@@ -205,15 +204,14 @@ public class BetEntryTest extends BaseCaseAQS {
         log("@Step 2: Navigate to Trading > Bet Entry");
         String date = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
 
         log("@Step 3: Click on 'Soccer' > select any League > click Show");
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
 
         log("@Step Precondition: Get the first Event of Frist League of Today Soccer");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
-        soccerBetEntryPage.showLeague(companyUnit,"",league);
+        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
 
         log("@Step Precondition: Define order to place bet");
         List<Order> lstOrder = new ArrayList<>();
@@ -252,15 +250,13 @@ public class BetEntryTest extends BaseCaseAQS {
         log("@Step 2: Navigate to Trading > Bet Entry");
         String date = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
 
         log("@Step 3: Click on 'Soccer' > select any League > click Show");
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-
         log("@Step Precondition: Get the first Event of Frist League of Today Soccer");
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
 
         log("@Step Precondition: Define order to place bet");
         List<Order> lstOrder = new ArrayList<>();
@@ -321,15 +317,14 @@ public class BetEntryTest extends BaseCaseAQS {
         log("@Step 2: Navigate to Trading > Bet Entry");
         String date = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
 
         log("@Step 3: Click on 'Soccer' > select any League > click Show");
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
 
         log("@Step Precondition: Get the first Event of Frist League of Today Soccer");
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
+        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
 
         log("@Step Precondition: Define order to place bet");
         List<Order> lstOrder = new ArrayList<>();

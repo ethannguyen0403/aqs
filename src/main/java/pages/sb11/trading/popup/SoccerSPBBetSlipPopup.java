@@ -32,7 +32,7 @@ public class SoccerSPBBetSlipPopup {
     private Label lblCopyBetToSPBPS7SameOdds = Label.xpath("//label[@for='sameOddMore']");
     private CheckBox cbCopyBetToSPBPS7MinusOdds = CheckBox.xpath("//input[@id='minusOddMore']");
     private Label lblCopyBetToSPBPS7MinusOdds = Label.xpath("//label[@for='minusOddMore']");
-    private Button btnPlaceBet = Button.xpath("//app-entry-bet-slip-more-option-form//button[contains(text(),'Place Bet')]");
+    public Button btnPlaceBet = Button.xpath("//app-entry-bet-slip-more-option-form//button[contains(text(),'Place Bet')]");
     private Button btnClose = Button.xpath("//app-entry-bet-slip-more-option-form//div[contains(@class,'main-box-header')]//span[2]");
 
     /**

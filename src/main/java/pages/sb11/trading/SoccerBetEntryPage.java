@@ -169,8 +169,10 @@ public class SoccerBetEntryPage extends BetEntryPage {
         btnShow.click();
         int rowIndex = getEventRowIndex(eventName);
         int colIndex = colMore;
-        tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
-        return new SoccerSPBBetSlipPopup();
+        tblEvent.getControlOfCell(1,colIndex, rowIndex,"div[contains(@class,'cursor-pointer cus-more')]").click();
+        SoccerSPBBetSlipPopup popup = new SoccerSPBBetSlipPopup();
+        popup.btnPlaceBet.isDisplayed();
+        return popup;
 
     }
 
@@ -220,7 +222,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
      */
     public void placeBet(String accountCode, String eventName, boolean isFullTime, String type,List<Order> lstOrder,boolean isCopySPBPS7SameOdds, boolean isCopySPBPS7MinusOdds, boolean isPlaceBet){
         Order order = lstOrder.get(0);
-        boolean fullTime = false;
+        boolean fullTime = isFullTime;
         if(order.getStage().equalsIgnoreCase("FT") || order.getStage().equalsIgnoreCase("Full Time"))
         {
             fullTime = true;
