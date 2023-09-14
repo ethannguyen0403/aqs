@@ -55,7 +55,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         Assert.assertEquals(monitorBetsPage.lblTodayEvent.getText(),"Today Event(s)","Failed! Today Events(s) checkbox is not displayed");
         Assert.assertEquals(monitorBetsPage.ddpLiveNonLive.getOptions(),LIVE_NONLIVE_LIST,"Failed! Dropdown Live/NonLive is not displayed");
         Assert.assertEquals(monitorBetsPage.ddpCurrency.getOptions(),CURRENCY_LIST,"Failed! Dropdown Currency is not displayed");
-        Assert.assertEquals(monitorBetsPage.ddpStake.getOptions(),STAKE_LIST,"Failed! Dropdown Stake is not displayed");
+        Assert.assertEquals(monitorBetsPage.ddpStake.getOptions(),STAKE_LIST_ALL,"Failed! Dropdown Stake is not displayed");
         log("Show Bet Types, Show Masters, Show Traders, Show Leagues, Show Events, Reset All Filters and Show button");
         Assert.assertTrue(monitorBetsPage.lblShowBetType.isDisplayed(),"Failed! Show Bet Types label is not displayed");
         Assert.assertTrue(monitorBetsPage.lblShowLeagues.isDisplayed(),"Failed! Show Leagues label is not displayed");
@@ -80,12 +80,12 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Step 4: Click any currency at AC column");
         monitorBetsPage.filterResult(sport,smartType,punterType,betPlaceIn,betCount,false,lrbRule,liveNonLive,currency,stake,true);
         String accountName = monitorBetsPage.tblOrder.getColumn(monitorBetsPage.colAC,5,false).get(0).split("\n")[0];
-        String accCurrency = monitorBetsPage.tblOrder.getColumn(monitorBetsPage.colStake,5,false).get(0).split("\n")[2];
+//        String accCurrency = monitorBetsPage.tblOrder.getColumn(monitorBetsPage.colStake,5,false).get(0).split("\n")[2];
         log("Validate Performance By Month is displayed correctly title");
         PerformanceByMonthPage performanceByMonthPage = monitorBetsPage.openPerfByMonth(accountName);
         Assert.assertTrue(performanceByMonthPage.getTitlePage().contains("Performance By Month"), "Failed! Performance By Month popup is not displayed");
         log("Validate group code name is displayed correctly on header with format [smart group name] - [smart group currency] - Last 12 Month Performance");
-        Assert.assertEquals(performanceByMonthPage.getTableHeader(), accountName + " - " + accCurrency + " - Last 12 Month Performance");
+        Assert.assertEquals(performanceByMonthPage.getTableHeader(), accountName + " - " + accCur + " - Last 12 Month Performance");
         log("INFO: Executed completely");
     }
 

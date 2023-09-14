@@ -18,7 +18,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2066")
-    public void Trading_Permission_TC_001(){
+    public void Trading_Permission_TC_2066(){
         log("@title: Validate User Management page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on User > Trading Permission page");
@@ -30,7 +30,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2067")
-    public void Trading_Permission_TC_002(){
+    public void Trading_Permission_TC_2067(){
         log("@title: Validate User Management page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on User > Trading Permission page");
@@ -72,6 +72,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         TradingPermissionPage tradingPermissionPage = welcomePage.navigatePage(USER,TRADING_PERMISSION,TradingPermissionPage.class);
         log("@Step 3: Check Auto-assigned All checkbox of any item");
         tradingPermissionPage.filterAccount(COMPANY_UNIT,"All",username);
+        tradingPermissionPage.autoAssignAll(username,false);
         log("Validate that all Permission is disabled: Client Agent, Client, Smart (M), Smart (A), Smart (G)");
         tradingPermissionPage.verifyPermissionEnabled(username,false);
         log("INFO: Executed completely");
