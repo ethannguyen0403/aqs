@@ -9,8 +9,6 @@ import pages.sb11.soccer.PerformanceByMonthPage;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 
-import java.sql.DriverManager;
-
 import static common.SBPConstants.*;
 
 public class MonitorBetsTest extends BaseCaseAQS {
@@ -29,7 +27,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2101")
-    public void MonitorBetsTC_001(){
+    public void MonitorBetsTC_2101(){
         log("@title: Validate Monitor Bets page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > Monitor Bets");
@@ -41,7 +39,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2102")
-    public void MonitorBetsTC_002(){
+    public void MonitorBetsTC_2102(){
         log("@title: Validate UI on Monitor Bets is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Monitor Bets");
@@ -53,11 +51,11 @@ public class MonitorBetsTest extends BaseCaseAQS {
         Assert.assertEquals(monitorBetsPage.ddpPunterType.getOptions(),MonitorBets.PUNTER_TYPE_LIST,"Failed! Dropdown Punter Type is not displayed");
         Assert.assertEquals(monitorBetsPage.ddpBetPlacedIN.getOptions(),MonitorBets.BET_PLACED_IN,"Failed! Dropdown Bet Placed In is not displayed");
         Assert.assertEquals(monitorBetsPage.ddpBetCount.getOptions(),MonitorBets.BET_COUNT,"Failed! Dropdown Bet Count is not displayed");
-        Assert.assertEquals(monitorBetsPage.ddpLRBRule.getOptions(),"[LRB-Rule]","Failed! Dropdown LRB-Rule is not displayed");
+        Assert.assertEquals(monitorBetsPage.ddpLRBRule.getOptions().get(0),"[LRB-Rule]","Failed! Dropdown LRB-Rule is not displayed");
         Assert.assertEquals(monitorBetsPage.lblTodayEvent.getText(),"Today Event(s)","Failed! Today Events(s) checkbox is not displayed");
         Assert.assertEquals(monitorBetsPage.ddpLiveNonLive.getOptions(),LIVE_NONLIVE_LIST,"Failed! Dropdown Live/NonLive is not displayed");
         Assert.assertEquals(monitorBetsPage.ddpCurrency.getOptions(),CURRENCY_LIST,"Failed! Dropdown Currency is not displayed");
-        Assert.assertEquals(monitorBetsPage.ddpStake.getOptions(),STAKE_LIST,"Failed! Dropdown Stake is not displayed");
+        Assert.assertEquals(monitorBetsPage.ddpStake.getOptions(),STAKE_LIST_ALL,"Failed! Dropdown Stake is not displayed");
         log("Show Bet Types, Show Masters, Show Traders, Show Leagues, Show Events, Reset All Filters and Show button");
         Assert.assertTrue(monitorBetsPage.lblShowBetType.isDisplayed(),"Failed! Show Bet Types label is not displayed");
         Assert.assertTrue(monitorBetsPage.lblShowLeagues.isDisplayed(),"Failed! Show Leagues label is not displayed");
@@ -73,7 +71,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2103")
-    public void MonitorBetsTC_003(){
+    public void MonitorBetsTC_2103(){
         log("@title: Validate Performance By Month is displayed correctly when clicking account at AC column");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Monitor Bets");
@@ -81,17 +79,19 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Step 3: Filter with valid info and click Show");
         log("@Step 4: Click any currency at AC column");
         monitorBetsPage.filterResult(sport,smartType,punterType,betPlaceIn,betCount,false,lrbRule,liveNonLive,currency,stake,true);
+        String accountName = monitorBetsPage.tblOrder.getColumn(monitorBetsPage.colAC,5,false).get(0).split("\n")[0];
+//        String accCurrency = monitorBetsPage.tblOrder.getColumn(monitorBetsPage.colStake,5,false).get(0).split("\n")[2];
         log("Validate Performance By Month is displayed correctly title");
-        PerformanceByMonthPage performanceByMonthPage = monitorBetsPage.openPerfByMonth(accountCode);
+        PerformanceByMonthPage performanceByMonthPage = monitorBetsPage.openPerfByMonth(accountName);
         Assert.assertTrue(performanceByMonthPage.getTitlePage().contains("Performance By Month"), "Failed! Performance By Month popup is not displayed");
         log("Validate group code name is displayed correctly on header with format [smart group name] - [smart group currency] - Last 12 Month Performance");
-        Assert.assertEquals(performanceByMonthPage.getTableHeader(), accountCode + " - " + accCur + " - Last 12 Month Performance");
+        Assert.assertEquals(performanceByMonthPage.getTableHeader(), accountName + " - " + accCur + " - Last 12 Month Performance");
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression"})
     @TestRails(id = "2104")
-    public void MonitorBetsTC_004(){
+    public void MonitorBetsTC_2104(){
         log("@title: Validate Pending Bets is displayed correctly when clicking currency at Stake column");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Monitor Bets");
@@ -99,17 +99,19 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Step 3: Filter with valid info and click Show");
         log("@Step 4: Click any currency at Stake column");
         monitorBetsPage.filterResult(sport,smartType,punterType,betPlaceIn,betCount,false,lrbRule,liveNonLive,currency,stake,true);
+        String accountName = monitorBetsPage.tblOrder.getColumn(monitorBetsPage.colAC,5,false).get(0).split("\n")[0];
+        String accCurrency = monitorBetsPage.tblOrder.getColumn(monitorBetsPage.colStake,5,false).get(0).split("\n")[2];
         log("Validate Performance By Month is displayed correctly title");
-        PendingBetsPage pendingBetsPage = monitorBetsPage.openPendingBets(accountCode);
+        PendingBetsPage pendingBetsPage = monitorBetsPage.openPendingBets(accountName);
         Assert.assertTrue(pendingBetsPage.getTitlePage().contains("Pending Bets"), "Failed! Pending Bets popup is not displayed");
         log("Validate group code name is displayed correctly on header with format [smart group name] - [smart group currency]");
-        Assert.assertEquals(pendingBetsPage.getTableHeader(), accountCode + " - " + accCur);
+        Assert.assertEquals(pendingBetsPage.getTableHeader(), accountName + " - " + accCurrency);
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression"})
     @TestRails(id = "2105")
-    public void MonitorBetsTC_005(){
+    public void MonitorBetsTC_2105(){
         log("@title: Validate Last 12 Days Performance is displayed correctly when clicking data on T column");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Monitor Bets");
@@ -117,11 +119,13 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Step 3: Filter with valid info and click Show");
         log("@Step 4: Click any currency at T column");
         monitorBetsPage.filterResult(sport,smartType,punterType,betPlaceIn,betCount,false,lrbRule,liveNonLive,currency,stake,true);
+        String accountName = monitorBetsPage.tblOrder.getColumn(monitorBetsPage.colAC,5,false).get(0).split("\n")[0];
+        String accCurrency = monitorBetsPage.tblOrder.getColumn(monitorBetsPage.colStake,5,false).get(0).split("\n")[2];
         log("Validate Performance By Month is displayed correctly title");
-        Last12DaysPerformancePage last12DaysPerformancePage = monitorBetsPage.openLast12DaysPerf(accountCode);
-        Assert.assertTrue(last12DaysPerformancePage.getTitlePage().contains("Pending Bets"), "Failed! Pending Bets popup is not displayed");
+        Last12DaysPerformancePage last12DaysPerformancePage = monitorBetsPage.openLast12DaysPerf(accountName);
+        Assert.assertTrue(last12DaysPerformancePage.getTitlePage().contains("Last 12 Days Performance"), "Failed! Pending Bets popup is not displayed");
         log("Validate group code name is displayed correctly on header with format [smart group name] - [smart group currency]");
-        Assert.assertEquals(last12DaysPerformancePage.getTableHeader(), accCur + " - " + accountCode);
+        Assert.assertEquals(last12DaysPerformancePage.getTableHeader(), accCurrency + " - " + accountName);
         log("INFO: Executed completely");
     }
 }
