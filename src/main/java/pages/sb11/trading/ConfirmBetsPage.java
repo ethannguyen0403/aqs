@@ -349,13 +349,13 @@ public class ConfirmBetsPage extends WelcomePage {
         System.out.println(String.format("Update order %s  at row %s", order.getOrderId(), orderIndex));
         DropDownBox.xpath(tblOrder.getxPathOfCell(1, colSelection, orderIndex, "select")).selectByVisibleText(order.getSelection());
         DropDownBox.xpath(tblOrder.getxPathOfCell(1, colBL, orderIndex, "select")).selectByVisibleText(order.getBetType());
-        //TODO: [Isabella 12/12/20022]find the solution to update value for Odds and stake textbox in this Comfirm bet page
-       // TextBox.xpath(tblOrder.getxPathOfCell(1, colOdds, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getPrice()));
-       /* TextBox txtOdds = TextBox.xpath(tblOrder.getxPathOfCell(1, colOdds, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getPrice()));
-        clearAndUpdateTextBoxValue(txtOdds,String.format("%s",order.getPrice()));*/
-       // TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getRequireStake()));
-     /*   TextBox txtStake =TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, orderIndex, "input[1]"));//.sendKeys(String.format("%s",order.getRequireStake()));
-        clearAndUpdateTextBoxValue(txtStake,String.format("%s",order.getRequireStake()));*/
+        //TODO: [Isabella 12/12/20022]find the solution to update value for Odds and stake textbox in this Comfirm bet page with settled status
+//        TextBox.xpath(tblOrder.getxPathOfCell(1, colOdds, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getPrice()));
+//       TextBox txtOdds = TextBox.xpath(tblOrder.getxPathOfCell(1, colOdds, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getPrice()));
+//        clearAndUpdateTextBoxValue(txtOdds,String.format("%s",order.getPrice()));
+//        TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getRequireStake()));
+//       TextBox txtStake =TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, orderIndex, "input[1]"));//.sendKeys(String.format("%s",order.getRequireStake()));
+//        clearAndUpdateTextBoxValue(txtStake,String.format("%s",order.getRequireStake()));
         if(order.getSport().equalsIgnoreCase("Cricket")){
             TextBox.xpath(tblOrder.getxPathOfCell(1, colHdp, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getHandicapWtks()));
             TextBox.xpath(tblOrder.getxPathOfCell(1, colHdp, orderIndex, "input[2]")).sendKeys(String.format("%s",order.getHandicapRuns()));
