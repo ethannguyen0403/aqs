@@ -335,7 +335,7 @@ public class BetOrderTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "476")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_qc"})
     @Parameters(("username"))
     public void BetOrder_C476(String username){
         log("@title: Verify order display in Pending when clicking Pending link Confirm section");
