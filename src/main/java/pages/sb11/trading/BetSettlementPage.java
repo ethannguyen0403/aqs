@@ -235,10 +235,19 @@ public class BetSettlementPage extends WelcomePage {
     }
     public void sendBetListEmail(Order order){
         //to wait the order is have win loss result
-        getWinlossAmountofOrder(order);
-        selectOrder(order);
-        btnSendBetListEmail.scrollToTop();
-        btnSendBetListEmail.click();
+        //getWinlossAmountofOrder(order);
+        try {
+            Thread.sleep(8000); //hard code sleep action for waiting report to generate Win/Lose
+            btnSearch.click();
+            waitSpinnerDisappeared();
+            selectOrder(order);
+            btnSendBetListEmail.scrollToTop();
+            btnSendBetListEmail.click();
+            ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
+            confirmPopupControl.confirmYes();
+        } catch (InterruptedException e) {
+            System.out.println("Failed! Win/Lose data is not shown!");
+        }
     }
     public void exportSelectedBEt(Order order){
         selectOrder(order);
