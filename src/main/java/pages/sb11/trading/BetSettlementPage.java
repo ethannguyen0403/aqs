@@ -9,6 +9,8 @@ import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.control.ConfirmPopupControl;
 
+import java.util.concurrent.TimeUnit;
+
 import static common.ESSConstants.HomePage.EN_US;
 import static common.SBPConstants.SPORT_SIGN_MAP;
 
@@ -218,11 +220,18 @@ public class BetSettlementPage extends WelcomePage {
     }
 
     public void settleAndSendSettlementEmail(Order order){
-        selectOrder(order);
-        btnSettleSendSettlementEmail.scrollToTop();
-        btnSettleSendSettlementEmail.click();
-        ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
-        confirmPopupControl.confirmYes();
+        try {
+            Thread.sleep(8000); //hard code sleep action for waiting report to generate Win/Lose
+            btnSearch.click();
+            waitSpinnerDisappeared();
+            selectOrder(order);
+            btnSettleSendSettlementEmail.scrollToTop();
+            btnSettleSendSettlementEmail.click();
+            ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
+            confirmPopupControl.confirmYes();
+        } catch (InterruptedException e) {
+            System.out.println("Failed! Win/Lose data is not shown!");
+        }
     }
     public void sendBetListEmail(Order order){
         //to wait the order is have win loss result

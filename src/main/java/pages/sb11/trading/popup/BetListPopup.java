@@ -143,10 +143,6 @@ public class BetListPopup {
                 expectedHDP = "";
         }
         String expectedSelection = expectedOrder.getSelection();
-        if(betType.equalsIgnoreCase("Lay"))
-        {
-            expectedSelection = String.format("%s (Lay)",expectedOrder.getSelection());
-        }
         Assert.assertEquals(accountCode, expectedOrder.getAccountCode(), "Failed! Account code is incorrect");
         Assert.assertEquals(betType, expectedBetType, "Failed! Bet Type is incorrect");
         Assert.assertEquals(selection, expectedSelection, "Failed! Selection is incorrect");
