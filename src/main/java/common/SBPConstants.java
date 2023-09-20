@@ -272,11 +272,11 @@ public class SBPConstants {
     }
 
     public static class OverUnderLiability{
-        public final static List<String> TABLE_HEADER = Arrays.asList("Event Date", "Event", "Win %", "Home", "Draw", "Away");
+        public final static List<String> TABLE_HEADER = Arrays.asList("Event", "Win %", "G - 0", "G - 1", "G - 2", "G - 3", "G - 4", "G - 5", "G - 6", "G - 7", "G - 8", "G - 9", "G - 10");
     }
 
     public static class OverUnderCornerLiability{
-        public final static List<String> TABLE_HEADER = Arrays.asList("Event Date", "Event", "Win %", "Home", "Draw", "Away");
+        public final static List<String> TABLE_HEADER = Arrays.asList("Event", "Win %", "G - 0", "G - 1", "G - 2", "G - 3", "G - 4", "G - 5", "G - 6", "G - 7", "G - 8", "G - 9", "G - 10");
     }
 
     public static class BBGPhoneBetting{
