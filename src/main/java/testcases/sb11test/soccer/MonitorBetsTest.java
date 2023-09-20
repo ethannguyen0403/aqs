@@ -20,7 +20,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     String betCount = "Last 300 Bets";
     String lrbRule = "[LRB-Rule]";
     String liveNonLive = "ALL";
-    String currency = "ALL";
+    String currency = "HKD";
     String stake = "ALL";
     String accountCode = "No.7 SPB";
     String accCur = "HKD";
