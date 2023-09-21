@@ -23,7 +23,7 @@ import static common.SBPConstants.*;
 public class OverUnderCornerLiabilityTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2118")
-    public void OverUnderCornerLiabilityTC_001(){
+    public void OverUnderCornerLiabilityTC_2118(){
         log("@title: Validate Over/Under Corner Liability page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > Over/Under Corner Liability");
@@ -35,7 +35,7 @@ public class OverUnderCornerLiabilityTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2119")
-    public void OverUnderCornerLiabilityTC_002(){
+    public void OverUnderCornerLiabilityTC_2119(){
         log("@title: Validate Over/Under Corner Liability page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > Over/Under Corner Liability");

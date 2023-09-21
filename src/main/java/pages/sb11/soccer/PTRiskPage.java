@@ -15,8 +15,8 @@ public class PTRiskPage extends WelcomePage {
     public DropDownBox ddpCompanyUnit = DropDownBox.id("typeSelected");
     public DropDownBox ddpReportType = DropDownBox.id("typeSelected1");
     public DropDownBox ddpLiveNonLive = DropDownBox.id("betSelected1");
-    public TextBox txtFromDate = TextBox.name("fromDate");
-    public TextBox txtToDate = TextBox.name("toDate");
+    public TextBox txtFromDate = TextBox.xpath("//div[contains(text(),'From Date')]/following-sibling::div//input");
+    public TextBox txtToDate = TextBox.xpath("//div[contains(text(),'To Date')]/following-sibling::div//input");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
 
@@ -44,16 +44,24 @@ public class PTRiskPage extends WelcomePage {
         ddpReportType.selectByVisibleText(reportType);
         waitSpinnerDisappeared();
         ddpLiveNonLive.selectByVisibleText(liveNonlive);
-        if(!fromDate.isEmpty())
+        if(!fromDate.isEmpty()){
             dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-        if(!toDate.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!toDate.isEmpty()){
             dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+            waitSpinnerDisappeared();
+        }
         btnLeagues.click();
         btnClearAll.click();
         filterLeague(leagueName);
         btnClient.click();
         btnClearAll.click();
-        filterClient(clientCode);
+        if (!clientCode.isEmpty()){
+            filterClient(clientCode);
+        } else {
+            btnSetSelection.click();
+        }
         btnShow.click();
         waitSpinnerDisappeared();
     }
