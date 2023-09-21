@@ -39,7 +39,7 @@ public class BBTTest extends BaseCaseAQS {
 
         log(" Validate UI Info display correctly");
         log("Company Unit, Report By, Punter Type, Sport, From Date, To Date and Show button");
-        Assert.assertEquals(bbtPage.ddpCompanyUnit.getOptions(), COMPANY_UNIT_LIST, "Failed! Company Unit dropdown is not displayed");
+        Assert.assertEquals(bbtPage.ddpCompanyUnit.getOptions(), COMPANY_UNIT_LIST_ALL, "Failed! Company Unit dropdown is not displayed");
         Assert.assertEquals(bbtPage.ddpSport.getOptions(), SPORT_LIST, "Failed! Sport dropdown is not displayed");
         Assert.assertEquals(bbtPage.ddpSmartType.getOptions(), SBPConstants.BBTPage.SMART_TYPE_LIST, "Failed! Smart Type dropdown is not displayed");
         Assert.assertEquals(bbtPage.ddpReportType.getOptions(), SBPConstants.BBTPage.REPORT_TYPE_LIST, "Failed! Report Type dropdown is not displayed");
