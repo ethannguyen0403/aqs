@@ -19,7 +19,7 @@ public class CurrencyRatesTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2151")
-    public void Currency_Rates_TC_001(){
+    public void Currency_Rates_TC_2151(){
         log("@title: Validate Currency Rates page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Currency Rate");
@@ -31,7 +31,7 @@ public class CurrencyRatesTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2152")
-    public void Currency_Rates_TC_002(){
+    public void Currency_Rates_TC_2152(){
         log("@title: Validate Currency Rate page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Currency Rate");
@@ -46,8 +46,8 @@ public class CurrencyRatesTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
-    @TestRails(id = "2152")
-    public void Currency_Rates_TC_003(){
+    @TestRails(id = "2154")
+    public void Currency_Rates_TC_2154(){
         log("@title: Validate can export Currency list to Excel file successfully");
         String dowloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "CurrencyRate.xlsx";
         log("@Step 1: Login with valid account");
