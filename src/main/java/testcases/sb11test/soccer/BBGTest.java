@@ -16,7 +16,7 @@ public class BBGTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2135")
-    public void BBG_TC_001(){
+    public void BBG_TC_2135(){
         log("@title: Validate BBG page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > BBG");
@@ -28,7 +28,7 @@ public class BBGTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2136")
-    public void BBG_TC_002(){
+    public void BBG_TC_2136(){
         log("@title: Validate BBG page is displayed when navigate");
         String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
         String todate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));

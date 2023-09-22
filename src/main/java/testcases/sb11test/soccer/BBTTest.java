@@ -19,7 +19,7 @@ public class BBTTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2135")
-    public void BBT_TC_001() {
+    public void BBT_TC_2135() {
         log("@title: Validate BBT page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > BBT");
@@ -31,7 +31,7 @@ public class BBTTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2136")
-    public void BBT_TC_002() {
+    public void BBT_TC_2136() {
         log("@title: Validate BBT page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > BBT");
