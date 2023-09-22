@@ -317,6 +317,8 @@ public class SBPConstants {
 
     public static class JournalEntries{
         public final static List<String> TYPE_LIST = Arrays.asList("Client","Bookie","Ledger");
+        public final static List<String> LEVEL_LIST = Arrays.asList("[Choose one]","Super","Master","Agent","Player");
+        public final static List<String> CURRENCY_LIST = Arrays.asList("[All]","AED","AUD","CAD","CNY","EUR","GBP","HKD","IDR","INR","JPY","KPW","KRW","LKR","MYR","PHP","PKR","SGD","THB","TWD","USD","VND","ZAR");
         public final static List<String> TRANSACTION_TYPE_LIST = Arrays.asList("[Choose One]","Payment Bookie","Payment Client","Payment Feed","Payment Operational","Payment Other","Payment Provider",
                 "Received Bookie","Received Client","Received Comm/Rebate","Received Dividend/Share","Received Feed","Received Other","Contra Bookie","Contra Client","Contra Bookie Client","Contra CUR");
     }
@@ -326,7 +328,7 @@ public class SBPConstants {
                 "Account Type","CUR","Foreign Debit","Foreign Credit","Debit in HKD","Credit in HKD");
         public final static List<String> DATE_TYPE = Arrays.asList("Created Date","Transaction Date");
         public final static List<String> TRANSACTION_TYPE_LIST = Arrays.asList("[All]","Payment Bookie","Payment Client","Payment Feed","Payment Operational","Payment Other","Payment Provider",
-                "Received Bookie","Received Client","Received Comm/Rebate","Received Dividend/Share","Received Feed","Received Other","Contra Bookie","Contra Client","Contra Bookie Client","Contra CUR","Others");
+                "Received Bookie","Received Client","Received Comm/Rebate","Received Dividend/Share","Received Feed","Received Other","Contra Bookie","Contra Client","Contra Bookie Client","Contra CUR");
         public final static List<String> ACCOUNT_TYPE = Arrays.asList("Client","Bookie","Ledger","All");
     }
 
