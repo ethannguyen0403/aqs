@@ -59,6 +59,7 @@ public class BookieStatementPage extends WelcomePage {
     public void filter( String companyUnit, String financialYear, String agentType, String fromDate, String toDate, String bookieCode, String currency){
         if(!companyUnit.isEmpty())
             ddpCompanyUnit.selectByVisibleText(companyUnit);
+        waitSpinnerDisappeared();
         if(!financialYear.isEmpty())
             ddpFinancialYear.selectByVisibleText(financialYear);
         if(!agentType.isEmpty())
