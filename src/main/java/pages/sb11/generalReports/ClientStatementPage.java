@@ -47,6 +47,7 @@ public class ClientStatementPage extends WelcomePage {
         ddpViewBy.selectByVisibleText(viewBy);
         ddpCompanyUnit.selectByVisibleText(companyUnit);
         ddpFinancialYear.selectByVisibleText(financialYear);
+        waitSpinnerDisappeared();
         ddpClients.selectByVisibleText(clients);
         String currentDate = txtFromDate.getAttribute("value");
         if (!fromDate.isEmpty())
