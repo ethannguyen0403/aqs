@@ -26,7 +26,7 @@ public class ChartOfAccountTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2155")
-    public void Chart_Of_Account_TC_001(){
+    public void Chart_Of_Account_TC_2155(){
         log("@title: Validate Chart Of Account page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Chart Of Account");
@@ -38,7 +38,7 @@ public class ChartOfAccountTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2156")
-    public void Chart_Of_Account_TC_002(){
+    public void Chart_Of_Account_TC_2156(){
         log("@title: Validate UI on Chart Of Account is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Chart Of Account");
@@ -66,7 +66,7 @@ public class ChartOfAccountTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2157")
-    public void Chart_Of_Account_TC_003(){
+    public void Chart_Of_Account_TC_2157(){
         log("@title: Validate can add new Detail Type successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Chart Of Account");
@@ -74,39 +74,22 @@ public class ChartOfAccountTest extends BaseCaseAQS {
         log("@Step 3: Click Add button at Detail Type table");
         CreateDetailTypePopup createDetailTypePopup = chartOfAccountPage.openCreateDetailTypePopup();
         log("@Step 4: Fill full info");
-        log("@Step 5: Click Submit");
-        createDetailTypePopup.addDetailType(detailType,"456","456","456","456","Asset",companyUnit,false);
-        log("Validate that new Detail type is created successfully and display correctly on Detail Type list");
-        chartOfAccountPage.filterDetail(companyUnit,detailType);
-        Assert.assertTrue(chartOfAccountPage.isDetailTypeDisplayed(detailType),"Failed! Created Detail Type is not displayed!");
-        log("INFO: Executed completely");
-        log("Post-condition: Deleted Create Detail type");
-        chartOfAccountPage.deleteDetail(companyUnit,detailType);
+        try {
+            log("@Step 5: Click Submit");
+            createDetailTypePopup.addDetailType(detailType,"456","456","456","456","Asset",companyUnit,true);
+            log("Validate that new Detail type is created successfully and display correctly on Detail Type list");
+            chartOfAccountPage.filterDetail(companyUnit,detailType);
+            Assert.assertTrue(chartOfAccountPage.isDetailTypeDisplayed(detailType),"Failed! Created Detail Type is not displayed!");
+        } finally {
+            log("INFO: Executed completely");
+            log("Post-condition: Deleted Create Detail type");
+            chartOfAccountPage.deleteDetail(companyUnit,detailType);
+        }
     }
 
     @Test(groups = {"regression"})
     @TestRails(id = "2158")
-    public void Chart_Of_Account_TC_004(){
-        log("@title: Validate can add new Detail Type successfully");
-        log("@Step 1: Login with valid account");
-        log("@Step 2: Access Accounting > Chart Of Account");
-        ChartOfAccountPage chartOfAccountPage = welcomePage.navigatePage(ACCOUNTING,CHART_OF_ACCOUNT,ChartOfAccountPage.class);
-        log("@Step 3: Click Add button at Detail Type table");
-        CreateDetailTypePopup createDetailTypePopup = chartOfAccountPage.openCreateDetailTypePopup();
-        log("@Step 4: Fill full info");
-        log("@Step 5: Click Submit");
-        createDetailTypePopup.addDetailType(detailType,"123","123","123","123","Asset",companyUnit,false);
-        log("Validate that new Detail type is created successfully and display correctly on Detail Type list");
-        chartOfAccountPage.filterDetail(companyUnit,detailType);
-        Assert.assertTrue(chartOfAccountPage.isDetailTypeDisplayed(detailType),"Failed! Created Detail Type is not displayed!");
-        log("INFO: Executed completely");
-        log("Post-condition: Deleted Create Detail type");
-        chartOfAccountPage.deleteDetail(companyUnit,detailType);
-    }
-
-    @Test(groups = {"regression"})
-    @TestRails(id = "2159")
-    public void Chart_Of_Account_TC_005(){
+    public void Chart_Of_Account_TC_2158(){
         log("@title: Validate can add new Parent Account successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Chart Of Account");
@@ -125,7 +108,7 @@ public class ChartOfAccountTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
-    @TestRails(id = "2160")
+    @TestRails(id = "2159")
     public void Chart_Of_Account_TC_006(){
         log("@title: Validate can add new Sub Account successfully");
         log("@Step 1: Login with valid account");
