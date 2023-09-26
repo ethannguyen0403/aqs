@@ -65,7 +65,8 @@ public class BetSettlementPage extends WelcomePage {
      * @param accountCode
      */
     public void filter(String status, String fromDate, String toDate, String accStartWith, String accountCode){
-       ddbStatus.selectByVisibleText(status);
+        btnLogout.moveToTheControl();
+        ddbStatus.selectByVisibleText(status);
        if(!fromDate.isEmpty())
        {
            if(ddbMatchDate.isDisplayed()) {
@@ -120,6 +121,17 @@ public class BetSettlementPage extends WelcomePage {
         CheckBox cb = CheckBox.xpath(tblOrder.getxPathOfCell(1,colSelect,rowIndex,"input"));
         cb.scrollToThisControl(false);
         cb.click();
+    }
+
+    private void fillWinLose(Order order) {
+        int rowIndex = getOrderIndex(order.getBetId());
+        TextBox winLose = TextBox.xpath(tblOrder.getxPathOfCell(1, colWinLoss, rowIndex, "input"));
+        try {
+            winLose.waitForElementToBePresent(winLose.getLocator(), 2).sendKeys("" + order.getRequireStake());
+            System.out.println("Fill win/lose");
+        } catch (Exception e) {
+
+        }
     }
 
     /**
@@ -182,7 +194,7 @@ public class BetSettlementPage extends WelcomePage {
         Assert.assertEquals(selection,order.getSelection(), "Failed! Selection at row "+rowindex+" is incorrect");
 
         String expectedBetType = order.getMarketType();
-        String expectedHDP ="";
+        String expectedHDP = hdp.startsWith("+") ? "+" : "";
         String hdpSign = order.isNegativeHdp() ? "-" : "";
         if(order.getEvent().getSportName().equalsIgnoreCase("Soccer")){
             if (order.getMarketType().contains(("1x2"))){
@@ -194,7 +206,7 @@ public class BetSettlementPage extends WelcomePage {
             }
             Assert.assertEquals(live,  String.format("%s - %s", order.getLiveHomeScore(),order.getLiveHomeScore()), "Failed! Live is incorrect");
         }else if (order.getEvent().getSportName().equalsIgnoreCase("Cricket")) {
-            expectedHDP = String.format("%s%s / %s%s", hdpSign, order.getHandicapWtks(), hdpSign, order.getHandicapRuns());
+            expectedHDP =  String.format("%s%s / %s%s", hdpSign + expectedHDP, order.getHandicapWtks(), hdpSign + expectedHDP, order.getHandicapRuns());
             Assert.assertEquals(live, "", "Failed! Live is incorrect");
         }else {
             expectedBetType = "MB";
@@ -225,6 +237,7 @@ public class BetSettlementPage extends WelcomePage {
             btnSearch.click();
             waitSpinnerDisappeared();
             selectOrder(order);
+            fillWinLose(order);
             btnSettleSendSettlementEmail.scrollToTop();
             btnSettleSendSettlementEmail.click();
             ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");

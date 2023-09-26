@@ -845,7 +845,8 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         Assert.assertFalse(confirmBetsPage.isOrderDisplayInTheTable(order), "Failed! Manual bet display in the table");
 
         log("@Post-Condition: Cancel Manual bet");
-        confirmBetsPage.filter(COMPANY_UNIT, "", "Confirmed", eventInfo.getSportName(), "All", "Specific Date", date, "", accountCode);
+        confirmBetsPage.filter(COMPANY_UNIT, "", "Confirmed", eventInfo.getSportName(), "Manual Bet", "Specific Date",
+                DateUtils.getPreviousDate(date, "dd/MM/yyyy"), "", accountCode);
         confirmBetsPage.deleteOrder(order, false);
 
         log("INFO: Executed completely");

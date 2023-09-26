@@ -26,6 +26,7 @@ public class HeaderMenuControl extends BaseElement {
 
     private Label getSubMenuLabel(String menu, String subMenu){
         Label lblMainMenu  = Label.xpath(String.format("%s//span[text()='%s']",_xpath, menu));
+        lblMainMenu.waitForElementToBePresent(lblMainMenu.getLocator(), 1);
         if(!lblMainMenu.isDisplayed()) {
             System.out.println("DEBUG! The menu " + menu + " does not display");
             return null;
@@ -33,6 +34,7 @@ public class HeaderMenuControl extends BaseElement {
         lblMainMenu.moveToTheControl();
 //        lblMainMenu.click();
         Label lblSubMenu =Label.xpath(String.format("%s//div[contains(@class,'dropdown-menu')]//span[contains(text(),'%s')]",_xpath,subMenu));
+        lblSubMenu.waitForElementToBePresent(lblSubMenu.getLocator(), 1);
         if(!lblSubMenu.isDisplayed()){
             System.out.println("DEBUG! The sub menu "+subMenu+" under menu "+menu+" does not display");
             return null;
