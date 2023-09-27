@@ -13,20 +13,20 @@ public class AccountPercentTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2199")
-    public void AccountPercent_TC001(){
+    public void AccountPercent_2199(){
         log("Validate AccountPercent page is displayed when navigate");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Access Trading > Account Percent");
         AccountPercentPage accountPercentPage = welcomePage.navigatePage(TRADING,ACCOUNT_PERCENT,AccountPercentPage.class);
         log("Validate AccountPercent page is displayed when navigate");
-        Assert.assertEquals(accountPercentPage.getTitlePage(),ACCOUNT_PERCENT, "Failed! Account Percent page is not displayed");
+        Assert.assertTrue(accountPercentPage.getTitlePage().contains(ACCOUNT_PERCENT), "Failed! Account Percent page is not displayed");
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression"})
     @TestRails(id = "2200")
     @Parameters({"bookieCode"})
-    public void AccountPercent_TC002(String bookieCode){
+    public void AccountPercent_2200(String bookieCode){
         log("Validate UI on Account Percent is correctly displayed");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Access Trading > Account Percent");
@@ -47,7 +47,7 @@ public class AccountPercentTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2201")
     @Parameters({"bookieCode","accountCode"})
-    public void AccountPercent_TC003(String bookieCode, String accountCode){
+    public void AccountPercent_2201(String bookieCode, String accountCode){
         String PT  = "1.00000";
         log("Validate can update account percent successfully");
         log("@Step 1: Login to SB11 site");

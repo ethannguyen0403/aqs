@@ -172,7 +172,7 @@ public class SBPConstants {
 
     public static class LedgerStatement{
         public final static List<String> ACCOUNT_TYPE = Arrays.asList("All","Asset","Income","Liability","Expenditure","Capital");
-        public final static List<String> TABLE_HEADER = Arrays.asList(" ", "Amounts are shown in Original Currency"," ", "Amounts are shown in HKD", "#", "Ledger", "CUR", "Credit/Debit", "Running Bal.", "Running Bal. [CT]"," ", "Credit/Debit", "Running Bal.");
+        public final static List<String> TABLE_HEADER = Arrays.asList("", "Amounts are shown in Original Currency","", "Amounts are shown in HKD", "#", "Ledger", "CUR", "Credit/Debit", "Running Bal.", "Running Bal. [CT]","", "Credit/Debit", "Running Bal.");
     }
 
     public static class BookieInfo{
@@ -234,7 +234,7 @@ public class SBPConstants {
     }
 
     public static class ClientSystem{
-        public final static List<String> STATUS_LIST = Arrays.asList("All", "Active","Closed","In-active");
+        public final static List<String> STATUS_LIST = Arrays.asList("All", "Active","In-active","Closed");
         public final static List<String> CURRENCY_LIST = Arrays.asList("All","AUD","CAD","CNY","AED","EUR","HKD","INR","IDR","JPY","MYR","KPW","PKR","PHP","SGD","ZAR","KRW","LKR","GBP","TWD","THB","USD","VND");
         public final static List<String> CLIENT_LIST = Arrays.asList("With Super","Without Super");
         public final static List<String> TABLE_HEADER_CLIENT = Arrays.asList("#","i", "Client Name","CUR","Edit","Created Date");

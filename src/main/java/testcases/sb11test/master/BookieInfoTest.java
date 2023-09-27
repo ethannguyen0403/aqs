@@ -18,7 +18,7 @@ public class BookieInfoTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2202")
-    public void Bookie_Info_TC_001(){
+    public void Bookie_Info_2202(){
         log("@title: Verify that can login successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click Master > Bookie Info");
@@ -29,7 +29,7 @@ public class BookieInfoTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression"})
     @TestRails(id = "2203")
-    public void Bookie_Info_TC_002(){
+    public void Bookie_Info_2203(){
         log("@title: Validate UI on Bookie Info is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click Master > Bookie Info");
@@ -55,7 +55,7 @@ public class BookieInfoTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2204")
     @Parameters({"bookieCode"})
-    public void Bookie_Info_TC_003(String bookieCode){
+    public void Bookie_Info_2204(String bookieCode){
         log("@title: Validate can search Bookie successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click Master > Bookie Info");
@@ -70,7 +70,7 @@ public class BookieInfoTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2205")
-    public void Bookie_Info_TC_004(){
+    public void Bookie_Info_2205(){
         String downloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "bookie-list.xlsx";
         log("@title: Validate can export Bookie List to Excel file successfully");
         log("@Step 1: Login with valid account");
