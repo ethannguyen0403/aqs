@@ -1,4 +1,5 @@
 package pages.sb11.trading;
+import com.paltech.element.BaseElement;
 import com.paltech.element.common.*;
 import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
@@ -59,6 +60,8 @@ public class SoccerBetEntryPage extends BetEntryPage {
             waitPageLoad();
         }
         if(!league.isEmpty()) {
+            BaseElement ddpLeagueDropdown = new TextBox(ddpLeague.getLocator());
+            ddpLeagueDropdown.doubleClick();
             ddpLeague.selectByVisibleText(league);
             waitPageLoad();
 
