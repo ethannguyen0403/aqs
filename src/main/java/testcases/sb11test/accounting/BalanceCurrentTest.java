@@ -12,7 +12,6 @@ import utils.testraildemo.TestRails;
 import static common.SBPConstants.*;
 
 public class BalanceCurrentTest extends BaseCaseAQS {
-
     String companyUnit = "Kastraki Limited";
     String masterCode = "QATE";
     String agentCode = "QATE01-PT";
@@ -40,7 +39,7 @@ public class BalanceCurrentTest extends BaseCaseAQS {
         log("Validate UI Info display correctly");
         log("Dropdown: Company Unit, Account");
         Assert.assertEquals(balanceCurrentPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed");
-        Assert.assertTrue(balanceCurrentPage.ddpAccount.getOptions().contains(clientCode),"Failed! Account dropdown is not displayed!");
+        Assert.assertTrue(balanceCurrentPage.ddpAccount.getOptions().contains("QA2112 - "+clientCode),"Failed! Account dropdown is not displayed!");
         log("Button: Show button");
         Assert.assertEquals(balanceCurrentPage.btnShow.getText(),"Show","Show button is not displayed!");
         log("INFO: Executed completely");
