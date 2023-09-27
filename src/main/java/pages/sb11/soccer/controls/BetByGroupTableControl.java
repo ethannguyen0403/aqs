@@ -34,17 +34,21 @@ public class BetByGroupTableControl extends BaseElement {
 
     public void clickPriceColumn(String account){
         // click on Price cell of the first row if not input account
-        if (account.isEmpty())
+        if (account.isEmpty()){
             tblBGG.getControlOfCell(1,priceCol,1,null).click();
-        int rowIndex = tblBGG.getRowIndexContainValue(account,accountCol,null);
-        tblBGG.getControlOfCell(1,priceCol,rowIndex,null).click();
+        } else {
+            int rowIndex = tblBGG.getRowIndexContainValue(account,accountCol,null);
+            tblBGG.getControlOfCell(1,priceCol,rowIndex,null).click();
+        }
     }
     public void clickTraderColumn(String account){
         // click on Trader cell of the first row if not input account
-        if (account.isEmpty())
+        if (account.isEmpty()){
             tblBGG.getControlOfCell(1,traderCol,1,null).click();
-        int rowIndex = tblBGG.getRowIndexContainValue(account,accountCol,null);
-        tblBGG.getControlOfCell(1,traderCol,rowIndex,null).click();
+        } else {
+            int rowIndex = tblBGG.getRowIndexContainValue(account,accountCol,null);
+            tblBGG.getControlOfCell(1,traderCol,rowIndex,null).click();
+        }
     }
 
     public int getRowIndexContainAccount(String account){
@@ -53,12 +57,12 @@ public class BetByGroupTableControl extends BaseElement {
 
     public String getSmartGroupName() {
         String title = lblTitle.getText();
-        return title.split("-")[0];
+        return title.split(" -")[0];
     }
 
     public String getSmartGroupCurr(){
         String title = lblTitle.getText();
-        return title.split("-")[1];
+        return title.split("- ")[1];
     }
 
 

@@ -72,6 +72,7 @@ public class SoccerBetSlipPopup {
         }
         if(isPlaceBet) {
             btnPlaceBet.click();
+
         }
     }
 

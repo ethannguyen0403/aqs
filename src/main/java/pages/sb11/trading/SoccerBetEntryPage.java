@@ -238,6 +238,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
         type1 = order.getMarketType();*/
         SoccerBetSlipPopup soccerBetSlipPopup = openBetSlip(accountCode,lstOrder.get(0).getSelection(),fullTime,type);
         soccerBetSlipPopup.placeMultiBet(lstOrder,isCopySPBPS7SameOdds,isCopySPBPS7MinusOdds,isPlaceBet);
+        waitSpinnerDisappeared();
     }
     
     /**

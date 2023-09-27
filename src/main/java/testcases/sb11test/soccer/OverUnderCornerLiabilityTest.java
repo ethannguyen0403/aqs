@@ -36,7 +36,7 @@ public class OverUnderCornerLiabilityTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2119")
     public void OverUnderCornerLiabilityTC_2119(){
-        log("@title: Validate Over/Under Corner Liability page is displayed when navigate");
+        log("@title: Validate UI on Over/Under Corner Liability is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > Over/Under Corner Liability");
         OverUnderCornerLiabilityPage overUnderCornerLiabilityPage = welcomePage.navigatePage(SOCCER,OVER_UNDER_CORNER_LIABILITY, OverUnderCornerLiabilityPage.class);

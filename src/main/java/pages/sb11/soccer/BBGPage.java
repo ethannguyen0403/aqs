@@ -1,5 +1,6 @@
 package pages.sb11.soccer;
 
+import com.paltech.driver.DriverManager;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
@@ -60,6 +61,7 @@ public class BBGPage extends WelcomePage {
         if(!toDate.isEmpty())
             if(!currentDate.equals(toDate))
                 dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+        waitSpinnerDisappeared();
         if(!stake.isEmpty())
             ddpStake.selectByVisibleText(stake);
         if(!currency.isEmpty())
@@ -82,10 +84,12 @@ public class BBGPage extends WelcomePage {
 
     public BetByTeamPricePopup clickFirstPriceCell(){
        firstBetByGroupTableControl.clickPriceColumn("");
+       DriverManager.getDriver().switchToWindow();
        return new BetByTeamPricePopup();
     }
     public BBGLastDaysPerformacesPopup clickFirstTraderCell(){
         firstBetByGroupTableControl.clickTraderColumn("");
+        DriverManager.getDriver().switchToWindow();
         return new BBGLastDaysPerformacesPopup();
     }
     private BetByGroupTableControl findAccount(String account){
