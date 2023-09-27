@@ -801,6 +801,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("Precondition:Have a new Manual bet created #C862");
         String description = "Manual bet on " + DateUtils.getDate(0, "yyyymmddhhmmss", "GMT+7");
         String date = DateUtils.getDate(0, "dd/MM/yyyy", "GMT+7");
+        String previousDate = DateUtils.getPreviousDate(date, "dd/MM/yyyy");
         String dateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7"));
         Event eventInfo = new Event.Builder()
                 .sportName(SOCCER)
@@ -846,7 +847,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
 
         log("@Post-Condition: Cancel Manual bet");
         confirmBetsPage.filter(COMPANY_UNIT, "", "Confirmed", eventInfo.getSportName(), "Manual Bet", "Specific Date",
-                DateUtils.getPreviousDate(date, "dd/MM/yyyy"), "", accountCode);
+                previousDate, "", accountCode);
         confirmBetsPage.deleteOrder(order, false);
 
         log("INFO: Executed completely");
