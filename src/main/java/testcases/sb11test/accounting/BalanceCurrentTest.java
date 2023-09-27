@@ -12,14 +12,13 @@ import utils.testraildemo.TestRails;
 import static common.SBPConstants.*;
 
 public class BalanceCurrentTest extends BaseCaseAQS {
-
     String companyUnit = "Kastraki Limited";
     String masterCode = "QATE";
     String agentCode = "QATE01-PT";
 
     @Test(groups = {"regression"})
     @TestRails(id = "2168")
-    public void Balance_Current_TC_001(){
+    public void Balance_Current_2168(){
         log("@title: Validate Balance[Current] page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Balance[Current]");
@@ -32,7 +31,7 @@ public class BalanceCurrentTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @Parameters({"clientCode"})
     @TestRails(id = "2169")
-    public void Balance_Current_TC_002(String clientCode){
+    public void Balance_Current_2169(String clientCode){
         log("@title: Validate UI on Balance [Current] is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Balance [Current]");
@@ -40,7 +39,7 @@ public class BalanceCurrentTest extends BaseCaseAQS {
         log("Validate UI Info display correctly");
         log("Dropdown: Company Unit, Account");
         Assert.assertEquals(balanceCurrentPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed");
-        Assert.assertTrue(balanceCurrentPage.ddpAccount.getOptions().contains(clientCode),"Failed! Account dropdown is not displayed!");
+        Assert.assertTrue(balanceCurrentPage.ddpAccount.getOptions().contains("QA2112 - "+clientCode),"Failed! Account dropdown is not displayed!");
         log("Button: Show button");
         Assert.assertEquals(balanceCurrentPage.btnShow.getText(),"Show","Show button is not displayed!");
         log("INFO: Executed completely");
@@ -49,7 +48,7 @@ public class BalanceCurrentTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @Parameters({"clientCode"})
     @TestRails(id = "2170")
-    public void Balance_Current_TC_003(String clientCode){
+    public void Balance_Current_2170(String clientCode){
         log("@title: Validate Member Summary of Master is displayed successfully when clicking on Master");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Balance [Current]");
@@ -68,7 +67,7 @@ public class BalanceCurrentTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @Parameters({"clientCode"})
     @TestRails(id = "2171")
-    public void Balance_Current_TC_004(String clientCode){
+    public void Balance_Current_2171(String clientCode){
         log("@title: Validate Member Summary of Agent is displayed successfully when clicking on Master");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Balance [Current]");

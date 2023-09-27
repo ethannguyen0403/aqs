@@ -32,7 +32,7 @@ public class BBTTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2136")
     public void BBT_TC_2136() {
-        log("@title: Validate BBT page is displayed when navigate");
+        log("@title: Validate UI on BBT is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);

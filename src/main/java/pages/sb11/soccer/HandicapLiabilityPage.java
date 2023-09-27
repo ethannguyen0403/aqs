@@ -59,10 +59,10 @@ public class HandicapLiabilityPage extends WelcomePage {
     }
 
     public void filterGroups(String groupCode){
-        CheckBox cbGroup = CheckBox.xpath("//div[contains(@class,'card-columns')]//span[text()='"+groupCode+"']//preceding::input[1]");
         btnShowGroups.click();
         waitSpinnerDisappeared();
-        cbGroup.click();
+        CheckBox cbGroup = CheckBox.xpath("//div[contains(@class,'card-columns')]//span[text()='"+groupCode+"']//preceding::input[1]");
+        cbGroup.jsClick();
         btnSetSelection.click();
         btnShow.click();
     }

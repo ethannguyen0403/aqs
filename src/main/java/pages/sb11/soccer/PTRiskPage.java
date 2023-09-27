@@ -11,7 +11,7 @@ import pages.sb11.WelcomePage;
 import pages.sb11.soccer.popup.PTRiskBetListPopup;
 
 public class PTRiskPage extends WelcomePage {
-    Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
+    Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span");
     public DropDownBox ddpCompanyUnit = DropDownBox.id("typeSelected");
     public DropDownBox ddpReportType = DropDownBox.id("typeSelected1");
     public DropDownBox ddpLiveNonLive = DropDownBox.id("betSelected1");

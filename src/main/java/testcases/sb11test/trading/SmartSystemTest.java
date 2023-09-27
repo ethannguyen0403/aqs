@@ -1,6 +1,7 @@
 package testcases.sb11test.trading;
 
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.trading.AgentGroupPage;
 import pages.sb11.trading.MasterGroupPage;
@@ -13,8 +14,8 @@ import utils.testraildemo.TestRails;
 import static common.SBPConstants.*;
 
 public class SmartSystemTest extends BaseCaseAQS {
-    String masterCode = "FSQA-MASTER";
-    String agentCode = "FSQA-AGENT";
+    String masterCode = "QA Smart Master";
+    String agentCode = "QA Smart Agent";
     String groupCode = "FSQA-SMART";
 
     @Test(groups = {"regression"})
@@ -61,7 +62,8 @@ public class SmartSystemTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2175")
-    public void Smart_System_TC_004(){
+    @Parameters({"masterCode"})
+    public void Smart_System_2175(String masterCode){
         log("@title: Validate Master Group Report is displayed when clicking on Master Code");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Smart System");

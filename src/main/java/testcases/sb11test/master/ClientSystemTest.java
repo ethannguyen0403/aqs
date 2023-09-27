@@ -24,7 +24,7 @@ public class ClientSystemTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2206")
-    public void Client_System_TC_001(){
+    public void Client_System_2206(){
         log("@title: Verify that can login successfully");
         log("@Step 1: Login with valid account");
         log("Step 2: Click Master > Client System");
@@ -36,7 +36,7 @@ public class ClientSystemTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2207")
-    public void Client_System_TC_002(){
+    public void Client_System_2207(){
         log("@title: Validate UI on Client System is correctly displayed");
         log("@Step 1: Login with valid account");
         log("Step 2: Click Master > Client System");
@@ -62,7 +62,7 @@ public class ClientSystemTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2208")
     @Parameters({"clientCode"})
-    public void Client_System_TC_003(String clientCode){
+    public void Client_System_2208(String clientCode){
         log("@title: Validate can search Bookie successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click Master > Client System");
@@ -77,7 +77,7 @@ public class ClientSystemTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2209")
-    public void Client_System_TC_004(){
+    public void Client_System_2209(){
         String downloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "client-list.xlsx";
         log("@title: Validate can export Client List to Excel file successfully");
         log("@Step 1: Login with valid account");
@@ -100,7 +100,7 @@ public class ClientSystemTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2210")
     @Parameters({"clientCode"})
-    public void Client_System_TC_005(String clientCode){
+    public void Client_System_2210(String clientCode){
         log("@title: Validate Master List popup is displayed when clicking data on Master column");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click Master > Client System");
@@ -115,7 +115,7 @@ public class ClientSystemTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2211")
     @Parameters({"clientCode"})
-    public void Client_System_TC_006(String clientCode){
+    public void Client_System_2211(String clientCode){
         log("@title: Validate Agent List popup is displayed when clicking data on Master column");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click Master > Client System");
@@ -130,7 +130,7 @@ public class ClientSystemTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2212")
     @Parameters({"clientCode"})
-    public void Client_System_TC_007(String clientCode){
+    public void Client_System_2212(String clientCode){
         log("@title: Validate Account List popup is displayed when clicking data on Master column");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click Master > Client System");
@@ -145,7 +145,7 @@ public class ClientSystemTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2213")
     @Parameters({"clientCode"})
-    public void Client_System_TC_008(String clientCode){
+    public void Client_System_2213(String clientCode){
         log("@title: Validate Member List popup is displayed when clicking data on Master column");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click Master > Client System");

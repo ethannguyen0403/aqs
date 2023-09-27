@@ -1,13 +1,19 @@
 package pages.sb11.soccer.popup;
 
+import com.paltech.driver.DriverManager;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.Label;
+import controls.Row;
 import controls.Table;
 import objects.Order;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.soccer.PTRiskPage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PTRiskBetListPopup extends WelcomePage {
@@ -26,6 +32,7 @@ public class PTRiskBetListPopup extends WelcomePage {
     Label lblHandicap = Label.xpath("//div[@class='pt-risk-modal']//span[text()='Handicap']");
     Label lblOverUnder = Label.xpath("//div[@class='pt-risk-modal']//span[text()='Over Under']");
     Label lblHalftime = Label.xpath("//div[@class='pt-risk-modal']//span[text()='Half-time']");
+    String rowHandicapXpath = "//tab[contains(@class,'active')]//table[@aria-label='group table']//tbody[2]/tr";
     @Override
     public String getTitlePage ()
     {
@@ -69,6 +76,25 @@ public class PTRiskBetListPopup extends WelcomePage {
                 Assert.assertTrue(tblBetList.getControlOfCell(1,colStake,i+1,"span").getText().contains(Double.toString(order.getRequireStake())),
                         "FAILED! Stake is incorrect!");
                 Assert.assertTrue(tblBetList.getControlOfCell(1,colCUR,i+1,"span").getText().contains(order.getAccountCurrency()),
+                        "FAILED! Currency is incorrect!");
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean verifyOrderHafttime(Order order){
+        List<WebElement> lstRow = DriverManager.getDriver().findElements(By.xpath(rowHandicapXpath));
+        for (int i = 0; i < lstRow.size();i++){
+            if (lstRow.get(i).getText().contains(order.getBetId())){
+                Assert.assertTrue(lstRow.get(i).getText().contains(order.getAccountCode()),
+                        "FAILED! Account Code is incorrect!");
+                Assert.assertTrue(lstRow.get(i).getText().contains(Double.toString(order.getHdpPoint())),
+                        "FAILED! HDP is incorrect!");
+                Assert.assertTrue(lstRow.get(i).getText().contains(Double.toString(order.getPrice())),
+                        "FAILED! Price is incorrect!");
+                Assert.assertTrue(lstRow.get(i).getText().contains(Double.toString(order.getRequireStake())),
+                        "FAILED! Stake is incorrect!");
+                Assert.assertTrue(lstRow.get(i).getText().contains(order.getAccountCurrency()),
                         "FAILED! Currency is incorrect!");
                 return true;
             }

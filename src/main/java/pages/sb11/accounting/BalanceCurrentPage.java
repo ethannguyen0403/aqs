@@ -63,17 +63,15 @@ public class BalanceCurrentPage extends WelcomePage {
     private int getAgentRowIndex(String agentCode){
         int i = 2;
         Label lblAgent;
-        while (true){
+        while (i < 50){
             lblAgent = Label.xpath(tbAgent.getxPathOfCell(1,colMasterAgent,i,null));
-            if(!lblAgent.isDisplayed()) {
-                System.out.println("Can NOT found the agent "+agentCode+" in the table");
-                return 0;
-            }
             if(lblAgent.getText().contains(agentCode)){
                 System.out.println("Found the agent "+agentCode+" in the table");
                 return i;
             }
             i = i +1;
         }
+        System.out.println("Can NOT found the agent "+agentCode+" in the table");
+        return 0;
     }
 }

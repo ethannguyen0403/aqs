@@ -42,7 +42,7 @@ public class HandicapCornerLiabilityTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2113")
     public void HandicapCornerLiabilityTC_2113(){
-        log("@title: Validate Handicap Liability page is displayed when navigate");
+        log("@title: Validate UI on Handicap Corner Liability is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > Handicap Liability");
         HandicapCornerLiabilityPage handicapCornerLiabilityPage = welcomePage.navigatePage(SOCCER,HANDICAP_CORNER_LIABILITY, HandicapCornerLiabilityPage.class);
