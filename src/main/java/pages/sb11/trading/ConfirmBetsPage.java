@@ -217,7 +217,7 @@ public class ConfirmBetsPage extends WelcomePage {
         }else {
             Assert.assertEquals(eventName, String.format("%s\n" + "vs\n" +"%s",order.getEvent().getHome(),order.getEvent().getAway()), "Failed! Event name is incorrect");
             Assert.assertEquals(orderID, String.format("%s / %s",order.getOrderId(), order.getBetId()), "Failed! Order id and Bet Id is incorrect ");
-            Assert.assertEquals(selection, order.getSelection(), "Failed! Stake is incorrect is in correct");
+            Assert.assertEquals(selection, order.getSelection(), "Failed! Selection is incorrect");
         }
 
         Assert.assertEquals(odds,String.format("%.3f",order.getPrice()), "Failed!Odds is incorrect");
@@ -230,6 +230,11 @@ public class ConfirmBetsPage extends WelcomePage {
             btExpected = String.format("%s-%s",EN_US.get(order.getStage()),EN_US.get(order.getMarketType()));
         }
         Assert.assertEquals(bt,btExpected, "Failed!BT is incorrect");
+
+        //Handle format selection if bet type is Lay
+        if (order.getBetType().equalsIgnoreCase("Lay")){
+            order.setSelection(String.format("%s (Lay)",order.getSelection()));
+        }
         //TODO: check script covert event start date, create bet date correct as UI, and country of League
        /* String dateconvert="";
         try {

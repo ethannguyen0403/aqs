@@ -86,9 +86,9 @@ public class BetOrderPage extends HomePage {
         String marketName = table.getControlOfCell(1,colMarket,rowIndex,"p").getText(); // Goald - IR
         String eventDate = table.getControlOfCell(1,colEventDate,rowIndex,"span").getText();
         String eventFullName =table.getControlOfCell(1,colEventEnglish,rowIndex,"span[1]").getText();
-        String compeitionName =table.getControlOfCell(1,colEventEnglish,rowIndex,"span[2]").getText();
+        String competitionName =table.getControlOfCell(1,colEventEnglish,rowIndex,"span[2]").getText();
         String agent= table.getControlOfCell(1,colAgentHilter,rowIndex,"span[1]").getText();
-        String hilter =table.getControlOfCell(1,colAgentHilter,rowIndex,"span[2]").getText();
+        String hitter =table.getControlOfCell(1,colAgentHilter,rowIndex,"span[2]").getText();
         String operator =table.getControlOfCell(1,colAgentHilter,rowIndex,"span[3]").getText();
         String bookie = table.getControlOfCell(1,colBookieOrderID,rowIndex,"div[1]").getText();
         String orderID =table.getControlOfCell(1,colBookieOrderID,rowIndex,"div[2]").getText();
@@ -99,27 +99,38 @@ public class BetOrderPage extends HomePage {
         String score = order.getClientMetadata().replace("{\"score\":\" ","").replace(" \"}","").replace(" - ",":");
         Assert.assertEquals(liveScore,score,"Failed! Score in Selection colum is incorrect");
 
-        // Verify market column format: FT-OU
-        String marketNamePhaseExpected = String.format("%s - %s",order.getMarketName(),EN_US.get(order.getPhase()));
-        Assert.assertEquals(marketName,marketNamePhaseExpected,"Failed! Score in Selection colum is incorrect");
-
         // Verify market column format: Goals - IR
-        String stageMarketType = String.format("%s-%s",EN_US.get(order.getStage()),EN_US.get(order.getMarketType()));
-        Assert.assertEquals(stageType,stageMarketType,"Failed! Score in Selection colum is incorrect");
+        String marketNamePhaseExpected;
+        if (EN_US.get(order.getPhase()) == null) {
+            marketNamePhaseExpected = "-";
+        } else{
+            marketNamePhaseExpected = String.format("%s - %s",order.getMarketName(),EN_US.get(order.getPhase()));
+        }
+        Assert.assertEquals(marketName,marketNamePhaseExpected,"Failed! Market name in Market colum is incorrect");
+
+        // Verify market column format: FT-OU
+        String stageMarketType;
+        if (EN_US.get(order.getStage()) == null) {
+            stageMarketType = "-";
+        } else {
+            stageMarketType = String.format("%s-%s",EN_US.get(order.getStage()),EN_US.get(order.getMarketType()));
+        }
+
+        Assert.assertEquals(stageType,stageMarketType,"Failed! Market Type in Market colum is incorrect");
 
         // Verify event Date column
         //TODO: Do not know time in API to convert to UI- contact with dev for this VP
        // Assert.assertEquals(eventDate,order.getSelection(),"Failed! Score in Selection colum is incorrect");
 
         // Verify Event English column: Competition Name
-        Assert.assertEquals(compeitionName,order.getCompetitionName(),"Failed! Competition Name in Event English colum is incorrect");
+        Assert.assertEquals(competitionName,order.getCompetitionName().trim(),"Failed! Competition Name in Event English colum is incorrect");
 
-        // Verify event Event English column:Event Name
+        // Verify Event English column:Event Name
         String eventFullNameActual = String.format("%s -vs- %s",order.getHome(), order.getAway());
-        Assert.assertEquals(eventFullName,eventFullNameActual,"Failed! Event Name in Event English colum is incorrect");
+        Assert.assertEquals(eventFullName,eventFullNameActual.trim(),"Failed! Event Name in Event English colum is incorrect");
 
         // Verify Agent- Hitter column
-        Assert.assertEquals(hilter,order.getHitter(),"Failed! Hitter in Agent- Hitter colum is incorrect");
+        Assert.assertEquals(hitter,order.getHitter(),"Failed! Hitter in Agent- Hitter colum is incorrect");
         Assert.assertEquals(agent,order.getAgentName(),"Failed! Agent in Agent- Hitter colum is incorrect");
         Assert.assertEquals(operator,order.getOperator(),"Failed! Operator in Agent- Hitter colum is incorrect");
 
@@ -149,7 +160,7 @@ public class BetOrderPage extends HomePage {
             System.out.println("There is no data in table "+status);
            Assert.assertEquals(table.getColumn(1,false).get(0).trim(),NORECORD,"Failed! No record message should display when have no data");
         }else{
-            for(int i  =0 ;i < orders.size() ;i++){
+            for(int i = 0 ;i < orders.size() ;i++){
                 verifyDataInARowCorrectLyAsStatus(table,orders.get(i),i+1);
             }
         }

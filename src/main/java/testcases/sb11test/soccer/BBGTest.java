@@ -16,7 +16,7 @@ public class BBGTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2135")
-    public void BBG_TC_001(){
+    public void BBG_TC_2135(){
         log("@title: Validate BBG page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > BBG");
@@ -28,7 +28,7 @@ public class BBGTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2136")
-    public void BBG_TC_002(){
+    public void BBG_TC_2136(){
         log("@title: Validate BBG page is displayed when navigate");
         String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
         String todate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
@@ -40,7 +40,7 @@ public class BBGTest extends BaseCaseAQS {
         log(" Validate UI Info display correctly");
         log("Company Unit, Report By, Punter Type, Sport, From Date, To Date and Show button");
         Assert.assertEquals(bbgPage.ddpSport.getOptions(),SPORT_LIST,"Failed! Sport dropdown is not displayed");
-        Assert.assertEquals(bbgPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed");
+        Assert.assertEquals(bbgPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST_ALL,"Failed! Company Unit dropdown is not displayed");
         Assert.assertEquals(bbgPage.ddpSmartType.getOptions(), SBPConstants.BBGPage.SMART_TYPE_LIST,"Failed! Smart Type dropdown is not displayed");
         Assert.assertEquals(bbgPage.ddpReportType.getOptions(), SBPConstants.BBGPage.REPORT_TYPE_LIST,"Failed! Report Type dropdown is not displayed");
         Assert.assertEquals(bbgPage.ddpWinLose.getOptions(), SBPConstants.BBGPage.WIN_LOSE_TYPE_LIST,"Failed! Win/Lose dropdown is not displayed");

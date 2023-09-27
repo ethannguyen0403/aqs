@@ -9,8 +9,8 @@ import controls.Table;
 import pages.sb11.WelcomePage;
 
 public class MonitorBetsPage extends WelcomePage {
-    int colAC = 2;
-    int colStake = 6;
+    public int colAC = 2;
+    public int colStake = 6;
     int colT = 9;
     Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
     public String getTitlePage ()
@@ -53,6 +53,7 @@ public class MonitorBetsPage extends WelcomePage {
         ddpStake.selectByVisibleText(stake);
         if (isShow){
             btnShow.click();
+            waitSpinnerDisappeared();
         }
     }
 
@@ -67,6 +68,7 @@ public class MonitorBetsPage extends WelcomePage {
         int index = getACRowIndex(accountCode);
         tblOrder.getControlOfCell(1,colStake,index,"span[3]").click();
         DriverManager.getDriver().switchToWindow();
+        waitSpinnerDisappeared();
         return new PendingBetsPage();
     }
 

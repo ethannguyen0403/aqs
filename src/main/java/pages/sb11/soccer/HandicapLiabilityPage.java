@@ -35,7 +35,7 @@ public class HandicapLiabilityPage extends WelcomePage {
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
     public Button btnShowGroups = Button.xpath("//div[contains(text(),'Show Groups')]");
     public Button btnSetSelection = Button.xpath("//button[contains(text(),'Set Selection')]");
-    public Table tblOrder = Table.xpath("//app-handicap-liability//table",6);
+    public Table tblOrder = Table.xpath("//app-handicap-liability//table",15);
     public Table tbOrderByGroup;
     int colEvent = 1;
 
