@@ -117,10 +117,12 @@ public class BetSettlementPage extends WelcomePage {
     }
 
     private void selectOrder(Order order){
-        int rowIndex =getOrderIndex(order.getBetId());
-        CheckBox cb = CheckBox.xpath(tblOrder.getxPathOfCell(1,colSelect,rowIndex,"input"));
+        int rowIndex = getOrderIndex(order.getBetId());
+        CheckBox cb = CheckBox.xpath(tblOrder.getxPathOfCell(1, colSelect, rowIndex, "input"));
         cb.scrollToThisControl(false);
-        cb.click();
+        if(!cb.isSelected()){
+            cb.click();
+        }
     }
 
     private void fillWinLose(Order order) {
@@ -259,7 +261,7 @@ public class BetSettlementPage extends WelcomePage {
             btnSendBetListEmail.click();
 //            ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
 //            confirmPopupControl.confirmYes();
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
             System.out.println("Failed! Win/Lose data is not shown!");
         }
     }
