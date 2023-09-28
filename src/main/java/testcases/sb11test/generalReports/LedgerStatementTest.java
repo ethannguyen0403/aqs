@@ -391,6 +391,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
+            ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
@@ -444,6 +445,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
+            ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
@@ -714,6 +716,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Total column is sum of records\n" +
                     "Amounts in GBP will get value from Original Currency then convert to GBP to showy");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
+            ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
@@ -771,6 +774,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Total column is sum of records\n" +
                     "Amounts in GBP will get value from Original Currency then convert to GBP to show");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
+            ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
@@ -884,6 +888,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in red, Running Bal and Running Bal CT displayed\n" +
                     "Amounts in GBP (conver to GBP): Credit/Debit column = value inputted at step 5 in red, Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
+            ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
@@ -941,6 +946,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Total column is sum of records\n" +
                     "Amounts in GBP will get value from Original Currency then convert to GBP to show");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
+            ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
@@ -998,6 +1004,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Amounts in GBP will get value from Original Currency then convert to GBP to show\n" +
                     "\n");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
+            ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
