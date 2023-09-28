@@ -1018,7 +1018,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2770")
     public void Ledger_Statement_2770(){
         String detailType = "000.000.001.000 - QA Ledger Group Income";
