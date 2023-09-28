@@ -914,7 +914,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2185")
-    public void Confirm_Bets_TC_001() {
+    public void Confirm_Bets_2185() {
         log("@title: Validate Confirm Bets page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Confirm Bets");
@@ -926,7 +926,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2186")
-    public void Confirm_Bets_TC_002() {
+    public void Confirm_Bets_2186() {
         log("@title: Validate UI on Confirm Bets is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Confirm Bets");
@@ -953,7 +953,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2187")
     @Parameters({"accountCode"})
-    public void Confirm_Bets_TC_003(String accountCode) {
+    public void Confirm_Bets_2187(String accountCode) {
         log("@title: Validate Total Stake is matched correctly with all bet stake on Pending list");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Confirm Bets");
@@ -971,7 +971,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2188")
     @Parameters({"accountCode"})
-    public void Confirm_Bets_TC_004(String accountCode) {
+    public void Confirm_Bets_2188(String accountCode) {
         log("@title: Validate Total Confirmed Stake is matched correctly with all bet stake on Pending list");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Confirm Bets");

@@ -25,9 +25,9 @@ public class BetSettlementPage extends WelcomePage {
     public TextBox txtAccStartWith = TextBox.xpath("//input[@name='txtAccStartsWith']");
     public TextBox txtAccountCode = TextBox.xpath("//input[@name='txtAccountCode']");
     public Button btnSearch = Button.xpath("//div[@class='container-fluid cbody']//button[contains(@class,'icon-search-custom')]");
-    public Link lnkShowAccount = Link.xpath("//span[contains(@class='cursor-pointer show-acc')]");
-    public Link lnkMoreFilter = Link.xpath("//button[contains(@containerclass,'dropdown-list-btn')]");
-    public Link lnkResetAllFilter = Link.xpath("//span[contains(@class,' reset-all-filters-btn')]");
+    public Button lnkShowAccount = Button.xpath("//span[contains(text(),'Show Account')]");
+    public Button lnkMoreFilter = Button.xpath("//button[contains(@containerclass,'dropdown-list-btn')]");
+    public Button lnkResetAllFilter = Button.xpath("//span[contains(@class,'reset-all-filters-btn')]");
     public Button btnSettleSendSettlementEmail = Button.xpath("//div[@class='container-fluid cbody']/div[2]//div[contains(@class,' d-inline-block')]/div[2]//button[1]");
     public Button btnSendBetListEmail = Button.xpath("//div[@class='container-fluid cbody']/div[2]//div[contains(@class,' d-inline-block')]/div[2]//button[2]");
     public Button btnExportSelectedBet = Button.xpath("//div[@class='container-fluid cbody']/div[2]//div[contains(@class,' d-inline-block')]/div[2]//button[3]");

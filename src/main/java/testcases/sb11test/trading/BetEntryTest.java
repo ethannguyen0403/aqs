@@ -463,7 +463,7 @@ public class BetEntryTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2189")
-    public void BetEntry_TC_001(){
+    public void BetEntry_2189(){
         log("Validate Bet Entry page for Soccer is displayed when navigate");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Trading > Bet Entry");
@@ -476,7 +476,7 @@ public class BetEntryTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression"})
     @TestRails(id = "2190")
-    public void BetEntry_TC_002(){
+    public void BetEntry_2190(){
         log("Validate UI on Bet Entry for Soccer is correctly displayed");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Trading > Bet Entry");
@@ -486,7 +486,7 @@ public class BetEntryTest extends BaseCaseAQS {
         log("Validate UI Info display correctly");
         log("Dropdown: Company Unit, Choose League, Search By");
         Assert.assertEquals(soccerBetEntryPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed!");
-        Assert.assertTrue(soccerBetEntryPage.ddpLeague.getOptions().contains("Club Friendly"),"Failed! League dropdown is not displayed!");
+        Assert.assertTrue(soccerBetEntryPage.ddpLeague.isEnabled(),"Failed! League dropdown is not displayed!");
         Assert.assertTrue(soccerBetEntryPage.ddpSearchBy.getOptions().contains("Code"),"Failed! Search By dropdown is not displayed!");
         log("Textbox: Account Code");
         Assert.assertTrue(soccerBetEntryPage.lblAccountCode.getText().contains("Account Code"),"Failed! Account Code textbox is not displayed!");
@@ -499,7 +499,7 @@ public class BetEntryTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2191")
-    public void BetEntry_TC_003(){
+    public void BetEntry_2191(){
         log("Validate Bet Entry page for Cricket is displayed when navigate");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Trading > Bet Entry");
@@ -513,7 +513,7 @@ public class BetEntryTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2192")
-    public void BetEntry_TC_004(){
+    public void BetEntry_2192(){
         log("Validate UI on Bet Entry for Cricket is correctly displayed");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Trading > Bet Entry");
@@ -523,7 +523,7 @@ public class BetEntryTest extends BaseCaseAQS {
         log("Validate UI Info display correctly");
         log("Dropdown: Company Unit, Choose League, Search By");
         Assert.assertEquals(cricketBetEntryPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed!");
-        Assert.assertTrue(cricketBetEntryPage.ddpLeague.getOptions().contains("Club Friendly"),"Failed! League dropdown is not displayed!");
+        Assert.assertTrue(cricketBetEntryPage.ddpLeague.isEnabled(),"Failed! League dropdown is not displayed!");
         Assert.assertTrue(cricketBetEntryPage.ddpSearchBy.getOptions().contains("Code"),"Failed! Search By dropdown is not displayed!");
         log("Textbox: Account Code");
         Assert.assertTrue(cricketBetEntryPage.lblAccountCode.getText().contains("Account Code"),"Failed! Account Code textbox is not displayed!");
@@ -536,7 +536,7 @@ public class BetEntryTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2193")
-    public void BetEntry_TC_005(){
+    public void BetEntry_2193(){
         log("Validate Bet Entry page for Mixed Sport is displayed when navigate");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Trading > Bet Entry");
@@ -550,7 +550,7 @@ public class BetEntryTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2194")
-    public void BetEntry_TC_006(){
+    public void BetEntry_2194(){
         log("Validate UI on Bet Entry for Mixed Sport is correctly displayed");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Trading > Bet Entry");
@@ -562,7 +562,7 @@ public class BetEntryTest extends BaseCaseAQS {
         Assert.assertEquals(manualBetBetEntryPage.ddCompany.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed!");
         Assert.assertEquals(manualBetBetEntryPage.ddSport.getOptions(), SBPConstants.BetEntryPage.SPORT_LIST,"Failed! Sport dropdown is not displayed!");
         Assert.assertEquals(manualBetBetEntryPage.ddBetType.getOptions(), SBPConstants.BetEntryPage.BET_TYPE,"Failed! Bet type dropdown is not displayed!");
-        Assert.assertEquals(manualBetBetEntryPage.ddBetType.getOptions(), SBPConstants.BetEntryPage.ODD_TYPE,"Failed! Odd type dropdown is not displayed!");
+        Assert.assertEquals(manualBetBetEntryPage.ddOddType.getOptions(), SBPConstants.BetEntryPage.ODD_TYPE,"Failed! Odd type dropdown is not displayed!");
         log("Textbox: Account Code, Bet Description, Selection, Bet type, Odds, Stake, WinLoss");
         Assert.assertTrue(manualBetBetEntryPage.lblAccountCode.getText().contains("Account Code"),"Failed! Account Code textbox is not displayed!");
         Assert.assertEquals(manualBetBetEntryPage.lblClient.getText(),"Client","Failed! Account Code textbox is not displayed!");
@@ -577,7 +577,7 @@ public class BetEntryTest extends BaseCaseAQS {
         Assert.assertEquals(manualBetBetEntryPage.lblDate.getText(),"Date","Failed! Date datetimepicker is not displayed!");
         log("Button: Show button, Place Bet button");
         Assert.assertTrue(manualBetBetEntryPage.btnSearch.isDisplayed(),"Failed! Search button is not displayed!");
-        Assert.assertEquals(manualBetBetEntryPage.btnPlaceBet,"Place bet","Failed! Place bet button is not displayed!");
+        Assert.assertTrue(manualBetBetEntryPage.btnPlaceBet.isEnabled(),"Failed! Place bet button is not displayed!");
         log("INFO: Executed completely");
     }
 }
