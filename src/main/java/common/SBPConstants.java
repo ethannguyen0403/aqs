@@ -149,9 +149,9 @@ public class SBPConstants {
 
     public static class BetSettlement{
         public final static List<String> LST_MESSAGE_SETTLE_SENT_MAIL = Arrays.asList("Bet(s) is settled successfully.",
-                "Statement Email has been sent to your mail box.");
+                "Statement Email has been sent to your mail box");
         public final static List<String> BET_LIST_STATEMENT_EMAIL = Arrays.asList("Bet List [Current]",
-                "Description", "Selection", "HDP", "Live", "Prive","Stake", "Win/Lose","Type","Date");
+                "Description", "Selection", "HDP", "Live", "Price","Stake", "Win/Lose","Type","Date");
         public final static List<String> STATUS_LIST = Arrays.asList("Confirmed","Settled");
         public final static List<String> MATCH_DATE = Arrays.asList("[All Dates]","Specific Date");
     }
