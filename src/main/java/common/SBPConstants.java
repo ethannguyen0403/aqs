@@ -1,7 +1,5 @@
 package common;
 
-import utils.sb11.CurrencyRateUtils;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -91,6 +89,7 @@ public class SBPConstants {
     public final static List<String> TABLE_HEADER = Arrays.asList("Role", "User", "Sport", "Soccer","Accounting","Trading","Master","General Reports","Invoice","Financial Reports");
     public final static List<String> COMPANY_UNIT_LIST = Arrays.asList("Kastraki Limited", "SK1122", "IB 01", "Fair", "Aquifer");
     public final static List<String> COMPANY_UNIT_LIST_ALL = Arrays.asList("All","Kastraki Limited", "SK1122", "IB 01", "Fair","Aquifer");
+    public final static List<String> FINANCIAL_YEAR_LIST_NEW = Arrays.asList("Year 2021","Year 2022","Year 2023","Year 2020-2021","Year 2021-2022","Year 2022-2023","Year 2023-2024");
     public final static List<String> FINANCIAL_YEAR_LIST = Arrays.asList("Year 2020-2021","Year 2021-2022","Year 2022-2023","Year 2023-2024");
     public final static List<String> COUNTRY_LIST = Arrays.asList("All", "Afghanistan","Africa","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Antigua and Barbuda","Argentina","Armenia","Aruba","Asia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia-Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei Darussalam","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde Islands","Cayman Islands","Central African Republic","Chad","Chile","China","Chinese Taipei","Colombia","Comoros Island","Congo","Cook Islands","Costa Rica","Croatia","Cuba","Curacao","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Dubai","East Timor","Ecuador","Egypt","El Salvador","England","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","EuroCup","Europe","Faroe Islands","FIFA","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Grenada","Guadeloupe","Guam","Guatemala","Guinea","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","International","Iran","Iraq","Ireland Republic","Israel","Israeli-Palestinian","Italy","Ivory Cost","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Korea North","Korea South","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macao","Macedonia FYR","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","North America","North Ireland","Norway","Oceania","Oman","Other","Others","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Romania","Russia","Rwanda","Samoa","San Marino","Saudi Arabia","Scotland","Senegal","Serbia","Serbia and Montenegro","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South America","Spain","Sri Lanka","St. Kitts and Nevis","St. Lucia","St. Vincent and the Grenadines","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Tahiti","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad And Tobago","Tunisia","Turkey","Turkmenistan","UEFA","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","US Virgin Islands","USA","Uzbekistan","Vanuatu","Venezuela","Vietnam","Wales","World","WorldCup","Yemen","Yugoslavia","Zambia","Zanzibar","Zimbabwe");
     public final static List<String> TYPE_LIST = Arrays.asList("Normal","Account");
@@ -142,7 +141,7 @@ public class SBPConstants {
     public static class BetEntryPage {
         public final static String MESSAGE_SUCCESS_MANUAL_BET ="Place Successful !";
         public final static List<String> TABLE_HEADER = Arrays.asList("Time", "Event", "Full Time", "Half Time"," ", "HDP", "Home", "Away", "GOAL", "Over", "Under", "HDP", "Home", "Away", "GOAL", "Over", "Under", "More", "SPB");
-        public final static List<String> SPORT_LIST = Arrays.asList("Soccer","Cricket");
+        public final static List<String> SPORT_LIST = Arrays.asList("Soccer","Cricket","Basketball","Tennis","American Football","Ice Hockey");
         public final static List<String> BET_TYPE = Arrays.asList("Back","Lay");
         public final static List<String> ODD_TYPE = Arrays.asList("HK","ID","MY","EU");
     }
@@ -242,7 +241,7 @@ public class SBPConstants {
     }
 
     public static class TransactionVerification{
-        public final static List<String> WEBSITE = Arrays.asList("Pinnacle","BetISN","Fair999");
+        public final static List<String> WEBSITE = Arrays.asList("[Choose one]","Pinnacle","BetISN","Fair999");
     }
 
     public static class AccountPercent{
@@ -337,7 +336,7 @@ public class SBPConstants {
         public final static List<String> SPORT_LIST = Arrays.asList("All","Soccer","Cricket","Basketball","Tennis","American Football","Ice Hockey");
         public final static List<String> DATE_TYPE_LIST = Arrays.asList("All Dates","Specific Date");
         public final static List<String> BET_TYPE_LIST = Arrays.asList("All");
-        public final static List<String> TABLE_HEADER_ORDER = Arrays.asList("#","Event Date","Country","League","Event","Bet Date","Selection","Hdp","Live","Odds","B/L","Stake","BT","Trad","","","");
+        public final static List<String> TABLE_HEADER_ORDER = Arrays.asList("#","Event Date","Country","League","Event","Bet Date","Selection","Hdp","Live","Odds","B/L","Stake","BT","Trad","","");
         public final static List<String> TABLE_HEADER_PENDING = Arrays.asList("Pending Accounts");
         public final static List<String> TABLE_HEADER_CONFIRMED = Arrays.asList("Confirmed Accounts");
     }

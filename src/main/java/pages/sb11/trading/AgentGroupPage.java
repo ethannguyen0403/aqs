@@ -24,8 +24,8 @@ public class AgentGroupPage extends WelcomePage {
     public Button btnAddAgent = Button.xpath("//button[contains(text(),'Add Agent')]");
     public Table tbAgent = Table.xpath("//app-agent-group//table",11);
     int colAgent = 3;
-    int colGroup = 8;
-    int colCL = 9;
+    int colGroup = 9;
+    int colCL = 10;
 
     public void filterAgent (String currency, String orderBy, String agentCode){
         if (!currency.isEmpty())
@@ -33,6 +33,7 @@ public class AgentGroupPage extends WelcomePage {
         ddpOrderBy.selectByVisibleText(orderBy);
         txtAgentCode.sendKeys(agentCode);
         btnShow.click();
+        waitSpinnerDisappeared();
     }
 
     public AgentGroupReportPopup openAgentGroupReport(String agentCode){
@@ -43,7 +44,7 @@ public class AgentGroupPage extends WelcomePage {
 
     public AgentGroupListPopup openGroupListPopup(String agentCode){
         int rowIndex = getAgentRowIndex(agentCode);
-        tbAgent.getControlOfCell(1,colGroup,rowIndex,null).click();
+        tbAgent.getControlOfCell(1, colGroup,rowIndex,null).click();
         return new AgentGroupListPopup();
     }
 
@@ -55,7 +56,7 @@ public class AgentGroupPage extends WelcomePage {
 
     public String getGroupAmount(String agentCode){
         int rowIndex = getAgentRowIndex(agentCode);
-        return tbAgent.getControlOfCell(1,colGroup,rowIndex,null).getText();
+        return tbAgent.getControlOfCell(1, colGroup,rowIndex,null).getText();
     }
 
     private int getAgentRowIndex(String agentCode){

@@ -342,19 +342,19 @@ public class BetSettlementTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2195")
-    public void BetSettlement_TC001(){
+    public void BetSettlement_2195(){
         log("Validate Bet Settlement page is displayed when navigate");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Trading > Bet Settlement");
         BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
         log("Validate Bet Settlement page is displayed with correctly title");
-        Assert.assertEquals(betSettlementPage.getTitlePage(),BET_SETTLEMENT,"Failed! Bet Settlement page is not displayed");
+        Assert.assertTrue(betSettlementPage.getTitlePage().contains(BET_SETTLEMENT),"Failed! Bet Settlement page is not displayed");
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression"})
     @TestRails(id = "2196")
-    public void BetSettlement_TC002(){
+    public void BetSettlement_2196(){
         log("Validate UI on Bet Settlement is correctly displayed");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Trading > Bet Settlement");

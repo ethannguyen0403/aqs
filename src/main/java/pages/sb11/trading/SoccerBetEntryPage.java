@@ -18,7 +18,7 @@ import java.util.Random;
 import java.util.TimeZone;
 
 public class SoccerBetEntryPage extends BetEntryPage {
-    public Label lblTitle = Label.xpath("//app-bet-entry-header//app-common-header-sport//div[contains(@class,'main-box-header')]/div[1]/span");
+    public Label lblTitle = Label.xpath("//app-bet-entry-header//div[contains(@class,'main-box-header')]/div[1]/span");
     public Label lblGoto = Label.xpath("//app-bet-entry-header//app-common-header-sport//div[contains(@class,'main-box-header')]/div[2]/span");
     public Label lblDate = Label.xpath("//label[text()='Date']");
     public Label lblAccountCode = Label.xpath("//label[contains(text(),'Account Code')]");
