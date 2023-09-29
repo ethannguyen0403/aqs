@@ -15,7 +15,7 @@ public class AppArlertControl extends BaseElement {
     public AppArlertControl(By locator, String xpathExpression) {
         super(locator);
         this._xpath = xpathExpression;
-        lblSuccessMessage = Label.xpath(String.format("%s//div[contains(@class,'alert-success')]",_xpath));
+        lblSuccessMessage = Label.xpath(String.format("%s//div[contains(@class,'alert-success')]/span",_xpath));
         lstAlertXpath = String.format("%s/div",_xpath);
     }
 
@@ -31,7 +31,7 @@ public class AppArlertControl extends BaseElement {
         int index = 1;
         List<String> lstMessage = new ArrayList<>();
         while (true){
-            Label lblSuccessMessageI = Label.xpath(String.format("%s[%s]//div[contains(@class,'alert-success')]",lstAlertXpath,index));
+            Label lblSuccessMessageI = Label.xpath(String.format("%s[%s]//div[contains(@class,'alert-success')]/span",lstAlertXpath,index));
             if(!lblSuccessMessageI.isDisplayed(1))
                 return lstMessage;
             lstMessage.add(lblSuccessMessageI.getText().trim());
