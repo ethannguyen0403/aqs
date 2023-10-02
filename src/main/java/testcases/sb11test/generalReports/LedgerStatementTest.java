@@ -391,6 +391,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
+            ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
@@ -444,6 +445,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
+            ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
@@ -714,6 +716,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Total column is sum of records\n" +
                     "Amounts in GBP will get value from Original Currency then convert to GBP to showy");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
+            ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
@@ -771,6 +774,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Total column is sum of records\n" +
                     "Amounts in GBP will get value from Original Currency then convert to GBP to show");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
+            ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
@@ -884,6 +888,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in red, Running Bal and Running Bal CT displayed\n" +
                     "Amounts in GBP (conver to GBP): Credit/Debit column = value inputted at step 5 in red, Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
+            ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
@@ -941,6 +946,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Total column is sum of records\n" +
                     "Amounts in GBP will get value from Original Currency then convert to GBP to show");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
+            ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
@@ -998,6 +1004,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "Amounts in GBP will get value from Original Currency then convert to GBP to show\n" +
                     "\n");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
+            ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
@@ -1008,7 +1015,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2769")
-    public void Ledger_Statement_TC_001(){
+    public void Ledger_Statement_2769(){
         log("@title: Validate Ledger Statement page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("Step 2: Click General Reports > Ledger Statement");
@@ -1020,7 +1027,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2770")
-    public void Ledger_Statement_TC_002(){
+    public void Ledger_Statement_2770(){
         String detailType = "000.000.001.000 - QA Ledger Group Income";
         log("@title: Validate UI on Ledger Statement is correctly displayed");
         log("@Step 1: Login with valid account");
@@ -1040,14 +1047,15 @@ public class LedgerStatementTest extends BaseCaseAQS {
         Assert.assertEquals(ledgerStatementPage.btnExportToExcel.getText(),"Export To Excel","Failed! Export To Excel button is not displayed!");
         Assert.assertEquals(ledgerStatementPage.btnExportToPDF.getText(),"Export To PDF","Failed! Export To PDF button is not displayed!");
         log("Validate Ledger Statement table is displayed with correctly header column");
-        log("Header is " + ledgerStatementPage.tbLedger.getHeaderNameOfRows());
+        ledgerStatementPage.btnShow.click();
+        ledgerStatementPage.waitSpinnerDisappeared();
         Assert.assertEquals(ledgerStatementPage.tbLedger.getHeaderNameOfRows(),LedgerStatement.TABLE_HEADER,"Failed! Ledger Statement table is displayed with incorrectly header column");
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression"})
-    @TestRails(id = "2770")
-    public void Ledger_Statement_TC_003(){
+    @TestRails(id = "2772")
+    public void Ledger_Statement_2772(){
         String dowloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "ledger-statement.xlsx";
         log("@title: Validate can export Ledger Statement to Excel file successfully");
         log("@Step 1: Login with valid account");
@@ -1069,7 +1077,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2768")
-    public void Ledger_Statement_TC_004(){
+    public void Ledger_Statement_2768(){
         String dowloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "download.pdf";
         log("@title: Validate can export Ledger Statement to PDF file successfully");
         log("@Step 1: Login with valid account");

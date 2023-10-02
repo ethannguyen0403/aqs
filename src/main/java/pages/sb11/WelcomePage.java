@@ -75,6 +75,7 @@ public class WelcomePage extends Header{
 
     private YopmailPage navigatetoYopmail(String url){
         DriverManager.getDriver().newTab();
+        DriverManager.getDriver().switchToWindow();
         DriverManager.getDriver().get(url);
         return new YopmailPage();
     }

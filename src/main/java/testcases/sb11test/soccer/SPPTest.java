@@ -81,7 +81,7 @@ public class SPPTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2129")
-    public void SPP_TC_001(){
+    public void SPP_TC_2129(){
         log("@title: Validate SPP page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
@@ -93,18 +93,18 @@ public class SPPTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2130")
-    public void SPP_TC_002(){
+    public void SPP_TC_2130(){
         log("@title: Validate SPP page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
         log(" Validate UI Info display correctly");
         log("Company Unit, Report By, Punter Type, Smart Master, Smart Agent, From Date, To Date and Show button");
-        Assert.assertEquals(sppPage.ddSport.getOptions(),SPORT_LIST,"Failed! Sport dropdown is not displayed");
+        Assert.assertEquals(sppPage.ddSport.getOptions(),SPORT_LIST_ALL,"Failed! Sport dropdown is not displayed");
         Assert.assertTrue(sppPage.ddpReportBy.getOptions().contains("Group"),"Failed! Report By dropdown is not displayed");
         Assert.assertTrue(sppPage.ddpPunterType.getOptions().contains("Smart Group"),"Failed! Punter Type dropdown is not displayed");
-        Assert.assertTrue(sppPage.ddpSmartMaster.getOptions().contains("MasterGroup-Auto"),"Failed! Smart Master dropdown is not displayed");
-        Assert.assertTrue(sppPage.ddpSmartAgent.getOptions().contains("AgentGroup-Auto"),"Failed! Smart Agent dropdown is not displayed");
+        Assert.assertTrue(sppPage.ddpSmartMaster.getOptions().contains("QA Smart Master"),"Failed! Smart Master dropdown is not displayed");
+        Assert.assertTrue(sppPage.ddpSmartAgent.getOptions().contains("QA Smart Agent"),"Failed! Smart Agent dropdown is not displayed");
         Assert.assertEquals(sppPage.lblFromDate.getText(),"From Date","Failed! From Date datetime picker is not displayed");
         Assert.assertEquals(sppPage.lblToDate.getText(),"To Date","Failed! To Date datetime picker is not displayed");
         log("Show Tax Amount, Show Bet Types, Show Leagues, Smart Group, Order By Win%, Reset All Filters and More Filters");
@@ -122,7 +122,7 @@ public class SPPTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2131")
-    public void SPP_TC_003(){
+    public void SPP_TC_2131(){
         log("@title: Validate Tax column is displayed after checking Show Tax Amount");
         String date = String.format(DateUtils.getDate(-3,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Login with valid account");
@@ -138,8 +138,8 @@ public class SPPTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression"})
     @TestRails(id = "2132")
-    public void SPP_TC_004(){
-        String groupName = "QAFS-SG1";
+    @Parameters({"smartGroup"})
+    public void SPP_TC_2132(String smartGroup){
         log("@title: Validate League Performance page is displayed successfully when clicking on Group code");
         String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
         String todate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
@@ -149,25 +149,24 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 3: Filter with valid data");
         sppPage.filter("Soccer", "Group","Smart Group","[All]","[All]",fromdate,todate);
         log("@Step 4: Click on any group code");
-        LeaguePerformancePage leaguePerformancePage = sppPage.openLeaguePerformance(groupName);
+        LeaguePerformancePage leaguePerformancePage = sppPage.openLeaguePerformance(smartGroup);
         log("Validate League Performance is displayed correctly title");
         Assert.assertTrue(leaguePerformancePage.getTitlePage().contains("League Performance"), "Failed! League Performance page is not displayed");
         log("Validate 5 tables should displayed with format");
         String fromDateconvert = DateUtils.formatDate(fromdate,"dd/MM/yyyy","yyyy-MM-dd");
         String toDateconvert = DateUtils.formatDate(todate,"dd/MM/yyyy","yyyy-MM-dd");
-        Assert.assertEquals(leaguePerformancePage.getTableHeaderInRange(), groupName + " - League Performance for " + fromDateconvert + " To " + toDateconvert);
-        Assert.assertEquals(leaguePerformancePage.getTableHeader1Month(), groupName + " - League Performance for Last 1 Month");
-        Assert.assertEquals(leaguePerformancePage.getTableHeader3Months(), groupName + " - League Performance for Last 3 Months");
-        Assert.assertEquals(leaguePerformancePage.getTableHeader6Months(), groupName + " - League Performance for Last 6 Months");
-        Assert.assertEquals(leaguePerformancePage.getTableHeader1Year(), groupName + " - League Performance for Last 1 Year");
+        Assert.assertEquals(leaguePerformancePage.getTableHeaderInRange(), smartGroup + " - League Performance for " + fromDateconvert + " To " + toDateconvert);
+        Assert.assertEquals(leaguePerformancePage.getTableHeader1Month(), smartGroup + " - League Performance for Last 1 Month");
+        Assert.assertEquals(leaguePerformancePage.getTableHeader3Months(), smartGroup + " - League Performance for Last 3 Months");
+        Assert.assertEquals(leaguePerformancePage.getTableHeader6Months(), smartGroup + " - League Performance for Last 6 Months");
+        Assert.assertEquals(leaguePerformancePage.getTableHeader1Year(), smartGroup + " - League Performance for Last 1 Year");
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression"})
     @TestRails(id = "2133")
-    public void SPP_TC_005(){
-        String groupName = "QAFS-SG1";
-        String accCur = "AED";
+    @Parameters({"smartGroup","accountCurrency"})
+    public void SPP_TC_2133(String smartGroup, String accountCurrency){
         log("@title: Validate Performance by Month page is displayed succefully when clicking on MP");
         String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
         String todate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
@@ -177,19 +176,18 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 3: Filter with valid data");
         sppPage.filter("Soccer", "Group","Smart Group","[All]","[All]",fromdate,todate);
         log("@Step 4: Click on any data at MP column");
-        PerformanceByMonthPage performanceByMonthPage = sppPage.openPerfByMonth(groupName);
+        PerformanceByMonthPage performanceByMonthPage = sppPage.openPerfByMonth(smartGroup);
         log("Validate Performance By Month is displayed correctly title");
         Assert.assertTrue(performanceByMonthPage.getTitlePage().contains("Performance By Month"), "Failed! Performance By Month page is not displayed");
         log("Validate group code name is displayed correctly on header with format");
-        Assert.assertEquals(performanceByMonthPage.getTableHeader(), groupName + " - " + accCur + " - Last 12 Month Performance");
+        Assert.assertEquals(performanceByMonthPage.getTableHeader(), smartGroup + " - " + accountCurrency + " - Last 12 Month Performance");
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression"})
     @TestRails(id = "2134")
-    public void SPP_TC_006(){
-        String groupName = "QAFS-SG1";
-        String accountName = "FS-ACC-1";
+    @Parameters({"smartGroup","accountCode"})
+    public void SPP_TC_2134(String smartGroup, String accountCode){
         log("@title: Validate Account PT Performance page is displayed succefully when clicking on PT");
         String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
         String todate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
@@ -198,15 +196,15 @@ public class SPPTest extends BaseCaseAQS {
         SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
         log("@Step 3: Filter with valid data");
         sppPage.filter("Soccer", "Group","Smart Group","[All]","[All]",fromdate,todate);
-        String PT = sppPage.getRowDataOfGroup(groupName).get(sppPage.colPT-1);
+        String PT = sppPage.getRowDataOfGroup(smartGroup).get(sppPage.colPT-1);
         log("@Step 4: Click on any data at PT column");
-        PTPerformancePopup ptPerformancePopup = sppPage.openAccountPTPerf(groupName);
+        PTPerformancePopup ptPerformancePopup = sppPage.openAccountPTPerf(smartGroup);
         log("Validate Account PT Performance page is displayed correctly title");
         Assert.assertTrue(ptPerformancePopup.getTitlePage().contains("Account PT Performance"), "Failed! PT Performance page is not displayed");
         log("Validate group code name is displayed correctly smart group name on header");
-        Assert.assertTrue(ptPerformancePopup.isGroupNameDisplayed(groupName),"Failed! Group name "+ groupName + " is not displayed!");
+        Assert.assertTrue(ptPerformancePopup.isGroupNameDisplayed(smartGroup),"Failed! Group name "+ smartGroup + " is not displayed!");
         log("Validate PT% on SPP page is matched with PT% on Account PT Performance page");
-        Assert.assertTrue(ptPerformancePopup.isAccountPTMatched(accountName,PT),"Failed! PT is not matched!");
+        Assert.assertTrue(ptPerformancePopup.isAccountPTMatched(accountCode,PT),"Failed! PT is not matched!");
         log("INFO: Executed completely");
     }
 }

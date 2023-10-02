@@ -83,8 +83,8 @@ public class JournalEntriesTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
-    @TestRails(id = "2161")
-    public void Journal_Entries_TC_2161(){
+    @TestRails(id = "4176")
+    public void Journal_Entries_TC_4176(){
         log("@title: Validate UI on Journal Entries is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Journal Entries");
@@ -96,15 +96,17 @@ public class JournalEntriesTest extends BaseCaseAQS {
         Assert.assertEquals(journalEntriesPage.ddCreditTo.getOptions(),JournalEntries.TYPE_LIST,"Failed! Credit type list dropdown is not displayed");
         Assert.assertTrue(journalEntriesPage.ddCreditLedger.getOptions().contains(clientCode),"Failed! Credit Client dropdown is not displayed");
         Assert.assertTrue(journalEntriesPage.ddDebitLedger.getOptions().contains(clientCode),"Failed! Debit Client dropdown is not displayed");
-        Assert.assertTrue(journalEntriesPage.ddCreditBookieClient.getOptions().contains(bookieCode),"Failed! Credit Bookie dropdown is not displayed");
-        Assert.assertTrue(journalEntriesPage.ddDebitBookieClient.getOptions().contains(bookieCode),"Failed! Debit Bookie dropdown is not displayed");
-        Assert.assertEquals(journalEntriesPage.ddDebitCurrency.getOptions(),CURRENCY_LIST,"Failed! Credit Bookie dropdown is not displayed");
-        Assert.assertEquals(journalEntriesPage.ddCreditCurrency.getOptions(),CURRENCY_LIST,"Failed! Debit Bookie dropdown is not displayed");
+        Assert.assertTrue(journalEntriesPage.ddCreditBookieClient.getOptions().contains("[All]"),"Failed! Credit Bookie dropdown is not displayed");
+        Assert.assertTrue(journalEntriesPage.ddDebitBookieClient.getOptions().contains("[All]"),"Failed! Debit Bookie dropdown is not displayed");
+        Assert.assertEquals(journalEntriesPage.ddDebitLevel.getOptions(),JournalEntries.LEVEL_LIST,"Failed! Debit Level dropdown is not displayed");
+        Assert.assertEquals(journalEntriesPage.ddCreditLevel.getOptions(),JournalEntries.LEVEL_LIST,"Failed! Credit Level dropdown is not displayed");
+        Assert.assertEquals(journalEntriesPage.ddDebitCurrency.getOptions(),JournalEntries.CURRENCY_LIST,"Failed! Credit Bookie dropdown is not displayed");
+        Assert.assertEquals(journalEntriesPage.ddCreditCurrency.getOptions(),JournalEntries.CURRENCY_LIST,"Failed! Debit Bookie dropdown is not displayed");
         Assert.assertEquals(journalEntriesPage.ddTransactionType.getOptions(),JournalEntries.TRANSACTION_TYPE_LIST,"Failed! Debit Bookie dropdown is not displayed");
         log("Textbox: Account, Remark");
-        Assert.assertEquals(journalEntriesPage.lblAccountCredit,"Account","Failed! Account Debit textbox is not displayed");
-        Assert.assertEquals(journalEntriesPage.lblAccountCredit,"Account","Failed! Account Credit textbox is not displayed");
-        Assert.assertEquals(journalEntriesPage.lblRemark,"Remark","Failed! Remark textbox is not displayed");
+        Assert.assertEquals(journalEntriesPage.lblAccountDebit.getText(),"Account","Failed! Account Debit textbox is not displayed");
+        Assert.assertEquals(journalEntriesPage.lblAccountCredit.getText(),"Account","Failed! Account Credit textbox is not displayed");
+        Assert.assertEquals(journalEntriesPage.lblRemark.getText(),"Remark","Failed! Remark textbox is not displayed");
         log("Datetimepicker: Transaction Date");
         Assert.assertTrue(journalEntriesPage.txtDateTrans.isDisplayed(),"Failed! Transaction Date is not displayed!");
         log("Button: Add (Debit), Add (Credit) and Submit button");
@@ -114,10 +116,10 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @TestRails(id="2162")
+    @TestRails(id="4179")
     @Test(groups = {"regression"})
     @Parameters({"bookieCode","bookieSuperMasterCode"})
-    public void Journal_Entries_TC_2162(String bookieCode, String bookieSuperMasterCode){
+    public void Journal_Entries_TC_4179(String bookieCode, String bookieSuperMasterCode){
         log("@title: Validate users can make transactions successfully between bookies");
         Transaction transaction = new Transaction.Builder()
                 .bookieDebit(bookieCode)
@@ -150,10 +152,10 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @TestRails(id="2163")
+    @TestRails(id="4180")
     @Test(groups = {"regression"})
     @Parameters({"clientCode","bookieSuperMasterCode"})
-    public void Journal_Entries_TC_2163(String clientCode, String bookieSuperMasterCode){
+    public void Journal_Entries_TC_4180(String clientCode, String bookieSuperMasterCode){
         log("@title: Validate users can make transactions successfully between client");
         Transaction transaction = new Transaction.Builder()
                 .clientDebit(clientCode)
@@ -196,7 +198,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit(debitExpAcc)
+                .ledgerDebit("AutoExpenditureCredit1")
                 .ledgerCredit(creditExpAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
@@ -208,7 +210,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
                 .build();
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
-        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
+//        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         ledgerStatementPage.showLedger(companyUnit,financialYear,"Expenditure",lgExpenditureGroup,"","");

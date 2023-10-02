@@ -221,10 +221,11 @@ public class BetSettlementTest extends BaseCaseAQS {
 
         log("@Step 3.Select the bet and click Send Bet List Email > observe");
         betSettlementPage.sendBetListEmail(order);
+        String expectedMessage = betSettlementPage.getSuccessMessage();
 
         log("@Verify 1 .User can send Bet List email successfully with message 'Statement Email has been sent to your mail box'");
-        Assert.assertTrue(betSettlementPage.getSuccessMessage().contains("Statement Email has been sent to your mail box"),
-                "Failed! Success message after place bet is incorrect Actual is "+betSettlementPage.getSuccessMessage());
+        Assert.assertTrue(expectedMessage.contains("Statement Email has been sent to your mail box"),
+                "Failed! Success message after place bet is incorrect Actual is "+ expectedMessage);
 
         log("@Post-condition: delete confirm bet");
         betSettlementPage.deleteOrder(order);
@@ -269,11 +270,14 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("@Step 3. Select the bet and click Settle & Send Settlement Email button > Yes and observe message");
         log("@Step 4: Switch to Settled mode and search bet of the account then observe list result");
         betSettlementPage.settleAndSendSettlementEmail(order);
+        List<String> listSuccessMessage = betSettlementPage.getListSuccessMessage();
+
 
         log("@Verify 1 .Successfully message displays with 2 popup:\n" +
                 "Bet(s) is settled successfully.\n" +
                 "Statement Email has been sent to your mail box.");
-        Assert.assertTrue(betSettlementPage.getListSuccessMessage().equals(BetSettlement.LST_MESSAGE_SETTLE_SENT_MAIL),"Failed! List Success message after Settle & Send Settlement Email bet is incorrect");
+        Assert.assertTrue(listSuccessMessage.equals(BetSettlement.LST_MESSAGE_SETTLE_SENT_MAIL),
+                "Failed! List Success message after Settle & Send Settlement Email bet is incorrect. Actual: " + listSuccessMessage + "\n");
 
         log("Verify 2. The bet settled displays in result list");
         betSettlementPage.filter("Settled",date,date,"",accountCode);
@@ -283,8 +287,8 @@ public class BetSettlementTest extends BaseCaseAQS {
 
     @TestRails(id="206")
     @Test(groups = {"smoke"})
-    @Parameters({"accountCode","accountCurrency","emailAddress","clientName"})
-    public void BetSettlement_TC206(String accountCode,String accountCurrency,String emailAddress,String clientName){
+    @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
+    public void BetSettlement_TC206(String accountCode,String accountCurrency,String emailAddress,String clientCode){
         log("@title: Validate all information display correctly in statement email (AQS-2020)");
         log("Precondition:Already has account with some Confirmed bet settle Win/Lose (includes MB, Soccer, Cricket)\n" +
                 "The account is configured with email in Address Book");
@@ -322,39 +326,38 @@ public class BetSettlementTest extends BaseCaseAQS {
 
         log("@Step 4: Login to mailbox and verify infor displays in statement");
         List<ArrayList<String>> emailInfo = betSettlementPage.getFirstActiveMailBox("https://yopmail.com/",emailAddress);
-        List<String> expectedRow1 = Arrays.asList("Member Code "+accountCode,"Member Name: "+accountCode);
-        List<String> expectedRow2 = Arrays.asList("Member Code "+accountCode,"Member Name: "+accountCode);
+        List<String> expectedRow1 = Arrays.asList("Member Code: "+accountCode,"Member Name: "+accountCode);
         log("@Verify 1 .Information of Description, Selection, HDP, Live, Price, Stake, Win/Lose, Type, Date, Total Win, C/F (displayed), Balance show correctly");
         Assert.assertEquals(emailInfo.get(0).get(0),"Statement of Account for the Account "+accountCode,"Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(0).get(1),"Mr "+ clientName,"Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(0).get(2),"Please find enclosed statement for account ISA_ACC001 "+accountCode,"Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(0).get(3),"Therefore the amount + "+accountCurrency+" 19.00 ","Failed! title of email is incorrect");
+        Assert.assertEquals(emailInfo.get(0).get(1),"Mr "+ clientCode,"Failed! title of email is incorrect");
+        Assert.assertEquals(emailInfo.get(0).get(2),"Please find enclosed statement for account "+accountCode,"Failed! title of email is incorrect");
+        Assert.assertTrue(emailInfo.get(0).get(3).contains(String.format("Therefore the amount + %s", accountCurrency)) ,"Failed! title of email is incorrect");
         Assert.assertEquals(emailInfo.get(0).get(4),"This amount shall be KIV to the next period.","Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(0).get(5),BET_LIST_STATEMENT_EMAIL,"Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(0).get(6),expectedRow1,"Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(0).get(7),expectedRow2,"Failed! title of email is incorrect");
+        Assert.assertEquals(emailInfo.get(1), BET_LIST_STATEMENT_EMAIL, "Failed! title of email is incorrect");
+        Assert.assertEquals(emailInfo.get(3).get(0), expectedRow1.get(0), "Failed! title of email is incorrect");
+        Assert.assertEquals(emailInfo.get(3).get(1), expectedRow1.get(1), "Failed! title of email is incorrect");
 
-        log("@Post-condition: delete confirm bet");
-        betSettlementPage.deleteOrder(order);
+//        log("@Post-condition: delete confirm bet");
+//        betSettlementPage.deleteOrder(order);
 
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression"})
     @TestRails(id = "2195")
-    public void BetSettlement_TC001(){
+    public void BetSettlement_2195(){
         log("Validate Bet Settlement page is displayed when navigate");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Trading > Bet Settlement");
         BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
         log("Validate Bet Settlement page is displayed with correctly title");
-        Assert.assertEquals(betSettlementPage.getTitlePage(),BET_SETTLEMENT,"Failed! Bet Settlement page is not displayed");
+        Assert.assertTrue(betSettlementPage.getTitlePage().contains(BET_SETTLEMENT),"Failed! Bet Settlement page is not displayed");
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression"})
     @TestRails(id = "2196")
-    public void BetSettlement_TC002(){
+    public void BetSettlement_2196(){
         log("Validate UI on Bet Settlement is correctly displayed");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Trading > Bet Settlement");

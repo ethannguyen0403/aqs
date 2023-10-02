@@ -55,7 +55,7 @@ public class TradingPermissionPage extends WelcomePage {
             System.out.println("Title page is " + clientAgentPermissionPopup.getTitlePage());
             Assert.assertTrue(clientAgentPermissionPopup.getTitlePage().contains("Client Agent Permission"),"Failed! Client Agent Permission popup is not displayed");
             clientAgentPermissionPopup.close();
-
+            waitSpinnerDisappeared();
             Icon.xpath(tbTradPermission.getxPathOfCell(1,colClient,rowIndex,null)).click();
             Assert.assertTrue(clientPermissionPopup.getTitlePage().contains("Client Permission"),"Failed! Client Permission popup is not displayed");
             clientPermissionPopup.close();

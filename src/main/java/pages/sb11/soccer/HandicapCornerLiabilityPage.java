@@ -36,7 +36,7 @@ public class HandicapCornerLiabilityPage extends WelcomePage {
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
     public Button btnShowGroups = Button.xpath("//div[contains(text(),'Show Groups')]");
     public Button btnSetSelection = Button.xpath("//button[contains(text(),'Set Selection')]");
-    public Table tblOrder = Table.xpath("//app-handicap-corner-liability//table",6);
+    public Table tblOrder = Table.xpath("//app-handicap-corner-liability//table",15);
 
     public Table tbOrderByGroup;
     int colEvent = 1;
@@ -61,10 +61,10 @@ public class HandicapCornerLiabilityPage extends WelcomePage {
     }
 
     public void filterGroups(String groupCode){
-        CheckBox cbGroup = CheckBox.xpath("//div[contains(@class,'card-columns')]//span[text()='"+groupCode+"']//preceding::input[1]");
         btnShowGroups.click();
         waitSpinnerDisappeared();
-        cbGroup.click();
+        CheckBox cbGroup = CheckBox.xpath("//div[contains(@class,'card-columns')]//span[text()='"+groupCode+"']//preceding::input[1]");
+        cbGroup.jsClick();
         btnSetSelection.click();
         btnShow.click();
     }

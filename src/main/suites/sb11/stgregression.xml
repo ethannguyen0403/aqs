@@ -23,8 +23,8 @@
         <parameter name="emailAddress" value="autoacc001stg@yopmail.com"/>
         <parameter name="smartGroup" value="Auto QC Group"/>
         <parameter name="superCode" value="SM-01U-QA Client"/>
-        <parameter name="masterCode" value="Ma-01U00-QA Client"/>
-        <parameter name="agentCode" value="A-01U0000-QA Client"/>
+        <parameter name="masterCode" value="QA Smart Master"/>
+        <parameter name="agentCode" value="QA Smart Agent"/>
         <parameter name="bookieMasterCode" value="Ma-QA101-QA Test"/>
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <groups>

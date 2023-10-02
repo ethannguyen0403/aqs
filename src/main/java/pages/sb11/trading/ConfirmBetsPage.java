@@ -217,7 +217,7 @@ public class ConfirmBetsPage extends WelcomePage {
         }else {
             Assert.assertEquals(eventName, String.format("%s\n" + "vs\n" +"%s",order.getEvent().getHome(),order.getEvent().getAway()), "Failed! Event name is incorrect");
             Assert.assertEquals(orderID, String.format("%s / %s",order.getOrderId(), order.getBetId()), "Failed! Order id and Bet Id is incorrect ");
-            Assert.assertEquals(selection, order.getSelection(), "Failed! Stake is incorrect is in correct");
+            Assert.assertEquals(selection, order.getSelection(), "Failed! Selection is incorrect");
         }
 
         Assert.assertEquals(odds,String.format("%.3f",order.getPrice()), "Failed!Odds is incorrect");
@@ -230,6 +230,11 @@ public class ConfirmBetsPage extends WelcomePage {
             btExpected = String.format("%s-%s",EN_US.get(order.getStage()),EN_US.get(order.getMarketType()));
         }
         Assert.assertEquals(bt,btExpected, "Failed!BT is incorrect");
+
+        //Handle format selection if bet type is Lay
+        if (order.getBetType().equalsIgnoreCase("Lay")){
+            order.setSelection(String.format("%s (Lay)",order.getSelection()));
+        }
         //TODO: check script covert event start date, create bet date correct as UI, and country of League
        /* String dateconvert="";
         try {
@@ -349,13 +354,13 @@ public class ConfirmBetsPage extends WelcomePage {
         System.out.println(String.format("Update order %s  at row %s", order.getOrderId(), orderIndex));
         DropDownBox.xpath(tblOrder.getxPathOfCell(1, colSelection, orderIndex, "select")).selectByVisibleText(order.getSelection());
         DropDownBox.xpath(tblOrder.getxPathOfCell(1, colBL, orderIndex, "select")).selectByVisibleText(order.getBetType());
-        //TODO: [Isabella 12/12/20022]find the solution to update value for Odds and stake textbox in this Comfirm bet page
-       // TextBox.xpath(tblOrder.getxPathOfCell(1, colOdds, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getPrice()));
-       /* TextBox txtOdds = TextBox.xpath(tblOrder.getxPathOfCell(1, colOdds, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getPrice()));
-        clearAndUpdateTextBoxValue(txtOdds,String.format("%s",order.getPrice()));*/
-       // TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getRequireStake()));
-     /*   TextBox txtStake =TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, orderIndex, "input[1]"));//.sendKeys(String.format("%s",order.getRequireStake()));
-        clearAndUpdateTextBoxValue(txtStake,String.format("%s",order.getRequireStake()));*/
+        //TODO: [Isabella 12/12/20022]find the solution to update value for Odds and stake textbox in this Comfirm bet page with settled status
+//        TextBox.xpath(tblOrder.getxPathOfCell(1, colOdds, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getPrice()));
+//       TextBox txtOdds = TextBox.xpath(tblOrder.getxPathOfCell(1, colOdds, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getPrice()));
+//        clearAndUpdateTextBoxValue(txtOdds,String.format("%s",order.getPrice()));
+//        TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getRequireStake()));
+//       TextBox txtStake =TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, orderIndex, "input[1]"));//.sendKeys(String.format("%s",order.getRequireStake()));
+//        clearAndUpdateTextBoxValue(txtStake,String.format("%s",order.getRequireStake()));
         if(order.getSport().equalsIgnoreCase("Cricket")){
             TextBox.xpath(tblOrder.getxPathOfCell(1, colHdp, orderIndex, "input[1]")).sendKeys(String.format("%s",order.getHandicapWtks()));
             TextBox.xpath(tblOrder.getxPathOfCell(1, colHdp, orderIndex, "input[2]")).sendKeys(String.format("%s",order.getHandicapRuns()));

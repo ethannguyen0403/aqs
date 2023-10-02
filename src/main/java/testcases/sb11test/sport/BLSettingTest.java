@@ -89,6 +89,7 @@ public class BLSettingTest extends BaseCaseAQS {
             BLSettingsPopup blSettingsPopup = blSettingPage.openBLSettingPopup(eventName);
             log("@Step 6: Fill full info and click Submit");
             blSettingsPopup.fillBLSettings("1","KP","RB",true);
+            blSettingPage.waitSpinnerDisappeared();
             log("Validate Event of selected league is displayed correctly on Event table");
             blSettingPage.isEventSettingDisplayCorrect(eventName,"1","KP","RB");
         } finally {

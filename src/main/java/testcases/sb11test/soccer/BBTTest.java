@@ -19,7 +19,7 @@ public class BBTTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2135")
-    public void BBT_TC_001() {
+    public void BBT_TC_2135() {
         log("@title: Validate BBT page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > BBT");
@@ -31,15 +31,15 @@ public class BBTTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2136")
-    public void BBT_TC_002() {
-        log("@title: Validate BBT page is displayed when navigate");
+    public void BBT_TC_2136() {
+        log("@title: Validate UI on BBT is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
 
         log(" Validate UI Info display correctly");
         log("Company Unit, Report By, Punter Type, Sport, From Date, To Date and Show button");
-        Assert.assertEquals(bbtPage.ddpCompanyUnit.getOptions(), COMPANY_UNIT_LIST, "Failed! Company Unit dropdown is not displayed");
+        Assert.assertEquals(bbtPage.ddpCompanyUnit.getOptions(), COMPANY_UNIT_LIST_ALL, "Failed! Company Unit dropdown is not displayed");
         Assert.assertEquals(bbtPage.ddpSport.getOptions(), SPORT_LIST, "Failed! Sport dropdown is not displayed");
         Assert.assertEquals(bbtPage.ddpSmartType.getOptions(), SBPConstants.BBTPage.SMART_TYPE_LIST, "Failed! Smart Type dropdown is not displayed");
         Assert.assertEquals(bbtPage.ddpReportType.getOptions(), SBPConstants.BBTPage.REPORT_TYPE_LIST, "Failed! Report Type dropdown is not displayed");

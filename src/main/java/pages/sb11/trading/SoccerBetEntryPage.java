@@ -1,4 +1,5 @@
 package pages.sb11.trading;
+import com.paltech.element.BaseElement;
 import com.paltech.element.common.*;
 import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
@@ -17,7 +18,7 @@ import java.util.Random;
 import java.util.TimeZone;
 
 public class SoccerBetEntryPage extends BetEntryPage {
-    public Label lblTitle = Label.xpath("//app-bet-entry-header//app-common-header-sport//div[contains(@class,'main-box-header')]/div[1]/span");
+    public Label lblTitle = Label.xpath("//app-bet-entry-header//div[contains(@class,'main-box-header')]/div[1]/span");
     public Label lblGoto = Label.xpath("//app-bet-entry-header//app-common-header-sport//div[contains(@class,'main-box-header')]/div[2]/span");
     public Label lblDate = Label.xpath("//label[text()='Date']");
     public Label lblAccountCode = Label.xpath("//label[contains(text(),'Account Code')]");
@@ -59,6 +60,8 @@ public class SoccerBetEntryPage extends BetEntryPage {
             waitPageLoad();
         }
         if(!league.isEmpty()) {
+            BaseElement ddpLeagueDropdown = new TextBox(ddpLeague.getLocator());
+            ddpLeagueDropdown.doubleClick();
             ddpLeague.selectByVisibleText(league);
             waitPageLoad();
 
@@ -238,6 +241,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
         type1 = order.getMarketType();*/
         SoccerBetSlipPopup soccerBetSlipPopup = openBetSlip(accountCode,lstOrder.get(0).getSelection(),fullTime,type);
         soccerBetSlipPopup.placeMultiBet(lstOrder,isCopySPBPS7SameOdds,isCopySPBPS7MinusOdds,isPlaceBet);
+        waitSpinnerDisappeared();
     }
     
     /**

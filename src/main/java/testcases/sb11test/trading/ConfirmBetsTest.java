@@ -301,8 +301,8 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .sportName("Cricket")
                 .leagueName("QA League")
                 .eventDate(dateAPI)
-                .home("QA 01")
-                .away("QA 02")
+                .home("QA Team 01")
+                .away("QA Team 02")
                 .openTime("13:00")
                 .eventStatus("Scheduled")
                 .isLive(false)
@@ -361,11 +361,11 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +7"));
         // define event info
         Event eventInfo = new Event.Builder()
-                .sportName("Soccer")
+                .sportName("Cricket")
                 .leagueName("QA League")
                 .eventDate(dateAPI)
-                .home("QA 01")
-                .away("QA 02")
+                .home("QA Team 01")
+                .away("QA Team 02")
                 .openTime("13:00")
                 .eventStatus("Scheduled")
                 .isLive(false)
@@ -408,7 +408,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
 
         log("@Step 4: Find the bet at the precondition > edit any information of the bet (Selection/HDP/Odds/Stake)");
         log("@Step 5: Click on 'Update Bet'");
-        order.setRequireStake(17.50);
+        order.setSelection(eventInfo.getAway());
         confirmBetsPage.updateOrder(order, false);
 
         log("@Verify 1: Bet info is correctly updated in confirmed bets ");
@@ -801,6 +801,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("Precondition:Have a new Manual bet created #C862");
         String description = "Manual bet on " + DateUtils.getDate(0, "yyyymmddhhmmss", "GMT+7");
         String date = DateUtils.getDate(0, "dd/MM/yyyy", "GMT+7");
+        String previousDate = DateUtils.getPreviousDate(date, "dd/MM/yyyy");
         String dateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7"));
         Event eventInfo = new Event.Builder()
                 .sportName(SOCCER)
@@ -845,7 +846,8 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         Assert.assertFalse(confirmBetsPage.isOrderDisplayInTheTable(order), "Failed! Manual bet display in the table");
 
         log("@Post-Condition: Cancel Manual bet");
-        confirmBetsPage.filter(COMPANY_UNIT, "", "Confirmed", eventInfo.getSportName(), "All", "Specific Date", date, "", accountCode);
+        confirmBetsPage.filter(COMPANY_UNIT, "", "Confirmed", eventInfo.getSportName(), "Manual Bet", "Specific Date",
+                previousDate, "", accountCode);
         confirmBetsPage.deleteOrder(order, false);
 
         log("INFO: Executed completely");
@@ -912,7 +914,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2185")
-    public void Confirm_Bets_TC_001() {
+    public void Confirm_Bets_2185() {
         log("@title: Validate Confirm Bets page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Confirm Bets");
@@ -924,7 +926,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2186")
-    public void Confirm_Bets_TC_002() {
+    public void Confirm_Bets_2186() {
         log("@title: Validate UI on Confirm Bets is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Confirm Bets");
@@ -951,7 +953,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2187")
     @Parameters({"accountCode"})
-    public void Confirm_Bets_TC_003(String accountCode) {
+    public void Confirm_Bets_2187(String accountCode) {
         log("@title: Validate Total Stake is matched correctly with all bet stake on Pending list");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Confirm Bets");
@@ -969,7 +971,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2188")
     @Parameters({"accountCode"})
-    public void Confirm_Bets_TC_004(String accountCode) {
+    public void Confirm_Bets_2188(String accountCode) {
         log("@title: Validate Total Confirmed Stake is matched correctly with all bet stake on Pending list");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Confirm Bets");

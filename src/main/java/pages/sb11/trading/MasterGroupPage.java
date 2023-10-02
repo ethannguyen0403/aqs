@@ -35,6 +35,7 @@ public class MasterGroupPage extends WelcomePage {
         ddpOrderBy.selectByVisibleText(orderBy);
         txtMasterCode.sendKeys(masterCode);
         btnShow.click();
+        waitSpinnerDisappeared();
     }
 
     public MasterGroupReportPopup openMasterGroupReport(String masterCode){

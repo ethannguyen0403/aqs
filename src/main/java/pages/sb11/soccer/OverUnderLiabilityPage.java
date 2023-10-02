@@ -36,7 +36,7 @@ public class OverUnderLiabilityPage extends WelcomePage {
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
     public Button btnShowGroups = Button.xpath("//div[contains(text(),'Show Groups')]");
     public Button btnSetSelection = Button.xpath("//button[contains(text(),'Set Selection')]");
-    public Table tblOrder = Table.xpath("//app-over-under-liability//table",6);
+    public Table tblOrder = Table.xpath("//app-over-under-liability//table",13);
     public Table tbOrderByGroup;
     int colEvent = 1;
 
@@ -60,10 +60,10 @@ public class OverUnderLiabilityPage extends WelcomePage {
     }
 
     public void filterGroups(String groupCode){
-        CheckBox cbGroup = CheckBox.xpath("//div[contains(@class,'card-columns')]//span[text()='"+groupCode+"']//preceding::input[1]");
         btnShowGroups.click();
         waitSpinnerDisappeared();
-        cbGroup.click();
+        CheckBox cbGroup = CheckBox.xpath("//div[contains(@class,'card-columns')]//span[text()='"+groupCode+"']//preceding::input[1]");
+        cbGroup.jsClick();
         btnSetSelection.click();
         btnShow.click();
     }

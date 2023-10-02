@@ -30,9 +30,9 @@ public class HeaderMenuControl extends BaseElement {
             System.out.println("DEBUG! The menu " + menu + " does not display");
             return null;
         }
-        lblMainMenu.moveToTheControl();
-//        lblMainMenu.click();
-        Label lblSubMenu =Label.xpath(String.format("%s//div[contains(@class,'dropdown-menu')]//span[contains(text(),'%s')]",_xpath,subMenu));
+        lblMainMenu.click();
+//        Label lblSubMenu =Label.xpath(String.format("%s//div[contains(@class,'dropdown-menu')]//span[contains(text(),'%s')]",_xpath,subMenu));
+        Label lblSubMenu = Label.xpath(String.format("%s//span[text()='%s']/parent::a/following-sibling::div//span[contains(text(),'%s')]",_xpath,menu,subMenu));
         if(!lblSubMenu.isDisplayed()){
             System.out.println("DEBUG! The sub menu "+subMenu+" under menu "+menu+" does not display");
             return null;
