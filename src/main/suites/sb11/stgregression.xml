@@ -69,7 +69,7 @@
 <!--            <class name="testcases.sb11test.trading.BetSettlementTest"/>-->
 <!--            <class name="testcases.sb11test.trading.TransactionVerificationTest"/>-->
 <!--            <class name="testcases.sb11test.trading.AccountPercentTest"/>-->
-            <class name="testcases.sb11test.master.BookieInfoTest"/>
+<!--            <class name="testcases.sb11test.master.BookieInfoTest"/>-->
 <!--            <class name="testcases.sb11test.master.ClientSystemTest"/>-->
 <!--            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>-->
         </classes>
