@@ -186,7 +186,7 @@ public class BookieStatementPage extends WelcomePage {
         Label lblTableTitle;
         while (true) {
             xpathFilterTable = String.format("//app-bookie-statement//div[contains(@class,'content-filter')][1]/div[%s]", tableIndex);
-            lblTableTitle = Label.xpath(String.format("%s//div[contains(@class,'title-filter')]", xpathFilterTable));
+            lblTableTitle = Label.xpath(String.format("%s//div[contains(@class,'header')]", xpathFilterTable));
             if (!lblTableTitle.isDisplayed())
                 return null;
             if (lblTableTitle.getText().contains(account))
