@@ -56,10 +56,9 @@ public class BookieStatementPage extends WelcomePage {
         return this.lblTitle.getText().trim();
     }
 
-    public void filter( String companyUnit, String financialYear, String agentType, String fromDate, String toDate, String bookieCode, String currency){
+    public void filter( String companyUnit, String financialYear, String agentType, String fromDate, String toDate, String bookieCode, String currency) throws InterruptedException {
         if(!companyUnit.isEmpty())
             ddpCompanyUnit.selectByVisibleText(companyUnit);
-        waitSpinnerDisappeared();
         if(!financialYear.isEmpty())
             ddpFinancialYear.selectByVisibleText(financialYear);
         if(!agentType.isEmpty())
@@ -73,12 +72,18 @@ public class BookieStatementPage extends WelcomePage {
             if(!currentDate.equals(toDate))
                 dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         if(!bookieCode.isEmpty()) {
+//            txtBookieCode.sendKeys(bookieCode);
+//            txtBookieCode.sendKeys(Keys.ENTER);
             txtBookieCode.sendKeys(bookieCode);
-            txtBookieCode.sendKeys(Keys.ENTER);
+            Thread.sleep(1000);
+            searchIcon.click();
+            btnConfirmShowBookie.click();
         }
         if(!currency.isEmpty())
             ddpCurrency.selectByVisibleText(currency);
         btnShow.click();
+        Thread.sleep(1000);
+        waitSpinnerDisappeared();
     }
 
     private void filterBookie(String bookieCode) throws InterruptedException {
