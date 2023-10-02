@@ -59,7 +59,7 @@
 <!--            <class name="testcases.sb11test.soccer.BBGTest"/>-->
 <!--            <class name="testcases.sb11test.accounting.CurrencyRatesTest"/>-->
 <!--            <class name="testcases.sb11test.accounting.ChartOfAccountTest"/>-->
-<!--            <class name="testcases.sb11test.accounting.JournalEntriesTest"/>-->
+            <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
 <!--            <class name="testcases.sb11test.accounting.JournalReportsTest"/>-->
 <!--            <class name="testcases.sb11test.accounting.BalanceCurrentTest"/>-->
 <!--            <class name="testcases.sb11test.trading.SmartSystemTest"/>-->
