@@ -88,6 +88,10 @@ public class LedgerStatementPage extends WelcomePage {
         btnExportToPDF.click();
     }
 
+    public String getTotalAmountInHKD(){
+        return tbLedger.getControlOfCell(1, 4, 3, null).getText().trim();
+    }
+
     private Transaction verifyTransactionDisplayCorrectInRow(Transaction transaction, boolean isDebit, int rowIndex){
         // TODO: Johnny Use API to get OP Rate of according currency instead of init data in Constant class
         String ledgerAccount = tbLedger.getControlOfCell(1, colLedger, rowIndex, null).getText().trim();
