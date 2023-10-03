@@ -19,7 +19,6 @@ public class Header {
     public Button btnLogout = Button.xpath("//div[@id='navbarSupportedContent']//button");
     public Icon iconLogo = Icon.xpath("//span[contains(@class,'main-icon')]");
     public DropDownList ddlMenu = DropDownList.xpath("//div[contains(@class,'dropdown')]", "//ul[contains(@class,'dropdown-content ng-star-inserted')]/li");
-    public DropDownList ddlMenuVisible = DropDownList.xpath("//div[contains(@class,'dropdown-menu show')]", "/a");
     public HeaderMenuControl headerMenuControl = HeaderMenuControl.xpath("//div[@id='navbarTogglerDemo02']/ul[contains(@class,'navbar-nav')]");
     Label lblSpin = Label.xpath("//div[contains(@class,'la-ball-clip-rotate')]");
     public void waitPageLoad(){
@@ -37,10 +36,6 @@ public class Header {
     public pages.sb11.popup.ChangePasswordPopup openChangePasswordPopup(){
         lblChangePassword.click();
         return new ChangePasswordPopup();
-    }
-
-    public List<String> getListMenuOfVisibleDropDown() {
-        return ddlMenuVisible.getMenuList();
     }
 
     /**

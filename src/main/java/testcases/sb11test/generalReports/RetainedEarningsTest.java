@@ -34,14 +34,14 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("@title: Validate 'Retained Earnings' menu is hidden if not active Retained Earnings permission");
         log("Precondition: Deactivate Retained Earnings option in one role account");
         RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRoleInRoleTable("one role").switchPermissions(RETAINED_EARNING, false);
+        roleManagementPage.selectRole("one role").switchPermissions(RETAINED_EARNING, false);
         log("@Step 1: Re-login with one role account account has 'Retained Earnings' permission is OFF");
         LoginPage loginPage = roleManagementPage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         RetainedEarningsPage retainedEarningsPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, TRIAL_BALANCE, RetainedEarningsPage.class);
         log("@Verify 1: 'Retained Earnings' menu is hidden displays");
-        Assert.assertTrue(!welcomePage.getListMenuOfVisibleDropDown().contains("RETAINED_EARNING"), "FAILED! Retained Earnings menu is displayed");
+        Assert.assertTrue(!welcomePage.headerMenuControl.isSubmenuDisplay(FINANCIAL_REPORTS, RETAINED_EARNING), "FAILED! Retained Earnings menu is displayed");
         log("INFO: Executed completely");
     }
 
@@ -86,7 +86,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("Precondition: Get value of Parent Account '302.000.000.000 - Retained Earnings' from Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
         ledgerStatementPage.showLedger(COMPANY_UNIT, FINANCIAL_YEAR, "All", detailTypeRetained, "", "");
-        ledgerValue = ledgerStatementPage.getTotalAmountInHKD();
+        ledgerValue = ledgerStatementPage.getTotalAmountInHKD("Total in HKD");
         log("@Step 1: Navigate to Financial Reports > Retained Earnings");
         RetainedEarningsPage retainedEarningsPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);
@@ -130,7 +130,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("Precondition: Get value of Parent Account '303.000.000.000 - Dividend' from Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
         ledgerStatementPage.showLedger(COMPANY_UNIT, FINANCIAL_YEAR, "All", detailTypeDividend, "", "");
-        ledgerValue = ledgerStatementPage.getTotalAmountInHKD();
+        ledgerValue = ledgerStatementPage.getTotalAmountInHKD("Total in HKD");
         log("@Step 1: Navigate to Financial Reports > Retained Earnings");
         RetainedEarningsPage retainedEarningsPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);

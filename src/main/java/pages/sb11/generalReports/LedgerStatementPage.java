@@ -32,7 +32,9 @@ public class LedgerStatementPage extends WelcomePage {
 
     int totalCol = 12;
     int colLedger = 2;
+    int colTotal = 1;
     int colCur = 3;
+    int colAmountTotalHKD = 4;
     int colAmountORG = 4;
     int colRunBalORG = 5;
     int colRunBalCTORG = 6;
@@ -88,8 +90,9 @@ public class LedgerStatementPage extends WelcomePage {
         btnExportToPDF.click();
     }
 
-    public String getTotalAmountInHKD(){
-        return tbLedger.getControlOfCell(1, 4, 3, null).getText().trim();
+    public String getTotalAmountInHKD(String toTalName){
+        int index = getTotalRowIndex(toTalName);
+        return tbLedger.getControlOfCell(1, colAmountTotalHKD, index, null).getText().trim();
     }
 
     private Transaction verifyTransactionDisplayCorrectInRow(Transaction transaction, boolean isDebit, int rowIndex){
@@ -156,6 +159,22 @@ public class LedgerStatementPage extends WelcomePage {
             }
             if(lblLedger.getText().contains(ledgername)){
                 System.out.println("Found the ledger name "+ledgername+" in the table");
+                return i;
+            }
+            i = i +1;
+        }
+    }
+    private int getTotalRowIndex(String totalName){
+        int i = 1;
+        Label lblTotal;
+        while (true){
+            lblTotal = Label.xpath(tbLedger.getxPathOfCell(1,colTotal,i,null));
+            if(!lblTotal.isDisplayed()) {
+                System.out.println("Can NOT found the ledger name "+lblTotal+" in the table");
+                return 0;
+            }
+            if(lblTotal.getText().contains(totalName)){
+                System.out.println("Found the ledger name "+lblTotal+" in the table");
                 return i;
             }
             i = i +1;

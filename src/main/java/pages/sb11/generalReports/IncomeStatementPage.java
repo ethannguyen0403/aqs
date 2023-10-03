@@ -15,7 +15,6 @@ public class IncomeStatementPage extends WelcomePage {
     protected Button btnShow = Button.xpath("//button[contains(@class, 'btn-show')]");
     protected Label lblNetProfit = Label.xpath("//*[contains(text(), 'Net Profit (Loss)')]/following-sibling::td[1]");
 
-    private String netProfitLoss ;
 
     public void filterIncomeReport(String companyUnit, String financialYears, String month, String report) {
         if (!companyUnit.equals("")) {
@@ -34,13 +33,8 @@ public class IncomeStatementPage extends WelcomePage {
         waitSpinnerDisappeared();
     }
 
-    public void setNetProfitLoss() {
-         netProfitLoss = lblNetProfit.getText();
-    }
-
     public String getNetProfitLoss(){
-        setNetProfitLoss();
-        return netProfitLoss;
+        return lblNetProfit.getText();
     }
 
 }

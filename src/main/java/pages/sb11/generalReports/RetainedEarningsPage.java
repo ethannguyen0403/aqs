@@ -11,10 +11,8 @@ import java.util.regex.Pattern;
 
 
 public class RetainedEarningsPage extends WelcomePage {
-    private List<String> listValueOfCol;
     private int totalCol = 3;
     private int colDes = 2;
-    private int colNo = 1;
     private int colAmount = 3;
     private int rowOrderAmount = 4;
     private int colDesLimit = 3;
@@ -54,15 +52,14 @@ public class RetainedEarningsPage extends WelcomePage {
         return matcher.find();
     }
 
-    public void setListOfCol(int colIndex, int limit) {
-        listValueOfCol = tblTotal.getColumn(colIndex, limit, false);
+    public List<String> getListOfCol(int colIndex, int limit) {
+        return tblTotal.getColumn(colIndex, limit, false);
     }
 
     public List<String> getDescriptionListValue() {
-        setListOfCol(colDes, colDesLimit);
-        return listValueOfCol;
-    }
+        return getListOfCol(colDes, colDesLimit);
 
+    }
 
     public String getTotalRetained(){
         return tblTotal.getControlOfCell(1,2, rowOrderAmount, null).getText().trim();
@@ -86,7 +83,9 @@ public class RetainedEarningsPage extends WelcomePage {
      */
     public String getAmount(String amountDes) {
         int rowIndex = getDesRowIndex(amountDes);
-        String amountDesValue = tblTotal.getControlOfCell(1, colAmount, rowIndex, null).getText().trim();
+        String amountDesValue = Label.xpath(
+                tblTotal.getControlxPathBasedValueOfDifferentColumnOnRow(amountDes, 1, colDes, rowIndex, null, colAmount, null, false,
+                        false)).getText().trim();
         if (amountDesValue.isEmpty() || amountDesValue.equals("")) {
             System.out.println("Can NOT found amount of Description name:  " + amountDes + " in the table");
         }
