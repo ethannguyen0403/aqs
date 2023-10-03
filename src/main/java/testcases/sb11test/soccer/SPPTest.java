@@ -52,7 +52,7 @@ public class SPPTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"bookieCode","accountCode","accountCurrency","bookieMasterCode","smartGroup","bookieSuperMasterCode"})
     @TestRails(id = "311")
-    public void SPP_TC_311(String bookieCode,String accountCode, String accountCurrency,String bookieMasterCode,String smartGroup,String bookieSuperMasterCode)  {
+    public void SPP_TC_311(String bookieCode,String accountCode, String accountCurrency,String bookieMasterCode,String smartGroup,String bookieSuperMasterCode) throws InterruptedException {
         log("@title:Validate WL in Bookie Statement matched with SPP page (#AQS-2073)");
         log("@Precondition: Group code ’37 Peter 27 l1’ has 1 player 'G60755A5A5AA026'\n" +
                 "The player has data on the filtered date (e.g. 15/11/2022)\n" +
