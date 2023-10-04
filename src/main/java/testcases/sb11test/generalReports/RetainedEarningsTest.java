@@ -101,14 +101,12 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     public void Retained_Earnings_TC2819() {
         String netProfitLoss = "";
-        String month = "2023 - July";
 
         log("@title: Validate correct Net Income/Loss from Operation value displays");
         log("@Step 1: Navigate to Financial Reports > Income Statement");
-        log("@Step 2: Get value of Net Profit (Loss) with filter Financial Year = Year 2022-2023, Month = 2023-July, Report = Before CJE");
+        log("@Step 2: Get value of Net Profit (Loss) with default filter");
         IncomeStatementPage incomeStatementPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT, IncomeStatementPage.class);
-        incomeStatementPage.filterIncomeReport(COMPANY_UNIT, FINANCIAL_YEAR_LIST.get(2), month,
-                IncomeStatementConstants.REPORT_TYPE.get(0));
+        incomeStatementPage.filterIncomeReport(COMPANY_UNIT, "", "", REPORT_TYPE.get(0));
         netProfitLoss = incomeStatementPage.getNetProfitLoss();
         log("@Step 3: Navigate to Financial Reports > Retained Earnings");
         RetainedEarningsPage retainedEarningsPage =
