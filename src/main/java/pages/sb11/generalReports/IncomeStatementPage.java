@@ -8,12 +8,12 @@ import pages.sb11.WelcomePage;
 
 public class IncomeStatementPage extends WelcomePage {
 
-    protected DropDownBox ddCompanyUnit = DropDownBox.xpath("//*[contains(text(), 'Company Unit')]/..//select");
-    protected DropDownBox ddFinancialYear = DropDownBox.xpath("//*[contains(text(), 'Financial Year')]/..//select");
-    protected DropDownBox ddMonth = DropDownBox.xpath("//*[contains(text(), 'Month')]/..//select");
-    protected DropDownBox ddReport = DropDownBox.xpath("//*[contains(text(), 'Report')]/..//select");
+    protected DropDownBox ddCompanyUnit = DropDownBox.xpath("//div[text()= 'Company Unit']/parent::div//select");
+    protected DropDownBox ddFinancialYear = DropDownBox.xpath("//div[text()= 'Financial Year']/parent::div//select");
+    protected DropDownBox ddMonth = DropDownBox.xpath("//div[text()= 'Month']/parent::div//select");
+    protected DropDownBox ddReport = DropDownBox.xpath("//div[text()= 'Report']/parent::div//select");
     protected Button btnShow = Button.xpath("//button[contains(@class, 'btn-show')]");
-    protected Label lblNetProfit = Label.xpath("//*[contains(text(), 'Net Profit (Loss)')]/following-sibling::td[1]");
+    protected Label lblNetProfit = Label.xpath("//td[text()='Net Profit (Loss)']/following-sibling::td[1]");
 
 
     public void filterIncomeReport(String companyUnit, String financialYears, String month, String report) {

@@ -25,6 +25,7 @@ public class SBPConstants {
     public final static String SOCCER = "Soccer";
     public final static String INVOICE = "Invoice";
     public final static String INVOICES = "Invoices";
+    public final static List<String> REPORT_TYPE = Arrays.asList("Before CJE", "After CJE");
     public final static String FINANCIAL_REPORTS = "Financial Reports";
     public final static String RETAINED_EARNING = "Retained Earnings";
     public final static String INCOME_STATEMENT = "Income Statement";
@@ -349,12 +350,6 @@ public class SBPConstants {
         public final static List<String> DESCRIPTION_LIST = Arrays.asList("Retained Earnings","Net Income/Loss from Operation", "Dividends");
 
     }
-
-    public static class IncomeStatementConstants{
-        public final static List<String> REPORT_TYPE = Arrays.asList("Before CJE", "After CJE");
-
-    }
-
 
 }
 
