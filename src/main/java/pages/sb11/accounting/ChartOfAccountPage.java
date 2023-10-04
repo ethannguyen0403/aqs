@@ -60,7 +60,7 @@ public class ChartOfAccountPage extends WelcomePage {
     }
 
     public CreateDetailTypePopup openCreateDetailTypePopup() {
-        btnAddDetail.click();
+        btnAddDetail.jsClick();
         return new CreateDetailTypePopup();
     }
 
@@ -97,8 +97,8 @@ public class ChartOfAccountPage extends WelcomePage {
 
     public void deleteDetail(String companyUnit, String detailTypeName){
         filterDetail(companyUnit,detailTypeName);
-        int rowIndex =getRowContainsDetailTypeName(detailTypeName);
-        Icon.xpath(tbDetail.getxPathOfCell(1,colDelete,rowIndex,"en")).click();
+        int rowIndex = getRowContainsDetailTypeName(detailTypeName);
+        Icon.xpath(tbDetail.getxPathOfCell(1,colDelete,rowIndex+1,"em")).click();
         DeletePopup deletePopup = DeletePopup.xpath("//app-confirm");
         deletePopup.confirmYes();
         waitPageLoad();

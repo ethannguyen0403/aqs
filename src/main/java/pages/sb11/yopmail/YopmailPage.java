@@ -3,6 +3,7 @@ package pages.sb11.yopmail;
 import com.paltech.driver.DriverManager;
 import com.paltech.element.common.TextBox;
 import org.openqa.selenium.Keys;
+import java.util.Set;
 
 public class YopmailPage {
     public TextBox txtEmail = TextBox.xpath("//input[@class='ycptinput']");
@@ -11,7 +12,8 @@ public class YopmailPage {
         txtEmail.sendKeys(emailAddress);
         txtEmail.type(false, Keys.ENTER);
         YopmailMailBoxPage yopmailMailBoxPage = new YopmailMailBoxPage();
-        DriverManager.getDriver().switchToFrame(0);
+//        DriverManager.getDriver().switchToFrame(0);.
+        DriverManager.getDriver().switchToFrame("ifmail");
         return yopmailMailBoxPage;
     }
 

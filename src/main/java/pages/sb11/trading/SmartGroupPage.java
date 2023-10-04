@@ -34,6 +34,7 @@ public class SmartGroupPage extends WelcomePage {
         ddpOrderBy.selectByVisibleText(orderBy);
         txtGroupCode.sendKeys(groupCode);
         btnShow.click();
+        waitSpinnerDisappeared();
     }
 
     public SmartGroupReportPopup openSmartGroupReport(String groupCode){

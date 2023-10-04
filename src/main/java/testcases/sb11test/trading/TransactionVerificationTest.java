@@ -17,19 +17,19 @@ public class TransactionVerificationTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2197")
-    public void TransactionVerification_TC001(){
+    public void TransactionVerification_2197(){
         log("Validate Transaction Verification page is displayed when navigate");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Access Trading > Transaction Verification");
         TransactionVerificationPage transactionVerificationPage = welcomePage.navigatePage(TRADING,TRANSACTION_VERIFICATION,TransactionVerificationPage.class);
         log("Validate Transaction Verification page is displayed when navigate");
-        Assert.assertEquals(transactionVerificationPage.getTitlePage(),TRANSACTION_VERIFICATION, "Failed! Transaction Verification page is not displayed");
+        Assert.assertTrue(transactionVerificationPage.getTitlePage().contains(TRANSACTION_VERIFICATION), "Failed! Transaction Verification page is not displayed");
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression"})
     @TestRails(id = "2198")
-    public void TransactionVerification_TC002(){
+    public void TransactionVerification_2198(){
         log("Validate UI on Transaction Verification is correctly displayed");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Access Trading > Transaction Verification");

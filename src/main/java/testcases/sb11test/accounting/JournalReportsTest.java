@@ -13,14 +13,14 @@ import static common.SBPConstants.*;
 
 public class JournalReportsTest extends BaseCaseAQS {
     String companyUnit = "Kastraki Limited";
-    String clientCode = "QA Client Test";
+    String clientCode = "QA Client (No.121 QA Client)";
     String dateType = "Created Date";
     String debitExpAcc = "AutoExpenditureDebit";
     String creditExpAcc = "AutoExpenditureCredit";
-    String lgDebitCur = "AUD";
-    String lgCreditCur = "AUD";
+    String lgDebitCur = "HKD";
+    String lgCreditCur = "HKD";
     String descExpenditure = "Expenditure Transaction " + DateUtils.getMilliSeconds();
-    String transType = "Others";
+    String transType = "Payment Other";
 
     @Test(groups = {"regression"})
     @TestRails(id = "2165")
@@ -36,7 +36,7 @@ public class JournalReportsTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2166")
-    public void Journal_Reports_TC_002(){
+    public void Journal_Reports_TC_2166(){
         log("@title: Validate UI on Journal Reports is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Journal Reports");
@@ -62,13 +62,13 @@ public class JournalReportsTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2167")
-    public void Journal_Reports_TC_003(){
+    public void Journal_Reports_TC_2167(){
         log("@title: Validate transaction in Journal Entries should display correctly on Journal Report");
         log("@Step 1: Login with valid account");
         log("@Step 2:  Already making a transaction on Journal Entries page");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit(debitExpAcc)
+                .ledgerDebit("AutoExpenditureCredit1")
                 .ledgerCredit(creditExpAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
@@ -82,7 +82,7 @@ public class JournalReportsTest extends BaseCaseAQS {
         log("@Step 3: Access Accounting > Journal Reports");
         JournalReportsPage journalReportsPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_REPORTS,JournalReportsPage.class);
         log("@Step 4: Filter with transaction at pre-condition");
-        journalReportsPage.filterReports(companyUnit,dateType,"","","All","",transType,debitExpAcc);
+        journalReportsPage.filterReports(companyUnit,dateType,"","","All","",transType,"AutoExpenditureCredit1");
         log("Validate transaction in Journal Entries should display correctly on Journal Report");
         journalReportsPage.verifyTxn(transaction,true);
         log("INFO: Executed completely");

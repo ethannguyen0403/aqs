@@ -315,7 +315,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     public void PTRiskControlTC_006(){
         log("@title: Validate that can copy report successfully");
-        String date = String.format(DateUtils.getDate(-3,"d/MM/yyyy","GMT +7"));
+        String date = String.format(DateUtils.getDate(-3,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > PT Risk Control");
         PTRiskPage ptRiskPage = welcomePage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
@@ -386,7 +386,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         ptRiskBetListPopup.activeTab("Half-time");
 
         log("Verify 1: Verify Half time Handicap bet info is correct when the bet is placed from Bet Entry");
-        Assert.assertTrue(ptRiskBetListPopup.verifyOrder(lstOrder.get(0)),"Failed Order info is incorrect");
+        Assert.assertTrue(ptRiskBetListPopup.verifyOrderHafttime(lstOrder.get(0)),"Failed Order info is incorrect");
         ptRiskBetListPopup.closeBetListPopup();
 
         log("@Step 5: Access Trading > Confirm Bet");
@@ -398,7 +398,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("@Step 7: Access Soccer > PT Risk Control and filter the event and click on the event then check on Haft-Time info");
         ptRiskPage = confirmBetsPage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
 
-        log("Verify 1: verify Bet is removed when bet is removed in Confirm bet");
+        log("Verify 2: verify Bet is removed when bet is removed in Confirm bet");
         ptRiskBetListPopup = ptRiskPage.openBetList(lstOrder.get(0).getEvent().getHome());
         Assert.assertTrue(ptRiskBetListPopup.verifyOrder(lstOrder.get(0)),"Failed! The order info is still display");
         log("INFO: Executed completely");

@@ -18,15 +18,17 @@ public class TransactionVerificationPage extends WelcomePage {
     public DropDownBox ddpSiteLogin = DropDownBox.xpath("//div[contains(text(),'Site Login')]//following::select[1]");
     public TextBox txtDate = TextBox.name("fromDate");
     public DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-days-calendar-view");
-    public Label lblDate = Label.xpath("//div[(text()='Date')]");
+    public Label lblDate = Label.xpath("//div[contains(text(),'Date')]");
     public Button btnShow = Button.xpath("//button[text()='Show']");
 
     public void filterTxn (String website, String siteLogin, String date){
         ddpWebsite.selectByVisibleText(website);
+        waitSpinnerDisappeared();
         ddpSiteLogin.selectByVisibleText(siteLogin);
         if(!date.isEmpty()){
             dtpDate.selectDate(date,"dd/MM/yyyy");
         }
         btnShow.click();
+        waitSpinnerDisappeared();
     }
 }

@@ -57,7 +57,9 @@ public class JournalReportsPage extends WelcomePage {
         if (!accountType.isEmpty()){
             ddpAccountType.selectByVisibleText(accountType);
         }
-        ddpClientBookieLedger.selectByVisibleText(clientBookieLedger);
+        if (!clientBookieLedger.isEmpty()){
+            ddpClientBookieLedger.selectByVisibleText(clientBookieLedger);
+        }
         if (!transactionType.isEmpty()){
             ddpTransactionType.selectByVisibleText(transactionType);
         }
@@ -66,15 +68,15 @@ public class JournalReportsPage extends WelcomePage {
     }
 
     public Transaction verifyTxn(Transaction trans, boolean isDebit){
-        int rowIndex = getAccountRowIndex(trans.getDebitAccountCode());
-        String accountName = tbJournalReport.getControlOfCell(1,colAccName,rowIndex,"td").getText().trim();
-        String transType = tbJournalReport.getControlOfCell(1,colTransType,rowIndex,"td").getText().trim();
-        String description = tbJournalReport.getControlOfCell(1,colDes,rowIndex,"td").getText().trim();
-        String cur = tbJournalReport.getControlOfCell(1,colCur,rowIndex,"td").getText().trim();
-        String amountDebit = tbJournalReport.getControlOfCell(1,colAmountDebit,rowIndex,"td").getText().trim();
-        String amountCredit = tbJournalReport.getControlOfCell(1,colAmountCredit,rowIndex,"td").getText().trim();
-        String amountDebitHKD = tbJournalReport.getControlOfCell(1,colAmountDebitHKD,rowIndex,"td").getText().trim();
-        String amountCreditHKD = tbJournalReport.getControlOfCell(1,colAmountCreditHKD,rowIndex,"td").getText().trim();
+        int rowIndex = getAccountRowIndex(trans.getLedgerDebit(),trans.getRemark());
+        String accountName = tbJournalReport.getControlOfCell(1,colAccName,rowIndex,null).getText();
+        String transType = tbJournalReport.getControlOfCell(1,colTransType,rowIndex,null).getText();
+        String description = tbJournalReport.getControlOfCell(1,colDes,rowIndex,null).getText();
+        String cur = tbJournalReport.getControlOfCell(1,colCur,rowIndex,null).getText().trim();
+        String amountDebit = tbJournalReport.getControlOfCell(1,colAmountDebit,rowIndex,null).getText().trim();
+        String amountCredit = tbJournalReport.getControlOfCell(1,colAmountCredit,rowIndex,null).getText().trim();
+        String amountDebitHKD = tbJournalReport.getControlOfCell(1,colAmountDebitHKD,rowIndex,null).getText().trim();
+        String amountCreditHKD = tbJournalReport.getControlOfCell(1,colAmountCreditHKD,rowIndex,null).getText().trim();
 
         Assert.assertTrue(transType.contains(trans.getTransType()),"Failed! Transaction Type is incorrect");
         Assert.assertTrue(description.contains(trans.getRemark()),"Failed! Description is incorrect");
@@ -100,20 +102,21 @@ public class JournalReportsPage extends WelcomePage {
     }
 
 
-    private int getAccountRowIndex(String accountName){
-        int i = 1;
-        Label lblAccName;
-        while (true){
+    private int getAccountRowIndex(String accountName, String transDes){
+        int lstRow = tbJournalReport.getNumberOfRows(false,false);
+        Label lblAccName,lblTransDes;
+        for (int i = 1; i < lstRow; i=i+3){
             lblAccName = Label.xpath(tbJournalReport.getxPathOfCell(1,colAccName,i,null));
+            lblTransDes = Label.xpath(tbJournalReport.getxPathOfCell(1,colDes,i,null));
             if(!lblAccName.isDisplayed()) {
                 System.out.println("Can NOT found the account name "+accountName+" in the table");
                 return 0;
             }
-            if(lblAccName.getText().contains(accountName)){
+            if(lblAccName.getText().contains(accountName) && lblTransDes.getText().contains(transDes)){
                 System.out.println("Found the account name "+accountName+" in the table");
                 return i;
             }
-            i = i +1;
         }
+        return 0;
     }
 }

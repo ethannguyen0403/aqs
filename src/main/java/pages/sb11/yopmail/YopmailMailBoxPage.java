@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YopmailMailBoxPage {
-    private Label lblMailTitle = Label.xpath("//body//div[@id='mail']");
+    private Label lblMailTitle = Label.xpath("//body//div[contains(@class,'ellipsis nw b f18')]");
     private Label lblNameClient = Label.xpath("//body//div[@id='mail']/div[1]/div[1]");
-    private  Label lblPleaseFindEnclosed = Label.xpath("//body//div[@id='mail']/div[1]/div[2]");
-    private   Table tblReport = Table.xpath("//body//div[@id='mail']/div[1]//table[1]",9);
+    private Label lblPleaseFindEnclosed = Label.xpath("//body//div[@id='mail']/div[1]/div[2]");
+    private Table tblReport = Table.xpath("//body//div[@id='mail']/div[1]//table[1]", 9);
     private Label lblTherefore = Label.xpath("//body//div[@id='mail']/div[1]//table[2]//tr[1]");
-    private Label lblThisAmountShallbeKIVToTheNextPeriod = Label.xpath("//body//div[@id='mail']/div[1]//table[2]//tr[1]");
+    private Label lblThisAmountShallbeKIVToTheNextPeriod = Label.xpath("//body//div[@id='mail']/div[1]//table[2]//tr[3]");
 
     public ArrayList<String> getInfo(){
         lblMailTitle.waitForControlInvisible(5,1);
@@ -26,9 +26,10 @@ public class YopmailMailBoxPage {
     }
 
     public ArrayList<String> getbetListHeader(){
-
-        return tblReport.getHeaderList();
+//        return tblReport.getHeaderList();
+        return tblReport.getHeaderNameOfRows();
     }
+
     public List<ArrayList<String>> getbetListInfo(){
         return tblReport.getRows(false);
     }

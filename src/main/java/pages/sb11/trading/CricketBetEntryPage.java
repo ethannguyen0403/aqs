@@ -1,5 +1,6 @@
 package pages.sb11.trading;
 
+import com.paltech.element.BaseElement;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
@@ -64,6 +65,8 @@ public class CricketBetEntryPage extends BetEntryPage {
             dtpDate.selectDate(date,"dd/MM/yyyy");
             waitPageLoad();
         }
+        BaseElement ddpLeagueBox = new TextBox(ddpLeague.getLocator());
+        ddpLeagueBox.doubleClick();
         ddpLeague.selectByVisibleText(league);
         btnShow.click();
         //waitPageLoad();

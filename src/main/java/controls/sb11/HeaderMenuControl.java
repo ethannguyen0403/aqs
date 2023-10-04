@@ -30,9 +30,9 @@ public class HeaderMenuControl extends BaseElement {
             System.out.println("DEBUG! The menu " + menu + " does not display");
             return null;
         }
-        lblMainMenu.moveToTheControl();
-//        lblMainMenu.click();
-        Label lblSubMenu =Label.xpath(String.format("%s//div[contains(@class,'dropdown-menu')]//span[contains(text(),'%s')]",_xpath,subMenu));
+        lblMainMenu.click();
+//        Label lblSubMenu =Label.xpath(String.format("%s//div[contains(@class,'dropdown-menu')]//span[contains(text(),'%s')]",_xpath,subMenu));
+        Label lblSubMenu = Label.xpath(String.format("%s//span[text()='%s']/parent::a/following-sibling::div//span[contains(text(),'%s')]",_xpath,menu,subMenu));
         if(!lblSubMenu.isDisplayed()){
             System.out.println("DEBUG! The sub menu "+subMenu+" under menu "+menu+" does not display");
             return null;
@@ -94,5 +94,16 @@ public class HeaderMenuControl extends BaseElement {
         int index = getMenuIndex(menu);
         return  Label.xpath(String.format("//div[@id='navbarTogglerDemo02']/ul[contains(@class,'navbar-nav')]//li[%s]",index));
     }
+public boolean isSubmenuDisplay(String menu, String subMenu){
+        Label lblSubMenu = getSubMenuLabel(menu, subMenu);
+        if(lblSubMenu == null){
+            System.out.println(subMenu+ " is not displayed!");
+            return false;
+        }else {
+            System.out.println(subMenu+ " displayed!");
+            return true;
+        }
+}
+
 
 }

@@ -31,7 +31,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2067")
     public void Trading_Permission_TC_2067(){
-        log("@title: Validate User Management page is displayed when navigate");
+        log("@title: Validate UI on Trading Permission is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on User > Trading Permission page");
         TradingPermissionPage tradingPermissionPage = welcomePage.navigatePage(USER,TRADING_PERMISSION,TradingPermissionPage.class);

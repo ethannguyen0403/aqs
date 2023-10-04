@@ -23,15 +23,15 @@ public class ClientSystemPage extends WelcomePage {
     public DropDownBox ddpCurrency = DropDownBox.xpath("//label[text()='Currency']//following::select[1]");
     public DropDownBox ddpStatus = DropDownBox.xpath("//label[text()='Status']//following::select[1]");
 
-    public Label lblClientName = Label.xpath("//label[text()='Client List']");
+    public Label lblClientName = Label.xpath("//label[text()='Client Name']");
     public TextBox txtClientName = TextBox.id("name");
 
     public Button btnShow = Button.xpath("//button[text()='Show']");
     public Button btnAddClient = Button.xpath("//button[text()='Add Client']");
     public Button btnExportToExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
 
-    public Table tbClient = Table.xpath("//div[@class='d-inline-block col-6']",6);
-    public Table tbSuperMaster = Table.xpath("//div[@class='col-6 d-inline-block']",10);
+    public Table tbClient = Table.xpath("//div[@class='d-inline-block col-6']//table",6);
+    public Table tbSuperMaster = Table.xpath("//div[@class='col-6 d-inline-block']//table",10);
     int colClientName = 3;
     int colMaster = 5;
     int colAgent = 6;
@@ -47,6 +47,7 @@ public class ClientSystemPage extends WelcomePage {
         if (!status.isEmpty())
             ddpStatus.selectByVisibleText(status);
         btnShow.click();
+        waitSpinnerDisappeared();
     }
 
     public boolean isClientCodeExist(String clientCode){

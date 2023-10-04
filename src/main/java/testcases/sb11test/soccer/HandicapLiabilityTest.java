@@ -39,7 +39,7 @@ public class HandicapLiabilityTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2110")
     public void HandicapLiabilityTC_2110(){
-        log("@title: Validate Handicap Liability page is displayed when navigate");
+        log("@title: Validate UI on Handicap Liability is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > Handicap Liability");
         HandicapLiabilityPage handicapLiabilityPage = welcomePage.navigatePage(SOCCER,HANDICAP_LIABILITY, HandicapLiabilityPage.class);
@@ -72,8 +72,8 @@ public class HandicapLiabilityTest extends BaseCaseAQS {
         String companyUnit = "Kastraki Limited";
         String smartType = "Group";
 
-        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
+        String date = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,"All");
@@ -104,7 +104,7 @@ public class HandicapLiabilityTest extends BaseCaseAQS {
         log("@Step 4: Click Show");
         handicapLiabilityPage.filterResult(companyUnit, smartType,false,"All",date,date,"All",true);
         handicapLiabilityPage.filterGroups(smartGroup);
-        log("Validate Handicap bet from Bet Entry is displayed correctly on Handicap Liability report");
+        log("Verify 1: Validate Handicap bet from Bet Entry is displayed correctly on Handicap Liability report");
         handicapLiabilityPage.isOrderExist(lstOrder,smartGroup);
 
         log("@Post-Condition: Cancel Pending bet "+ lstOrder.get(0).getBetId() +" in Confirm Bet page");

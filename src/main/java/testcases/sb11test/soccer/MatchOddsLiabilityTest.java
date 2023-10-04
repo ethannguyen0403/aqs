@@ -39,7 +39,7 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2107")
     public void MatchOddsLiabilityTC_2107(){
-        log("@title: Validate 1x2 Liability page is displayed when navigate");
+        log("@title: Validate UI on 1x2 Liability is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > 1x2 Liability");
         MatchOddsLiabilityPage matchOddsLiabilityPage = welcomePage.navigatePage(SOCCER,MATCH_ODDS_LIABILITY, MatchOddsLiabilityPage.class);
