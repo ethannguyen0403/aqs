@@ -103,6 +103,8 @@ public class SBPConstants {
     public final static List<String> STAKE_LIST_ALL = Arrays.asList("ALL","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
     public final static List<String> STAKE_LIST = Arrays.asList("All","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
     public final static String GMT_7 = "GMT +7";
+    public final static String FINANCIAL_REPORTS = "Financial Reports";
+    public final static String BALANCE_SHEET = "Balance Sheet";
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
         {

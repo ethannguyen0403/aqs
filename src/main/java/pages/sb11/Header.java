@@ -50,4 +50,8 @@ public class Header {
         return PageFactory.initElements(DriverManager.getDriver(), expectedPage);
     }
 
+    public boolean isPageDisplayCorrect(String menu, String subMenu){
+        return headerMenuControl.isSubmenuDisplay(menu,subMenu);
+    }
+
 }
