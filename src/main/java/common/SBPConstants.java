@@ -25,6 +25,11 @@ public class SBPConstants {
     public final static String SOCCER = "Soccer";
     public final static String INVOICE = "Invoice";
     public final static String INVOICES = "Invoices";
+    public final static List<String> REPORT_TYPE = Arrays.asList("Before CJE", "After CJE");
+    public final static String FINANCIAL_REPORTS = "Financial Reports";
+    public final static String RETAINED_EARNING = "Retained Earnings";
+    public final static String INCOME_STATEMENT = "Income Statement";
+    public final static String TRIAL_BALANCE = "Trial Balance";
     public final static String ROLE_MANAGEMENT = "Role Management";
     public final static String TRADING_PERMISSION = "Trading Permission";
     public final static String LEAGUE_SEASON_TEAM_INFO = "League/Season/Team Info";
@@ -339,6 +344,11 @@ public class SBPConstants {
         public final static List<String> TABLE_HEADER_ORDER = Arrays.asList("#","Event Date","Country","League","Event","Bet Date","Selection","Hdp","Live","Odds","B/L","Stake","BT","Trad","","");
         public final static List<String> TABLE_HEADER_PENDING = Arrays.asList("Pending Accounts");
         public final static List<String> TABLE_HEADER_CONFIRMED = Arrays.asList("Confirmed Accounts");
+    }
+
+    public static class RetainedEarningsConstants {
+        public final static List<String> DESCRIPTION_LIST = Arrays.asList("Retained Earnings","Net Income/Loss from Operation", "Dividends");
+
     }
 
 }
