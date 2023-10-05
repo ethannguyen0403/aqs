@@ -94,14 +94,16 @@ public class HeaderMenuControl extends BaseElement {
         int index = getMenuIndex(menu);
         return  Label.xpath(String.format("//div[@id='navbarTogglerDemo02']/ul[contains(@class,'navbar-nav')]//li[%s]",index));
     }
-    public boolean isSubmenuDisplay(String menu, String subMenu){
-        Label lblSubMenu = getSubMenuLabel(menu,subMenu);
-        if (lblSubMenu == null){
-            System.out.println(subMenu+" is not displayed!");
+ public boolean isSubmenuDisplay(String menu, String subMenu){
+        Label lblSubMenu = getSubMenuLabel(menu, subMenu);
+        if(lblSubMenu == null){
+            System.out.println(subMenu+ " is not displayed!");
             return false;
-        } else {
-            System.out.println(subMenu+" displayed!");
+        }else {
+            System.out.println(subMenu+ " displayed!");
             return true;
         }
-    }
+}
+
+
 }
