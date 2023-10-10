@@ -35,7 +35,7 @@ public class InvoicesTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2238")
     public void Invoices_TC_2238() {
-        String newInvoiceNumber = "PCFair - Bookie - QA - Associate Code/qaAccounts/BE01/ST/RSE01/1023/0004";
+        String newInvoiceNumber = "";
         try {
             log("@title: Validate invoices info in Workflow Settings are displayed correctly Invoices page");
             Invoice invoiceObject = new Invoice.Builder()
