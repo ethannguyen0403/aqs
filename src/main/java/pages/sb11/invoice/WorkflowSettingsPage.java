@@ -10,6 +10,7 @@ public class WorkflowSettingsPage extends WelcomePage {
 
     protected Button btnWorkflowInfo = Button.xpath("//input[@id='wfInfo']/following::label[1]");
     protected Button btnSearch = Button.xpath("//button[contains(@class,'icon-search-custom')]");
+    protected Label lblInvoiceNumber = Label.xpath("//div[@class='modal-body invoice-header']//div[contains(text(), 'No:')]");
     protected DropDownBox ddbInvType = DropDownBox.xpath("//span[contains(text(),'Inv Type')]/following::select[1]");
     protected DropDownBox ddbProject = DropDownBox.xpath("//span[contains(text(),'Project')]/following::select[1]");
     protected DropDownBox ddbBusinessEntity = DropDownBox.xpath("//span[contains(text(),'Business Entity')]/following::select[1]");
@@ -27,9 +28,18 @@ public class WorkflowSettingsPage extends WelcomePage {
     public Table tblWorkflow = Table.xpath("//app-workflow-setting//table", totalCol);
 
 
+    public String getInvoiceNumber(){
+    return lblInvoiceNumber.getText().replace("No:", "").trim();
+    }
+
     public WorkFLowViewPopup viewLinkInvoice(int index) {
         tblWorkflow.getControlOfCell(1, colView, index, null).click();
         return new WorkFLowViewPopup();
+    }
+
+    public WorkFLowViewPopup viewLinkInvoice(String workflowName) {
+        int workflowIndex = getWorkflowNameRowIndex(workflowName);
+        return viewLinkInvoice(workflowIndex);
     }
 
     public WorkflowNewInvoicePopup viewNewInvoice(int index) {

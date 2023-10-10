@@ -81,7 +81,7 @@ public class InvoicesPage extends WelcomePage {
     }
 
     public ArrayList<String> getInvoiceByIndex(int index){
-        return  tblInvoice.getRows(1,false).get(index);
+        return tblInvoice.getRows(1,false).get(index);
     }
 
     public void verifyInvoice(Invoice invoice, int invoiceIndex) {
@@ -130,5 +130,28 @@ public class InvoicesPage extends WelcomePage {
         return new ActionInvoicePopup();
     }
 
+    public ActionInvoicePopup actionInvoice(String invoiceName) {
+        int invoiceRowIndex = getInvoiceRowIndex(invoiceName);
+        return actionInvoice(invoiceRowIndex);
+    }
 
+
+
+    public int getInvoiceRowIndex(String invoiceName) {
+        Label lbl;
+        int i = 1;
+        while (true) {
+            lbl = Label.xpath(tblInvoice.getxPathOfCell(1, colInvoiceNumber, i, null));
+            if (!lbl.isDisplayed()) {
+                System.out.println(String.format("Not found the value in the column in the table"));
+                return -1;
+            }
+            lbl.getText().trim();
+            if (lbl.getText().equals(invoiceName)) {
+                System.out.println(String.format("Found the value in the column in the table"));
+                return i;
+            }
+            i = i + 1;
+        }
+    }
 }

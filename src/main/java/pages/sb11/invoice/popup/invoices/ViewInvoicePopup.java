@@ -5,8 +5,6 @@ import com.paltech.utils.DateUtils;
 import objects.Invoice;
 import org.testng.Assert;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class ViewInvoicePopup {
@@ -46,7 +44,7 @@ public class ViewInvoicePopup {
 
     public void verifyInvoice(Invoice invoice) {
         String actualRsEntity = lblRSEntity.getText().replace(":", "").trim();
-        String actualInvoiceNumber = lblInvoiceNumber.getText().replace("No:", "").replaceAll("\\s", "");
+        String actualInvoiceNumber = lblInvoiceNumber.getText().replace("No:", "").trim();
         String actualDate = DateUtils.formatDate(getPaymentDateOfInvoice(), "dd MMMM yyyy", "dd/MM/yyyy");
         String actualDescription = lblDescription.getText().trim();
         String actualAmount = lblAmount.getText().replace(":", "").trim();

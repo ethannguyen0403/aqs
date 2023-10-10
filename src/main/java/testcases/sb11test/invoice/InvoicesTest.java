@@ -32,6 +32,52 @@ public class InvoicesTest extends BaseCaseAQS {
     String invoiceStatus = "Cancelled";
     double amount = Double.parseDouble(StringUtils.generateNumeric(2));
 
+    @Test(groups = {"regression"})
+    @TestRails(id = "2238")
+    public void Invoices_TC_2238() {
+        String newInvoiceNumber = "PCFair - Bookie - QA - Associate Code/qaAccounts/BE01/ST/RSE01/1023/0004";
+        try {
+            log("@title: Validate invoices info in Workflow Settings are displayed correctly Invoices page");
+            Invoice invoiceObject = new Invoice.Builder()
+                    .invoiceDescription(invoiceDescription).invoiceStatus(invoiceStatus)
+                    .approvalStatus(approvalStatus).amount(amount)
+                    .currency(currency).date(today).build();
+
+            log("Precondition: Add new Invoice to Workflow: QA-Workflow01Up");
+            WorkflowSettingsPage workflowSettingsPage = welcomePage.navigatePage(INVOICE, WORKFLOW_SETTINGS, WorkflowSettingsPage.class);
+            workflowSettingsPage.selectWorkflowInfo().filter("", INVOICE_PROJECT, "", "", "", "", "", "", "");
+            int workflowIndex = workflowSettingsPage.getWorkflowNameRowIndex(workflowName);
+            WorkflowNewInvoicePopup newInvoicePopup = workflowSettingsPage.viewNewInvoice(workflowIndex);
+            newInvoiceNumber = newInvoicePopup.getInvoiceNumber();
+            newInvoicePopup.createNewInvoice(invoiceObject);
+
+            log("@Step 1: Navigate to SB11 > Invoice > Workflow Settings");
+            log("@Step 2: Click on Workflow info button");
+            log("@Step 3: Click on View link and get invoice info");
+            WorkFLowViewPopup workFLowViewPopup = workflowSettingsPage.viewLinkInvoice(workflowIndex);
+            List<String> expectedListInvoice = workFLowViewPopup.getInvoiceListInfo(newInvoiceNumber);
+            Invoice newInvoiceObject = new Invoice.Builder().invoiceNumber(newInvoiceNumber)
+                    .invoiceDescription(expectedListInvoice.get(3)).invoiceStatus(expectedListInvoice.get(8))
+                    .approvalStatus(expectedListInvoice.get(7)).amount(Double.valueOf(expectedListInvoice.get(6)))
+                    .currency(expectedListInvoice.get(5)).date(expectedListInvoice.get(2))
+                    .rsEntity(expectedListInvoice.get(4)).build();
+            workFLowViewPopup.closePopup();
+
+            log("@Step 4: Navigate to Invoice > Invoices");
+            InvoicesPage invoicesPage = welcomePage.navigatePage(INVOICE, INVOICES, InvoicesPage.class);
+            log("@Step 5: Filter Invoices with invoice number: " + newInvoiceNumber);
+            invoicesPage.filter("", "", "", "", "", "", "", newInvoiceNumber);
+            log("@Verify 1: Verify invoice's information is displayed with the correct information");
+            invoicesPage.verifyInvoice(newInvoiceObject, 1);
+        } finally {
+            log("Post-Condition: Modify status of created Invoice with ApprovalStatus: Rejected, InvoiceStatus: Cancelled");
+            InvoicesPage invoicesPage = welcomePage.navigatePage(INVOICE, INVOICES, InvoicesPage.class);
+            invoicesPage.filter("", INVOICE_PROJECT, "", "", "", "", "", newInvoiceNumber);
+            ActionInvoicePopup actionInvoicePopup = invoicesPage.actionInvoice(newInvoiceNumber);
+            actionInvoicePopup.editStatusInvoiceToCancelled();
+            log("INFO: Executed completely");
+        }
+    }
 
     @Test(groups = {"regression"})
     @TestRails(id = "2239")
@@ -54,64 +100,13 @@ public class InvoicesTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
-    @TestRails(id = "2771")
-    public void Invoices_TC_2771() {
-        String downloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath();
-        log("@title: Validate user can save invoice as PDF file successfully");
-        log("@Step 1: Navigate to SB11 > Invoice > Invoices");
-        InvoicesPage invoicesPage = welcomePage.navigatePage(INVOICE, INVOICES, InvoicesPage.class);
-
-        log("@Step 2: Filter Invoices with default");
-        invoicesPage.filter();
-        String invoiceNumber = invoicesPage.getFirstInvoice().get(invoicesPage.colInvoiceNumber - 1).trim();
-
-        log("@Step 3: Click on View of the first invoice");
-        ViewInvoicePopup viewInvoicePopup = invoicesPage.viewInvoice(1);
-
-        log("@Step 4: Click on 'Save as PDF' to download invoice");
-        viewInvoicePopup.exportPDF();
-
-        log("@Verify 1: Verify invoice was saved successfully as PDF file");
-        String filePath = downloadPath + invoiceNumber.replace("/", "_") + ".pdf";
-        Assert.assertTrue(FileUtils.doesFileNameExist(filePath),
-                "Failed to download Expected document");
-        log("@Post-condition: delete download file");
-        try {
-            FileUtils.removeFile(filePath);
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
-        log("INFO: Executed completely");
-    }
-
-    @Test(groups = {"regression"})
-    @TestRails(id = "2767")
-    public void Invoices_TC_2767(){
-        log("@title: Validate Log link works");
-        log("@Step 1: Navigate to SB11 > Invoice > Invoices");
-        InvoicesPage invoicesPage = welcomePage.navigatePage(INVOICE, INVOICES, InvoicesPage.class);
-
-        log("@Step 2: Filter Invoices with default");
-        invoicesPage.filter();
-
-        log("@Step 3: Click on Log of the first invoice");
-        LogInvoicePopup logInvoicePopup = invoicesPage.logInvoice(1);
-
-        log("@Verify 1: Verify title of Log popup is displayed correct");
-        Assert.assertEquals(logInvoicePopup.getTitle(), LogInvoicePopupConstants.POPUP_TITLE, "Failed! Title of Log Invoice popup is incorrect");
-        log("@Verify 2: Verify header list of Log popup table is displayed correct");
-        Assert.assertEquals(logInvoicePopup.getHeaderList(), LogInvoicePopupConstants.HEADER_LIST, "Failed! Header list of Log Invoice table is incorrect");
-        log("INFO: Executed completely");
-    }
-
-    @Test(groups = {"regression"})
     @TestRails(id = "2240")
     public void Invoices_TC_2240(){
         log("@title: Validate information of invoices is updated accordingly after editing invoice ");
         log("@Step 1: Navigate to SB11 > Invoice > Invoices");
         InvoicesPage invoicesPage = welcomePage.navigatePage(INVOICE,INVOICES,InvoicesPage.class);
 
-        log("@Step 2: Filter Invoices with project: QA-Workflow01Up");
+        log("@Step 2: Filter Invoices with project: QA-Project01");
         invoicesPage.filter("", INVOICE_PROJECT, "", "", "","","","");
 
         log("@Step 3: Click on Action link of first invoice");
@@ -140,7 +135,7 @@ public class InvoicesTest extends BaseCaseAQS {
         workflowSettingsPage.selectWorkflowInfo();
         log("@Precondition-step 3: Filter invoice and click on View link");
         workflowSettingsPage.filter("", INVOICE_PROJECT, "", "", "", "", "", "", "");
-        WorkFLowViewPopup workFLowViewPopup = workflowSettingsPage.viewLinkInvoice(1);
+        WorkFLowViewPopup workFLowViewPopup = workflowSettingsPage.viewLinkInvoice(workflowName);
         log("@Precondition-step 4: Get Invoice data");
         List<String> expectedListInvoice = workFLowViewPopup.getInvoiceListInfo(1);
         Invoice invoiceObject = new Invoice.Builder().invoiceNumber(expectedListInvoice.get(1))
@@ -163,43 +158,53 @@ public class InvoicesTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
-    @TestRails(id = "2238")
-    public void Invoices_TC_2238(){
-        log("@title: Validate invoices info in Workflow Settings are displayed correctly Invoices page");
-        Invoice invoiceObject = new Invoice.Builder()
-                .invoiceDescription(invoiceDescription).invoiceStatus(invoiceStatus)
-                .approvalStatus(approvalStatus).amount(amount)
-                .currency(currency).date(today).build();
-
-        log("Precondition: Add new Invoice to Workflow: QA-Workflow01Up");
-        WorkflowSettingsPage workflowSettingsPage = welcomePage.navigatePage(INVOICE, WORKFLOW_SETTINGS, WorkflowSettingsPage.class);
-        workflowSettingsPage.selectWorkflowInfo().filter("", INVOICE_PROJECT, "", "", "", "", "", "", "");
-        int workflowIndex = workflowSettingsPage.getWorkflowNameRowIndex(workflowName);
-        WorkflowNewInvoicePopup newInvoicePopup = workflowSettingsPage.viewNewInvoice(workflowIndex);
-        newInvoicePopup.createNewInvoice(invoiceObject);
-
-        log("@Step 1: Navigate to SB11 > Invoice > Workflow Settings");
-        log("@Step 2: Click on Workflow info button");
-        log("@Step 3: Click on View link and get invoice info");
-        WorkFLowViewPopup workFLowViewPopup = workflowSettingsPage.viewLinkInvoice(workflowIndex);
-        List<String> expectedListInvoice = workFLowViewPopup.getInvoiceListInfo(1);
-        Invoice newInvoiceObject = new Invoice.Builder().invoiceNumber(expectedListInvoice.get(1))
-                .invoiceDescription(expectedListInvoice.get(3)).invoiceStatus(expectedListInvoice.get(8))
-                .approvalStatus(expectedListInvoice.get(7)).amount(Double.valueOf(expectedListInvoice.get(6)))
-                .currency(expectedListInvoice.get(5)).date(expectedListInvoice.get(2))
-                .rsEntity(expectedListInvoice.get(4)).build();
-        workFLowViewPopup.closePopup();
-
-        log("@Step 4: Navigate to Invoice > Invoices");
+    @TestRails(id = "2767")
+    public void Invoices_TC_2767(){
+        log("@title: Validate Log link works");
+        log("@Step 1: Navigate to SB11 > Invoice > Invoices");
         InvoicesPage invoicesPage = welcomePage.navigatePage(INVOICE, INVOICES, InvoicesPage.class);
-        log("@Step 5: Filter Invoices with invoice number: " + newInvoiceObject.getInvoiceNumber());
-        invoicesPage.filter("", "", "", "", "", "", "", newInvoiceObject.getInvoiceNumber());
-        log("@Verify 1: Verify invoice's information is displayed with the correct information");
-        invoicesPage.verifyInvoice(newInvoiceObject,1);
 
-        log("Post-Condition: Modify status of created Invoice with ApprovalStatus: Rejected, InvoiceStatus: Cancelled");
-        ActionInvoicePopup actionInvoicePopup = invoicesPage.actionInvoice(1);
-        actionInvoicePopup.editStatusInvoiceToCancelled();
+        log("@Step 2: Filter Invoices with default");
+        invoicesPage.filter();
+
+        log("@Step 3: Click on Log of the first invoice");
+        LogInvoicePopup logInvoicePopup = invoicesPage.logInvoice(1);
+
+        log("@Verify 1: Verify title of Log popup is displayed correct");
+        Assert.assertEquals(logInvoicePopup.getTitle(), LogInvoicePopupConstants.POPUP_TITLE, "Failed! Title of Log Invoice popup is incorrect");
+        log("@Verify 2: Verify header list of Log popup table is displayed correct");
+        Assert.assertEquals(logInvoicePopup.getHeaderList(), LogInvoicePopupConstants.HEADER_LIST, "Failed! Header list of Log Invoice table is incorrect");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression"})
+    @TestRails(id = "2771")
+    public void Invoices_TC_2771() {
+        String downloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath();
+        log("@title: Validate user can save invoice as PDF file successfully");
+        log("@Step 1: Navigate to SB11 > Invoice > Invoices");
+        InvoicesPage invoicesPage = welcomePage.navigatePage(INVOICE, INVOICES, InvoicesPage.class);
+
+        log("@Step 2: Filter Invoices with default");
+        invoicesPage.filter();
+        String invoiceNumber = invoicesPage.getFirstInvoice().get(invoicesPage.colInvoiceNumber - 1).replaceAll("\\s","");
+
+        log("@Step 3: Click on View of the first invoice");
+        ViewInvoicePopup viewInvoicePopup = invoicesPage.viewInvoice(1);
+
+        log("@Step 4: Click on 'Save as PDF' to download invoice");
+        viewInvoicePopup.exportPDF();
+
+        log("@Verify 1: Verify invoice was saved successfully as PDF file");
+        String filePath = downloadPath + invoiceNumber.replace("/", "_") + ".pdf";
+        Assert.assertTrue(FileUtils.doesFileNameExist(filePath),
+                "Failed to download Expected document");
+        log("@Post-condition: delete download file");
+        try {
+            FileUtils.removeFile(filePath);
+        } catch (IOException e) {
+            log(e.getMessage());
+        }
         log("INFO: Executed completely");
     }
 
