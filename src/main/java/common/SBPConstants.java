@@ -25,6 +25,7 @@ public class SBPConstants {
     public final static String SOCCER = "Soccer";
     public final static String INVOICE = "Invoice";
     public final static String INVOICES = "Invoices";
+    public final static String WORKFLOW_SETTINGS = "Workflow Settings";
     public final static List<String> REPORT_TYPE = Arrays.asList("Before CJE", "After CJE");
     public final static String FINANCIAL_REPORTS = "Financial Reports";
     public final static String RETAINED_EARNING = "Retained Earnings";
@@ -91,6 +92,7 @@ public class SBPConstants {
     public final static String LEDGER_PARENT_NAME_LIABILITY = "QA Ledger Group Liability";
     public final static String LEDGER_PARENT_NAME_INCOME = "QA Ledger Group Income";
     public final static String LEDGER_PARENT_NAME_CAPITAL = "QA Ledger Group Capital";
+    public final static String INVOICE_PROJECT = "QA-Project01";
     public final static List<String> TABLE_HEADER = Arrays.asList("Role", "User", "Sport", "Soccer","Accounting","Trading","Master","General Reports","Invoice","Financial Reports");
     public final static List<String> COMPANY_UNIT_LIST = Arrays.asList("Kastraki Limited", "SK1122", "IB 01", "Fair", "Aquifer");
     public final static List<String> COMPANY_UNIT_LIST_ALL = Arrays.asList("All","Kastraki Limited", "SK1122", "IB 01", "Fair","Aquifer");
@@ -350,6 +352,11 @@ public class SBPConstants {
     public static class RetainedEarningsConstants {
         public final static List<String> DESCRIPTION_LIST = Arrays.asList("Retained Earnings","Net Income/Loss from Operation", "Dividends");
 
+    }
+
+    public static class LogInvoicePopupConstants {
+        public final static List<String> HEADER_LIST = Arrays.asList("Invoice Number","Action","From", "To", "Modified By", "Modified Date");
+        public final static String POPUP_TITLE = "Invoice Log";
     }
 
 }
