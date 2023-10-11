@@ -30,10 +30,4 @@ public class ActionInvoicePopup extends InvoicesPage {
         btnSubmit.click();
         waitSpinnerDisappeared();
     }
-
-    public void editStatusInvoiceToCancelled(){
-        Invoice cancelInvoice = new Invoice.Builder().approvalStatus("Rejected").invoiceStatus("Cancelled").build();
-        editInvoice(cancelInvoice);
-    }
-
 }

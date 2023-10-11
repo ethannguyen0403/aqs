@@ -11,13 +11,13 @@ public class ViewInvoicePopup {
 
     Label lblTitle = Label.xpath("//app-view-invoice//span[contains(@class,'modal-title')]");
     Label lblInvoiceNumber = Label.xpath("//div[@class='modal-body invoice-header']//div[contains(text(), 'No:')]");
-    Label lblPaymentDateValue = Label.xpath("//form[@id='my-table']/div[3]//div[contains(text(),'Payment Date')]/following::div[1]//span");
-    Label lblDescription = Label.xpath("//form[@id='my-table']/div[1]//div[contains(text(), 'Description')]/following::span[1]");
-    Label lblCur = Label.xpath("//form[@id='my-table']/div[3]//span[text()='CUR']//following::span[1]");
-    Label lblAmount = Label.xpath("//form[@id='my-table']/div[3]//div[contains(text(),'Amount')]/following::div[1]//span");
-    Label lblRSEntity = Label.xpath("//form[@id='my-table']/div[2]//div[contains(text(),'Receive Send Entity')]/following::span[1]");
-    Label lblApprovalStatus = Label.xpath("//form[@id='my-table']/div[5]//div[contains(text(),'Approval Status:')]/following::span[1]");
-    Label lblInvoiceStatus = Label.xpath("//form[@id='my-table']/div[5]//div[contains(text(),'Invoice Status:')]/following::span[1]");
+    Label lblPaymentDateValue = Label.xpath("//app-view-invoice//div[contains(text(),'Payment Date')]/following::span[1]");
+    Label lblDescription = Label.xpath("//app-view-invoice//div[contains(text(), 'Description')]/following::span[1]");
+    Label lblCur = Label.xpath("//app-view-invoice//span[text()='CUR']//following::span[1]");
+    Label lblAmount = Label.xpath("//app-view-invoice//div[contains(text(),'Amount')]/following::span[1]");
+    Label lblRSEntity = Label.xpath("//app-view-invoice//div[contains(text(),'Receive Send Entity')]/following::span[1]");
+    Label lblApprovalStatus = Label.xpath("//app-view-invoice//div[contains(text(),'Approval Status:')]/following::span[1]");
+    Label lblInvoiceStatus = Label.xpath("//app-view-invoice//div[contains(text(),'Invoice Status:')]/following::span[1]");
     protected Label btnSaveAsPDF = Label.xpath("//button[text()='Save As PDF']");
 
     public ViewInvoicePopup(){
