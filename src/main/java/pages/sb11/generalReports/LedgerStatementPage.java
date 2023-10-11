@@ -20,16 +20,17 @@ public class LedgerStatementPage extends WelcomePage {
     public DropDownBox ddFinancialYear = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Financial Year')]//following::select[1]");
     public DropDownBox ddLedgerGroup = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Detail Type')]//following::select[1]");
     public DropDownBox ddLedgerName = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Account Type')]//following::select[1]");
+    public DropDownBox ddReport = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Report')]//following::select[1]");
     public TextBox txtFromDate = TextBox.name("fromDate");
     public TextBox txtToDate = TextBox.name("toDate");
     public Label lblFromDate = Label.xpath("//div[text()='From Date']");
     public Label lblToDate = Label.xpath("//div[text()='To Date']");
-    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
-    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
+    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
+    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
     public Button btnShow = Button.xpath("//app-ledger-statement//button[contains(text(),'Show')]");
     public Button btnExportToExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
     public Button btnExportToPDF = Button.xpath("//button[contains(text(),'Export To PDF')]");
-
+    public Label lblGrandTotalbyRunningBal = Label.xpath("//td[text()='Grand Total in HKD']/following-sibling::td[3]");
     int totalCol = 12;
     int colLedger = 2;
     int colTotal = 1;
@@ -45,7 +46,7 @@ public class LedgerStatementPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'header-filter')]//span[1]");
     public String getTitlePage () {return lblTitle.getText().trim();}
 
-    public void showLedger (String companyUnit, String financialYear, String accountType, String ledgerGroup, String fromDate, String toDate){
+    public void showLedger (String companyUnit, String financialYear, String accountType, String ledgerGroup, String fromDate, String toDate,String report){
         ddCompanyUnit.selectByVisibleText(companyUnit);
         ddFinancialYear.selectByVisibleText(financialYear);
         ddLedgerName.selectByVisibleContainsText(accountType);
@@ -57,7 +58,11 @@ public class LedgerStatementPage extends WelcomePage {
         if (!toDate.isEmpty()){
             dtpToDate.selectDate(toDate, "dd/MM/yyyy");
         }
+        if(!report.isEmpty()){
+            ddReport.selectByVisibleText(report);
+        }
         btnShow.click();
+        waitSpinnerDisappeared();
     }
 
     public Transaction verifyLedgerTrans(Transaction trans, boolean isDebit, String ledgerGroup){
@@ -93,6 +98,9 @@ public class LedgerStatementPage extends WelcomePage {
     public String getTotalAmountInHKD(String toTalName){
         int index = getTotalRowIndex(toTalName);
         return tbLedger.getControlOfCell(1, colAmountTotalHKD, index, null).getText().trim();
+    }
+    public String getGrandTotalByRunningBal(){
+        return lblGrandTotalbyRunningBal.getText();
     }
 
     private Transaction verifyTransactionDisplayCorrectInRow(Transaction transaction, boolean isDebit, int rowIndex){
