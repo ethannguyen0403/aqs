@@ -74,7 +74,7 @@ public class InvoicesTest extends BaseCaseAQS {
             InvoicesPage invoicesPage = welcomePage.navigatePage(INVOICE, INVOICES, InvoicesPage.class);
             invoicesPage.filter("", INVOICE_PROJECT, "", "", "", "", "", newInvoiceNumber);
             ActionInvoicePopup actionInvoicePopup = invoicesPage.actionInvoice(newInvoiceNumber);
-            Invoice cancelledInvoice = new Invoice.Builder().approvalStatus("Rejected").invoiceNumber("Cancelled").build();
+            Invoice cancelledInvoice = new Invoice.Builder().approvalStatus("Rejected").invoiceStatus("Cancelled").build();
             actionInvoicePopup.editInvoice(cancelledInvoice);
             log("INFO: Executed completely");
         }
