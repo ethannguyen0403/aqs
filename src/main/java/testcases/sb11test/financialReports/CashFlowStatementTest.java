@@ -7,7 +7,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
 import pages.sb11.financialReports.CashFlowStatementPage;
-import pages.sb11.generalReports.RetainedEarningsPage;
+import pages.sb11.financialReports.RetainedEarningsPage;
 import pages.sb11.role.RoleManagementPage;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
