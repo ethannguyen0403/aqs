@@ -49,11 +49,11 @@ public class CashFlowStatementTest extends BaseCaseAQS {
         log("@Verify 1: Validate Cash Flow Statement page displayed with correct filter");
         cashFlowStatementPage.verifyFilterSectionDisplay();
         log("@Verify 2: Validate Cash Flow Statement page displayed with correct table sections");
-        Assert.assertEquals(cashFlowStatementPage.getTransactionTableHeader(), CashFlowStatementConstants.HEADER_LIST_TRANSACTION_TABLE,
+        Assert.assertEquals(cashFlowStatementPage.tblTransaction.getHeaderNameOfRows(), CashFlowStatementConstants.HEADER_LIST_TRANSACTION_TABLE,
                 "FAILED! Transaction table header is displayed incorrect.");
-        Assert.assertEquals(cashFlowStatementPage.getCashFlowInvestHeader(), CashFlowStatementConstants.HEADER_LIST_CASH_INVEST_TABLE,
+        Assert.assertEquals(cashFlowStatementPage.tblCashInvest.getHeaderNameOfRows(), CashFlowStatementConstants.HEADER_LIST_CASH_INVEST_TABLE,
                 "FAILED! Cash flow from investing activities header is displayed incorrect.");
-        Assert.assertEquals(cashFlowStatementPage.getCashFinancingHeader(), CashFlowStatementConstants.HEADER_LIST_CASH_FINANCING_TABLE,
+        Assert.assertEquals(cashFlowStatementPage.tblCashFinancing.getHeaderNameOfRows(), CashFlowStatementConstants.HEADER_LIST_CASH_FINANCING_TABLE,
                 "FAILED! Cash flow from financing activities header is displayed incorrect.");
         List<String> expectedList = Arrays.asList(HEADER_LIST_TOTAL_INCREASE_DECREASE_TABLE.get(0),
                 String.format(HEADER_LIST_TOTAL_INCREASE_DECREASE_TABLE.get(1), previousDate)

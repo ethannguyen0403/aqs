@@ -19,19 +19,17 @@ public class CashFlowStatementPage extends WelcomePage {
     DropDownBox ddbFinancialYear = DropDownBox.xpath("//div[contains(text(),'Financial Year')]/following::select[1]");
     TextBox txtFromDate = TextBox.xpath("//div[contains(text(),'From Date')]/following::input[1]");
     TextBox txtToDate = TextBox.xpath("//div[contains(text(),'To Date')]/following::input[1]");
-    DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,
-            "//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
-    DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,
-            "//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
+    DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate, "//bs-datepicker-container");
+    DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate, "//bs-datepicker-container");
     Button btnShow = Button.name("btnShow");
 
     int totalColTransaction = 3;
     int colNameTotalInOrDecrease = 1;
     int colNetAmount = 2;
-    Table tblTransaction = Table.xpath("(//app-cash-flow//table[contains(@class,'pt-2 mr-1 col-5 table-bookie')])[1]", totalColTransaction);
-    Table tblCashInvest = Table.xpath("(//app-cash-flow//table[contains(@class,'pt-2 mr-1 col-5 table-bookie')])[2]", 2);
-    Table tblCashFinancing = Table.xpath("(//app-cash-flow//table[contains(@class,'pt-2 mr-1 col-5 table-bookie')])[3]", 2);
-    Table tblTotalInOrDecrease = Table.xpath("(//app-cash-flow//table[contains(@class,'pt-2 mr-1 col-5 table-bookie')])[4]", 3);
+    public Table tblTransaction = Table.xpath("(//app-cash-flow//table[contains(@class,'pt-2 mr-1 col-5 table-bookie')])[1]", totalColTransaction);
+    public Table tblCashInvest = Table.xpath("(//app-cash-flow//table[contains(@class,'pt-2 mr-1 col-5 table-bookie')])[2]", 2);
+    public Table tblCashFinancing = Table.xpath("(//app-cash-flow//table[contains(@class,'pt-2 mr-1 col-5 table-bookie')])[3]", 2);
+    public Table tblTotalInOrDecrease = Table.xpath("(//app-cash-flow//table[contains(@class,'pt-2 mr-1 col-5 table-bookie')])[4]", 3);
 
     enum CashFlowStatementTable {
         TABLE_TRANSACTION, TABLE_INVEST, TABLE_FINANCING
@@ -93,6 +91,7 @@ public class CashFlowStatementPage extends WelcomePage {
                 colOrder = 1;
                 break;
             default:
+                System.out.println("Table type not matched");
                 break;
         }
         while (true) {
@@ -111,18 +110,6 @@ public class CashFlowStatementPage extends WelcomePage {
 
     public String getPageTitle() {
         return lblPageTitle.getText().trim();
-    }
-
-    public List<String> getTransactionTableHeader() {
-        return tblTransaction.getHeaderNameOfRows();
-    }
-
-    public List<String> getCashFlowInvestHeader() {
-        return tblCashInvest.getHeaderNameOfRows();
-    }
-
-    public List<String> getCashFinancingHeader() {
-        return tblCashFinancing.getHeaderNameOfRows();
     }
 
     public void verifyTotalInOrDecreaseTableCorrectFormat(List<String> expectedList) {
