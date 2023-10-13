@@ -46,6 +46,7 @@ public class SBPConstants {
     public final static String TRANSACTION_VERIFICATION = "Transaction Verification";
     public final static String RESULT_ENTRY = "Result Entry";
     public final static String ACCOUNT_PERCENT = "Account Percent";
+    public final static String KEY_CLIENTS_REPORT = "Key Clients Report";
     public final static String BALANCE_CURRENT = "Balance [Current]";
     public final static String SPORT= "Sport";
     public final static String CLIENT_STATEMENT = "Client Statement";
@@ -256,6 +257,12 @@ public class SBPConstants {
         public final static List<String> TYPE_LIST = Arrays.asList("[All]","With Percent","Without Percent");
         public final static List<String> TABLE_HEADER = Arrays.asList("#","i","Account Code","Actual WinLoss %","CUR","Client Name");
     }
+    public static class KeyClientsReport{
+        public final static List<String> TABLE_HEADER = Arrays.asList("S1 COMPLETED [15/09/2023 - 30/09/2023]","#","Date","Cricket","Soccer","Tennis","Others","Total","C/F. ToDate");
+        public final static List<String> GROUP_LIST = Arrays.asList("S1","No.7 CRI");
+        public final static List<String> SPORT_LIST = Arrays.asList("All","Cricket");
+    }
+
 
     public static class MonitorBets{
         public final static List<String> TABLE_HEADER = Arrays.asList("Info", "AC", "Event", "Selection","HDP","Stake","L","NL","T","Report","");
