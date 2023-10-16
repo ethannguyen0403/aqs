@@ -26,7 +26,7 @@ public class OverUnderLiabilityTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2115")
-    public void OverUnderLiabilityTC_001(){
+    public void OverUnderLiabilityTC_2115(){
         log("@title: Validate Over/Under Liability page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > Over/Under Liability");
@@ -65,7 +65,7 @@ public class OverUnderLiabilityTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2117")
     @Parameters({"accountCode","accountCurrency","smartGroup"})
-    public void OverUnderLiabilityTC_003(String accountCode, String accountCurrency, String smartGroup){
+    public void OverUnderLiabilityTC_2117(String accountCode, String accountCurrency, String smartGroup){
         log("@title: Validate Over/Under bet from Bet Entry is displayed correctly on Over/Under Liability report");
         log("Precondition: Having an Over/Under bet which have been placed on Bet Entry");
         String sport="Soccer";

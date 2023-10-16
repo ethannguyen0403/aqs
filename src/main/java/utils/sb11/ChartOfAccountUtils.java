@@ -142,5 +142,41 @@ public class ChartOfAccountUtils {
         }
         return ledgerType;
     }
+    public static List<String> getLstLedgerGroup(){
+        List<String> lstLedgerGroupName = new ArrayList<>();
+        JSONArray jsonArr = null;
+        try {
+            jsonArr = getLedgerGroupListJson();
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        if (Objects.nonNull(jsonArr)) {
+            if (jsonArr.length() > 0) {
+                for (int i = 0; i < jsonArr.length(); i++) {
+                    JSONObject orderObj = jsonArr.getJSONObject(i);
+                    lstLedgerGroupName.add(orderObj.getString("ledgerGroupName"));
+                }
+            }
+        }
+        return lstLedgerGroupName;
+    }
+    public static List<String> getLstParentName(String ledgerGroupId){
+        List<String> lstParent = new ArrayList<>();
+        JSONArray jsonArr = null;
+        try {
+            jsonArr = getParentGroupListJson(ledgerGroupId);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        if (Objects.nonNull(jsonArr)) {
+            if (jsonArr.length() > 0) {
+                for (int i = 0; i < jsonArr.length(); i++) {
+                    JSONObject orderObj = jsonArr.getJSONObject(i);
+                    lstParent.add(orderObj.getString("parentAccountName"));
+                }
+            }
+        }
+        return lstParent;
+    }
 
 }

@@ -31,13 +31,15 @@ public class RoleManagementPage extends WelcomePage {
         CheckBox targetToggle =
                 CheckBox.xpath(tbPermissions.getControlxPathBasedValueOfDifferentColumnOnRow(permissionName, 1, colColumn, index, null,
                         colCheckBox, "input", false, false));
-        targetToggle.scrollToThisControl(false);
+        targetToggle.scrollToThisControl(true);
         if (isStatus) {
             if (!targetToggle.isSelected())
-                targetToggle.click();
+                CheckBox.xpath(tbPermissions.getControlxPathBasedValueOfDifferentColumnOnRow(permissionName, 1, colColumn, index, null,
+                                colCheckBox, "span", false, false)).jsClick();
         } else {
             if (targetToggle.isSelected())
-                targetToggle.click();
+                CheckBox.xpath(tbPermissions.getControlxPathBasedValueOfDifferentColumnOnRow(permissionName, 1, colColumn, index, null,
+                        colCheckBox, "span", false, false)).jsClick();
         }
         return this;
     }

@@ -1,4 +1,4 @@
-package testcases.sb11test.generalReports;
+package testcases.sb11test.financialReports;
 
 import com.paltech.driver.DriverManager;
 import com.paltech.utils.FileUtils;
@@ -85,7 +85,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("@title: Validate correct Retained Earnings value displays");
         log("Precondition: Get value of Parent Account '302.000.000.000 - Retained Earnings' from Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
-        ledgerStatementPage.showLedger(COMPANY_UNIT, FINANCIAL_YEAR, "All", detailTypeRetained, "", "");
+        ledgerStatementPage.showLedger(COMPANY_UNIT, FINANCIAL_YEAR, "All", detailTypeRetained, "", "","");
         ledgerValue = ledgerStatementPage.getTotalAmountInHKD("Total in HKD");
         log("@Step 1: Navigate to Financial Reports > Retained Earnings");
         RetainedEarningsPage retainedEarningsPage =
@@ -127,7 +127,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("@title: Validate correct Dividends value displays");
         log("Precondition: Get value of Parent Account '303.000.000.000 - Dividend' from Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
-        ledgerStatementPage.showLedger(COMPANY_UNIT, FINANCIAL_YEAR, "All", detailTypeDividend, "", "");
+        ledgerStatementPage.showLedger(COMPANY_UNIT, FINANCIAL_YEAR, "All", detailTypeDividend, "", "","");
         ledgerValue = ledgerStatementPage.getTotalAmountInHKD("Total in HKD");
         log("@Step 1: Navigate to Financial Reports > Retained Earnings");
         RetainedEarningsPage retainedEarningsPage =

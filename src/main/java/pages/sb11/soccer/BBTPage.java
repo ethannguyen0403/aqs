@@ -29,8 +29,8 @@ public class BBTPage extends WelcomePage {
     public DropDownBox ddpCurrency = DropDownBox.xpath("//div[contains(text(),'Currency')]//following::select[1]");
     public TextBox txtFromDate = TextBox.name("fromDate");
     public TextBox txtToDate = TextBox.name("toDate");
-    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
-    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
+    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
+    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
     public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
     public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
 
@@ -80,10 +80,11 @@ public class BBTPage extends WelcomePage {
             ddpStake.selectByVisibleText(stake);
         if(!currency.isEmpty())
             ddpCurrency.selectByVisibleText(currency);
-        if(!league.isEmpty())
+        if(!league.isEmpty()){
             btnLeagues.click();
             btnClearAll.click();
             filterLeague(league);
+        }
         btnShow.click();
         waitSpinnerDisappeared();
     }
@@ -228,8 +229,8 @@ public class BBTPage extends WelcomePage {
             return null;
         } else {
             lblFirstGroupS1.click();
-            DriverManager.getDriver().switchToWindow();
             waitSpinnerDisappeared();
+            DriverManager.getDriver().switchToWindow();
             return new ReportS1Page();
         }
     }
