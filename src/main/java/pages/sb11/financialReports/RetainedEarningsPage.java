@@ -1,4 +1,4 @@
-package pages.sb11.generalReports;
+package pages.sb11.financialReports;
 
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
