@@ -28,6 +28,7 @@ public class SBPConstants {
     public final static String WORKFLOW_SETTINGS = "Workflow Settings";
     public final static List<String> REPORT_TYPE = Arrays.asList("Before CJE", "After CJE");
     public final static String FINANCIAL_REPORTS = "Financial Reports";
+    public final static String CASH_FLOW_STATEMENT = "Cash Flow Statement";
     public final static String RETAINED_EARNING = "Retained Earnings";
     public final static String INCOME_STATEMENT = "Income Statement";
     public final static String TRIAL_BALANCE = "Trial Balance";
@@ -366,6 +367,17 @@ public class SBPConstants {
     public static class LogInvoicePopupConstants {
         public final static List<String> HEADER_LIST = Arrays.asList("Invoice Number","Action","From", "To", "Modified By", "Modified Date");
         public final static String POPUP_TITLE = "Invoice Log";
+    }
+
+    public static class CashFlowStatementConstants {
+        public final static List<String> HEADER_LIST_TRANSACTION_TABLE = Arrays.asList("#", "Transaction Type", "Total In HKD");
+        public final static List<String> HEADER_LIST_CASH_INVEST_TABLE = Arrays.asList("Cash flow from investing activities", "");
+        public final static List<String> HEADER_LIST_CASH_FINANCING_TABLE = Arrays.asList("Cash flow from financing activities", "");
+        public final static List<String> HEADER_LIST_TOTAL_INCREASE_DECREASE_TABLE =
+                Arrays.asList("Total Increase (decrease) in cash and cash equivalents"
+                        , "Cash and cash equivalents at the beginning of the month (%s Rate)",
+                        "Cash and cash equivalents at the beginning of the month (%s Rate)", "Effect of foreign exchange rate changes",
+                        "Cash and cash equivalents at the end of the month");
     }
 
 }
