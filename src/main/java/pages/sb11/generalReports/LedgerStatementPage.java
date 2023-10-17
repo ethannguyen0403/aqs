@@ -4,14 +4,17 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
 import controls.Table;
-import objects.Order;
 import objects.Transaction;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import utils.sb11.CurrencyRateUtils;
+
+import java.util.Calendar;
+
 
 import static java.lang.Double.parseDouble;
 
@@ -31,11 +34,13 @@ public class LedgerStatementPage extends WelcomePage {
     public Button btnExportToExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
     public Button btnExportToPDF = Button.xpath("//button[contains(text(),'Export To PDF')]");
     public Label lblGrandTotalbyRunningBal = Label.xpath("//td[text()='Grand Total in HKD']/following-sibling::td[3]");
+    public Label lblAmountAreShowHeader = Label.xpath("//app-ledger-statement//table//thead//tr//th[contains(., 'CUR Translation in')]");
     int totalCol = 12;
     int colLedger = 2;
     int colTotal = 1;
     int colCur = 3;
-    int colAmountTotalHKD = 4;
+    int colAmountTotalOriginCurrency = 4;
+    int colToTalOriginCurrency = 1;
     int colAmountORG = 4;
     int colRunBalORG = 5;
     int colRunBalCTORG = 6;
@@ -47,11 +52,15 @@ public class LedgerStatementPage extends WelcomePage {
     public String getTitlePage () {return lblTitle.getText().trim();}
 
     public void showLedger (String companyUnit, String financialYear, String accountType, String ledgerGroup, String fromDate, String toDate,String report){
-        ddCompanyUnit.selectByVisibleText(companyUnit);
-        ddFinancialYear.selectByVisibleText(financialYear);
-        ddLedgerName.selectByVisibleContainsText(accountType);
+        if (!companyUnit.isEmpty())
+            ddCompanyUnit.selectByVisibleText(companyUnit);
+        if (!financialYear.isEmpty())
+            ddFinancialYear.selectByVisibleText(financialYear);
+        if (!accountType.isEmpty())
+            ddLedgerName.selectByVisibleContainsText(accountType);
         waitSpinnerDisappeared();
-        ddLedgerGroup.selectByVisibleContainsText(ledgerGroup);
+        if (!ledgerGroup.isEmpty())
+            ddLedgerGroup.selectByVisibleContainsText(ledgerGroup);
         if (!fromDate.isEmpty()){
             dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
         }
@@ -95,9 +104,18 @@ public class LedgerStatementPage extends WelcomePage {
         btnExportToPDF.click();
     }
 
-    public String getTotalAmountInHKD(String toTalName){
+    public String getTotalAmountInOriginCurrency(String toTalName){
         int index = getTotalRowIndex(toTalName);
-        return tbLedger.getControlOfCell(1, colAmountTotalHKD, index, null).getText().trim();
+        return tbLedger.getControlOfCell(1, colAmountTotalOriginCurrency, index, null).getText().trim();
+    }
+
+    public String getDescriptionTotalAmountInOriginCurrency(String toTalName){
+        int index = getTotalRowIndex(toTalName);
+        return tbLedger.getControlOfCell(1, colToTalOriginCurrency, index, null).getText().trim();
+    }
+
+    public String getDescriptionGrandTotalAmountInOriginCurrency(){
+        return tbLedger.getControlOfCell(2, 1, 2, null).getText().trim();
     }
     public String getGrandTotalByRunningBal(){
         return lblGrandTotalbyRunningBal.getText();
@@ -144,6 +162,10 @@ public class LedgerStatementPage extends WelcomePage {
     public LedgerDetailPopup openLedgerDetail (String ledgerName){
         int rowIndex = getLedgerRowIndex(ledgerName);
         tbLedger.getControlOfCell(1,colLedger, rowIndex,"a").click();
+        return new LedgerDetailPopup();
+    }
+    public LedgerDetailPopup openLedgerFirstDetail (){
+        tbLedger.getControlOfCell(1,colLedger, 2,"a").click();
         return new LedgerDetailPopup();
     }
 
@@ -202,5 +224,21 @@ public class LedgerStatementPage extends WelcomePage {
                 return i;
             i = i +1;
         }
+    }
+
+    public String getDateAvoidLastDayOfMonth(String formatDate) {
+        String toDay = DateUtils.getDate(0, formatDate, "GMT +7");
+        if (!isLastDayOfMonth()) {
+            return toDay;
+        } else {
+            return DateUtils.getPreviousDate(toDay, formatDate);
+        }
+    }
+
+    public boolean isLastDayOfMonth() {
+        Calendar calendar = Calendar.getInstance();
+        int lastDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int currentDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        return currentDayOfMonth == lastDayOfMonth ? true : false;
     }
 }

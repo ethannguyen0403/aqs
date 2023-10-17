@@ -86,7 +86,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("Precondition: Get value of Parent Account '302.000.000.000 - Retained Earnings' from Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
         ledgerStatementPage.showLedger(COMPANY_UNIT, FINANCIAL_YEAR, "All", detailTypeRetained, "", "","");
-        ledgerValue = ledgerStatementPage.getTotalAmountInHKD("Total in HKD");
+        ledgerValue = ledgerStatementPage.getTotalAmountInOriginCurrency("Total in HKD");
         log("@Step 1: Navigate to Financial Reports > Retained Earnings");
         RetainedEarningsPage retainedEarningsPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);
@@ -128,7 +128,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("Precondition: Get value of Parent Account '303.000.000.000 - Dividend' from Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
         ledgerStatementPage.showLedger(COMPANY_UNIT, FINANCIAL_YEAR, "All", detailTypeDividend, "", "","");
-        ledgerValue = ledgerStatementPage.getTotalAmountInHKD("Total in HKD");
+        ledgerValue = ledgerStatementPage.getTotalAmountInOriginCurrency("Total in HKD");
         log("@Step 1: Navigate to Financial Reports > Retained Earnings");
         RetainedEarningsPage retainedEarningsPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);

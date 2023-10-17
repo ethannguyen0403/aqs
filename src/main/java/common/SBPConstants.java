@@ -18,6 +18,7 @@ public class SBPConstants {
     public final static String ADDRESS_BOOK = "Address Book";
     public final static String TRADING = "Trading";
     public final static String ACCOUNTING = "Accounting";
+    public final static String COMPANY_SETUP = "Company Set-up";
     public final static String ROLE = "Role";
     public final static String USER = "User";
     public final static String CHART_OF_ACCOUNT = "Chart Of Account";
@@ -39,6 +40,8 @@ public class SBPConstants {
     public final static String PT_RISK_CONTROL = "PT Risk Control";
     public final static String LEDGER_STATEMENT = "Ledger Statement";
     public final static String BOOKIE_STATEMENT = "Bookie Statement";
+    public final static String BOOKIE_BALANCE = "Bookie Balance";
+    public final static String CLIENT_BALANCE = "Client Balance";
     public final static String JOURNAL_ENTRIES = "Journal Entries";
     public final static String JOURNAL_REPORTS = "Journal Reports";
     public final static String SMART_SYSTEM = "Smart System";
@@ -108,8 +111,10 @@ public class SBPConstants {
     public final static List<String> PROVIDER_LIST = Arrays.asList("Pinnacle","Bet ISN","PS7","Fair999");
     public final static List<String> LIVE_NONLIVE_LIST = Arrays.asList("ALL","Live","Non-Live");
     public final static List<String> CURRENCY_LIST = Arrays.asList("ALL","AUD","CAD","CNY","AED","EUR","HKD","INR","IDR","JPY","MYR","KPW","PKR","PHP","SGD","ZAR","KRW","LKR","GBP","TWD","THB","USD","VND");
+    public final static List<String> CURRENCY_LIST_WITHOUT_ALL = Arrays.asList("AUD","CAD","CNY","AED","EUR","HKD","INR","IDR","JPY","MYR","KPW","PKR","PHP","SGD","ZAR","KRW","LKR","GBP","TWD","THB","USD","VND");
     public final static List<String> STAKE_LIST_ALL = Arrays.asList("ALL","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
     public final static List<String> STAKE_LIST = Arrays.asList("All","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
+    public final static List<String> MONTH_NAME_LIST = Arrays.asList("January","February","March","April","May","June","July","August","September","October", "November", "December");
     public final static String GMT_7 = "GMT +7";
     public final static String BALANCE_SHEET = "Balance Sheet";
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
