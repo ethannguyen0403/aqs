@@ -1,6 +1,7 @@
 package testcases.sb11test.accounting;
 
 import com.paltech.driver.DriverManager;
+import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -19,7 +20,8 @@ import utils.testraildemo.TestRails;
 import static common.SBPConstants.*;
 
 public class CompanySetupTest extends BaseCaseAQS {
-
+    String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+    String previousDate = DateUtils.getPreviousDate(currentDate, "yyyy-MM-dd");
 
     @TestRails(id = "4332")
     @Test(groups = {"regression", "2023.10.31"})
@@ -112,15 +114,15 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@Step 1: Navigate to  General Reports > Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
 
-        toDayAvoidLastDayOfMonth = ledgerStatementPage.isLastDayOfMonth()? ledgerStatementPage.getDateAvoidLastDayOfMonth("dd/MM/yyyy") : toDayAvoidLastDayOfMonth;
+        toDayAvoidLastDayOfMonth = ledgerStatementPage.isLastDayOfMonth() ? previousDate : "";
         log("@Step 2: Filter with Company: "+ companyName);
         ledgerStatementPage.showLedger(companyName, "","","","",toDayAvoidLastDayOfMonth, "");
 
         log(String.format("@Verify 1: Validate  the table has \"CUR transaction in %s\" is NOT displayed.", currency));
-        Assert.assertFalse(ledgerStatementPage.lblAmountAreShowHeader.isDisplayed(),  "FAILED! The table CUR transaction is shown");
+        Assert.assertFalse(ledgerStatementPage.lblAmountShowCurrency.isDisplayed(),  "FAILED! The table CUR transaction is shown");
         log("@Verify 2: Validate shows text correct with currency: " + currency);
         Assert.assertEquals(ledgerStatementPage.getDescriptionTotalAmountInOriginCurrency("Total in"), expectedText1, "FAILED! Text is not correct");
-        Assert.assertEquals(ledgerStatementPage.getDescriptionGrandTotalAmountInOriginCurrency(),expectedText2,  "FAILED! Text is not correct");
+        Assert.assertEquals(ledgerStatementPage.lblGrandTotalInOrigin.getText().trim(),expectedText2,  "FAILED! Text is not correct");
         Assert.assertEquals(ledgerStatementPage.tbLedger.getHeaderNameOfRows().get(3), expectedText3, "FAILED! Text is not correct");
 
         log("@Step 3: Click on first ledger name to open Ledger Detail");

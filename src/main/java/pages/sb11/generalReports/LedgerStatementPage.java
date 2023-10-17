@@ -4,7 +4,6 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
-import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Transaction;
@@ -34,7 +33,8 @@ public class LedgerStatementPage extends WelcomePage {
     public Button btnExportToExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
     public Button btnExportToPDF = Button.xpath("//button[contains(text(),'Export To PDF')]");
     public Label lblGrandTotalbyRunningBal = Label.xpath("//td[text()='Grand Total in HKD']/following-sibling::td[3]");
-    public Label lblAmountAreShowHeader = Label.xpath("//app-ledger-statement//table//thead//tr//th[contains(., 'CUR Translation in')]");
+    public Label lblAmountShowCurrency = Label.xpath("//app-ledger-statement//table//thead//tr//th[contains(., 'CUR Translation in')]");
+    public Label lblGrandTotalInOrigin = Label.xpath("//table//td[contains(., 'Grand Total in')]");
     int totalCol = 12;
     int colLedger = 2;
     int colTotal = 1;
@@ -114,9 +114,6 @@ public class LedgerStatementPage extends WelcomePage {
         return tbLedger.getControlOfCell(1, colToTalOriginCurrency, index, null).getText().trim();
     }
 
-    public String getDescriptionGrandTotalAmountInOriginCurrency(){
-        return tbLedger.getControlOfCell(2, 1, 2, null).getText().trim();
-    }
     public String getGrandTotalByRunningBal(){
         return lblGrandTotalbyRunningBal.getText();
     }
@@ -223,15 +220,6 @@ public class LedgerStatementPage extends WelcomePage {
             if(lblLedgerGroup.getText().contains(ledgerGroup))
                 return i;
             i = i +1;
-        }
-    }
-
-    public String getDateAvoidLastDayOfMonth(String formatDate) {
-        String toDay = DateUtils.getDate(0, formatDate, "GMT +7");
-        if (!isLastDayOfMonth()) {
-            return toDay;
-        } else {
-            return DateUtils.getPreviousDate(toDay, formatDate);
         }
     }
 
