@@ -9,7 +9,7 @@ public class ClientMemberTransactionPopup {
     public int colOpeningRunning = 5;
     public int colTotalRunning = 4;
 
-    Table tblWinloseSummary = Table.xpath("//app-report-dialog//table[@aria-label='transaction table']",summaryColTotal);
+    public Table tblWinloseSummary = Table.xpath("//app-report-dialog//table[@aria-label='transaction table']",summaryColTotal);
 
     public String getTotalRunning(int colIndex) {
         String returnValue = "";
