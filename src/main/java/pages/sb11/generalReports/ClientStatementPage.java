@@ -90,7 +90,6 @@ public class ClientStatementPage extends WelcomePage {
         } else {
             return lblCellValue.getText();
         }
-        tblSuper.get
     }
 
     public String getAgentCellValue(String agentCode, int colIndex) {
