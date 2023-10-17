@@ -1335,7 +1335,7 @@ public class ClientStatementTest extends BaseCaseAQS {
 
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression1","2023.10.31"})
+    @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "4356")
     @Parameters({"clientCode","accountCode"})
     public void ClientStatementTC_4356(String clientCode, String accountCode) {
