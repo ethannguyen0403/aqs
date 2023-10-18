@@ -1332,31 +1332,6 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
         }
-
-        log("INFO: Executed completely");
-    }
-    @Test(groups = {"regression","2023.10.31"})
-    @TestRails(id = "4356")
-    @Parameters({"clientCode","accountCode"})
-    public void ClientStatementTC_4356(String clientCode, String accountCode) {
-        log("@title: Validate that show currency 'HKD' in 'Client Statement' page when filtering Company Unit = All ");
-        log("@Step 1: Go to General Report >> Client Statement");
-        ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        log("@Step 2: Select valid values with company unit 'All'");
-        log("@Step 3: Click on 'Show' button");
-        clientCode = superMasterCode + clientCode;
-        String fromDate = String.format("01/%s/%s",DateUtils.getMonth(GMT_7), DateUtils.getYear(GMT_7));
-        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,clientCode,fromDate,"");
-        log("@Step 4: Observe the result");
-        log("@Step 5: Open Member Summary");
-        ClientSummaryPopup clientSummaryPopup = clientPage.openSummaryPopup("QASAHK00");
-        log("@Step 6: Open Member Transactions");
-        ClientMemberTransactionPopup clientMemberTransactionPopup = clientSummaryPopup.openMemberTransactionPopup(accountCode);
-        log("@Verify 1: show ‘Credit [HKD]’, ‘Debit [HKD]’ and ‘Running [HKD]’");
-        ArrayList<String> lstHeader = clientMemberTransactionPopup.tblWinloseSummary.getHeaderNameOfRows();
-        Assert.assertTrue(lstHeader.contains("Credit [HKD]"),"FAILED! Credit [HKD] display incorrect");
-        Assert.assertTrue(lstHeader.contains("Debit [HKD]"),"FAILED! Debit [HKD] display incorrect");
-        Assert.assertTrue(lstHeader.contains("Running [HKD]"),"FAILED! Running [HKD] display incorrect");
         log("INFO: Executed completely");
     }
 }

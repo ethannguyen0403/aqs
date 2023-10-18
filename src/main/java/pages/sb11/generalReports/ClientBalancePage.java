@@ -40,7 +40,7 @@ public class ClientBalancePage extends WelcomePage {
         waitSpinnerDisappeared();
     }
     public ClientBalanceDetailPopup goToClientDetail(String clientName){
-        filter("","","","",clientName.split("-")[0].trim(),"");
+        filter("","","","",clientName.split("-")[0].trim());
         tblClientBalance.getControlOfCellSPP(1,colClientName,1,null).click();
         waitSpinnerDisappeared();
         DriverManager.getDriver().switchToWindow();
