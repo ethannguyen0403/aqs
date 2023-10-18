@@ -19,8 +19,8 @@ public class ClientBalancePage extends WelcomePage {
     public DropDownBox ddShowTotal = DropDownBox.xpath("//div[contains(text(),'Show Total')]//following::select[1]");
     protected Button btnShow = Button.name("btnShow");
     TextBox txtSMCode = TextBox.xpath("//div[contains(text(),'SM Code')]/parent::div//input");
-    int totalCol = 5;
-    int colClientName = 2;
+    public int totalCol = 5;
+    public int colClientName = 2;
     public Table tblClientBalance = Table.xpath("//table[@id='client-balance-summary']", totalCol);
 
 

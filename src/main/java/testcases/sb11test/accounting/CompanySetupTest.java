@@ -151,7 +151,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         Assert.assertEquals(clientBalancePage.tblClientBalance.getHeaderNameOfRows().get(4), expectedText1, "FAILED! Text Total Balance is not correct");
 
         log("@Step 3: Click on Client Balance name >> Client Balance detail popup");
-        ClientBalanceDetailPopup detailPopup = clientBalancePage.goToClientDetail(1);
+        ClientBalanceDetailPopup detailPopup = clientBalancePage.goToClientDetail("sd");
 
         log(String.format("@Verify 2: Validate shows text correct with currency %s on Client detail popup", currency));
         Assert.assertEquals(detailPopup.tblClientSuper.getHeaderNameOfRows().get(4), expectedText2, "FAILED! Text in Client Balance detail popup is not correct");
