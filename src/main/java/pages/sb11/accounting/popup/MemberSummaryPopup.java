@@ -17,4 +17,5 @@ public class MemberSummaryPopup {
     }
 
     public Table tbMemSummary = Table.xpath("//app-accounting-current-detail//table",7);
+
 }

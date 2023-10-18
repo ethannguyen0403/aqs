@@ -5,8 +5,11 @@ import controls.DateTimePicker;
 import controls.Table;
 import org.openqa.selenium.Keys;
 import pages.sb11.WelcomePage;
+import pages.sb11.generalReports.popup.bookiestatement.BookieAgentSummaryPopup;
+import pages.sb11.generalReports.popup.bookiestatement.BookieMasterAgentDetailPopup;
 import pages.sb11.generalReports.popup.bookiestatement.BookieMemberSummaryPopup;
 import pages.sb11.generalReports.popup.bookiestatement.BookieSuperMasterDetailPopup;
+import pages.sb11.master.BookieMasterPage;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +29,7 @@ public class BookieStatementPage extends WelcomePage {
     public int colRecPay = 8;
     public int colMovement = 9;
     public int colClosing = 10;
+    public int colAS = 7;
 
     Label lblTitle = Label.xpath("//app-bookie-statement//span[contains(@class,'card-header main-box-header')]");
     DropDownBox ddpViewBy = DropDownBox.xpath("//div[contains(@class,'p-2 pb-4 pr-0 filter')][1]//select");
@@ -48,6 +52,7 @@ public class BookieStatementPage extends WelcomePage {
     Table tblSuper = Table.xpath("//app-client-detail//table[@id='table-super']",colTotal);
     Table tblMaster = Table.xpath("//app-client-detail//table[@id='table-master']",colTotal);
     //Table tblAgent = Table.xpath("//app-client-detail//div[%s]//table[@id='table-agent']",colTotal);
+    public Table tblGrandTotal = Table.xpath("//div[@id='bookie-statement-summary']/div[contains(@class,'content-filter')][2]//table",8);
 
 
     @Override
@@ -72,8 +77,6 @@ public class BookieStatementPage extends WelcomePage {
             if(!currentDate.equals(toDate))
                 dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         if(!bookieCode.isEmpty()) {
-//            txtBookieCode.sendKeys(bookieCode);
-//            txtBookieCode.sendKeys(Keys.ENTER);
             txtBookieCode.sendKeys(bookieCode);
             Thread.sleep(1000);
             searchIcon.click();
@@ -107,13 +110,14 @@ public class BookieStatementPage extends WelcomePage {
 
     public BookieSuperMasterDetailPopup openBookieSuperMasterDetailPopup(String superMasterCode) {
         Label lblSuperMasterCode;
-        String xpath = String.format("//div[@class='content-filter pt-4 row ng-star-inserted']//div//div[contains(.,' %s ')]", superMasterCode);
+        String xpath = String.format("//div[@class='content-filter pt-4 row ng-star-inserted']//div//tr//a[contains(text(),'%s')]", superMasterCode);
         lblSuperMasterCode = Label.xpath(xpath);
         if (!lblSuperMasterCode.isDisplayed()) {
             System.out.println("Cannot find out Super Master in list of result table: " + superMasterCode);
             return null;
         } else {
-            xpath = xpath + "//..//a[contains(text(),' Super Master R/P/C/RB/A ')]";
+//            xpath = xpath + "//..//a[contains(text(),' Super Master R/P/C/RB/A ')]";
+            xpath = xpath + "//ancestor::tr//preceding-sibling::tr//a";
             lblSuperMasterCode = Label.xpath(xpath);
             lblSuperMasterCode.click();
             return new BookieSuperMasterDetailPopup();
@@ -179,6 +183,17 @@ public class BookieStatementPage extends WelcomePage {
         waitSpinnerDisappeared();
         return new BookieMemberSummaryPopup();
     }
+    public BookieMasterAgentDetailPopup openBookieMasterAgentDetailPopup(String supermasterCode, String masterCode) {
+        Table tblBookie = getTableContainsBookieAccount(supermasterCode);
+        if(Objects.isNull(tblBookie)) {
+            System.out.println("DEBUG!: NO table have the title contains account "+ supermasterCode);
+            return null;
+        }
+        int indexMS = getTableContainsBookieAccount(supermasterCode).getRowIndexContainValue(masterCode,2,null);
+        tblBookie.getControlOfCell(1,colAgentCode,indexMS,"a").click();
+        waitSpinnerDisappeared();
+        return new BookieMasterAgentDetailPopup();
+    }
 
     private Table getTableContainsBookieAccount(String account){
         int tableIndex = 1;
@@ -205,5 +220,17 @@ public class BookieStatementPage extends WelcomePage {
         String winloss =  bookieSummaryPopup.getDataRowofPlayer(playerAccount).get(winlosCol-1);
         bookieSummaryPopup.closePopup();
         return winloss;
+    }
+
+    public BookieAgentSummaryPopup openBookieAgentSummary(String supermasterCode, String masterCode) {
+        Table tblBookie = getTableContainsBookieAccount(supermasterCode);
+        if(Objects.isNull(tblBookie)) {
+            System.out.println("DEBUG!: NO table have the title contains account "+ supermasterCode);
+            return null;
+        }
+        int indexMS = getTableContainsBookieAccount(supermasterCode).getRowIndexContainValue(masterCode,2,null);
+        tblBookie.getControlOfCell(1,colAS,indexMS,"a").click();
+        waitSpinnerDisappeared();
+        return new BookieAgentSummaryPopup();
     }
 }

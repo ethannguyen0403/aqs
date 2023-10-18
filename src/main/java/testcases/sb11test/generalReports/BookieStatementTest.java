@@ -3,10 +3,10 @@ package testcases.sb11test.generalReports;
 import com.paltech.utils.DateUtils;
 import objects.Transaction;
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.generalReports.BookieStatementPage;
-import pages.sb11.generalReports.popup.bookiestatement.BookieMemberSummaryPopup;
-import pages.sb11.generalReports.popup.bookiestatement.BookieSuperMasterDetailPopup;
+import pages.sb11.generalReports.popup.bookiestatement.*;
 import testcases.BaseCaseAQS;
 import utils.sb11.AccountSearchUtils;
 import utils.sb11.BookieInfoUtils;
@@ -14,6 +14,7 @@ import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static common.SBPConstants.*;
 
@@ -162,6 +163,54 @@ public class BookieStatementTest extends BaseCaseAQS {
             TransactionUtils.addClientBookieTxn(transactionPost,accountSuperIdCredit,accountSuperIdDebit,fromType,typeId);
         }
 
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.10.31"})
+    @TestRails(id = "4357")
+    @Parameters({"bookieSuperMasterCode","bookieMasterCode","accountCode"})
+    public void BookieStatementTC_4357(String bookieSuperMasterCode, String bookieMasterCode, String accountCode) throws InterruptedException {
+        log("@title: Validate that show currency 'HKD' in 'Bookie Statement' page when filtering Company Unit = All");
+        log("@pre-condition: Login with valid account");
+        log("@Step 1: Go to General Report >> Bookie Statement");;
+        String agentCode = "A-QA10101-QA Test";
+        String fromDate = DateUtils.getDate(-10,"dd/MM/yyyy",GMT_7);
+        BookieStatementPage page = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
+        log("@Step 2: Select valid values with company unit 'All'");
+        log("@Step 3: Select agent type 'Super Master'");
+        log("@Step 4: Click on 'Show' button and observe");
+        page.filter("All","","Super Master",fromDate,"","QA Bookie","");
+        log("@Verify 1: Show text to ‘Grand Total in [HKD]’ in the bottom report");
+        Assert.assertEquals(page.tblGrandTotal.getHeaderNameOfRows().get(1),"Grand Total in","FAILED! Grand total in display incorrrect.");
+        Assert.assertEquals(page.tblGrandTotal.getHeaderNameOfRows().get(2),"HKD","FAILED! Cur of Grand total in display incorrrect.");
+        log("@Step 5: Click on master code and observe");
+        BookieMasterAgentDetailPopup bookieMasterAgentDetailPopup = page.openBookieMasterAgentDetailPopup(bookieSuperMasterCode,bookieMasterCode);
+        log("@Verify 2: show header table text: 'Debit [HKD]', 'Credit [HKD]', 'Running [HKD]'.");
+        ArrayList<String> lstHeader1 = bookieMasterAgentDetailPopup.tblMDetail.getHeaderNameOfRows();
+        Assert.assertTrue(lstHeader1.contains("Debit [HKD]"),"FAILED! Debit [HKD] display incorrect.");
+        Assert.assertTrue(lstHeader1.contains("Credit [HKD]"),"FAILED! Credit [HKD] display incorrect.");
+        Assert.assertTrue(lstHeader1.contains("Running [HKD]"),"FAILED! Running [HKD] display incorrect.");
+        log("@Step 6: Close the dialog");
+        bookieMasterAgentDetailPopup.closeIcon.click();
+        log("@Step 7: Click on 'AS'");
+        BookieAgentSummaryPopup bookieAgentSummaryPopup = page.openBookieAgentSummary(bookieSuperMasterCode,bookieMasterCode);
+        BookieAgentDetailPopup bookieAgentDetailPopup = bookieAgentSummaryPopup.openAgentDetailPopup(agentCode);
+        log("@Verify 3: show header table text: 'Debit [HKD]', 'Credit [HKD]', 'Running [HKD]'.");
+        ArrayList<String> lstHeader2 = bookieAgentDetailPopup.tblAgentDetail.getHeaderNameOfRows();
+        Assert.assertTrue(lstHeader2.contains("Debit [HKD]"),"FAILED! Debit [HKD] display incorrect.");
+        Assert.assertTrue(lstHeader2.contains("Credit [HKD]"),"FAILED! Credit [HKD] display incorrect.");
+        Assert.assertTrue(lstHeader2.contains("Running [HKD]"),"FAILED! Running [HKD] display incorrect.");        log("@Step 8: Click on MS and observe");
+        log("@Step 8: Close dialog");
+        bookieAgentDetailPopup.closeIcon.click();
+        bookieAgentSummaryPopup.closeIcon.click();
+        log("@Step 9: Click on 'MS' link and observe");
+        BookieMemberSummaryPopup memberSummaryPopup = page.openBookieMemberSummaryDetailPopup(bookieSuperMasterCode,bookieMasterCode);
+        MemberDetailPage memberDetailPage = memberSummaryPopup.openMemberDetailPage(accountCode);
+        log("@Step 10: Click on account code and observe");
+        log("@Verify 6: show header table text: ‘Balance [HKD]’,'Debit [HKD]', 'Credit [HKD]', 'Running [HKD]'.");
+        ArrayList<String> lstHeader3 = memberDetailPage.tblMemberDetail.getHeaderNameOfRows();
+        Assert.assertTrue(lstHeader3.contains("Debit [HKD]"),"FAILED! Debit [HKD] display incorrect.");
+        Assert.assertTrue(lstHeader3.contains("Credit [HKD]"),"FAILED! Credit [HKD] display incorrect.");
+        Assert.assertTrue(lstHeader3.contains("Running [HKD]"),"FAILED! Running [HKD] display incorrect.");
         log("INFO: Executed completely");
     }
 }
