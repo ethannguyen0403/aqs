@@ -3,51 +3,49 @@ package pages.sb11.generalReports;
 import com.paltech.driver.DriverManager;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
-import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
 import pages.sb11.WelcomePage;
-import pages.sb11.generalReports.clientbalance.ClientBalanceDetailPage;
+import pages.sb11.generalReports.popup.clientBalance.ClientBalanceDetailPopup;
+
 
 public class ClientBalancePage extends WelcomePage {
-    DropDownBox ddViewBy = DropDownBox.xpath("//div[contains(text(),'View By')]/parent::div//select");
-    DropDownBox ddCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]/parent::div//select");
-    DropDownBox ddFinancial = DropDownBox.xpath("//div[contains(text(),'Financial Year')]/parent::div//select");
+    public DropDownBox ddViewBy = DropDownBox.xpath("//div[contains(text(),'View By')]//following::select[1]");
+    public DropDownBox ddCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
+    public DropDownBox ddFinancialYear = DropDownBox.xpath("//div[contains(text(),'Financial Year')]//following::select[1]");
     TextBox txtDate = TextBox.name("fromDate");
-    DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container");
+    DateTimePicker dtpDate = DateTimePicker.xpath(txtDate, "//bs-datepicker-container");
+    public DropDownBox ddShowTotal = DropDownBox.xpath("//div[contains(text(),'Show Total')]//following::select[1]");
+    protected Button btnShow = Button.name("btnShow");
     TextBox txtSMCode = TextBox.xpath("//div[contains(text(),'SM Code')]/parent::div//input");
-    public DropDownBox ddShowTotalIn = DropDownBox.xpath("//div[contains(text(),'Show Total In')]/parent::div//select");
-    Button btnShow = Button.xpath("//button[text()='Show']");
-    public int colTotalBalance = 5;
-    public int colClient = 2;
-    public Table tblBalance = Table.xpath("//table[@id='client-balance-summary']",9);
-    public void filter(String viewBy, String companyUnit, String financialYear, String date, String smCode, String showTotalIn) {
-        if(!viewBy.isEmpty()){
+    int totalCol = 5;
+    int colClientName = 2;
+    public Table tblClientBalance = Table.xpath("//table[@id='client-balance-summary']", totalCol);
+
+
+    public void filter(String viewBy, String companyUnit, String financialYear, String date, String smCode) {
+        if (!viewBy.isEmpty())
             ddViewBy.selectByVisibleText(viewBy);
-        }
-        if(!companyUnit.isEmpty()){
+        if (!companyUnit.isEmpty())
             ddCompanyUnit.selectByVisibleText(companyUnit);
-        }
-        if(!financialYear.isEmpty()){
-            ddFinancial.selectByVisibleText(financialYear);
-        }
-        if(!date.isEmpty()){
-            dtpDate.selectDate(date,"dd/MM/yyyy");
-        }
-        if(!smCode.isEmpty()){
+        waitSpinnerDisappeared();
+        if (!financialYear.isEmpty())
+            ddFinancialYear.selectByVisibleText(financialYear);
+        if (!date.isEmpty())
+            dtpDate.selectDate(date, "dd/MM/yyyy");
+        if (!smCode.isEmpty())
             txtSMCode.sendKeys(smCode);
-        }
-        if(!showTotalIn.isEmpty()){
-            ddShowTotalIn.selectByVisibleText(showTotalIn);
-        }
         btnShow.click();
         waitSpinnerDisappeared();
     }
-    public ClientBalanceDetailPage openBalanceDetailByClient(String clientName){
+    public ClientBalanceDetailPopup goToClientDetail(String clientName){
         filter("","","","",clientName.split("-")[0].trim(),"");
-        tblBalance.getControlOfCellSPP(1,colClient,1,null).click();
+        tblClientBalance.getControlOfCellSPP(1,colClientName,1,null).click();
+        waitSpinnerDisappeared();
         DriverManager.getDriver().switchToWindow();
-        return new ClientBalanceDetailPage();
+        return new ClientBalanceDetailPopup();
     }
+
+
 }
