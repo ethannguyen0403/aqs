@@ -1,4 +1,4 @@
-package pages.sb11.generalReports;
+package pages.sb11.financialReports;
 
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
@@ -20,8 +20,8 @@ public class RetainedEarningsPage extends WelcomePage {
 
     protected Label lblTitle = Label.xpath("//div[contains(@class, 'card-header')]//span");
     protected Button btnShow = Button.xpath("//button[contains(@class, 'btn-success')]");
-    public DropDownBox ddCompanyUnit = DropDownBox.xpath("//*[contains(text(), 'Company Unit')]/..//select");
-    public DropDownBox ddFinancialYear = DropDownBox.xpath("//*[contains(text(), 'Financial Year')]/..//select");
+    public DropDownBox ddCompanyUnit = DropDownBox.xpath("//div[text()= 'Company Unit']/parent::div//select");
+    public DropDownBox ddFinancialYear = DropDownBox.xpath("//div[text()= 'Financial Year']/parent::div//select");
     Table tblTotal = Table.xpath("//app-retained-earnings//table[@id='my-table']", totalCol);
     public Button btnExportToExcel = Button.xpath("//button//i[contains(@class, 'fa-file-excel')]");
     public Button btnExportToPDF = Button.xpath("//button//i[contains(@class, 'fa-file-pdf')]");

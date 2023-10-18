@@ -18,6 +18,7 @@ public class SBPConstants {
     public final static String ADDRESS_BOOK = "Address Book";
     public final static String TRADING = "Trading";
     public final static String ACCOUNTING = "Accounting";
+    public final static String COMPANY_SETUP = "Company Set-up";
     public final static String ROLE = "Role";
     public final static String USER = "User";
     public final static String CHART_OF_ACCOUNT = "Chart Of Account";
@@ -25,7 +26,10 @@ public class SBPConstants {
     public final static String SOCCER = "Soccer";
     public final static String INVOICE = "Invoice";
     public final static String INVOICES = "Invoices";
+    public final static String WORKFLOW_SETTINGS = "Workflow Settings";
+    public final static List<String> REPORT_TYPE = Arrays.asList("Before CJE", "After CJE");
     public final static String FINANCIAL_REPORTS = "Financial Reports";
+    public final static String CASH_FLOW_STATEMENT = "Cash Flow Statement";
     public final static String RETAINED_EARNING = "Retained Earnings";
     public final static String INCOME_STATEMENT = "Income Statement";
     public final static String TRIAL_BALANCE = "Trial Balance";
@@ -36,6 +40,8 @@ public class SBPConstants {
     public final static String PT_RISK_CONTROL = "PT Risk Control";
     public final static String LEDGER_STATEMENT = "Ledger Statement";
     public final static String BOOKIE_STATEMENT = "Bookie Statement";
+    public final static String BOOKIE_BALANCE = "Bookie Balance";
+    public final static String CLIENT_BALANCE = "Client Balance";
     public final static String JOURNAL_ENTRIES = "Journal Entries";
     public final static String JOURNAL_REPORTS = "Journal Reports";
     public final static String SMART_SYSTEM = "Smart System";
@@ -90,6 +96,7 @@ public class SBPConstants {
     public final static String LEDGER_PARENT_NAME_LIABILITY = "QA Ledger Group Liability";
     public final static String LEDGER_PARENT_NAME_INCOME = "QA Ledger Group Income";
     public final static String LEDGER_PARENT_NAME_CAPITAL = "QA Ledger Group Capital";
+    public final static String INVOICE_PROJECT = "QA-Project01";
     public final static List<String> TABLE_HEADER = Arrays.asList("Role", "User", "Sport", "Soccer","Accounting","Trading","Master","General Reports","Invoice","Financial Reports");
     public final static List<String> COMPANY_UNIT_LIST = Arrays.asList("Kastraki Limited", "SK1122", "IB 01", "Fair", "Aquifer");
     public final static List<String> COMPANY_UNIT_LIST_ALL = Arrays.asList("All","Kastraki Limited", "SK1122", "IB 01", "Fair","Aquifer");
@@ -104,9 +111,12 @@ public class SBPConstants {
     public final static List<String> PROVIDER_LIST = Arrays.asList("Pinnacle","Bet ISN","PS7","Fair999");
     public final static List<String> LIVE_NONLIVE_LIST = Arrays.asList("ALL","Live","Non-Live");
     public final static List<String> CURRENCY_LIST = Arrays.asList("ALL","AUD","CAD","CNY","AED","EUR","HKD","INR","IDR","JPY","MYR","KPW","PKR","PHP","SGD","ZAR","KRW","LKR","GBP","TWD","THB","USD","VND");
+    public final static List<String> CURRENCY_LIST_WITHOUT_ALL = Arrays.asList("AUD","CAD","CNY","AED","EUR","HKD","INR","IDR","JPY","MYR","KPW","PKR","PHP","SGD","ZAR","KRW","LKR","GBP","TWD","THB","USD","VND");
     public final static List<String> STAKE_LIST_ALL = Arrays.asList("ALL","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
     public final static List<String> STAKE_LIST = Arrays.asList("All","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
+    public final static List<String> MONTH_NAME_LIST = Arrays.asList("January","February","March","April","May","June","July","August","September","October", "November", "December");
     public final static String GMT_7 = "GMT +7";
+    public final static String BALANCE_SHEET = "Balance Sheet";
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
         {
@@ -350,11 +360,21 @@ public class SBPConstants {
 
     }
 
-    public static class IncomeStatementConstants{
-        public final static List<String> REPORT_TYPE = Arrays.asList("Before CJE", "After CJE");
-
+    public static class LogInvoicePopupConstants {
+        public final static List<String> HEADER_LIST = Arrays.asList("Invoice Number","Action","From", "To", "Modified By", "Modified Date");
+        public final static String POPUP_TITLE = "Invoice Log";
     }
 
+    public static class CashFlowStatementConstants {
+        public final static List<String> HEADER_LIST_TRANSACTION_TABLE = Arrays.asList("#", "Transaction Type", "Total In HKD");
+        public final static List<String> HEADER_LIST_CASH_INVEST_TABLE = Arrays.asList("Cash flow from investing activities", "");
+        public final static List<String> HEADER_LIST_CASH_FINANCING_TABLE = Arrays.asList("Cash flow from financing activities", "");
+        public final static List<String> HEADER_LIST_TOTAL_INCREASE_DECREASE_TABLE =
+                Arrays.asList("Total Increase (decrease) in cash and cash equivalents"
+                        , "Cash and cash equivalents at the beginning of the month (%s Rate)",
+                        "Cash and cash equivalents at the beginning of the month (%s Rate)", "Effect of foreign exchange rate changes",
+                        "Cash and cash equivalents at the end of the month");
+    }
 
 }
 

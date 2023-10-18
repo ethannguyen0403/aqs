@@ -26,7 +26,7 @@ public class ExcelUtils {
             Map<String, String> element;
             for (int i = 1; i < numberOfTestData; i++) {
                 Row rowData = sheet.getRow(i);
-                if (columns.contains(getDataFromCell(rowData.getCell(0)))) {
+                if (columns.get(0).equals(getDataFromCell(rowData.getCell(0)))) {
                     Row rowHeader = sheet.getRow(i);
                     for (int j = 1; j < (numberOfTestData - i); j++) {
                         element = new HashMap<>();
@@ -65,7 +65,7 @@ public class ExcelUtils {
 
     private static int findColumnByName(Row row, String name) {
         for (Cell cell : row) {
-            String cellValue = cell.getStringCellValue();
+            String cellValue = getCellValue(cell);
             if (cellValue == null) {
                 return -1;
             }
@@ -76,7 +76,7 @@ public class ExcelUtils {
         return -1;
     }
 
-    private static String getCellValue(Cell cell) {
+    public static String getCellValue(Cell cell) {
         String result = "";
         CellType cellType = cell.getCellType();
         DataFormatter dataFormatter = new DataFormatter();
