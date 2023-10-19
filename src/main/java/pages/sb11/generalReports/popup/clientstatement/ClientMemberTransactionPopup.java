@@ -2,14 +2,14 @@ package pages.sb11.generalReports.popup.clientstatement;
 
 import com.paltech.element.common.Label;
 import controls.Table;
-import pages.sb11.WelcomePage;
+
 
 public class ClientMemberTransactionPopup {
     int summaryColTotal = 10;
     public int colOpeningRunning = 5;
     public int colTotalRunning = 4;
 
-    Table tblWinloseSummary = Table.xpath("//app-report-dialog//table[@aria-label='transaction table']",summaryColTotal);
+    public Table tblWinloseSummary = Table.xpath("//app-report-dialog//table[@aria-label='transaction table']",summaryColTotal);
 
     public String getTotalRunning(int colIndex) {
         String returnValue = "";

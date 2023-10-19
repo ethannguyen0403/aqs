@@ -28,6 +28,7 @@ public class BalanceSheetPage extends WelcomePage {
     public Label lblValueTotalOfAsset = Label.xpath("//following::span[text()='Total Assets']/parent::div/following-sibling::div/span");
     public Label lblTotalOfAsset = Label.xpath("//div[contains(@class,'total-by-group-account')][2]");
     public Label lblValueTotalLiabilityCapital = Label.xpath("//span[contains(text(),'Total Liability and Capital')]/parent::div/following-sibling::div/span");
+    public Label lblAmountAreShow = Label.xpath("//app-balance-sheet//label[contains(text(), 'Amounts are shown in')]");
     public Button btnExportToExcel = Button.xpath("//button//i[contains(@class, 'fa-file-excel')]");
     public Button btnExportToPDF = Button.xpath("//button//i[contains(@class, 'fa-file-pdf')]");
     @Override
