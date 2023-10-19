@@ -11,8 +11,8 @@ import pages.sb11.generalReports.bookiebalance.BalanceDetailPage;
 import pages.sb11.generalReports.clientbalance.ClientBalanceDetailPage;
 
 public class BookieBalancePage extends WelcomePage {
-    DropDownBox ddCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]/parent::div//select");
-    DropDownBox ddFinancial = DropDownBox.xpath("//div[contains(text(),'Financial Year')]/parent::div//select");
+    public DropDownBox ddCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]/parent::div//select");
+    public DropDownBox ddFinancial = DropDownBox.xpath("//div[contains(text(),'Financial Year')]/parent::div//select");
     TextBox txtDate = TextBox.name("fromDate");
     DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container");
     TextBox txtBookieCode = TextBox.xpath("//div[contains(text(),'Bookie Code')]/parent::div//input");
@@ -34,9 +34,6 @@ public class BookieBalancePage extends WelcomePage {
         }
         if(!bookieCode.isEmpty()){
             txtBookieCode.sendKeys(bookieCode);
-        }
-        if(!showTotalIn.isEmpty()){
-            ddShowTotalIn.selectByVisibleText(showTotalIn);
         }
         btnShow.click();
         waitSpinnerDisappeared();

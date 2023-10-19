@@ -289,11 +289,13 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@Step 1: Go to General Report >> Ledger Statement");
         LedgerStatementPage page = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         log("@Step 2: Select company unit 'Aquifer' and observe financial year");
-        page.showLedger("Aquifer","","","","","","");
+        page.ddCompanyUnit.selectByVisibleText("Aquifer");
+        welcomePage.waitSpinnerDisappeared();
         log("@Verify 1: financial Year filter will list options as a single year");
         Assert.assertTrue(page.ddFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_1_YEAR),"FAILED! Financial 1 year display incorrect.");
         log("@Step 3: Select company unit 'Kastraki' and observe financial year");
-        page.showLedger(COMPANY_UNIT,"","","","","","");
+        page.ddCompanyUnit.selectByVisibleText(COMPANY_UNIT);
+        welcomePage.waitSpinnerDisappeared();
         log("@Verify 2: financial Year filter will list options as period of 2 year");
         Assert.assertTrue(page.ddFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST),"FAILED! Financial period of 2 year display incorrect.");
         log("INFO: Executed completely");
@@ -301,23 +303,97 @@ public class CompanySetupTest extends BaseCaseAQS {
     @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "4361")
     public void Company_Set_up_TC4361() {
-        log("@title: Validate that display financial year correctly by company's accounting period in 'Ledger Statement' page");
+        log("@title: Validate that display financial year correctly by company's accounting period in 'Client Balance' page");
         log("@pre-condition: Login with valid account");
-        log("@Step 1: Go to General Report >> Ledger Statement");
+        log("@Step 1: Go to General Report >> Client Balance");
         ClientBalancePage page = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_BALANCE,ClientBalancePage.class);
         log("@Step 2: Select company unit 'Aquifer' and observe financial year");
-        page.filter("","Aquifer","","","");
+        page.ddCompanyUnit.selectByVisibleText("Aquifer");
+        welcomePage.waitSpinnerDisappeared();
         log("@Verify 1: financial Year filter will list options as a single year");
         Assert.assertTrue(page.ddFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_1_YEAR),"FAILED! Financial 1 year display incorrect.");
         log("@Step 3: Select company unit 'Kastraki' and observe financial year");
-        page.filter("",COMPANY_UNIT,"","","");
+        page.ddCompanyUnit.selectByVisibleText(COMPANY_UNIT);
+        welcomePage.waitSpinnerDisappeared();
         log("@Verify 2: financial Year filter will list options as period of 2 year");
         Assert.assertTrue(page.ddFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST),"FAILED! Financial period of 2 year display incorrect.");
-        log("@Step 4: Select company unit 'Kastraki' and observe financial year");
-        page.filter("","All","","","");
+        log("@Step 4: Select company unit 'All' and observe financial year");
+        page.ddCompanyUnit.selectByVisibleText("All");
+        welcomePage.waitSpinnerDisappeared();
         log("@Verify 3: financial Year filter will list all options of both kind of financial year");
         Assert.assertTrue(page.ddFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_NEW),"FAILED! all options of both kind of financial year display incorrect.");
         log("INFO: Executed completely");
     }
-
+    @Test(groups = {"regression","2023.10.31"})
+    @TestRails(id = "4362")
+    public void Company_Set_up_TC4362() {
+        log("@title: Validate that display financial year correctly by company's accounting period in 'Bookie Balance' page");
+        log("@pre-condition: Login with valid account");
+        log("@Step 1: Go to General Report >> Bookie Balance");
+        BookieBalancePage page = welcomePage.navigatePage(GENERAL_REPORTS,BOOKIE_BALANCE,BookieBalancePage.class);
+        log("@Step 2: Select company unit 'Aquifer' and observe financial year");
+        page.ddCompanyUnit.selectByVisibleText("Aquifer");
+        welcomePage.waitSpinnerDisappeared();
+        log("@Verify 1: financial Year filter will list options as a single year");
+        Assert.assertTrue(page.ddFinancial.getOptions().equals(FINANCIAL_YEAR_LIST_1_YEAR),"FAILED! Financial 1 year display incorrect.");
+        log("@Step 3: Select company unit 'Kastraki' and observe financial year");
+        page.ddCompanyUnit.selectByVisibleText(COMPANY_UNIT);
+        welcomePage.waitSpinnerDisappeared();
+        log("@Verify 2: financial Year filter will list options as period of 2 year");
+        Assert.assertTrue(page.ddFinancial.getOptions().equals(FINANCIAL_YEAR_LIST),"FAILED! Financial period of 2 year display incorrect.");
+        log("@Step 4: Select company unit 'Kastraki' and observe financial year");
+        page.ddCompanyUnit.selectByVisibleText("All");
+        welcomePage.waitSpinnerDisappeared();
+        log("@Verify 3: financial Year filter will list all options of both kind of financial year");
+        Assert.assertTrue(page.ddFinancial.getOptions().equals(FINANCIAL_YEAR_LIST_NEW),"FAILED! all options of both kind of financial year display incorrect.");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.10.31"})
+    @TestRails(id = "4363")
+    public void Company_Set_up_TC4363() {
+        log("@title: Validate that display financial year correctly by company's accounting period in 'Client Statement' page");
+        log("@pre-condition: Login with valid account");
+        log("@Step 1: Go to General Report >> Client Statement");
+        ClientStatementPage page = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+        log("@Step 2: Select company unit 'Aquifer' and observe financial year");
+        page.ddpCompanyUnit.selectByVisibleText("Aquifer");
+        welcomePage.waitSpinnerDisappeared();
+        log("@Verify 1: financial Year filter will list options as a single year");
+        Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_1_YEAR),"FAILED! Financial 1 year display incorrect.");
+        log("@Step 3: Select company unit 'Kastraki' and observe financial year");
+        page.ddpCompanyUnit.selectByVisibleText(COMPANY_UNIT);
+        welcomePage.waitSpinnerDisappeared();
+        log("@Verify 2: financial Year filter will list options as period of 2 year");
+        Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST),"FAILED! Financial period of 2 year display incorrect.");
+        log("@Step 4: Select company unit 'Kastraki' and observe financial year");
+        page.ddpCompanyUnit.selectByVisibleText("All");
+        welcomePage.waitSpinnerDisappeared();
+        log("@Verify 3: financial Year filter will list all options of both kind of financial year");
+        Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_NEW),"FAILED! all options of both kind of financial year display incorrect.");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.10.31"})
+    @TestRails(id = "4364")
+    public void Company_Set_up_TC4364() {
+        log("@title: Validate that display financial year correctly by company's accounting period in 'Bookie Statement' page");
+        log("@pre-condition: Login with valid account");
+        log("@Step 1: Go to General Report >> Bookie Statement");
+        BookieStatementPage page = welcomePage.navigatePage(GENERAL_REPORTS,BOOKIE_STATEMENT,BookieStatementPage.class);
+        log("@Step 2: Select company unit 'Aquifer' and observe financial year");
+        page.ddpCompanyUnit.selectByVisibleText("Aquifer");
+        welcomePage.waitSpinnerDisappeared();
+        log("@Verify 1: financial Year filter will list options as a single year");
+        Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_1_YEAR),"FAILED! Financial 1 year display incorrect.");
+        log("@Step 3: Select company unit 'Kastraki' and observe financial year");
+        page.ddpCompanyUnit.selectByVisibleText(COMPANY_UNIT);
+        welcomePage.waitSpinnerDisappeared();
+        log("@Verify 2: financial Year filter will list options as period of 2 year");
+        Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST),"FAILED! Financial period of 2 year display incorrect.");
+        log("@Step 4: Select company unit 'Kastraki' and observe financial year");
+        page.ddpCompanyUnit.selectByVisibleText("All");
+        welcomePage.waitSpinnerDisappeared();
+        log("@Verify 3: financial Year filter will list all options of both kind of financial year");
+        Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_NEW),"FAILED! all options of both kind of financial year display incorrect.");
+        log("INFO: Executed completely");
+    }
 }

@@ -33,8 +33,8 @@ public class BookieStatementPage extends WelcomePage {
 
     Label lblTitle = Label.xpath("//app-bookie-statement//span[contains(@class,'card-header main-box-header')]");
     DropDownBox ddpViewBy = DropDownBox.xpath("//div[contains(@class,'p-2 pb-4 pr-0 filter')][1]//select");
-    DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bookie-statement//div[contains(@class,'company-unit')]//select");
-    DropDownBox ddpFinancialYear = DropDownBox.xpath("//app-bookie-statement//div[contains(@class,'financial-year')]//select");
+    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bookie-statement//div[contains(@class,'company-unit')]//select");
+    public DropDownBox ddpFinancialYear = DropDownBox.xpath("//app-bookie-statement//div[contains(@class,'financial-year')]//select");
     DropDownBox ddpAgentType = DropDownBox.xpath("//app-bookie-statement//div[contains(@class,'agent-type')]//select");
     TextBox txtFromDate = TextBox.xpath("//app-bookie-statement//div[contains(@class,'form-date')]//input");
     TextBox txtToDate = TextBox.xpath("//app-bookie-statement//div[contains(@class,'to-date')]//input");

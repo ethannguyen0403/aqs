@@ -24,15 +24,13 @@ import java.util.Map;
 import static common.SBPConstants.*;
 
 public class BalanceSheetTest extends BaseCaseAQS {
-    @Test(groups = {"regression_stg"})
+    @Test(groups = {"regression_stg","2023.10.31"})
     @TestRails(id = "2780")
     @Parameters({"password"})
     public void Balance_Sheet_2780(String password) throws Exception {
         String accountNoPermission = "onerole";
         log("@title: Validate Balance Sheet menu is hidden if not active Balance Sheet permission");
         log("@Pre-condition: Balance Sheet permission is OFF for any account");
-//        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-//        roleManagementPage.selectRole("one role").switchPermissions(BALANCE_SHEET, true);
         log("@Step 1: Login by account at precondition");
         LoginPage loginPage = welcomePage.logout();
         loginPage.login(accountNoPermission,StringUtils.decrypt(password));
@@ -41,7 +39,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertFalse(welcomePage.isPageDisplayCorrect(FINANCIAL_REPORTS,BALANCE_SHEET),"FAILED! Balance Sheet displayed incorrect!");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "2781")
     public void Balance_Sheet_2781() {
         log("@title: Validate Balance Sheet menu displays if active Balance Sheet permission");
@@ -56,7 +54,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.getTitlePage().contains(SBPConstants.BALANCE_SHEET),"FAILED! Title page displayed incorrect!");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "2784")
     public void Balance_Sheet_2784() {
         log("@title: Validate an ASSET section displays on the left side");
@@ -70,7 +68,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.isSectionDisplayCorrect("ASSET"),"FAILED! ASSET section displays incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "2785")
     public void Balance_Sheet_2785() {
         log("@title: Validate LIABILITY and CAPITAL section display on the right side");
@@ -85,7 +83,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.isSectionDisplayCorrect("CAPITAL"),"FAILED! CAPITAL section displays incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "2786")
     public void Balance_Sheet_2786() {
         log("@title: Validate Parent Accounts will be grouped by Detail Types");
@@ -99,7 +97,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.isParentAccountsDisplayCorrect(),"FAILED! ParentAccounts display Incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "2787")
     public void Balance_Sheet_2787() {
         log("@title: Validate Data will be sorted by Chart Code of Detail Types ascendingly");
@@ -115,7 +113,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.isDetailTypeSortCorrect("CAPITAL"),"FAILED! Detail Type sort Incorrect in Capital table");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "2788")
     public void Balance_Sheet_2788() {
         log("@title: Validate there is a total amount for each Detail Type");
@@ -129,7 +127,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.isTotalAmountDisplayCorrect(),"FAILED! Total amount of each Detail Type displays Incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "2789")
     public void Balance_Sheet_2789() {
         log("@title: Validate the Balance Amount is taken from Ledger Statement > 'Amounts are shown in HKD' section > Running Bal.' column");
@@ -163,7 +161,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertEquals(page.getTotalAmount(detailTypeName).getText(),totalAmountOfParentAcount,"FAILED! Balance Amount displays incorrect!");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "2790")
     public void Balance_Sheet_2790() {
         log("@title: Validate 'Total Assets' value is correct");
@@ -177,7 +175,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertEquals(page.lblValueTotalOfAsset.getText(),page.getTotalOfAllParent("ASSET").replace("-",""),"FAILED! Balance Amount of Asset section display incorrect!");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "2791")
     public void Balance_Sheet_2791() {
         log("@title: Validate 'Total Liability and Capital' is correct");
@@ -192,7 +190,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertEquals(page.checkNegativeValue(page.lblValueTotalLiabilityCapital),totalBoth);
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "2792")
     public void Balance_Sheet_2792() {
         log("@title: Validate the UI displays properl");
@@ -211,7 +209,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.ddReport.isEnabled(),"FAILED! Report Dropdown display incorrect!");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression1"})
+    @Test(groups = {"regression1","2023.10.31"})
     @TestRails(id = "2793")
     public void Balance_Sheet_2793() {
         log("@title: Validate 'Export To Excel' button work properly");
@@ -263,7 +261,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.isParentAccountDisplayCorrect(lstParentValueLia,actualExcelData2,columExcel2,excelColValueLia),"FAILED! Parent Account LIABILITY value display incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "2794")
     public void Balance_Sheet_2794() {
         log("@title: Validate 'Export To PDF' button work properly");

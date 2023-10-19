@@ -25,8 +25,8 @@ public class ClientStatementPage extends WelcomePage {
 
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
     DropDownBox ddpViewBy = DropDownBox.xpath("//div[contains(@class,'p-2 pb-4 pr-0 filter')][1]//select");
-    DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(@class,'p-2 pb-4 pr-0 filter')][2]//select");
-    DropDownBox ddpFinancialYear = DropDownBox.xpath("//div[contains(@class,'p-2 pb-4 pr-0 filter')][3]//select");
+    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(@class,'p-2 pb-4 pr-0 filter')][2]//select");
+    public DropDownBox ddpFinancialYear = DropDownBox.xpath("//div[contains(@class,'p-2 pb-4 pr-0 filter')][3]//select");
     DropDownBox ddpClients = DropDownBox.xpath("//div[contains(@class,'p-2 pb-4 pr-0 filter')][4]//select");
     TextBox txtFromDate = TextBox.name("fromDate");
     TextBox txtToDate = TextBox.name("toDate");
@@ -44,9 +44,12 @@ public class ClientStatementPage extends WelcomePage {
     }
 
     public void filter(String viewBy, String companyUnit, String financialYear, String clients, String fromDate, String toDate) {
-        ddpViewBy.selectByVisibleText(viewBy);
-        ddpCompanyUnit.selectByVisibleText(companyUnit);
-        ddpFinancialYear.selectByVisibleText(financialYear);
+        if (!viewBy.isEmpty())
+            ddpViewBy.selectByVisibleText(viewBy);
+        if (!companyUnit.isEmpty())
+            ddpCompanyUnit.selectByVisibleText(companyUnit);
+        if (!financialYear.isEmpty())
+            ddpFinancialYear.selectByVisibleText(financialYear);
         waitSpinnerDisappeared();
         ddpClients.selectByVisibleText(clients);
         String currentDate = txtFromDate.getAttribute("value");
