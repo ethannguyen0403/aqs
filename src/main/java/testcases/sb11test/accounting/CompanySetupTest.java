@@ -20,6 +20,7 @@ import pages.sb11.generalReports.BookieBalancePage;
 import pages.sb11.generalReports.ClientBalancePage;
 import pages.sb11.generalReports.ClientStatementPage;
 import pages.sb11.generalReports.LedgerStatementPage;
+import pages.sb11.generalReports.bookiebalance.BalanceDetailPage;
 import pages.sb11.generalReports.popup.bookieBalance.BookieBalanceDetailPopup;
 import pages.sb11.generalReports.*;
 import pages.sb11.generalReports.popup.bookiestatement.*;
@@ -27,11 +28,11 @@ import pages.sb11.generalReports.popup.clientBalance.ClientBalanceDetailPopup;
 import pages.sb11.generalReports.popup.clientstatement.ClientMemberTransactionPopup;
 import pages.sb11.generalReports.popup.clientstatement.ClientSummaryPopup;
 import pages.sb11.generalReports.popup.clientstatement.ClientLedgerRecPayPopup;
-import pages.sb11.generalReports.popup.clientstatement.ClientMemberTransactionPopup;
-import pages.sb11.generalReports.popup.clientstatement.ClientSummaryPopup;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import pages.sb11.role.RoleManagementPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.ChartOfAccountUtils;
+import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;
@@ -44,6 +45,9 @@ import static common.SBPConstants.*;
 public class CompanySetupTest extends BaseCaseAQS {
     String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
     String previousDate = DateUtils.getPreviousDate(currentDate, "yyyy-MM-dd");
+    String viewBy = "Client Point";
+    String superMasterCode = "QA2112 - ";
+    String agentLedCode = "QATE00-LED";
 
     @TestRails(id = "4332")
     @Test(groups = {"regression", "2023.10.31"})
@@ -184,7 +188,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@Step 1: Navigate to  General Reports >> Client Balance");
         ClientBalancePage clientBalancePage = welcomePage.navigatePage(GENERAL_REPORTS, CLIENT_BALANCE, ClientBalancePage.class);
         log("@Step 2: Filter with default data with company name: " + companyName);
-        clientBalancePage.filter("", companyName, "", "");
+        clientBalancePage.filter("", companyName, "", "", "");
 
         log(String.format("@Verify 1: Validate shows text correct with currency %s after submit filter", companyCurrency));
         Assert.assertEquals(clientBalancePage.ddShowTotal.getFirstSelectedOption(), companyCurrency, "FAILED! Text of Show Total dropdown is not correct");
@@ -212,7 +216,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         BookieBalancePage clientBalancePage = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_BALANCE, BookieBalancePage.class);
         log("@Step 2: Filter with default data with company name: " + companyName);
         clientBalancePage.waitSpinnerDisappeared();
-        clientBalancePage.filter(companyName, "", "");
+        clientBalancePage.filter(companyName, "", "", "", "");
 
         log(String.format("@Verify 1: Validate shows text correct with currency %s after submit filter", companyCurrency));
         Assert.assertEquals(clientBalancePage.ddShowTotal.getFirstSelectedOption(), companyCurrency, "");

@@ -26,6 +26,7 @@ public class BookieBalancePage extends WelcomePage {
     public Table tblCurrency = Table.xpath("(//table)[2]",4);
     public int colBookieName = 2;
     public Table tblBookieBalance = Table.xpath("//div[@id='bookie-balance-summary']//table[not(contains(@style,' '))]", 3);
+    public DropDownBox ddShowTotal = DropDownBox.xpath("//div[contains(text(),'Show Total')]//following::select[1]");
     public void filter(String companyUnit, String financialYear, String date, String bookieCode, String showTotalIn) {
         if(!companyUnit.isEmpty()){
             ddCompanyUnit.selectByVisibleText(companyUnit);
@@ -45,11 +46,11 @@ public class BookieBalancePage extends WelcomePage {
         btnShow.click();
         waitSpinnerDisappeared();
     }
-    public BookieBalanceDetailPopup openBalanceDetailByBookie(String bookieName){
+    public BalanceDetailPage openBalanceDetailByBookie(String bookieName){
         filter("","","",bookieName.split("-")[0].trim(),"");
         tblBookie.getControlOfCell(1,colBookie,1,null).click();
         DriverManager.getDriver().switchToWindow();
-        return new BookieBalanceDetailPopup();
+        return new BalanceDetailPage();
     }
     public BookieBalanceDetailPopup goToBookieDetail(int index){
         tblBookieBalance.getControlOfCell(1,colBookieName,index,null).click();
