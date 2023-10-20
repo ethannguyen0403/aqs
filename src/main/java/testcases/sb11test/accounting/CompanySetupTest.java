@@ -38,6 +38,9 @@ import static common.SBPConstants.*;
 public class CompanySetupTest extends BaseCaseAQS {
     String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
     String previousDate = DateUtils.getPreviousDate(currentDate, "yyyy-MM-dd");
+    String viewBy = "Client Point";
+    String superMasterCode = "QA2112 - ";
+    String agentLedCode = "QATE00-LED";
 
     @TestRails(id = "4332")
     @Test(groups = {"regression", "2023.10.31"})
@@ -128,21 +131,10 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@Step 2: Filter with company: " + companyName);
         currencyRatesPage.filterRate(companyName,"");
 
-        log(String.format("@Verify 1: Validate currency: %s of Company: %s has value: 1", companyCurrency, companyName));
         List<String> currencyList = currencyRatesPage.tblCurRate.getColumn(currencyRatesPage.colCur, false);
-        Map<String, String> actualCurEntriesList = currencyRatesPage.getEntriesCurList(currencyList);
-        Assert.assertEquals(actualCurEntriesList.get(companyCurrency), "1", "FAILED! Currency of Company incorrect");
-
+        log(String.format("@Verify 1: Validate currency: %s of Company: %s has value: 1", companyCurrency, companyName));
         log("@Verify 2: Validate show the converting rates grabbed from OANDA as daily is correct");
-        Map<String, String> oandaCurEntriesList = new LinkedHashMap<>();
-        for (int i = 0; i < currencyList.size(); i++) {
-            String curValue = CurrencyRateUtils.getOpRateOanda(currencyList.get(i), companyCurrency, previousDate, currentDate);
-            if (currencyList.get(i).equalsIgnoreCase(companyCurrency)) {
-                curValue = String.format("%.0f",  Float.parseFloat(curValue));
-            }
-            oandaCurEntriesList.put(currencyList.get(i), curValue);
-        }
-        Assert.assertEquals(actualCurEntriesList, oandaCurEntriesList, "FAILED! Currency rate from OANDA incorrect");
+        currencyRatesPage.verifyCurCorrectFromOANDA(currencyList, companyCurrency, previousDate, currentDate);
         log("INFO: Executed completely");
     }
 
@@ -239,9 +231,6 @@ public class CompanySetupTest extends BaseCaseAQS {
                 ledgerDebitAccountNumber, ledgerType, ledgerGroupId, parentId;
         String companyName = "Kastraki Limited";
         String currency = "HKD";
-        String viewBy = "Client Point";
-        String superMasterCode = "QA2112 - ";
-        String agentLedCode = "QATE00-LED";
         String expectedText1 = "Total in " + currency;
         String expectedText2 = "Grand Total in " + currency;
 
@@ -283,23 +272,12 @@ public class CompanySetupTest extends BaseCaseAQS {
             ClientLedgerRecPayPopup recPayPopup = popup.openLedgerRecPaySummaryPopup(ledgerDebitAccountName,popup.colLedgerRecPay);
 
             log("@Verify 3: Validate Rec/Pay/CA/RB/Adj Txns dialog shows header with currency: " + currency);
-            ArrayList<String> expectedHeaderList = new ArrayList<>();
-            for (String s : ClientLedgerRecPayPopupConstants.HEADER_LIST) {
-                expectedHeaderList.add(String.format(s, currency));
-            }
-            ArrayList<String> actualHeaderList = recPayPopup.tblRecPaySummary.getHeaderNameOfRows();
-            actualHeaderList.remove(0);
-            Assert.assertEquals(actualHeaderList,expectedHeaderList, "FAILED! Text is incorrect");
+            recPayPopup.verifyHeaderCorrectWithCompanyCur(ClientLedgerRecPayPopupConstants.HEADER_LIST, currency);
             recPayPopup.switchToFirstWindow();
-
             log("@Step 5: Open Transaction popup");
             ClientMemberTransactionPopup transPopup = popup.openMemberTransactionPopupLedger(ledgerDebitAccountName);
             log("@Verify 3:  Member Transactions popup shows header with currency: " + currency);
-            ArrayList<String> expectedHeaderListMem = new ArrayList<>();
-            for (String s : MemberTransactionPopupConstants.HEADER_LIST) {
-                expectedHeaderListMem.add(String.format(s, currency));
-            }
-            Assert.assertEquals(transPopup.tblWinloseSummary.getHeaderNameOfRows(), expectedHeaderListMem, "FAILED! Text is incorrect");
+            transPopup.verifyHeaderCorrectWithCompanyCur(MemberTransactionPopupConstants.HEADER_LIST, currency);
         }finally {
             log("@Post-condition: Add transaction for the Asset Ledger account into Debit");
             Transaction transactionPost = new Transaction.Builder()

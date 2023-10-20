@@ -3,7 +3,10 @@ package pages.sb11.generalReports.popup.clientstatement;
 import com.paltech.driver.DriverManager;
 import com.paltech.element.common.Label;
 import controls.Table;
+import org.testng.Assert;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class ClientLedgerRecPayPopup {
@@ -19,6 +22,16 @@ public class ClientLedgerRecPayPopup {
         }
     }
     public ClientLedgerRecPayPopup()  {
+    }
+
+    public void verifyHeaderCorrectWithCompanyCur(List<String> expectedHeader, String currency){
+        List<String> newList = new ArrayList<>();
+        for (String s :expectedHeader) {
+            newList.add(String.format(s, currency));
+        }
+        ArrayList<String> actualHeaderList = tblRecPaySummary.getHeaderNameOfRows();
+        actualHeaderList.remove(0);
+        Assert.assertEquals(actualHeaderList,newList, "FAILED! Text is incorrect");
     }
     public String getDifferenceOriginalVal(int colIndex) {
         String returnValue = "";

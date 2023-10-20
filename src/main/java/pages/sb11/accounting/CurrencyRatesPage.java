@@ -6,9 +6,12 @@ import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import utils.sb11.CurrencyRateUtils;
 
-import java.util.HashMap;
+
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,8 +48,22 @@ public class CurrencyRatesPage extends WelcomePage {
         btnExport.click();
     }
 
+    public void verifyCurCorrectFromOANDA(List<String> expectedCurList, String companyCurrency, String fromDate, String toDate ){
+        Map<String, String> actualCurEntriesList = getEntriesCurList(expectedCurList);
+        Map<String, String> oandaCurEntriesList = new LinkedHashMap<>();
+        for (int i = 0; i < actualCurEntriesList.size(); i++) {
+            String curValue = CurrencyRateUtils.getOpRateOanda(expectedCurList.get(i), companyCurrency, fromDate, toDate);
+            if (expectedCurList.get(i).equalsIgnoreCase(companyCurrency)) {
+                curValue = String.format("%.0f",  Float.parseFloat(curValue));
+            }
+            oandaCurEntriesList.put(expectedCurList.get(i), curValue);
+        }
+        Assert.assertEquals(actualCurEntriesList.get(companyCurrency), "1", "FAILED! Currency of Company incorrect");
+        Assert.assertEquals(actualCurEntriesList, oandaCurEntriesList, "FAILED! Currency rate from OANDA incorrect");
+    }
+
     public Map<String, String> getEntriesCurList(List<String> currencyList){
-        Map<String, String> entriesList = new HashMap<>();
+        Map<String, String> entriesList = new LinkedHashMap<>();
         for(int i=0; i< currencyList.size(); i++){
             int curValueIndex = findRowCurIndex(currencyList.get(i));
             String curValue = Label.xpath(tblCurRate.getxPathOfCell(1, colOPRate, curValueIndex, null)).getText().trim();
