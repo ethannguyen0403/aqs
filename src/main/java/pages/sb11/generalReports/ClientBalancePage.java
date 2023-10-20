@@ -14,17 +14,17 @@ public class ClientBalancePage extends WelcomePage {
     public DropDownBox ddViewBy = DropDownBox.xpath("//div[contains(text(),'View By')]//following::select[1]");
     public DropDownBox ddCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
     public DropDownBox ddFinancialYear = DropDownBox.xpath("//div[contains(text(),'Financial Year')]//following::select[1]");
-    TextBox txtDate = TextBox.xpath("//div[contains(text(),'Date')]/following::input[1]");
+    TextBox txtDate = TextBox.name("fromDate");
     DateTimePicker dtpDate = DateTimePicker.xpath(txtDate, "//bs-datepicker-container");
     public DropDownBox ddShowTotal = DropDownBox.xpath("//div[contains(text(),'Show Total')]//following::select[1]");
     protected Button btnShow = Button.name("btnShow");
-
-    int totalCol = 5;
-    int colClientName = 2;
+    TextBox txtSMCode = TextBox.xpath("//div[contains(text(),'SM Code')]/parent::div//input");
+    public int totalCol = 5;
+    public int colClientName = 2;
     public Table tblClientBalance = Table.xpath("//table[@id='client-balance-summary']", totalCol);
 
 
-    public void filter(String viewBy, String companyUnit, String financialYear, String date) {
+    public void filter(String viewBy, String companyUnit, String financialYear, String date, String smCode) {
         if (!viewBy.isEmpty())
             ddViewBy.selectByVisibleText(viewBy);
         if (!companyUnit.isEmpty())
@@ -34,11 +34,14 @@ public class ClientBalancePage extends WelcomePage {
             ddFinancialYear.selectByVisibleText(financialYear);
         if (!date.isEmpty())
             dtpDate.selectDate(date, "dd/MM/yyyy");
+        if (!smCode.isEmpty())
+            txtSMCode.sendKeys(smCode);
         btnShow.click();
         waitSpinnerDisappeared();
     }
-    public ClientBalanceDetailPopup goToClientDetail(int index){
-        tblClientBalance.getControlOfCellSPP(1,colClientName,index,null).click();
+    public ClientBalanceDetailPopup goToClientDetail(String clientName){
+        filter("","","","",clientName.split("-")[0].trim());
+        tblClientBalance.getControlOfCellSPP(1,colClientName,1,null).click();
         waitSpinnerDisappeared();
         DriverManager.getDriver().switchToWindow();
         return new ClientBalanceDetailPopup();

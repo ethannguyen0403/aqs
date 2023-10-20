@@ -1,5 +1,6 @@
 package pages.sb11.generalReports.popup.bookiestatement;
 
+import com.paltech.driver.DriverManager;
 import com.paltech.element.common.Icon;
 import com.paltech.element.common.Label;
 import controls.Row;
@@ -32,7 +33,7 @@ public class BookieMemberSummaryPopup {
     public int colRecPay = 9;
 
     Table tblTotalDetail = Table.xpath("//app-member-summary//div[contains(@class,'table-responsive')][1]//table",colTotal);
-    Table tblMemberDetail = Table.xpath("//app-member-summary//div[contains(@class,'table-responsive')][2]//table",colTotalMember);
+    public Table tblMemberDetail = Table.xpath("//app-member-summary//div[contains(@class,'table-responsive')][2]//table",colTotalMember);
     Icon closeIcon = Icon.xpath("//span[contains(@class,'close-icon')]");
 
     public String getTotalCellValue(int colIndex, boolean isHKD) {
@@ -114,5 +115,10 @@ public class BookieMemberSummaryPopup {
             i = i + 1;
         }
     }
-
+    public MemberDetailPage openMemberDetailPage(String accountCode){
+        Label lblAccCode = Label.xpath(String.format("//a[contains(text(),'%s')]",accountCode));
+        lblAccCode.click();
+        DriverManager.getDriver().switchToWindow();
+        return new MemberDetailPage();
+    }
 }

@@ -141,7 +141,7 @@ public class ClientStatementPage extends WelcomePage {
     }
 
     public ClientSummaryPopup openSummaryPopup(String agentCode) {
-        String xpath = String.format("//div[@id='client-statement-summary']//table[not(@id)]//a[text()=' %s']//..//..//td[3]", agentCode);
+        String xpath = String.format("//div[@id='client-statement-summary']//table[not(@id)]//a[text()=' %s']", agentCode);
         Label lblCellAgent = Label.xpath(xpath);
         if (!lblCellAgent.isDisplayed()) {
             System.out.println(String.format("Cannot find out agent %s in result", agentCode));

@@ -3,10 +3,12 @@ package testcases.sb11test.generalReports;
 import com.paltech.utils.DateUtils;
 import objects.Transaction;
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.generalReports.BookieStatementPage;
-import pages.sb11.generalReports.popup.bookiestatement.BookieMemberSummaryPopup;
-import pages.sb11.generalReports.popup.bookiestatement.BookieSuperMasterDetailPopup;
+import pages.sb11.generalReports.ClientBalancePage;
+import pages.sb11.generalReports.LedgerStatementPage;
+import pages.sb11.generalReports.popup.bookiestatement.*;
 import testcases.BaseCaseAQS;
 import utils.sb11.AccountSearchUtils;
 import utils.sb11.BookieInfoUtils;
@@ -14,6 +16,7 @@ import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static common.SBPConstants.*;
 
