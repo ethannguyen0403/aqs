@@ -25,6 +25,7 @@ public class RetainedEarningsPage extends WelcomePage {
     Table tblTotal = Table.xpath("//app-retained-earnings//table[@id='my-table']", totalCol);
     public Button btnExportToExcel = Button.xpath("//button//i[contains(@class, 'fa-file-excel')]");
     public Button btnExportToPDF = Button.xpath("//button//i[contains(@class, 'fa-file-pdf')]");
+    public Label lblAmountAreShow = Label.xpath("//app-aqs-bet//label[contains(text(), 'Amounts are shown in')]");
 
     public String getTitle(){
         return lblTitle.getText();
