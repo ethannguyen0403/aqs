@@ -150,6 +150,24 @@ public class ClientSummaryPopup {
         }
     }
 
+    public ClientMemberTransactionPopup openMemberTransactionPopupLedger(String accountCode) {
+        Label lblAccountCode;
+        int i = 1;
+        while (true){
+            lblAccountCode = Label.xpath(tblLedgerSummary.getxPathOfCell(1,colLedgerAccountCode,i,"a"));
+            if(lblAccountCode.getText().equalsIgnoreCase(accountCode)){
+                lblAccountCode.click();
+                DriverManager.getDriver().switchToWindow();
+                return new ClientMemberTransactionPopup();
+            }
+            if(i>40){
+                System.out.println("Not found " + accountCode);
+                return null;
+            }
+            i = i+1;
+        }
+    }
+
     public ClientLedgerRecPayPopup openLedgerRecPaySummaryPopup(String accountCode, int colIndex) {
         Label lblCellValueA;
         Label lblCellValueSpan;
@@ -166,7 +184,7 @@ public class ClientSummaryPopup {
             if (lblAccountCode.getText().equalsIgnoreCase(accountCode)) {
                 lblCellValueA.click();
                 DriverManager.getDriver().switchToWindow();
-                return new ClientLedgerRecPayPopup();
+                return new ClientLedgerRecPayPopup(true);
             }
             i = i + 1;
         }

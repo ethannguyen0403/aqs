@@ -1,9 +1,6 @@
 package pages.sb11.generalReports;
 
-import com.paltech.element.common.Button;
-import com.paltech.element.common.DropDownBox;
-import com.paltech.element.common.Label;
-import com.paltech.element.common.TextBox;
+import com.paltech.element.common.*;
 import controls.DateTimePicker;
 import controls.Table;
 import org.testng.Assert;
@@ -33,7 +30,8 @@ public class ClientStatementPage extends WelcomePage {
     Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate, "//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
     DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate, "//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
-
+    public Label lblGrandTotal = Label.xpath("//app-client-detail//table[@id='grand-total']//th[3]");
+    public Label lblGrandTotalCur = Label.xpath("//app-client-detail//table[@id='grand-total']//th[3]/following-sibling::th[1]");
     Table tblSuper = Table.xpath("//app-client-detail//table[@id='table-super']", colTotal);
 //    Table tblMaster = Table.xpath("//app-client-detail//table[@id='table-master']",colTotal);
     //Table tblAgent = Table.xpath("//app-client-detail//div[%s]//table[@id='table-agent']",colTotal);
@@ -150,7 +148,8 @@ public class ClientStatementPage extends WelcomePage {
             System.out.println(String.format("Cannot find out agent %s in result", agentCode));
             return null;
         } else {
-            lblCellAgent.click();
+//            lblCellAgent.click();
+            Link.xpath(xpath + "/a").click();
             waitSpinnerDisappeared();
             return new ClientSummaryPopup();
         }

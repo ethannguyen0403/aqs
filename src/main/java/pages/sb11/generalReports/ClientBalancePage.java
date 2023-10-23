@@ -7,6 +7,7 @@ import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
 import pages.sb11.WelcomePage;
+import pages.sb11.generalReports.popup.bookieBalance.BookieBalanceDetailPopup;
 import pages.sb11.generalReports.popup.clientBalance.ClientBalanceDetailPopup;
 
 
@@ -22,6 +23,8 @@ public class ClientBalancePage extends WelcomePage {
     public int totalCol = 5;
     public int colClientName = 2;
     public Table tblClientBalance = Table.xpath("//table[@id='client-balance-summary']", totalCol);
+    public int colBookieName = 2;
+    public Table tblBookieBalance = Table.xpath("//div[@id='bookie-balance-summary']//table[not(contains(@style,' '))]", 3);
 
 
     public void filter(String viewBy, String companyUnit, String financialYear, String date, String smCode) {
@@ -47,5 +50,11 @@ public class ClientBalancePage extends WelcomePage {
         return new ClientBalanceDetailPopup();
     }
 
+    public ClientBalanceDetailPopup goToClientDetail(int index){
+        tblClientBalance.getControlOfCellSPP(1,colClientName,index,null).click();
+        waitSpinnerDisappeared();
+        DriverManager.getDriver().switchToWindow();
+        return new ClientBalanceDetailPopup();
+    }
 
 }

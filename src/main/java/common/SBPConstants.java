@@ -19,6 +19,7 @@ public class SBPConstants {
     public final static String TRADING = "Trading";
     public final static String ACCOUNTING = "Accounting";
     public final static String COMPANY_SETUP = "Company Set-up";
+    public final static String CURRENCY_RATES = "Currency Rates";
     public final static String ROLE = "Role";
     public final static String USER = "User";
     public final static String CHART_OF_ACCOUNT = "Chart Of Account";
@@ -45,7 +46,6 @@ public class SBPConstants {
     public final static String JOURNAL_ENTRIES = "Journal Entries";
     public final static String JOURNAL_REPORTS = "Journal Reports";
     public final static String SMART_SYSTEM = "Smart System";
-    public final static String CURRENCY_RATES = "Currency Rates";
     public final static String BET_ENTRY = "Bet Entry";
     public final static String TRANSACTION_VERIFICATION = "Transaction Verification";
     public final static String RESULT_ENTRY = "Result Entry";
@@ -387,6 +387,12 @@ public class SBPConstants {
                         "Cash and cash equivalents at the end of the month");
     }
 
+    public static class ClientLedgerRecPayPopupConstants {
+        public final static List<String> HEADER_LIST = Arrays.asList("#", "Txn. Date", "Description", "Credit", "Debit", "Credit [%s]", "Debit [%s]");
+    }
+    public static class MemberTransactionPopupConstants {
+        public final static List<String> HEADER_LIST = Arrays.asList("#", "Txn.Date", "Txn.Id", "Description", "Debit", "Credit", "Running", "Debit [%s]", "Credit [%s]", "Running [%s]");
+    }
 }
 
 
