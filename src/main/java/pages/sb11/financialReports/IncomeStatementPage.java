@@ -1,4 +1,4 @@
-package pages.sb11.generalReports;
+package pages.sb11.financialReports;
 
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
@@ -14,6 +14,7 @@ public class IncomeStatementPage extends WelcomePage {
     protected DropDownBox ddReport = DropDownBox.xpath("//div[text()= 'Report']/parent::div//select");
     protected Button btnShow = Button.xpath("//button[contains(@class, 'btn-show')]");
     protected Label lblNetProfit = Label.xpath("//td[text()='Net Profit (Loss)']/following-sibling::td[1]");
+    public Label lblAmountAreShow = Label.xpath("//app-income-statement//label[contains(text(), 'Amounts are shown in')]");
 
 
     public void filterIncomeReport(String companyUnit, String financialYears, String month, String report) {
