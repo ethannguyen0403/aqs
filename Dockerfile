@@ -15,5 +15,5 @@ FROM openjdk:20-jdk
 WORKDIR /build
 # # # copy jar from the first stage
 COPY --from=builder /build/ /build/
-
+COPY ./drivers/ /build/drivers
 # CMD ["java", "-cp", "/target/classes/;/target/dependency/"]
