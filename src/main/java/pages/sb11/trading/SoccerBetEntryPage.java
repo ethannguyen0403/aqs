@@ -157,7 +157,9 @@ public class SoccerBetEntryPage extends BetEntryPage {
         int rowIndex = getEventRowIndex(eventName);
         int colIndex = defineColumn(isFullTime,type);
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
-        return new SoccerBetSlipPopup();
+        SoccerBetSlipPopup popup = new SoccerBetSlipPopup();
+        popup.lblEventStartTime.isDisplayed();
+        return popup;
 
     }
 
