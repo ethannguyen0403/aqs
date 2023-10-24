@@ -80,6 +80,7 @@ public class BookieStatementPage extends WelcomePage {
             txtBookieCode.sendKeys(bookieCode);
             Thread.sleep(1000);
             searchIcon.click();
+            waitSpinnerDisappeared();
             btnConfirmShowBookie.click();
         }
         if(!currency.isEmpty())
