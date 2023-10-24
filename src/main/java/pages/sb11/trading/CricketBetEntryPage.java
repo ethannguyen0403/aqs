@@ -65,6 +65,7 @@ public class CricketBetEntryPage extends BetEntryPage {
             dtpDate.selectDate(date,"dd/MM/yyyy");
             waitPageLoad();
         }
+        waitPageLoad();
         BaseElement ddpLeagueBox = new TextBox(ddpLeague.getLocator());
         ddpLeagueBox.doubleClick();
         ddpLeague.selectByVisibleText(league);
