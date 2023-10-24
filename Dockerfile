@@ -17,9 +17,3 @@ WORKDIR /build
 COPY --from=builder /build/ /build/
 COPY ./drivers/ /build/drivers
 # CMD ["java", "-cp", "/target/classes/;/target/dependency/"]
-
-RUN apt-get update
-RUN apt-get install wget
-
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
