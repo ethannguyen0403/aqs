@@ -38,8 +38,12 @@ public class TradingPermissionPage extends WelcomePage {
 
     public void autoAssignAll(String username, boolean isChecked){
         int rowIndex = getRowContainsUsername(username);
+        CheckBox cbAutoAssign = CheckBox.xpath(tbTradPermission.getxPathOfCell(1,colAuto,rowIndex,"input"));
+        if (!cbAutoAssign.isSelected()){
+            cbAutoAssign.click();
+        }
         if (isChecked){
-            Icon.xpath(tbTradPermission.getxPathOfCell(1,colAuto,rowIndex,"input")).click();
+            cbAutoAssign.click();
         }
     }
 
