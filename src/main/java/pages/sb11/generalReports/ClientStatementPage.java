@@ -148,8 +148,8 @@ public class ClientStatementPage extends WelcomePage {
             System.out.println(String.format("Cannot find out agent %s in result", agentCode));
             return null;
         } else {
-//            lblCellAgent.click();
-            Link.xpath(xpath + "/a").click();
+            lblCellAgent.click();
+//            Label.xpath(xpath + "/a").click();
             waitSpinnerDisappeared();
             return new ClientSummaryPopup();
         }
