@@ -1,6 +1,7 @@
 package pages.sb11.generalReports.popup.clientstatement;
 
 import com.paltech.element.common.Button;
+import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.utils.DoubleUtils;
 import controls.Table;
@@ -12,6 +13,7 @@ import utils.sb11.CurrencyRateUtils;
 public class LedgerDetailPopup {
     public Label lblTitle = Label.xpath("//app-ledger-detail//span[contains(@class,'font-weight-bolder')]");
     public Button btnClose = Button.xpath("//app-ledger-detail//em[contains(@class,'fa-times')]");
+    DropDownBox  ddShowTxn = DropDownBox.xpath("//app-ledger-detail//select[contains(@class, 'justify-content-center')]");
     int totalCol = 10;
     int colTxnDate = 2;
     int colDescription = 3;
@@ -38,6 +40,9 @@ public class LedgerDetailPopup {
         return new LedgerStatementPage();
     }
 
+    public void selectShowTxnDropDown(String options){
+        ddShowTxn.selectByVisibleText(options);
+    }
     public Transaction verifyLedgerTrans(Transaction trans, boolean isDebit, String description){
         int i = 1;
         while(true){
