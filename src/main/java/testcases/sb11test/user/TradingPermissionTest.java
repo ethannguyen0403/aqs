@@ -72,7 +72,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         TradingPermissionPage tradingPermissionPage = welcomePage.navigatePage(USER,TRADING_PERMISSION,TradingPermissionPage.class);
         log("@Step 3: Check Auto-assigned All checkbox of any item");
         tradingPermissionPage.filterAccount(COMPANY_UNIT,"All",username);
-        tradingPermissionPage.clickAutoAssignAll(username,false);
+        tradingPermissionPage.clickAutoAssignAll(username,true);
         log("Validate that all Permission is disabled: Client Agent, Client, Smart (M), Smart (A), Smart (G)");
         tradingPermissionPage.verifyPermissionEnabled(username,false);
         log("INFO: Executed completely");
@@ -90,12 +90,12 @@ public class TradingPermissionTest extends BaseCaseAQS {
         tradingPermissionPage.filterAccount(COMPANY_UNIT,"All",username);
         log("Validate that all Permission is enabled and can be clickable");
         try{
-            tradingPermissionPage.clickAutoAssignAll(username,true);
+            tradingPermissionPage.clickAutoAssignAll(username,false);
             tradingPermissionPage.verifyPermissionEnabled(username,true);
             log("INFO: Executed completely");
             log("Post condition: Enable auto assign");
         } finally {
-            tradingPermissionPage.clickAutoAssignAll(username,false);
+            tradingPermissionPage.clickAutoAssignAll(username,true);
         }
     }
 }

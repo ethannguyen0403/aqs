@@ -41,11 +41,11 @@ public class TradingPermissionPage extends WelcomePage {
         CheckBox cbAutoAssign = CheckBox.xpath(tbTradPermission.getxPathOfCell(1,colAuto,rowIndex,"input"));
         boolean isChecking = cbAutoAssign.isSelected();
         if (isChecked){
-            if(isChecking) {
+            if(!isChecking) {
                 cbAutoAssign.click();
             }
         } else {
-            if(!isChecking) {
+            if(isChecking) {
                 cbAutoAssign.click();
             }
         }
