@@ -27,6 +27,8 @@
         <parameter name="agentCode" value="QA Smart Agent"/>
         <parameter name="bookieMasterCode" value="Ma-QA101-QA Test"/>
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
+        <parameter name="companyName" value="Kastraki Limited"/>
+        <parameter name="companyCurrency" value="HKD"/>
         <groups>
             <run>
                 <include name="regression" />

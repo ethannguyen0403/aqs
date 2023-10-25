@@ -23,6 +23,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 import static common.SBPConstants.*;
 
@@ -1331,8 +1332,6 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
         }
-
         log("INFO: Executed completely");
     }
-
 }

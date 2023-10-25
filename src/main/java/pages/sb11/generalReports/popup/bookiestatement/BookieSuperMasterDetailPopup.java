@@ -3,7 +3,6 @@ package pages.sb11.generalReports.popup.bookiestatement;
 import com.paltech.element.common.Icon;
 import com.paltech.element.common.Label;
 import controls.Table;
-import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.BookieStatementPage;
 
 public class BookieSuperMasterDetailPopup  {
@@ -16,7 +15,8 @@ public class BookieSuperMasterDetailPopup  {
     public int colGrandTotal = 7;
 
     Table tblSuperMasterDetail = Table.xpath("//app-super-master-detail//table[@aria-label='table']",summaryColTotal);
-    Icon closeIcon = Icon.xpath("//span[@class='cursor-pointer close-icon ml-3']");
+    public Table tblSMDetail = Table.xpath("//app-super-master-detail//table[@aria-label='table'][2]",10);
+    public Icon closeIcon = Icon.xpath("//span[@class='cursor-pointer close-icon ml-3']");
 
     public String getSuperMasterCellValue(int colIndex, boolean isHKD) {
         String returnValue;
