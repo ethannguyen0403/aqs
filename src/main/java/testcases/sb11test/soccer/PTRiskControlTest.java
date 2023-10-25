@@ -391,7 +391,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
 
         log("@Step 5: Access Trading > Confirm Bet");
         ConfirmBetsPage confirmBetsPage = ptRiskPage.navigatePage(TRADING,CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending","Soccer","","",date,date,accountCode);
+        confirmBetsPage.filter(companyUnit,"","Pending","Soccer","","Specific Date",date,date,accountCode);
         log("@Step 6: Filter the account place bet and remove this bet");
         confirmBetsPage.deleteOrder(lstOrder.get(0),true);
 
@@ -399,8 +399,9 @@ public class PTRiskControlTest extends BaseCaseAQS {
         ptRiskPage = confirmBetsPage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
 
         log("Verify 2: verify Bet is removed when bet is removed in Confirm bet");
+        ptRiskPage.filter("",COMPANY_UNIT,"Normal","All",date,date, lstOrder.get(0).getEvent().getLeagueName());
         ptRiskBetListPopup = ptRiskPage.openBetList(lstOrder.get(0).getEvent().getHome());
-        Assert.assertTrue(ptRiskBetListPopup.verifyOrder(lstOrder.get(0)),"Failed! The order info is still display");
+        Assert.assertFalse(ptRiskBetListPopup.verifyOrder(lstOrder.get(0)),"Failed! The order info is still display");
         log("INFO: Executed completely");
     }
 }

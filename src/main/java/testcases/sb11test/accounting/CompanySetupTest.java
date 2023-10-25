@@ -12,10 +12,7 @@ import pages.sb11.LoginPage;
 import pages.sb11.accounting.CompanySetupPage;
 import pages.sb11.accounting.CurrencyRatesPage;
 import pages.sb11.accounting.popup.CompanySetupCreatePopup;
-import pages.sb11.financialReports.BalanceSheetPage;
-import pages.sb11.financialReports.IncomeStatementPage;
-import pages.sb11.financialReports.RetainedEarningsPage;
-import pages.sb11.financialReports.TrialBalancePage;
+import pages.sb11.financialReports.*;
 import pages.sb11.generalReports.BookieBalancePage;
 import pages.sb11.generalReports.ClientBalancePage;
 import pages.sb11.generalReports.ClientStatementPage;
@@ -295,6 +292,55 @@ public class CompanySetupTest extends BaseCaseAQS {
                     .transType("Tax Rebate").build();
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
         }
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression","2023.10.31"})
+    @TestRails(id = "4350")
+    @Parameters({"bookieSuperMasterCode","bookieMasterCode","accountCode", "companyName", "companyCurrency"})
+    public void Company_Set_up_TC4350(String bookieSuperMasterCode, String bookieMasterCode, String accountCode, String companyName, String companyCurrency) throws InterruptedException {
+        log("@title: Validate that show the reporting currency of company correctly in 'Bookie Statement' page");
+        log(String.format("@Pre-condition: Company '%s' has currency as %s", companyName, companyCurrency));
+        log("@Step 1: Go to General Report >> Bookie Statement");;
+        String agentCode = "A-QA10101-QA Test";
+        String fromDate = DateUtils.getDate(-10,"dd/MM/yyyy",GMT_7);
+        BookieStatementPage page = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
+        log("@Step 2: Select valid values with company unit: " + companyName);
+        log("@Step 3: Select agent type 'Super Master'");
+        log("@Step 4: Click on 'Show' button and observe");
+        page.filter(companyName,"","Super Master",fromDate,"","QA Bookie","");
+        log(String.format("@Verify 1: Show text to ‘Grand Total in [%s]’ in the bottom report", companyCurrency));
+        Assert.assertEquals(page.tblGrandTotal.getHeaderNameOfRows().get(1),"Grand Total in","FAILED! Grand total in display incorrrect.");
+        Assert.assertEquals(page.tblGrandTotal.getHeaderNameOfRows().get(2),companyCurrency,"FAILED! Cur of Grand total in display incorrrect.");
+        log("@Step 5: Click on master code and observe");
+        BookieMasterAgentDetailPopup bookieMasterAgentDetailPopup = page.openBookieMasterAgentDetailPopup(bookieSuperMasterCode,bookieMasterCode);
+        log("@Verify 2: show header table text: 'Debit [%s]', 'Credit [%s]', 'Running [%s]'.".replaceAll("%s", companyCurrency));
+        ArrayList<String> lstHeader1 = bookieMasterAgentDetailPopup.tblMDetail.getHeaderNameOfRows();
+        Assert.assertTrue(lstHeader1.contains(String.format("Debit [%s]", companyCurrency)),"FAILED! Debit display incorrect.");
+        Assert.assertTrue(lstHeader1.contains(String.format("Credit [%s]", companyCurrency)),"FAILED! Credit display incorrect.");
+        Assert.assertTrue(lstHeader1.contains(String.format("Running [%s]", companyCurrency)),"FAILED! Running display incorrect.");
+        log("@Step 6: Close the dialog");
+        bookieMasterAgentDetailPopup.closeIcon.click();
+        log("@Step 7: Click on 'AS'");
+        BookieAgentSummaryPopup bookieAgentSummaryPopup = page.openBookieAgentSummary(bookieSuperMasterCode,bookieMasterCode);
+        BookieAgentDetailPopup bookieAgentDetailPopup = bookieAgentSummaryPopup.openAgentDetailPopup(agentCode);
+        log("@Verify 3: show header table text: 'Debit [%s]', 'Credit [%s]', 'Running [%s]'.".replaceAll("%s", companyCurrency));
+        ArrayList<String> lstHeader2 = bookieAgentDetailPopup.tblAgentDetail.getHeaderNameOfRows();
+        Assert.assertTrue(lstHeader2.contains(String.format("Debit [%s]", companyCurrency)),"FAILED! Debit display incorrect.");
+        Assert.assertTrue(lstHeader2.contains(String.format("Credit [%s]", companyCurrency)),"FAILED! Credit display incorrect.");
+        Assert.assertTrue(lstHeader2.contains(String.format("Running [%s]", companyCurrency)),"FAILED! Running display incorrect.");
+        log("@Step 8: Close dialog");
+        bookieAgentDetailPopup.closeIcon.click();
+        bookieAgentSummaryPopup.closeIcon.click();
+        log("@Step 9: Click on 'MS' link and observe");
+        BookieMemberSummaryPopup memberSummaryPopup = page.openBookieMemberSummaryDetailPopup(bookieSuperMasterCode,bookieMasterCode);
+        MemberDetailPage memberDetailPage = memberSummaryPopup.openMemberDetailPage(accountCode);
+        log("@Step 10: Click on account code and observe");
+        log("@Verify 6: show header table text: 'Debit [%s]', 'Credit [%s]', 'Running [%s]'.".replaceAll("%s", companyCurrency));
+        ArrayList<String> lstHeader3 = memberDetailPage.tblMemberDetail.getHeaderNameOfRows();
+        Assert.assertTrue(lstHeader3.contains(String.format("Debit [%s]", companyCurrency)),"FAILED! Debit display incorrect.");
+        Assert.assertTrue(lstHeader3.contains(String.format("Credit [%s]", companyCurrency)),"FAILED! Credit display incorrect.");
+        Assert.assertTrue(lstHeader3.contains(String.format("Running [%s]", companyCurrency)),"FAILED! Running display incorrect.");
         log("INFO: Executed completely");
     }
 
@@ -592,4 +638,122 @@ public class CompanySetupTest extends BaseCaseAQS {
         Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_NEW),"FAILED! all options of both kind of financial year display incorrect.");
         log("INFO: Executed completely");
     }
+    @TestRails(id = "8571")
+    @Test(groups = {"regression", "2023.10.31"})
+    @Parameters({"companyName", "companyCurrency"})
+    public void Company_Set_up_TC8571(String companyName, String companyCurrency) {
+        log("@title: Validate that show the reporting currency of company correctly in 'Income Statement' page");
+        String expectedText = String.format("Amounts are shown in [%s]", companyCurrency);
+        log(String.format("@Precondition: Company %s has currency as %s", companyName, companyCurrency) );
+        log("@Step 1: Navigate to  General Reports >> Income Statement");
+        IncomeStatementPage incomeStatementPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT, IncomeStatementPage.class);
+        log("@Step 2: Filter with default data with company name: " + companyName);
+        incomeStatementPage.filterIncomeReport(companyName, "","","");
+        log(String.format("@Verify 1: Validate shows text 'Amounts are shown in [%s]' correct", companyCurrency));
+        Assert.assertEquals(incomeStatementPage.lblAmountAreShow.getText().trim(), expectedText, "FAILED! Text is incorrect");
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id = "8572")
+    @Test(groups = {"regression", "2023.10.31"})
+    @Parameters({"companyName", "companyCurrency"})
+    public void Company_Set_up_TC8572(String companyName, String companyCurrency) {
+        log("@title: Validate that show the reporting currency of company correctly in 'Retained Earning' page");
+        String expectedText = String.format("Amounts are shown in [%s]", companyCurrency);
+        log(String.format("@Precondition: Company %s has currency as %s", companyName, companyCurrency) );
+        log("@Step 1: Navigate to  Financial Reports >> Retained Earning");
+        RetainedEarningsPage retainedEarningsPage = welcomePage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);
+        log("@Step 2: Filter with default data with company name: " + companyName);
+        retainedEarningsPage.filterRetainedEarnings(companyName, "");
+        log(String.format("@Verify 1: Validate shows text 'Amounts are shown in [%s]' correct", companyCurrency));
+        Assert.assertEquals(retainedEarningsPage.lblAmountAreShow.getText().trim(), expectedText, "FAILED! Text is incorrect");
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id = "8573")
+    @Test(groups = {"regression", "2023.10.31"})
+    @Parameters({"companyName", "companyCurrency"})
+    public void Company_Set_up_TC8573(String companyName, String companyCurrency) {
+        log("@title: Validate that show the reporting currency of company correctly in 'Stockholders Equity' page");
+        String expectedText = String.format("Amounts are shown in [%s]", companyCurrency);
+        log(String.format("@Precondition: Company %s has currency as %s", companyName, companyCurrency) );
+        log("@Step 1: Navigate to  Financial Reports >> Stockholders Equity");
+        StockHoldersEquityPage stockHoldersPage = welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
+        log("@Step 2: Filter with default data with company name: " + companyName);
+        stockHoldersPage.filter(companyName, "");
+        log(String.format("@Verify 1: Validate shows text 'Amounts are shown in [%s]' correct", companyCurrency));
+        Assert.assertEquals(stockHoldersPage.lblAmountAreShow.getText().trim(), expectedText, "FAILED! Text is incorrect");
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id = "8574")
+    @Test(groups = {"regression", "2023.10.31"})
+    @Parameters({"companyName", "companyCurrency"})
+    public void Company_Set_up_TC8574(String companyName, String companyCurrency) {
+        log("@title: Validate that show the reporting currency of company correctly in 'Balance Sheet - Analysis' page");
+        String expectedText = String.format("Amounts are shown in [%s]", companyCurrency);
+        log(String.format("@Precondition: Company %s has currency as %s", companyName, companyCurrency) );
+        log("@Step 1: Navigate to  Financial Reports >> Balance Sheet - Analysis");
+        BalanceSheetAnalysisPage blAnalysis = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
+        log("@Step 2: Filter with default data with company name: " + companyName);
+        blAnalysis.filter(companyName, "", "", "");
+        log(String.format("@Verify 1: Validate shows text 'Amounts are shown in [%s]' correct", companyCurrency));
+        Assert.assertEquals(blAnalysis.lblAmountAreShow.getText().trim(), expectedText, "FAILED! Text is incorrect");
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id = "8575")
+    @Test(groups = {"regression", "2023.10.31"})
+    @Parameters({"companyName", "companyCurrency"})
+    public void Company_Set_up_TC8575(String companyName, String companyCurrency) {
+        log("@title: Validate that show the reporting currency of company correctly in 'Income Statement - Analysis' page");
+        String expectedText = String.format("Amounts are shown in [%s]", companyCurrency);
+        log(String.format("@Precondition: Company %s has currency as %s", companyName, companyCurrency));
+        log("@Step 1: Navigate to  Financial Reports >> Income Statement - Analysis");
+        IncomeStatementAnalysisPage incomeAnalysis = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
+        log("@Step 2: Filter with default data with company name: " + companyName);
+        incomeAnalysis.filter(companyName, "", "", "");
+        log(String.format("@Verify 1: Validate shows text 'Amounts are shown in [%s]' correct", companyCurrency));
+        Assert.assertEquals(incomeAnalysis.lblAmountAreShow.getText().trim(), expectedText, "FAILED! Text is incorrect");
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id = "9148")
+    @Test(groups = {"regression", "2023.10.31"})
+    @Parameters({"companyName", "companyCurrency"})
+    public void Company_Set_up_TC9148(String companyName, String companyCurrency) {
+        String lastDateOfPreviousMonth = "";
+        log("@title: Validate that show the reporting currency of Company correctly in 'Ledger Statement' page if the last day of month has rate");
+        String expectedText1 = "Total in " + companyCurrency;
+        String expectedText2 = "Grand Total in " + companyCurrency;
+        String expectedText3 = "Amounts are shown in " + companyCurrency;
+        log(String.format("@Precondition: Company %s has currency as %s", companyName, companyCurrency) );
+        log("@Step 1: Navigate to  General Reports > Ledger Statement");
+        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+
+        lastDateOfPreviousMonth = ledgerStatementPage.getLastDateOfPreviousMonth("dd/MM/yyyy", "GMT +7");
+        log(String.format("@Step 2: Filter with Company: %s on the last date of previous month", companyName));
+        ledgerStatementPage.showLedger(companyName, "", "", "", lastDateOfPreviousMonth, lastDateOfPreviousMonth, "");
+
+        log(String.format("@Verify 1: Validate  the table has \"CUR transaction in %s\" is displayed.", companyCurrency));
+        Assert.assertTrue(ledgerStatementPage.lblAmountShowCurrency.isDisplayed(),  "FAILED! The table CUR transaction is not shown");
+        log("@Verify 2: Validate shows text correct with currency: " + companyCurrency);
+        Assert.assertEquals(ledgerStatementPage.getDescriptionTotalAmountInOriginCurrency("Total in"), expectedText1, "FAILED! Text is not correct");
+        Assert.assertEquals(ledgerStatementPage.lblGrandTotalInOrigin.getText().trim(),expectedText2,  "FAILED! Text is not correct");
+        Assert.assertEquals(ledgerStatementPage.tbLedger.getHeaderNameOfRows().get(3), expectedText3, "FAILED! Text is not correct");
+
+        log("@Step 3: Click on first ledger name to open Ledger Detail");
+        LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerFirstDetail();
+        log("@Step 4: Select 'With Translation modes' of ShowTxn dropdown");
+        ledgerDetailPopup.selectShowTxnDropDown("With");
+        log(String.format("@Verify 3: Validate shows text correct with currency: %s ", companyCurrency));
+        Assert.assertEquals(ledgerDetailPopup.tbLedger.getHeaderNameOfRows().get(3), expectedText3, "FAILED! Text is not correct");
+
+        log("@Step 4: Select 'Without Translation modes' of ShowTxn dropdown");
+        ledgerDetailPopup.selectShowTxnDropDown("Without");
+        log(String.format("@Verify 4: Validate shows text correct with currency: %s ", companyCurrency));
+        Assert.assertEquals(ledgerDetailPopup.tbLedger.getHeaderNameOfRows().get(3), expectedText3, "FAILED! Text is not correct");
+        log("INFO: Executed completely");
+    }
+
 }

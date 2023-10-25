@@ -32,7 +32,7 @@ public class PTRiskBetListPopup extends WelcomePage {
     Label lblHandicap = Label.xpath("//div[@class='pt-risk-modal']//span[text()='Handicap']");
     Label lblOverUnder = Label.xpath("//div[@class='pt-risk-modal']//span[text()='Over Under']");
     Label lblHalftime = Label.xpath("//div[@class='pt-risk-modal']//span[text()='Half-time']");
-    String rowHandicapXpath = "//tab[contains(@class,'active')]//table[@aria-label='group table']//tbody[2]/tr";
+    String rowHandicapXpath = "//tab[contains(@class,'active')]//table[@aria-label='group table']//tbody/tr";
     @Override
     public String getTitlePage ()
     {
@@ -66,9 +66,8 @@ public class PTRiskBetListPopup extends WelcomePage {
     public boolean verifyOrder(Order order){
         List<String> lstAccountCode = tblBetList.getColumn(colAccountCode,100,true);
         for (int i = 0; i < lstAccountCode.size();i++){
-            if (lstAccountCode.get(i).equals(order.getAccountCode())){
-                Assert.assertTrue(tblBetList.getControlOfCell(1,colOderID,i+1,"div").getText().equals(order.getBetId()),
-                        "FAILED! Order ID is incorrect!");
+            String betID = tblBetList.getControlOfCell(1,colOderID,i+1,"div").getText();
+            if (lstAccountCode.get(i).equals(order.getAccountCode()) && betID.equals(order.getBetId())){
                 Assert.assertTrue(tblBetList.getControlOfCell(1,colHDP,i+1,"span").getText().contains(Double.toString(order.getHdpPoint())),
                         "FAILED! HDP is incorrect!");
                 Assert.assertTrue(tblBetList.getControlOfCell(1,colPrice,i+1,"span").getText().contains(Double.toString(order.getPrice())),
@@ -80,6 +79,7 @@ public class PTRiskBetListPopup extends WelcomePage {
                 return true;
             }
         }
+        System.err.println("Bet ID do not display");
         return false;
     }
     public boolean verifyOrderHafttime(Order order){

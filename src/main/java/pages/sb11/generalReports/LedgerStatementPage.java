@@ -12,7 +12,10 @@ import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import utils.sb11.CurrencyRateUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 
 import static java.lang.Double.parseDouble;
@@ -228,5 +231,14 @@ public class LedgerStatementPage extends WelcomePage {
         int lastDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         int currentDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
         return currentDayOfMonth == lastDayOfMonth ? true : false;
+    }
+
+    public String getLastDateOfPreviousMonth(String formatDate, String gmt) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -1);
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatDate);
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone(gmt));
+        return simpleDateFormat.format(calendar.getTime());
     }
 }

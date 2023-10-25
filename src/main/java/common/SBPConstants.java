@@ -32,6 +32,9 @@ public class SBPConstants {
     public final static String FINANCIAL_REPORTS = "Financial Reports";
     public final static String CASH_FLOW_STATEMENT = "Cash Flow Statement";
     public final static String RETAINED_EARNING = "Retained Earnings";
+    public final static String STOCKHOLDERS_EQUITY = "Stockholders Equity";
+    public final static String BALANCE_SHEET_ANALYSIS = "Balance Sheet - Analysis";
+    public final static String INCOME_STATEMENT_ANALYSIS = "Income Statement - Analysis";
     public final static String INCOME_STATEMENT = "Income Statement";
     public final static String TRIAL_BALANCE = "Trial Balance";
     public final static String ROLE_MANAGEMENT = "Role Management";
