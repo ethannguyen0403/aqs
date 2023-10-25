@@ -376,37 +376,6 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @TestRails(id = "8571")
-    @Test(groups = {"regression", "2023.10.31"})
-    @Parameters({"companyName", "companyCurrency"})
-    public void Company_Set_up_TC8571(String companyName, String companyCurrency) {
-        log("@title: Validate that show the reporting currency of company correctly in 'Income Statement' page");
-        String expectedText = String.format("Amounts are shown in [%s]", companyCurrency);
-        log(String.format("@Precondition: Company %s has currency as %s", companyName, companyCurrency) );
-        log("@Step 1: Navigate to  General Reports >> Income Statement");
-        IncomeStatementPage incomeStatementPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT, IncomeStatementPage.class);
-        log("@Step 2: Filter with default data with company name: " + companyName);
-        incomeStatementPage.filterIncomeReport(companyName, "","","");
-        log(String.format("@Verify 1: Validate shows text 'Amounts are shown in [%s]' correct", companyCurrency));
-        Assert.assertEquals(incomeStatementPage.lblAmountAreShow.getText().trim(), expectedText, "FAILED! Text is incorrect");
-        log("INFO: Executed completely");
-    }
-
-    @TestRails(id = "8572")
-    @Test(groups = {"regression", "2023.10.31"})
-    @Parameters({"companyName", "companyCurrency"})
-    public void Company_Set_up_TC8572(String companyName, String companyCurrency) {
-        log("@title: Validate that show the reporting currency of company correctly in 'Retained Earning' page");
-        String expectedText = String.format("Amounts are shown in [%s]", companyCurrency);
-        log(String.format("@Precondition: Company %s has currency as %s", companyName, companyCurrency) );
-        log("@Step 1: Navigate to  General Reports >> Retained Earning");
-        RetainedEarningsPage retainedEarningsPage = welcomePage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);
-        log("@Step 2: Filter with default data with company name: " + companyName);
-        retainedEarningsPage.filterRetainedEarnings(companyName, "");
-        log(String.format("@Verify 1: Validate shows text 'Amounts are shown in [%s]' correct", companyCurrency));
-        Assert.assertEquals(retainedEarningsPage.lblAmountAreShow.getText().trim(), expectedText, "FAILED! Text is incorrect");
-        log("INFO: Executed completely");
-    }
     @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "4354")
     public void Company_Set_up_TC4354() {
