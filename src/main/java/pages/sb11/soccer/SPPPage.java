@@ -81,7 +81,7 @@ public class SPPPage extends WelcomePage {
     }
 
     public LeaguePerformancePage openLeaguePerformance(String groupName){
-        String tableXpath ="//app-spp//div[contains(@class,'filter bg-white')][1]/table";
+        String tableXpath ="//app-spp//div[contains(@class,'filter bg-white')][2]/table";
         int rowIndex = getRowContainsGroupName(tableXpath,colGroupCode,groupName);
         tblSPP.getControlOfCellSPP(1,colGroupCode, rowIndex,null).click();
         DriverManager.getDriver().switchToWindow();
@@ -89,15 +89,16 @@ public class SPPPage extends WelcomePage {
     }
 
     public PerformanceByMonthPage openPerfByMonth (String groupName){
-        String tableXpath ="//app-spp//div[contains(@class,'filter bg-white')][1]/table";
+        String tableXpath ="//app-spp//div[contains(@class,'filter bg-white')][2]/table";
         int rowIndex = getRowContainsGroupName(tableXpath,colGroupCode,groupName);
         tblSPP.getControlOfCellSPP(1,colMP, rowIndex,null).click();
         DriverManager.getDriver().switchToWindow();
+        waitPageLoad();
         return new PerformanceByMonthPage();
     }
 
     public PTPerformancePopup openAccountPTPerf (String groupName){
-        String tableXpath ="//app-spp//div[contains(@class,'filter bg-white')][1]/table";
+        String tableXpath ="//app-spp//div[contains(@class,'filter bg-white')][2]/table";
         int rowIndex = getRowContainsGroupName(tableXpath,colGroupCode,groupName);
         tblSPP.getControlOfCellSPP(1,colPT, rowIndex,null).click();
         return new PTPerformancePopup();

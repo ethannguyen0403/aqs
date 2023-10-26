@@ -75,7 +75,7 @@ public class BBTTest extends BaseCaseAQS {
         MonthPerformancePage monthPerformancePage = bbtPage.openMonthPerformanceFirstGroup();
         String expectedHeader = lstFirstRowData.get(0) + " - " + lstFirstRowData.get(6) + " - " + "Last 12 Month Performance";
 
-        log("3. Validate Last 12 Month Performance is displayed with format\n" +
+        log("Verify 1. Validate Last 12 Month Performance is displayed with format\n" +
                 "[smart group name] - [smart group currency] - Last 12 Month Performance");
         Assert.assertEquals(monthPerformancePage.lblHeaderGroup.getText(), expectedHeader, "FAILED! Header of Month Performance is not displayed correct");
         log("INFO: Executed completely");
@@ -156,7 +156,7 @@ public class BBTTest extends BaseCaseAQS {
         String expectedHeaderTable1 = "Punter Performance - Last 1 Year[Live Bets]";
         String expectedHeaderTable2 = lstFirstRowData.get(0) + "-" + lstFirstRowData.get(6);
 
-        log("3. Validate Live Last 50 Bets is displayed correctly title with 2 tables header Punter Performance - Last 1 Year[Live Bets] and" +
+        log("Verify 3. Validate Live Last 50 Bets is displayed correctly title with 2 tables header Punter Performance - Last 1 Year[Live Bets] and" +
                 "[smart group name] - [smart group currency]");
         Assert.assertEquals(liveLast50BetsPage.lblSummaryTableHeader.getText(), expectedHeaderTable1, "FAILED! Header of Live Last 50 Bets - Punter Performance - Last 1 Year[Live Bets] is not displayed correct");
         Assert.assertEquals(liveLast50BetsPage.lblDetailTableHeader.getText(), expectedHeaderTable2, "FAILED! Header of Live Last 50 Bets - Smart Group is not displayed correct");

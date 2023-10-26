@@ -52,7 +52,7 @@ public class MasterGroupPage extends WelcomePage {
 
     public MasterGroupClientListPopup openMasterGroupClientList(String masterCode){
         int rowIndex = getMasterRowIndex(masterCode);
-        tbMaster.getControlOfCell(1,colCL,rowIndex,null).click();
+        tbMaster.getControlOfCell(1,tbMaster.getColumnIndexByName("CL"),rowIndex,null).click();
         return new MasterGroupClientListPopup();
     }
 

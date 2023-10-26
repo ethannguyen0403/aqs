@@ -271,6 +271,9 @@ public class SBPConstants {
         public final static List<String> TABLE_HEADER = Arrays.asList("S1 COMPLETED [15/09/2023 - 30/09/2023]","#","Date","Cricket","Soccer","Tennis","Others","Total","C/F. ToDate");
         public final static List<String> GROUP_LIST = Arrays.asList("S1","No.7 CRI");
         public final static List<String> SPORT_LIST = Arrays.asList("All","Cricket");
+        public final static String TABLE_TITLE = "%s [%s - %s]";
+        public final static List<String> TABLE_HEADER_NAME = Arrays.asList("#","Date","Home","Away","Final Result","C/F. ToDate","Event Result","Event");
+        public final static List<String> TABLE_HEADER_S1_ALL = Arrays.asList("#","Date","Cricket","Soccer","Tennis","Others","Total","C/F. ToDate");
     }
 
 
