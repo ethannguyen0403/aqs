@@ -12,7 +12,7 @@
         <groupId>com.paltech</groupId>
         <artifactId>coreselenium</artifactId>
         <version>1.0.4</version>
-        <relativePath></relativePath>
+<!--        <relativePath></relativePath>-->
     </parent>
     <dependencies>
         <dependency>
