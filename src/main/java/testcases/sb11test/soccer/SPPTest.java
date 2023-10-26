@@ -150,7 +150,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
         log("@Step 3: Filter with valid data");
-        sppPage.filter("Soccer", "Group","Smart Group","[All]","[All]",fromdate,todate);
+        sppPage.filter("Soccer", "Group","Smart Group","QA Smart Master","[All]",fromdate,todate);
         log("@Step 4: Click on any group code");
         LeaguePerformancePage leaguePerformancePage = sppPage.openLeaguePerformance(smartGroup);
         log("Validate League Performance is displayed correctly title");
@@ -177,7 +177,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
         log("@Step 3: Filter with valid data");
-        sppPage.filter("Soccer", "Group","Smart Group","[All]","[All]",fromdate,todate);
+        sppPage.filter("Soccer", "Group","Smart Group","QA Smart Master","[All]",fromdate,todate);
         log("@Step 4: Click on any data at MP column");
         PerformanceByMonthPage performanceByMonthPage = sppPage.openPerfByMonth(smartGroup);
         log("Validate Performance By Month is displayed correctly title");
@@ -198,7 +198,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
         log("@Step 3: Filter with valid data");
-        sppPage.filter("Soccer", "Group","Smart Group","[All]","[All]",fromdate,todate);
+        sppPage.filter("Soccer", "Group","Smart Group","QA Smart Master","[All]",fromdate,todate);
         String PT = sppPage.getRowDataOfGroup(smartGroup).get(sppPage.colPT-1);
         log("@Step 4: Click on any data at PT column");
         PTPerformancePopup ptPerformancePopup = sppPage.openAccountPTPerf(smartGroup);

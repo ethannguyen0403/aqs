@@ -136,15 +136,15 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 2: Go To Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         log("@Step 3: Filter data of any ledger account as example as below:\n" +
-                "Financial Year = Year 2022-2023\n" +
+                "Financial Year = Year 2023-2024\n" +
                 "Account Type = Asset\n" +
                 "Detail Type = 500.000.000 - QA Ledger Group Asset\n" +
                 "From Date 1/7/2023 To Date 31/7/2023\n" +
                 "Report = Before CJE");
-        String fromDate = "01/07/2023";
-        String toDate = "31/7/2023";
+        String fromDate = "01/08/2023";
+        String toDate = "30/8/2023";
         String detailTypeName = "QA Ledger Group Asset";
-        String financialYear = "Year 2022-2023";
+        String financialYear = "Year 2023-2024";
         String report = "Before CJE";
         ledgerStatementPage.showLedger(COMPANY_UNIT,financialYear,LedgerStatement.ACCOUNT_TYPE.get(1),detailTypeName,fromDate,toDate,report);
         log("@Step 4: Get 'Amounts are shown in HKD' section > Running Bal.' column at Total in HKD row");
@@ -155,7 +155,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
                 "Financial Year = Year 2022-2023\n" +
                 "Month = 2023 - July\n" +
                 "Report = Before CJE");
-        String month = "2023 - July";
+        String month = "2023 - August";
         page.filter(COMPANY_UNIT,financialYear,month,report);
         log("@Verify 1: Balance Amount = value that get at step");
         Assert.assertEquals(page.getTotalAmount(detailTypeName).getText(),totalAmountOfParentAcount,"FAILED! Balance Amount displays incorrect!");
