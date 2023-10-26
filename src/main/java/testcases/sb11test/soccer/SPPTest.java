@@ -11,6 +11,9 @@ import pages.sb11.soccer.LeaguePerformancePage;
 import pages.sb11.soccer.PerformanceByMonthPage;
 import pages.sb11.soccer.SPPPage;
 import pages.sb11.soccer.popup.PTPerformancePopup;
+import pages.sb11.trading.BetEntryPage;
+import pages.sb11.trading.BetSettlementPage;
+import pages.sb11.trading.ManualBetBetEntryPage;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 
@@ -32,7 +35,7 @@ public class SPPTest extends BaseCaseAQS {
 
         log("@Step 1: Go to Client Statement >> client point >> select the client");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.filter("Client Point","Kastraki Limited",FINANCIAL_YEAR,clientValue,date,date);
+        clientPage.filter("Client Point","Kastraki Limited",FINANCIAL_YEAR,clientValue,date,"");
 
         log("@Step 2: Click the client agent >> find the player >> observe win/loss");
         String winlosePlayer = clientPage.getMemberSummary(agentCode,accountCode).get(7);
@@ -147,7 +150,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
         log("@Step 3: Filter with valid data");
-        sppPage.filter("Soccer", "Group","Smart Group","[All]","[All]",fromdate,todate);
+        sppPage.filter("Soccer", "Group","Smart Group","QA Smart Master","[All]",fromdate,todate);
         log("@Step 4: Click on any group code");
         LeaguePerformancePage leaguePerformancePage = sppPage.openLeaguePerformance(smartGroup);
         log("Validate League Performance is displayed correctly title");
@@ -174,7 +177,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
         log("@Step 3: Filter with valid data");
-        sppPage.filter("Soccer", "Group","Smart Group","[All]","[All]",fromdate,todate);
+        sppPage.filter("Soccer", "Group","Smart Group","QA Smart Master","[All]",fromdate,todate);
         log("@Step 4: Click on any data at MP column");
         PerformanceByMonthPage performanceByMonthPage = sppPage.openPerfByMonth(smartGroup);
         log("Validate Performance By Month is displayed correctly title");
@@ -195,7 +198,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
         log("@Step 3: Filter with valid data");
-        sppPage.filter("Soccer", "Group","Smart Group","[All]","[All]",fromdate,todate);
+        sppPage.filter("Soccer", "Group","Smart Group","QA Smart Master","[All]",fromdate,todate);
         String PT = sppPage.getRowDataOfGroup(smartGroup).get(sppPage.colPT-1);
         log("@Step 4: Click on any data at PT column");
         PTPerformancePopup ptPerformancePopup = sppPage.openAccountPTPerf(smartGroup);
@@ -205,6 +208,28 @@ public class SPPTest extends BaseCaseAQS {
         Assert.assertTrue(ptPerformancePopup.isGroupNameDisplayed(smartGroup),"Failed! Group name "+ smartGroup + " is not displayed!");
         log("Validate PT% on SPP page is matched with PT% on Account PT Performance page");
         Assert.assertTrue(ptPerformancePopup.isAccountPTMatched(accountCode,PT),"Failed! PT is not matched!");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.10.31"})
+    @TestRails(id = "2795")
+    @Parameters({"accountCode"})
+    public void SPP_TC_2795(String accountCode){
+        log("@title: Validate the Cricket Manual Bets display properly");
+        log("@pre-condition 1: SPP permission is ON");
+        log("@pre-condition 1: There are some placed and settled MB from Bet Entry > Mixed Sport page");
+        String date = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
+        betEntryPage.goToMixedSports();
+        ManualBetBetEntryPage manualBetBetEntryPage = new ManualBetBetEntryPage();
+        String messageSuccess = manualBetBetEntryPage.placeManualBet("Kastraki Limited ",date, accountCode, "Cricket",
+                "Manual Bet Testing", null,null,"1.25","1","1",true);
+
+        BetSettlementPage betSettlementPagePage = welcomePage.navigatePage(TRADING, BET_SETTLEMENT,BetSettlementPage.class);
+        betSettlementPagePage.filter("Comfirmed",date,date,"",accountCode);
+//        betSettlementPagePage.settleAndSendSettlementEmail();
+        log("@Step 1: Go to Soccer >> SPP page");
+//        SPPPage page =
+        log("@Step 2: Select Cricket Sport and filter date that settled bets at precondition");
         log("INFO: Executed completely");
     }
 }

@@ -337,8 +337,6 @@ public class BetSettlementTest extends BaseCaseAQS {
         Assert.assertEquals(emailInfo.get(3).get(0), expectedRow1.get(0), "Failed! title of email is incorrect");
         Assert.assertEquals(emailInfo.get(3).get(1), expectedRow1.get(1), "Failed! title of email is incorrect");
 
-//        log("@Post-condition: delete confirm bet");
-//        betSettlementPage.deleteOrder(order);
 
         log("INFO: Executed completely");
     }

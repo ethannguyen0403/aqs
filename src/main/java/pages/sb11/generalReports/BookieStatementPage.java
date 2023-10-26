@@ -33,8 +33,8 @@ public class BookieStatementPage extends WelcomePage {
 
     Label lblTitle = Label.xpath("//app-bookie-statement//span[contains(@class,'card-header main-box-header')]");
     DropDownBox ddpViewBy = DropDownBox.xpath("//div[contains(@class,'p-2 pb-4 pr-0 filter')][1]//select");
-    DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bookie-statement//div[contains(@class,'company-unit')]//select");
-    DropDownBox ddpFinancialYear = DropDownBox.xpath("//app-bookie-statement//div[contains(@class,'financial-year')]//select");
+    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bookie-statement//div[contains(@class,'company-unit')]//select");
+    public DropDownBox ddpFinancialYear = DropDownBox.xpath("//app-bookie-statement//div[contains(@class,'financial-year')]//select");
     DropDownBox ddpAgentType = DropDownBox.xpath("//app-bookie-statement//div[contains(@class,'agent-type')]//select");
     TextBox txtFromDate = TextBox.xpath("//app-bookie-statement//div[contains(@class,'form-date')]//input");
     TextBox txtToDate = TextBox.xpath("//app-bookie-statement//div[contains(@class,'to-date')]//input");
@@ -80,6 +80,7 @@ public class BookieStatementPage extends WelcomePage {
             txtBookieCode.sendKeys(bookieCode);
             Thread.sleep(1000);
             searchIcon.click();
+            waitSpinnerDisappeared();
             btnConfirmShowBookie.click();
         }
         if(!currency.isEmpty())
@@ -110,14 +111,14 @@ public class BookieStatementPage extends WelcomePage {
 
     public BookieSuperMasterDetailPopup openBookieSuperMasterDetailPopup(String superMasterCode) {
         Label lblSuperMasterCode;
-        String xpath = String.format("//div[@class='content-filter pt-4 row ng-star-inserted']//div//tr//a[contains(text(),'%s')]", superMasterCode);
+        String xpath = String.format("//div[@class='content-filter pt-4 row ng-star-inserted']//div//div[contains(.,' %s ')]",superMasterCode);
         lblSuperMasterCode = Label.xpath(xpath);
         if (!lblSuperMasterCode.isDisplayed()) {
             System.out.println("Cannot find out Super Master in list of result table: " + superMasterCode);
             return null;
         } else {
-//            xpath = xpath + "//..//a[contains(text(),' Super Master R/P/C/RB/A ')]";
-            xpath = xpath + "//ancestor::tr//preceding-sibling::tr//a";
+            xpath = xpath + "//..//a[contains(text(),' Super Master R/P/C/RB/A ')]";
+//            xpath = xpath + "//ancestor::tr//preceding-sibling::tr//a";
             lblSuperMasterCode = Label.xpath(xpath);
             lblSuperMasterCode.click();
             return new BookieSuperMasterDetailPopup();
