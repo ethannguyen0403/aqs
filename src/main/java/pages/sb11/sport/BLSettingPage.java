@@ -10,7 +10,6 @@ import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.trading.popup.BLSettingsPopup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BLSettingPage extends WelcomePage {
@@ -98,7 +97,6 @@ public class BLSettingPage extends WelcomePage {
     }
 
     public String getFirstLeague(){
-
         List<String> lstLeague = getListLeague();
         try {
             // 0 Select, 1 All => get league from index = 2
@@ -110,7 +108,14 @@ public class BLSettingPage extends WelcomePage {
     }
 
     public List<String> getListLeague(){
-        return ddpLeague.getOptions();
+        //fixed waiting time for loading options inside dropdown
+        try {
+            Thread.sleep(2000);
+            return ddpLeague.getOptions();
+        } catch (Exception e) {
+            e.getCause();
+        }
+        return null;
     }
     public String getFirstEventNameOfLeague(){
         String eventName = null;
