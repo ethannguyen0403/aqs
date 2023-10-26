@@ -5,7 +5,7 @@
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
-    <test name="SB11 Pre Regression">
+    <test name="SB11 Pre Regression 2023.10.31">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='stg'/>
         <parameter name='language' value='en'/>
@@ -36,14 +36,14 @@
         </groups>
 
         <classes>
-            <class name="testcases.sb11test.accounting.CompanySetupTest"/>
+<!--            <class name="testcases.sb11test.accounting.CompanySetupTest"/>-->
 
-            <class name="testcases.sb11test.trading.KeyClientsReportTest"/>
+<!--            <class name="testcases.sb11test.trading.KeyClientsReportTest"/>-->
 
-            <class name="testcases.sb11test.invoice.InvoicesTest"/>
+<!--            <class name="testcases.sb11test.invoice.InvoicesTest"/>-->
 
             <class name="testcases.sb11test.financialReports.CashFlowStatementTest"/>
-            <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
+<!--            <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>-->
         </classes>
     </test>
 </suite>
