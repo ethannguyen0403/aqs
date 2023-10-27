@@ -1,0 +1,7 @@
+FROM maven:3.8.7-openjdk-18-slim
+
+COPY ./drivers/google-chrome-118.0.5993.117.deb ./google-chrome-118.0.5993.117.deb
+# Install chrome broswer
+RUN apt-get update && apt-get install -y gnupg2 xvfb gtk2-engines-pixbuf xfonts-cyrillic xfonts-100dpi \
+                                         xfonts-75dpi xfonts-base xfonts-scalable sudo ./google-chrome-118.0.5993.117.deb
+RUN PATH=$PATH:/usr/local/openjdk-18/bin/
