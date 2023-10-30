@@ -1,19 +1,17 @@
 package pages.sb11.soccer.popup;
 
 import com.paltech.driver.DriverManager;
+import com.paltech.element.BaseElement;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.Label;
-import controls.Row;
 import controls.Table;
 import objects.Order;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.soccer.PTRiskPage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PTRiskBetListPopup extends WelcomePage {
@@ -27,8 +25,9 @@ public class PTRiskBetListPopup extends WelcomePage {
     public int colCUR = 11;
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
     Button btnClose = Button.xpath("//div[@class='pt-risk-modal']//span[contains(@class,'close-icon')]");
-    Table tblBetList = Table.xpath("//tab[contains(@class,'active')]//table[@aria-label='group table']",totalCol);
-    String lblTabxPath = "//div[@class='pt-risk-modal']//span[text()='%s']";
+    public Table tblBetList = Table.xpath("//tab[contains(@class,'active')]//table[@aria-label='group table']",totalCol);
+    public String lblTabxPath = "//div[@class='pt-risk-modal']//span[text()='%s']";
+    public Label lblTabList = Label.xpath("//ul[@role='tablist']//span");
     Label lblHandicap = Label.xpath("//div[@class='pt-risk-modal']//span[text()='Handicap']");
     Label lblOverUnder = Label.xpath("//div[@class='pt-risk-modal']//span[text()='Over Under']");
     Label lblHalftime = Label.xpath("//div[@class='pt-risk-modal']//span[text()='Half-time']");
@@ -41,6 +40,54 @@ public class PTRiskBetListPopup extends WelcomePage {
 
     public void activeTab(String tabName){
         Label.xpath(String.format(lblTabxPath,tabName)).click();
+    }
+
+    public int getAmountForeCastHK1X2InBetSlip(String type1or2, String reportType) {
+        int totalAmount = 0;
+        int rowIndex = 1;
+        int pTColIndex = tblBetList.getColumnIndexByName("PT%");
+        int priceColIndex = tblBetList.getColumnIndexByName("Price");
+        int stakeColIndex = tblBetList.getColumnIndexByName("Stake");
+        while (true) {
+            BaseElement lblPTValue = tblBetList.getControlOfCell(1, pTColIndex, rowIndex, null);
+            BaseElement lblPriceValue = tblBetList.getControlOfCell(1, priceColIndex, rowIndex, null);
+            BaseElement lblStakeValue = tblBetList.getControlOfCell(1, stakeColIndex, rowIndex, null);
+            if (!lblPTValue.isDisplayed()) {
+                System.out.println("NOT Found the value with Row index: " + rowIndex);
+                break;
+            }
+            if (lblPTValue.isDisplayed()) {
+                if (type1or2.equalsIgnoreCase("1")) {
+                    totalAmount += calculateForeCast1X2AmountHKOdd(Double.valueOf(lblPTValue.getText()),
+                            convertOddsToCorrectWithReportType(reportType, Double.valueOf(lblStakeValue.getText())),
+                            Double.valueOf(lblPriceValue.getText().trim().replaceAll("[^-?0-9.]+", "")), "1");
+                } else {
+                    totalAmount += calculateForeCast1X2AmountHKOdd(Double.valueOf(lblPTValue.getText()),
+                            convertOddsToCorrectWithReportType(reportType, Double.valueOf(lblStakeValue.getText())),
+                            Double.valueOf(lblPriceValue.getText().trim().replaceAll("[^-?0-9.]+", "")), "2");
+                }
+                rowIndex++;
+            }
+        }
+        return totalAmount;
+    }
+
+    public double convertOddsToCorrectWithReportType(String reportType, double pT) {
+        if (reportType.equalsIgnoreCase("PT + Throw Bets")) {
+            return pT / 100;
+        } else {
+            return pT;
+        }
+    }
+
+    public int calculateForeCast1X2AmountHKOdd(double pT, double price, double stake, String type1or2) {
+        if (type1or2.equalsIgnoreCase("1")) {
+            return (int) Math.round((stake * pT * price));
+        }
+        if (type1or2.equalsIgnoreCase("2")) {
+            return (int) Math.round(price * pT);
+        }
+        return 0;
     }
 
     public String getBetListCellValue(String accountCode, int colIndex) {
@@ -103,7 +150,8 @@ public class PTRiskBetListPopup extends WelcomePage {
     }
 
     public PTRiskPage closeBetListPopup() {
-        btnClose.click();
+        if (btnClose.isDisplayed())
+            btnClose.click();
         return new PTRiskPage();
     }
 

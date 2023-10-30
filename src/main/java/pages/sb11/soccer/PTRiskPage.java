@@ -5,10 +5,12 @@ import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
-import objects.Order;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.soccer.popup.PTRiskBetListPopup;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class PTRiskPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span");
@@ -21,6 +23,7 @@ public class PTRiskPage extends WelcomePage {
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
 
     public DropDownBox ddpOrderBy = DropDownBox.id("typeSelected3");
+    public DropDownBox ddpSport = DropDownBox.id("sportSelect");
     public Button btnBetTypes = Button.xpath("//app-pt-risk-control//button[text()=' Bet Types ']");
     public Button btnClient = Button.xpath("//app-pt-risk-control//button[text()=' Clients ']");
     public Button btnLeagues = Button.xpath("//app-pt-risk-control//button[text()=' Leagues ']");
@@ -33,10 +36,16 @@ public class PTRiskPage extends WelcomePage {
     public Button btnShow = Button.xpath("//app-pt-risk-control//button[text()='Show']");
     public Button btnCopy = Button.xpath("//app-pt-risk-control//button[text()='Copy Report ']");
     public Label messageSuccess = Label.xpath("//div[contains(@class, 'message-box')]");
+
     @Override
     public String getTitlePage ()
     {
         return this.lblTitle.getText().trim();
+    }
+
+    public void filter(String sport, String clientCode, String companyUnit, String reportType, String liveNonlive, String fromDate, String toDate, String leagueName){
+        ddpSport.selectByVisibleContainsText(sport);
+        filter(clientCode, companyUnit, reportType, liveNonlive, fromDate, toDate,leagueName);
     }
 
     public void filter(String clientCode, String companyUnit, String reportType, String liveNonlive, String fromDate, String toDate, String leagueName)  {
@@ -143,4 +152,75 @@ public class PTRiskPage extends WelcomePage {
         return forecastCorrect;
     }
 
+    public boolean isBetTypeBasketIs1X2(){
+        btnBetTypes.click();
+        Label lblValueList = Label.xpath("//div[@class='modal-content']//div[@class='list-item-filter']//div//label");
+        boolean is1Item = lblValueList.getWebElements().size()==1 ? true: false;
+        int index = 1;
+        while(is1Item){
+            Label lblValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div//label[%s]", index));
+            if(lblValue.isDisplayed()){
+                return lblValue.getText().equalsIgnoreCase("1x2")? true:false;
+            }
+            if(!lblValue.isDisplayed()){
+                System.out.println("NOT Found item");
+                return false;
+            }
+        }
+        return is1Item;
+    }
+
+    public Map<String, String> getEntriesValueOfTableSport(String leagueName, String teamName, String indexPrimaryRow, String indexValueRow){
+        String tableXpath = getXpathPTSportLeagueTable(leagueName, teamName);
+        Map<String, String> entries = new LinkedHashMap<>();
+        int i = 1;
+        while(true){
+            Label primaryCell = Label.xpath(tableXpath + String.format("/tr[%s]//td[%s]", indexPrimaryRow, i));
+            Label valueCell = Label.xpath(tableXpath + String.format("/tr[%s]//td[%s]", indexValueRow, i));
+            if(primaryCell.isDisplayed() && valueCell.isDisplayed()){
+                entries.put(primaryCell.getText().trim(), valueCell.getText().trim());
+                i++;
+            }
+            if(!primaryCell.isDisplayed() || !valueCell.isDisplayed()){
+                System.out.println("NOT Found the value return Map entry");
+                return entries;
+            }
+        }
+    }
+
+    public String getXpathPTSportLeagueTable(String leagueName, String teamName){
+        int tableLeagueIndex = findTableSportIndex(leagueName);
+        int indexTeamTable = 1;
+        while(true){
+            Label lblCellValue = Label.xpath(String.format("//div[@class='bet-list']/table[%s]//table[%s]//th", tableLeagueIndex, indexTeamTable));
+            if(lblCellValue.getText().contains(teamName)){
+                System.out.println("Found table of League Name: " + leagueName + ", team Name: " + teamName);
+                break;
+            }
+            indexTeamTable++;
+            if(!lblCellValue.isDisplayed()){
+                System.out.println("NOT Found table of League Name: " +  leagueName + ", team Name: " + teamName);
+                indexTeamTable = -1;
+                break;
+            }
+        }
+        return String.format("//div[@class='bet-list']/table[%s]//table[%s]", indexTeamTable,tableLeagueIndex);
+    }
+
+
+    public int findTableSportIndex(String leagueName){
+        int index = 1;
+        while(true){
+            Label lblCellName = Label.xpath(String.format("//div[@class='bet-list']/table[%s]/tr", index));
+            if(lblCellName.getText().equalsIgnoreCase(leagueName)){
+                System.out.println("Found table of League Name: " + leagueName);
+                return index;
+            }
+            index++;
+            if(!lblCellName.isDisplayed()){
+                System.out.println("NOT Found table of League Name: " + leagueName);
+                return -1;
+            }
+        }
+    }
 }

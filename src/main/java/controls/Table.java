@@ -644,12 +644,20 @@ public class Table extends BaseElement {
                 return 0;
             }
             // Get the row contains the event time
-           lbl.getText().trim();
+            lbl.getText().trim();
             if (lbl.getText().equals(value)) {
                 System.out.println(String.format("Found the value in the column in the table"));
                 return i;
             }
             i = i + 1;
         }
+    }
+    public int getColumnIndexByName(String columnName){
+        ArrayList<String> lstHeader = getHeaderNameOfRows();
+        for (int i = 0, n = lstHeader.size(); i < n; i++){
+            if (lstHeader.get(i).equals(columnName))
+                return i + 1;
+        }
+        return -1;
     }
 }
