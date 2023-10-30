@@ -242,6 +242,7 @@ public class BetSettlementPage extends WelcomePage {
             fillWinLose(order);
             btnSettleSendSettlementEmail.scrollToTop();
             btnSettleSendSettlementEmail.click();
+            waitSpinnerDisappeared();
             ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
             confirmPopupControl.confirmYes();
         } catch (InterruptedException e) {

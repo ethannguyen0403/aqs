@@ -2,6 +2,7 @@ package testcases.sb11test.soccer;
 
 import com.paltech.utils.DateUtils;
 import common.SBPConstants;
+import objects.Order;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -11,8 +12,17 @@ import pages.sb11.soccer.LeaguePerformancePage;
 import pages.sb11.soccer.PerformanceByMonthPage;
 import pages.sb11.soccer.SPPPage;
 import pages.sb11.soccer.popup.PTPerformancePopup;
+import pages.sb11.trading.BetEntryPage;
+import pages.sb11.trading.BetSettlementPage;
+import pages.sb11.trading.ManualBetBetEntryPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.AccountSearchUtils;
+import utils.sb11.BetEntrytUtils;
+import utils.sb11.BetSettlementUtils;
 import utils.testraildemo.TestRails;
+
+import java.io.IOException;
+import java.text.ParseException;
 
 import static common.SBPConstants.*;
 import static common.SBPConstants.FINANCIAL_YEAR;
@@ -32,7 +42,7 @@ public class SPPTest extends BaseCaseAQS {
 
         log("@Step 1: Go to Client Statement >> client point >> select the client");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.filter("Client Point","Kastraki Limited",FINANCIAL_YEAR,clientValue,date,date);
+        clientPage.filter("Client Point","Kastraki Limited",FINANCIAL_YEAR,clientValue,date,"");
 
         log("@Step 2: Click the client agent >> find the player >> observe win/loss");
         String winlosePlayer = clientPage.getMemberSummary(agentCode,accountCode).get(7);
@@ -147,7 +157,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
         log("@Step 3: Filter with valid data");
-        sppPage.filter("Soccer", "Group","Smart Group","[All]","[All]",fromdate,todate);
+        sppPage.filter("Soccer", "Group","Smart Group","QA Smart Master","[All]",fromdate,todate);
         log("@Step 4: Click on any group code");
         LeaguePerformancePage leaguePerformancePage = sppPage.openLeaguePerformance(smartGroup);
         log("Validate League Performance is displayed correctly title");
@@ -174,7 +184,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
         log("@Step 3: Filter with valid data");
-        sppPage.filter("Soccer", "Group","Smart Group","[All]","[All]",fromdate,todate);
+        sppPage.filter("Soccer", "Group","Smart Group","QA Smart Master","[All]",fromdate,todate);
         log("@Step 4: Click on any data at MP column");
         PerformanceByMonthPage performanceByMonthPage = sppPage.openPerfByMonth(smartGroup);
         log("Validate Performance By Month is displayed correctly title");
@@ -195,7 +205,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
         log("@Step 3: Filter with valid data");
-        sppPage.filter("Soccer", "Group","Smart Group","[All]","[All]",fromdate,todate);
+        sppPage.filter("Soccer", "Group","Smart Group","QA Smart Master","[All]",fromdate,todate);
         String PT = sppPage.getRowDataOfGroup(smartGroup).get(sppPage.colPT-1);
         log("@Step 4: Click on any data at PT column");
         PTPerformancePopup ptPerformancePopup = sppPage.openAccountPTPerf(smartGroup);
@@ -205,6 +215,41 @@ public class SPPTest extends BaseCaseAQS {
         Assert.assertTrue(ptPerformancePopup.isGroupNameDisplayed(smartGroup),"Failed! Group name "+ smartGroup + " is not displayed!");
         log("Validate PT% on SPP page is matched with PT% on Account PT Performance page");
         Assert.assertTrue(ptPerformancePopup.isAccountPTMatched(accountCode,PT),"Failed! PT is not matched!");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.10.31"})
+    @TestRails(id = "2795")
+    @Parameters({"accountCode","smartGroup"})
+    public void SPP_TC_2795(String accountCode, String smartGroup) throws IOException, ParseException {
+        log("@title: Validate the Cricket Manual Bets display properly");
+        log("@pre-condition 1: SPP permission is ON");
+        log("@pre-condition 1: There are some placed and settled MB from Bet Entry > Mixed Sport page");
+        String eventDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd HH:mm:ss",GMT_7));
+        String creatDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        String sport = "Cricket";
+        Order order = new Order.Builder()
+                .price(1.5).requireStake(15)
+                .oddType("HK").accountCode(accountCode)
+                .createDate(creatDate)
+                .eventDate(eventDate)
+                .selection("Home " + DateUtils.getMilliSeconds())
+                .build();
+        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        String accountId = AccountSearchUtils.getAccountId(accountCode);
+        BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_MAP.get(sport),order);
+        welcomePage.waitSpinnerDisappeared();
+        int betId = BetSettlementUtils.getConfirmedBetId(accountId,SPORT_MAP.get(sport),order);
+        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId,SPORT_MAP.get(sport),order);
+        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId,SPORT_MAP.get(sport));
+        log("@Step 1: Go to Soccer >> SPP page");
+        SPPPage page = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
+        log("@Step 2: Select Cricket Sport and filter date that settled bets at precondition");
+        String fromDate = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        page.filter(sport,"Group","Smart Group","QA Smart Master","",fromDate,fromDate);
+        log("@Step 3: Open League Performance by Smart Group Name");
+        LeaguePerformancePage leaguePerformancePage = page.openLeaguePerformance(smartGroup);
+        log("@Verify 1: The Cricket Manual Bets display properly");
+        Assert.assertEquals(leaguePerformancePage.getTableHeaderInRange(), smartGroup + " - League Performance for " + creatDate + " To " + creatDate);
         log("INFO: Executed completely");
     }
 }

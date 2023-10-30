@@ -60,6 +60,7 @@ public class MonitorBetsPage extends WelcomePage {
     public PerformanceByMonthPage openPerfByMonth (String accountCode){
         int index = getACRowIndex(accountCode);
         tblOrder.getControlOfCell(1,colAC,index,"span[1]").click();
+        waitSpinnerDisappeared();
         DriverManager.getDriver().switchToWindow();
         return new PerformanceByMonthPage();
     }
