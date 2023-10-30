@@ -608,7 +608,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
             Assert.assertTrue(ptRiskBetListPopup.lblTabList.getWebElements().size() == 1 &&
                     Label.xpath(String.format(ptRiskBetListPopup.lblTabxPath, "1x2")).isDisplayed(), "FAILED! The tab 1x2 is not correct");
             log("Verify 2: PT% column shows PT% setting if an account that placed bets, has a PT% setting on account list");
-            List<String> listPTValue = ptRiskBetListPopup.tblBetList.getColumn(ptRiskBetListPopup.tblBetList.getColumnIndexByName("%PT"), false);
+            List<String> listPTValue = ptRiskBetListPopup.tblBetList.getColumn(ptRiskBetListPopup.tblBetList.getColumnIndexByName("PT%"), false);
             Assert.assertTrue(listPTValue.contains(percent), "FAILED! The PT value is missing on bet list");
         } finally {
             log("@Post-condition: Delete Event on event schedule");
