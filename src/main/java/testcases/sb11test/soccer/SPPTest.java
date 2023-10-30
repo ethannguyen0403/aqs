@@ -220,7 +220,7 @@ public class SPPTest extends BaseCaseAQS {
     @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "2795")
     @Parameters({"accountCode","smartGroup"})
-    public void SPP_TC_2795(String accountCode, String smartGroup) throws IOException, ParseException {
+    public void SPP_TC_2795(String accountCode, String smartGroup) throws IOException, ParseException, InterruptedException {
         log("@title: Validate the Cricket Manual Bets display properly");
         log("@pre-condition 1: SPP permission is ON");
         log("@pre-condition 1: There are some placed and settled MB from Bet Entry > Mixed Sport page");
@@ -243,6 +243,7 @@ public class SPPTest extends BaseCaseAQS {
         BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId,SPORT_MAP.get(sport));
         log("@Step 1: Go to Soccer >> SPP page");
         SPPPage page = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
+        Thread.sleep(120000);
         log("@Step 2: Select Cricket Sport and filter date that settled bets at precondition");
         String fromDate = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
         page.filter(sport,"Group","Smart Group","QA Smart Master","",fromDate,fromDate);
