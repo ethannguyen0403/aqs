@@ -549,8 +549,10 @@ public class PTRiskControlTest extends BaseCaseAQS {
 
             log("@Step 3: Filter with Report Type = Normal, League and Client placed bet");
             ptPage.filter("Basketball", "", COMPANY_UNIT, "Normal", "All", "", "", eventBasketball.getLeagueName());
+            String headerRowIndex = "1";
+            String valueRowIndex = "2";
             Map<String, String> entryValuePTRiskNormal =
-                    ptPage.getEntriesValueOfTableSport(eventBasketball.getLeagueName(), eventBasketball.getHome(), "1", "2");
+                    ptPage.getEntriesValueOfTableSport(eventBasketball.getLeagueName(), eventBasketball.getHome(), headerRowIndex, valueRowIndex);
             ptRiskBetListPopup = ptPage.openBetList(eventBasketball.getHome());
             log("Verify 3: Validate Forecast Normal is correct");
             Assert.assertEquals(entryValuePTRiskNormal.get("x"), "0",

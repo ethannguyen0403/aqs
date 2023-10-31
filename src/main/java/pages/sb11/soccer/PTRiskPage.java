@@ -170,12 +170,12 @@ public class PTRiskPage extends WelcomePage {
         return is1Item;
     }
 
-    public Map<String, String> getEntriesValueOfTableSport(String leagueName, String teamName, String indexPrimaryRow, String indexValueRow){
+    public Map<String, String> getEntriesValueOfTableSport(String leagueName, String teamName, String indexHeaderRow, String indexValueRow){
         String tableXpath = getXpathPTSportLeagueTable(leagueName, teamName);
         Map<String, String> entries = new LinkedHashMap<>();
         int i = 1;
         while(true){
-            Label primaryCell = Label.xpath(tableXpath + String.format("/tr[%s]//td[%s]", indexPrimaryRow, i));
+            Label primaryCell = Label.xpath(tableXpath + String.format("/tr[%s]//td[%s]", indexHeaderRow, i));
             Label valueCell = Label.xpath(tableXpath + String.format("/tr[%s]//td[%s]", indexValueRow, i));
             if(primaryCell.isDisplayed() && valueCell.isDisplayed()){
                 entries.put(primaryCell.getText().trim(), valueCell.getText().trim());

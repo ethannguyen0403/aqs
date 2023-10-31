@@ -29,7 +29,6 @@ public class AccountListUtils {
     private static String buildBodyJson(String accountId, String percent, boolean isLive, SportName... sportNames) {
         StringBuilder builderSport = new StringBuilder();
         String liveOrNon = isLive ? "Live" : "NonLive";
-        builderSport = builderSport.append("\"soccerLive\": 0,\n");
         for (int i = 0; i < sportNames.length; i++) {
             builderSport = builderSport.append(String.format("\"%s%s\": %s,\n", sportNames[i].name(), liveOrNon, percent));
         }
