@@ -417,7 +417,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3416")
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression", "2023.10.31"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3416(String accountCode) {
         orderBasketball.setAccountCode(accountCode);
@@ -464,7 +464,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3417")
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression", "2023.10.31"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3417(String accountCode) {
         orderBasketball.setAccountCode(accountCode);
@@ -505,7 +505,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3418")
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression", "2023.10.31"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3418(String accountCode) {
         orderBasketball.setAccountCode(accountCode);
@@ -574,7 +574,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3419")
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression", "2023.10.31"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3419(String accountCode) throws IOException{
         String percent = "6";
