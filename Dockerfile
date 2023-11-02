@@ -9,8 +9,6 @@ ADD ./src src/
 # package jar
 RUN mvn clean dependency:copy-dependencies compile
 
-# # Second stage: minimal runtime environment
-# FROM openjdk:20-jdk
 # FROM maven:3.8.7-openjdk-18-slim
 FROM registry.techtank9.com/analyst/automation/aqs:base
 
