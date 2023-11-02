@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.paltech</groupId>
     <artifactId>AQS</artifactId>
-    <version>1.0.4</version>
-<!--        <packaging>pom</packaging>-->
-      <!--  <packaging>jar</packaging>-->
+    <version>1.0.5</version>
+    <!--        <packaging>pom</packaging>-->
+    <!--  <packaging>jar</packaging>-->
     <parent>
         <groupId>com.paltech</groupId>
         <artifactId>coreselenium</artifactId>
-        <version>1.0.4</version>
+        <version>1.0.5</version>
         <relativePath></relativePath>
     </parent>
     <dependencies>
