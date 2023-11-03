@@ -14,7 +14,7 @@ FROM registry.techtank9.com/analyst/automation/aqs:base
 
 RUN useradd -ms /bin/bash automation && usermod -aG sudo automation && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER automation
-WORKDIR /build
+WORKDIR /home/automation/
 
 # # # copy jar from the first stage
 COPY --from=builder /build/ ./
