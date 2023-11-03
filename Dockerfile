@@ -10,7 +10,7 @@ ADD ./src src/
 RUN mvn clean dependency:copy-dependencies compile
 
 # FROM maven:3.8.7-openjdk-18-slim
-FROM registry.techtank9.com/analyst/automation/aqs:nolanLinusChromeDriver
+FROM registry.techtank9.com/analyst/automation/aqs:base
 
 RUN useradd -ms /bin/bash automation && usermod -aG sudo automation && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER automation
