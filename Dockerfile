@@ -17,7 +17,7 @@ USER automation
 WORKDIR /home/automation/
 
 # # # copy jar from the first stage
-COPY --from=builder /build/ ./
+COPY --from=builder /home/automation/ ./
 COPY ./drivers/chromedriver ./chromedriver
 
 # CMD ["java", "-cp", "/target/classes/;/target/dependency/"]
