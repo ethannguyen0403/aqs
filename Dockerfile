@@ -14,10 +14,10 @@ FROM registry.techtank9.com/analyst/automation/aqs:base
 
 RUN useradd -ms /bin/bash automation && usermod -aG sudo automation && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER automation
-WORKDIR /home/automation/
+WORKDIR /build
 
 # # # copy jar from the first stage
-COPY --from=builder /home/automation/ ./
+COPY --from=builder /build/ ./
 COPY ./drivers/chromedriver ./chromedriver
 
 # CMD ["java", "-cp", "/target/classes/;/target/dependency/"]
