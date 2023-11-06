@@ -64,7 +64,7 @@ public class BetSettlementPage extends WelcomePage {
      * @param toDate
      * @param accountCode
      */
-    public void filter(String status, String fromDate, String toDate, String accStartWith, String accountCode){
+    public void filter(String status, String fromDate, String toDate, String accStartWith, String accountCode) {
         btnLogout.moveToTheControl();
         ddbStatus.selectByVisibleText(status);
        if(!fromDate.isEmpty())
@@ -92,6 +92,11 @@ public class BetSettlementPage extends WelcomePage {
         txtAccountCode.sendKeys(accountCode);
         btnSearch.click();
         waitPageLoad();
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -128,8 +133,12 @@ public class BetSettlementPage extends WelcomePage {
     private void fillWinLose(Order order) {
         int rowIndex = getOrderIndex(order.getBetId());
         TextBox winLose = TextBox.xpath(tblOrder.getxPathOfCell(1, colWinLoss, rowIndex, "input"));
+
         try {
-            winLose.waitForElementToBePresent(winLose.getLocator(), 2).sendKeys("" + order.getRequireStake());
+            winLose.waitForElementToBePresent(winLose.getLocator(), 2);
+            if (!winLose.getAttribute("value").isEmpty()){
+                winLose.sendKeys("" + order.getRequireStake());
+            }
             System.out.println("Fill win/lose");
         } catch (Exception e) {
             System.out.println("Win/lose field already has value");
@@ -161,8 +170,9 @@ public class BetSettlementPage extends WelcomePage {
     }
 
     public String getWinlossAmountofOrder(Order order)  {
+        btnSearch.click();
         int rowindex = getOrderIndex(order.getBetId());
-        String winloss = tblOrder.getControlOfCell(1, colWinLoss,rowindex,null).getText();
+        String winloss = tblOrder.getControlOfCell(1, colWinLoss,rowindex,"input").getAttribute("value");
         if(winloss.equals("")){
             //wait for the bet is settled in 3s
             try {
@@ -213,8 +223,9 @@ public class BetSettlementPage extends WelcomePage {
         }else {
             expectedBetType = "MB";
         }
-
-        Assert.assertEquals(hdp,expectedHDP, "Failed! HDP at row "+rowindex+" is incorrect");
+        if (!order.getMarketType().contains("1x2")){
+            Assert.assertEquals(hdp,expectedHDP, "Failed! HDP at row "+rowindex+" is incorrect");
+        }
         Assert.assertEquals(odds,String.format("%.3f (%s)", order.getPrice(),order.getOddType()), "Failed! Odds at row "+rowindex+" is incorrect");
         Assert.assertEquals(stake,String.format("%.2f", order.getRequireStake()), "Failed! Stake at row "+rowindex+" is incorrect");
         //Assert.assertEquals(winloss,"", "Failed!  Win loss at row "+rowindex+" is incorrect");

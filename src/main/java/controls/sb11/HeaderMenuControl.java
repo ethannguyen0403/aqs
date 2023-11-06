@@ -72,6 +72,19 @@ public class HeaderMenuControl extends BaseElement {
             i = i + 1;
         }
     }
+    public List<String> getListSubMenu(){
+        int i = 1;
+        Label lblSubMenu;
+        List<String> lstSubMenu = new ArrayList<>();
+        while (true) {
+            lblSubMenu = Label.xpath(String.format("(//div[@id='navbarTogglerDemo02']//div[@class='dropdown-menu']//span)[%s]", i));
+            if (!lblSubMenu.isDisplayed()) {
+                return lstSubMenu;
+            }
+            lstSubMenu.add(lblSubMenu.getText().trim());
+            i = i + 1;
+        }
+    }
 
     private int getMenuIndex(String menu) {
         int i = 1;
