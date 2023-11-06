@@ -83,7 +83,7 @@ public class EventSchedulePage extends WelcomePage {
         lnkShowLeague.click();
         waitPageLoad();
         int index = getLeagueRowIndex(league);
-        tblLeague.getControlOfCell(1,2, index,null).click();
+        tblLeague.getControlOfCell(1,2, index,"input").jsClick();
     }
 
     /**
@@ -116,8 +116,10 @@ public class EventSchedulePage extends WelcomePage {
         goToSport(event.getSportName());
         showScheduleList(event.getLeagueName(),true, event.getHome(),event.getEventDate());
         int index = getEventIndex(event);
-        if(index == 0)
+        if(index == 0){
             System.out.println("Not found the event in the list for deleting");
+            return;
+        }
         Icon.xpath(tblEventBody.getxPathOfCell(1,colActionEventTbl,index,"i[contains(@class,'fa-times-circle')]")).click();
         ConfirmPopup popup = new ConfirmPopup();
         popup.confirm(true);
@@ -155,7 +157,7 @@ public class EventSchedulePage extends WelcomePage {
             }
         }
         selectLeagueInScheduleList(league);
-        btnShowSchedule.click();
+        btnShowSchedule.jsClick();
         waitSpinnerDisappeared();
     }
 

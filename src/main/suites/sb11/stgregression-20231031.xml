@@ -16,7 +16,6 @@
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
         <parameter name="accountCode" value="Auto-Account01"/>
-        <parameter name="accountId" value="860411"/>
         <parameter name="accountCurrency" value="HKD"/>
         <parameter name="clientCode" value ="QA Client (No.121 QA Client)"/>
         <parameter name="bookieCode" value ="QA Bookie"/>
@@ -37,13 +36,11 @@
 
         <classes>
             <class name="testcases.sb11test.accounting.CompanySetupTest"/>
-
+            <class name="testcases.sb11test.financialReports.RetainedEarningsTest"/>
             <class name="testcases.sb11test.soccer.SPPTest"/>
-
             <class name="testcases.sb11test.trading.KeyClientsReportTest"/>
-
             <class name="testcases.sb11test.invoice.InvoicesTest"/>
-
+            <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
             <class name="testcases.sb11test.financialReports.CashFlowStatementTest"/>
             <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
         </classes>

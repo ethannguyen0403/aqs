@@ -35,6 +35,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("Precondition: Deactivate Retained Earnings option in one role account");
         RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
         roleManagementPage.selectRole("one role").switchPermissions(RETAINED_EARNING, false);
+        roleManagementPage.selectRole("one role").switchPermissions(TRIAL_BALANCE, true);
         log("@Step 1: Re-login with one role account account has 'Retained Earnings' permission is OFF");
         LoginPage loginPage = roleManagementPage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
