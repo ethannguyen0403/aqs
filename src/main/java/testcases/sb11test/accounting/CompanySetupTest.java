@@ -156,6 +156,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
 
         toDayAvoidLastDayOfMonth = ledgerStatementPage.isLastDayOfMonth() ? previousDate : "";
+        toDayAvoidLastDayOfMonth = DateUtils.formatDate(toDayAvoidLastDayOfMonth, "yyyy-MM-dd", "dd/MM/yyyy");
         log("@Step 2: Filter with Company: "+ companyName);
         ledgerStatementPage.showLedger(companyName, "","","","",toDayAvoidLastDayOfMonth, "");
 

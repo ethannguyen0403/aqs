@@ -55,6 +55,7 @@ public class LedgerStatementPage extends WelcomePage {
     public String getTitlePage () {return lblTitle.getText().trim();}
 
     public void showLedger (String companyUnit, String financialYear, String accountType, String ledgerGroup, String fromDate, String toDate,String report){
+        btnShow.moveAndHoverOnControl();
         if (!companyUnit.isEmpty())
             ddCompanyUnit.selectByVisibleText(companyUnit);
         if (!financialYear.isEmpty())

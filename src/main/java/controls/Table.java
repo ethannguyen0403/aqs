@@ -644,7 +644,7 @@ public class Table extends BaseElement {
                 return 0;
             }
             // Get the row contains the event time
-           lbl.getText().trim();
+            lbl.getText().trim();
             if (lbl.getText().equals(value)) {
                 System.out.println(String.format("Found the value in the column in the table"));
                 return i;
