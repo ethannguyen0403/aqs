@@ -89,7 +89,7 @@ public class CricketSportTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id = "63")
-    @Test(groups = {"regression11","2023.11.30"})
+    @Test(groups = {"regression","2023.11.30"})
     public void Cricket_Sport_63() {
         log("Validate users can schedule events");
         log("@pre-condition 1: Account is activated permission");
