@@ -127,6 +127,7 @@ public class InvoicesPage extends WelcomePage {
 
     public ActionInvoicePopup actionInvoice(int index) {
         tblInvoice.getControlOfCell(1, colAction, index, null).click();
+        waitSpinnerDisappeared();
         return new ActionInvoicePopup();
     }
 
