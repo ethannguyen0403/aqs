@@ -30,7 +30,7 @@ public class ConfirmPopupControl extends BaseElement {
     public String getContentMessage(){return lblContentMessage.getText().trim();}
 
     public void confirmYes(){
-        btnYes.waitForElementToBePresent(btnYes.getLocator());
+        btnYes.waitForElementToBePresent(btnYes.getLocator(), 6);
         btnYes.click();}
 
     public void confirmNo(){btnNo.click();}

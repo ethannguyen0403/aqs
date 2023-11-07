@@ -306,7 +306,7 @@ public class ConfirmBetsPage extends WelcomePage {
      */
     public void deleteOrder(Order order, boolean isPending){
         int rowIndex =getOrderIndex(order.getBetId());
-        Icon.xpath(tblOrder.getxPathOfCell(1,defineDeleteColIndex(isPending),rowIndex,"i")).click();
+        Icon.xpath(tblOrder.getxPathOfCell(1,defineDeleteColIndex(isPending),rowIndex,"i")).jsClick();
         ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
         confirmPopupControl.confirmYes();
         waitPageLoad();
