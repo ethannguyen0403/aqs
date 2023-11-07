@@ -3,6 +3,7 @@ package pages.sb11.sport;
 import com.paltech.element.common.*;
 import controls.DateTimePicker;
 import controls.Table;
+import objects.Event;
 import pages.sb11.WelcomePage;
 
 public class CricketResultEntryPage extends WelcomePage {
@@ -22,8 +23,19 @@ public class CricketResultEntryPage extends WelcomePage {
     public TextBox txtDateTime = TextBox.id("date");
     public Label lblDate = Label.xpath("//label[contains(text(),'Date')]");
     public DateTimePicker dtpDateTime = DateTimePicker.xpath(txtDateTime,"//bs-days-calendar-view");
-    public Table tbResult = Table.xpath("//div[contains(@class,'main-box-header')]//following::table[1]",10);
+    int colEvent = 4;
+    int colStatus = 6;
+    int colBatFirst = 7;
+    int colRunHome = 8;
+    int colWtksHome = 9;
+    int colRunAway = 10;
+    int colWtksAway = 11;
+    int colHdp = 12;
+    int colResult = 13;
+    public Table tbResult = Table.xpath("//div[contains(@class,'main-box-header')]//following::table[1]",13);
     public DropDownBox ddGoTo = DropDownBox.xpath("//span[contains(text(),'Go To')]//following::select[1]");
+    public Button btnSubmit = Button.xpath("//button[contains(text(),'Submit')]");
+    public Button btnRevert = Button.xpath("//button[contains(text(),'Revert')]");
 
     public void goToSport(String sport){
         if(sport.equals("Soccer"))
@@ -38,6 +50,7 @@ public class CricketResultEntryPage extends WelcomePage {
         if(!date.isEmpty()){
             dtpDateTime.selectDate(date,"dd/MM/yyyy");
             btnShowLeagues.click();
+            waitSpinnerDisappeared();
         }
         ddpLeague.selectByVisibleText(league);
         ddpOrderBy.selectByVisibleText(orderBy);
@@ -45,5 +58,39 @@ public class CricketResultEntryPage extends WelcomePage {
         if (isShow){
             btnShow.click();
         }
+    }
+    public int getEventIndex(Event event){
+        Label lblEvent;
+        String eventExpect = event.getHome() + "\n-vs-\n" + event.getAway();
+        int i = 2;
+        while (i < 10) {
+            lblEvent = Label.xpath(tbResult.getxPathOfCell(1,colEvent,i,"div"));
+            if (lblEvent.getText().equals(eventExpect)){
+                return i;
+            }
+        }
+        return -1;
+    }
+    public void submitEvent(Event event, String status, String batFirst, String runHome, String wtksHome, String runAway, String wtksAway, String result){
+        int eventIndex = getEventIndex(event);
+        DropDownBox ddStatus = DropDownBox.xpath(tbResult.getxPathOfCell(1,colStatus,eventIndex,"select"));
+        DropDownBox ddBatfirst = DropDownBox.xpath(tbResult.getxPathOfCell(1,colBatFirst,eventIndex,"select"));
+        DropDownBox ddResult = DropDownBox.xpath(tbResult.getxPathOfCell(1,colResult,eventIndex,"select"));
+        TextBox txbRunHome = TextBox.xpath(tbResult.getxPathOfCell(1,colRunHome,eventIndex,"input"));
+        TextBox txbWtksHome = TextBox.xpath(tbResult.getxPathOfCell(1,colWtksHome,eventIndex,"input"));
+        TextBox txbRunAway = TextBox.xpath(tbResult.getxPathOfCell(1,colRunAway,eventIndex,"input"));
+        TextBox txbWtksAway = TextBox.xpath(tbResult.getxPathOfCell(1,colWtksAway,eventIndex,"input"));
+        if (!status.isEmpty())
+            ddStatus.selectByVisibleText(status);
+        if (!batFirst.isEmpty())
+            ddBatfirst.selectByVisibleText(batFirst);
+        if (!runHome.isEmpty())
+            txbRunHome.sendKeys(runHome);
+            txbWtksHome.sendKeys(wtksHome);
+            txbRunAway.sendKeys(runAway);
+            txbWtksAway.sendKeys(wtksAway);
+        if (!result.isEmpty())
+            ddResult.selectByVisibleText(result);
+        btnSubmit.click();
     }
 }

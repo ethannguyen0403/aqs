@@ -7,9 +7,11 @@ import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
+import objects.Event;
 import objects.Order;
 import pages.sb11.trading.popup.CricketBetSlipPopup;
 import pages.sb11.trading.popup.BetListPopup;
+import utils.sb11.BetEntrytUtils;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class CricketBetEntryPage extends BetEntryPage {
     public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bet-entry-header//label[contains(text(),'Company Unit')]/following::select[1]");
     public DropDownBox ddpLeague = DropDownBox.id("league");
     public DropDownBox ddpSearchBy = DropDownBox.xpath("//select[@class='form-control']");
-    private TextBox txtAccountCode = TextBox.id("account-code");
+    public TextBox txtAccountCode = TextBox.id("account-code");
     private TextBox txtDate = TextBox.xpath("//app-bet-entry-header//input[@name='fromDate']");
     public Button btnShow = Button.xpath("//app-bet-entry-header//button[contains(@class,'btn-show')]");
     private DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
@@ -45,7 +47,7 @@ public class CricketBetEntryPage extends BetEntryPage {
     private int colCPB = 16;
 
     public Table tblEvent = Table.xpath("//app-bet-entry-table//table",totalCol);
-    //app-bet-entry-soccer
+    public Label lblMsgInvalid = Label.xpath("//div[contains(text(),'Please input valid Account Code.')]");
 
     public String getTitlePage ()
     {
@@ -125,7 +127,7 @@ public class CricketBetEntryPage extends BetEntryPage {
         String _marketType = marketType.toUpperCase();
         String _selection = selection.toUpperCase();
         switch (_marketType){
-            case "1x2":
+            case "1X2":
                 switch (_selection){
                     case "HOME":
                         return colMOHome;
@@ -209,4 +211,45 @@ public class CricketBetEntryPage extends BetEntryPage {
     public List<String> getListLeague(){
         return ddpLeague.getOptions();
     }
+    public boolean isLeagueExist(String leagueName){
+        int i = 1;
+        Label lblLeague;
+        while (true){
+            lblLeague = Label.xpath("//table/tbody/td");
+            if(!lblLeague.isDisplayed()) {
+                System.out.println("Can NOT found the league "+leagueName+" in the table");
+                return false;
+            }
+            if(lblLeague.getText().equals(leagueName)){
+                System.out.println("Found the league "+leagueName+" in the table");
+                return true;
+            }
+            i = i +1;
+        }
+    }
+    public boolean isEventExist(Event event){
+        Label lblTime;
+        String expectedEventName = String.format("%s\n%s",event.getHome(), event.getAway());
+        int i = 1;
+        while (true) {
+            lblTime = Label.xpath(tblEvent.getxPathOfCell(1,colEvent,i,null));
+            if(!lblTime.isDisplayed()) {
+                System.out.println("Can NOT found the event "+event.getHome()+" & "+ event.getAway()+" in the table");
+                return false;
+            }
+            String eventName = lblTime.getText().trim();
+            if (eventName.equals(expectedEventName)){
+                System.out.println("Found the event "+event.getHome()+" & "+ event.getAway()+" in the table at row "+ i);
+                String time = Label.xpath(tblEvent.getxPathOfCell(1, colTime, i, null)).getText().trim();
+                String date = BetEntrytUtils.convertToDate(event.getEventDate(),"dd/MM");
+                if (time.equals(String.format("%s\n%s",date, event.getOpenTime()))) {
+                    System.out.println("Date time of event "+event.getHome()+" & "+ event.getAway()+" in correct: Expected is "+ i);
+                    return true;
+                }
+            }
+            i = i + 1;
+        }
+
+    }
+
 }
