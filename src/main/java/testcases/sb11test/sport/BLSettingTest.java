@@ -76,13 +76,13 @@ public class BLSettingTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2100")
     public void BLSettingsTC_2100(){
-        log("@title: Validate that BL Settings is displayed correctly on BBT page");
+        log("@title: Validate that BL Settings is displayed correctly after editing");
         log("@Step 1: Access Sport > BL Settings");
         BLSettingPage blSettingPage = welcomePage.navigatePage(SPORT,BL_SETTINGS, BLSettingPage.class);
         log("@Step 2: Select Date and click Show League");
         log("@Step 3: Select a league and click Show");
         log("@Step 4: Click Edit on an event");
-        blSettingPage.filterResult("",blSettingPage.getFirstLeague(),"KOT",true);
+        blSettingPage.filterResult("", blSettingPage.getFirstLeague(),"KOT",true);
         log("@Step 5: Click Edit on an event");
         String eventName = blSettingPage.getFirstEventNameOfLeague();
         try {
@@ -90,7 +90,7 @@ public class BLSettingTest extends BaseCaseAQS {
             log("@Step 6: Fill full info and click Submit");
             blSettingsPopup.fillBLSettings("1","KP","RB",true);
             blSettingPage.waitSpinnerDisappeared();
-            log("Validate Event of selected league is displayed correctly on Event table");
+            log("Validate that BL Settings value is displayed correctly (TV, KP, Live RB)");
             blSettingPage.isEventSettingDisplayCorrect(eventName,"1","KP","RB");
         } finally {
             BLSettingsPopup blSettingsPopup = blSettingPage.openBLSettingPopup(eventName);

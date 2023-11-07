@@ -69,6 +69,9 @@ public class BalanceSheetPage extends WelcomePage {
                     if (lstParentInBalance.get(j).contains("Inactive")){
                         System.out.println("Parent Account: "+lstParentInBalance.get(j));
                         break;
+                    } else if (lstParentInBalance.contains("PL for Current Year - HKD") && detailTypeName.contains("Retained Earnings")){
+                        System.out.println(detailTypeName + " display correct!");
+                        break;
                     } else if (!lstParentName.contains(lstParentInBalance.get(j))){
                         System.out.println(lstParentInBalance.get(j)+" be grouded incorrect!");
                         return false;

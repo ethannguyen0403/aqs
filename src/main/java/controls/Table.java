@@ -652,4 +652,12 @@ public class Table extends BaseElement {
             i = i + 1;
         }
     }
+    public int getColumnIndexByName(String columnName){
+        ArrayList<String> lstHeader = getHeaderNameOfRows();
+        for (int i = 0, n = lstHeader.size(); i < n; i++){
+            if (lstHeader.get(i).equals(columnName))
+                return i + 1;
+        }
+        return -1;
+    }
 }
