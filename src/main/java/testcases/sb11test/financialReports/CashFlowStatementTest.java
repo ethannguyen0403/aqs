@@ -83,7 +83,7 @@ public class CashFlowStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @TestRails(id = "C8547")
+    @TestRails(id = "8547")
     @Test(groups = {"regression", "2023.10.31"})
     public void Cash_Flow_Statement_TC8547() {
         log("@title: Validate Total Increase (decrease) in cash and cash equivalents data");

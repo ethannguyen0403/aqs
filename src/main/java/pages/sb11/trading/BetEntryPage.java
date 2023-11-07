@@ -29,6 +29,7 @@ public class BetEntryPage extends WelcomePage {
     Label lblTitle = Label.xpath("//app-bet-entry-header//div[contains(@class,'main-box-header')]/div[1]/span");
 //    public Button btnSoccer = Button.xpath("//app-bet-entry//span[contains(text(),'Soccer')]");
     public Button btnSoccer = Button.name("btnSoccer");
+    public Button btnBasketball = Button.name("btnBasketball");
     public Button btnCricket = Button.name("btnCricket");
     public Button btnMixedSport = Button.name("btnMixedSports");
     private DropDownBox ddbSport = DropDownBox.id("navigate-page");
@@ -41,6 +42,12 @@ public class BetEntryPage extends WelcomePage {
         btnSoccer.click();
         waitPageLoad();
         return new SoccerBetEntryPage();
+    }
+
+    public BasketballBetEntryPage goToBasketball(){
+        btnBasketball.click();
+        waitPageLoad();
+        return new BasketballBetEntryPage();
     }
     public CricketBetEntryPage goToCricket(){
         btnCricket.click();
