@@ -35,5 +35,4 @@ public class LoginPage {
         welcomePage.waitSpinnerDisappeared();
         return welcomePage;
     }
-
 }

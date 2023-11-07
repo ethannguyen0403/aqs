@@ -129,7 +129,7 @@ public class BetSettlementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="203")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke_isa"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetSettlement_TC203(String accountCode,String accountCurrency){
         log("@title: Validate that user can export file successfully");
