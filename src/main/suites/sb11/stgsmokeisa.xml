@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="AQS_STG_Smoke" verbose="1">
+<suite name="ISA_SB11_STG_Smoke" verbose="1">
     <listeners>
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
@@ -27,17 +27,12 @@
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <groups>
             <run>
-                <include name="smoke" />
-                <include name="smoke_qc" /><!--For test case only run on QAT and STG-->
+                <include name="smoke_isa" />
             </run>
         </groups>
 
         <classes>
-
-            <class name="testcases.sb11test.sport.EventScheduleTest"/>
             <class name="testcases.sb11test.trading.BetSettlementTest"/>
-            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
-            <class name="testcases.sb11test.trading.BetEntryTest"/>
         </classes>
     </test>
 </suite>
