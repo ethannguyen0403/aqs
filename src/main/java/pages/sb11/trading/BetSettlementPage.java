@@ -90,14 +90,15 @@ public class BetSettlementPage extends WelcomePage {
 
         }
         txtAccountCode.sendKeys(accountCode);
-        btnSearch.click();
-        waitPageLoad();
+
         //add more 1 minute wait the report loaded
         try {
-            Thread.sleep(10000);
+            Thread.sleep(20000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        btnSearch.click();
+        waitPageLoad();
     }
 
     /**

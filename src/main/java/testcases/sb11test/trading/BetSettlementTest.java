@@ -85,8 +85,8 @@ public class BetSettlementTest extends BaseCaseAQS {
                 "\n");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
-        String date = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
@@ -130,16 +130,15 @@ public class BetSettlementTest extends BaseCaseAQS {
 
     @TestRails(id="203")
     @Test(groups = {"smoke"})
-    @Parameters({"accountCode","accountCurrency"})
-    public void BetSettlement_TC203(String accountCode,String accountCurrency) throws IOException {
+    @Parameters({"accountCode"})
+    public void BetSettlement_TC203(String accountCode) throws IOException {
         log("@title: Validate that user can export file successfully");
         log("Precondition: User has permission to access Bet Settlement page \n" +
                 "Having an account with Confirmed bet settle Win/Lose");
         String dowloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "Bet_Settlement.xlsx";
-        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
         log("@Step 2:Navigate to Trading > Bet Settlement > Search bet of the account at precondition in Confirmed mode");
         BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed",date,date,"",accountCode);
+        betSettlementPage.filter("Confirmed","","","",accountCode);
         String order =betSettlementPage.getOrderIndex(1);
 
         log("@Step 3.Select the bet and click Export Selected Bet (s) > observe");
@@ -162,12 +161,10 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("@title: Validate that user can send Bets List email successfully");
         log("Precondition: User has permission to access Bet Settlement page \n" +
                 "Having an account with Confirmed bet settle Win/Lose and configuring with email in Address Book");
-        String fromDate = String.format(DateUtils.getDate(-14,"dd/MM/yyyy","GMT +7"));
-        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
 
         log("@Step 2:Navigate to Trading > Bet Settlement > Search bet of the account at precondition in Confirmed mode");
         BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed",fromDate,date,"",accountCode);
+        betSettlementPage.filter("Confirmed","","","",accountCode);
         String orderID =betSettlementPage.getOrderIndex(1);
         Order order = new Order.Builder()
                 .betId(orderID)
@@ -245,7 +242,7 @@ public class BetSettlementTest extends BaseCaseAQS {
                 "The account is configured with email in Address Book");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
-        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
+        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);

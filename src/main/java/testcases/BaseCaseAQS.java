@@ -208,6 +208,7 @@ public class BaseCaseAQS {
         if (isLogin) {
             if (isLogin) {
                 betOrderPage = loginAQSPage.login(username, StringUtils.decrypt(password));
+                log(String.format("Successfully login AQS with account %s", username));
             }
         }
     }
@@ -218,6 +219,7 @@ public class BaseCaseAQS {
         if (isLogin) {
             if (isLogin) {
                 welcomePage = loginSB11Page.login(username, StringUtils.decrypt(password));
+                log(String.format("Successfully login SB11 with account %s", username));
             }
         }
     }
