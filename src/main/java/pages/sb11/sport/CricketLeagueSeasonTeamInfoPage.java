@@ -6,6 +6,7 @@ import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.Table;
 import pages.sb11.WelcomePage;
+import pages.sb11.popup.ConfirmPopup;
 import pages.sb11.sport.popup.*;
 
 public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
@@ -13,6 +14,7 @@ public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
     int colSeasonName = 3;
     int colTeamName = 3;
     int colDeleteLeague = 8;
+    int colDeleteTeam = 6;
     public Label lblTitleLeague = Label.xpath("//app-league//div[contains(@class,'main-box-header')]//span[1]");
     public Label lblTitleSeason = Label.xpath("//app-season//div[contains(@class,'main-box-header')]//span[1]");
     public Label lblTitleTeam = Label.xpath("//app-team//div[contains(@class,'main-box-header')]//span[1]");
@@ -154,4 +156,20 @@ public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
         }
     }
 
+    public void deleteTeamName(String leagueName, String seasonName, String teamName) {
+        filterLeague("All","All",leagueName);
+        if (seasonName != ""){
+            selectSeason(seasonName);
+        }
+        txtTeamName.sendKeys(teamName);
+        btnSearchTeam.click();
+        int index = getRowContainsTeamName(teamName);
+        if(index==0){
+            System.err.println("ERROR! "+teamName+" does not display");
+        } else {
+            tbTeam.getControlOfCell(1,colDeleteTeam,index,"i").click();
+            ConfirmPopup popup = new ConfirmPopup();
+            popup.confirm(true);
+        }
+    }
 }
