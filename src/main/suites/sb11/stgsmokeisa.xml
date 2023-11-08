@@ -7,7 +7,7 @@
 
     <test name="SB11 STG Smoke">
         <parameter name='browser' value='window10.local.chrome'/>
-        <parameter name='env' value='stg'/>
+        <parameter name='env' value='pro'/>
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
@@ -27,7 +27,7 @@
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <groups>
             <run>
-                <include name="smoke_isa" />
+                <include name="smoke" />
             </run>
         </groups>
 
