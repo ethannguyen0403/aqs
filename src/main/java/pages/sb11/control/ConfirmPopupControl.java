@@ -31,6 +31,7 @@ public class ConfirmPopupControl extends BaseElement {
 
     public void confirmYes(){
         btnYes.waitForElementToBePresent(btnYes.getLocator());
+        btnYes.isDisplayed(2);
         btnYes.click();}
 
     public void confirmNo(){btnNo.click();}

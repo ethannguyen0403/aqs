@@ -40,7 +40,7 @@ public class BetEntryPage extends WelcomePage {
 
     public SoccerBetEntryPage goToSoccer(){
         btnSoccer.click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
         return new SoccerBetEntryPage();
     }
 
