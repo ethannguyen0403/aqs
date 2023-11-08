@@ -136,7 +136,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("Precondition: User has permission to access Bet Settlement page \n" +
                 "Having an account with Confirmed bet settle Win/Lose");
         String dowloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "Bet_Settlement.xlsx";
-        String date = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
+        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
         log("@Step 2:Navigate to Trading > Bet Settlement > Search bet of the account at precondition in Confirmed mode");
         BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
         betSettlementPage.filter("Confirmed",date,date,"",accountCode);
@@ -157,7 +157,7 @@ public class BetSettlementTest extends BaseCaseAQS {
 
     @TestRails(id="204")
     @Test(groups = {"smoke"})
-    @Parameters({"accountCode","accountCurrency"})
+    @Parameters({"accountCode"})
     public void BetSettlement_TC204(String accountCode){
         log("@title: Validate that user can send Bets List email successfully");
         log("Precondition: User has permission to access Bet Settlement page \n" +
