@@ -29,11 +29,12 @@
         <parameter name="companyCurrency" value="HKD"/>
         <groups>
             <run>
-                <include name="2023.10.31" />
+                <include name="smoke"/>
             </run>
         </groups>
         <classes>
-            <class name="testcases.sb11test.invoice.InvoicesTest">
+
+            <class name="testcases.sb11test.soccer.PTRiskControlTest">
             </class>
 
         </classes>

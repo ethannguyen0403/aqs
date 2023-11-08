@@ -33,11 +33,11 @@
         </groups>
         <classes>
 
-            <class name="testcases.sb11test.financialReports.RetainedEarningsTest">
+            <class name="testcases.sb11test.soccer.SPPTest">
                 <methods>
-                    <include name="Retained_Earnings_TC2816"/>
-                    <include name="Retained_Earnings_TC2817"/>
-                    <include name="Retained_Earnings_TC2819"/>
+                    <include name="SPP_TC_2134"/>
+                    <include name="SPP_TC_2133"/>
+                    <include name="SPP_TC_2131"/>
                 </methods>
             </class>
 
