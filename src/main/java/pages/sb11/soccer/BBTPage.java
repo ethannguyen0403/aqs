@@ -9,6 +9,8 @@ import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class BBTPage extends WelcomePage {
@@ -277,18 +279,31 @@ public class BBTPage extends WelcomePage {
         }
     }
 
-    public void verifyEventStartTimeCorrect(String fromDate, String toDate, Map<String, List<Integer>> dateTimeEntries){
-        String currentDay= DateUtils.formatDate(fromDate, "dd/MM/yyyy", "dd/MM/yy");
-        String tomorrowDay = DateUtils.formatDate(toDate, "dd/MM/yyyy", "dd/MM/yy");
+    public void verifyEventTimeDisplayCorrectWithTimeFilterInOneDay(String date, Map<String, List<Integer>> dateTimeEntries){
+        String fromDate = DateUtils.formatDate(date, "dd/MM/yyyy", "dd/MM/yy");
+        String fromDatePlusOne = DateUtils.formatDate(increaseDate(date, "dd/MM/yyyy", 1), "dd/MM/yyyy", "dd/MM/yy");
         if (dateTimeEntries.size() == 1) {
-            if (dateTimeEntries.get(currentDay) != null) {
-                Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(currentDay), true), "FAILED! Event time of From Date is incorrect");
+            if (dateTimeEntries.get(fromDate) != null) {
+                Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(fromDate), true), "FAILED! Event time of From Date is incorrect");
             } else {
-                Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(tomorrowDay), false), "FAILED! Event time of To Date is incorrect");
+                Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(fromDatePlusOne), false), "FAILED! Event time of To Date is incorrect");
             }
         } else {
-            Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(currentDay), true), "FAILED! Event time of From Date is incorrect");
-            Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(tomorrowDay), false), "FAILED! Event time of To Date is incorrect");
+            Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(fromDate), true), "FAILED! Event time of From Date is incorrect");
+            Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(fromDatePlusOne), false), "FAILED! Event time of To Date is incorrect");
+        }
+    }
+
+    private String increaseDate(String date, String formatDate, int amount) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(formatDate);
+            Calendar c = Calendar.getInstance();
+            c.setTime(sdf.parse(date));
+            c.add(Calendar.DATE, amount);
+            return sdf.format(c.getTime());
+        } catch (ParseException e) {
+            System.out.println("FAILED to parse date");
+            return null;
         }
     }
 
@@ -302,6 +317,7 @@ public class BBTPage extends WelcomePage {
     }
 
     public boolean isEventTimeCorrect(List<Integer> listTime, boolean isFromDate) {
+        if(listTime==null) return false;
         if (isFromDate) {
             for (Integer time : listTime) {
                 if (time < 12)

@@ -118,7 +118,7 @@ public class BBTTest extends BaseCaseAQS {
         log("@Verify 1: All events start from 12:00 pm of filtering date GMT+8 to 11:59:59 am tomorrow returns");
         bbtPage.scrollToShowFullResults();
         Map<String, List<Integer>> dateTimeEntries = bbtPage.getListTimeEvent();
-        bbtPage.verifyEventStartTimeCorrect(currentDay, tomorrowDay, dateTimeEntries);
+        bbtPage.verifyEventTimeDisplayCorrectWithTimeFilterInOneDay(currentDay, dateTimeEntries);
         log("INFO: Executed completely");
     }
 
@@ -129,11 +129,12 @@ public class BBTTest extends BaseCaseAQS {
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter Settled Bets with To day");
-        bbtPage.filter("", "", "", "Settled Bets", previousDate, previousDate, "", "", "");
+        String fromDate = DateUtils.getDate(-5, "dd/MM/yyyy", "GMT +8");
+        bbtPage.filter("", "", "", "Settled Bets", fromDate, fromDate, "", "", "");
         log("@Verify 1: All events start from 12:00 pm of filtering date GMT+8 to 11:59:59 am tomorrow returns");
         bbtPage.scrollToShowFullResults();
         Map<String, List<Integer>> dateTimeEntries = bbtPage.getListTimeEvent();
-        bbtPage.verifyEventStartTimeCorrect(previousDate, currentDay, dateTimeEntries);
+        bbtPage.verifyEventTimeDisplayCorrectWithTimeFilterInOneDay(fromDate, dateTimeEntries);
         log("INFO: Executed completely");
     }
 
