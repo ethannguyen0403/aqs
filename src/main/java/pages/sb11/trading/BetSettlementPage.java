@@ -90,13 +90,25 @@ public class BetSettlementPage extends WelcomePage {
 
         }
         txtAccountCode.sendKeys(accountCode);
-        btnSearch.click();
-        waitPageLoad();
+
+        //add more 1 minute wait the report loaded
         try {
-            Thread.sleep(10000);
+            Thread.sleep(20000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        btnSearch.click();
+        waitPageLoad();
+    }
+
+    /**
+     * Get order ID as expected row index
+     * @param rowIndex
+     * @return
+     */
+    public String getOrderIndex(int rowIndex){
+        Label lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1,colBRBettrefId,rowIndex,"span[2]"));
+        return lblOrderID.getText();
     }
 
     /**
@@ -122,13 +134,18 @@ public class BetSettlementPage extends WelcomePage {
     }
 
     private void selectOrder(Order order){
-        int rowIndex = getOrderIndex(order.getBetId());
+        selectRowByOrderID(order.getBetId());
+
+    }
+    public void selectRowByOrderID(String order){
+        int rowIndex = getOrderIndex(order);
         CheckBox cb = CheckBox.xpath(tblOrder.getxPathOfCell(1, colSelect, rowIndex, "input"));
         cb.scrollToThisControl(false);
         if(!cb.isSelected()){
             cb.click();
         }
     }
+
 
     private void fillWinLose(Order order) {
         int rowIndex = getOrderIndex(order.getBetId());
@@ -245,10 +262,6 @@ public class BetSettlementPage extends WelcomePage {
     }
 
     public void settleAndSendSettlementEmail(Order order){
-        try {
-            Thread.sleep(8000); //hard code sleep action for waiting report to generate Win/Lose
-            btnSearch.click();
-            waitSpinnerDisappeared();
             selectOrder(order);
             fillWinLose(order);
             btnSettleSendSettlementEmail.scrollToTop();
@@ -256,9 +269,6 @@ public class BetSettlementPage extends WelcomePage {
             waitSpinnerDisappeared();
             ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
             confirmPopupControl.confirmYes();
-        } catch (InterruptedException e) {
-            System.out.println("Failed! Win/Lose data is not shown!");
-        }
     }
 
     public void sendBetListEmail(Order order) {
@@ -276,6 +286,11 @@ public class BetSettlementPage extends WelcomePage {
         } catch (InterruptedException e) {
             System.out.println("Failed! Win/Lose data is not shown!");
         }
+    }
+    public void exportSelectedOrderID(String order){
+        selectRowByOrderID(order);
+        btnExportSelectedBet.scrollToTop();
+        btnExportSelectedBet.click();
     }
     public void exportSelectedBEt(Order order){
         selectOrder(order);

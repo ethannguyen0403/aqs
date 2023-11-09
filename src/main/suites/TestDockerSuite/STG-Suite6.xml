@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="ISA_SB11_STG_Smoke" verbose="1">
+<suite name="SB11_STG_Smoke" verbose="1" >
     <listeners>
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
-    <test name="SB11 STG Smoke">
+    <test name="SB11 Pre">
         <parameter name='browser' value='window10.local.chrome'/>
-        <parameter name='env' value='pro'/>
+        <parameter name='env' value='stg'/>
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
@@ -25,14 +25,23 @@
         <parameter name="agentCode" value="QASAHK00"/>
         <parameter name="bookieMasterCode" value="Ma-QA101-QA Test"/>
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
+        <parameter name="companyName" value="Kastraki Limited"/>
+        <parameter name="companyCurrency" value="HKD"/>
         <groups>
             <run>
-                <include name="smoke" />
+
             </run>
         </groups>
-
         <classes>
-            <class name="testcases.sb11test.trading.BetSettlementTest"/>
+
+            <class name="testcases.sb11test.generalReports.BookieStatementTest">
+                <methods>
+                    <include name="BookieStatementTC_183"/>
+                    <include name="BookieStatementTC_1639"/>
+                    <include name="BookieStatementTC_184"/>
+                </methods>
+            </class>
+
         </classes>
     </test>
 </suite>

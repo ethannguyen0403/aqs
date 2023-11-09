@@ -1,0 +1,15 @@
+include:
+  - project: "mis/devops/gitlab-ci-templates"
+    file:
+      - "workflows/workflow.yml"
+      - "build/docker-build.yml"
+
+stages:
+  - docker-build
+
+docker-build:
+  stage: docker-build
+  variables:
+    IMAGE_TAG: "$CI_REGISTRY_IMAGE_V2:$CI_COMMIT_REF_NAME"
+  extends:
+    - .docker-build
