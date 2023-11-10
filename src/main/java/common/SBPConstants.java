@@ -122,12 +122,14 @@ public class SBPConstants {
     public final static List<String> MONTH_NAME_LIST = Arrays.asList("January","February","March","April","May","June","July","August","September","October", "November", "December");
     public final static String GMT_7 = "GMT +7";
     public final static String BALANCE_SHEET = "Balance Sheet";
+    public final static List<String> CRICKET_MARKET_TYPE_NO_LIVE =  Arrays.asList("1x2","DNB","OE","OU");
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
         {
             put("1X2", "Match Betting");
             put("Match-HDP", "Match Handicap");
             put("OU", "Over/Under");
+            put("OE", "Odd/Even");
             put("DNB", "DrawNoBet");
 
         }

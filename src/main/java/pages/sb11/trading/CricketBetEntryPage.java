@@ -111,6 +111,14 @@ public class CricketBetEntryPage extends BetEntryPage {
             selection= "HOME";
         if(order.getSelection().equals(order.getAway()))
             selection="AWAY";
+        if(order.getSelection().equals("Odd"))
+            selection="Odd";
+        if(order.getSelection().equals("Even"))
+            selection="Even";
+        if(order.getSelection().equals("Over"))
+            selection="Over";
+        if(order.getSelection().equals("Under"))
+            selection="Under";
         int colIndex = defineColumn(order.getMarketType(), selection);
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
         return new CricketBetSlipPopup();
