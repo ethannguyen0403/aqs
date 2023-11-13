@@ -945,7 +945,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 1: Original Currency: Debit show value = 0 in black, Credit show value = 10 in blue, Running Bal = Opening Balance (+Credit - Debit) value\n" +
                     "Total column is sum of records\n" +
                     "Amounts in GBP will get value from Original Currency then convert to GBP to show");
-            ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
+            ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
             ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
