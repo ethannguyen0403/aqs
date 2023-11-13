@@ -1,18 +1,17 @@
 package pages.sb11.soccer;
 
 import com.paltech.driver.DriverManager;
-import com.paltech.element.common.Button;
-import com.paltech.element.common.DropDownBox;
-import com.paltech.element.common.Label;
-import com.paltech.element.common.TextBox;
+import com.paltech.element.common.*;
 import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
 import controls.Row;
 import controls.Table;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class BBTPage extends WelcomePage {
     public Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
@@ -33,6 +32,8 @@ public class BBTPage extends WelcomePage {
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
     public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
     public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
+    public Label lblAlert = Label.xpath("//div[@role='alert']");
+    public Label lblNoRecord = Label.xpath("//span[text()='No record found']");
 
     public Button btnShowBetTypes = Button.xpath("//div[contains(text(),'Show Bet Types')]");
     public Button btnShowLeagues = Button.xpath("//div[contains(text(),'Show Leagues')]");
@@ -43,7 +44,7 @@ public class BBTPage extends WelcomePage {
     public Button btnLeagues = Button.xpath("//app-bbt//div[text()='Show Leagues ']");
     public Button btnClearAll = Button.xpath("//app-bbt//button[text()='Clear All']");
     public Button btnSetSelection = Button.xpath("//app-filter-data//button[text()='Set Selection ']");
-    private Label lblFirstGroupName = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//a)[1]");
+    public Label lblFirstGroupName = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//a)[1]");
     private Label lblFirstGroupHDP = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[2])[1]");
     private Label lblFirstGroupPrice = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[3])[1]");
     private Label lblFirstGroupLive = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[5])[1]");
@@ -52,7 +53,10 @@ public class BBTPage extends WelcomePage {
     private Label lblFirstGroupLast12Day = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[8])[1]");
     private Label lblFirstGroupS1 = Label.xpath("(//app-league-table//div[contains(@class,'league-time')]//span)[1]");
     private Label lblFirstGroupS12 = Label.xpath("(//app-league-table//div[contains(@class,'league-time')]//span)[4]");
+    public Label lblEventStartTime = Label.xpath("//div[contains(@class, 'league-time') and not(contains(@class, 'flex-row-reverse'))]");
     int totalColumnNumber = 8;
+    public int colCur = 7;
+    public int colStake = 4;
     public Table tblBBT = Table.xpath("//app-bbt//table",totalColumnNumber);
 
 
@@ -273,6 +277,143 @@ public class BBTPage extends WelcomePage {
             }
             return lstData;
         }
+    }
+
+    public void verifyEventTimeDisplayCorrectWithTimeFilterInOneDay(String date, Map<String, List<Integer>> dateTimeEntries){
+        String fromDate = DateUtils.formatDate(date, "dd/MM/yyyy", "dd/MM/yy");
+        String fromDatePlusOne = DateUtils.formatDate(increaseDate(date, "dd/MM/yyyy", 1), "dd/MM/yyyy", "dd/MM/yy");
+        if (dateTimeEntries.size() == 1) {
+            if (dateTimeEntries.get(fromDate) != null) {
+                Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(fromDate), true), "FAILED! Event time of From Date is incorrect");
+            } else {
+                Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(fromDatePlusOne), false), "FAILED! Event time of To Date is incorrect");
+            }
+        } else {
+            Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(fromDate), true), "FAILED! Event time of From Date is incorrect");
+            Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(fromDatePlusOne), false), "FAILED! Event time of To Date is incorrect");
+        }
+    }
+
+    private String increaseDate(String date, String formatDate, int amount) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(formatDate);
+            Calendar c = Calendar.getInstance();
+            c.setTime(sdf.parse(date));
+            c.add(Calendar.DATE, amount);
+            return sdf.format(c.getTime());
+        } catch (ParseException e) {
+            System.out.println("FAILED to parse date");
+            return null;
+        }
+    }
+
+    public void scrollToShowFullResults(){
+        int count = 7;
+        while (count > 0){
+            DriverManager.getDriver().executeJavascript("window.scrollTo(0, document.body.scrollHeight)");
+            waitPageLoad();
+            count --;
+        }
+    }
+
+    public boolean isEventTimeCorrect(List<Integer> listTime, boolean isFromDate) {
+        if(listTime==null) return false;
+        if (isFromDate) {
+            for (Integer time : listTime) {
+                if (time < 12)
+                    return false;
+            }
+        } else {
+            for (Integer time : listTime) {
+                if (time > 12)
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    public Map<String, List<Integer>> getListTimeEvent() {
+        List<String> dateAndTimeEventList = new ArrayList<>();
+        Map<String, List<Integer>> dateTimeEntries = new HashMap<>();
+        lblEventStartTime.getWebElements().stream().forEach(webElement -> dateAndTimeEventList.add(webElement.getText().trim()));
+        if (dateAndTimeEventList != null) {
+            for (String dateTime : dateAndTimeEventList) {
+                String[] dateTimeArray = dateTime.split(" ");
+                String date = dateTimeArray[0];
+                Integer time = Integer.valueOf(dateTimeArray[1].split(":")[0]);
+                if (dateTimeEntries.get(date) != null) {
+                    dateTimeEntries.get(date).add(time);
+                } else {
+                    dateTimeEntries.put(date, new ArrayList<>(Arrays.asList(time)));
+                }
+            }
+            return dateTimeEntries;
+        } else {
+            System.out.println("NOT Found the values");
+            return null;
+        }
+    }
+
+    public  List<String> getCurrencyListOfAllEvents(){
+        return getListColOfAllBBTTable(colCur);
+    }
+
+    public  List<String> getStakeListOfAllEvents(){
+        return getListColOfAllBBTTable(colStake);
+    }
+
+    public double convertStakeFilter(String stakeFilter) {
+        switch (stakeFilter) {
+            case "Above 1k":
+                return 1000;
+            case "Above 10k":
+                return 10000;
+            case "Above 50k":
+                return 50000;
+            case "Above 150k":
+                return 150000;
+            default:
+                return 0;
+        }
+    }
+
+    public boolean verifyAllStakeCorrectFilter(String filterStake, List<String> stakeEvent) {
+        double minNumber = convertStakeFilter(filterStake);
+        for (String stake : stakeEvent) {
+            double stakeDou = Double.valueOf(stake.replaceAll(",", ""));
+            if (stakeDou < minNumber)
+                return false;
+        }
+        return true;
+    }
+
+    public List<String> getListColOfAllBBTTable(int colIndex){
+        List<String> curList = new ArrayList<>();
+        int tableIndex = 1;
+        while(true){
+            Table tblBBT = Table.xpath(String.format("(//app-bbt//table)[%s]", tableIndex), totalColumnNumber);
+            if(!tblBBT.isDisplayed()){
+                System.out.println("NOT found the table with index: " + tableIndex);
+                return curList;
+            }
+            if (tblBBT.isDisplayed()){
+                curList.addAll(tblBBT.getColumn(colIndex,true));
+            }
+            tableIndex++;
+        }
+    }
+
+    public boolean verifyAllBetsWithSameCurrency(String expectedCurrency, List<String> actualCurList) {
+        return new HashSet<>(actualCurList).size() == 1 && actualCurList.get(0).equalsIgnoreCase(expectedCurrency);
+    }
+
+    public boolean isOptionsFilterDisplay(List<String> optionsList) {
+        for (String option : optionsList) {
+            Label lblOption = Label.xpath(String.format("//div[contains(@class, 'card-columns')]//span[.='%s']", option));
+            if (!lblOption.isDisplayed())
+                return false;
+        }
+        return true;
     }
 
 }
