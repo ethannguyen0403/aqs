@@ -134,6 +134,17 @@ public class SBPConstants {
 
         }
     };
+    public static final Map<String, String> CRICKET_BET_TYPE_LIST= new HashMap<String, String>()
+    {
+        {
+            put("1x2", "1x2");
+            put("Match-HDP", "Match HDP");
+            put("OU", "Over Under");
+            put("OE", "Odd Even");
+            put("DNB", "DrawNoBet");
+
+        }
+    };
     public static final Map<String, String> SPORT_MAP= new HashMap<String, String>()
     {
         {

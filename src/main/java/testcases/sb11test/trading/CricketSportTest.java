@@ -21,6 +21,7 @@ import pages.sb11.sport.popup.CreateCricketTeamPopup;
 import pages.sb11.trading.*;
 import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.popup.BetListPopup;
+import pages.sb11.trading.popup.CricketBetSlipPopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.AccountPercentUtils;
 import utils.sb11.AccountSearchUtils;
@@ -191,9 +192,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
+        event = welcomePage.createEvent(event);
         log("@Step 1: Login to SB11");
         log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
-        event = welcomePage.createEvent(event);
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
@@ -219,10 +220,12 @@ public class CricketSportTest extends BaseCaseAQS {
                 .event(event)
                 .build();
         lstOrder.add(order);
+        CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
         log("Verify 1: Validate the info in the bet slip displays correctly.");
+        cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
         log("@Step 5: Input odds as 2 >> input stake as 100");
         log("@Step 6: Click 'Place Bet'");
-        cricketBetEntryPage.placeBet(order,true);
+        cricketBetSlipPopup.placeBet(order,true);
         log("Verify 2: The bet is placed successfully");
         Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
         BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
@@ -259,9 +262,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
+        event = welcomePage.createEvent(event);
         log("@Step 1: Login to SB11");
         log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
-        event = welcomePage.createEvent(event);
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
@@ -287,10 +290,12 @@ public class CricketSportTest extends BaseCaseAQS {
                 .event(event)
                 .build();
         lstOrder.add(order);
+        CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
         log("Verify 1: Validate the info in the bet slip displays correctly.");
+        cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
         log("@Step 5: Input odds as 2 >> input stake as 100");
         log("@Step 6: Click 'Place Bet'");
-        cricketBetEntryPage.placeBet(order,true);
+        cricketBetSlipPopup.placeBet(order,true);
         log("Verify 2: The bet is placed successfully");
         Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
         BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
@@ -539,9 +544,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
+        event = welcomePage.createEvent(event);
         log("@Step 1: Login to SB11");
         log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
-        event = welcomePage.createEvent(event);
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
@@ -567,10 +572,12 @@ public class CricketSportTest extends BaseCaseAQS {
                 .event(event)
                 .build();
         lstOrder.add(order);
+        CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
         log("Verify 1: Validate the info in the bet slip displays correctly.");
+        cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
         log("@Step 5: Input odds as 2 >> input stake as 100");
         log("@Step 6: Click 'Place Bet'");
-        cricketBetEntryPage.placeBet(order,true);
+        cricketBetSlipPopup.placeBet(order,true);
         log("Verify 2: The bet is placed successfully");
         Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
         BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
@@ -607,9 +614,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
+        event = welcomePage.createEvent(event);
         log("@Step 1: Login to SB11");
         log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
-        event = welcomePage.createEvent(event);
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
@@ -635,10 +642,12 @@ public class CricketSportTest extends BaseCaseAQS {
                 .event(event)
                 .build();
         lstOrder.add(order);
+        CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
         log("Verify 1: Validate the info in the bet slip displays correctly.");
+        cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
         log("@Step 5: Input odds as 2 >> input stake as 100");
         log("@Step 6: Click 'Place Bet'");
-        cricketBetEntryPage.placeBet(order,true);
+        cricketBetSlipPopup.placeBet(order,true);
         log("Verify 2: The bet is placed successfully");
         Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
         BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
@@ -675,9 +684,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
+        event = welcomePage.createEvent(event);
         log("@Step 1: Login to SB11");
         log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
-        event = welcomePage.createEvent(event);
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
@@ -703,10 +712,12 @@ public class CricketSportTest extends BaseCaseAQS {
                 .event(event)
                 .build();
         lstOrder.add(order);
+        CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
         log("Verify 1: Validate the info in the bet slip displays correctly.");
+        cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
         log("@Step 5: Input odds as 2 >> input stake as 100");
         log("@Step 6: Click 'Place Bet'");
-        cricketBetEntryPage.placeBet(order,true);
+        cricketBetSlipPopup.placeBet(order,true);
         log("Verify 2: The bet is placed successfully");
         Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
         BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
@@ -743,9 +754,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
+        event = welcomePage.createEvent(event);
         log("@Step 1: Login to SB11");
         log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
-        event = welcomePage.createEvent(event);
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
@@ -772,10 +783,12 @@ public class CricketSportTest extends BaseCaseAQS {
                 .event(event)
                 .build();
         lstOrder.add(order);
+        CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
         log("Verify 1: Validate the info in the bet slip displays correctly.");
+        cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
         log("@Step 5: Input odds as 2 >> input stake as 100");
         log("@Step 6: Click 'Place Bet'");
-        cricketBetEntryPage.placeBet(order,true);
+        cricketBetSlipPopup.placeBet(order,true);
         log("Verify 2: The bet is placed successfully");
         Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
         BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
@@ -812,9 +825,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
+        event = welcomePage.createEvent(event);
         log("@Step 1: Login to SB11");
         log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
-        event = welcomePage.createEvent(event);
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
@@ -841,10 +854,12 @@ public class CricketSportTest extends BaseCaseAQS {
                 .event(event)
                 .build();
         lstOrder.add(order);
+        CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
         log("Verify 1: Validate the info in the bet slip displays correctly.");
+        cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
         log("@Step 5: Input odds as 2 >> input stake as 100");
         log("@Step 6: Click 'Place Bet'");
-        cricketBetEntryPage.placeBet(order,true);
+        cricketBetSlipPopup.placeBet(order,true);
         log("Verify 2: The bet is placed successfully");
         Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
         BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
@@ -882,9 +897,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
+        event = welcomePage.createEvent(event);
         log("@Step 1: Login to SB11");
         log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
-        event = welcomePage.createEvent(event);
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
@@ -910,10 +925,12 @@ public class CricketSportTest extends BaseCaseAQS {
                 .event(event)
                 .build();
         lstOrder.add(order);
+        CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
         log("Verify 1: Validate the info in the bet slip displays correctly.");
+        cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
         log("@Step 5: Input odds as 2 >> input stake as 100");
         log("@Step 6: Click 'Place Bet'");
-        cricketBetEntryPage.placeBet(order,true);
+        cricketBetSlipPopup.placeBet(order,true);
         log("Verify 2: The bet is placed successfully");
         Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
         BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
@@ -950,9 +967,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
+        event = welcomePage.createEvent(event);
         log("@Step 1: Login to SB11");
         log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
-        event = welcomePage.createEvent(event);
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
@@ -978,10 +995,12 @@ public class CricketSportTest extends BaseCaseAQS {
                 .event(event)
                 .build();
         lstOrder.add(order);
+        CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
         log("Verify 1: Validate the info in the bet slip displays correctly.");
+        cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
         log("@Step 5: Input odds as 2 >> input stake as 100");
         log("@Step 6: Click 'Place Bet'");
-        cricketBetEntryPage.placeBet(order,true);
+        cricketBetSlipPopup.placeBet(order,true);
         log("Verify 2: The bet is placed successfully");
         Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
         BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
