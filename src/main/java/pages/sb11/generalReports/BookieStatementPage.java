@@ -78,10 +78,11 @@ public class BookieStatementPage extends WelcomePage {
                 dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         if(!bookieCode.isEmpty()) {
             txtBookieCode.sendKeys(bookieCode);
-//            Thread.sleep(2000);
-//            searchIcon.click();
-//            waitSpinnerDisappeared();
-//            btnConfirmShowBookie.click();
+            //sleep to waiting for table
+            Thread.sleep(2000);
+            searchIcon.click();
+            waitSpinnerDisappeared();
+            btnConfirmShowBookie.click();
         }
         if(!currency.isEmpty())
             ddpCurrency.selectByVisibleText(currency);
