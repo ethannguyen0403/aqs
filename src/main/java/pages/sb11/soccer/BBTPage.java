@@ -6,8 +6,12 @@ import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
 import controls.Row;
 import controls.Table;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import utils.sb11.BBTUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +30,7 @@ public class BBTPage extends WelcomePage {
     public DropDownBox ddpSport = DropDownBox.xpath("//div[contains(text(),'Sport')]//following::select[1]");
     public DropDownBox ddpStake = DropDownBox.xpath("//div[contains(text(),'Stake')]//following::select[1]");
     public DropDownBox ddpCurrency = DropDownBox.xpath("//div[contains(text(),'Currency')]//following::select[1]");
+    public DropDownBox ddpLiveStatus = DropDownBox.xpath("//div[contains(@class, 'filter-more')]//following::select[1]");
     public TextBox txtFromDate = TextBox.name("fromDate");
     public TextBox txtToDate = TextBox.name("toDate");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
@@ -38,9 +43,12 @@ public class BBTPage extends WelcomePage {
     public Button btnShowBetTypes = Button.xpath("//div[contains(text(),'Show Bet Types')]");
     public Button btnShowLeagues = Button.xpath("//div[contains(text(),'Show Leagues')]");
     public Button btnShowGroup = Button.xpath("//div[contains(text(),'Show Groups')]");
+    public Button btnShowMaster = Button.xpath("//div[contains(text(),'Show Masters')]");
+    public Button btnShowAgent = Button.xpath("//div[contains(text(),'Show Agents')]");
     public Button btnMoreFilter = Button.xpath("//div[contains(text(),'More Filters')]");
     public Button btnResetAllFilter = Button.xpath("//span[contains(text(),'Reset All Filters')]");
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    public Button btnShowMoreFilter = Button.xpath("//button[contains(@class,'btn-show-filter')]");
     public Button btnLeagues = Button.xpath("//app-bbt//div[text()='Show Leagues ']");
     public Button btnClearAll = Button.xpath("//app-bbt//button[text()='Clear All']");
     public Button btnSetSelection = Button.xpath("//app-filter-data//button[text()='Set Selection ']");
@@ -50,15 +58,18 @@ public class BBTPage extends WelcomePage {
     private Label lblFirstGroupLive = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[5])[1]");
     private Label lblFirstGroupNonLive = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[6])[1]");
     private Label lblFirstGroupPendingBet = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[7])[1]");
-    private Label lblFirstGroupLast12Day = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[8])[1]");
+    public Label lblFirstGroupLast12Day = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[8])[1]");
     private Label lblFirstGroupS1 = Label.xpath("(//app-league-table//div[contains(@class,'league-time')]//span)[1]");
     private Label lblFirstGroupS12 = Label.xpath("(//app-league-table//div[contains(@class,'league-time')]//span)[4]");
     public Label lblEventStartTime = Label.xpath("//div[contains(@class, 'league-time') and not(contains(@class, 'flex-row-reverse'))]");
+    public Label lblLeaguesName = Label.xpath("//app-league-table//div[@class='header d-flex']");
+    public Icon iconCount = Icon.xpath("//span[contains(@class, 'count-ribbon')]");
     int totalColumnNumber = 8;
     public int colCur = 7;
     public int colStake = 4;
+    public int colName = 1;
     public Table tblBBT = Table.xpath("//app-bbt//table",totalColumnNumber);
-
+    public Table tblFirstBBT = Table.xpath("(//app-bbt//table)[1]",totalColumnNumber);
 
     public void filter(String companyUnit, String sport, String smartType, String reportType, String fromDate, String toDate, String stake, String currency, String league){
         if (!companyUnit.isEmpty())
@@ -71,15 +82,19 @@ public class BBTPage extends WelcomePage {
             ddpReportType.selectByVisibleText(reportType);
         String currentDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
 //        String currentDate = txtFromDate.getAttribute("value");
-        if(!fromDate.isEmpty())
-            if(!currentDate.equals(fromDate))
-                dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+        if (!fromDate.isEmpty()) {
+            if (!currentDate.equals(fromDate)) {
+                dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
                 waitSpinnerDisappeared();
+            }
+        }
 //        currentDate = txtToDate.getAttribute("value");
-        if(!toDate.isEmpty())
-            if(!currentDate.equals(toDate))
-                dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+        if (!toDate.isEmpty()) {
+            if (!currentDate.equals(toDate)) {
+                dtpToDate.selectDate(toDate, "dd/MM/yyyy");
                 waitSpinnerDisappeared();
+            }
+        }
         if(!stake.isEmpty())
             ddpStake.selectByVisibleText(stake);
         if(!currency.isEmpty())
@@ -279,6 +294,16 @@ public class BBTPage extends WelcomePage {
         }
     }
 
+    public boolean verifyAllCountIconsResetToAll() {
+        List<WebElement> countIconList = iconCount.getWebElements();
+        for (WebElement icon : countIconList) {
+            if (!icon.getText().equalsIgnoreCase("All")) {
+                return false;
+            }
+        }
+        return countIconList.size() == 3 ? true : false;
+    }
+
     public void verifyEventTimeDisplayCorrectWithTimeFilterInOneDay(String date, Map<String, List<Integer>> dateTimeEntries){
         String fromDate = DateUtils.formatDate(date, "dd/MM/yyyy", "dd/MM/yy");
         String fromDatePlusOne = DateUtils.formatDate(increaseDate(date, "dd/MM/yyyy", 1), "dd/MM/yyyy", "dd/MM/yy");
@@ -362,6 +387,10 @@ public class BBTPage extends WelcomePage {
         return getListColOfAllBBTTable(colStake);
     }
 
+    public List<String> getSmartGroupName(){
+        return getListColOfAllBBTTable(colName);
+    }
+
     public double convertStakeFilter(String stakeFilter) {
         switch (stakeFilter) {
             case "Above 1k":
@@ -387,6 +416,15 @@ public class BBTPage extends WelcomePage {
         return true;
     }
 
+    public List<String> getListAllLeaguesName() {
+        List<String> leaguesList = new ArrayList<>();
+        List<WebElement> leaguesEleList = lblLeaguesName.getWebElements();
+        for (WebElement leagues : leaguesEleList) {
+            leaguesList.add(leagues.getText().trim());
+        }
+        return leaguesList;
+    }
+
     public List<String> getListColOfAllBBTTable(int colIndex){
         List<String> curList = new ArrayList<>();
         int tableIndex = 1;
@@ -403,17 +441,132 @@ public class BBTPage extends WelcomePage {
         }
     }
 
-    public boolean verifyAllBetsWithSameCurrency(String expectedCurrency, List<String> actualCurList) {
-        return new HashSet<>(actualCurList).size() == 1 && actualCurList.get(0).equalsIgnoreCase(expectedCurrency);
+    public boolean verifyAllElementOfListAreTheSame(String expectedValue, List<String> actualList){
+        return new HashSet<>(actualList).size() == 1 && actualList.get(0).equalsIgnoreCase(expectedValue);
+    }
+
+    public List<String> getSelectedOptionNameOfFilter(){
+        List<String> optionsName = new ArrayList<>();
+        int indexOption = 1;
+        while (true){
+            CheckBox chkOption = CheckBox.xpath(String.format("(//div[@class='card-columns']//input)[%s]", indexOption));
+            Label lblOption = Label.xpath(String.format("(//div[@class='card-columns']//span)[%s]", indexOption));
+            if(chkOption.isDisplayed()){
+                indexOption++;
+                if (chkOption.isSelected()){
+                    optionsName.add(lblOption.getText().trim());
+                }
+            }
+            if(!chkOption.isDisplayed() || chkOption.getWebElement()==null){
+                return optionsName;
+            }
+        }
     }
 
     public boolean isOptionsFilterDisplay(List<String> optionsList) {
         for (String option : optionsList) {
-            Label lblOption = Label.xpath(String.format("//div[contains(@class, 'card-columns')]//span[.='%s']", option));
+            Label lblOption = Label.xpath(String.format("//div[contains(@class, 'card-columns')]//span[.=\"%s\"]", option));
             if (!lblOption.isDisplayed())
                 return false;
         }
         return true;
     }
 
+    public void selectLeaguesFilter(String... leaguesName){
+        btnLeagues.click();
+        waitSpinnerDisappeared();
+        btnClearAll.click();
+        for(String option: leaguesName){
+            selectOptionOnFilter(option, true);
+        }
+        btnSetSelection.click();
+        waitSpinnerDisappeared();
+    }
+
+    public void selectGroupsFilter(String... groupName){
+        btnShowGroup.click();
+        waitSpinnerDisappeared();
+        btnClearAll.click();
+        for(String option: groupName){
+            selectOptionOnFilter(option, true);
+        }
+        btnSetSelection.click();
+        waitSpinnerDisappeared();
+    }
+
+    public void selectSmartTypeFilter(String smartType, String... optionName) {
+        Button btnSmartFilter;
+        switch (smartType) {
+            case "Group":
+                btnSmartFilter = btnShowGroup;
+                break;
+            case "Master":
+                btnSmartFilter = btnShowMaster;
+                break;
+            case "Agent":
+                btnSmartFilter = btnShowAgent;
+                break;
+            default:
+                System.out.println("NOT Found Show smart Type: '" + smartType + "' button");
+                return;
+        }
+        btnSmartFilter.click();
+        waitSpinnerDisappeared();
+        btnClearAll.click();
+        for(String option: optionName){
+            selectOptionOnFilter(option, true);
+        }
+        btnSetSelection.click();
+        waitSpinnerDisappeared();
+    }
+
+    public void selectLiveNonLiveMoreFilter(String option){
+        btnMoreFilter.click();
+        if(!option.equalsIgnoreCase("All")){
+            ddpLiveStatus.selectByVisibleText(option);
+        }
+        btnShowMoreFilter.click();
+        waitSpinnerDisappeared();
+    }
+
+    public boolean verifyGroupNameCorrectPosition(String companyId, String sportId, String reportType, String fromDate, String toDate){
+        String price= "",  groupCode="", selection="", homeTeamName = "", awayTeamName = "";
+        //Get first order bet Info
+        JSONObject dataBBT = BBTUtils.getAvailableLeaguesJson(companyId, sportId, reportType, fromDate, toDate);
+        if (Objects.nonNull(dataBBT)) {
+            JSONArray jsonArr = dataBBT.getJSONArray("data");
+            if (jsonArr.length() > 0) {
+                JSONObject orderObj = jsonArr.getJSONObject(0);
+                homeTeamName = orderObj.getString("homeTeamName");
+                awayTeamName = orderObj.getString("awayTeamName");
+                JSONArray dataBets = orderObj.getJSONArray("dataBets");
+                if(dataBets.length()>0){
+                    JSONObject betInfo = dataBets.getJSONObject(0);
+                    groupCode = betInfo.getString("groupCode");
+                    price = String.format("%.3f",betInfo.getDouble("price"));
+                    selection = betInfo.getString("selection");
+                }
+            }
+    }
+        String teamName = selection.equalsIgnoreCase("AWAY")? awayTeamName: homeTeamName;
+        String targetXpath = String.format(
+                "//span[contains(text(), \"%s\")]/ancestor::table[contains(@aria-describedby, 'home-table')]//td[contains(., '%s')]/preceding-sibling::td[2]", teamName, price);
+        if(Label.xpath(targetXpath).getText().equalsIgnoreCase(groupCode)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public void selectOptionOnFilter(String optionName, boolean isChecked) {
+        CheckBox chkOption = CheckBox.xpath(String.format("//th[.=\"%s\"]/preceding-sibling::th[1]/input", optionName));
+        if (isChecked) {
+            if (!chkOption.isSelected()) {
+                chkOption.select();
+            }
+        } else {
+            if (chkOption.isSelected())
+                chkOption.deSelect();
+        }
+    }
 }
