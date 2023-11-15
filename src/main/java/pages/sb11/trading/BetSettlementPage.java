@@ -2,6 +2,7 @@ package pages.sb11.trading;
 
 import com.paltech.element.common.*;
 import com.paltech.utils.DateUtils;
+import common.SBPConstants;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Order;
@@ -150,10 +151,9 @@ public class BetSettlementPage extends WelcomePage {
     private void fillWinLose(Order order) {
         int rowIndex = getOrderIndex(order.getBetId());
         TextBox winLose = TextBox.xpath(tblOrder.getxPathOfCell(1, colWinLoss, rowIndex, "input"));
-
         try {
             winLose.waitForElementToBePresent(winLose.getLocator(), 2);
-            if (!winLose.getAttribute("value").isEmpty()){
+            if (winLose.getAttribute("value").isEmpty()){
                 winLose.sendKeys("" + order.getRequireStake());
             }
             System.out.println("Fill win/lose");
@@ -240,7 +240,7 @@ public class BetSettlementPage extends WelcomePage {
         }else {
             expectedBetType = "MB";
         }
-        if (!order.getMarketType().contains("1x2")){
+        if (!SBPConstants.CRICKET_MARKET_TYPE_NO_LIVE.contains(order.getMarketType())){
             Assert.assertEquals(hdp,expectedHDP, "Failed! HDP at row "+rowindex+" is incorrect");
         }
         Assert.assertEquals(odds,String.format("%.3f (%s)", order.getPrice(),order.getOddType()), "Failed! Odds at row "+rowindex+" is incorrect");

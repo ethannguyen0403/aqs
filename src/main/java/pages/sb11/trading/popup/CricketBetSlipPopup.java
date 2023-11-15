@@ -2,8 +2,11 @@ package pages.sb11.trading.popup;
 
 import com.paltech.element.common.*;
 import objects.Order;
+import org.testng.Assert;
 
 import static common.ESSConstants.HomePage.EN_US;
+import static common.SBPConstants.CRICKET_BET_TYPE_LIST;
+import static common.SBPConstants.CRICKET_MARKET_TYPE_BET_LIST;
 
 public class CricketBetSlipPopup {
     private Label lblTitle = Label.xpath("//app-entry-bet-slip//div[contains(@class,'main-box-header')]//span[1]");
@@ -90,4 +93,20 @@ public class CricketBetSlipPopup {
      }
 
 
+    public void verifyBetSlipDisplayCorrect(Order order) {
+         Assert.assertTrue(CRICKET_BET_TYPE_LIST.get(order.getMarketType()).equals(lblBetTypeValue.getText()),"FAILED! Value of bet type incorrect.");
+         Assert.assertTrue(order.getSelection().equals(lblSelectionValue.getText()),"FAILED! Value of selection incorrect.");
+         defineControlBasedMarketType(order.getMarketType());
+         Assert.assertTrue(txtOdds.isEnabled(),"FAILED! Odds Text box display incorrect.");
+         Assert.assertTrue(ddbBetType.isEnabled(),"FAILED! Bet Type Drop down display incorrect.");
+         Assert.assertTrue(txtStake.isEnabled(),"FAILED! Stake Text box display incorrect.");
+         Assert.assertTrue(btnPlaceBet.isEnabled(),"FAILED! Place bet button display incorrect.");
+         if (order.getMarketType().equals("Match-HDP")){
+             Assert.assertTrue(txtHandicapWtks.isEnabled(),"FAILED! Handicap-Wtks Text box display incorrect.");
+             Assert.assertTrue(txtHandicapRuns.isEnabled(),"FAILED! Handicap-Runs Text box display incorrect.");
+         }
+         if (order.getMarketType().equals("OU")){
+             Assert.assertTrue(txtRuns.isEnabled(),"FAILED! Runs Text box display incorrect.");
+         }
+    }
 }

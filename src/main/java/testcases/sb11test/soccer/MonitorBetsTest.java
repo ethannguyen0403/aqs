@@ -1,13 +1,25 @@
 package testcases.sb11test.soccer;
 
+import com.paltech.driver.DriverManager;
+import com.paltech.utils.DateUtils;
+import com.paltech.utils.StringUtils;
+import objects.Order;
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+import pages.sb11.LoginPage;
+import pages.sb11.soccer.BBTPage;
 import pages.sb11.soccer.Last12DaysPerformancePage;
 import pages.sb11.soccer.MonitorBetsPage;
 import pages.sb11.soccer.PendingBetsPage;
 import pages.sb11.soccer.PerformanceByMonthPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.AccountSearchUtils;
+import utils.sb11.BetEntrytUtils;
 import utils.testraildemo.TestRails;
+
+import java.io.IOException;
+import java.util.List;
 
 import static common.SBPConstants.*;
 
@@ -25,6 +37,79 @@ public class MonitorBetsTest extends BaseCaseAQS {
     String accountCode = "No.7 SPB";
     String accCur = "HKD";
 
+    @Test(groups = {"regression","2023.11.30"})
+    @TestRails(id = "50")
+    @Parameters({"password"})
+    public void MonitorBetsTC_50(String password) throws Exception {
+        log("@title: Validate accounts without permission cannot see the 'Monitor Bets' menu");
+        String accountNoPermission = "onerole";
+        log("@Pre-condition: Account is inactivated permission 'Monitor Bets'");
+        log("@Step 1: Navigate to the site");
+        log("@Step 2: Check menu item 'Monitor Bets' under menu 'Soccer'");
+        LoginPage loginPage = welcomePage.logout();
+        loginPage.login(accountNoPermission, StringUtils.decrypt(password));
+        log("Verify 1: Menu 'Monitor Bets' is not shown");
+        List<String> lstSubMenu = welcomePage.headerMenuControl.getListSubMenu();
+        Assert.assertFalse(lstSubMenu.contains(MONITOR_BETS),"FAILED! Monitor Bets page displayed incorrect!");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.11.30"})
+    @TestRails(id = "51")
+    @Parameters({"password"})
+    public void MonitorBetsTC_51(String password) throws Exception {
+        log("@title: Validate accounts without permission cannot access 'Monitor Bets' page");
+        String accountNoPermission = "onerole";
+        String monitorBetsPageUrl = environment.getSbpLoginURL() + "#/aqs-report/monitor-bets";
+        log("@Pre-condition: Account is inactivated permission 'Monitor Bets'");
+        log("@Step 1: Navigate to the site");
+        log("@Step 2: Trying to access page by using url:");
+        LoginPage loginPage = welcomePage.logout();
+        loginPage.login(accountNoPermission, StringUtils.decrypt(password));
+        DriverManager.getDriver().get(monitorBetsPageUrl);
+        log("Verify 1: User cannot access 'Monitor Bets' page");
+        Assert.assertFalse(new MonitorBetsPage().lblTitle.isDisplayed(), "FAILED! Monitor Bets page can access by external link");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.11.30"})
+    @TestRails(id = "52")
+    public void MonitorBetsTC_52() {
+        log("@title: Validate accounts with permission can access 'Monitor Bets' page");
+        log("@Pre-condition: Account is inactivated permission 'Monitor Bets'");
+        log("@Step 1: Navigate to the site");
+        log("@Step 2: Expand menu 'Soccer' and access 'Monitor Bets' page");
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        log("Verify 1: User cannot access 'Monitor Bets' page");
+        Assert.assertTrue(new MonitorBetsPage().lblTitle.isDisplayed(), "FAILED! Monitor Bets page can access by external link");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.11.30"})
+    @TestRails(id = "53")
+    public void MonitorBetsTC_53(){
+        log("@title: Validate sound is played if a new bet comes when speaker is on");
+        log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
+        log("@Pre-condition 2: Punter account is added to a smart group in Trading Smart System Smart Group");
+        log("@Step 1: Navigate to the site");
+        log("@Step 2: Access 'Monitor Bets' page");
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        log("@Step 3: Validate when there's a new bet of the punter account come");
+        log("Verify 1: Bet(s) is auto shown on the report without refreshing the page");
+        Assert.assertTrue(monitorBetsPage.isCheckBetsUpdateCorrect(),"FAILED! Bets update incorrect.");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.11.30"})
+    @TestRails(id = "54")
+    public void MonitorBetsTC_54() {
+        log("@title: Validate new bets are auto added without refreshing page");
+        log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
+        log("@Pre-condition 2: Punter account is added to a smart group in Trading Smart System Smart Group");
+        log("@Step 1: Navigate to the site");
+        log("@Step 2: Access 'Monitor Bets' page");
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        log("@Step 3: Validate when there's a new bet of the punter account come");
+        log("Verify 1: Bet(s) is auto shown on the report without refreshing the page");
+        Assert.assertTrue(monitorBetsPage.isCheckBetsUpdateCorrect(),"FAILED! Bets update incorrect.");
+        log("INFO: Executed completely");
+    }
     @Test(groups = {"regression"})
     @TestRails(id = "2101")
     public void MonitorBetsTC_2101(){

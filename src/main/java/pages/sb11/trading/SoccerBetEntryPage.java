@@ -54,14 +54,15 @@ public class SoccerBetEntryPage extends BetEntryPage {
      */
     public void showLeague(String companyUnit, String date, String league){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
-
         if(!date.isEmpty()){
             dtpDate.selectDate(date,"dd/MM/yyyy");
             waitPageLoad();
         }
         if(!league.isEmpty()) {
+            //Double-click on dropdown to load option list
             BaseElement ddpLeagueDropdown = new TextBox(ddpLeague.getLocator());
-            ddpLeagueDropdown.doubleClick();
+            ddpLeagueDropdown.click();
+            ddpLeagueDropdown.click();
             ddpLeague.selectByVisibleText(league);
             waitPageLoad();
 
