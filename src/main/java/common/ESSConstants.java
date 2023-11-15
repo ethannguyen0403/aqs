@@ -55,6 +55,8 @@ public class ESSConstants {
                 put("MB", "MB");
                 put("Match-HDP","Match-HDP");// Cricket market type
                 put("1x2","1x2");// Cricket market type
+                put("DNB","DNB");// Cricket market type
+                put("OE","OE");// Cricket market type
 
             }
         };

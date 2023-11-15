@@ -198,8 +198,8 @@ public class ConfirmBetsPage extends WelcomePage {
             Assert.assertEquals(handicapWtks, String.format("%s",order.getHandicapWtks()), "Failed!HDP Handicap Wtks is incorrect");
             Assert.assertEquals(handicapRuns, String.format("%s",order.getHandicapRuns()), "Failed!HDP Handicap Runs is incorrect");
             Assert.assertEquals(live, "", "Failed! Live is incorrect");
-        } else if (order.getSport().equalsIgnoreCase("Cricket") && order.getMarketType().equalsIgnoreCase("1x2")){
-            System.out.println("Market Type is 1x2");
+        } else if (order.getSport().equalsIgnoreCase("Cricket") && SBPConstants.CRICKET_MARKET_TYPE_NO_LIVE.contains(order.getMarketType())){
+            System.out.println("Market Type is: "+ order.getMarketType());
         } else {
             hdp = DropDownBox.xpath(tblOrder.getxPathOfCell(1, colHdp, orderIndex, "select")).getFirstSelectedOption().trim();
             String liveHomeScore = TextBox.xpath(tblOrder.getxPathOfCell(1, colLive, orderIndex, "input[1]")).getAttribute("value").trim();

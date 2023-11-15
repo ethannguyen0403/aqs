@@ -142,7 +142,7 @@ public class BookieStatementTest extends BaseCaseAQS {
             BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
 
             log("@Step 3: Filter with Bookie has made transaction");
-            Thread.sleep(20000);
+            bookieStatementPage.txtBookieCode.sendKeys(bookieCode);
             bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Super Master","","",bookieCode,"");
             log("@Step 4: Click on Super Master RPCRBA link");
             BookieSuperMasterDetailPopup bookiePopup = bookieStatementPage.openBookieSuperMasterDetailPopup(superMasterCode);

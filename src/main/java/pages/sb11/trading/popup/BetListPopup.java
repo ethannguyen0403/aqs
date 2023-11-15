@@ -138,7 +138,7 @@ public class BetListPopup {
             if (expectedBetType.contains("HDP")) {
                 expectedHDP = String.format("%s%s / %s%s", hdpSign, expectedOrder.getHandicapWtks(), hdpSign, expectedOrder.getHandicapRuns());
             } else if (expectedBetType.equals("OU")) {
-                expectedHDP = String.format("%s%s", hdpSign, expectedOrder.getRuns());
+                expectedHDP = String.format("%s%s", hdpSign, String.format("%.2f",expectedOrder.getRuns()));
             } else
                 expectedHDP = "";
         }

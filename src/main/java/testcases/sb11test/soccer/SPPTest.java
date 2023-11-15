@@ -33,7 +33,7 @@ public class SPPTest extends BaseCaseAQS {
     @TestRails(id = "1002")
     public void SPP_TC_1002(String accountCode, String smartGroup, String superCode,String clientCode,String agentCode){
          /*NOTE: Create QA Smart Master and QA Smart Agent for STG and PR) for consistent data*/
-        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
+        String date = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
         String clientValue = String.format("%s - %s",superCode, clientCode );
         log("@title: Validate WL in Client Statement matched with SPP page (#AQS-2073)");
         log("Precondition:Group code ’"+smartGroup+" has 1 player "+accountCode+"\n" +
@@ -50,7 +50,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 3: Go to SPP >> select all leagues >> select the group");
         log("Step 4: Select the date 15/11/2022 >> click Show");
         SPPPage sppPage = clientPage.navigatePage(SOCCER,SPP,SPPPage.class);
-        sppPage.filter("Soccer", "Group","Smart Group","QA Smart Master","QA Smart Agent",date,date);
+        sppPage.filter("All", "Group","Smart Group","QA Smart Master","QA Smart Agent",date,date);
         String winloseSPP = sppPage.getRowDataOfGroup(smartGroup).get(sppPage.colWL-1);
 
         log("@verify 1: Validate the win/loss in the Client statement (step 2) matches with the win/loss of the group in the SPP page");
@@ -67,7 +67,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@Precondition: Group code ’37 Peter 27 l1’ has 1 player 'G60755A5A5AA026'\n" +
                 "The player has data on the filtered date (e.g. 15/11/2022)\n" +
                 "Bookie: BetISN, Master code: Ma-G60755A5A5-Peter, CUR: IDR");
-        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
+        String date = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
 
         log("@Step 1: Go to Bookie Statement >> select currency as IDR to limit the returned data");
         log("@Step 2: Input bookie code as BetISN >> click Show");
@@ -81,7 +81,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 6: Select the date e.g.15/11/2022 >> click Show");
         log("@Step 7: Observe the win/loss of the group");
         SPPPage sppPage = bookieStatementPage.navigatePage(SOCCER,SPP,SPPPage.class);
-        sppPage.filter("Soccer", "Group","Smart Group","QA Smart Master","QA Smart Agent",date,date);
+        sppPage.filter("All", "Group","Smart Group","QA Smart Master","QA Smart Agent",date,date);
         String winloseSPP = sppPage.getRowDataOfGroup(smartGroup).get(sppPage.colWL-1);
 
         log("@verify 1: Validate the win/loss in the Client statement (step 2) matches with the win/loss of the group in the SPP page");
