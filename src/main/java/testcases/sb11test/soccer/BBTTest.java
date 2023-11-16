@@ -29,8 +29,7 @@ public class BBTTest extends BaseCaseAQS {
     @Test(groups = {"regression_qc", "2023.11.30"})
     @Parameters({"password"})
     @TestRails(id = "157")
-    public void BBT_TC_157(String password) throws Exception{
-        String userNameOneRole = "onerole";
+    public void BBT_TC_157(String password, String userNameOneRole) throws Exception{
         log("@title: Validate accounts without permission cannot see the menu");
         log("Precondition: Deactivate BBT option in one role account");
         RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
@@ -49,8 +48,7 @@ public class BBTTest extends BaseCaseAQS {
     @Test(groups = {"regression_qc", "2023.11.30"})
     @Parameters({"password"})
     @TestRails(id = "158")
-    public void BBT_TC_158(String password) throws Exception{
-        String userNameOneRole = "onerole";
+    public void BBT_TC_158(String password, String userNameOneRole) throws Exception{
         String bbtURL = environment.getSbpLoginURL() + "#/aqs-report/bbt";
         log("@title: Validate accounts without permission cannot access page ");
         log("Precondition: Deactivate BBT option in one role account");
@@ -69,8 +67,7 @@ public class BBTTest extends BaseCaseAQS {
     @Test(groups = {"regression_qc", "2023.11.30"})
     @Parameters({"password"})
     @TestRails(id = "159")
-    public void BBT_TC_159(String password) throws Exception{
-        String userNameOneRole = "onerole";
+    public void BBT_TC_159(String password, String userNameOneRole) throws Exception{
         String bbtURL = environment.getSbpLoginURL() + "#/aqs-report/bbt";
         log("@title: Validate accounts with permission can access page ");
         log("Precondition: Account is activated permission 'BBT'");
@@ -341,8 +338,7 @@ public class BBTTest extends BaseCaseAQS {
     @Test(groups = {"regression", "2023.11.30"})
     @Parameters({"password"})
     @TestRails(id = "314")
-    public void BBT_TC_314(String password) throws Exception{
-        String userNameOneRole = "onerole";
+    public void BBT_TC_314(String password, String userNameOneRole) throws Exception{
         log("@title: Validate can open 'Last 12 Days Performance' with correct values although SPP permission is OFF");
         log("Precondition: Account is activated permission 'BBT' and is deactivated 'SPP' permission");
         RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);

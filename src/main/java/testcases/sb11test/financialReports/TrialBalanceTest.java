@@ -37,8 +37,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
     @TestRails(id = "2779")
     @Test(groups = {"regression", "2023.11.30"})
     @Parameters({"password"})
-    public void Trial_Balance_C2779(String password) throws Exception {
-        String userNameOneRole = "onerole";
+    public void Trial_Balance_C2779(String password, String userNameOneRole) throws Exception {
         log("@title: Validate user can not access Trial Balance page when having no permission");
         log("Precondition: Deactivate Trial Balance option in one role account");
         RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);

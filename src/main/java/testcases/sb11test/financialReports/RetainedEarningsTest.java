@@ -29,8 +29,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     @TestRails(id = "2815")
     @Test(groups = {"smoke_qc", "2023.10.31"})
     @Parameters({"password"})
-    public void Retained_Earnings_TC2815(String password) throws Exception {
-        String userNameOneRole = "onerole";
+    public void Retained_Earnings_TC2815(String password, String userNameOneRole) throws Exception {
         log("@title: Validate 'Retained Earnings' menu is hidden if not active Retained Earnings permission");
         log("Precondition: Deactivate Retained Earnings option in one role account");
         RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
