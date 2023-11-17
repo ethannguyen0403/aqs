@@ -85,8 +85,8 @@ public class BetSettlementTest extends BaseCaseAQS {
                 "\n");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
-        String date = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
@@ -130,94 +130,45 @@ public class BetSettlementTest extends BaseCaseAQS {
 
     @TestRails(id="203")
     @Test(groups = {"smoke"})
-    @Parameters({"accountCode","accountCurrency"})
-    public void BetSettlement_TC203(String accountCode,String accountCurrency){
+    @Parameters({"accountCode"})
+    public void BetSettlement_TC203(String accountCode) throws IOException {
         log("@title: Validate that user can export file successfully");
         log("Precondition: User has permission to access Bet Settlement page \n" +
                 "Having an account with Confirmed bet settle Win/Lose");
         String dowloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "Bet_Settlement.xlsx";
-        String sport="Soccer";
-        String companyUnit = "Kastraki Limited";
-
-        String date = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
-                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType("HDP")
-                .stage("FT")
-                .selection(eventInfo.getHome())
-                .event(eventInfo)
-                .build();
-        lstOrder.add(order);
-        soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
-        order = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder).get(0);
-
-        ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,date,accountCode);
-        confirmBetsPage.confirmBet(order);
-
         log("@Step 2:Navigate to Trading > Bet Settlement > Search bet of the account at precondition in Confirmed mode");
-        BetSettlementPage betSettlementPage  = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed",date,date,"",accountCode);
+        BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed","","","",accountCode);
+        String order =betSettlementPage.getOrderIndex(1);
 
         log("@Step 3.Select the bet and click Export Selected Bet (s) > observe");
-        betSettlementPage.exportSelectedBEt(order);
-
-        log("@Verify: User can export file successfully with exported file name: Bet_Settlement");
-        Assert.assertTrue(FileUtils.doesFileNameExist(dowloadPath), "Failed to download Expected document");
-
-        log("@Post-condition: delete download file");
+        betSettlementPage.exportSelectedOrderID(order);
         try {
+        log("@Verify: User can export file successfully with exported file name: Bet_Settlement");
+        Assert.assertTrue(FileUtils.doesFileNameExist(dowloadPath), "Failed to download Expected document "+ dowloadPath);
+        } finally {
+            log("@Post-condition: delete download file");
+
             FileUtils.removeFile(dowloadPath);
-        } catch (IOException e) {
-            log(e.getMessage());
         }
-        log("@Post-condition: delete confirm bet");
-        betSettlementPage.deleteOrder(order);
         log("INFO: Executed completely");
     }
 
     @TestRails(id="204")
     @Test(groups = {"smoke"})
-    @Parameters({"accountCode","accountCurrency"})
-    public void BetSettlement_TC204(String accountCode,String accountCurrency){
+    @Parameters({"accountCode"})
+    public void BetSettlement_TC204(String accountCode){
         log("@title: Validate that user can send Bets List email successfully");
         log("Precondition: User has permission to access Bet Settlement page \n" +
                 "Having an account with Confirmed bet settle Win/Lose and configuring with email in Address Book");
-        String sport="Soccer";
-        String companyUnit = "Kastraki Limited";
-        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
-                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType("HDP")
-                .stage("FT")
-                .selection(eventInfo.getHome())
-                .event(eventInfo)
-                .build();
-        lstOrder.add(order);
-        soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
-        order = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder).get(0);
-
-        ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,"",accountCode);
-        confirmBetsPage.confirmBet(order);
 
         log("@Step 2:Navigate to Trading > Bet Settlement > Search bet of the account at precondition in Confirmed mode");
-        BetSettlementPage betSettlementPage  = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed",date,"","",accountCode);
+        BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed","","","",accountCode);
+        String orderID =betSettlementPage.getOrderIndex(1);
+        Order order = new Order.Builder()
+                .betId(orderID)
+                .build();
 
         log("@Step 3.Select the bet and click Send Bet List Email > observe");
         betSettlementPage.sendBetListEmail(order);
@@ -227,8 +178,6 @@ public class BetSettlementTest extends BaseCaseAQS {
         Assert.assertTrue(expectedMessage.contains("Statement Email has been sent to your mail box"),
                 "Failed! Success message after place bet is incorrect Actual is "+ expectedMessage);
 
-        log("@Post-condition: delete confirm bet");
-        betSettlementPage.deleteOrder(order);
         log("INFO: Executed completely");
     }
     @TestRails(id="205")
@@ -240,8 +189,9 @@ public class BetSettlementTest extends BaseCaseAQS {
                 "The account is configured with email in Address Book");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
-        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
+        String fromDate = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT +7"));
+        String date = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT +7"));
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
@@ -258,20 +208,18 @@ public class BetSettlementTest extends BaseCaseAQS {
         lstOrder.add(order);
         soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
         order = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder).get(0);
-
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
         confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,"",accountCode);
         confirmBetsPage.confirmBet(order);
 
         log("@Step 2: Navigate to Trading > Bet Settlement and search bet of the account at precondition in Confirmed mode");
-        BetSettlementPage betSettlementPage  = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed",date,"","",accountCode);
+        BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed",fromDate,date,"",accountCode);
 
         log("@Step 3. Select the bet and click Settle & Send Settlement Email button > Yes and observe message");
         log("@Step 4: Switch to Settled mode and search bet of the account then observe list result");
         betSettlementPage.settleAndSendSettlementEmail(order);
         List<String> listSuccessMessage = betSettlementPage.getListSuccessMessage();
-
 
         log("@Verify 1 .Successfully message displays with 2 popup:\n" +
                 "Bet(s) is settled successfully.\n" +
@@ -280,7 +228,7 @@ public class BetSettlementTest extends BaseCaseAQS {
                 "Failed! List Success message after Settle & Send Settlement Email bet is incorrect. Actual: " + listSuccessMessage + "\n");
 
         log("Verify 2. The bet settled displays in result list");
-        betSettlementPage.filter("Settled",date,date,"",accountCode);
+        betSettlementPage.filter("Settled",fromDate,date,"",accountCode);
         betSettlementPage.verifyOrderInfo(order);
         log("INFO: Executed completely");
     }
@@ -294,7 +242,7 @@ public class BetSettlementTest extends BaseCaseAQS {
                 "The account is configured with email in Address Book");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
-        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
+        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);

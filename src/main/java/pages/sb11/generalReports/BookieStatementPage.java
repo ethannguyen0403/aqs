@@ -38,7 +38,7 @@ public class BookieStatementPage extends WelcomePage {
     DropDownBox ddpAgentType = DropDownBox.xpath("//app-bookie-statement//div[contains(@class,'agent-type')]//select");
     TextBox txtFromDate = TextBox.xpath("//app-bookie-statement//div[contains(@class,'form-date')]//input");
     TextBox txtToDate = TextBox.xpath("//app-bookie-statement//div[contains(@class,'to-date')]//input");
-    TextBox txtBookieCode = TextBox.xpath("//app-bookie-statement//div[contains(@class,'bookie-code')]//input");
+    public TextBox txtBookieCode = TextBox.xpath("//app-bookie-statement//div[contains(@class,'bookie-code')]//input");
     DropDownBox ddpCurrency = DropDownBox.xpath("//app-bookie-statement//div[text()='Currency']//following::select[1]");
     Button btnShow = Button.xpath("//app-bookie-statement//button[contains(@class,'btn-show')]");
     DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
@@ -78,7 +78,8 @@ public class BookieStatementPage extends WelcomePage {
                 dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         if(!bookieCode.isEmpty()) {
             txtBookieCode.sendKeys(bookieCode);
-            Thread.sleep(1000);
+            //sleep to waiting for table
+            Thread.sleep(2000);
             searchIcon.click();
             waitSpinnerDisappeared();
             btnConfirmShowBookie.click();

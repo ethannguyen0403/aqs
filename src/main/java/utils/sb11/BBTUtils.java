@@ -12,7 +12,7 @@ import static testcases.BaseCaseAQS.environment;
 
 public class BBTUtils {
 
-    private static JSONObject getAvailableLeaguesJson(String companyId, String sportId, String reportType, String fromDate, String toDate) {
+    public static JSONObject getAvailableLeaguesJson(String companyId, String sportId, String reportType, String fromDate, String toDate) {
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
         Map<String, String> headersParam = new HashMap<String, String>() {
             {
@@ -48,5 +48,7 @@ public class BBTUtils {
         }
         return lstLeagues;
     }
+
+
 
 }

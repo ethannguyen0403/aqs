@@ -34,6 +34,7 @@ public class WorkflowSettingsPage extends WelcomePage {
 
     public WorkFLowViewPopup viewLinkInvoice(int index) {
         tblWorkflow.getControlOfCell(1, colView, index, null).click();
+        waitSpinnerDisappeared();
         return new WorkFLowViewPopup();
     }
 

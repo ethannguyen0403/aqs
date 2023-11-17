@@ -2,6 +2,7 @@ package pages.sb11.trading;
 
 import com.paltech.element.common.*;
 import com.paltech.utils.DateUtils;
+import common.SBPConstants;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Order;
@@ -64,7 +65,7 @@ public class BetSettlementPage extends WelcomePage {
      * @param toDate
      * @param accountCode
      */
-    public void filter(String status, String fromDate, String toDate, String accStartWith, String accountCode){
+    public void filter(String status, String fromDate, String toDate, String accStartWith, String accountCode) {
         btnLogout.moveToTheControl();
         ddbStatus.selectByVisibleText(status);
        if(!fromDate.isEmpty())
@@ -90,8 +91,25 @@ public class BetSettlementPage extends WelcomePage {
 
         }
         txtAccountCode.sendKeys(accountCode);
+
+        //add more 1 minute wait the report loaded
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         btnSearch.click();
         waitPageLoad();
+    }
+
+    /**
+     * Get order ID as expected row index
+     * @param rowIndex
+     * @return
+     */
+    public String getOrderIndex(int rowIndex){
+        Label lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1,colBRBettrefId,rowIndex,"span[2]"));
+        return lblOrderID.getText();
     }
 
     /**
@@ -117,7 +135,11 @@ public class BetSettlementPage extends WelcomePage {
     }
 
     private void selectOrder(Order order){
-        int rowIndex = getOrderIndex(order.getBetId());
+        selectRowByOrderID(order.getBetId());
+
+    }
+    public void selectRowByOrderID(String order){
+        int rowIndex = getOrderIndex(order);
         CheckBox cb = CheckBox.xpath(tblOrder.getxPathOfCell(1, colSelect, rowIndex, "input"));
         cb.scrollToThisControl(false);
         if(!cb.isSelected()){
@@ -125,11 +147,15 @@ public class BetSettlementPage extends WelcomePage {
         }
     }
 
+
     private void fillWinLose(Order order) {
         int rowIndex = getOrderIndex(order.getBetId());
         TextBox winLose = TextBox.xpath(tblOrder.getxPathOfCell(1, colWinLoss, rowIndex, "input"));
         try {
-            winLose.waitForElementToBePresent(winLose.getLocator(), 2).sendKeys("" + order.getRequireStake());
+            winLose.waitForElementToBePresent(winLose.getLocator(), 2);
+            if (winLose.getAttribute("value").isEmpty()){
+                winLose.sendKeys("" + order.getRequireStake());
+            }
             System.out.println("Fill win/lose");
         } catch (Exception e) {
             System.out.println("Win/lose field already has value");
@@ -161,8 +187,9 @@ public class BetSettlementPage extends WelcomePage {
     }
 
     public String getWinlossAmountofOrder(Order order)  {
+        btnSearch.click();
         int rowindex = getOrderIndex(order.getBetId());
-        String winloss = tblOrder.getControlOfCell(1, colWinLoss,rowindex,null).getText();
+        String winloss = tblOrder.getControlOfCell(1, colWinLoss,rowindex,"input").getAttribute("value");
         if(winloss.equals("")){
             //wait for the bet is settled in 3s
             try {
@@ -213,8 +240,9 @@ public class BetSettlementPage extends WelcomePage {
         }else {
             expectedBetType = "MB";
         }
-
-        Assert.assertEquals(hdp,expectedHDP, "Failed! HDP at row "+rowindex+" is incorrect");
+        if (!SBPConstants.CRICKET_MARKET_TYPE_NO_LIVE.contains(order.getMarketType())){
+            Assert.assertEquals(hdp,expectedHDP, "Failed! HDP at row "+rowindex+" is incorrect");
+        }
         Assert.assertEquals(odds,String.format("%.3f (%s)", order.getPrice(),order.getOddType()), "Failed! Odds at row "+rowindex+" is incorrect");
         Assert.assertEquals(stake,String.format("%.2f", order.getRequireStake()), "Failed! Stake at row "+rowindex+" is incorrect");
         //Assert.assertEquals(winloss,"", "Failed!  Win loss at row "+rowindex+" is incorrect");
@@ -234,10 +262,6 @@ public class BetSettlementPage extends WelcomePage {
     }
 
     public void settleAndSendSettlementEmail(Order order){
-        try {
-            Thread.sleep(8000); //hard code sleep action for waiting report to generate Win/Lose
-            btnSearch.click();
-            waitSpinnerDisappeared();
             selectOrder(order);
             fillWinLose(order);
             btnSettleSendSettlementEmail.scrollToTop();
@@ -245,9 +269,6 @@ public class BetSettlementPage extends WelcomePage {
             waitSpinnerDisappeared();
             ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
             confirmPopupControl.confirmYes();
-        } catch (InterruptedException e) {
-            System.out.println("Failed! Win/Lose data is not shown!");
-        }
     }
 
     public void sendBetListEmail(Order order) {
@@ -265,6 +286,11 @@ public class BetSettlementPage extends WelcomePage {
         } catch (InterruptedException e) {
             System.out.println("Failed! Win/Lose data is not shown!");
         }
+    }
+    public void exportSelectedOrderID(String order){
+        selectRowByOrderID(order);
+        btnExportSelectedBet.scrollToTop();
+        btnExportSelectedBet.click();
     }
     public void exportSelectedBEt(Order order){
         selectOrder(order);

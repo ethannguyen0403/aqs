@@ -122,12 +122,25 @@ public class SBPConstants {
     public final static List<String> MONTH_NAME_LIST = Arrays.asList("January","February","March","April","May","June","July","August","September","October", "November", "December");
     public final static String GMT_7 = "GMT +7";
     public final static String BALANCE_SHEET = "Balance Sheet";
+    public final static List<String> CRICKET_MARKET_TYPE_NO_LIVE =  Arrays.asList("1x2","DNB","OE","OU");
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
         {
             put("1X2", "Match Betting");
             put("Match-HDP", "Match Handicap");
             put("OU", "Over/Under");
+            put("OE", "Odd/Even");
+            put("DNB", "DrawNoBet");
+
+        }
+    };
+    public static final Map<String, String> CRICKET_BET_TYPE_LIST= new HashMap<String, String>()
+    {
+        {
+            put("1x2", "1x2");
+            put("Match-HDP", "Match HDP");
+            put("OU", "Over Under");
+            put("OE", "Odd Even");
             put("DNB", "DrawNoBet");
 
         }
@@ -218,6 +231,7 @@ public class SBPConstants {
     public static class ResultEntry{
         public final static List<String> RESULT_SOCCER_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "HT Score", "FT Score", "HT Corner", "FT Corner", "HT Card", "FT Card");
         public final static List<String> RESULT_CRICKET_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "Team To Bat First", "Home Team", "Away Team", "IsHdp FB", "Runs", "Wtks", "Runs", "Wtks");
+        public final static List<String> RESULT_TYPE = Arrays.asList("NotSet","Home Win","Away Win", "Draw");
 
     }
 
@@ -318,7 +332,11 @@ public class SBPConstants {
 
     public static class BBTPage{
         public final static List<String> SMART_TYPE_LIST = Arrays.asList("Group","Master","Agent");
+        public final static List<String> STAKE_LIST = Arrays.asList("All","Above 1K","Above 10K","Above 50K","Above 150K");
         public final static List<String> REPORT_TYPE_LIST = Arrays.asList("Pending Bets","Settled Bets");
+        public final static List<String> SOCCER_BET_TYPES_LIST = Arrays.asList("FT-1x2", "HT-OU", "FT-OU", "FT-HDP", "HT-HDP");
+        public final static String ALERT_MESSAGE = "Date range should not be more than 7 days";
+        public final static List<String> LIVE_STATUS_LIST = Arrays.asList("[All]","Live","Non-Live");
     }
 
     public static class BBGPage{

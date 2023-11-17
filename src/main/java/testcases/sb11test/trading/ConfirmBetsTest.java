@@ -554,7 +554,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("@Step 3: Select status as Settled");
         betSettlementPage.filter("Settled", date, todate ,"", accountCode);
 
-        log("@Veirfy 1 : Validate the bet displays with the updated values");
+        log("@Verify 1 : Validate the bet displays with the updated values");
         betSettlementPage.verifyOrderInfo(order);
 
         log("INFO: Executed completely");

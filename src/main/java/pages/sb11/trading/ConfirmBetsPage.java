@@ -3,6 +3,7 @@ package pages.sb11.trading;
 import com.paltech.driver.DriverManager;
 import com.paltech.element.common.*;
 import com.paltech.utils.DateUtils;
+import common.SBPConstants;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Order;
@@ -190,14 +191,16 @@ public class ConfirmBetsPage extends WelcomePage {
         String bt =tblOrder.getControlOfCell(1, colBT, orderIndex, null).getText().trim();
         String trad=tblOrder.getControlOfCell(1, colTra, orderIndex, null).getText().trim();
         String hdp="";
-        if(order.getSport().equalsIgnoreCase("Cricket")){
+        if(order.getSport().equalsIgnoreCase("Cricket") && order.getMarketType().equalsIgnoreCase("Match-HDP")){
             String handicapWtks = TextBox.xpath(tblOrder.getxPathOfCell(1, colHdp, orderIndex, "input[1]")).getAttribute("value").trim();
             String handicapRuns = TextBox.xpath(tblOrder.getxPathOfCell(1, colHdp, orderIndex, "input[2]")).getAttribute("value").trim();
             String live = Label.xpath(tblOrder.getxPathOfCell(1, colLive, orderIndex, "input[1]")).getText().trim();
             Assert.assertEquals(handicapWtks, String.format("%s",order.getHandicapWtks()), "Failed!HDP Handicap Wtks is incorrect");
             Assert.assertEquals(handicapRuns, String.format("%s",order.getHandicapRuns()), "Failed!HDP Handicap Runs is incorrect");
             Assert.assertEquals(live, "", "Failed! Live is incorrect");
-        }else {
+        } else if (order.getSport().equalsIgnoreCase("Cricket") && SBPConstants.CRICKET_MARKET_TYPE_NO_LIVE.contains(order.getMarketType())){
+            System.out.println("Market Type is: "+ order.getMarketType());
+        } else {
             hdp = DropDownBox.xpath(tblOrder.getxPathOfCell(1, colHdp, orderIndex, "select")).getFirstSelectedOption().trim();
             String liveHomeScore = TextBox.xpath(tblOrder.getxPathOfCell(1, colLive, orderIndex, "input[1]")).getAttribute("value").trim();
             String liveAwayScore =  TextBox.xpath(tblOrder.getxPathOfCell(1, colLive, orderIndex, "input[2]")).getAttribute("value").trim();
@@ -212,6 +215,7 @@ public class ConfirmBetsPage extends WelcomePage {
             Assert.assertEquals(liveAwayScore,String.format("%d", order.getLiveAwayScore()), "Failed! Away live score is incorrect");}
         }
         Assert.assertEquals(league, order.getEvent().getLeagueName(), "Failed! Selection is incorrect");
+
         if(order.getBetId()=="Manual Bet"){
             Assert.assertEquals(eventName,order.getEvent().getHome(), "Failed! Event name is incorrect");
             selection =  TextBox.xpath(tblOrder.getxPathOfCell(1, colSelection, orderIndex, "input")).getAttribute("value");
@@ -249,6 +253,7 @@ public class ConfirmBetsPage extends WelcomePage {
         Assert.assertEquals(dateEvent, dateconvert, "Failed! Event date is incorrect");
        Assert.assertEquals(country, "country of league", "Failed! Country is incorrect");*/
     }
+
 
     /**
      * Select an order then click on Confirm Bet button
@@ -306,7 +311,7 @@ public class ConfirmBetsPage extends WelcomePage {
      */
     public void deleteOrder(Order order, boolean isPending){
         int rowIndex =getOrderIndex(order.getBetId());
-        Icon.xpath(tblOrder.getxPathOfCell(1,defineDeleteColIndex(isPending),rowIndex,"i")).click();
+        Icon.xpath(tblOrder.getxPathOfCell(1,defineDeleteColIndex(isPending),rowIndex,"i")).jsClick();
         ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
         confirmPopupControl.confirmYes();
         waitPageLoad();
@@ -403,4 +408,5 @@ public class ConfirmBetsPage extends WelcomePage {
         }
         return true;
     }
+
 }

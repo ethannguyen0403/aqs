@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="AQS_STG_Smoke" verbose="1">
+<suite name="ISA_SB11_STG_Smoke" verbose="1">
     <listeners>
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
     <test name="SB11 STG Smoke">
         <parameter name='browser' value='window10.local.chrome'/>
-        <parameter name='env' value='stg'/>
+        <parameter name='env' value='pro'/>
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
@@ -28,16 +28,11 @@
         <groups>
             <run>
                 <include name="smoke" />
-                <include name="smoke_qc" /><!--For test case only run on QAT and STG-->
             </run>
         </groups>
 
         <classes>
-
-            <class name="testcases.sb11test.sport.EventScheduleTest"/>
             <class name="testcases.sb11test.trading.BetSettlementTest"/>
-            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
-            <class name="testcases.sb11test.trading.BetEntryTest"/>
         </classes>
     </test>
 </suite>

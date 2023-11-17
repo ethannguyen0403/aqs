@@ -55,6 +55,7 @@ public class LedgerStatementPage extends WelcomePage {
     public String getTitlePage () {return lblTitle.getText().trim();}
 
     public void showLedger (String companyUnit, String financialYear, String accountType, String ledgerGroup, String fromDate, String toDate,String report){
+        btnShow.moveAndHoverOnControl();
         if (!companyUnit.isEmpty())
             ddCompanyUnit.selectByVisibleText(companyUnit);
         if (!financialYear.isEmpty())
@@ -125,11 +126,11 @@ public class LedgerStatementPage extends WelcomePage {
         // TODO: Johnny Use API to get OP Rate of according currency instead of init data in Constant class
         String ledgerAccount = tbLedger.getControlOfCell(1, colLedger, rowIndex, null).getText().trim();
         String cur = tbLedger.getControlOfCell(1, colCur, rowIndex, null).getText().trim();
-        String amountORG = tbLedger.getControlOfCell(1, colAmountORG, rowIndex, null).getText().trim();
-        String amountGBP = tbLedger.getControlOfCell(1, colAmountGBP, rowIndex, null).getText().trim();
-        String runBalORG = tbLedger.getControlOfCell(1, colRunBalORG,rowIndex,null).getText().trim();
-        String runBalCTORG = tbLedger.getControlOfCell(1,colRunBalCTORG,rowIndex,null).getText().trim();
-        String runBalGBP = tbLedger.getControlOfCell(1, colRunBalGBP,rowIndex,null).getText().trim();
+        String amountORG = tbLedger.getControlOfCell(1, colAmountORG, rowIndex, null).getText().trim().replace(",","");
+        String amountGBP = tbLedger.getControlOfCell(1, colAmountGBP, rowIndex, null).getText().trim().replace(",","");
+        String runBalORG = tbLedger.getControlOfCell(1, colRunBalORG,rowIndex,null).getText().trim().replace(",","");
+        String runBalCTORG = tbLedger.getControlOfCell(1,colRunBalCTORG,rowIndex,null).getText().trim().replace(",","");
+        String runBalGBP = tbLedger.getControlOfCell(1, colRunBalGBP,rowIndex,null).getText().trim().replace(",","");
 
         if (isDebit){
             double curDebitRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1",transaction.getLedgerDebitCur()));

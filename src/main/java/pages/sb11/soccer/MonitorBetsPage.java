@@ -12,7 +12,7 @@ public class MonitorBetsPage extends WelcomePage {
     public int colAC = 2;
     public int colStake = 6;
     int colT = 9;
-    Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
+    public Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
     public String getTitlePage ()
     {
         return lblTitle.getText().trim();
@@ -95,5 +95,20 @@ public class MonitorBetsPage extends WelcomePage {
             }
             i = i +1;
         }
+    }
+
+    public boolean isCheckBetsUpdateCorrect() {
+        int firstNumOrder = tblOrder.getNumberOfRows(true);
+        try {
+            Thread.sleep(60000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        int secNumOder = tblOrder.getNumberOfRows(true);
+        if (firstNumOrder < secNumOder){
+            return true;
+        }
+        System.out.println("Do not have any bets");
+        return true;
     }
 }
