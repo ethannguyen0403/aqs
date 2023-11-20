@@ -37,7 +37,7 @@ public class ChartOfAccountPage extends WelcomePage {
     public Table tbSubAcc = Table.xpath("//span[contains(text(),'Sub')]//following::table[1]",6);
 
     int colDetailType = 3;
-    int colParentAcc = 2;
+    int colParentAcc = 3;
     int colSubAcc = 3;
     int colDelete = 5;
 
@@ -98,7 +98,7 @@ public class ChartOfAccountPage extends WelcomePage {
     public void deleteDetail(String companyUnit, String detailTypeName){
         filterDetail(companyUnit,detailTypeName);
         int rowIndex = getRowContainsDetailTypeName(detailTypeName);
-        Icon.xpath(tbDetail.getxPathOfCell(1,colDelete,rowIndex+1,"em")).click();
+        Icon.xpath(tbDetail.getxPathOfCell(1,colDelete,rowIndex,"em")).click();
         DeletePopup deletePopup = DeletePopup.xpath("//app-confirm");
         deletePopup.confirmYes();
         waitPageLoad();
@@ -106,7 +106,7 @@ public class ChartOfAccountPage extends WelcomePage {
 
     public void deleteParent(String companyUnit, String detailTypeName, String parentAccount){
         filterParent(companyUnit,detailTypeName,parentAccount);
-        int rowIndex =getRowContainsParentAccount(parentAccount);
+        int rowIndex = getRowContainsParentAccount(parentAccount);
         Icon.xpath(tbParent.getxPathOfCell(1,colDelete,rowIndex,"en")).click();
         DeletePopup deletePopup = DeletePopup.xpath("//app-confirm");
         deletePopup.confirmYes();

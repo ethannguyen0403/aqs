@@ -99,6 +99,7 @@ public class MonitorBetsPage extends WelcomePage {
 
     public boolean isCheckBetsUpdateCorrect() {
         int firstNumOrder = tblOrder.getNumberOfRows(true);
+        //Wait for Bets update in Monitor Bets page
         try {
             Thread.sleep(60000);
         } catch (InterruptedException e) {
@@ -111,4 +112,19 @@ public class MonitorBetsPage extends WelcomePage {
         System.out.println("Do not have any bets");
         return true;
     }
+    public boolean isCheckACDisplay(String accountCode){
+        //wait for bet update in Monitor Bets page
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        int indexAC = getACRowIndex(accountCode);
+        if (indexAC == 0){
+            System.err.println("AC "+ accountCode+ " is not display");
+            return false;
+        }
+        return true;
+    }
+
 }
