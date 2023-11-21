@@ -13,6 +13,7 @@ import pages.sb11.soccer.Last12DaysPerformancePage;
 import pages.sb11.soccer.MonitorBetsPage;
 import pages.sb11.soccer.PendingBetsPage;
 import pages.sb11.soccer.PerformanceByMonthPage;
+import pages.sb11.trading.BetEntryPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.AccountSearchUtils;
 import utils.sb11.BetEntrytUtils;
@@ -97,17 +98,58 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.11.30"})
-    @TestRails(id = "54")
-    public void MonitorBetsTC_54() {
-        log("@title: Validate new bets are auto added without refreshing page");
+    @TestRails(id = "132")
+    @Parameters({"accountCurrency"})
+    public void MonitorBetsTC_132(String accountCurrency) {
+        log("@title: Validate normal punters are only shown when filter Normal Punter type");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
-        log("@Pre-condition 2: Punter account is added to a smart group in Trading Smart System Smart Group");
-        log("@Step 1: Navigate to the site");
+        log("@Pre-condition 2: The account is not added to any smart group in Trading Smart System Smart Group");
+        String accNoAdd = "QALKR";
+        log("@Pre-condition 3: The account has placed bet(s)");
+        int dateNo = 0;
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        List<Order> lstOrder = betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",false,true,
+                0.5,2.12,"HK","Back",0,0,5.5,accNoAdd,accountCurrency,"HDP",false,false );
+        log("@Step 1: Login to the site");
         log("@Step 2: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
-        log("@Step 3: Validate when there's a new bet of the punter account come");
-        log("Verify 1: Bet(s) is auto shown on the report without refreshing the page");
-        Assert.assertTrue(monitorBetsPage.isCheckBetsUpdateCorrect(),"FAILED! Bets update incorrect.");
+        MonitorBetsPage monitorBetsPage = betEntryPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        log("@Step 3: Observe the data by the default filters, Punter Type = Smart Punter");
+        monitorBetsPage.ddpPunterType.selectByVisibleText("Smart Punter");
+        monitorBetsPage.btnShow.click();
+        log("Verify 1: Bet(s) of normal punter is not shown when filter Smart Punter");
+        Assert.assertFalse(monitorBetsPage.isCheckACDisplay(accNoAdd),"FAILED! Bet(s) of normal punter is shown when filter Smart Punter");
+        log("@Step 4: Filter Punter Type = Normal Punter and observe the result");
+        monitorBetsPage.ddpPunterType.selectByVisibleText("Normal Punter");
+        monitorBetsPage.btnShow.click();
+        log("Verify 2: Bet(s) of normal punter is shown when filter Normal Punter");
+        Assert.assertTrue(monitorBetsPage.isCheckACDisplay(accNoAdd),"FAILED! Bet(s) of normal punter is shown when filter Normal Punter");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.11.30"})
+    @TestRails(id = "133")
+    @Parameters({"accountCode","accountCurrency"})
+    public void MonitorBetsTC_133(String accountCode, String accountCurrency) {
+        log("@title: Validate smart punter are shown when filter Smart Punter type");
+        log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
+        log("@Pre-condition 2: The account is added to any smart group in Trading Smart System Smart Group");
+        log("@Pre-condition 3: The account has placed bet(s)");
+        int dateNo = 0;
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",false,true,
+                0.5,2.12,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
+        log("@Step 1: Login to the site");
+        log("@Step 2: Access 'Monitor Bets' page");
+        MonitorBetsPage monitorBetsPage = betEntryPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        log("@Step 3: Observe the data by the default filters, Punter Type = Smart Punter");
+        monitorBetsPage.ddpPunterType.selectByVisibleText("Smart Punter");
+        monitorBetsPage.btnShow.click();
+        log("Verify 1: Bet(s) of smart punter is shown when filter Smart Punter");
+        Assert.assertTrue(monitorBetsPage.isCheckACDisplay(accountCode),"FAILED! Bet(s) of smart punter is not shown when filter Smart Punter");
+        log("@Step 4: Filter Punter Type = Normal Punter and observe the result");
+        monitorBetsPage.ddpPunterType.selectByVisibleText("Normal Punter");
+        monitorBetsPage.btnShow.click();
+        log("Verify 2: Bet(s) of smart punter is not shown when filter Normal Punter");
+        Assert.assertFalse(monitorBetsPage.isCheckACDisplay(accountCode),"FAILED! Bet(s) of smart punter is not shown when filter Normal Punter");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression"})
