@@ -39,7 +39,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
 
     @Test(groups = {"regression","2023.11.30"})
     @TestRails(id = "50")
-    @Parameters({"password"})
+    @Parameters({"password", "userNameOneRole"})
     public void MonitorBetsTC_50(String password, String userNameOneRole) throws Exception {
         log("@title: Validate accounts without permission cannot see the 'Monitor Bets' menu");
         log("@Pre-condition: Account is inactivated permission 'Monitor Bets'");
@@ -54,7 +54,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.11.30"})
     @TestRails(id = "51")
-    @Parameters({"password"})
+    @Parameters({"password", "userNameOneRole"})
     public void MonitorBetsTC_51(String password, String userNameOneRole) throws Exception {
         log("@title: Validate accounts without permission cannot access 'Monitor Bets' page");
         String monitorBetsPageUrl = environment.getSbpLoginURL() + "#/aqs-report/monitor-bets";

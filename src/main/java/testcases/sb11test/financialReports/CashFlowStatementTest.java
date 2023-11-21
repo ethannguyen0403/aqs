@@ -65,7 +65,7 @@ public class CashFlowStatementTest extends BaseCaseAQS {
 
     @TestRails(id = "8546")
     @Test(groups = {"regression", "2023.10.31"})
-    @Parameters({"password"})
+    @Parameters({"password", "userNameOneRole"})
     public void Cash_Flow_Statement_TC8546(String password, String userNameOneRole) throws Exception {
         log("@title: Validate can't access Cash Flow Statement page when having no permission");
         log("Precondition: Deactivate Cash Flow Statement option in one role account");

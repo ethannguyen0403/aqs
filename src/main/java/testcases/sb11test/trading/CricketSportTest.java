@@ -1355,7 +1355,7 @@ public class CricketSportTest extends BaseCaseAQS {
     }
     @TestRails(id = "339")
     @Test(groups = {"regression","2023.11.30"})
-    @Parameters({"password"})
+    @Parameters({"password", "userNameOneRole"})
     public void Cricket_Sport_339(String password, String userNameOneRole) throws Exception {
         log("Validate accounts without permission cannot access the Bet Entry page");
         log("@pre-condition: There is an account that has no permission on the Bet Entry page");

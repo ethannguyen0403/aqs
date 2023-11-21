@@ -16,8 +16,8 @@ import utils.sb11.BBTUtils;
 import utils.sb11.BetEntrytUtils;
 import utils.testraildemo.TestRails;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import static common.SBPConstants.*;
 import static common.SBPConstants.BBTPage.*;
@@ -25,9 +25,10 @@ import static common.SBPConstants.BBTPage.*;
 public class BBTTest extends BaseCaseAQS {
     String currentDay = DateUtils.getDate(0, "dd/MM/yyyy", "GMT +8");
     String groupName = "QA Smart Group";
+    String masterName = "QA Smart Master";
 
     @Test(groups = {"regression_qc", "2023.11.30"})
-    @Parameters({"password"})
+    @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "157")
     public void BBT_TC_157(String password, String userNameOneRole) throws Exception{
         log("@title: Validate accounts without permission cannot see the menu");
@@ -46,7 +47,7 @@ public class BBTTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression_qc", "2023.11.30"})
-    @Parameters({"password"})
+    @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "158")
     public void BBT_TC_158(String password, String userNameOneRole) throws Exception{
         String bbtURL = environment.getSbpLoginURL() + "#/aqs-report/bbt";
@@ -65,7 +66,7 @@ public class BBTTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression_qc", "2023.11.30"})
-    @Parameters({"password"})
+    @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "159")
     public void BBT_TC_159(String password, String userNameOneRole) throws Exception{
         String bbtURL = environment.getSbpLoginURL() + "#/aqs-report/bbt";
@@ -85,21 +86,14 @@ public class BBTTest extends BaseCaseAQS {
     @Test(groups = {"regression", "2023.11.30"})
     @TestRails(id = "161")
     public void BBT_TC_161(){
-        log("@title: Validate the filter 'Show Master/Group/Agent' displays accordingly when selected each value in Smart Type list");
+        log("@title: Validate the filter 'Show Masters/Groups/Agents' displays accordingly when selected each value in Smart Type list");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
-        log("@Step 2: Filter with Smart Type dropdown: Group");
-        bbtPage.filter("", "","Group", "", "", "", "","","");
-        log("@Verify 1: Filter Group shows the results");
-        Assert.assertTrue(bbtPage.lblFirstGroupName.isDisplayed() || bbtPage.lblNoRecord.isDisplayed(), "FAILED! There are no results");
-        log("@Step 3: Filter with Smart Type dropdown: Master");
-        bbtPage.filter("", "","Master", "", "", "", "","","");
-        log("@Verify 2: Filter Group shows the results");
-        Assert.assertTrue(bbtPage.lblFirstGroupName.isDisplayed() || bbtPage.lblNoRecord.isDisplayed(), "FAILED! There are no results");
-        log("@Step 4: Filter with Smart Type dropdown: Agent");
-        bbtPage.filter("", "","Agent", "", "", "", "","","");
-        log("@Verify 3: Filter Group shows the results");
-        Assert.assertTrue(bbtPage.lblFirstGroupName.isDisplayed() || bbtPage.lblNoRecord.isDisplayed(), "FAILED! There are no results");
+        log("@Step 1: Select an Smart Type option: Master");
+        bbtPage.ddpSmartType.selectByVisibleText("Master");
+        bbtPage.waitSpinnerDisappeared();
+        log("@Verify 1: The Show Masters link will display");
+        Assert.assertTrue(bbtPage.btnShowMaster.isDisplayed(), "FAILED! Button 'Show Master' is not displayed.");
         log("INFO: Executed completely");
     }
 
@@ -110,27 +104,25 @@ public class BBTTest extends BaseCaseAQS {
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter Pending bets with To day");
-        bbtPage.filter("", "","", "Pending Bets", "", "", "","","");
+        bbtPage.filter("", "","", "Pending Bets", currentDay, currentDay, "","","");
         log("@Verify 1: All events start from 12:00 pm of filtering date GMT+8 to 11:59:59 am tomorrow returns");
-        bbtPage.scrollToShowFullResults();
-        Map<String, List<Integer>> dateTimeEntries = bbtPage.getListTimeEvent();
-        bbtPage.verifyEventTimeDisplayCorrectWithTimeFilterInOneDay(currentDay, dateTimeEntries);
+        List<String> leagueTimeList = bbtPage.getListLeagueTime();
+        Assert.assertTrue(bbtPage.verifyEventTimeDisplayCorrectWithTimeFilter(currentDay, currentDay, leagueTimeList), "FAILED! Event time is not correct");
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression", "2023.11.30"})
     @TestRails(id = "166")
     public void BBT_TC_166() {
+        String fromDate = DateUtils.getDate(-5, "dd/MM/yyyy", "GMT +8");
         log("@title: Validate all events with settled bets that have start time within a filtered date range return when filtering Settled Bets");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter Settled Bets with To day");
-        String fromDate = DateUtils.getDate(-5, "dd/MM/yyyy", "GMT +8");
-        bbtPage.filter("", "", "", "Settled Bets", fromDate, "", "", "", "");
+        bbtPage.filter("", "", "", "Settled Bets", fromDate, currentDay, "", "", "");
         log("@Verify 1: All events start from 12:00 pm of filtering date GMT+8 to 11:59:59 am tomorrow returns");
-        bbtPage.scrollToShowFullResults();
-        Map<String, List<Integer>> dateTimeEntries = bbtPage.getListTimeEvent();
-        bbtPage.verifyEventTimeDisplayCorrectWithTimeFilterInOneDay(fromDate, dateTimeEntries);
+        List<String> leagueTimeList = bbtPage.getListLeagueTime();
+        Assert.assertTrue(bbtPage.verifyEventTimeDisplayCorrectWithTimeFilter(fromDate, currentDay, leagueTimeList), "FAILED! Event time is not correct");
         log("INFO: Executed completely");
     }
 
@@ -145,11 +137,11 @@ public class BBTTest extends BaseCaseAQS {
         log("@Step 2: Select From Date - To Date over 7 dates");
         bbtPage.dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
         log("@Verify 1: Validate alert message appears");
-        Assert.assertTrue(bbtPage.lblAlert.isDisplayed() && bbtPage.lblAlert.getText().contains(ALERT_MESSAGE), "FAILED! The alert message is not displayed.");
+        Assert.assertTrue(bbtPage.alert.getWarningMessage().contains(DATE_RANGE_ALERT_MESSAGE), "FAILED! The alert message is not displayed.");
         log("@Step 3: Click on show button with date ranges over 7 dates");
         bbtPage.btnShow.click();
         log("@Verify: Validate alert message appears");
-        Assert.assertTrue(bbtPage.lblAlert.isDisplayed() && bbtPage.lblAlert.getText().contains(ALERT_MESSAGE), "FAILED! The alert message is not displayed.");
+        Assert.assertTrue(bbtPage.alert.getWarningMessage().contains(DATE_RANGE_ALERT_MESSAGE), "FAILED! The alert message is not displayed.");
         log("INFO: Executed completely");
     }
 
@@ -163,7 +155,6 @@ public class BBTTest extends BaseCaseAQS {
         log("@Step 2: Filter with currency: " + accountCurrency);
         bbtPage.filter("", "", "", "", "", "", "", accountCurrency, "");
         log("@Verify 1: Validate all bets that placed with the currency: " + accountCurrency);
-        bbtPage.scrollToShowFullResults();
         List<String> actualCurList = bbtPage.getCurrencyListOfAllEvents();
         Assert.assertTrue(bbtPage.verifyAllElementOfListAreTheSame(accountCurrency, actualCurList), "FAILED! All bets don't have the same currency");
         log("INFO: Executed completely");
@@ -189,7 +180,6 @@ public class BBTTest extends BaseCaseAQS {
         log("@Step 2: Filter with option Stake: Above 1K");
         bbtPage.filter("", "", "", "", "", "", "Above 1K", "", "");
         log("@Verify 1: All bets that place with stake >= 1K return");
-        bbtPage.scrollToShowFullResults();
         List<String> actualStakeList = bbtPage.getStakeListOfAllEvents();
         Assert.assertTrue(bbtPage.verifyAllStakeCorrectFilter("Above 1K", actualStakeList), "FAILED! There are one or many stakes smaller than 1000");
         log("INFO: Executed completely");
@@ -210,20 +200,18 @@ public class BBTTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression", "2023.11.30"})
-    @TestRails(id = "174")
-    public void BBT_TC_174() {
+    @TestRails(id = "173")
+    public void BBT_TC_173() {
         log("@title: Validate all Masters/Groups/Agents that have bets in the filtered date range displays");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
-        log("@Step 2: Filter with Smart Type: Group, Smart Group: " + groupName);
-        bbtPage.filter("", "", "Group", "", "", "", "", "", "");
-        bbtPage.selectSmartTypeFilter( "Group", groupName);
-        bbtPage.btnShow.click();
+        log("@Step 2: Filter with Smart Type: Master, Master: " + masterName);
+        bbtPage.ddpSmartType.selectByVisibleText("Master");
         bbtPage.waitSpinnerDisappeared();
-        bbtPage.scrollToShowFullResults();
-        log("@Verify 1: All Groups that have bets in the filtered date range displays");
-        List<String> smartGroupName = bbtPage.getSmartGroupName();
-        Assert.assertTrue(bbtPage.verifyAllElementOfListAreTheSame(groupName, smartGroupName), "FAILED! The Shows smart type incorrect with value: " + groupName);
+        log("@Step 3: Click on Show Master link");
+        bbtPage.btnShowMaster.click();
+        log(String.format("@Verify 1: %s filtering option is displayed", masterName ));
+        Assert.assertTrue(bbtPage.isOptionsFilterDisplay(Arrays.asList(masterName)), "FAILED! Show master filter is not contain an option: " + masterName);
         log("INFO: Executed completely");
     }
 
@@ -235,11 +223,8 @@ public class BBTTest extends BaseCaseAQS {
         log("@title: Validate all leagues that have events in filtered date range display");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
-        bbtPage.selectLeaguesFilter(firstLeague);
         log("@Step 2: Filter with selected league: " + firstLeague);
-        bbtPage.btnShow.click();
-        bbtPage.waitSpinnerDisappeared();
-        bbtPage.scrollToShowFullResults();
+        bbtPage.selectLeaguesFilter(firstLeague);
         log("@Verify 1: All leagues: " + firstLeague + " that have events in filtered date range display");
         List<String> leaguesList = bbtPage.getListAllLeaguesName();
         Assert.assertTrue(bbtPage.verifyAllElementOfListAreTheSame(firstLeague, leaguesList), "FAILED! The Leagues filter shows incorrect results");
@@ -267,9 +252,7 @@ public class BBTTest extends BaseCaseAQS {
         log("@title: Validate More Filters contains values: Live, Non Live and All (default)");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
-        log("@Step 2: Filter with default option");
-        bbtPage.filter("", "", "", "", "", "", "", "", "");
-        log("@Step 3: Expand More Filters link");
+        log("@Step 2: Expand More Filters link");
         bbtPage.btnMoreFilter.click();
         log("@Verify 1: Validate Live status contains values: Live, Non Live and All (default)");
         Assert.assertEquals(bbtPage.ddpLiveStatus.getFirstSelectedOption(), LIVE_STATUS_LIST.get(0), "FAILED! Default option was not All");
@@ -308,14 +291,13 @@ public class BBTTest extends BaseCaseAQS {
     @Test(groups = {"regression", "2023.11.30"})
     @TestRails(id = "242")
     public void BBT_TC_242() {
-        String dateAPI = DateUtils.formatDate(currentDay, "dd/MM/yyyy", "yyyy-MM-dd");
         log("@title: Validate the smart group will show under the event home team section or away team section if player of this group placed bets on home/away team");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with default option");
         bbtPage.filter("", "", "", "", "", "", "", "", "");
         log("@Verify 1: The smart group will show under the event home team section or away team section respectively");
-        Assert.assertTrue(bbtPage.verifyGroupNameCorrectPosition(""+0, SPORT_MAP.get(SOCCER), "PENDING", dateAPI + " 12:00:00", dateAPI + " 12:00:00"), "FAILED! The smart group is not correct");
+        Assert.assertTrue(bbtPage.verifyFirstGroupNameUnderTeamName(), "FAILED! The first smart group name is not under the first team name");
         log("INFO: Executed completely");
     }
 
@@ -328,7 +310,6 @@ public class BBTTest extends BaseCaseAQS {
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with default option");
         bbtPage.selectGroupsFilter(smartGroup);
-        bbtPage.filter("", "", "", "", "", "", "", "", "");
         log("@Verify 1: Data table of BBT is correct");
         Assert.assertEquals(bbtPage.lblFirstGroupName.getText().trim(), smartGroup, "FAILED! Smart group name is not correct");
         Assert.assertEquals(bbtPage.lblFirstGroupLast12Day.getText().trim(), "-", "FAILED! T' column is not correct");
@@ -336,7 +317,7 @@ public class BBTTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression", "2023.11.30"})
-    @Parameters({"password"})
+    @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "314")
     public void BBT_TC_314(String password, String userNameOneRole) throws Exception{
         log("@title: Validate can open 'Last 12 Days Performance' with correct values although SPP permission is OFF");

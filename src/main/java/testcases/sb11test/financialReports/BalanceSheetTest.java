@@ -26,7 +26,7 @@ import static common.SBPConstants.*;
 public class BalanceSheetTest extends BaseCaseAQS {
     @Test(groups = {"regression_stg","2023.10.31"})
     @TestRails(id = "2780")
-    @Parameters({"password"})
+    @Parameters({"password", "userNameOneRole"})
     public void Balance_Sheet_2780(String password, String userNameOneRole) throws Exception {
         log("@title: Validate Balance Sheet menu is hidden if not active Balance Sheet permission");
         log("@Pre-condition: Balance Sheet permission is OFF for any account");
