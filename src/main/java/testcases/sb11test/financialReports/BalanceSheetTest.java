@@ -26,14 +26,13 @@ import static common.SBPConstants.*;
 public class BalanceSheetTest extends BaseCaseAQS {
     @Test(groups = {"regression_stg","2023.10.31"})
     @TestRails(id = "2780")
-    @Parameters({"password"})
-    public void Balance_Sheet_2780(String password) throws Exception {
-        String accountNoPermission = "onerole";
+    @Parameters({"password", "userNameOneRole"})
+    public void Balance_Sheet_2780(String password, String userNameOneRole) throws Exception {
         log("@title: Validate Balance Sheet menu is hidden if not active Balance Sheet permission");
         log("@Pre-condition: Balance Sheet permission is OFF for any account");
         log("@Step 1: Login by account at precondition");
         LoginPage loginPage = welcomePage.logout();
-        loginPage.login(accountNoPermission,StringUtils.decrypt(password));
+        loginPage.login(userNameOneRole,StringUtils.decrypt(password));
         log("@Step 2: Expand Financial Reports");
         log("@Verify 1: Balance Sheet menu does not display");
         Assert.assertFalse(welcomePage.isPageDisplayCorrect(FINANCIAL_REPORTS,BALANCE_SHEET),"FAILED! Balance Sheet displayed incorrect!");

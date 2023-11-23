@@ -1355,14 +1355,13 @@ public class CricketSportTest extends BaseCaseAQS {
     }
     @TestRails(id = "339")
     @Test(groups = {"regression","2023.11.30"})
-    @Parameters({"password"})
-    public void Cricket_Sport_339(String password) throws Exception {
-        String accountNoPermission = "onerole";
+    @Parameters({"password", "userNameOneRole"})
+    public void Cricket_Sport_339(String password, String userNameOneRole) throws Exception {
         log("Validate accounts without permission cannot access the Bet Entry page");
         log("@pre-condition: There is an account that has no permission on the Bet Entry page");
         log("@Step 1: Login to SB11 >> select Trading menu");
         LoginPage loginPage = welcomePage.logout();
-        loginPage.login(accountNoPermission, StringUtils.decrypt(password));
+        loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         log("Verify 1: The Bet Entry page does not exsist");
         List<String> lstSubMenu = welcomePage.headerMenuControl.getListSubMenu();
         Assert.assertFalse(lstSubMenu.contains(BET_ENTRY),"FAILED! Bet Entry displayed incorrect!");

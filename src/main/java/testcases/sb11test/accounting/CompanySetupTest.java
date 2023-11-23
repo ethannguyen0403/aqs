@@ -49,8 +49,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     @TestRails(id = "4332")
     @Test(groups = {"regression", "2023.10.31"})
     @Parameters({"password"})
-    public void Company_Set_up_TC4332(String password) throws Exception{
-        String userNameOneRole = "onerole";
+    public void Company_Set_up_TC4332(String password, String usernameOneRole) throws Exception{
         log("@title: Validate accounts without permission cannot see the menu");
         log("@Precondition: Deactivate Company Set-up option in one role account");
         RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
@@ -58,7 +57,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         roleManagementPage.switchPermissions(JOURNAL_ENTRIES, true);
         log("@Step 1: Re-login with one role account account has 'Company Set-up' permission is OFF");
         LoginPage loginPage = roleManagementPage.logout();
-        loginPage.login(userNameOneRole, StringUtils.decrypt(password));
+        loginPage.login(usernameOneRole, StringUtils.decrypt(password));
         JournalEntries retainedEarningsPage =
                 welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntries.class);
         log("@Verify 1: Company Set-up menu is hidden displays");
@@ -70,8 +69,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     @TestRails(id = "4333")
     @Test(groups = {"regression", "2023.10.31"})
     @Parameters({"password"})
-    public void Company_Set_up_TC4333(String password) throws Exception{
-        String userNameOneRole = "onerole";
+    public void Company_Set_up_TC4333(String password, String usernameOneRole) throws Exception{
         String companyURL = environment.getSbpLoginURL() + "#/aqs-report/company-set-up";
         log("@title: Validate accounts without permission cannot access page by external link");
         log("@Precondition: Deactivate Company Set-up option in one role account");
@@ -79,7 +77,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         roleManagementPage.selectRole("one role").switchPermissions("Company Set-up", false);
         log("@Step 1: Re-login with one role account account has 'Company Set-up' permission is OFF");
         LoginPage loginPage = roleManagementPage.logout();
-        loginPage.login(userNameOneRole, StringUtils.decrypt(password));
+        loginPage.login(usernameOneRole, StringUtils.decrypt(password));
         log("@Verify 1: Company Set-up menu can not access by external link: " + companyURL);
         DriverManager.getDriver().get(companyURL);
         Assert.assertFalse(new CompanySetupPage().lblTitle.isDisplayed(), "FAILED! Company Set-up page can access by external link");
@@ -89,9 +87,8 @@ public class CompanySetupTest extends BaseCaseAQS {
 
     @TestRails(id = "4334")
     @Test(groups = {"regression", "2023.10.31"})
-    @Parameters({"password"})
-    public void Company_Set_up_TC4334(String password) throws Exception{
-        String userNameOneRole = "onerole";
+    @Parameters({"password", "userNameOneRole"})
+    public void Company_Set_up_TC4334(String password, String userNameOneRole) throws Exception{
         log("@title: Validate accounts with permission can access page");
         log("@Precondition: Active Company Set-up option in one role account");
         RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
