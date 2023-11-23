@@ -253,4 +253,24 @@ public class SPPTest extends BaseCaseAQS {
         Assert.assertEquals(leaguePerformancePage.getTableHeaderInRange(), smartGroup + " - League Performance for " + creatDate + " To " + creatDate);
         log("INFO: Executed completely");
     }
+
+    @Test(groups = {"regression", "2023.11.30"})
+    @TestRails(id = "2796")
+    @Parameters({"smartGroup","accountCurrency"})
+    public void SPP_TC_2796(String smartGroup, String accountCurrency){
+        log("@title: Validate the total bets of Cricket Manual Bets will display at MB column");
+        String fromDate = DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Soccer > SPP");
+        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+        log("@Step 3: Filter with Cricket sport");
+        sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", fromDate, "");
+        log("@Step 4: Click on any data at MP column");
+        PerformanceByMonthPage performanceByMonthPage = sppPage.openPerfByMonth(smartGroup);
+        log("Validate Performance By Month is displayed correctly title");
+        Assert.assertTrue(performanceByMonthPage.getTitlePage().contains("Performance By Month"), "Failed! Performance By Month page is not displayed");
+        log("Validate group code name is displayed correctly on header with format");
+        Assert.assertEquals(performanceByMonthPage.getTableHeader(), smartGroup + " - " + accountCurrency + " - Last 12 Month Performance");
+        log("INFO: Executed completely");
+    }
 }

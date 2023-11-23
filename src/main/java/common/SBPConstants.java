@@ -46,6 +46,7 @@ public class SBPConstants {
     public final static String CLIENT_BALANCE = "Client Balance";
     public final static String BOOKIE_BALANCE = "Bookie Balance";
     public final static String BOOKIE_STATEMENT = "Bookie Statement";
+    public final static String CLOSING_JOURNAL_ENTRIES = "Closing Journal Entries";
     public final static String JOURNAL_ENTRIES = "Journal Entries";
     public final static String JOURNAL_REPORTS = "Journal Reports";
     public final static String SMART_SYSTEM = "Smart System";
@@ -335,7 +336,7 @@ public class SBPConstants {
         public final static List<String> STAKE_LIST = Arrays.asList("All","Above 1K","Above 10K","Above 50K","Above 150K");
         public final static List<String> REPORT_TYPE_LIST = Arrays.asList("Pending Bets","Settled Bets");
         public final static List<String> SOCCER_BET_TYPES_LIST = Arrays.asList("FT-1x2", "HT-OU", "FT-OU", "FT-HDP", "HT-HDP");
-        public final static String ALERT_MESSAGE = "Date range should not be more than 7 days";
+        public final static String DATE_RANGE_ALERT_MESSAGE = "Date range should not be more than 7 days";
         public final static List<String> LIVE_STATUS_LIST = Arrays.asList("[All]","Live","Non-Live");
     }
 
@@ -366,6 +367,8 @@ public class SBPConstants {
         public final static List<String> CURRENCY_LIST = Arrays.asList("[All]","AED","AUD","CAD","CNY","EUR","GBP","HKD","IDR","INR","JPY","KPW","KRW","LKR","MYR","PHP","PKR","SGD","THB","TWD","USD","VND","ZAR");
         public final static List<String> TRANSACTION_TYPE_LIST = Arrays.asList("[Choose One]","Payment Bookie","Payment Client","Payment Feed","Payment Operational","Payment Other","Payment Provider",
                 "Received Bookie","Received Client","Received Comm/Rebate","Received Dividend/Share","Received Feed","Received Other","Contra Bookie","Contra Client","Contra Bookie Client","Contra CUR");
+        public final static String MES_IF_TXN_IN_3_LAST_MONTH = "After submitting this transaction, you will need to perform Closing Journal Entries for %s - %s Please click on the 'Closing Journal Entries' link and perform.";
+        public final static String MES_IF_TXN_BEFORE_3_LAST_MONTH = "After submitting this transaction, you will need to perform Closing Journal Entries for %s - %s Please contact Support Team to perform this CJE.";
     }
 
     public static class JournalReports{

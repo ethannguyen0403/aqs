@@ -6,12 +6,10 @@ import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
 import controls.Row;
 import controls.Table;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import controls.sb11.AppArlertControl;
+import controls.sb11.BBTTable;
 import org.openqa.selenium.WebElement;
-import org.testng.Assert;
 import pages.sb11.WelcomePage;
-import utils.sb11.BBTUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,7 +35,7 @@ public class BBTPage extends WelcomePage {
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
     public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
     public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
-    public Label lblAlert = Label.xpath("//div[@role='alert']");
+    public AppArlertControl alert = AppArlertControl.xpath("//app-alert");
     public Label lblNoRecord = Label.xpath("//span[text()='No record found']");
 
     public Button btnShowBetTypes = Button.xpath("//div[contains(text(),'Show Bet Types')]");
@@ -53,6 +51,7 @@ public class BBTPage extends WelcomePage {
     public Button btnClearAll = Button.xpath("//app-bbt//button[text()='Clear All']");
     public Button btnSetSelection = Button.xpath("//app-filter-data//button[text()='Set Selection ']");
     public Label lblFirstGroupName = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//a)[1]");
+    public Label lblFirstHomeName =  Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//thead)[1]");
     private Label lblFirstGroupHDP = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[2])[1]");
     private Label lblFirstGroupPrice = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[3])[1]");
     private Label lblFirstGroupLive = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//tbody//tr[1]//td[5])[1]");
@@ -62,13 +61,12 @@ public class BBTPage extends WelcomePage {
     private Label lblFirstGroupS1 = Label.xpath("(//app-league-table//div[contains(@class,'league-time')]//span)[1]");
     private Label lblFirstGroupS12 = Label.xpath("(//app-league-table//div[contains(@class,'league-time')]//span)[4]");
     public Label lblEventStartTime = Label.xpath("//div[contains(@class, 'league-time') and not(contains(@class, 'flex-row-reverse'))]");
-    public Label lblLeaguesName = Label.xpath("//app-league-table//div[@class='header d-flex']");
     public Icon iconCount = Icon.xpath("//span[contains(@class, 'count-ribbon')]");
     int totalColumnNumber = 8;
     public int colCur = 7;
     public int colStake = 4;
     public int colName = 1;
-    public Table tblBBT = Table.xpath("//app-bbt//table",totalColumnNumber);
+    public BBTTable tblBBT = new BBTTable("//table[contains(@class, 'table')]", totalColumnNumber);
     public Table tblFirstBBT = Table.xpath("(//app-bbt//table)[1]",totalColumnNumber);
 
     public void filter(String companyUnit, String sport, String smartType, String reportType, String fromDate, String toDate, String stake, String currency, String league){
@@ -106,6 +104,7 @@ public class BBTPage extends WelcomePage {
         }
         btnShow.click();
         waitSpinnerDisappeared();
+        scrollToShowFullResults();
     }
 
     private void filterLeague(String leagueName) {
@@ -304,35 +303,37 @@ public class BBTPage extends WelcomePage {
         return countIconList.size() == 3 ? true : false;
     }
 
-    public void verifyEventTimeDisplayCorrectWithTimeFilterInOneDay(String date, Map<String, List<Integer>> dateTimeEntries){
-        String fromDate = DateUtils.formatDate(date, "dd/MM/yyyy", "dd/MM/yy");
-        String fromDatePlusOne = DateUtils.formatDate(increaseDate(date, "dd/MM/yyyy", 1), "dd/MM/yyyy", "dd/MM/yy");
-        if (dateTimeEntries.size() == 1) {
-            if (dateTimeEntries.get(fromDate) != null) {
-                Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(fromDate), true), "FAILED! Event time of From Date is incorrect");
-            } else {
-                Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(fromDatePlusOne), false), "FAILED! Event time of To Date is incorrect");
-            }
-        } else {
-            Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(fromDate), true), "FAILED! Event time of From Date is incorrect");
-            Assert.assertTrue(isEventTimeCorrect(dateTimeEntries.get(fromDatePlusOne), false), "FAILED! Event time of To Date is incorrect");
+    public boolean verifyEventTimeDisplayCorrectWithTimeFilter(String fromDate, String toDate, List<String> dateList) {
+        if (dateList == null) {
+            System.out.println("Value list is empty");
+            return false;
         }
+        fromDate = fromDate + " 00:00";
+        toDate = DateUtils.getDateAfterCurrentDate(1, "dd/MM/yyyy") + " 12:00";
+        long fromDateL = convertToMilliSecond(fromDate, "dd/MM/yyyy HH:mm");
+        long toDateL = convertToMilliSecond(toDate, "dd/MM/yyyy HH:mm");
+        for (String date : dateList) {
+            long actualDateL = convertToMilliSecond(date, "dd/MM/yy HH:mm");
+            if (actualDateL < fromDateL || actualDateL > toDateL) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    private String increaseDate(String date, String formatDate, int amount) {
+    private long convertToMilliSecond(String dateStr, String format) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(formatDate);
-            Calendar c = Calendar.getInstance();
-            c.setTime(sdf.parse(date));
-            c.add(Calendar.DATE, amount);
-            return sdf.format(c.getTime());
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            Date date = sdf.parse(dateStr);
+            return date.getTime();
         } catch (ParseException e) {
-            System.out.println("FAILED to parse date");
-            return null;
+            System.out.println("Failed to parse date");
+            return -1;
         }
     }
 
     public void scrollToShowFullResults(){
+        // Scroll down to bottom to show full results
         int count = 7;
         while (count > 0){
             DriverManager.getDriver().executeJavascript("window.scrollTo(0, document.body.scrollHeight)");
@@ -341,50 +342,37 @@ public class BBTPage extends WelcomePage {
         }
     }
 
-    public boolean isEventTimeCorrect(List<Integer> listTime, boolean isFromDate) {
-        if(listTime==null) return false;
-        if (isFromDate) {
-            for (Integer time : listTime) {
-                if (time < 12)
-                    return false;
+    public List<String> getListLeagueTime() {
+        int index = 1;
+        List<String> leaguesList = new ArrayList<>();
+        while (true) {
+            Label leagueName = Label.xpath(tblBBT.getLeagueTimeXpath(index));
+            if (leagueName.isDisplayed()) {
+                leaguesList.add(leagueName.getText());
+                index++;
             }
-        } else {
-            for (Integer time : listTime) {
-                if (time > 12)
-                    return false;
+            if (!leagueName.isDisplayed()) {
+                return leaguesList;
             }
-        }
-        return true;
-    }
-
-    public Map<String, List<Integer>> getListTimeEvent() {
-        List<String> dateAndTimeEventList = new ArrayList<>();
-        Map<String, List<Integer>> dateTimeEntries = new HashMap<>();
-        lblEventStartTime.getWebElements().stream().forEach(webElement -> dateAndTimeEventList.add(webElement.getText().trim()));
-        if (dateAndTimeEventList != null) {
-            for (String dateTime : dateAndTimeEventList) {
-                String[] dateTimeArray = dateTime.split(" ");
-                String date = dateTimeArray[0];
-                Integer time = Integer.valueOf(dateTimeArray[1].split(":")[0]);
-                if (dateTimeEntries.get(date) != null) {
-                    dateTimeEntries.get(date).add(time);
-                } else {
-                    dateTimeEntries.put(date, new ArrayList<>(Arrays.asList(time)));
-                }
-            }
-            return dateTimeEntries;
-        } else {
-            System.out.println("NOT Found the values");
-            return null;
         }
     }
 
-    public  List<String> getCurrencyListOfAllEvents(){
-        return getListColOfAllBBTTable(colCur);
+    public List<String> getListColOfAllBBTTable(int colOrder) {
+        List<String> expectedList = new ArrayList<>();
+        for (int i = 1; i <= tblBBT.getTableControl().getWebElements().size(); i++) {
+            String cellValue = tblBBT.getTableControl(i).getControlOfCell(1, colOrder, 1, null).getText().trim();
+            if (!cellValue.isEmpty())
+                expectedList.add(cellValue);
+        }
+        return expectedList;
     }
 
     public  List<String> getStakeListOfAllEvents(){
         return getListColOfAllBBTTable(colStake);
+    }
+
+    public  List<String> getCurrencyListOfAllEvents(){
+        return getListColOfAllBBTTable(colCur);
     }
 
     public List<String> getSmartGroupName(){
@@ -407,6 +395,7 @@ public class BBTPage extends WelcomePage {
     }
 
     public boolean verifyAllStakeCorrectFilter(String filterStake, List<String> stakeEvent) {
+        if(stakeEvent == null) return false;
         double minNumber = convertStakeFilter(filterStake);
         for (String stake : stakeEvent) {
             double stakeDou = Double.valueOf(stake.replaceAll(",", ""));
@@ -417,27 +406,17 @@ public class BBTPage extends WelcomePage {
     }
 
     public List<String> getListAllLeaguesName() {
+        int index = 1;
         List<String> leaguesList = new ArrayList<>();
-        List<WebElement> leaguesEleList = lblLeaguesName.getWebElements();
-        for (WebElement leagues : leaguesEleList) {
-            leaguesList.add(leagues.getText().trim());
-        }
-        return leaguesList;
-    }
-
-    public List<String> getListColOfAllBBTTable(int colIndex){
-        List<String> curList = new ArrayList<>();
-        int tableIndex = 1;
-        while(true){
-            Table tblBBT = Table.xpath(String.format("(//app-bbt//table)[%s]", tableIndex), totalColumnNumber);
-            if(!tblBBT.isDisplayed()){
-                System.out.println("NOT found the table with index: " + tableIndex);
-                return curList;
+        while (true) {
+            Label leagueName = Label.xpath(tblBBT.getLeagueNameXpath(index));
+            if (leagueName.isDisplayed()) {
+                leaguesList.add(leagueName.getText());
+                index++;
             }
-            if (tblBBT.isDisplayed()){
-                curList.addAll(tblBBT.getColumn(colIndex,true));
+            if (!leagueName.isDisplayed()) {
+                return leaguesList;
             }
-            tableIndex++;
         }
     }
 
@@ -464,6 +443,7 @@ public class BBTPage extends WelcomePage {
     }
 
     public boolean isOptionsFilterDisplay(List<String> optionsList) {
+        if (optionsList == null) return false;
         for (String option : optionsList) {
             Label lblOption = Label.xpath(String.format("//div[contains(@class, 'card-columns')]//span[.=\"%s\"]", option));
             if (!lblOption.isDisplayed())
@@ -481,6 +461,9 @@ public class BBTPage extends WelcomePage {
         }
         btnSetSelection.click();
         waitSpinnerDisappeared();
+        btnShow.click();
+        waitSpinnerDisappeared();
+        scrollToShowFullResults();
     }
 
     public void selectGroupsFilter(String... groupName){
@@ -492,9 +475,14 @@ public class BBTPage extends WelcomePage {
         }
         btnSetSelection.click();
         waitSpinnerDisappeared();
+        btnShow.click();
+        waitSpinnerDisappeared();
+        scrollToShowFullResults();
     }
 
     public void selectSmartTypeFilter(String smartType, String... optionName) {
+        ddpSmartType.selectByVisibleText(smartType);
+        waitSpinnerDisappeared();
         Button btnSmartFilter;
         switch (smartType) {
             case "Group":
@@ -518,6 +506,9 @@ public class BBTPage extends WelcomePage {
         }
         btnSetSelection.click();
         waitSpinnerDisappeared();
+        btnShow.click();
+        waitSpinnerDisappeared();
+        scrollToShowFullResults();
     }
 
     public void selectLiveNonLiveMoreFilter(String option){
@@ -529,33 +520,10 @@ public class BBTPage extends WelcomePage {
         waitSpinnerDisappeared();
     }
 
-    public boolean verifyGroupNameCorrectPosition(String companyId, String sportId, String reportType, String fromDate, String toDate){
-        String price= "",  groupCode="", selection="", homeTeamName = "", awayTeamName = "";
-        //Get first order bet Info
-        JSONObject dataBBT = BBTUtils.getAvailableLeaguesJson(companyId, sportId, reportType, fromDate, toDate);
-        if (Objects.nonNull(dataBBT)) {
-            JSONArray jsonArr = dataBBT.getJSONArray("data");
-            if (jsonArr.length() > 0) {
-                JSONObject orderObj = jsonArr.getJSONObject(0);
-                homeTeamName = orderObj.getString("homeTeamName");
-                awayTeamName = orderObj.getString("awayTeamName");
-                JSONArray dataBets = orderObj.getJSONArray("dataBets");
-                if(dataBets.length()>0){
-                    JSONObject betInfo = dataBets.getJSONObject(0);
-                    groupCode = betInfo.getString("groupCode");
-                    price = String.format("%.3f",betInfo.getDouble("price"));
-                    selection = betInfo.getString("selection");
-                }
-            }
-    }
-        String teamName = selection.equalsIgnoreCase("AWAY")? awayTeamName: homeTeamName;
-        String targetXpath = String.format(
-                "//span[contains(text(), \"%s\")]/ancestor::table[contains(@aria-describedby, 'home-table')]//td[contains(., '%s')]/preceding-sibling::td[2]", teamName, price);
-        if(Label.xpath(targetXpath).getText().equalsIgnoreCase(groupCode)){
-            return true;
-        }else {
-            return false;
-        }
+    public boolean verifyFirstGroupNameUnderTeamName() {
+        int teamNameHeight = lblFirstHomeName.getWebElement().getRect().getHeight();
+        int groupNameHeight = lblFirstGroupName.getWebElement().getRect().getHeight();
+        return teamNameHeight > groupNameHeight;
     }
 
     public void selectOptionOnFilter(String optionName, boolean isChecked) {

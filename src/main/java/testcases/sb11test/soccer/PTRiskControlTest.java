@@ -28,7 +28,7 @@ import static common.SBPConstants.*;
 
 public class PTRiskControlTest extends BaseCaseAQS {
     String superMasterCode = "QA2112 - ";
-    Double percent = 1.0;
+    Double percent = 0.5;
     String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
     Event eventBasketball =
             new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(DateUtils.formatDate(currentDate, "yyyy-MM-dd", "dd/MM/yyyy"))

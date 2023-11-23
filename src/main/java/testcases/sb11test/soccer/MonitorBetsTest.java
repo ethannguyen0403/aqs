@@ -40,15 +40,14 @@ public class MonitorBetsTest extends BaseCaseAQS {
 
     @Test(groups = {"regression","2023.11.30"})
     @TestRails(id = "50")
-    @Parameters({"password"})
-    public void MonitorBetsTC_50(String password) throws Exception {
+    @Parameters({"password", "userNameOneRole"})
+    public void MonitorBetsTC_50(String password, String userNameOneRole) throws Exception {
         log("@title: Validate accounts without permission cannot see the 'Monitor Bets' menu");
-        String accountNoPermission = "onerole";
         log("@Pre-condition: Account is inactivated permission 'Monitor Bets'");
         log("@Step 1: Navigate to the site");
         log("@Step 2: Check menu item 'Monitor Bets' under menu 'Soccer'");
         LoginPage loginPage = welcomePage.logout();
-        loginPage.login(accountNoPermission, StringUtils.decrypt(password));
+        loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         log("Verify 1: Menu 'Monitor Bets' is not shown");
         List<String> lstSubMenu = welcomePage.headerMenuControl.getListSubMenu();
         Assert.assertFalse(lstSubMenu.contains(MONITOR_BETS),"FAILED! Monitor Bets page displayed incorrect!");
@@ -56,16 +55,15 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.11.30"})
     @TestRails(id = "51")
-    @Parameters({"password"})
-    public void MonitorBetsTC_51(String password) throws Exception {
+    @Parameters({"password", "userNameOneRole"})
+    public void MonitorBetsTC_51(String password, String userNameOneRole) throws Exception {
         log("@title: Validate accounts without permission cannot access 'Monitor Bets' page");
-        String accountNoPermission = "onerole";
         String monitorBetsPageUrl = environment.getSbpLoginURL() + "#/aqs-report/monitor-bets";
         log("@Pre-condition: Account is inactivated permission 'Monitor Bets'");
         log("@Step 1: Navigate to the site");
         log("@Step 2: Trying to access page by using url:");
         LoginPage loginPage = welcomePage.logout();
-        loginPage.login(accountNoPermission, StringUtils.decrypt(password));
+        loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         DriverManager.getDriver().get(monitorBetsPageUrl);
         log("Verify 1: User cannot access 'Monitor Bets' page");
         Assert.assertFalse(new MonitorBetsPage().lblTitle.isDisplayed(), "FAILED! Monitor Bets page can access by external link");
