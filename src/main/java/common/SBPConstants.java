@@ -145,7 +145,7 @@ public class SBPConstants {
 
         }
     };
-    public static final Map<String, String> SPORT_MAP= new HashMap<String, String>()
+    public static final Map<String, String> SPORT_ID_MAP = new HashMap<String, String>()
     {
         {
             put("Soccer", "1");

@@ -12,9 +12,6 @@ import pages.sb11.soccer.LeaguePerformancePage;
 import pages.sb11.soccer.PerformanceByMonthPage;
 import pages.sb11.soccer.SPPPage;
 import pages.sb11.soccer.popup.PTPerformancePopup;
-import pages.sb11.trading.BetEntryPage;
-import pages.sb11.trading.BetSettlementPage;
-import pages.sb11.trading.ManualBetBetEntryPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.AccountSearchUtils;
 import utils.sb11.BetEntrytUtils;
@@ -23,11 +20,14 @@ import utils.testraildemo.TestRails;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.List;
 
 import static common.SBPConstants.*;
 import static common.SBPConstants.FINANCIAL_YEAR;
 
 public class SPPTest extends BaseCaseAQS {
+    String currentDate = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
+    String previousDate = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
     @Test(groups = {"smoke"})
     @Parameters({"accountCode","smartGroup","superCode","clientCode","agentCode"})
     @TestRails(id = "1002")
@@ -236,11 +236,11 @@ public class SPPTest extends BaseCaseAQS {
                 .build();
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
         String accountId = AccountSearchUtils.getAccountId(accountCode);
-        BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_MAP.get(sport),order);
+        BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get(sport),order);
         welcomePage.waitSpinnerDisappeared();
-        int betId = BetSettlementUtils.getConfirmedBetId(accountId,SPORT_MAP.get(sport),order);
-        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId,SPORT_MAP.get(sport),order);
-        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId,SPORT_MAP.get(sport));
+        int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get(sport),order);
+        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get(sport),order);
+        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get(sport));
         log("@Step 1: Go to Soccer >> SPP page");
         SPPPage page = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
         Thread.sleep(120000);
@@ -256,21 +256,192 @@ public class SPPTest extends BaseCaseAQS {
 
     @Test(groups = {"regression", "2023.11.30"})
     @TestRails(id = "2796")
-    @Parameters({"smartGroup","accountCurrency"})
-    public void SPP_TC_2796(String smartGroup, String accountCurrency){
+    @Parameters({"smartGroup","accountCode"})
+    public void SPP_TC_2796(String smartGroup, String accountCode){
+        String apiCurrentDate = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
+        String accountId = AccountSearchUtils.getAccountId(accountCode);
         log("@title: Validate the total bets of Cricket Manual Bets will display at MB column");
-        String fromDate = DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7");
+
+        log("Precondition: There are some placed and settled MB from Bet Entry >> Mixed Sport page of any account");
+        welcomePage.waitSpinnerDisappeared();
+        Order order = new Order.Builder()
+                .price(1.5).requireStake(15)
+                .oddType("HK").accountCode(CLIENT_CREDIT_ACC)
+                .createDate(apiCurrentDate)
+                .eventDate(apiCurrentDate + " 23:59:00")
+                .selection("Home " + DateUtils.getMilliSeconds())
+                .build();
+        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Cricket"),order);
+        welcomePage.waitSpinnerDisappeared();
+        int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Cricket"),order);
+        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Cricket"),order);
+        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Cricket"));
+
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
         log("@Step 3: Filter with Cricket sport");
-        sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", fromDate, "");
-        log("@Step 4: Click on any data at MP column");
-        PerformanceByMonthPage performanceByMonthPage = sppPage.openPerfByMonth(smartGroup);
-        log("Validate Performance By Month is displayed correctly title");
-        Assert.assertTrue(performanceByMonthPage.getTitlePage().contains("Performance By Month"), "Failed! Performance By Month page is not displayed");
-        log("Validate group code name is displayed correctly on header with format");
-        Assert.assertEquals(performanceByMonthPage.getTableHeader(), smartGroup + " - " + accountCurrency + " - Last 12 Month Performance");
+        sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", currentDate, currentDate);
+        sppPage.selectShowBetTypes("MB");
+
+        log("@Verify 1: Validate all Cricket Manual Bets display properly");
+        int mBCricketBets = BetSettlementUtils.getListDoubleOfSettledBestJson("stake", apiCurrentDate, apiCurrentDate, accountCode, accountId, SPORT_ID_MAP.get("Cricket")).size();
+        List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
+        Assert.assertEquals(mBCricketBets, Integer.valueOf(dataRowTable.get(sppPage.colMB - 1)), "FAILED! The filer Cricket MB is not correct");
         log("INFO: Executed completely");
     }
+
+    @Test(groups = {"regression", "2023.11.30"})
+    @TestRails(id = "2797")
+    @Parameters({"accountCode", "smartGroup"})
+    public void SPP_TC_2797(String accountCode, String smartGroup){
+        String apiCurrentDate = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
+        String accountId = AccountSearchUtils.getAccountId(accountCode);
+
+        log("@title: Validate the Wins/Lose/Draw of Cricket Manual Bets displays correctly");
+        log("Precondition: There are some placed and settled MB from Bet Entry >> Mixed Sport page of any account");
+        Order order = new Order.Builder()
+                .price(1.5).requireStake(15)
+                .oddType("HK").accountCode(CLIENT_CREDIT_ACC)
+                .createDate(apiCurrentDate)
+                .eventDate(apiCurrentDate + " 23:59:00")
+                .selection("Home " + DateUtils.getMilliSeconds())
+                .build();
+        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Cricket"),order);
+        welcomePage.waitSpinnerDisappeared();
+        int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Cricket"),order);
+        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Cricket"),order);
+        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Cricket"));
+
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Soccer > SPP");
+        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+        log(String.format("@Step 3: Filter with Smart Group: %s, and Bet Types: MB", smartGroup));
+        sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", previousDate, currentDate);
+        sppPage.selectShowBetTypes("MB");
+        log("@Verify 1: Validate The Wins of Cricket Manual Bets displays correct Win = the amount value >0 (If bet is win, the Win column > 0)");
+        List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
+        Assert.assertTrue(Integer.valueOf(dataRowTable.get(sppPage.colWins - 1)) > 0, "FAILED!  The Wins of Cricket Manual Bets is not correct");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2023.11.30"})
+    @TestRails(id = "2798")
+    @Parameters({"accountCode", "smartGroup"})
+    public void SPP_TC_2798(String accountCode, String smartGroup){
+        String apiCurrentDate = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
+        String apiPreviousDate = DateUtils.formatDate(previousDate, "dd/MM/yyyy", "yyyy-MM-dd");
+        String accountId = AccountSearchUtils.getAccountId(accountCode);
+
+        log("@title: Validate the correct Avg Stake and Turnover of Cricket Manual Bets displays");
+        log("Precondition:There are some placed and settled MB from Bet Entry >> Mixed Sport page of any account");
+        welcomePage.waitSpinnerDisappeared();
+        Order order = new Order.Builder()
+                .price(1.5).requireStake(15)
+                .oddType("HK").accountCode(CLIENT_CREDIT_ACC)
+                .createDate(apiCurrentDate)
+                .eventDate(apiCurrentDate + " 23:59:00")
+                .selection("Home " + DateUtils.getMilliSeconds())
+                .build();
+        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Cricket"),order);
+        welcomePage.waitSpinnerDisappeared();
+        int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Cricket"),order);
+        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Cricket"),order);
+        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Cricket"));
+
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Soccer > SPP");
+        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+        log(String.format("@Step 3: Filter with Smart Group: %s, and Bet Types: MB", smartGroup));
+        sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", previousDate, currentDate);
+        sppPage.selectShowBetTypes("MB");
+        log("@Verify 1: Validate the correct Avg Stake and Turnover of Cricket Manual Bets displays");
+        List<Double> stakeSettledBet = BetSettlementUtils.getListDoubleOfSettledBestJson("stake", apiPreviousDate, apiCurrentDate, accountCode, accountId, SPORT_ID_MAP.get("Cricket"));
+        List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
+        int avg = sppPage.calculateAvg(stakeSettledBet);
+        int turnOver = sppPage.calculateTotal(stakeSettledBet);
+        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.colAVgStake - 1)), avg, "FAILED! Average stake is not correct");
+        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.colTurnOver - 1)), turnOver, "FAILED! Turn Over is not correct");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2023.11.30"})
+    @TestRails(id = "2799")
+    @Parameters({"accountCode", "smartGroup"})
+    public void SPP_TC_2799(String accountCode, String smartGroup){
+        String apiCurrentDate = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
+        String apiPreviousDate = DateUtils.formatDate(previousDate, "dd/MM/yyyy", "yyyy-MM-dd");
+        String accountId = AccountSearchUtils.getAccountId(accountCode);
+
+        log("@title: Validate the correct total WL displays");
+        log("Precondition:There are some placed and settled MB from Bet Entry >> Mixed Sport page of any account");
+        Order order = new Order.Builder()
+                .price(1.5).requireStake(15)
+                .oddType("HK").accountCode(CLIENT_CREDIT_ACC)
+                .createDate(apiCurrentDate)
+                .eventDate(apiCurrentDate + " 23:59:00")
+                .selection("Home " + DateUtils.getMilliSeconds())
+                .build();
+        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Cricket"),order);
+        welcomePage.waitSpinnerDisappeared();
+        int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Cricket"),order);
+        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Cricket"),order);
+        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Cricket"));
+
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Soccer > SPP");
+        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+        log(String.format("@Step 3: Filter with Smart Group: %s, and Bet Types: MB", smartGroup));
+        sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", previousDate, currentDate);
+        sppPage.selectShowBetTypes("MB");
+        log("@Verify 1: Validate the correct Avg Stake and Turnover of Cricket Manual Bets displays");
+        List<Double> wLSettledBet = BetSettlementUtils.getListDoubleOfSettledBestJson("winLose", apiPreviousDate, apiCurrentDate, accountCode, accountId, SPORT_ID_MAP.get("Cricket"));
+        List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
+        int wLTotal = sppPage.calculateTotal(wLSettledBet);
+        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.colWL - 1)), wLTotal, "FAILED! Win/Lose is not correct");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression", "2023.11.30"})
+    @TestRails(id = "2800")
+    @Parameters({"smartGroup"})
+    public void SPP_TC_2800(String smartGroup){
+        log("@title: Validate the correct %WL displays");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Soccer > SPP");
+        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+        log(String.format("@Step 3: Filter with Smart Group: %s, and Bet Types: MB", smartGroup));
+        sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", previousDate, currentDate);
+        sppPage.selectShowBetTypes("MB");
+        log("@Verify 1: Validate Correct Win% = (W/L*100) / Turnover displays");
+        List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
+        int wLPercent = Integer.valueOf(dataRowTable.get(sppPage.colWL-1))*100/ Integer.valueOf(dataRowTable.get(sppPage.colTurnOver-1));
+        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.colWLPercent - 1)), wLPercent, "FAILED! The value of WL% Cricket MB is not correct");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2023.11.30"})
+    @TestRails(id = "2801")
+    @Parameters({"accountCode", "smartGroup"})
+    public void SPP_TC_2801(String accountCode, String smartGroup){
+        String apiCurrentDate = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
+        String apiPreviousDate = DateUtils.formatDate(previousDate, "dd/MM/yyyy", "yyyy-MM-dd");
+        String accountId = AccountSearchUtils.getAccountId(accountCode);
+        int mBCricketBets = BetSettlementUtils.getListDoubleOfSettledBestJson("stake", apiPreviousDate, apiCurrentDate, accountCode, accountId, SPORT_ID_MAP.get("Cricket")).size();
+        log("@title: Validate can filter by MB bet types");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Soccer > SPP");
+        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+        log(String.format("@Step 3: Filter with Smart Group: %s, and Bet Types: MB", smartGroup));
+        sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", previousDate, currentDate);
+        sppPage.selectShowBetTypes("MB");
+        log("@Verify 1: Validate all Cricket Manual Bets display properly");
+        List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
+        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.colMB - 1)), mBCricketBets, "FAILED! The filer Cricket MB is not correct");
+        log("INFO: Executed completely");
+    }
+
 }

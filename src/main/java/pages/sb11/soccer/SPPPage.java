@@ -36,9 +36,16 @@ public class SPPPage extends WelcomePage {
     public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
     public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
     public Label lblShowTaxAmount = Label.xpath("//label[contains(text(),'Show Tax Amount')]");
+    public Button btnSetSelection = Button.xpath("//button[contains(@class, 'set-selection')]");
+    public Button btnClearAll = Button.xpath("//button[.='Clear All']");
     int totalColumnNumber = 15;
     int colGroupCode = 2;
+    public int colWins = 6;
+    public int colMB = 9;
+    public int colAVgStake = 10;
+    public int colTurnOver = 11;
     public int colWL =12;
+    public int colWLPercent = 14;
     int colMP = 3;
     public int colPT = 4;
 
@@ -57,8 +64,9 @@ public class SPPPage extends WelcomePage {
      * @param fromDate
      * @param toDate
      */
-    public void filter(String sport, String reportBy, String punterType, String smartMaster, String smartAgent, String fromDate, String toDate){
-        if(!sport.isEmpty())
+    public void filter(String sport, String reportBy, String punterType, String smartMaster, String smartAgent, String fromDate, String toDate) {
+        waitPageLoad();
+        if (!sport.isEmpty())
             ddSport.selectByVisibleText(sport);
         if(!reportBy.isEmpty())
             ddpReportBy.selectByVisibleText(reportBy);
@@ -78,6 +86,44 @@ public class SPPPage extends WelcomePage {
                 dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         btnShow.click();
         waitSpinnerDisappeared();
+    }
+
+
+
+    public void selectShowBetTypes(String... betTypes){
+        btnShowBetTypes.click();
+        waitSpinnerDisappeared();
+        btnClearAll.click();
+        for(String option: betTypes){
+            selectOptionOnFilter(option, true);
+        }
+        btnSetSelection.click();
+        btnShow.click();
+        waitSpinnerDisappeared();
+    }
+
+    public void selectSmartGroup(String... groupName){
+        btnSmartGroup.click();
+        waitSpinnerDisappeared();
+        btnClearAll.click();
+        for(String option: groupName){
+            selectOptionOnFilter(option, true);
+        }
+        btnSetSelection.click();
+        btnShow.click();
+        waitSpinnerDisappeared();
+    }
+
+    public void selectOptionOnFilter(String optionName, boolean isChecked) {
+        CheckBox chkOption = CheckBox.xpath(String.format("//div[contains(.,\"%s\") and contains(@class, 'flex-row list-per-item')]//input", optionName));
+        if (isChecked) {
+            if (!chkOption.isSelected()) {
+                chkOption.select();
+            }
+        } else {
+            if (chkOption.isSelected())
+                chkOption.deSelect();
+        }
     }
 
     public LeaguePerformancePage openLeaguePerformance(String groupName){
@@ -191,4 +237,21 @@ public class SPPPage extends WelcomePage {
         return roundAcutal.equals(expected);
     }
 
+    public int calculateAvg(List<Double> stakeList) {
+        if (stakeList == null) return -1;
+        int avgStake = 0;
+        for (Double stake : stakeList) {
+            avgStake += stake;
+        }
+        return Math.round(avgStake / stakeList.size());
+    }
+
+    public int calculateTotal(List<Double> stakeList){
+        if(stakeList==null)return -1;
+        int totalStake = 0;
+        for (Double stake : stakeList) {
+            totalStake += stake;
+        }
+        return Math.round(totalStake);
+    }
 }

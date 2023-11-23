@@ -33,6 +33,23 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "2773")
+    @Test(groups = {"regression", "2023.11.30"})
+    public void Trial_Balance_C2773() {
+        log("@title: Validate Debit/Credit data is matched correctly with Ledger Statement page");
+        log("@Step 1: Navigate to SB11 > Financial Reports > Trial Balance");
+        TrialBalancePage trialBalancePage =
+                welcomePage.navigatePage(FINANCIAL_REPORTS, TRIAL_BALANCE, TrialBalancePage.class);
+        log("@Verify 1: Report is disabled with 'Before CJE' option as default when Month is not 'July'");
+        trialBalancePage.filter(COMPANY_UNIT, FINANCIAL_YEAR, "2023 - November", "");
+        Assert.assertTrue(!trialBalancePage.ddReport.isEnabled(), "FAILED! The report dropdown is enable.");
+        log("@Verify 2: Report is enabled with 2 options 'Before CJE' and 'After CJE' when Month = 'July'");
+        trialBalancePage.ddMonth.selectByVisibleText("2023 - July");
+        welcomePage.waitSpinnerDisappeared();
+        Assert.assertTrue(trialBalancePage.ddReport.isEnabled() && trialBalancePage.ddReport.getOptions().equals(REPORT_TYPE),
+                "FAILED! The report dropdown is not correct");
+        log("INFO: Executed completely");
+    }
 
     @TestRails(id = "2779")
     @Test(groups = {"regression", "2023.11.30"})
