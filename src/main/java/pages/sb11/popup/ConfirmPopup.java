@@ -16,4 +16,8 @@ public class ConfirmPopup {
             btnNo.click();
     }
 
+    public String getContentMessage(){
+        return lblConfirm.getText();
+    }
+
 }

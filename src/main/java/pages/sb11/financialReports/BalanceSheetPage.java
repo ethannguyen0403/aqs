@@ -175,7 +175,7 @@ public class BalanceSheetPage extends WelcomePage {
         for (int i = 0; i < lstDetail.size();i++){
             total = total + checkNegativeValue(getTotalAmount(lstDetail.get(i)));
         }
-        return String.valueOf(total);
+        return String.format("%.2f",total);
     }
     public Double checkNegativeValue(Label lbl){
         Double numberValue = 0.00;

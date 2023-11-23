@@ -1,14 +1,12 @@
 package pages.sb11.accounting;
 
-import com.paltech.element.common.Button;
-import com.paltech.element.common.DropDownBox;
-import com.paltech.element.common.Label;
-import com.paltech.element.common.TextBox;
+import com.paltech.element.common.*;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Transaction;
 import org.openqa.selenium.Keys;
 import pages.sb11.WelcomePage;
+import pages.sb11.generalReports.ClosingJournalEntriesPage;
 
 public class JournalEntriesPage extends WelcomePage {
     public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
@@ -43,6 +41,7 @@ public class JournalEntriesPage extends WelcomePage {
     public Label lblRemark = Label.xpath("//span[text()='Remark']");
 
     Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
+    public Link lblClosingJournalEntries = Link.xpath("//span[text()='Closing Journal Entries']");
     public String getTitlePage ()
     {
         return lblTitle.getText().trim();
@@ -194,4 +193,9 @@ public class JournalEntriesPage extends WelcomePage {
 
     }
 
+    public ClosingJournalEntriesPage openClosingJournalEntriesPage() {
+        lblClosingJournalEntries.click();
+        waitSpinnerDisappeared();
+        return new ClosingJournalEntriesPage();
+    }
 }
