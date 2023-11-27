@@ -1,4 +1,4 @@
-pipelineJob('QA-Automation/AQS/SB11_STG_Smoke_CASC') {
+pipelineJob('QA-Automation/AQS/SB11_STG_Smoke_Isa') {
     parameters {
         stringParam('BRANCH', 'keanu-branch', 'Repo branch')
     }
@@ -46,7 +46,7 @@ pipelineJob('QA-Automation/AQS/SB11_STG_Smoke_CASC') {
                             sh '''cp /home/automation/chromedriver \$WORKSPACE'''
                             sh '''chmod +x \$WORKSPACE/chromedriver'''
                             sh '''sudo chown automation:automation /home/automation/'''
-                            sh '''xvfb-run --server-args="-screen 0 1920x1080x24" java -cp '/home/automation/target/classes/:/home/automation/target/dependency/*' org.testng.TestNG /home/automation/src/main/suites/sb11/stgsmoke.xml'''
+                            sh '''xvfb-run --server-args="-screen 0 1920x1080x24" java -cp '/home/automation/target/classes/:/home/automation/target/dependency/*' org.testng.TestNG /home/automation/src/main/suites/sb11/stgsmokeisa.xml'''
                           }
                         }
                       }
