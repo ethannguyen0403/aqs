@@ -15,15 +15,11 @@ import testcases.BaseCaseAQS;
 import utils.sb11.*;
 import utils.testraildemo.TestRails;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 
 import static common.SBPConstants.*;
 
@@ -1186,11 +1182,11 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
         String accountId = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
-        BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_MAP.get("Soccer"),order);
+        BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Soccer"),order);
         welcomePage.waitSpinnerDisappeared();
-        int betId = BetSettlementUtils.getConfirmedBetId(accountId,SPORT_MAP.get("Soccer"),order);
-        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId,SPORT_MAP.get("Soccer"),order);
-        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId,SPORT_MAP.get("Soccer"));
+        int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Soccer"),order);
+        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Soccer"),order);
+        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Soccer"));
 
         log("@Step 1: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
@@ -1232,11 +1228,11 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
         String accountId = AccountSearchUtils.getAccountId(CLIENT_DEBIT_ACC);
-        BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_MAP.get("Soccer"),order);
+        BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Soccer"),order);
         welcomePage.waitSpinnerDisappeared();
-        int betId = BetSettlementUtils.getConfirmedBetId(accountId,SPORT_MAP.get("Soccer"),order);
-        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId,SPORT_MAP.get("Soccer"),order);
-        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId,SPORT_MAP.get("Soccer"));
+        int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Soccer"),order);
+        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Soccer"),order);
+        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Soccer"));
 
         log("@Step 1: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);

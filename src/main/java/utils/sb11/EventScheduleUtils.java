@@ -1,19 +1,13 @@
 package utils.sb11;
 
 import com.paltech.constant.Configs;
-import com.paltech.utils.DateUtils;
 import com.paltech.utils.WSUtils;
-import objects.Event;
-import objects.Order;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import utils.AppUtils;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static common.SBPConstants.SPORT_MAP;
 import static testcases.BaseCaseAQS.environment;
 
 public class EventScheduleUtils {

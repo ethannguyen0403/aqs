@@ -10,14 +10,24 @@ import utils.AppUtils;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static testcases.BaseCaseAQS.environment;
 
 public class BetSettlementUtils {
+
+    public static JSONArray getSettledListJson(String toDate, String fromDate, String accountCode, String accountId, String sportID) {
+        String bearerToken = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
+        Map<String, String> headersParam = new HashMap<String, String>() {
+            {
+                put("Authorization", bearerToken);
+                put("Content-Type", Configs.HEADER_JSON);
+            }
+        };
+        String endPoint = environment.getSbpLoginURL() + "aqs-agent-service/trading/bet-settlement/list-order-settled";
+        String payLoad = buildJsonPayload(toDate, fromDate, "SETTLED", accountCode, accountId, sportID);
+        return WSUtils.getPOSTJSONArrayWithDynamicHeaders(endPoint, payLoad, headersParam);
+    }
 
     public static JSONArray getOrderConfirmedListJson(String accountId, String sportId, Order order) throws IOException {
         if (sportId.equals(""))
@@ -49,8 +59,9 @@ public class BetSettlementUtils {
                 , order.getCreateDate(), order.getCreateDate(), order.getAccountCode(), accountId,sportId);
         return WSUtils.getPOSTJSONArrayWithDynamicHeaders(api, jsn, headersParam);
     }
-    public static void sendManualBetSettleJson(String accountId, Order order, int betId, int wagerId, String sportId) throws IOException, ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    public static void sendManualBetSettleJson(String accountId, Order order, int betId, int wagerId, String sportId){
+       try{
+           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date = sdf.parse(order.getEventDate());
         long millis = date.getTime();
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
@@ -110,7 +121,48 @@ public class BetSettlementUtils {
                         "}"
                 , order.getCreateDate() +"T16:59:00.000+00:00", order.getCreateDate() + "T16:59:00.000+00:00", order.getRequireStake(), order.getSelection(),
                 order.getPrice(), betId, order.getPrice(), order.getOddType(), order.getOddType(), wagerId, sportId, millis, accountId, betId, wagerId);
-        WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
+
+            WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
+        }catch (IOException | ParseException e){
+           System.out.println(e.getMessage());
+        }
+    }
+
+    private static String buildJsonPayload(String fromDatePS7, String toDatePS7, String status,String accountCode, String accountId, String sportID){
+        return String.format("{\n" +
+                "  \"fromDatePS7\": \"%s\",\n" +
+                "  \"toDatePS7\": \"%s\",\n" +
+                "  \"status\": \"%s\",\n" +
+                "  \"dateMode\": \"SPECIFIC_DATE\",\n" +
+                "  \"accCodeStartWith\": \"\",\n" +
+                "  \"accCode\": \"%s\",\n" +
+                "  \"marketType\": \"\",\n" +
+                "  \"accType\": \"BET\",\n" +
+                "  \"bookieId\": \"\",\n" +
+                "  \"timeZone\": \"Asia/Saigon\",\n" +
+                "  \"accountId\": %s,\n" +
+                "  \"sportId\": %s\n" +
+                "}", fromDatePS7, toDatePS7, status,accountCode, accountId, sportID);
+    }
+
+    public static List<Double> getListDoubleOfSettledBestJson(String keyValue, String toDate, String fromDate, String accountCode,
+                                                              String accountId, String sportID){
+        JSONArray jsonArr = null;
+        List<Double> listStake = new ArrayList<>();
+        try {
+            jsonArr = getSettledListJson(toDate, fromDate, accountCode, accountId, sportID);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if (Objects.nonNull(jsonArr)) {
+            if (jsonArr.length() > 0) {
+                for (int i = 0; i < jsonArr.length(); i++) {
+                    JSONObject orderObj = jsonArr.getJSONObject(i);
+                    listStake.add(orderObj.getDouble(keyValue));
+                }
+            }
+        }
+        return listStake;
     }
 
     public static int getConfirmedBetId(String accountId, String sportId, Order order) {

@@ -4,6 +4,8 @@ import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
 import common.SBPConstants;
+import objects.Event;
+import objects.Order;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -11,9 +13,12 @@ import pages.sb11.LoginPage;
 import pages.sb11.role.RoleManagementPage;
 import pages.sb11.soccer.*;
 import pages.sb11.soccer.BBTPage;
+import pages.sb11.trading.BetEntryPage;
+import pages.sb11.trading.SoccerBetEntryPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.BBTUtils;
 import utils.sb11.BetEntrytUtils;
+import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.Arrays;
@@ -89,11 +94,40 @@ public class BBTTest extends BaseCaseAQS {
         log("@title: Validate the filter 'Show Masters/Groups/Agents' displays accordingly when selected each value in Smart Type list");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
-        log("@Step 1: Select an Smart Type option: Master");
+        log("@Step 2: Select an Smart Type option: Master");
         bbtPage.ddpSmartType.selectByVisibleText("Master");
         bbtPage.waitSpinnerDisappeared();
         log("@Verify 1: The Show Masters link will display");
         Assert.assertTrue(bbtPage.btnShowMaster.isDisplayed(), "FAILED! Button 'Show Master' is not displayed.");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2023.11.30"})
+    @TestRails(id = "162")
+    @Parameters({"accountCode","accountCurrency"})
+    public void BBT_TC_162(String accountCode,String accountCurrency){
+        String groupName = "Auto QC Group";
+        log("@title: Validate the bets that placed by smart players belonging to Masters/Groups/Agents displays properly");
+        log("@Precondition: Place bet with smart player to show bet on BBT page");
+        String dateAPI = DateUtils.formatDate(currentDay, "dd/MM/yyyy", "yyyy-MM-dd");
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,SOCCER,"");
+        Order order = new Order.Builder()
+                .sport(SOCCER).isNegativeHdp(false).hdpPoint(1.75).price(1.11).requireStake(13.58).home(eventInfo.getHome())
+                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
+                .marketType("HDP").stage("FT").selection(eventInfo.getHome()).event(eventInfo).build();
+
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
+        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
+        soccerBetEntryPage.showLeague(COMPANY_UNIT, currentDay, eventInfo.getLeagueName());
+        soccerBetEntryPage.placeBet(accountCode,order.getHome(),true,"Home",Arrays.asList(order),true,false,true);
+
+        log("@Step 1: Navigate to Soccer > BBT");
+        BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
+        log("@Step 2: Filter with group name: " + groupName);
+        bbtPage.selectLeaguesFilter(eventInfo.getLeagueName());
+        bbtPage.selectSmartTypeFilter("Group", groupName);
+        log("@Verify 1: The bets that placed by smart players belonging to Groups displays properly");
+        Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(order, true) != -1, "FAILED! The bet is not show on BBT page");
         log("INFO: Executed completely");
     }
 
@@ -200,9 +234,24 @@ public class BBTTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression", "2023.11.30"})
+    @TestRails(id = "172")
+    public void BBT_TC_172() {
+        String betType = "HT-OU";
+        log("@title: Validate all bets in selected bet types display");
+        log("@Step 1: Navigate to Soccer > BBT");
+        BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
+        log("@Step 2: Filter Soccer with Bet type: " + betType);
+        bbtPage.selectBetTypesFilter(SOCCER, betType);
+        log("@Verify 1: All bet HT-OU shows in results page");
+        List<String> betTypesList =  bbtPage.getBetTypeListOfAllEvents();
+        Assert.assertTrue(bbtPage.verifyAllBetsIsOverUnder(betTypesList), "FAILED! There is one or many bets is not Over/Under");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2023.11.30"})
     @TestRails(id = "173")
     public void BBT_TC_173() {
-        log("@title: Validate all Masters/Groups/Agents that have bets in the filtered date range displays");
+        log("@title: Validate Masters/Groups/Agents list displays accordingly when selected any Smart Type value");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with Smart Type: Master, Master: " + masterName);
@@ -216,10 +265,24 @@ public class BBTTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression", "2023.11.30"})
+    @TestRails(id = "174")
+    public void BBT_TC_174() {
+        log("@title: Validate all Masters/Groups/Agents that have bets in the filtered date range displays");
+        log("@Step 1: Navigate to Soccer > BBT");
+        BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
+        log("@Step 2: Filter with Smart Type: Group, Smart Group: " + groupName);
+        bbtPage.selectSmartTypeFilter( "Group", groupName);
+        log("@Verify 1: All Groups that have bets in the filtered date range displays");
+        List<String> smartGroupName = bbtPage.getSmartGroupName();
+        Assert.assertTrue(bbtPage.verifyAllElementOfListAreTheSame(groupName, smartGroupName), "FAILED! The Shows smart type incorrect with value: " + groupName);
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2023.11.30"})
     @TestRails(id = "209")
     public void BBT_TC_209() {
         String dateAPI =  DateUtils.formatDate(currentDay, "dd/MM/yyyy", "yyyy-MM-dd");
-        String firstLeague = BBTUtils.getListAvailableLeagueBBT(""+0, SPORT_MAP.get(SOCCER), "PENDING", dateAPI + " 12:00:00", dateAPI + " 12:00:00").get(0);
+        String firstLeague = BBTUtils.getListAvailableLeagueBBT(""+0, SPORT_ID_MAP.get(SOCCER), "PENDING", dateAPI + " 12:00:00", dateAPI + " 12:00:00").get(0);
         log("@title: Validate all leagues that have events in filtered date range display");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
@@ -388,7 +451,7 @@ public class BBTTest extends BaseCaseAQS {
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
 
-        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
+        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
@@ -414,7 +477,7 @@ public class BBTTest extends BaseCaseAQS {
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
 
-        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
+        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
@@ -440,7 +503,7 @@ public class BBTTest extends BaseCaseAQS {
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
 
-        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
+        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
@@ -468,7 +531,7 @@ public class BBTTest extends BaseCaseAQS {
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
 
-        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
+        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
@@ -496,7 +559,7 @@ public class BBTTest extends BaseCaseAQS {
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
 
-        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
+        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
@@ -524,7 +587,7 @@ public class BBTTest extends BaseCaseAQS {
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
 
-        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
+        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
@@ -550,7 +613,7 @@ public class BBTTest extends BaseCaseAQS {
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
 
-        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
+        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
@@ -573,7 +636,7 @@ public class BBTTest extends BaseCaseAQS {
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
 
-        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
+        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
@@ -596,7 +659,7 @@ public class BBTTest extends BaseCaseAQS {
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
 
-        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
+        List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
