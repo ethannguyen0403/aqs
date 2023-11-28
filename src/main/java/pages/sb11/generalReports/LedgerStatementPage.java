@@ -43,6 +43,7 @@ public class LedgerStatementPage extends WelcomePage {
     int colTotal = 1;
     int colCur = 3;
     int colAmountTotalOriginCurrency = 4;
+    int colCreDeTotalOriginCurrency = 3;
     int colToTalOriginCurrency = 1;
     int colAmountORG = 4;
     int colRunBalORG = 5;
@@ -111,6 +112,11 @@ public class LedgerStatementPage extends WelcomePage {
     public String getTotalAmountInOriginCurrency(String toTalName){
         int index = getTotalRowIndex(toTalName);
         return tbLedger.getControlOfCell(1, colAmountTotalOriginCurrency, index, null).getText().trim();
+    }
+
+    public String getTotalCreDeInOriginCurrency(String toTalName){
+        int index = getTotalRowIndex(toTalName);
+        return tbLedger.getControlOfCell(1, colCreDeTotalOriginCurrency, index, null).getText().trim();
     }
 
     public String getDescriptionTotalAmountInOriginCurrency(String toTalName){
