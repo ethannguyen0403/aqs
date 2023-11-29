@@ -255,7 +255,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     }
     @TestRails(id="15751")
     @Test(groups = {"regression","2023.11.30"})
-    public void Journal_Entries_TC_15751(){
+    public void Journal_Entries_TC_15751() throws InterruptedException {
         log("@title: Validate reminder displays if perform txn in the last 3 months that have CJE");
         log("@Pre-condition 1: Journal Entries' and 'Journal Entries Ledger' permissions are ON in any account");
         log("@Step 1: Click Accounting >> Journal Entries menu");
@@ -286,7 +286,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     }
     @TestRails(id="15752")
     @Test(groups = {"regression","2023.11.30"})
-    public void Journal_Entries_TC_15752(){
+    public void Journal_Entries_TC_15752() throws InterruptedException {
         log("@title: Validate reminder displays if perform txn before the last 3 months that have CJE");
         log("@Pre-condition 1: Journal Entries' and 'Journal Entries Ledger' permissions are ON in any account");
         log("@Step 1: Click Accounting >> Journal Entries menu");
