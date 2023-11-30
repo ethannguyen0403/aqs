@@ -72,7 +72,7 @@ public class CricketBetEntryPage extends BetEntryPage {
         ddpLeagueBox.doubleClick();
         ddpLeague.selectByVisibleText(league);
         btnShow.click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
     }
 
     /**
