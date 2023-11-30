@@ -29,6 +29,7 @@
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <parameter name="companyName" value="Kastraki Limited"/>
         <parameter name="companyCurrency" value="HKD"/>
+        <parameter name="userNameOneRole" value="onerole"/>
         <groups>
             <run>
                 <include name="2023.11.30"/>
