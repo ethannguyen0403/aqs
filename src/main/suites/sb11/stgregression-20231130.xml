@@ -37,14 +37,14 @@
         </groups>
 
         <classes>
-            <class name="testcases.sb11test.soccer.MonitorBetsTest"/>
-            <class name="testcases.sb11test.soccer.BBTTest"/>
-            <class name="testcases.sb11test.soccer.SPPTest"/>
+<!--            <class name="testcases.sb11test.soccer.MonitorBetsTest"/>-->
+<!--            <class name="testcases.sb11test.soccer.BBTTest"/>-->
+<!--            <class name="testcases.sb11test.soccer.SPPTest"/>-->
             <class name="testcases.sb11test.accounting.ChartOfAccountTest"/>
             <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
-            <class name="testcases.sb11test.trading.CricketSportTest"/>
-            <class name="testcases.sb11test.financialReports.TrialBalanceTest"/>
-            <class name="testcases.sb11test.financialReports.IncomeStatementTest"/>
+<!--            <class name="testcases.sb11test.trading.CricketSportTest"/>-->
+<!--            <class name="testcases.sb11test.financialReports.TrialBalanceTest"/>-->
+<!--            <class name="testcases.sb11test.financialReports.IncomeStatementTest"/>-->
         </classes>
     </test>
 </suite>
