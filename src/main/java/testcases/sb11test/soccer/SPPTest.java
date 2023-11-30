@@ -263,7 +263,6 @@ public class SPPTest extends BaseCaseAQS {
         log("@title: Validate the total bets of Cricket Manual Bets will display at MB column");
 
         log("Precondition: There are some placed and settled MB from Bet Entry >> Mixed Sport page of any account");
-        welcomePage.waitSpinnerDisappeared();
         Order order = new Order.Builder()
                 .price(1.5).requireStake(15)
                 .oddType("HK").accountCode(CLIENT_CREDIT_ACC)
@@ -273,7 +272,8 @@ public class SPPTest extends BaseCaseAQS {
                 .build();
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Cricket"),order);
-        welcomePage.waitSpinnerDisappeared();
+
+        BetSettlementUtils.waitForBetIsUpdate(15);
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Cricket"),order);
         int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Cricket"),order);
         BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Cricket"));

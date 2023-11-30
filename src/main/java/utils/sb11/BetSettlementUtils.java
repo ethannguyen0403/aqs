@@ -208,4 +208,12 @@ public class BetSettlementUtils {
         }
         return betId;
     }
+
+    public static void waitForBetIsUpdate(int timeSecond){
+        // Thread sleep to wait for bet is updated in Db
+        try{
+            Thread.sleep(timeSecond*1000);
+        }catch (Exception e){
+        }
+    }
 }
