@@ -23,45 +23,45 @@ public class IncomeStatementTest extends BaseCaseAQS {
     @TestRails(id = "2774")
     @Test(groups = {"regression", "2023.11.30"})
     public void Income_Statement_TC2774() {
-        log("@title: Validate Operating Income is only displayed details types with chart codes from 401 to 459 ");
+        log("@title: Validate Operating Income is only displayed details types with chart codes from 400 to 459");
         log("@Step 1: Access to SB11 > Financial Reports > Income Statement");
         IncomeStatementPage incomeStatementPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT, IncomeStatementPage.class);
         log("@Step 2: Filter with current Month");
         incomeStatementPage.filterIncomeReport(COMPANY_UNIT, "", "", "");
-        log("@Verify 1: Validate chart code of Operating Income in range 401 to 459");
+        log("@Verify 1: Validate chart code of Operating Income in range 400 to 459");
         List<String> chartCodeOperationIncome = incomeStatementPage.getListAccountCode(incomeStatementPage.findTableIndex("OPERATING INCOME"));
-        Assert.assertTrue(incomeStatementPage.verifyCodeStartingInRange(chartCodeOperationIncome, 401, 459), "FAILED! Chart code Operation Income NOT in range 401 to 459");
+        Assert.assertTrue(incomeStatementPage.verifyCodeStartingInRange(chartCodeOperationIncome, 400, 459), "FAILED! Chart code Operation Income NOT in range 400 to 459");
         log("INFO: Executed completely");
     }
 
     @TestRails(id = "2775")
     @Test(groups = {"regression", "2023.11.30"})
     public void Income_Statement_TC2775() {
-        log("@title: Validate Operating Expense is only displayed detail types with chart codes starting with 6");
+        log("@title: Validate Operating Expense is only displayed detail types with chart codes starting with 5, 6");
         log("@Step 1: Access to SB11 > Financial Reports > Income Statement");
         IncomeStatementPage incomeStatementPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT, IncomeStatementPage.class);
         log("@Step 2: Filter with current Month");
         incomeStatementPage.filterIncomeReport(COMPANY_UNIT, "", "", "");
-        log("@Verify 1: Validate chart code of Operating expenses are started with 6");
+        log("@Verify 1: Validate chart code of Operating expenses are started with 5, 6");
         List<String> chartCodeOperationIncome = incomeStatementPage.getListAccountCode(incomeStatementPage.findTableIndex("OPERATING EXPENSES"));
-        Assert.assertTrue(incomeStatementPage.verifyAllCodeStartWithNumber(chartCodeOperationIncome, 6), "FAILED! Chart code Operation expenses are not start with 6");
+        Assert.assertTrue(incomeStatementPage.verifyAllCodeStartWithNumber(chartCodeOperationIncome, "5", "6"), "FAILED! Chart code Operation expenses are not start with 5, 6");
         log("INFO: Executed completely");
     }
 
     @TestRails(id = "2776")
     @Test(groups = {"regression", "2023.11.30"})
     public void Income_Statement_TC2776() {
-        log("@title: Validate Non-Operating Income is only displayed details types with chart code starting from 460");
+        log("@title: Validate Non-Operating Income is only displayed details types with chart code starting from 460 to 5xx");
         log("@Step 1: Access to SB11 > Financial Reports > Income Statement");
         IncomeStatementPage incomeStatementPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT, IncomeStatementPage.class);
         log("@Step 2: Filter with current Month");
         incomeStatementPage.filterIncomeReport("SK1122", "", "", "");
-        log("@Verify 1: Validate chart code of Non-Operating Income in range 460 to 699");
+        log("@Verify 1: Validate chart code of Non-Operating Income in range 460 to 5xx");
         List<String> chartCodeOperationIncome = incomeStatementPage.getListAccountCode(incomeStatementPage.findTableIndex("NON-OPERATING INCOME"));
-        Assert.assertTrue(incomeStatementPage.verifyCodeStartingInRange(chartCodeOperationIncome, 460, 699), "FAILED! Chart code Operation Income NOT in range 460 to 6xx");
+        Assert.assertTrue(incomeStatementPage.verifyCodeStartingInRange(chartCodeOperationIncome, 460, 500), "FAILED! Chart code Operation Income NOT in range 460 to 5xx");
         log("INFO: Executed completely");
     }
 
@@ -88,10 +88,10 @@ public class IncomeStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @TestRails(id = "2815")
+    @TestRails(id = "2778")
     @Test(groups = {"regression_qc", "2023.11.30"})
     @Parameters({"password", "userNameOneRole"})
-    public void Retained_Earnings_TC2815(String password, String userNameOneRole) throws Exception {
+    public void Income_Statement_TC2778(String password, String userNameOneRole) throws Exception {
         log("@title: Validate user can not access Income Statement page when having no permission");
         log("Precondition: Deactivate Income Statement option in one role account");
         RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);

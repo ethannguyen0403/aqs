@@ -8,9 +8,7 @@ import pages.sb11.WelcomePage;
 
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class IncomeStatementPage extends WelcomePage {
 
@@ -54,10 +52,12 @@ public class IncomeStatementPage extends WelcomePage {
         return true;
     }
 
-    public boolean verifyAllCodeStartWithNumber(List<String> accountCodeList, int startNumber) {
+    public boolean verifyAllCodeStartWithNumber(List<String> accountCodeList, String... startNumber) {
         if (accountCodeList == null || accountCodeList.isEmpty()) return false;
+        List<String> expectedList = new ArrayList<>(Arrays.asList(startNumber));
         for (String accountCode : accountCodeList) {
-            if (!accountCode.startsWith("" + startNumber))
+            String firstNumber = String.valueOf(accountCode.charAt(0));
+            if (!expectedList.contains(firstNumber))
                 return false;
         }
         return true;
