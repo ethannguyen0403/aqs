@@ -1266,9 +1266,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .marketType("MB")
                 .build();
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
-        BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_MAP.get(sportName),order);
+        BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_ID_MAP.get(sportName),order);
         welcomePage.waitSpinnerDisappeared();
-        int betId = BetSettlementUtils.getConfirmedBetId(accountId,SPORT_MAP.get(sportName),order);
+        int betId = BetSettlementUtils.getConfirmedBetId(accountId,SPORT_ID_MAP.get(sportName),order);
         order.setBetId(String.valueOf(betId));
         log("@Step 1: Access Trading > Bet Settlement");
         log("@Step 2: Filter with Cricket sport and place manual bet at pre-condition > observe win/loss of manual bet");

@@ -8,7 +8,9 @@ import controls.Row;
 import controls.Table;
 import controls.sb11.AppArlertControl;
 import controls.sb11.BBTTable;
+import objects.Order;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
 
 import java.text.ParseException;
@@ -66,6 +68,7 @@ public class BBTPage extends WelcomePage {
     public int colCur = 7;
     public int colStake = 4;
     public int colName = 1;
+    public int colBetType = 2;
     public BBTTable tblBBT = new BBTTable("//table[contains(@class, 'table')]", totalColumnNumber);
     public Table tblFirstBBT = Table.xpath("(//app-bbt//table)[1]",totalColumnNumber);
 
@@ -293,6 +296,18 @@ public class BBTPage extends WelcomePage {
         }
     }
 
+    public boolean verifyAllBetsIsOverUnder(List<String> betType) {
+        if (betType == null) {
+            Assert.assertTrue(false, "Bet Type List is null");
+        }
+        for (String bet : betType) {
+            if (!bet.toUpperCase().contains("UNDER") && !bet.toUpperCase().contains("OVER")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean verifyAllCountIconsResetToAll() {
         List<WebElement> countIconList = iconCount.getWebElements();
         for (WebElement icon : countIconList) {
@@ -340,6 +355,7 @@ public class BBTPage extends WelcomePage {
             waitPageLoad();
             count --;
         }
+        DriverManager.getDriver().executeJavascript("window.scrollTo(0, 0)");
     }
 
     public List<String> getListLeagueTime() {
@@ -373,6 +389,10 @@ public class BBTPage extends WelcomePage {
 
     public  List<String> getCurrencyListOfAllEvents(){
         return getListColOfAllBBTTable(colCur);
+    }
+
+    public  List<String> getBetTypeListOfAllEvents(){
+        return getListColOfAllBBTTable(colBetType);
     }
 
     public List<String> getSmartGroupName(){
@@ -415,6 +435,7 @@ public class BBTPage extends WelcomePage {
                 index++;
             }
             if (!leagueName.isDisplayed()) {
+                System.out.println("NOT found table with League name: "+ leagueName);
                 return leaguesList;
             }
         }
@@ -452,6 +473,43 @@ public class BBTPage extends WelcomePage {
         return true;
     }
 
+    public int findRowIndexOfTeamTable(Order order, boolean isHomeTeam){
+        int rowIndex = 1;
+        int tableHomeIndex = findTableIndexByTeam(order.getHome());
+        int tableIndex = isHomeTeam ? tableHomeIndex : tableHomeIndex + 1;
+        Table tblTeam = tblBBT.getTableControl(tableIndex);
+        while(true){
+           Label lblStake = Label.xpath(tblTeam.getxPathOfCell(1, colStake, rowIndex, null));
+           if(lblStake.isDisplayed()){
+               if(Double.valueOf(lblStake.getText())==order.getRequireStake()){
+                   return rowIndex;
+               }
+               rowIndex++;
+           }
+            if(!lblStake.isDisplayed()){
+                System.out.println("NOT found the Row Index ");
+                return -1;
+            }
+        }
+    }
+
+    public int findTableIndexByTeam(String teamName) {
+        int index = 1;
+        while (true) {
+            Table tblTeam = tblBBT.getTableControl(index);
+            if (tblTeam.isDisplayed()) {
+                if (tblTeam.getHeaderNameOfRows().contains(teamName)) {
+                    return index;
+                }
+                index++;
+            }
+            if (!tblTeam.isDisplayed()) {
+                System.out.println("NOT found table with Team name: "+ teamName);
+                return -1;
+            }
+        }
+    }
+
     public void selectLeaguesFilter(String... leaguesName){
         btnLeagues.click();
         waitSpinnerDisappeared();
@@ -471,6 +529,21 @@ public class BBTPage extends WelcomePage {
         waitSpinnerDisappeared();
         btnClearAll.click();
         for(String option: groupName){
+            selectOptionOnFilter(option, true);
+        }
+        btnSetSelection.click();
+        waitSpinnerDisappeared();
+        btnShow.click();
+        waitSpinnerDisappeared();
+        scrollToShowFullResults();
+    }
+
+    public void selectBetTypesFilter(String sportName, String... betType){
+        ddpSport.selectByVisibleText(sportName);
+        waitSpinnerDisappeared();
+        btnShowBetTypes.click();
+        btnClearAll.click();
+        for(String option: betType){
             selectOptionOnFilter(option, true);
         }
         btnSetSelection.click();

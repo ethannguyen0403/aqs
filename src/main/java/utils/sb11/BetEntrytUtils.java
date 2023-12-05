@@ -74,7 +74,7 @@ public class BetEntrytUtils {
         return lstOrder;
     }
 
-    public static void placeManualBetAPI(int companyId, String accountId, String sportId, Order order) throws IOException {
+    public static void placeManualBetAPI(int companyId, String accountId, String sportId, Order order) {
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
         Map<String, String> headersParam = new HashMap<String, String>() {
             {
@@ -103,7 +103,11 @@ public class BetEntrytUtils {
                         "    \"sportId\": \"%s\"\n" +
                         "  }\n"
                 , companyId, accountId, order.getAccountCode(), order.getRequireStake(),order.getCreateDate(),order.getEventDate(),order.getSelection(),order.getPrice(),order.getOddType(),sportId);
-        WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
+        try {
+            WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
+        }catch (IOException e){
+            System.out.println("Exception: IOException occurs at sendGETRequestDynamicHeaders");
+        }
     }
 
     public static JSONArray getCompanyListJson() {
