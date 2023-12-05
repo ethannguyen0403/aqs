@@ -39,18 +39,33 @@ public class AgentGroupPage extends WelcomePage {
     public AgentGroupReportPopup openAgentGroupReport(String agentCode){
         int rowIndex = getAgentRowIndex(agentCode);
         tbAgent.getControlOfCell(1,colAgent,rowIndex,null).click();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return new AgentGroupReportPopup();
     }
 
     public AgentGroupListPopup openGroupListPopup(String agentCode){
         int rowIndex = getAgentRowIndex(agentCode);
         tbAgent.getControlOfCell(1, colGroup,rowIndex,null).click();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return new AgentGroupListPopup();
     }
 
     public AgentGroupClientListPopup openAgentGroupClientList(String agentCode){
         int rowIndex = getAgentRowIndex(agentCode);
         tbAgent.getControlOfCell(1,colCL,rowIndex,null).click();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return new AgentGroupClientListPopup();
     }
 

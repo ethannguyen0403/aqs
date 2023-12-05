@@ -127,7 +127,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @TestRails(id="4179")
     @Test(groups = {"regression"})
     @Parameters({"bookieCode","bookieSuperMasterCode"})
-    public void Journal_Entries_TC_4179(String bookieCode, String bookieSuperMasterCode){
+    public void Journal_Entries_TC_4179(String bookieCode, String bookieSuperMasterCode) throws InterruptedException {
         log("@title: Validate users can make transactions successfully between bookies");
         Transaction transaction = new Transaction.Builder()
                 .bookieDebit(bookieCode)
@@ -154,7 +154,8 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 8: Add two accounts to the below tables, then input amount");
         log("@Step 9: Choose Transaction Date and Transaction Types, input Remark if any. Click Submit");
         journalEntriesPage.addTransaction(transaction,"Bookie","Bookie",transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
+        //wait for showwing message
+        Thread.sleep(1000);
         log("Validate Message informs 'Transaction has been created.' is displayed");
         Assert.assertTrue(journalEntriesPage.messageSuccess.getText().contains("Transaction has been created"), "Failed! Message is displayed incorrectly!");
         log("INFO: Executed completely");
@@ -163,7 +164,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @TestRails(id="4180")
     @Test(groups = {"regression"})
     @Parameters({"clientCode","bookieSuperMasterCode"})
-    public void Journal_Entries_TC_4180(String clientCode, String bookieSuperMasterCode){
+    public void Journal_Entries_TC_4180(String clientCode, String bookieSuperMasterCode) throws InterruptedException {
         log("@title: Validate users can make transactions successfully between client");
         Transaction transaction = new Transaction.Builder()
                 .clientDebit(clientCode)
@@ -190,7 +191,8 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 8: Add two accounts to the below tables, then input amount");
         log("@Step 9: Choose Transaction Date and Transaction Types, input Remark if any. Click Submit");
         journalEntriesPage.addTransaction(transaction,"Client","Client",transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
+        //wait for showwing message
+        Thread.sleep(1000);
         log("Validate Message informs 'Transaction has been created.' is displayed");
         Assert.assertTrue(journalEntriesPage.messageSuccess.getText().contains("Transaction has been created"), "Failed! Message is displayed incorrectly!");
         log("INFO: Executed completely");

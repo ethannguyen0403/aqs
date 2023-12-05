@@ -34,12 +34,22 @@ public class BalanceCurrentPage extends WelcomePage {
     public MemberSummaryPopup openMasterMemberSummaryPopup (String masterCode){
         int rowIndex = getMasterRowIndex(masterCode);
         tbMaster.getControlOfCell(1,colMasterAgent, rowIndex,"a").click();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return new MemberSummaryPopup();
     }
 
     public MemberSummaryPopup openAgentMemberSummaryPopup (String agentCode){
         int rowIndex = getAgentRowIndex(agentCode);
         tbAgent.getControlOfCell(1,colMasterAgent, rowIndex,"a").click();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return new MemberSummaryPopup();
     }
 

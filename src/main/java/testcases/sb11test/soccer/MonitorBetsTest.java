@@ -3,6 +3,7 @@ package testcases.sb11test.soccer;
 import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
+import objects.Event;
 import objects.Order;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -17,6 +18,7 @@ import pages.sb11.trading.BetEntryPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.AccountSearchUtils;
 import utils.sb11.BetEntrytUtils;
+import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
@@ -148,6 +150,58 @@ public class MonitorBetsTest extends BaseCaseAQS {
         monitorBetsPage.btnShow.click();
         log("Verify 2: Bet(s) of smart punter is not shown when filter Normal Punter");
         Assert.assertFalse(monitorBetsPage.isCheckACDisplay(accountCode),"FAILED! Bet(s) of smart punter is not shown when filter Normal Punter");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.31"})
+    @TestRails(id = "134")
+    @Parameters({"accountCode","accountCurrency"})
+    public void MonitorBetsTC_134(String accountCode, String accountCurrency) {
+        log("@title: Validate only today events are shown when check on Today Event(s)");
+        log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
+        log("@Pre-condition 2: The account is added to any smart group in Trading Smart System Smart Group");
+        log("@Pre-condition 3: The account has placed Today and Yesterday events bet(s)");
+        int dateYesterday = -1;
+        int dateToday = 0;
+        String dateAPI = String.format(DateUtils.getDate(dateToday,"yyyy-MM-dd","GMT +7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,"Soccer","");
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateYesterday,"Home",false,true,
+                0.5,2.12,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
+        betEntryPage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateToday,"Home",false,true,
+                0.5,2.12,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
+        log("@Step 1: Login to the site");
+        log("@Step 2: Access 'Monitor Bets' page");
+        MonitorBetsPage monitorBetsPage = betEntryPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        log("@Step 3: Check on Today Event(s) checkbox");
+        monitorBetsPage.cbTodayEvent.click();
+        monitorBetsPage.btnShow.click();
+        log("Verify 1: Only bets that placed today will show");
+        Assert.assertTrue(monitorBetsPage.isCheckBetDisplayCorrect(accountCode,eventInfo),"FAILED! Bet(s) that placed today will not show");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression1","2023.12.31"})
+    @TestRails(id = "135")
+    @Parameters({"accountCode","accountCurrency"})
+    public void MonitorBetsTC_135(String accountCode, String accountCurrency) {
+        log("@title: Validate only Live bets are shown when filter Live");
+        log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
+        log("@Pre-condition 2: The account is added to any smart group in Trading Smart System Smart Group");
+        log("@Pre-condition 3: The account has placed Live and Non-Live events bet(s)");
+        int dateToday = 0;
+        String dateAPI = String.format(DateUtils.getDate(dateToday,"yyyy-MM-dd","GMT +7"));
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,"Soccer","");
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateToday,"Home",false,true,
+                0.5,2.12,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
+        log("@Step 1: Login to the site");
+        log("@Step 2: Access 'Monitor Bets' page");
+        MonitorBetsPage monitorBetsPage = betEntryPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        log("@Step 3: Check on Today Event(s) checkbox");
+        monitorBetsPage.cbTodayEvent.click();
+        monitorBetsPage.btnShow.click();
+        log("Verify 1: Only bets that placed today will show");
+        Assert.assertTrue(monitorBetsPage.isCheckBetDisplayCorrect(accountCode,eventInfo),"FAILED! Bet(s) that placed today will not show");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression"})
