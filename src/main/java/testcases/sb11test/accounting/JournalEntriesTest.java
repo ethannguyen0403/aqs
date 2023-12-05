@@ -44,7 +44,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @TestRails(id="864")
     @Test(groups = {"smoke"})
     @Parameters({"bookieCode","bookieSuperMasterCode"})
-    public void Journal_Entries_864(String bookieCode, String bookieSuperMasterCode){
+    public void Journal_Entries_864(String bookieCode, String bookieSuperMasterCode) throws InterruptedException {
         log("@title: Validate users can make transactions successfully between bookies");
         Transaction transaction = new Transaction.Builder()
                 .bookieDebit(bookieCode)
@@ -71,7 +71,8 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 8: Add two accounts to the below tables, then input amount");
         log("@Step 9: Choose Transaction Date and Transaction Types, input Remark if any. Click Submit");
         journalEntriesPage.addTransaction(transaction,"Bookie","Bookie",transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
+        //wait for message display
+        Thread.sleep(1000);
         log("Validate Message informs 'Transaction has been created.' is displayed");
         Assert.assertTrue(journalEntriesPage.messageSuccess.getText().contains("Transaction has been created"), "Failed! Message is displayed incorrectly!");
         log("INFO: Executed completely");
