@@ -66,6 +66,7 @@ public class BBTPage extends WelcomePage {
     public Icon iconCount = Icon.xpath("//span[contains(@class, 'count-ribbon')]");
     int totalColumnNumber = 8;
     public int colCur = 7;
+    public int colPrice = 3;
     public int colStake = 4;
     public int colName = 1;
     public int colBetType = 2;
@@ -443,6 +444,29 @@ public class BBTPage extends WelcomePage {
 
     public boolean verifyAllElementOfListAreTheSame(String expectedValue, List<String> actualList){
         return new HashSet<>(actualList).size() == 1 && actualList.get(0).equalsIgnoreCase(expectedValue);
+    }
+
+    public boolean verifyFilterDisplayWithOption(String... options) {
+        List<String> listFilter = getAllOptionNameFilter();
+        if (listFilter.isEmpty() || listFilter == null) return false;
+        if (!listFilter.containsAll(Arrays.asList(options))) return false;
+        return true;
+    }
+
+    public List<String> getAllOptionNameFilter() {
+        int indexOption = 1;
+        List<String> optionsName = new ArrayList<>();
+        while (true) {
+            Label lblOption = Label.xpath(String.format("(//div[contains(@class,'card-columns')]//span)[%s]", indexOption));
+            if (lblOption.isDisplayed()) {
+                indexOption++;
+                optionsName.add(lblOption.getText().trim());
+            }
+            if (!lblOption.isDisplayed()) {
+                System.out.println("NOT Found value option label with index: " + indexOption);
+                return optionsName;
+            }
+        }
     }
 
     public List<String> getSelectedOptionNameOfFilter(){
