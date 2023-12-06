@@ -66,6 +66,7 @@ public class ClientSystemPage extends WelcomePage {
     public MasterListPopup openMasterList(String clientCode){
         int rowIndex = getClientCodeRowIndex(clientCode);
         tbSuperMaster.getControlOfCell(1,colMaster,rowIndex,null).click();
+        waitSpinnerDisappeared();
         return new MasterListPopup();
     }
 
@@ -84,6 +85,7 @@ public class ClientSystemPage extends WelcomePage {
     public MemberListPopup openMemberList(String clientCode){
         int rowIndex = getClientCodeRowIndex(clientCode);
         tbSuperMaster.getControlOfCell(1,colList,rowIndex,null).click();
+        waitSpinnerDisappeared();
         return new MemberListPopup();
     }
 

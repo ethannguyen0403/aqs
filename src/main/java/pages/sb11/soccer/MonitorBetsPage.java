@@ -6,6 +6,7 @@ import com.paltech.element.common.CheckBox;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import controls.Table;
+import objects.Event;
 import pages.sb11.WelcomePage;
 
 public class MonitorBetsPage extends WelcomePage {
@@ -127,4 +128,24 @@ public class MonitorBetsPage extends WelcomePage {
         return true;
     }
 
+    public boolean isCheckBetDisplayCorrect(String accountCode, Event event) {
+        //wait for bet update in Monitor Bets page
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        int indexAC = getACRowIndex(accountCode);
+        if (indexAC == 0){
+            System.err.println("AC "+ accountCode+ " is not display");
+            return false;
+        }
+        String eventName = Label.xpath(tblOrder.getxPathOfCell(1,tblOrder.getColumnIndexByName("Event"),indexAC,null)).getText();
+        String eventNameExpect = event.getHome() + " -vs- "+ event.getAway();
+        if (!eventName.contains(eventNameExpect)){
+            System.err.println("Event "+ eventNameExpect + " is not display");
+            return false;
+        }
+        return true;
+    }
 }

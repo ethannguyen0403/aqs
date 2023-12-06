@@ -150,6 +150,7 @@ public class SPPPage extends WelcomePage {
         Table tblSPP1 = Table.xpath(tableXpath,15);
         int rowIndex = getRowContainsGroupName(tableXpath,colGroupCode,groupName);
         tblSPP1.getControlOfCellSPP(1,colPT, rowIndex,null).click();
+        waitSpinnerDisappeared();
         return new PTPerformancePopup();
     }
 

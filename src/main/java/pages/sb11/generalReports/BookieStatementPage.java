@@ -122,6 +122,7 @@ public class BookieStatementPage extends WelcomePage {
 //            xpath = xpath + "//ancestor::tr//preceding-sibling::tr//a";
             lblSuperMasterCode = Label.xpath(xpath);
             lblSuperMasterCode.click();
+            waitSpinnerDisappeared();
             return new BookieSuperMasterDetailPopup();
         }
     }

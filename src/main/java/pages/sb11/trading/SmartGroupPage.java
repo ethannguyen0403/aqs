@@ -40,12 +40,22 @@ public class SmartGroupPage extends WelcomePage {
     public SmartGroupReportPopup openSmartGroupReport(String groupCode){
         int rowIndex = getGroupRowIndex(groupCode);
         tbSmart.getControlOfCell(1,colGroup,rowIndex,null).click();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return new SmartGroupReportPopup();
     }
 
     public MemberGroupPopup openMemberGroupPopup(String groupCode){
         int rowIndex = getGroupRowIndex(groupCode);
         tbSmart.getControlOfCell(1,colMember,rowIndex,null).click();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return new MemberGroupPopup();
     }
 
