@@ -5,6 +5,7 @@ import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.Table;
+import org.openqa.selenium.support.Color;
 import pages.sb11.WelcomePage;
 import pages.sb11.trading.popup.AgentGroupReportPopup;
 import pages.sb11.trading.popup.MemberGroupPopup;
@@ -74,5 +75,27 @@ public class SmartGroupPage extends WelcomePage {
             }
             i = i +1;
         }
+    }
+    public int getGroupCodeIndex(String groupCode){
+        int i = 2;
+        Label lblAC;
+        while (true){
+            lblAC = Label.xpath(tbSmart.getxPathOfCell(1,tbSmart.getColumnIndexByName("Group Code"),i,null));
+            if(!lblAC.isDisplayed()) {
+                System.out.println("Can NOT found Group Code "+groupCode+" in the table");
+                return 0;
+            }
+            if(lblAC.getText().contains(groupCode)){
+                System.out.println("Found Group Code "+groupCode+" in the table");
+                return i;
+            }
+            i = i +1;
+        }
+    }
+
+    public String getColorByGroupCode(String smartGroup) {
+        int index = getGroupCodeIndex(smartGroup);
+        String color = tbSmart.getControlOfCell(1,tbSmart.getColumnIndexByName("C"),index,null).getColour();
+        return Color.fromString(color).asHex().toUpperCase();
     }
 }

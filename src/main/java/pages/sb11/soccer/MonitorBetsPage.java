@@ -7,6 +7,7 @@ import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import controls.Table;
 import objects.Event;
+import org.openqa.selenium.support.Color;
 import pages.sb11.WelcomePage;
 
 public class MonitorBetsPage extends WelcomePage {
@@ -38,6 +39,8 @@ public class MonitorBetsPage extends WelcomePage {
     public Label lblResetAllFilters = Label.xpath("//span[contains(text(),'Reset All Filters')]");
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
     public Table tblOrder = Table.xpath("//app-monitor-bets//table",11);
+    public Button btnClearAll = Button.xpath("//button[text()='Clear All']");
+    public Button btnSetSelection = Button.xpath("//button[text()='Set Selection']");
 
     public void filterResult(String sport, String smartType, String punterType, String betPlacedIn, String betCount, boolean isTodayEvent, String lrbRule, String liveNonLive, String currency, String stake, boolean isShow){
         ddpSport.selectByVisibleText(sport);
@@ -77,6 +80,7 @@ public class MonitorBetsPage extends WelcomePage {
     public Last12DaysPerformancePage openLast12DaysPerf (String accountCode){
         int index = getACRowIndex(accountCode);
         tblOrder.getControlOfCell(1,colT,index,null).click();
+        waitSpinnerDisappeared();
         DriverManager.getDriver().switchToWindow();
         return new Last12DaysPerformancePage();
     }
@@ -87,11 +91,11 @@ public class MonitorBetsPage extends WelcomePage {
         while (true){
             lblAC = Label.xpath(tblOrder.getxPathOfCell(1,colAC,i,null));
             if(!lblAC.isDisplayed()) {
-                System.out.println("Can NOT found the league "+accountCode+" in the table");
+                System.out.println("Can NOT found AC "+accountCode+" in the table");
                 return 0;
             }
             if(lblAC.getText().contains(accountCode)){
-                System.out.println("Found the league "+accountCode+" in the table");
+                System.out.println("Found AC "+accountCode+" in the table");
                 return i;
             }
             i = i +1;
@@ -131,7 +135,7 @@ public class MonitorBetsPage extends WelcomePage {
     public boolean isCheckBetDisplayCorrect(String accountCode, Event event) {
         //wait for bet update in Monitor Bets page
         try {
-            Thread.sleep(15000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -147,5 +151,61 @@ public class MonitorBetsPage extends WelcomePage {
             return false;
         }
         return true;
+    }
+
+    public void showMasterByName(boolean show, String... masterName) {
+        lblShowMaster.click();
+        waitSpinnerDisappeared();
+        btnClearAll.click();
+        for(String option: masterName){
+            selectOptionOnFilter(option, true);
+        }
+        btnSetSelection.click();
+        waitSpinnerDisappeared();
+        if (!show){
+            btnShow.click();
+            waitSpinnerDisappeared();
+        }
+    }
+
+    public void selectOptionOnFilter(String optionName, boolean isChecked) {
+        CheckBox chkOption = CheckBox.xpath(String.format("//th[.=\"%s\"]/preceding-sibling::th[1]/input", optionName));
+        if (isChecked) {
+            if (!chkOption.isSelected()) {
+                chkOption.select();
+            }
+        } else {
+            if (chkOption.isSelected())
+                chkOption.deSelect();
+        }
+    }
+    public void clickToCopyByAccountCode(String accountCode){
+        int index = getACRowIndex(accountCode);
+        tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName(""),index,"em").click();
+        waitSpinnerDisappeared();
+    }
+
+    public String getReportByAccountCode(String accountCode) {
+        int index = getACRowIndex(accountCode);
+        return tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName("Report"),index,null).getText();
+    }
+
+    public String getBGColorByColumnName(String columnName, String accountCode) {
+        int index = getACRowIndex(accountCode);
+        String color = tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName(columnName),index,null).getColour();
+        return Color.fromString(color).asHex().toUpperCase();
+    }
+    public void showBetType(boolean show, String... betType){
+        lblShowBetType.click();
+        waitSpinnerDisappeared();
+        for(String option: betType){
+            selectOptionOnFilter(option, true);
+        }
+        btnSetSelection.click();
+        waitSpinnerDisappeared();
+        if (show){
+            btnShow.click();
+            waitSpinnerDisappeared();
+        }
     }
 }

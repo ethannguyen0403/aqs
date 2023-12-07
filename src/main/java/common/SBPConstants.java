@@ -299,6 +299,19 @@ public class SBPConstants {
         public final static List<String> PUNTER_TYPE_LIST = Arrays.asList("Smart Punter","Normal Punter");
         public final static List<String> BET_PLACED_IN = Arrays.asList("Last 5 Min","Last 10 Min","Last 15 Min","Last 1 Hour","Last 3 Hour", "Last 6 Hour", "Last 9 Hour", "Last 12 Hour","All Hours");
         public final static List<String> BET_COUNT = Arrays.asList("Last 10 Bets","Last 50 Bets","Last 100 Bets","Last 200 Bets","Last 300 Bets");
+        public final static List<String> COLOR_CODE_L_COLUMN = Arrays.asList("#CCFFCC","#66FF99","#00FF99","#CCFFFF","#99FFFF","#66FFFF","#00FFFF","#0066FF","#0066CC","#000000","#FFEFDB","#FFDAB9",
+                "#E7C6A5","#CDAF95","FF9900");
+        public final static Map<String, String> COLOR_CODE_HDP_COLUMN = new HashMap<String, String>()
+        {
+            {
+                put("FT HDP", "#000000");
+                put("HT HDP", "#DBDB70");
+                put("HT OU", "#DBDB70");
+                put("FT OU", "#E0FFFF");
+                put("FT HDP - Corner", "#FFE1FF");
+                put("FT OU - Corner", "#FFE1FF");
+            }
+        };
     }
 
     public static class MatchOddsLiability{
@@ -416,6 +429,9 @@ public class SBPConstants {
     }
     public static class MemberTransactionPopupConstants {
         public final static List<String> HEADER_LIST = Arrays.asList("#", "Txn.Date", "Txn.Id", "Description", "Debit", "Credit", "Running", "Debit [%s]", "Credit [%s]", "Running [%s]");
+    }
+    public static class SoccerSPBBetSlipPopup {
+        public final static List<String> BET_TYPE_HDP_DROPDOWN = Arrays.asList("Full Time - Handicap - Corners","Full Time - Over Under - Corners");
     }
 }
 
