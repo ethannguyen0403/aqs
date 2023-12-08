@@ -102,6 +102,8 @@ public class SBPConstants {
     public final static String LEDGER_PARENT_NAME_INCOME = "QA Ledger Group Income";
     public final static String LEDGER_PARENT_NAME_CAPITAL = "QA Ledger Group Capital";
     public final static String INVOICE_PROJECT = "QA-Project01";
+    public final static String QA_SMART_GROUP = "QA Smart Group";
+    public final static String QA_SMART_MASTER = "QA Smart Master";
     public final static List<String> TABLE_HEADER = Arrays.asList("Role", "User", "Sport", "Soccer","Accounting","Trading","Master","General Reports","Invoice","Financial Reports");
     public final static List<String> COMPANY_UNIT_LIST = Arrays.asList("Kastraki Limited", "SK1122", "IB 01", "Fair", "Aquifer");
     public final static List<String> COMPANY_UNIT_LIST_ALL = Arrays.asList("All","Kastraki Limited", "SK1122", "IB 01", "Fair","Aquifer");
@@ -151,7 +153,8 @@ public class SBPConstants {
         {
             put("Soccer", "1");
             put("Cricket", "2");
-
+            put("Basketball", "3");
+            put("Tennis", "4");
         }
     };
 
@@ -220,6 +223,8 @@ public class SBPConstants {
         public final static List<String> TABLE_HEADER_MASTER = Arrays.asList("#", "i", "Bookie", "Master Code", "CUR", "Client","Support By","Edit","","# Agent");
         public final static List<String> TABLE_HEADER_AGENT = Arrays.asList("#", "i", "Bookie", "Agent Code", "CUR", "Client","Type","Support By","Edit","","# Members");
         public final static List<String> GO_TO_LIST = Arrays.asList("Super","Master","Agent");
+        public final static String TOOLTIP_MESSAGE = "This %s cannot be deleted because there's transaction made";
+
     }
 
     public static class LeagueSeasonTeamInfo{

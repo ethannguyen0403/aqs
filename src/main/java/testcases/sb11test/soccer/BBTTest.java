@@ -14,12 +14,12 @@ import pages.sb11.LoginPage;
 import pages.sb11.role.RoleManagementPage;
 import pages.sb11.soccer.*;
 import pages.sb11.soccer.BBTPage;
-import pages.sb11.sport.EventSchedulePage;
 import pages.sb11.trading.*;
 import pages.sb11.trading.BetEntryPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.BBTUtils;
 import utils.sb11.BetEntrytUtils;
+import utils.sb11.EventScheduleUtils;
 import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
 
@@ -30,22 +30,6 @@ import static common.SBPConstants.*;
 import static common.SBPConstants.BBTPage.*;
 
 public class BBTTest extends BaseCaseAQS {
-    String currentDay = DateUtils.getDate(0, "dd/MM/yyyy", "GMT +8");
-    String groupName = "QA Smart Group";
-    String masterName = "QA Smart Master";
-    Event eventTennis =
-            new Event.Builder().sportName("Tennis").leagueName("QA Tennis League").eventDate(currentDay)
-                    .home("QA Tennis Team 01").away("QA Tennis Team 02")
-                    .openTime("16:00").eventStatus("InRunning").isLive(true).isN(false).build();
-    Order orderTennis = new Order.Builder().sport("Basketball").price(1.17).requireStake(13.25).oddType("HK").betType("Back")
-            .home("QA Tennis Team 1").away("QA Tennis Team 2").selection("Home").isLive(false).event(eventTennis).build();
-
-    Event eventBasketball =
-            new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(currentDay)
-                    .home("QA Basketball Team 1").away("QA Basketball Team 2")
-                    .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
-    Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(16.50).oddType("HK").betType("Back")
-            .home("QA Basketball Team 1").away("QA Basketball Team 2").selection("Home").isLive(false).event(eventBasketball).build();
 
     @Test(groups = {"regression_qc", "2023.11.30"})
     @Parameters({"password", "userNameOneRole"})
@@ -122,6 +106,7 @@ public class BBTTest extends BaseCaseAQS {
     @Parameters({"accountCode","accountCurrency"})
     public void BBT_TC_162(String accountCode,String accountCurrency){
         String groupName = "Auto QC Group";
+        String currentDay = DateUtils.getDate(0, "dd/MM/yyyy", "GMT +8");
         log("@title: Validate the bets that placed by smart players belonging to Masters/Groups/Agents displays properly");
         log("@Precondition: Place bet with smart player to show bet on BBT page");
         String dateAPI = DateUtils.formatDate(currentDay, "dd/MM/yyyy", "yyyy-MM-dd");
@@ -150,6 +135,7 @@ public class BBTTest extends BaseCaseAQS {
     @TestRails(id = "165")
     public void BBT_TC_165() {
         log("@title: Validate all events with unsettled bets that have start time within a filtered date range returns when filtering Pending Bets ");
+        String currentDay = DateUtils.getDate(0, "dd/MM/yyyy", "GMT +8");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter Pending bets with To day");
@@ -164,6 +150,7 @@ public class BBTTest extends BaseCaseAQS {
     @TestRails(id = "166")
     public void BBT_TC_166() {
         String fromDate = DateUtils.getDate(-5, "dd/MM/yyyy", "GMT +8");
+        String currentDay = DateUtils.getDate(0, "dd/MM/yyyy", "GMT +8");
         log("@title: Validate all events with settled bets that have start time within a filtered date range return when filtering Settled Bets");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
@@ -269,13 +256,13 @@ public class BBTTest extends BaseCaseAQS {
         log("@title: Validate Masters/Groups/Agents list displays accordingly when selected any Smart Type value");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
-        log("@Step 2: Filter with Smart Type: Master, Master: " + masterName);
+        log("@Step 2: Filter with Smart Type: Master, Master: " + QA_SMART_MASTER);
         bbtPage.ddpSmartType.selectByVisibleText("Master");
         bbtPage.waitSpinnerDisappeared();
         log("@Step 3: Click on Show Master link");
         bbtPage.btnShowMaster.click();
-        log(String.format("@Verify 1: %s filtering option is displayed", masterName ));
-        Assert.assertTrue(bbtPage.isOptionsFilterDisplay(Arrays.asList(masterName)), "FAILED! Show master filter is not contain an option: " + masterName);
+        log(String.format("@Verify 1: %s filtering option is displayed", QA_SMART_MASTER ));
+        Assert.assertTrue(bbtPage.isOptionsFilterDisplay(Arrays.asList(QA_SMART_MASTER)), "FAILED! Show master filter is not contain an option: " + QA_SMART_MASTER);
         log("INFO: Executed completely");
     }
 
@@ -285,17 +272,18 @@ public class BBTTest extends BaseCaseAQS {
         log("@title: Validate all Masters/Groups/Agents that have bets in the filtered date range displays");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
-        log("@Step 2: Filter with Smart Type: Group, Smart Group: " + groupName);
-        bbtPage.selectSmartTypeFilter( "Group", groupName);
+        log("@Step 2: Filter with Smart Type: Group, Smart Group: " + QA_SMART_GROUP);
+        bbtPage.selectSmartTypeFilter( "Group", QA_SMART_GROUP);
         log("@Verify 1: All Groups that have bets in the filtered date range displays");
         List<String> smartGroupName = bbtPage.getSmartGroupName();
-        Assert.assertTrue(bbtPage.verifyAllElementOfListAreTheSame(groupName, smartGroupName), "FAILED! The Shows smart type incorrect with value: " + groupName);
+        Assert.assertTrue(bbtPage.verifyAllElementOfListAreTheSame(QA_SMART_GROUP, smartGroupName), "FAILED! The Shows smart type incorrect with value: " + QA_SMART_GROUP);
         log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression", "2023.11.30"})
     @TestRails(id = "209")
     public void BBT_TC_209() {
+        String currentDay = DateUtils.getDate(0, "dd/MM/yyyy", "GMT +8");
         String dateAPI =  DateUtils.formatDate(currentDay, "dd/MM/yyyy", "yyyy-MM-dd");
         String firstLeague = BBTUtils.getListAvailableLeagueBBT(""+0, SPORT_ID_MAP.get(SOCCER), "PENDING", dateAPI + " 12:00:00", dateAPI + " 12:00:00").get(0);
         log("@title: Validate all leagues that have events in filtered date range display");
@@ -689,68 +677,63 @@ public class BBTTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression", "2023.12.29"})
-    @Parameters({"accountCode"})
     @TestRails(id = "3800")
-    public void BBT_TC_3800(String accountCode) {
-        orderBasketball.setAccountCode(accountCode);
-        log("@title: Validate 'S' and 'S12' link should not displayed when filtering Basketball sport");
-        log("@Precondition: Having a bet for Basketball sport");
-        log("@Precondition-Step 1: Have a specific League Name, Home Team, Away Team for testing line\n" +
-                "League: QA Basketball League\n" +
-                "Home Team: QA Basketball Team 1\n" +
-                "Away Team: QA Basketball Team 2");
-        EventSchedulePage eventSchedulePage = welcomePage.navigatePage(SPORT, EVENT_SCHEDULE, EventSchedulePage.class);
-        welcomePage.waitSpinnerDisappeared();
-        eventSchedulePage.goToSport("Basketball");
-        eventSchedulePage.showLeague(eventBasketball.getLeagueName(), eventBasketball.getEventDate());
-        eventSchedulePage.addEvent(eventBasketball);
-        log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-        BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
-        basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
-        basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
-        log("@Step 1: Navigate to Soccer > BBT");
-        BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
-        log("@Step 2: Filter default option with Basketball sport");
-        bbtPage.filter("", "Basketball", "", "", "", "", "", "", "");
-        log("@Verify 1: Validate 'S' and 'S12' link should not displayed on Basketball");
-        Label SLink = Label.xpath(bbtPage.tblBBT.getSLinkXpath(1, "S"));
-        Label S12Link = Label.xpath(bbtPage.tblBBT.getSLinkXpath(1, "S12"));
-        Assert.assertTrue(!SLink.isDisplayed() && !S12Link.isDisplayed(), "FAILED! 'S' and 'S12' link displayed on Basketball");
-        log("INFO: Executed completely");
+    public void BBT_TC_3800() {
+            log("@title: Validate 'S' and 'S12' link should not displayed when filtering Basketball sport");
+            log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
+            log("@Step 1: Navigate to Soccer > BBT");
+            BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
+            log("@Step 2: Filter default option with Basketball sport");
+            bbtPage.filter("", "Basketball", "", "", "05/12/2023", "05/12/2023", "", "", "");
+            log("@Verify 1: Validate 'S' and 'S12' link should not displayed on Basketball");
+            Label SLink = Label.xpath(bbtPage.tblBBT.getSLinkXpath(1, "S"));
+            Label S12Link = Label.xpath(bbtPage.tblBBT.getSLinkXpath(1, "S12"));
+            Assert.assertTrue(!SLink.isDisplayed() && !S12Link.isDisplayed(), "FAILED! 'S' and 'S12' link displayed on Basketball");
+            log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression", "2023.12.29"})
     @Parameters({"accountCode"})
     @TestRails(id = "3801")
     public void BBT_TC_3801(String accountCode) {
-        orderTennis.setAccountCode(accountCode);
-        log("@title: Validate Bet Type filter should only display 1x2 bet for Tennis sport");
-        log("@Precondition: Having a bet for Tennis sport");
-        log("@Precondition-Step 1: Have a specific League Name, Home Team, Away Team for testing line\n" +
-                "League: QA Tennis League\n" +
-                "Home Team: QA Tennis Team 1\n" +
-                "Away Team: QA Tennis Team 2");
-        EventSchedulePage eventSchedulePage = welcomePage.navigatePage(SPORT, EVENT_SCHEDULE, EventSchedulePage.class);
-        welcomePage.waitSpinnerDisappeared();
-        eventSchedulePage.goToSport("Tennis");
-        eventSchedulePage.showLeague(eventTennis.getLeagueName(), eventTennis.getEventDate());
-        eventSchedulePage.addEvent(eventTennis);
+        String currentDay = DateUtils.getDate(0, "dd/MM/yyyy", "GMT +8");
+        String dateAPI = DateUtils.formatDate(currentDay, "dd/MM/yyyy", "yyyy-MM-dd");
+        Event eventTennis =
+                new Event.Builder().sportName("Tennis").leagueName("QA Tennis League").eventDate(currentDay)
+                        .home("QA Tennis Team 01").away("QA Tennis Team 02")
+                        .openTime("16:00").eventStatus("InRunning").isLive(true).isN(false).build();
+        Order orderTennis = new Order.Builder().sport("Basketball").price(1.17).requireStake(13.25).oddType("HK").betType("Back")
+                .home("QA Tennis Team 1").away("QA Tennis Team 2").selection("Home").isLive(false).event(eventTennis).build();
+        try{
+            log("@title: Validate Bet Type filter should only display 1x2 bet for Tennis sport");
+            log("@Precondition: Having a bet for Tennis sport");
+            log("@Precondition-Step 1: Have a specific League Name, Home Team, Away Team for testing line\n" +
+                    "League: QA Tennis League\n" +
+                    "Home Team: QA Tennis Team 1\n" +
+                    "Away Team: QA Tennis Team 2");
 
-        log("@Precondition-Step 2: Place some Tennis 1x2 match bets");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-        TennisBetEntryPage tennisBetEntryPage = betEntryPage.goToTennis();
-        tennisBetEntryPage.showLeague(COMPANY_UNIT, "", eventTennis.getLeagueName(), accountCode);
-        tennisBetEntryPage.placeBet(orderTennis, orderTennis.getSelection());
-        log("@Step 1: Navigate to Soccer > BBT");
-        BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
-        log("@Step 2: Filter default option with Tennis sport");
-        bbtPage.ddpSport.selectByVisibleText("Tennis");
-        bbtPage.waitSpinnerDisappeared();
-        log("@Verify 1: Validate Validate Bet Type filter should display 1x2 bet");
-        bbtPage.btnShowBetTypes.click();
-        Assert.assertTrue(bbtPage.verifyFilterDisplayWithOption("1x2"), "FAILED! Bet type 1x2 is not displayed");
-        log("INFO: Executed completely");
+            EventScheduleUtils.addTennisEventAPI(dateAPI, "INRUNNING");
+            log("@Precondition-Step 2: Place some Tennis 1x2 match bets");
+            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
+            TennisBetEntryPage tennisBetEntryPage = betEntryPage.goToTennis();
+            tennisBetEntryPage.showLeague(COMPANY_UNIT, "", eventTennis.getLeagueName(), accountCode);
+            tennisBetEntryPage.placeBet(orderTennis, orderTennis.getSelection());
+            log("@Step 1: Navigate to Soccer > BBT");
+            BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
+            log("@Step 2: Filter default option with Tennis sport");
+            bbtPage.ddpSport.selectByVisibleText("Tennis");
+            bbtPage.waitSpinnerDisappeared();
+            log("@Verify 1: Validate Validate Bet Type filter should display 1x2 bet");
+            bbtPage.btnShowBetTypes.click();
+            Assert.assertTrue(bbtPage.verifyFilterDisplayWithOption("1x2"), "FAILED! Bet type 1x2 is not displayed");
+            log("INFO: Executed completely");
+        }finally {
+            String eventID = EventScheduleUtils.getEventID(dateAPI, EventScheduleUtils.QA_TENNIS_LEAGUE_ID);
+            log("@Post-condition: Delete event Tennis id: " + eventID);
+            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("INFO: Post condition completely");
+        }
+
     }
 
     @Test(groups = {"regression", "2023.12.29"})
@@ -760,10 +743,10 @@ public class BBTTest extends BaseCaseAQS {
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter default option with Basketball sport");
-        bbtPage.ddpSport.selectByVisibleText("Basketball");
-        bbtPage.waitSpinnerDisappeared();
+        bbtPage.filter("", "Basketball", "","","05/12/2023", "05/12/2023", "", "", "");
         log("@Verify 1: Validate Bet Type filter should only display 3 options which are '1x2', 'HDP', and 'Total Points'");
         bbtPage.btnShowBetTypes.click();
+        bbtPage.waitSpinnerDisappeared();
         Assert.assertTrue(bbtPage.verifyFilterDisplayWithOption("1x2", "HDP", "Total Points"), "FAILED! Bet type '1x2', 'HDP', and 'Total Points' is not displayed");
         log("INFO: Executed completely");
     }
@@ -772,57 +755,88 @@ public class BBTTest extends BaseCaseAQS {
     @Parameters({"accountCode"})
     @TestRails(id = "3804")
     public void BBT_TC_3804(String accountCode) {
-        orderBasketball.setAccountCode(accountCode);
-        log("@title: Validate Lay Basketball bet should display correctly on right table ");
-        log("@Precondition: Place some Lay Basketball 1x2 match bets");
-        orderBasketball.setBetType("Lay");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-        BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
-        basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
-        basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
+        String currentDay = DateUtils.getDate(0, "dd/MM/yyyy", "GMT +8");
+        String dateAPI = DateUtils.formatDate(currentDay, "dd/MM/yyyy", "yyyy-MM-dd");
+        int randomStake = Integer.valueOf(StringUtils.generateNumeric(2));
+        Event eventBasketball =
+                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(currentDay)
+                        .home("QA Basketball Team 1").away("QA Basketball Team 2")
+                        .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
+        Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(randomStake).oddType("HK").betType("Lay")
+                .home("QA Basketball Team 1").away("QA Basketball Team 2").selection("Home").isLive(false).event(eventBasketball).build();
 
-        log("@Step 1: Navigate to Soccer > BBT");
-        BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
-        log("@Step 2: Filter with Basketball sport with valid data at pre-condition > observe");
-        bbtPage.filter("", "Basketball", "", "", "", "", "", "", "");
-        log("@Verify 1: Validate Lay Basketball bet should display correctly");
-        Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(orderBasketball, false) != -1, "FAILED! The bet is not show on BBT page");
-        log("INFO: Executed completely");
+        try{
+            log("@title: Validate Lay Basketball bet should display correctly on right table ");
+            log("@Precondition: Place some Lay Basketball 1x2 match bets");
+            EventScheduleUtils.addBasketballEventAPI(dateAPI, "INRUNNING");
+            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
+            BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
+            basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
+            basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
+
+            log("@Step 1: Navigate to Soccer > BBT");
+            BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
+            log("@Step 2: Filter with Basketball sport with valid data at pre-condition > observe");
+            bbtPage.filter("", "Basketball", "", "", "", "", "", "", "");
+            log("@Verify 1: Validate Lay Basketball bet should display correctly");
+            Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(orderBasketball, false) != -1, "FAILED! The bet is not show on BBT page");
+            log("INFO: Executed completely");
+        }finally {
+            String eventID = EventScheduleUtils.getEventID(dateAPI, EventScheduleUtils.QA_BASKETBALL_LEAGUE_ID);
+            log("@Post-condition: Delete event Basketball id: " + eventID);
+            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("INFO: Post condition completely");
+        }
+
     }
 
     @Test(groups = {"regression", "2023.12.29"})
     @Parameters({"accountCode"})
     @TestRails(id = "3805")
     public void BBT_TC_3805(String accountCode) {
-        orderBasketball.setAccountCode(accountCode);
-        log("@title: Validate (Lay) text should display correctly after the odds for Lay bet");
-        log("@Precondition: Place some Lay Basketball 1x2 match bets");
-        orderBasketball.setBetType("Lay");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-        BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
-        basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
-        basketballBetEntryPage.placeBet(orderBasketball, "1x2", "Away");
+        String currentDay = DateUtils.getDate(0, "dd/MM/yyyy", "GMT +8");
+        String dateAPI = DateUtils.formatDate(currentDay, "dd/MM/yyyy", "yyyy-MM-dd");
+        int randomStake = Integer.valueOf(StringUtils.generateNumeric(2));
+        Event eventBasketball =
+                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(currentDay)
+                        .home("QA Basketball Team 1").away("QA Basketball Team 2")
+                        .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
+        Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(randomStake).oddType("HK").betType("Lay")
+                .home("QA Basketball Team 1").away("QA Basketball Team 2").selection("Home").isLive(false).event(eventBasketball).build();
+        try{
+            log("@title: Validate (Lay) text should display correctly after the odds for Lay bet");
+            log("@Precondition: Place some Lay Basketball 1x2 match bets");
+            EventScheduleUtils.addBasketballEventAPI(dateAPI, "INRUNNING");
+            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
+            BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
+            basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
+            basketballBetEntryPage.placeBet(orderBasketball, "1x2", "Away");
 
-        log("@Step 1: Navigate to Soccer > BBT");
-        BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
-        log("@Step 2: Filter with Basketball sport with valid data at pre-condition > observe");
-        bbtPage.filter("", "Basketball", "", "", "", "", "", "", "");
-        log("@Verify 1: Validate (Lay) text should display correctly after the odds for Lay bet");
-        List<String> listPrice = bbtPage.getListColOfAllBBTTable(bbtPage.colPrice);
-        Assert.assertTrue(listPrice.get(0).contains("(Lay)"), "FAILED! The bet is not show on BBT page");
-        log("INFO: Executed completely");
+            log("@Step 1: Navigate to Soccer > BBT");
+            BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
+            log("@Step 2: Filter with Basketball sport with valid data at pre-condition > observe");
+            bbtPage.filter("", "Basketball", "", "", "", "", "", "", "");
+            log("@Verify 1: Validate (Lay) text should display correctly after the odds for Lay bet");
+            List<String> listPrice = bbtPage.getListColOfAllBBTTable(bbtPage.colPrice);
+            Assert.assertTrue(listPrice.get(0).contains("(Lay)"), "FAILED! The bet is not show on BBT page");
+            log("INFO: Executed completely");
+        }finally {
+            String eventID = EventScheduleUtils.getEventID(dateAPI, EventScheduleUtils.QA_BASKETBALL_LEAGUE_ID);
+            log("@Post-condition: Delete event Basketball id: " + eventID);
+            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("INFO: Post condition completely");
+        }
     }
 
     @Test(groups = {"regression", "2023.12.29"})
     @Parameters({"accountCode"})
     @TestRails(id = "3806")
-    public void BBT_TC_3806(String accountCode) {
-        orderBasketball.setAccountCode(accountCode);
+    public void BBT_TC_3806() {
         log("@title: Validate Bet Type, Selection, HDP column should have no background color on Last 50 Bets, Pending Bets dialog");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with Basketball sport with valid data > observe");
-        bbtPage.filter("", "Basketball", "", "", "", "", "", "", "");
+        bbtPage.filter("", "Basketball", "", "", "05/12/2023", "05/12/2023", "", "", "");
         log("@Step 2: Click on any HDP points to open Last 50 bets");
         Last50BetsPage last50BetsPage =  bbtPage.openLast50BetsFirstGroup();
         log("@Verify 1: Validate Bet Type, Selection, HDP column should have no background color");
