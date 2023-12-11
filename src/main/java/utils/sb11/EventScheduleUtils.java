@@ -16,30 +16,6 @@ import static testcases.BaseCaseAQS.environment;
 
 public class EventScheduleUtils {
 
-    public static final String QA_TENNIS_LEAGUE_ID = "2374";
-    public static final String QA_TENNIS_TEAM_1_ID = "46645";
-    public static final String QA_TENNIS_TEAM_2_ID = "46648";
-    public static final String QA_BASKETBALL_LEAGUE_ID = "2372";
-    public static final String QA_BASKETBALL_TEAM_1_ID = "46639";
-    public static final String QA_BASKETBALL_TEAM_2_ID = "46642";
-    public static final String QA_CRICKET_LEAGUE_ID = "2804";
-    public static final String QA_CRICKET_TEAM_1_ID = "53574";
-    public static final String QA_CRICKET_TEAM_2_ID = "53577";
-
-
-
-    public static void addTennisEventAPI(String dateAPI, String status) {
-        addEventByAPI(QA_TENNIS_TEAM_2_ID, QA_TENNIS_TEAM_1_ID, QA_TENNIS_LEAGUE_ID, dateAPI, SPORT_ID_MAP.get("Tennis"), status);
-    }
-
-    public static void addBasketballEventAPI(String dateAPI, String status) {
-        addEventByAPI(QA_BASKETBALL_TEAM_2_ID, QA_BASKETBALL_TEAM_1_ID, QA_BASKETBALL_LEAGUE_ID, dateAPI, SPORT_ID_MAP.get("Basketball"), status);
-    }
-
-    public static void addCricketEventAPI(String dateAPI, String status) {
-        addEventByAPI(QA_CRICKET_TEAM_2_ID, QA_CRICKET_TEAM_1_ID, QA_CRICKET_LEAGUE_ID, dateAPI, SPORT_ID_MAP.get("Cricket"), status);
-    }
-
     /**
      * @param dateAPI should follow format yyyy-MM-dd
      * */
@@ -84,6 +60,44 @@ public class EventScheduleUtils {
             }
         }
         return eventID;
+    }
+
+    public static String getTeamID(String teamName, String leagueID) {
+        JSONArray jsonArray = null;
+        String teamID = "";
+        try {
+            jsonArray = getTeamList(leagueID);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        if (Objects.nonNull(jsonArray)) {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                if (jsonObject.getString("teamName").equalsIgnoreCase(teamName)) {
+                    teamID = String.valueOf(jsonObject.getInt("teamId"));
+                }
+            }
+        }
+        return teamID;
+    }
+
+    public static String getLeagueID(String leagueName, String sportID) {
+        JSONArray jsonArray = null;
+        String leagueID = "";
+        try {
+            jsonArray = getAllLeague(sportID);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        if (Objects.nonNull(jsonArray)) {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                if (jsonObject.getString("leagueName").equalsIgnoreCase(leagueName)) {
+                    leagueID = String.valueOf(jsonObject.getInt("leagueId"));
+                }
+            }
+        }
+        return leagueID;
     }
 
     public static void deleteEventByAPI(String eventId) {
@@ -145,16 +159,28 @@ public class EventScheduleUtils {
      * @return the list api of League
      */
     private static JSONArray getAllLeague(String sportID){
-        String api = String.format("%saqs-agent-service/event/league/event?sportId=%s",environment.getSbpLoginURL(),sportID);
+        String api = String.format("%saqs-agent-service/event/all-league?sportId=%s",environment.getSbpLoginURL(),sportID);
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
         Map<String, String> headers = new HashMap<String, String>()
         {
             {
                 put("Authorization",autho) ;
-                put("Content-Type",Configs.HEADER_FORM_URLENCODED);
+                put("Content-Type",Configs.HEADER_JSON);
             }
         };
         return  WSUtils.getGETJSONArraytWithDynamicHeaders(api,headers);
+    }
+
+    private static JSONArray getTeamList(String leagueID) {
+        String api = String.format("%saqs-agent-service/event/team/list?leagueId=%s&seasonId=0", environment.getSbpLoginURL(), leagueID);
+        String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
+        Map<String, String> headers = new HashMap<String, String>() {
+            {
+                put("Authorization", autho);
+                put("Content-Type", Configs.HEADER_JSON);
+            }
+        };
+        return WSUtils.getGETJSONArraytWithDynamicHeaders(api, headers);
     }
 
     private static String buildJsonPayload(String awayId, String homeId, String leagueId,String dateAPI, String sportID, String status){
