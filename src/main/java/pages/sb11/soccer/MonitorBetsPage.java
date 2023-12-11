@@ -5,10 +5,14 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.CheckBox;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
+import common.SBPConstants;
 import controls.Table;
 import objects.Event;
+import objects.Order;
 import org.openqa.selenium.support.Color;
 import pages.sb11.WelcomePage;
+
+import java.util.List;
 
 public class MonitorBetsPage extends WelcomePage {
     public int colAC = 2;
@@ -132,7 +136,7 @@ public class MonitorBetsPage extends WelcomePage {
         return true;
     }
 
-    public boolean isCheckBetDisplayCorrect(String accountCode, Event event) {
+    public boolean isEventDisplayCorrect(String accountCode, Event event) {
         //wait for bet update in Monitor Bets page
         try {
             Thread.sleep(10000);
@@ -156,13 +160,12 @@ public class MonitorBetsPage extends WelcomePage {
     public void showMasterByName(boolean show, String... masterName) {
         lblShowMaster.click();
         waitSpinnerDisappeared();
-        btnClearAll.click();
         for(String option: masterName){
             selectOptionOnFilter(option, true);
         }
         btnSetSelection.click();
         waitSpinnerDisappeared();
-        if (!show){
+        if (show){
             btnShow.click();
             waitSpinnerDisappeared();
         }
@@ -207,5 +210,72 @@ public class MonitorBetsPage extends WelcomePage {
             btnShow.click();
             waitSpinnerDisappeared();
         }
+    }
+
+    public boolean isOrdersValidStake(String stakeValue) {
+        int orders = tblOrder.getNumberOfRows(false,true);
+        if (orders == 0){
+            System.err.println("No record found");
+            return false;
+        }
+        Double validStake = SBPConstants.MonitorBets.VALID_STAKE.get(stakeValue);
+        for (int i = 0; i < orders; i++){
+            String autualStake = tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName("Stake"),i+1,"span[2]").getText().replace(",","");
+            if (!(Double.valueOf(autualStake) >= validStake)){
+                 System.out.println("FAILED! "+ autualStake+" is not available");
+                 return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkOrderDisplayCorrect(Order order) {
+        int indexAC = getACRowIndex(order.getAccountCode());
+        if (indexAC==0){
+            System.err.println("FAILED! Account code is not shown");
+            return false;
+        }
+        String eventActual = tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName("Event"),indexAC,null).getText();
+        String eventExpect = order.getEvent().getHome() + " -vs- "+ order.getEvent().getAway();
+        String selectionActual = tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName("Selection"),indexAC,null).getText();
+        String hdpPointActual = tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName("HDP"),indexAC,"span[1]").getText();
+        String stakeActual = tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName("Stake"),indexAC,"span[2]").getText().replace(",","");
+        if (!eventActual.contains(eventExpect)){
+            System.out.println("FAILED! Event display incorrect");
+            return false;
+        }
+        if (!selectionActual.equals(order.getSelection())){
+            System.out.println("FAILED! Selection display incorrect");
+            return false;
+        }
+        if (!hdpPointActual.contains(String.valueOf(order.getHdpPoint()))){
+            System.out.println("FAILED! HDP display incorrect");
+            return false;
+        }
+        if (!stakeActual.equals(String.valueOf(order.getRequireStake()))){
+            System.out.println("FAILED! Stake display incorrect");
+            return false;
+        }
+        return true;
+    }
+    public boolean isOrderDisplayCorrect(Order order){
+        if (tblOrder.getNumberOfRows(false,true)==0){
+            System.out.println("No record found!");
+            return false;
+        } else {
+            return checkOrderDisplayCorrect(order);
+        }
+    }
+
+    public boolean isCurrencyDisplayCorrect(String currency) {
+        List<String> lstCur = tblOrder.getColumn(tblOrder.getColumnIndexByName("Stake"),10,false);
+        for (String cur: lstCur){
+            cur = cur.split("\n")[2];
+            if (!cur.equals(currency)){
+                System.out.println(cur+" difference from "+currency);
+                return false;
+            }
+        }
+        return true;
     }
 }

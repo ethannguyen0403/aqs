@@ -310,6 +310,18 @@ public class SBPConstants {
                 put("FT OU", "#E0FFFF");
                 put("FT HDP - Corner", "#FFE1FF");
                 put("FT OU - Corner", "#FFE1FF");
+                put("HT OU - Corner", "#DBDB70");
+                put("HT HDP - Corner", "#DBDB70");
+            }
+        };
+        public final static Map<String, Double> VALID_STAKE = new HashMap<String, Double>()
+        {
+            {
+                put("Above 1K", 1000.00);
+                put("Above 10K", 10000.00);
+                put("Above 50K", 50000.00);
+                put("Above 100K", 100000.00);
+                put("Above 150K", 150000.00);
             }
         };
     }

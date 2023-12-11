@@ -105,7 +105,7 @@ public class BetEntryPage extends WelcomePage {
         List<Order> lstOrder = new ArrayList<>();
         String stage = "Full Time";
         if(!isFullTime)
-            stage = "Haft Time";
+            stage = "Half Time";
         Order order = new Order.Builder()
                 .sport(sportName).isNegativeHdp(isNegativeHdp).hdpPoint(hdpPoint).price(price).requireStake(requireStake)
                 .oddType(oddsType).betType(betType).liveHomeScore(liveHomeScore).liveAwayScore(liveAwayScore).accountCode(accountCode).accountCurrency(accountCurrency)

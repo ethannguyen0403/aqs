@@ -14,6 +14,7 @@ import pages.sb11.soccer.MonitorBetsPage;
 import pages.sb11.soccer.PendingBetsPage;
 import pages.sb11.soccer.PerformanceByMonthPage;
 import pages.sb11.trading.BetEntryPage;
+import pages.sb11.trading.ConfirmBetsPage;
 import pages.sb11.trading.SmartGroupPage;
 import pages.sb11.trading.SmartSystemPage;
 import testcases.BaseCaseAQS;
@@ -29,20 +30,6 @@ import java.util.List;
 import static common.SBPConstants.*;
 
 public class MonitorBetsTest extends BaseCaseAQS {
-
-    String sport = "Soccer";
-    String smartType = "Master";
-    String punterType = "Smart Punter";
-    String betPlaceIn = "All Hours";
-    String betCount = "Last 300 Bets";
-    String lrbRule = "[LRB-Rule]";
-    String liveNonLive = "ALL";
-    String currency = "HKD";
-    String stake = "ALL";
-    String accountCode = "No.7 SPB";
-    String accCur = "HKD";
-    String master = "QA Smart Master";
-
     @Test(groups = {"regression","2023.11.30"})
     @TestRails(id = "50")
     @Parameters({"password", "userNameOneRole"})
@@ -180,7 +167,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         monitorBetsPage.cbTodayEvent.click();
         monitorBetsPage.btnShow.click();
         log("Verify 1: Only bets that placed today will show");
-        Assert.assertTrue(monitorBetsPage.isCheckBetDisplayCorrect(accountCode,eventInfo),"FAILED! Bet(s) that placed today will not show");
+        Assert.assertTrue(monitorBetsPage.isEventDisplayCorrect(accountCode,eventInfo),"FAILED! Bet(s) that placed today will not show");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.31"})
@@ -208,7 +195,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         monitorBetsPage.ddpLiveNonLive.selectByVisibleText("Live");
         monitorBetsPage.btnShow.click();
         log("Verify 1: Only Live bets are shown");
-        Assert.assertTrue(monitorBetsPage.isCheckBetDisplayCorrect(accountCode,eventInfo),"FAILED! Bet(s) that placed live will not show");
+        Assert.assertTrue(monitorBetsPage.isEventDisplayCorrect(accountCode,eventInfo),"FAILED! Bet(s) that placed live will not show");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.31"})
@@ -236,7 +223,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         monitorBetsPage.ddpLiveNonLive.selectByVisibleText("Non-Live");
         monitorBetsPage.btnShow.click();
         log("Verify 1: Only Non-Live bets are shown");
-        Assert.assertTrue(monitorBetsPage.isCheckBetDisplayCorrect(accountCode,eventInfo),"FAILED! Bet(s) that placed non-live will not show");
+        Assert.assertTrue(monitorBetsPage.isEventDisplayCorrect(accountCode,eventInfo),"FAILED! Bet(s) that placed non-live will not show");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.31"})
@@ -248,6 +235,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Pre-condition 2: The account is added to any smart group in Trading Smart System Smart Group");
         log("@Pre-condition 3: The account have some settled Bet(s) within 12 days");
         log("@Step 1: Access 'Monitor Bets' page");
+        String master = "QA Smart Master";
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.ddpBetPlacedIN.selectByVisibleText("All Hours");
@@ -266,6 +254,11 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: The account is added to any smart group in Trading Smart System Smart Group");
         log("@Pre-condition 3: The account has placed bet(s)");
+        String smartType = "Master";
+        String punterType = "Smart Punter";
+        String betPlaceIn = "All Hours";
+        String betCount = "Last 300 Bets";
+        String lrbRule = "[LRB-Rule]";
         int dateNo = 0;
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",false,true,
@@ -273,7 +266,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Step 1: Access 'Monitor Bets' page");
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
-        monitorBetsPage.filterResult(sport,smartType,punterType,betPlaceIn,betCount,false,lrbRule,liveNonLive,currency,stake,true);
+        monitorBetsPage.filterResult(SOCCER,smartType,punterType,betPlaceIn,betCount,false,lrbRule,"ALL","HKD","ALL",true);
         log("@Step 3: Click copy button then paste the text");
         monitorBetsPage.clickToCopyByAccountCode(accountCode);
         log("Verify 1: The copied text should display properly as Report column");
@@ -291,10 +284,16 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Pre-condition 2: The account is added to any smart group in Trading Smart System Smart Group");
         log("@Pre-condition 3: The account have some settled Bet(s) which has %L/%NL (e.g. %L=180%, %NL =1.77%)");
         log("@Step 1: Access 'Monitor Bets' page");
+        String smartType = "Master";
+        String master = "QA Smart Master";
+        String punterType = "Smart Punter";
+        String betPlaceIn = "All Hours";
+        String betCount = "Last 300 Bets";
+        String lrbRule = "[LRB-Rule]";
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.showMasterByName(false,master);
-        monitorBetsPage.filterResult(sport,smartType,punterType,betPlaceIn,betCount,false,lrbRule,liveNonLive,currency,stake,true);
+        monitorBetsPage.filterResult(SOCCER,smartType,punterType,betPlaceIn,betCount,false,lrbRule,"ALL","HKD","ALL",true);
         log("@Step 3: Inspect bg color element of %L and %NL column");
         String colorL =  monitorBetsPage.getBGColorByColumnName("L",accountCode);
         String colorNL = monitorBetsPage.getBGColorByColumnName("NL",accountCode);
@@ -310,16 +309,20 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@title: Validate background color at AC column is shown as smart group defined");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: In Smart System > Smart Group, 'Smart Group' is created with BG");
+        String master = "QA Smart Master";
+        String smartType = "Master";
+        String punterType = "Smart Punter";
+        String betPlaceIn = "All Hours";
+        String lrbRule = "[LRB-Rule]";
         SmartSystemPage smartSystemPage = welcomePage.navigatePage(TRADING,SMART_SYSTEM, SmartSystemPage.class);
         SmartGroupPage smartGroupPage = smartSystemPage.goToSmartGroup();
         smartGroupPage.filterSmartGroup("All","Default",smartGroup);
-        String colorExpected = smartGroupPage.getColorByGroupCode(smartGroup);
         log("@Pre-condition 3: The account have some settled Bet(s)");
         log("@Step 1: Access 'Monitor Bets' page");
         MonitorBetsPage monitorBetsPage = smartGroupPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.showMasterByName(false,master);
-        monitorBetsPage.filterResult(sport,smartType,punterType,betPlaceIn,"Last 10 Bets",false,lrbRule,liveNonLive,currency,stake,true);
+        monitorBetsPage.filterResult(SOCCER,smartType,punterType,betPlaceIn,"Last 10 Bets",false,lrbRule,"ALL","HKD","ALL",true);
         log("@Step 3: Inspect bg color element of %L and %NL column");
         String colorAC =  monitorBetsPage.getBGColorByColumnName("AC",accountCode);
         log("Verify 1: Color of L and NL columns are shown correctly as mentioned");
@@ -345,7 +348,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
         String colorHDP = monitorBetsPage.getBGColorByColumnName("HDP",accountCode);
         log("Verify 1: The background color column displays properly as below: FT HDP = no color");
-        Assert.assertEquals(colorHDP,MonitorBets.COLOR_CODE_HDP_COLUMN.get("FT HDP"),"FAILED! Color of L column is shown incorrect");
+        Assert.assertEquals(colorHDP,MonitorBets.COLOR_CODE_HDP_COLUMN.get("FT HDP"),"FAILED! Color of HDP column is shown incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.31"})
@@ -367,7 +370,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
         String colorHDP = monitorBetsPage.getBGColorByColumnName("HDP",accountCode);
         log("Verify 1: The background color column displays gold (#DBDB70)");
-        Assert.assertEquals(colorHDP,MonitorBets.COLOR_CODE_HDP_COLUMN.get("HT HDP"),"FAILED! Color of L column is shown incorrect");
+        Assert.assertEquals(colorHDP,MonitorBets.COLOR_CODE_HDP_COLUMN.get("HT HDP"),"FAILED! Color of HDP column is shown incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.31"})
@@ -389,7 +392,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
         String colorHDP = monitorBetsPage.getBGColorByColumnName("HDP",accountCode);
         log("Verify 1: The background color column displays gold (#DBDB70)");
-        Assert.assertEquals(colorHDP,MonitorBets.COLOR_CODE_HDP_COLUMN.get("HT OU"),"FAILED! Color of L column is shown incorrect");
+        Assert.assertEquals(colorHDP,MonitorBets.COLOR_CODE_HDP_COLUMN.get("HT OU"),"FAILED! Color of HDP column is shown incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.31"})
@@ -411,7 +414,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
         String colorHDP = monitorBetsPage.getBGColorByColumnName("HDP",accountCode);
         log("Verify 1: The background color column displays light blue (#E0FFFF)");
-        Assert.assertEquals(colorHDP,MonitorBets.COLOR_CODE_HDP_COLUMN.get("FT OU"),"FAILED! Color of L column is shown incorrect");
+        Assert.assertEquals(colorHDP,MonitorBets.COLOR_CODE_HDP_COLUMN.get("FT OU"),"FAILED! Color of HDP column is shown incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.31"})
@@ -433,7 +436,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
         String colorHDP = monitorBetsPage.getBGColorByColumnName("HDP",accountCode);
         log("Verify 1: The background color column displays light pink (#FFE1FF)");
-        Assert.assertEquals(colorHDP,MonitorBets.COLOR_CODE_HDP_COLUMN.get("FT HDP - Corner"),"FAILED! Color of L column is shown incorrect");
+        Assert.assertEquals(colorHDP,MonitorBets.COLOR_CODE_HDP_COLUMN.get("FT HDP - Corner"),"FAILED! Color of HDP column is shown incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.31"})
@@ -455,7 +458,130 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
         String colorHDP = monitorBetsPage.getBGColorByColumnName("HDP",accountCode);
         log("Verify 1: The background color column displays light pink (#FFE1FF)");
-        Assert.assertEquals(colorHDP,MonitorBets.COLOR_CODE_HDP_COLUMN.get("FT OU - Corner"),"FAILED! Color of L column is shown incorrect");
+        Assert.assertEquals(colorHDP,MonitorBets.COLOR_CODE_HDP_COLUMN.get("FT OU - Corner"),"FAILED! Color of HDP column is shown incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.31"})
+    @TestRails(id = "16191")
+    @Parameters({"accountCode","accountCurrency"})
+    public void MonitorBetsTC_16191(String accountCode, String accountCurrency) {
+        log("@title: Validate HDP background is gold (#DBDB70) when market type is HT OU - Corner");
+        log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
+        log("@Pre-condition 2: In Smart System > Smart Group, 'Smart Group' is created with BG");
+        log("@Pre-condition 3: The account placed bets for market type HT OU - Corner in Bet Entry page");
+        int dateNo = 0;
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        betEntryPage.placeMoreSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Over",false,false,
+                0.25,2.121,"HK","Back",0,0,5.5,accountCode,accountCurrency,"Over Under - Corners",false,false);
+        log("@Step 1: Access 'Monitor Bets' page");
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        log("@Step 2: Filter data of player account at precondition");
+        monitorBetsPage.showBetType(true,"HT-OU-CN");
+        log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
+        String colorHDP = monitorBetsPage.getBGColorByColumnName("HDP",accountCode);
+        log("Verify 1: The background color column displays gold (#DBDB70)");
+        Assert.assertEquals(colorHDP,MonitorBets.COLOR_CODE_HDP_COLUMN.get("HT OU - Corner"),"FAILED! Color of HDP column is shown incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.31"})
+    @TestRails(id = "16192")
+    @Parameters({"accountCode","accountCurrency"})
+    public void MonitorBetsTC_16192(String accountCode, String accountCurrency) {
+        log("@title: Validate HDP background is gold (#DBDB70) when market type is HT HDP - Corner");
+        log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
+        log("@Pre-condition 2: In Smart System > Smart Group, 'Smart Group' is created with BG");
+        log("@Pre-condition 3: The account placed bets for market type HT HDP - Corner in Bet Entry page");
+        int dateNo = 0;
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        betEntryPage.placeMoreSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",false,false,
+                0.25,2.121,"HK","Back",0,0,5.5,accountCode,accountCurrency,"Handicap - Corners",false,false);
+        log("@Step 1: Access 'Monitor Bets' page");
+        MonitorBetsPage monitorBetsPage = betEntryPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        log("@Step 2: Filter data of player account at precondition");
+        monitorBetsPage.showBetType(true,"HT-HDP-CN");
+        log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
+        String colorHDP = monitorBetsPage.getBGColorByColumnName("HDP",accountCode);
+        log("Verify 1: The background color column displays gold (#DBDB70)");
+        Assert.assertEquals(colorHDP,MonitorBets.COLOR_CODE_HDP_COLUMN.get("HT HDP - Corner"),"FAILED! Color of HDP column is shown incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.31"})
+    @TestRails(id = "142")
+    @Parameters({"accountCode","accountCurrency"})
+    public void MonitorBetsTC_142(String accountCode, String accountCurrency) {
+        log("@title: Validate data is shown according to the filtered stake amount");
+        log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
+        log("@Pre-condition 2: At 'Stake' column in 'Monitor Bets' page\n" +
+                "'Smart Group' = 1,500 HKD\n" +
+                "'Smart Group' = 500 HKD");
+        String master = "QA Smart Master";
+        int dateNo = 0;
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",true,false,
+                0.5,2.121,"HK","Back",0,0,1500,accountCode,accountCurrency,"HDP",false,false );
+        betEntryPage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",true,false,
+                0.5,2.121,"HK","Back",0,0,500,accountCode,accountCurrency,"HDP",false,false );
+        log("@Step 1: Access 'Monitor Bets' page");
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        log("@Step 2: Select filters with 'Stake' = 'Above 1K");
+        monitorBetsPage.ddpStake.selectByVisibleText("Above 1K");
+        log("@Step 3: Click on 'Show' button");
+        monitorBetsPage.showMasterByName(true,master);
+        log("Verify 1: Show 'Smart Group' bet 1500 HKD");
+        Assert.assertTrue(monitorBetsPage.isOrdersValidStake("Above 1K"),"FAILED! Show wrongly bet");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.31"})
+    @TestRails(id = "143")
+    @Parameters({"accountCode","accountCurrency"})
+    public void MonitorBetsTC_143(String accountCode, String accountCurrency) {
+        log("@title: Validate order info display/disappear when the order is placed and deleted");
+        log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
+        log("@Pre-condition 2: The player account is added to any smart group in Trading Smart System Smart Group");
+        log("@Pre-condition 3: The account placed bets");
+        String master = "QA Smart Master";
+        int dateNo = 0;
+        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        List<Order> lstOrder = betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",true,false,
+                0.5,2.121,"HK","Back",0,0,5.55,accountCode,accountCurrency,"HDP",false,false );
+        log("@Step 1: Access 'Monitor Bets' page");
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        log("@Step 2: Select filters which has bet of precondition");
+        log("@Step 3: Click on 'Show' button");
+        monitorBetsPage.showMasterByName(true,master);
+        log("Verify 1: Validate informations of Account code in Ac column, Bet Type in Event column, Select column, HDP column");
+        Assert.assertTrue(monitorBetsPage.isOrderDisplayCorrect(lstOrder.get(0)));
+        log("@Step 4: Go to Confirm bets > delete bet of precondition");
+        ConfirmBetsPage confirmBetsPage = monitorBetsPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
+        confirmBetsPage.filter(COMPANY_UNIT,"","Pending","Soccer","All","Specific Date","","",accountCode);
+        confirmBetsPage.deleteOrder(lstOrder.get(0),true);
+        log("Verify 2: Validate bet of precondition is not shown in Monitor Bets");
+        monitorBetsPage = confirmBetsPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        monitorBetsPage.ddpBetPlacedIN.selectByVisibleText("Last 10 Min");
+        monitorBetsPage.btnShow.click();
+        Assert.assertFalse(monitorBetsPage.isOrderDisplayCorrect(lstOrder.get(0)));
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.31"})
+    @TestRails(id = "144")
+    public void MonitorBetsTC_144() {
+        log("@title: Validate data is shown according to the filtered currency");
+        log("@Step 1: Access 'Monitor Bets' page");
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        log("@Step 2: Select filters with 'Currency' = 'INR'");
+        monitorBetsPage.ddpCurrency.selectByVisibleText("INR");
+        monitorBetsPage.ddpBetPlacedIN.selectByVisibleText("All Hours");
+        log("@Step 3: Click on 'Show' button");
+        monitorBetsPage.btnShow.click();
+        log("Verify 1: Verify Stake column is INR");
+        Assert.assertTrue(monitorBetsPage.isCurrencyDisplayCorrect("INR"),"FAILED! Currency displays incorrect");
+        log("@Step 4: Select filters with 'Currency' = 'HKD'");
+        monitorBetsPage.ddpCurrency.selectByVisibleText("HKD");
+        log("@Step 5: Click on 'Show' button");
+        monitorBetsPage.btnShow.click();
+        log("Verify 2: Verify Stake column is HKD");
+        Assert.assertTrue(monitorBetsPage.isCurrencyDisplayCorrect("HKD"),"FAILED! Currency displays incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression"})
@@ -508,10 +634,16 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@title: Validate Performance By Month is displayed correctly when clicking account at AC column");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Monitor Bets");
+        String accCur = "HKD";
+        String smartType = "Master";
+        String punterType = "Smart Punter";
+        String betPlaceIn = "All Hours";
+        String betCount = "Last 300 Bets";
+        String lrbRule = "[LRB-Rule]";
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 3: Filter with valid info and click Show");
         log("@Step 4: Click any currency at AC column");
-        monitorBetsPage.filterResult(sport,smartType,punterType,betPlaceIn,betCount,false,lrbRule,liveNonLive,currency,stake,true);
+        monitorBetsPage.filterResult(SOCCER,smartType,punterType,betPlaceIn,betCount,false,lrbRule,"ALL","HKD","ALL",true);
         String accountName = monitorBetsPage.tblOrder.getColumn(monitorBetsPage.colAC,5,false).get(0).split("\n")[0];
 //        String accCurrency = monitorBetsPage.tblOrder.getColumn(monitorBetsPage.colStake,5,false).get(0).split("\n")[2];
         log("Validate Performance By Month is displayed correctly title");
@@ -528,10 +660,16 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@title: Validate Pending Bets is displayed correctly when clicking currency at Stake column");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Monitor Bets");
+        String stake = "ALL";
+        String smartType = "Master";
+        String punterType = "Smart Punter";
+        String betPlaceIn = "All Hours";
+        String betCount = "Last 300 Bets";
+        String lrbRule = "[LRB-Rule]";
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 3: Filter with valid info and click Show");
         log("@Step 4: Click any currency at Stake column");
-        monitorBetsPage.filterResult(sport,smartType,punterType,betPlaceIn,betCount,false,lrbRule,liveNonLive,currency,stake,true);
+        monitorBetsPage.filterResult(SOCCER,smartType,punterType,betPlaceIn,betCount,false,lrbRule,"ALL","HKD",stake,true);
         String accountName = monitorBetsPage.tblOrder.getColumn(monitorBetsPage.colAC,5,false).get(0).split("\n")[0];
         String accCurrency = monitorBetsPage.tblOrder.getColumn(monitorBetsPage.colStake,5,false).get(0).split("\n")[2];
         log("Validate Performance By Month is displayed correctly title");
@@ -548,10 +686,16 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@title: Validate Last 12 Days Performance is displayed correctly when clicking data on T column");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Monitor Bets");
+        String stake = "ALL";
+        String smartType = "Master";
+        String punterType = "Smart Punter";
+        String betPlaceIn = "All Hours";
+        String betCount = "Last 300 Bets";
+        String lrbRule = "[LRB-Rule]";
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 3: Filter with valid info and click Show");
         log("@Step 4: Click any currency at T column");
-        monitorBetsPage.filterResult(sport,smartType,punterType,betPlaceIn,betCount,false,lrbRule,liveNonLive,currency,stake,true);
+        monitorBetsPage.filterResult(SOCCER,smartType,punterType,betPlaceIn,betCount,false,lrbRule,"ALL","HKD",stake,true);
         String accountName = monitorBetsPage.tblOrder.getColumn(monitorBetsPage.colAC,5,false).get(0).split("\n")[0];
         String accCurrency = monitorBetsPage.tblOrder.getColumn(monitorBetsPage.colStake,5,false).get(0).split("\n")[2];
         log("Validate Performance By Month is displayed correctly title");
