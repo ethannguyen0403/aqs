@@ -171,7 +171,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 3: Filter which has data");
         page.filter(SBPConstants.COMPANY_UNIT,SBPConstants.FINANCIAL_YEAR,"","");
         log("@Verify 1: Total Assets' = sum of all balance amounts of Asset section");
-        Assert.assertEquals(page.lblValueTotalOfAsset.getText(),page.getTotalOfAllParent("ASSET").replace("-",""),"FAILED! Balance Amount of Asset section display incorrect!");
+        Assert.assertEquals(page.lblValueTotalOfAsset.getText().replace(",",""),page.getTotalOfAllParent("ASSET").replace("-",""),"FAILED! Balance Amount of Asset section display incorrect!");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.10.31"})

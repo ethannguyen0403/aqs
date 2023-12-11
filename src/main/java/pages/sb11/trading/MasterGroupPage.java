@@ -41,18 +41,33 @@ public class MasterGroupPage extends WelcomePage {
     public MasterGroupReportPopup openMasterGroupReport(String masterCode){
         int rowIndex = getMasterRowIndex(masterCode);
         tbMaster.getControlOfCell(1,colMaster,rowIndex,null).click();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return new MasterGroupReportPopup();
     }
 
     public MasterGroupListPopup openGroupListPopup(String masterCode){
         int rowIndex = getMasterRowIndex(masterCode);
         tbMaster.getControlOfCell(1,colGroup,rowIndex,null).click();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return new MasterGroupListPopup();
     }
 
     public MasterGroupClientListPopup openMasterGroupClientList(String masterCode){
         int rowIndex = getMasterRowIndex(masterCode);
         tbMaster.getControlOfCell(1,tbMaster.getColumnIndexByName("CL"),rowIndex,null).click();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return new MasterGroupClientListPopup();
     }
 

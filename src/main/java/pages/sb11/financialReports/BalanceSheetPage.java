@@ -4,6 +4,7 @@ import com.paltech.driver.DriverManager;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
+import com.paltech.utils.DoubleUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import pages.sb11.WelcomePage;
@@ -145,7 +146,7 @@ public class BalanceSheetPage extends WelcomePage {
         for (int i = 0; i < lstParentName.size();i++){
             totalAmountOfParent = totalAmountOfParent + checkNegativeValue(getAmount(lstParentName.get(i)));
         }
-        if (!totalAmount.equals(totalAmountOfParent)){
+        if (!totalAmount.equals(DoubleUtils.roundUpWithTwoPlaces(totalAmountOfParent))){
             System.err.println("Total Amount of "+detailTypeName+" incorrect");
             return false;
         }
@@ -163,6 +164,7 @@ public class BalanceSheetPage extends WelcomePage {
         lstDetail.addAll(getDetailTypeNameByAccountType("CAPITAL"));
         for (int i = 0; i < lstDetail.size();i++){
             if (!isTotalAmountOfDetailType(lstDetail.get(i))){
+                System.out.println(lstDetail.get(i)+" is wrong");
                 return false;
             }
         }
