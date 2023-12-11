@@ -111,9 +111,9 @@ public class EventScheduleUtils {
                     put("Content-Type", Configs.HEADER_JSON);
                 }
             };
-            WSUtils.sendPOSTRequestDynamicHeaders(url, null, headersParam);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+            WSUtils.sendGETRequestDynamicHeaders(url, headersParam);
+        }catch (IOException e){
+            e.getMessage();
         }
     }
 
