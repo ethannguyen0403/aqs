@@ -32,14 +32,14 @@
         <parameter name="userNameOneRole" value="onerole"/>
         <groups>
             <run>
-                <include name="2023.12.31"/>
-<!--                <include name="regression1"/>-->
+                <include name="2023.12.29"/>
             </run>
         </groups>
 
         <classes>
             <class name="testcases.sb11test.soccer.MonitorBetsTest"/>
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
+            <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
         </classes>
     </test>
 </suite>
