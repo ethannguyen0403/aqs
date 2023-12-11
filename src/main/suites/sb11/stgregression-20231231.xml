@@ -5,7 +5,7 @@
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
-    <test name="SB11 Pre Regression 2023.12.31">
+    <test name="SB11 Pre Regression 2023.12.29">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='stg'/>
         <parameter name='language' value='en'/>
@@ -32,14 +32,14 @@
         <parameter name="userNameOneRole" value="onerole"/>
         <groups>
             <run>
-<!--                <include name="2023.12.31"/>-->
-                <include name="regression1"/>
+                <include name="2023.12.31"/>
+<!--                <include name="regression1"/>-->
             </run>
         </groups>
 
         <classes>
             <class name="testcases.sb11test.soccer.MonitorBetsTest"/>
-
+            <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
         </classes>
     </test>
 </suite>
