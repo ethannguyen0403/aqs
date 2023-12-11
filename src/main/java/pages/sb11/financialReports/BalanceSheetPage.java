@@ -5,9 +5,12 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.utils.DoubleUtils;
+import common.SBPConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import utils.ExcelUtils;
 import utils.sb11.ChartOfAccountUtils;
 
 import java.util.*;
@@ -25,7 +28,7 @@ public class BalanceSheetPage extends WelcomePage {
     String amountDetailTypeXpath = "//span[text()='%s']/parent::td/following-sibling::td/span";
     String amountParentAccountXpath = "//td[text()='%s']/following-sibling::td";
     String idParentAccountsXpath = "//span[text()='%s']//ancestor::tr/following-sibling::tr//td[1]";
-    String valueParentAccountsXpath = "//span[text()='%s']//ancestor::tr/following-sibling::tr//td[1]";
+    String valueParentAccountsXpath = "//span[text()='%s']//ancestor::tr/following-sibling::tr//td[3]";
     public Label lblValueTotalOfAsset = Label.xpath("//following::span[text()='Total Assets']/parent::div/following-sibling::div/span");
     public Label lblTotalOfAsset = Label.xpath("//div[contains(@class,'total-by-group-account')][2]");
     public Label lblValueTotalLiabilityCapital = Label.xpath("//span[contains(text(),'Total Liability and Capital')]/parent::div/following-sibling::div/span");
@@ -188,14 +191,50 @@ public class BalanceSheetPage extends WelcomePage {
         }
         return numberValue;
     }
-    public String checkValueCompareExcel(Label lbl){
-        String numberValue = null;
-        if (lbl.getAttribute("Class").contains("negative")){
-            numberValue = "-"+lbl.getText();
-        } else {
-            numberValue = lbl.getText();
-        }
-        return numberValue;
+    public void checkValueCompareExcel(String downloadPath){
+        String companyUnit = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",1,1);
+        String namePage = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",1,2);
+        String rangeTime = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",1,3);
+        String titleAsset = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",1,6);
+        String titleLiability = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",4,6);
+        String assetDetailType = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",1,7);
+        String valueAssetDetailType = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",3,7);
+        String parentNumAsset = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",1,8);
+        String parentNameAsset = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",2,8);
+        String parentValueAsset = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",3,8);
+        String liabilityDetailType = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",4,7);
+        String valueLiabilityDetailType = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",6,7);
+        String parentNumLia = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",4,8);
+        String parentNameLia = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",5,8);
+        String parentValueLia = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",6,8);
+
+        Assert.assertEquals(companyUnit, SBPConstants.COMPANY_UNIT,"FAILED! Company unit displays incorrect");
+        Assert.assertEquals(namePage, SBPConstants.BALANCE_SHEET,"FAILED! Page name displays incorrect");
+        Assert.assertEquals(rangeTime, "01 December 2023 - 31 December 2023","FAILED! Range time displays incorrect");
+        Assert.assertEquals(titleAsset, "ASSET","FAILED! Asset title displays incorrect");
+        Assert.assertEquals(titleLiability, "LIABILITY","FAILED! Liability title displays incorrect");
+
+        String assetDetailTypeUI = getDetailTypeNameByAccountType("ASSET").get(0);
+        String valueAssetDetailTypeUI = getTotalAmount(assetDetailTypeUI).getText();
+        String parentNumAssetUI = getLstIdParentAccount(assetDetailTypeUI).get(0);
+        String parentNameAssetUI = getLstParentName(assetDetailTypeUI).get(0);
+        String parentValueAssetUI = getLstParentValue(assetDetailTypeUI).get(0);
+        String liabilityDetailTypeUI = getDetailTypeNameByAccountType("LIABILITY").get(0);
+        String valueLiabilityDetailTypeUI = getTotalAmount(liabilityDetailTypeUI).getText();
+        String parentNumLiaUI = getLstIdParentAccount(liabilityDetailTypeUI).get(0);
+        String parentNameLiaUI = getLstParentName(liabilityDetailTypeUI).get(0);
+        String parentValueLiaUI = getLstParentValue(liabilityDetailTypeUI).get(0);
+
+        Assert.assertEquals(assetDetailType, assetDetailTypeUI,"FAILED! Asset detail type name displays incorrect");
+        Assert.assertTrue(valueAssetDetailType.contains(valueAssetDetailTypeUI),"FAILED! Value asset detail typedisplays incorrect");
+        Assert.assertEquals(parentNumAsset, parentNumAssetUI,"FAILED! parent number ID Asset displays incorrect");
+        Assert.assertEquals(parentNameAsset, parentNameAssetUI,"FAILED! parent name asset displays incorrect");
+        Assert.assertTrue(parentValueAsset.contains(parentValueAssetUI),"FAILED! parent value asset displays incorrect");
+        Assert.assertEquals(liabilityDetailType, liabilityDetailTypeUI,"FAILED! Liability detail type name displays incorrect");
+        Assert.assertTrue(valueLiabilityDetailType.contains(valueLiabilityDetailTypeUI),"FAILED! Value Liability detail typedisplays incorrect");
+        Assert.assertEquals(parentNumLia, parentNumLiaUI,"FAILED! parent number ID Liability displays incorrect");
+        Assert.assertEquals(parentNameLia, parentNameLiaUI,"FAILED! parent name Liability displays incorrect");
+        Assert.assertTrue(parentValueLia.contains(parentValueLiaUI),"FAILED! parent value Liability displays incorrect");
     }
 
     public boolean isParentAccountDisplayCorrect(List<String> lstParentAccount, List<Map<String, String>> actualExcelData, List<String> columExcel, int indexExcelColumn) {
