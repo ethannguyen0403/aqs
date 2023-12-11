@@ -32,7 +32,7 @@ public class BBTTable {
         return String.format("(%s)[%s]%s", _rootXpathTable, tableIndex, _xpathLeagueName);
     }
     public String getSLinkXpath(int tableIndex, String SLinkName) {
-        return String.format("(%s)[%s]%s//span[text()= '%s']", _rootXpathTable, tableIndex, _xpathSLink, SLinkName);
+        return String.format("(%s)[%s]%s//span[normalize-space()= '%s']", _rootXpathTable, tableIndex, _xpathSLink, SLinkName);
     }
 
     public String getLeagueTimeXpath(int tableIndex) {

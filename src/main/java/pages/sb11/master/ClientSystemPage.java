@@ -1,5 +1,6 @@
 package pages.sb11.master;
 
+import com.paltech.element.BaseElement;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
@@ -33,15 +34,19 @@ public class ClientSystemPage extends WelcomePage {
     public Table tbClient = Table.xpath("//div[@class='d-inline-block col-6']//table",6);
     public Table tbSuperMaster = Table.xpath("//div[@class='col-6 d-inline-block']//table",10);
     int colClientName = 3;
+    int colXButton = 4;
     int colMaster = 5;
     int colAgent = 6;
     int colMember = 7;
     int colList = 10;
 
-    public void filterClient (String companyUnit, String clientList, String clientName, String currency, String status){
-        ddpCompanyUnit.selectByVisibleText(companyUnit);
-        ddpClientList.selectByVisibleText(clientList);
-        txtClientName.sendKeys(clientName);
+    public void filterClient(String companyUnit, String clientList, String clientName, String currency, String status) {
+        if (!companyUnit.isEmpty())
+            ddpCompanyUnit.selectByVisibleText(companyUnit);
+        if (!clientList.isEmpty())
+            ddpClientList.selectByVisibleText(clientList);
+        if (!clientName.isEmpty())
+            txtClientName.sendKeys(clientName);
         if (!currency.isEmpty())
             ddpCurrency.selectByVisibleText(currency);
         if (!status.isEmpty())
@@ -89,6 +94,11 @@ public class ClientSystemPage extends WelcomePage {
         return new MemberListPopup();
     }
 
+    public BaseElement getControlXButton(String superCode) {
+        int rowIndex = getSupeMasterCodeRowIndex(superCode);
+        return tbSuperMaster.getControlOfCell(1, colXButton, rowIndex, null);
+    }
+
     private int getClientCodeRowIndex(String clientCode){
         int i = 1;
         Label lblClientCode;
@@ -102,5 +112,29 @@ public class ClientSystemPage extends WelcomePage {
                 return i;
             i = i +1;
         }
+    }
+
+    private int getSupeMasterCodeRowIndex(String superCode) {
+        int i = 1;
+        int colIndex = tbSuperMaster.getColumnIndexByName("Super Master");
+        Label lblClientCode;
+        while (true) {
+            lblClientCode = Label.xpath(tbSuperMaster.getxPathOfCell(1, colIndex, i, null));
+            if (!lblClientCode.isDisplayed()) {
+                System.out.println("The master code " + superCode + " does not display in the list");
+                return 0;
+            }
+            if (lblClientCode.getText().contains(superCode))
+                return i;
+            i = i + 1;
+        }
+    }
+
+    public boolean verifyElementIsDisabled(BaseElement element, String attribute){
+        return element.getAttribute(attribute).contains("disabled");
+    }
+
+    public String getTooltipText(BaseElement element){
+        return element.getAttribute("title").trim();
     }
 }
