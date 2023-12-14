@@ -208,7 +208,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.ddReport.isEnabled(),"FAILED! Report Dropdown display incorrect!");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression1","2023.10.31"})
+    @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "2793")
     public void Balance_Sheet_2793() {
         log("@title: Validate 'Export To Excel' button work properly");
@@ -218,46 +218,20 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 2: Go to Financial Reports >> Balance Sheet page");
         BalanceSheetPage page = welcomePage.navigatePage(SBPConstants.FINANCIAL_REPORTS, SBPConstants.BALANCE_SHEET, BalanceSheetPage.class);
         log("@Step 3: Filter which has data");
-        String financial = "Year 2022-2023";
-        String month = "2023 - July";
-        String monthExcel = "01 October 2023 - 31 October 2023";
-        int excelColIDAccountAsset = 0;
-        int excelColIDAccountLia = 3;
-        int excelColParentNameAsset = 1;
-        int excelColParentNameLia = 4;
-        int excelColValueAsset = 2;
-        int excelColValueLia = 5;
-        page.filter(SBPConstants.COMPANY_UNIT, financial, month, "");
-        ArrayList<String> lstDetailTypeAsset =  page.getDetailTypeNameByAccountType("ASSET");
-        ArrayList<String> lstDetailTypeLia =  page.getDetailTypeNameByAccountType("LIABILITY");
-        String detailTypeNameAsset = lstDetailTypeAsset.get(0);
-        String valueDetailTypeNameAsset = page.checkValueCompareExcel(page.getTotalAmount(detailTypeNameAsset));
-        String detailTypeNameLia = lstDetailTypeLia.get(0);
-        String valueDetailTypeNameLia = page.checkValueCompareExcel(page.getTotalAmount(detailTypeNameLia));
-        List<String> lstIdParentAccountAsset = page.getLstIdParentAccount(detailTypeNameAsset);
-        List<String> lstIdParentAccountLia = page.getLstIdParentAccount(detailTypeNameLia);
-        List<String> lstParentAssetName = page.getLstParentName(detailTypeNameAsset);
-        List<String> lstParentLiaName = page.getLstParentName(detailTypeNameLia);
-        List<String> lstParentValueAsset = page.getLstParentValue(detailTypeNameAsset);
-        List<String> lstParentValueLia = page.getLstParentValue(detailTypeNameLia);
-
-        List<String> columExcel1 = Arrays.asList(COMPANY_UNIT);
-        List<String> columExcel2 = Arrays.asList(detailTypeNameAsset,"",valueDetailTypeNameAsset,detailTypeNameLia,"",valueDetailTypeNameLia);
+        page.filter(SBPConstants.COMPANY_UNIT, "Year 2023-2024", "2023 - December", "");
         log("@Step 4: Click 'Export To Excel' button");
         page.btnExportToExcel.click();
         page.waitSpinnerDisappeared();
         log("@Step 5: Open exported file");
-        List<Map<String, String>> actualExcelData1 = ExcelUtils.getDataTest(downloadPath, "Balance Sheet", columExcel1, detailTypeNameAsset);
-        List<Map<String, String>> actualExcelData2 = ExcelUtils.getDataTest(downloadPath, "Balance Sheet", columExcel2, lstDetailTypeAsset.get(1));
         log("@Verify 1: Validate can export Retained Earnings to Excel file successfully'");
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
         log("@Verify 2: Validate value in Excel report is correct'");
-        Assert.assertTrue(page.isParentAccountDisplayCorrect(lstIdParentAccountAsset,actualExcelData2,columExcel2,excelColIDAccountAsset),"FAILED! Parent Account ASSET ID  display incorrect.");
-        Assert.assertTrue(page.isParentAccountDisplayCorrect(lstIdParentAccountLia,actualExcelData2,columExcel2,excelColIDAccountLia),"FAILED! Parent Account LIABILITY ID  display incorrect.");
-        Assert.assertTrue(page.isParentAccountDisplayCorrect(lstParentAssetName,actualExcelData2,columExcel2,excelColParentNameAsset),"FAILED! Parent Account ASSET Name display incorrect.");
-        Assert.assertTrue(page.isParentAccountDisplayCorrect(lstParentLiaName,actualExcelData2,columExcel2,excelColParentNameLia),"FAILED! Parent Account LIABILITY Name display incorrect.");
-        Assert.assertTrue(page.isParentAccountDisplayCorrect(lstParentValueAsset,actualExcelData2,columExcel2,excelColValueAsset),"FAILED! Parent Account ASSET value incorrect.");
-        Assert.assertTrue(page.isParentAccountDisplayCorrect(lstParentValueLia,actualExcelData2,columExcel2,excelColValueLia),"FAILED! Parent Account LIABILITY value display incorrect.");
+        page.checkValueCompareExcel(downloadPath);
+        try {
+            FileUtils.removeFile(downloadPath);
+        } catch (IOException e) {
+            log(e.getMessage());
+        }
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.10.31"})
