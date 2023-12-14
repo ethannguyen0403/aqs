@@ -14,6 +14,7 @@
         <parameter name='username' value='qa'/>
         <parameter name='password' value='p8PEjV0gJOnWf9U0aEgGEA=='/>
         <parameter name='newpassword' value='5pjguoEh1fnSILpykWt1vQ=='/>
+        <parameter name='isAddTestRailResult' value='true'/>
         <parameter name='isThrown' value='true'/>
 
         <groups>
