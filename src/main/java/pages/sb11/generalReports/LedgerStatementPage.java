@@ -58,14 +58,16 @@ public class LedgerStatementPage extends WelcomePage {
     public String getTitlePage () {return lblTitle.getText().trim();}
 
     public void showLedger (String companyUnit, String financialYear, String accountType, String ledgerGroup, String fromDate, String toDate,String report){
-        btnShow.moveAndHoverOnControl();
-        if (!companyUnit.isEmpty())
+        if (!companyUnit.isEmpty()){
             ddCompanyUnit.selectByVisibleText(companyUnit);
+            waitSpinnerDisappeared();
+        }
         if (!financialYear.isEmpty())
             ddFinancialYear.selectByVisibleText(financialYear);
-        if (!accountType.isEmpty())
+        if (!accountType.isEmpty()){
             ddLedgerName.selectByVisibleContainsText(accountType);
-        waitSpinnerDisappeared();
+            waitSpinnerDisappeared();
+        }
         if (!ledgerGroup.isEmpty())
             ddLedgerGroup.selectByVisibleContainsText(ledgerGroup);
         if (!fromDate.isEmpty()){
@@ -77,8 +79,8 @@ public class LedgerStatementPage extends WelcomePage {
         if(!report.isEmpty()){
             ddReport.selectByVisibleText(report);
         }
-        btnShow.click();
-        waitSpinnerDisappeared();
+        btnShow.jsClick();
+        waitPageLoad();
     }
 
     public Transaction verifyLedgerTrans(Transaction trans, boolean isDebit, String ledgerGroup){
