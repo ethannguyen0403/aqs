@@ -6,6 +6,8 @@ import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import com.paltech.utils.DateUtils;
+import com.paltech.utils.DoubleUtils;
+import common.SBPConstants;
 import controls.DateTimePicker;
 import controls.Table;
 import controls.sb11.AppArlertControl;
@@ -28,12 +30,15 @@ public class PositionTakingReportPage extends WelcomePage {
     public TextBox txtToDate = TextBox.name("toDate");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
-    int bookieTblCol = 4;
+    public int bookieTblCol = 4;
     int clientTblCol = 4;
+    public int clientNameCol = 2;
     public Table tblBookie = Table.xpath("(//table)[1]",bookieTblCol);
     public Table tblClient = Table.xpath("(//table)[2]",clientTblCol);
     public Label lblTotalWLBookie = Label.xpath("(//table)[1]//tbody//td[text()='Total']//following-sibling::td[2]");
     public Label lblTotalWLClient = Label.xpath("(//table)[2]//tbody//td[text()='Total']//following-sibling::td[2]");
+    public Button btnNext = Button.xpath("//button[contains(text(),'Next')]");
+    public Button btnPrevious = Button.xpath("//button[contains(text(),'Previous')]");
 
     public void filter(String companyUnit, String financialYear, String bookies, String fromDate, String toDate) {
         if (!companyUnit.isEmpty()){
@@ -49,7 +54,7 @@ public class PositionTakingReportPage extends WelcomePage {
             dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
         }
         if (!toDate.isEmpty()){
-            dtpToDate.selectDate(fromDate,"dd/MM/yyyy");
+            dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         }
         btnShow.click();
         waitSpinnerDisappeared();
@@ -116,5 +121,57 @@ public class PositionTakingReportPage extends WelcomePage {
             }
             i = i + 1;
         }
+    }
+
+    public void verifyTotalWinLose() {
+        bookieTblCol = getColTable("Bookie")-1;
+        tblBookie = Table.xpath("(//table)[1]",bookieTblCol);
+        Double winLoseEx = Double.valueOf(lblTotalWLBookie.getText().replace(",",""));
+        Double winLoseAc = 0.00;
+        for (int i = 4; i < bookieTblCol;i++){
+            String lblwinLoseDate = "(//table)[1]//tbody//td[text()='Total']//following-sibling::td[%s]";
+            String winloseDate = Label.xpath(String.format(lblwinLoseDate,i)).getText().replace(",","");
+            winLoseAc = DoubleUtils.roundUpWithTwoPlaces(winLoseAc + Double.valueOf(winloseDate));
+        }
+        Assert.assertTrue(winLoseAc.equals(winLoseEx),"FAILED! Total Win/Lose displays incorrect!");
+    }
+
+    public void verifyDateColumnDisplay(String toDate, int rangeDate) {
+        tblBookie = Table.xpath("(//table)[1]",9);
+        List<String> lstNameCol = tblBookie.getHeaderNameOfRows();
+        String nameCol = toDate;
+        for (int i = 1; i <= rangeDate; i++){
+            Assert.assertTrue(lstNameCol.contains(nameCol),"FAILED! Name Column display incorrect!");
+            nameCol = DateUtils.getPreviousDate(nameCol,"dd-MMM-yy");
+            if (i%4==0){
+                btnNext.click();
+                waitSpinnerDisappeared();
+                lstNameCol = tblBookie.getHeaderNameOfRows();
+            }
+        }
+    }
+
+    public void verifyDefaultHeadNameDisplay(String toDate) {
+        bookieTblCol = 4;
+        tblBookie = Table.xpath("(//table)[1]",bookieTblCol);
+        String tillColumn = "Till "+toDate;
+        List<String> lstHeaderAc = tblBookie.getHeaderNameOfRows();
+        List<String> lstHeaderEx = SBPConstants.PositionTakingReport.DEFAULT_BOOKIE_HEADER_NAME;
+        lstHeaderEx.set(tblBookie.getColumnIndexByName(tillColumn)-1,tillColumn);
+        Assert.assertEquals(lstHeaderAc,lstHeaderEx,"FAILED! Default header name display incorrect");
+    }
+
+    public AccountPopup clickToClientName(String clientName) {
+        int colIndex = tblClient.getColumnIndexByName("Client Name");
+        Label lblClientName = Label.xpath(tblClient.getxPathOfCell(1,colIndex,
+                tblClient.getRowIndexContainValue(clientName,colIndex,"a"),"a"));
+        lblClientName.click();
+        waitSpinnerDisappeared();
+        return new AccountPopup();
+    }
+
+    public String getValueTillColumn(String bookieName, String tillToDate) {
+        return tblBookie.getControlBasedValueOfDifferentColumnOnRow(bookieName,1,tblBookie.getColumnIndexByName("Bookie Name"),1,"a",
+                tblBookie.getColumnIndexByName(tillToDate),null,false,false).getText();
     }
 }

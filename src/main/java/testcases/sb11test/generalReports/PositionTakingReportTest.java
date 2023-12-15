@@ -155,8 +155,8 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})
-    @TestRails(id = "4198")
-    public void Position_Taking_Report_4198() {
+    @TestRails(id = "4338")
+    public void Position_Taking_Report_4338() {
         log("@title: Validate correct Till [selected To date] displays");
         log("@Pre-condition 1: Position Taking Report permission is ON for any account");
         log("@Step 1: Login by account at precondition");
@@ -189,5 +189,148 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         Assert.assertEquals(winloseAc,winloseEx,"FAILED! Win/Lose value displays incorrect");
         log("INFO: Executed completely");
     }
-
+    @Test(groups = {"regression","2023.12.29"})
+    @TestRails(id = "4339")
+    public void Position_Taking_Report_4339() {
+        log("@title: Validate correct [selected To/From date] displays");
+        log("@Pre-condition: Position Taking Report permission is ON");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to General Reports >> Position Taking Report page");
+        String accountCode = "6EU0288-PT";
+        String clientStatement = "PSM1000 - PSM Group Limited";
+        String agentCode = "PSMEU02-PT";
+        String bookieName = "[EUR >> HKD] Pinnacle2";
+        String fromDate = DateUtils.getDate(-5,"dd/MM/yyyy",GMT_7);
+        String toDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
+        log("@Step 3: Filter which has data");
+        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",fromDate,toDate);
+        log("@Step 4: Click any bookie");
+        AccountPopup accountPopup = page.clickToBookieName(bookieName);
+        log("@Step 5: Get the [selected To/From date] (e.g. 05-Sep-23) value of any account");
+        String selectDate = DateUtils.getDate(-1,"dd-MMM-yy",GMT_7);
+        String winloseAc = accountPopup.getValueSelectDate(accountCode,selectDate);
+        accountPopup.clickToClosePopup();
+        log("@Step 6: Go to 'Client Statement >> Client Detail' page");
+        ClientStatementPage clientStatementPage = page.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+        log("@Step 7: Filter data with the same client in the same company/date range at step #2, e.g.\n" +
+                "View By = Client Point\n" +
+                "Client = PSM Group Limited\n"+
+                "From Date To Date ((=Todate check at step #4)");
+        clientStatementPage.filter("Client Point",COMPANY_UNIT,FINANCIAL_YEAR,clientStatement,toDate,toDate);
+        log("@Step 8: Click agent-PT of account at step #4 (e.g. PSMEU02-PT)");
+        ClientSummaryPopup clientSummaryPopup = clientStatementPage.openSummaryPopup(agentCode);
+        log("@Step 9: Get Win/Lose value");
+        String winloseEx = clientSummaryPopup.getSummaryCellValue(accountCode,8);
+        log("@Step 10: Compare value at step #4 and step #8");
+        log("@Verify 1: The correct Win/Lose displays => values at step #4 and step #8 are the same");
+        Assert.assertEquals(winloseAc,winloseEx,"FAILED! Win/Lose value displays incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.29"})
+    @TestRails(id = "4340")
+    public void Position_Taking_Report_4340() {
+        log("@title: Validate correct Total in Bookie section displays");
+        log("@Pre-condition: Position Taking Report permission is ON");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to General Reports >> Position Taking Report page");
+        String fromDate = DateUtils.getDate(-4,"dd/MM/yyyy",GMT_7);
+        String toDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
+        log("@Step 3: Filter which has data");
+        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",fromDate,toDate);
+        log("@Step 4: Check the Total value");
+        log("@Verify 1: Total win/lose value = sum amount of all bookies for each column displays");
+        page.verifyTotalWinLose();
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.29"})
+    @TestRails(id = "4344")
+    public void Position_Taking_Report_4344() {
+        log("@title: Validate 'PSM Group Limited' client displays if there is no client of a similar account");
+        log("@Pre-condition: Position Taking Report permission is ON");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to General Reports >> Position Taking Report page");
+        PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
+        log("@Step 3: Filter which has data");
+        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All","","");
+        log("@Verify 1: Client Name (e.g. PSM Group Limited) displays");
+        Assert.assertEquals(page.tblClient.getControlOfCell(1,page.clientNameCol,1,"a").getText(),"PSM Group Limited","FAILED! Client Name display incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.29"})
+    @TestRails(id = "4346")
+    public void Position_Taking_Report_4346() {
+        log("@title: Validate there is a pagination if filtering more than 4 days");
+        log("@Pre-condition: Position Taking Report permission is ON");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to General Reports >> Position Taking Report page");
+        PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
+        log("@Step 3: Filter which has data on more than 4 day");
+        String fromDate = DateUtils.getDate(-4,"dd/MM/yyyy",GMT_7);
+        String toDate = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",fromDate,toDate);
+        log("@Verify 1: The pagination will displays as below:\n" +
+                "[selected To date](e.g. 05-Sep-23)\n"+
+                "Each page will show max is 4 days then click Next/Previous to view data on other days on the next /previous page");
+        String selectToDate = DateUtils.getDate(0,"dd-MMM-yy",GMT_7);
+        page.verifyDateColumnDisplay(selectToDate,5);
+        log("@Step 4: Click Next/Previous button");
+        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",fromDate,toDate);
+        page.btnNext.click();
+        page.waitSpinnerDisappeared();
+        log("@Verify 2: Columns Bookie Name/Client Name, Till [selected To date], DR-Win/Loss still keep when clicking Next/Previous button");
+        String toDateHeaderName = DateUtils.getDate(0,"dd-MMM-yyyy",GMT_7);
+        page.verifyDefaultHeadNameDisplay(toDateHeaderName);
+        page.btnPrevious.click();
+        page.waitSpinnerDisappeared();
+        page.verifyDefaultHeadNameDisplay(toDateHeaderName);
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.29"})
+    @TestRails(id = "4348")
+    public void Position_Taking_Report_4348() {
+        log("@title: Validate the Position Taking Report >> Account(s) dialog displays when clicked Bookie/Client link");
+        log("@Pre-condition: Position Taking Report permission is ON");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to General Reports >> Position Taking Report page");
+        String bookieName = "[EUR >> HKD] Pinnacle2";
+        String clientName = "PSM Group Limited";
+        PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
+        log("@Step 3: Filter which has data");
+        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All","","");
+        log("@Step 4: Click a Bookie link");
+        AccountPopup accountPopup = page.clickToBookieName(bookieName);
+        log("@Verify 1: The Position Taking Report >> Account(s) dialog displays");
+        Assert.assertTrue(accountPopup.lblTitle.getText().trim().contains("Account(s)"),"FAILED! Title Account(s) popup display incorrect");
+        accountPopup.clickToClosePopup();
+        log("@Step 5: Click a Client link");
+        accountPopup = page.clickToClientName(clientName);
+        log("@Verify 2: The Position Taking Report >> Account(s) dialog displays");
+        Assert.assertTrue(accountPopup.lblTitle.getText().trim().contains("Account(s)"),"FAILED! Title Account(s) popup display incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.29"})
+    @TestRails(id = "4351")
+    public void Position_Taking_Report_4351() {
+        log("@title: Validate the Grand Total in HKD of each column in detail is matched with main page");
+        log("@Pre-condition: Position Taking Report permission is ON");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to General Reports >> Position Taking Report page");
+        String bookieName = "[EUR >> HKD] Pinnacle2";
+        PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
+        log("@Step 3: Filter which has data");
+        String toDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",toDate,toDate);
+        log("@Step 4: Get Total value of each column in any Bookie  (e.g. [EUR >> HKD] BETISN -> Till 05-Sep-2023 =-25,179.78)");
+        String tillToDate = "Till "+ DateUtils.getDate(-1,"dd-MMM-yyyy",GMT_7);
+        String valueTillAc = page.getValueTillColumn(bookieName,tillToDate);
+        log("@Step 5: Click the bookie link at step #4");
+        AccountPopup accountPopup = page.clickToBookieName(bookieName);
+        log("@Step 6: Get the Total/Grand Total in HKD of each column");
+        String totalInHDK = accountPopup.getValueBookieTotalTillColumn();
+        log("@Verify 1: The Total value of each column is matched each other");
+        Assert.assertEquals(valueTillAc,totalInHDK,"FAILED! The Total value of Till column is not matched");
+        log("INFO: Executed completely");
+    }
 }
