@@ -51,7 +51,7 @@ public class BaseCaseAQS {
     public static BrowserMobProxy browserMobProxy;
     public static String PROJECT_ID="2";
     public static APIClient client;
-    private static boolean isAddTestRailResult = true;
+    private static boolean isAddTestRailResult;
     private static  List<Long> lstCases= new ArrayList<>();
     public static String aqsLoginURL;
     public static String sb11LoginURL;
@@ -66,7 +66,8 @@ public class BaseCaseAQS {
             throw new NullPointerException(String.format("ERROR: Exception occurs beforeSuite by '%s'", ex.getMessage()));
         }
         ctx.getName();
-
+        isAddTestRailResult = ctx.getCurrentXmlTest().getLocalParameters().get("isAddTestRailResult") != null ?
+                Boolean.valueOf(ctx.getCurrentXmlTest().getLocalParameters().get("isAddTestRailResult")) : false;
         if(isAddTestRailResult) {
             System.out.println("Add New Test Run in TestRails" );
             client = new APIClient("https://paltech.testrail.io");
