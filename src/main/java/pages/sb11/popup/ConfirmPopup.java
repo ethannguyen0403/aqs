@@ -16,4 +16,10 @@ public class ConfirmPopup {
             btnNo.click();
     }
 
+    public String getContentMessage() throws InterruptedException {
+        //wait for content display
+        Thread.sleep(2000);
+        return lblConfirm.getText();
+    }
+
 }

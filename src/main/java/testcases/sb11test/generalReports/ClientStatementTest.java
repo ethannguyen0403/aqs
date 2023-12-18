@@ -15,15 +15,11 @@ import testcases.BaseCaseAQS;
 import utils.sb11.*;
 import utils.testraildemo.TestRails;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 
 import static common.SBPConstants.*;
 
@@ -278,6 +274,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String expectedRecPayVal;
         String accountIdCredit = null;
         String accountIdDebit = null;
+        long remark = DateUtils.getMilliSeconds();
 
         log("Precondition: Add transaction for the Client account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -286,7 +283,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .clientCredit(clientCode)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Automation Testing Transaction Client: " + DateUtils.getMilliSeconds())
+                .remark("Automation Testing Transaction Client: " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .level(level)
@@ -318,7 +315,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .clientCredit(clientCode)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("Automation Testing Transaction Client: Post-condition")
+                    .remark("Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate("")
                     .transType("Tax Rebate")
                     .level(level)
@@ -344,6 +341,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String expectedRecPayVal;
         String accountIdCredit = null;
         String accountIdDebit = null;
+        long remark = DateUtils.getMilliSeconds();
 
         log("Precondition: Add transaction for the Client account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -352,7 +350,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .clientCredit(clientCode)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Automation Testing Transaction Client: " + DateUtils.getMilliSeconds())
+                .remark("Automation Testing Transaction Client: " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .level(level)
@@ -384,7 +382,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .clientCredit(clientCode)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("Automation Testing Transaction Client: Post-condition")
+                    .remark("Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .level(level)
@@ -420,6 +418,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
         ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Asset Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -430,7 +429,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(ledgerDebitAccountNumber)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds())
+                .remark("Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
@@ -464,7 +463,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(ledgerCreditAccountNumber)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .remark("Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
@@ -497,6 +496,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
         ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Asset Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -507,7 +507,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(ledgerDebitAccountNumber)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds())
+                .remark("Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
@@ -541,7 +541,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(ledgerCreditAccountNumber)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .remark("Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
@@ -574,6 +574,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
         ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Liability Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -584,7 +585,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(ledgerDebitAccountNumber)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds())
+                .remark("Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
@@ -618,7 +619,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(ledgerCreditAccountNumber)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .remark("Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
@@ -651,6 +652,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
         ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Liability Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -661,7 +663,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(ledgerDebitAccountNumber)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds())
+                .remark("Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
@@ -695,7 +697,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(ledgerCreditAccountNumber)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .remark("Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
@@ -728,6 +730,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
         ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Capital Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -738,7 +741,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(ledgerDebitAccountNumber)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds())
+                .remark("Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
@@ -772,7 +775,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(ledgerCreditAccountNumber)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .remark("Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
@@ -805,6 +808,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
         ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Capital Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -815,7 +819,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(ledgerDebitAccountNumber)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds())
+                .remark("Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
@@ -849,7 +853,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(ledgerCreditAccountNumber)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .remark("Automation Testing Transaction Client: Post-condition for txn" + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
@@ -882,6 +886,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
         ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Income Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -892,7 +897,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(ledgerDebitAccountNumber)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds())
+                .remark("Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
@@ -926,7 +931,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(ledgerCreditAccountNumber)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .remark("Automation Testing Transaction Client: Post-condition for txn" + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
@@ -958,6 +963,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
         ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Income Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -968,7 +974,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(ledgerDebitAccountNumber)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds())
+                .remark("Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
@@ -1002,7 +1008,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(ledgerCreditAccountNumber)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .remark("Automation Testing Transaction Client: Post-condition for txn" + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
@@ -1035,6 +1041,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
         ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Expenditure Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -1045,7 +1052,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(ledgerDebitAccountNumber)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds())
+                .remark("Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
@@ -1079,7 +1086,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(ledgerCreditAccountNumber)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .remark("Automation Testing Transaction Client: Post-condition for txn" + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
@@ -1112,6 +1119,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
         ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Expenditure Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -1122,7 +1130,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(ledgerDebitAccountNumber)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds())
+                .remark("Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
@@ -1156,7 +1164,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(ledgerCreditAccountNumber)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .remark("Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
@@ -1186,11 +1194,11 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
         String accountId = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
-        BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_MAP.get("Soccer"),order);
+        BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Soccer"),order);
         welcomePage.waitSpinnerDisappeared();
-        int betId = BetSettlementUtils.getConfirmedBetId(accountId,SPORT_MAP.get("Soccer"),order);
-        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId,SPORT_MAP.get("Soccer"),order);
-        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId,SPORT_MAP.get("Soccer"));
+        int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Soccer"),order);
+        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Soccer"),order);
+        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Soccer"));
 
         log("@Step 1: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
@@ -1232,11 +1240,11 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .build();
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
         String accountId = AccountSearchUtils.getAccountId(CLIENT_DEBIT_ACC);
-        BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_MAP.get("Soccer"),order);
+        BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Soccer"),order);
         welcomePage.waitSpinnerDisappeared();
-        int betId = BetSettlementUtils.getConfirmedBetId(accountId,SPORT_MAP.get("Soccer"),order);
-        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId,SPORT_MAP.get("Soccer"),order);
-        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId,SPORT_MAP.get("Soccer"));
+        int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Soccer"),order);
+        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Soccer"),order);
+        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Soccer"));
 
         log("@Step 1: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
@@ -1281,6 +1289,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
         ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
         ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Asset Ledger account to show value Rec/Pay");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -1291,7 +1300,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(ledgerDebitAccountNumber)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds())
+                .remark("Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
@@ -1326,7 +1335,7 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(ledgerCreditAccountNumber)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds())
+                    .remark("Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();

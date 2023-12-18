@@ -15,6 +15,11 @@ import java.util.Map;
 
 
 public class ExcelUtils {
+
+    /**
+     * @param columns list of cell on the same row. It should be header of data table in excel
+     * @param escapeValue value on the row which is break the loop when reach it
+     */
     public static List<Map<String, String>> getDataTest(String filePath, String sheetName, List<String> columns, String escapeValue) {
         InputStream input = null;
         List<Map<String, String>> dataEntryList = new ArrayList<>();
@@ -26,7 +31,7 @@ public class ExcelUtils {
             Map<String, String> element;
             for (int i = 1; i < numberOfTestData; i++) {
                 Row rowData = sheet.getRow(i);
-                if (columns.get(0).equals(getDataFromCell(rowData.getCell(0)))) {
+                if (columns.contains(getDataFromCell(rowData.getCell(0)))) {
                     Row rowHeader = sheet.getRow(i);
                     for (int j = 1; j < (numberOfTestData - i); j++) {
                         element = new HashMap<>();
@@ -51,6 +56,27 @@ public class ExcelUtils {
             }
         }
         return dataEntryList;
+    }
+
+    public static String getCellByColumnAndRowIndex(String filePath, String sheetName, int colIndex, int rowIndex) {
+        String cellValue;
+        InputStream input = null;
+        try {
+            input = new FileInputStream(new File(filePath));
+            XSSFWorkbook workbook = new XSSFWorkbook(input);
+            XSSFSheet sheet = workbook.getSheet(sheetName);
+            Row row = sheet.getRow(rowIndex-1);
+            cellValue = getDataFromCell(row.getCell(colIndex-1));
+            if (workbook != null) workbook.close();
+        } catch (Exception e) {
+            throw new RuntimeException("ERROR: Can't read excel file: " + filePath);
+        } finally {
+            try {
+                if (input != null) input.close();
+            } catch (IOException e) {
+            }
+        }
+        return cellValue;
     }
 
 

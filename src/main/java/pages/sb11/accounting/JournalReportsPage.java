@@ -105,18 +105,18 @@ public class JournalReportsPage extends WelcomePage {
     private int getAccountRowIndex(String accountName, String transDes){
         int lstRow = tbJournalReport.getNumberOfRows(false,false);
         Label lblAccName,lblTransDes;
-        for (int i = 1; i < lstRow; i=i+3){
+        for (int i = 1; i < lstRow; i++){
             lblAccName = Label.xpath(tbJournalReport.getxPathOfCell(1,colAccName,i,null));
             lblTransDes = Label.xpath(tbJournalReport.getxPathOfCell(1,colDes,i,null));
             if(!lblAccName.isDisplayed()) {
-                System.out.println("Can NOT found the account name "+accountName+" in the table");
-                return 0;
+                continue;
             }
             if(lblAccName.getText().contains(accountName) && lblTransDes.getText().contains(transDes)){
                 System.out.println("Found the account name "+accountName+" in the table");
                 return i;
             }
         }
+        System.out.println("Can NOT found the account name "+accountName+" in the table");
         return 0;
     }
 }

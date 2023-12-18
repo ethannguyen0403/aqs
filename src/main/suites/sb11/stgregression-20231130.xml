@@ -5,7 +5,7 @@
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
-    <test name="SB11 Pre Regression 2023.10.31">
+    <test name="SB11 Pre Regression 2023.11.30">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='stg'/>
         <parameter name='language' value='en'/>
@@ -29,6 +29,7 @@
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <parameter name="companyName" value="Kastraki Limited"/>
         <parameter name="companyCurrency" value="HKD"/>
+        <parameter name="userNameOneRole" value="onerole"/>
         <groups>
             <run>
                 <include name="2023.11.30"/>
@@ -36,8 +37,14 @@
         </groups>
 
         <classes>
+            <class name="testcases.sb11test.soccer.MonitorBetsTest"/>
+            <class name="testcases.sb11test.soccer.BBTTest"/>
+            <class name="testcases.sb11test.soccer.SPPTest"/>
+            <class name="testcases.sb11test.accounting.ChartOfAccountTest"/>
+            <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
             <class name="testcases.sb11test.trading.CricketSportTest"/>
-
+            <class name="testcases.sb11test.financialReports.TrialBalanceTest"/>
+            <class name="testcases.sb11test.financialReports.IncomeStatementTest"/>
         </classes>
     </test>
 </suite>

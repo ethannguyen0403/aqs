@@ -7,13 +7,20 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.accounting.ChartOfAccountPage;
 import pages.sb11.accounting.JournalEntriesPage;
+import pages.sb11.generalReports.ClosingJournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
+import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.ChartOfAccountUtils;
 import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.Month;
+import java.time.format.TextStyle;
+import java.util.Date;
+import java.util.Locale;
 
 import static common.SBPConstants.*;
 import static common.SBPConstants.LEDGER_PARENT_NAME_ASSET;
@@ -37,7 +44,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @TestRails(id="864")
     @Test(groups = {"smoke"})
     @Parameters({"bookieCode","bookieSuperMasterCode"})
-    public void Journal_Entries_864(String bookieCode, String bookieSuperMasterCode){
+    public void Journal_Entries_864(String bookieCode, String bookieSuperMasterCode) throws InterruptedException {
         log("@title: Validate users can make transactions successfully between bookies");
         Transaction transaction = new Transaction.Builder()
                 .bookieDebit(bookieCode)
@@ -64,7 +71,8 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 8: Add two accounts to the below tables, then input amount");
         log("@Step 9: Choose Transaction Date and Transaction Types, input Remark if any. Click Submit");
         journalEntriesPage.addTransaction(transaction,"Bookie","Bookie",transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
+        //wait for message display
+        Thread.sleep(1000);
         log("Validate Message informs 'Transaction has been created.' is displayed");
         Assert.assertTrue(journalEntriesPage.messageSuccess.getText().contains("Transaction has been created"), "Failed! Message is displayed incorrectly!");
         log("INFO: Executed completely");
@@ -119,7 +127,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @TestRails(id="4179")
     @Test(groups = {"regression"})
     @Parameters({"bookieCode","bookieSuperMasterCode"})
-    public void Journal_Entries_TC_4179(String bookieCode, String bookieSuperMasterCode){
+    public void Journal_Entries_TC_4179(String bookieCode, String bookieSuperMasterCode) throws InterruptedException {
         log("@title: Validate users can make transactions successfully between bookies");
         Transaction transaction = new Transaction.Builder()
                 .bookieDebit(bookieCode)
@@ -146,7 +154,8 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 8: Add two accounts to the below tables, then input amount");
         log("@Step 9: Choose Transaction Date and Transaction Types, input Remark if any. Click Submit");
         journalEntriesPage.addTransaction(transaction,"Bookie","Bookie",transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
+        //wait for showwing message
+        Thread.sleep(1000);
         log("Validate Message informs 'Transaction has been created.' is displayed");
         Assert.assertTrue(journalEntriesPage.messageSuccess.getText().contains("Transaction has been created"), "Failed! Message is displayed incorrectly!");
         log("INFO: Executed completely");
@@ -155,7 +164,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @TestRails(id="4180")
     @Test(groups = {"regression"})
     @Parameters({"clientCode","bookieSuperMasterCode"})
-    public void Journal_Entries_TC_4180(String clientCode, String bookieSuperMasterCode){
+    public void Journal_Entries_TC_4180(String clientCode, String bookieSuperMasterCode) throws InterruptedException {
         log("@title: Validate users can make transactions successfully between client");
         Transaction transaction = new Transaction.Builder()
                 .clientDebit(clientCode)
@@ -182,7 +191,8 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 8: Add two accounts to the below tables, then input amount");
         log("@Step 9: Choose Transaction Date and Transaction Types, input Remark if any. Click Submit");
         journalEntriesPage.addTransaction(transaction,"Client","Client",transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
+        //wait for showwing message
+        Thread.sleep(1000);
         log("Validate Message informs 'Transaction has been created.' is displayed");
         Assert.assertTrue(journalEntriesPage.messageSuccess.getText().contains("Transaction has been created"), "Failed! Message is displayed incorrectly!");
         log("INFO: Executed completely");
@@ -199,7 +209,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit("AutoExpenditureCredit1")
-                .ledgerCredit(creditExpAcc)
+                .ledgerCredit("AutoCapitalDebit")
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
                 .amountDebit(1)
@@ -219,4 +229,94 @@ public class JournalEntriesTest extends BaseCaseAQS {
         ledgerStatementPage.verifyLedgerTrans(transaction, true, lgExpenditureGroup);
         log("INFO: Executed completely");
     }
+    @TestRails(id="15749")
+    @Test(groups = {"regression","2023.11.30"})
+    public void Journal_Entries_TC_15749(){
+        log("@title: Validate there is a 'Closing Journal Entries' link behind the 'Submit' button");
+        log("@Pre-condition 1: 'Journal Entries' and 'Journal Entries Ledger' permissions are ON in any account");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Click Accounting >> Journal Entries menu");
+        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Verify 1: There is a 'Closing Journal Entries' link behind the 'Submit' button");
+        Assert.assertTrue(journalEntriesPage.lblClosingJournalEntries.isDisplayed(),"FAILED Closing Journal Entries button display incorrect");
+        log("INFO: Executed completely");
+    }
+    @TestRails(id="15750")
+    @Test(groups = {"regression","2023.11.30"})
+    public void Journal_Entries_TC_15750(){
+        log("@title: Validate user navigates to General Reports >> System Monitoring >> Closing Journal Entries page when clicked Closing Journal Entries link");
+        log("@Pre-condition 1: Journal Entries' and 'Journal Entries Ledger' permissions are ON in any account");
+        log("@Pre-condition 2: System Monitoring permission is ON");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Click Accounting >> Journal Entries menu");
+        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: Click 'Closing Journal Entries' link");
+        ClosingJournalEntriesPage closingJournalEntriesPage = journalEntriesPage.openClosingJournalEntriesPage();
+        log("@Verify 1: User will navigate to General Reports >> System Monitoring >> Closing Journal Entries page");
+        Assert.assertEquals(closingJournalEntriesPage.tabActive.getText().trim(),CLOSING_JOURNAL_ENTRIES,"FAILED! Closing Journal Entries page display incorrect");
+        log("INFO: Executed completely");
+    }
+    @TestRails(id="15751")
+    @Test(groups = {"regression","2023.11.30"})
+    public void Journal_Entries_TC_15751() throws InterruptedException {
+        log("@title: Validate reminder displays if perform txn in the last 3 months that have CJE");
+        log("@Pre-condition 1: Journal Entries' and 'Journal Entries Ledger' permissions are ON in any account");
+        log("@Step 1: Click Accounting >> Journal Entries menu");
+        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 2: Input all valid data into Debit and Credit section");
+        String previousMonth = String.valueOf(DateUtils.getMonth(GMT_7)-1);
+        String txtMonth = Month.of(DateUtils.getMonth(GMT_7)-1).getDisplayName(TextStyle.FULL.FULL, Locale.CANADA);
+        String curYear = String.valueOf(DateUtils.getYear(GMT_7));
+        Transaction transaction = new Transaction.Builder()
+                .ledgerDebit("AutoExpenditureCredit1")
+                .ledgerCredit(creditExpAcc)
+                .ledgerDebitCur(lgDebitCur)
+                .ledgerCreditCur(lgCreditCur)
+                .amountDebit(1)
+                .amountCredit(1)
+                .remark(descExpenditure)
+                .transDate("15/"+previousMonth+"/"+curYear)
+                .transType(transType)
+                .build();
+        log("@Step 3: Select txn date on the last 3 months has CJE (e.g. 20/10/2023) and Transaction Type");
+        log("@Step 4: Click Submit button");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
+        ConfirmPopup confirmPopup = new ConfirmPopup();
+        String actualMes = confirmPopup.getContentMessage();
+        log("@Verify 1: A reminder as 'After submitting this transaction, you will need to perform Closing Journal Entries for <Month of the transaction date>. Please click on the 'Closing Journal Entries' link and perform.' will display");
+        Assert.assertEquals(actualMes,String.format(JournalEntries.MES_IF_TXN_IN_3_LAST_MONTH,curYear,txtMonth),"FAILED! A reminder display incorrect");
+        log("INFO: Executed completely");
+    }
+    @TestRails(id="15752")
+    @Test(groups = {"regression","2023.11.30"})
+    public void Journal_Entries_TC_15752() throws InterruptedException {
+        log("@title: Validate reminder displays if perform txn before the last 3 months that have CJE");
+        log("@Pre-condition 1: Journal Entries' and 'Journal Entries Ledger' permissions are ON in any account");
+        log("@Step 1: Click Accounting >> Journal Entries menu");
+        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 2: Input all valid data into Debit and Credit section");
+        String previousMonth = String.valueOf(DateUtils.getMonth(GMT_7)-4);
+        String txtMonth = Month.of(DateUtils.getMonth(GMT_7)-4).getDisplayName(TextStyle.FULL.FULL, Locale.CANADA);
+        String curYear = String.valueOf(DateUtils.getYear(GMT_7));
+        Transaction transaction = new Transaction.Builder()
+                .ledgerDebit("AutoExpenditureCredit1")
+                .ledgerCredit(creditExpAcc)
+                .ledgerDebitCur(lgDebitCur)
+                .ledgerCreditCur(lgCreditCur)
+                .amountDebit(1)
+                .amountCredit(1)
+                .remark(descExpenditure)
+                .transDate("15/"+previousMonth+"/"+curYear)
+                .transType(transType)
+                .build();
+        log("@Step 3: Select txn date before the last 3 months has CJE (e.g. 20/07/2023) and Transaction Type");
+        log("@Step 4: Click Submit button");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
+        ConfirmPopup confirmPopup = new ConfirmPopup();
+        String actualMes = confirmPopup.getContentMessage();
+        log("@Verify 1: A reminder as 'After submitting this transaction, you will need to perform Closing Journal Entries for <Month of the transaction date>. Please contact Support Team to perform this CJE.' will display");
+        Assert.assertEquals(actualMes,String.format(JournalEntries.MES_IF_TXN_BEFORE_3_LAST_MONTH,curYear,txtMonth),"FAILED! A reminder display incorrect");
+        log("INFO: Executed completely");
+    }
+
 }

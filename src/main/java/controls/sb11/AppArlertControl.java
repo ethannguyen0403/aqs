@@ -10,12 +10,14 @@ import java.util.List;
 public class AppArlertControl extends BaseElement {
     protected String _xpath = null;
     private Label lblSuccessMessage;
+    private Label lblWarningMessage;
     private String lstAlertXpath ;
 
     public AppArlertControl(By locator, String xpathExpression) {
         super(locator);
         this._xpath = xpathExpression;
         lblSuccessMessage = Label.xpath(String.format("%s//div[contains(@class,'alert-success')]/span",_xpath));
+        lblWarningMessage = Label.xpath(String.format("%s//div[contains(@class,'alert-danger')]/span",_xpath));
         lstAlertXpath = String.format("%s/div",_xpath);
     }
 
@@ -25,6 +27,10 @@ public class AppArlertControl extends BaseElement {
 
     public String getSuscessMessage(){
         return lblSuccessMessage.getText();
+    }
+
+    public String getWarningMessage(){
+        return lblWarningMessage.getText();
     }
 
     public List<String> getListSuccessMessage(){

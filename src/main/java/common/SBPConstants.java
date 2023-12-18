@@ -46,6 +46,7 @@ public class SBPConstants {
     public final static String CLIENT_BALANCE = "Client Balance";
     public final static String BOOKIE_BALANCE = "Bookie Balance";
     public final static String BOOKIE_STATEMENT = "Bookie Statement";
+    public final static String CLOSING_JOURNAL_ENTRIES = "Closing Journal Entries";
     public final static String JOURNAL_ENTRIES = "Journal Entries";
     public final static String JOURNAL_REPORTS = "Journal Reports";
     public final static String SMART_SYSTEM = "Smart System";
@@ -84,7 +85,11 @@ public class SBPConstants {
     public final static String LEDGER_GROUP_NAME_EXPENDITURE = "QA Ledger Group Expenditure";
     public final static String LEDGER_GROUP_NAME_LIABILITY = "QA Ledger Group Liability";
     public final static String LEDGER_GROUP_NAME_ASSET = "QA Ledger Group Asset";
+    public final static String LEDGER_GROUP_NAME_ASSET_700 = "QA Asset Account 700";
     public final static String LEDGER_GROUP_NAME_CAPITAL = "QA Ledger Group Capital";
+    public final static String QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT = "500.000.000.000 - QA Ledger Group Asset";
+    public final static String QA_ASSET_PARENT_ACCOUNT_700 = "700.000.000.000 - QA Asset Account 700";
+    public final static String CAPITAL_PARENT_ACCOUNT = "301.000.000.000 - Capital";
     public final static String LEDGER_ASSET_CREDIT_ACC = "050.000.000.000 - AutoAssetCredit";
     public final static String LEDGER_ASSET_DEBIT_ACC = "055.000.000.000 - AutoAssetDebit";
     public final static String LEDGER_LIABILITY_CREDIT_ACC = "040.000.000.000 - AutoLiabilityCredit";
@@ -101,6 +106,8 @@ public class SBPConstants {
     public final static String LEDGER_PARENT_NAME_INCOME = "QA Ledger Group Income";
     public final static String LEDGER_PARENT_NAME_CAPITAL = "QA Ledger Group Capital";
     public final static String INVOICE_PROJECT = "QA-Project01";
+    public final static String QA_SMART_GROUP = "QA Smart Group";
+    public final static String QA_SMART_MASTER = "QA Smart Master";
     public final static List<String> TABLE_HEADER = Arrays.asList("Role", "User", "Sport", "Soccer","Accounting","Trading","Master","General Reports","Invoice","Financial Reports");
     public final static List<String> COMPANY_UNIT_LIST = Arrays.asList("Kastraki Limited", "SK1122", "IB 01", "Fair", "Aquifer");
     public final static List<String> COMPANY_UNIT_LIST_ALL = Arrays.asList("All","Kastraki Limited", "SK1122", "IB 01", "Fair","Aquifer");
@@ -145,12 +152,13 @@ public class SBPConstants {
 
         }
     };
-    public static final Map<String, String> SPORT_MAP= new HashMap<String, String>()
+    public static final Map<String, String> SPORT_ID_MAP = new HashMap<String, String>()
     {
         {
             put("Soccer", "1");
             put("Cricket", "2");
-
+            put("Basketball", "3");
+            put("Tennis", "4");
         }
     };
 
@@ -219,6 +227,8 @@ public class SBPConstants {
         public final static List<String> TABLE_HEADER_MASTER = Arrays.asList("#", "i", "Bookie", "Master Code", "CUR", "Client","Support By","Edit","","# Agent");
         public final static List<String> TABLE_HEADER_AGENT = Arrays.asList("#", "i", "Bookie", "Agent Code", "CUR", "Client","Type","Support By","Edit","","# Members");
         public final static List<String> GO_TO_LIST = Arrays.asList("Super","Master","Agent");
+        public final static String TOOLTIP_MESSAGE = "This %s cannot be deleted because there's transaction made";
+
     }
 
     public static class LeagueSeasonTeamInfo{
@@ -298,6 +308,31 @@ public class SBPConstants {
         public final static List<String> PUNTER_TYPE_LIST = Arrays.asList("Smart Punter","Normal Punter");
         public final static List<String> BET_PLACED_IN = Arrays.asList("Last 5 Min","Last 10 Min","Last 15 Min","Last 1 Hour","Last 3 Hour", "Last 6 Hour", "Last 9 Hour", "Last 12 Hour","All Hours");
         public final static List<String> BET_COUNT = Arrays.asList("Last 10 Bets","Last 50 Bets","Last 100 Bets","Last 200 Bets","Last 300 Bets");
+        public final static List<String> COLOR_CODE_L_COLUMN = Arrays.asList("#CCFFCC","#66FF99","#00FF99","#CCFFFF","#99FFFF","#66FFFF","#00FFFF","#0066FF","#0066CC","#000000","#FFEFDB","#FFDAB9",
+                "#E7C6A5","#CDAF95","FF9900");
+        public final static Map<String, String> COLOR_CODE_HDP_COLUMN = new HashMap<String, String>()
+        {
+            {
+                put("FT HDP", "#000000");
+                put("HT HDP", "#DBDB70");
+                put("HT OU", "#DBDB70");
+                put("FT OU", "#E0FFFF");
+                put("FT HDP - Corner", "#FFE1FF");
+                put("FT OU - Corner", "#FFE1FF");
+                put("HT OU - Corner", "#DBDB70");
+                put("HT HDP - Corner", "#DBDB70");
+            }
+        };
+        public final static Map<String, Double> VALID_STAKE = new HashMap<String, Double>()
+        {
+            {
+                put("Above 1K", 1000.00);
+                put("Above 10K", 10000.00);
+                put("Above 50K", 50000.00);
+                put("Above 100K", 100000.00);
+                put("Above 150K", 150000.00);
+            }
+        };
     }
 
     public static class MatchOddsLiability{
@@ -335,7 +370,7 @@ public class SBPConstants {
         public final static List<String> STAKE_LIST = Arrays.asList("All","Above 1K","Above 10K","Above 50K","Above 150K");
         public final static List<String> REPORT_TYPE_LIST = Arrays.asList("Pending Bets","Settled Bets");
         public final static List<String> SOCCER_BET_TYPES_LIST = Arrays.asList("FT-1x2", "HT-OU", "FT-OU", "FT-HDP", "HT-HDP");
-        public final static String ALERT_MESSAGE = "Date range should not be more than 7 days";
+        public final static String DATE_RANGE_ALERT_MESSAGE = "Date range should not be more than 7 days";
         public final static List<String> LIVE_STATUS_LIST = Arrays.asList("[All]","Live","Non-Live");
     }
 
@@ -366,6 +401,8 @@ public class SBPConstants {
         public final static List<String> CURRENCY_LIST = Arrays.asList("[All]","AED","AUD","CAD","CNY","EUR","GBP","HKD","IDR","INR","JPY","KPW","KRW","LKR","MYR","PHP","PKR","SGD","THB","TWD","USD","VND","ZAR");
         public final static List<String> TRANSACTION_TYPE_LIST = Arrays.asList("[Choose One]","Payment Bookie","Payment Client","Payment Feed","Payment Operational","Payment Other","Payment Provider",
                 "Received Bookie","Received Client","Received Comm/Rebate","Received Dividend/Share","Received Feed","Received Other","Contra Bookie","Contra Client","Contra Bookie Client","Contra CUR");
+        public final static String MES_IF_TXN_IN_3_LAST_MONTH = "After submitting this transaction, you will need to perform Closing Journal Entries for %s - %s Please click on the 'Closing Journal Entries' link and perform.";
+        public final static String MES_IF_TXN_BEFORE_3_LAST_MONTH = "After submitting this transaction, you will need to perform Closing Journal Entries for %s - %s Please contact Support Team to perform this CJE.";
     }
 
     public static class JournalReports{
@@ -388,7 +425,7 @@ public class SBPConstants {
     }
 
     public static class RetainedEarningsConstants {
-        public final static List<String> DESCRIPTION_LIST = Arrays.asList("Retained Earnings","Net Income/Loss from Operation", "Dividends");
+        public final static List<String> DESCRIPTION_LIST = Arrays.asList("Beginning Retained Earnings","Net Income/Loss from Operation", "Dividends");
 
     }
 
@@ -413,6 +450,9 @@ public class SBPConstants {
     }
     public static class MemberTransactionPopupConstants {
         public final static List<String> HEADER_LIST = Arrays.asList("#", "Txn.Date", "Txn.Id", "Description", "Debit", "Credit", "Running", "Debit [%s]", "Credit [%s]", "Running [%s]");
+    }
+    public static class SoccerSPBBetSlipPopup {
+        public final static List<String> BET_TYPE_HDP_DROPDOWN = Arrays.asList("Full Time - Handicap - Corners","Full Time - Over Under - Corners");
     }
 }
 

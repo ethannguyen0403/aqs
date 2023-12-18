@@ -5,8 +5,14 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.CheckBox;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
+import common.SBPConstants;
 import controls.Table;
+import objects.Event;
+import objects.Order;
+import org.openqa.selenium.support.Color;
 import pages.sb11.WelcomePage;
+
+import java.util.List;
 
 public class MonitorBetsPage extends WelcomePage {
     public int colAC = 2;
@@ -37,6 +43,8 @@ public class MonitorBetsPage extends WelcomePage {
     public Label lblResetAllFilters = Label.xpath("//span[contains(text(),'Reset All Filters')]");
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
     public Table tblOrder = Table.xpath("//app-monitor-bets//table",11);
+    public Button btnClearAll = Button.xpath("//button[text()='Clear All']");
+    public Button btnSetSelection = Button.xpath("//button[text()='Set Selection']");
 
     public void filterResult(String sport, String smartType, String punterType, String betPlacedIn, String betCount, boolean isTodayEvent, String lrbRule, String liveNonLive, String currency, String stake, boolean isShow){
         ddpSport.selectByVisibleText(sport);
@@ -76,6 +84,7 @@ public class MonitorBetsPage extends WelcomePage {
     public Last12DaysPerformancePage openLast12DaysPerf (String accountCode){
         int index = getACRowIndex(accountCode);
         tblOrder.getControlOfCell(1,colT,index,null).click();
+        waitSpinnerDisappeared();
         DriverManager.getDriver().switchToWindow();
         return new Last12DaysPerformancePage();
     }
@@ -86,11 +95,11 @@ public class MonitorBetsPage extends WelcomePage {
         while (true){
             lblAC = Label.xpath(tblOrder.getxPathOfCell(1,colAC,i,null));
             if(!lblAC.isDisplayed()) {
-                System.out.println("Can NOT found the league "+accountCode+" in the table");
+                System.out.println("Can NOT found AC "+accountCode+" in the table");
                 return 0;
             }
             if(lblAC.getText().contains(accountCode)){
-                System.out.println("Found the league "+accountCode+" in the table");
+                System.out.println("Found AC "+accountCode+" in the table");
                 return i;
             }
             i = i +1;
@@ -99,6 +108,7 @@ public class MonitorBetsPage extends WelcomePage {
 
     public boolean isCheckBetsUpdateCorrect() {
         int firstNumOrder = tblOrder.getNumberOfRows(true);
+        //Wait for Bets update in Monitor Bets page
         try {
             Thread.sleep(60000);
         } catch (InterruptedException e) {
@@ -109,6 +119,163 @@ public class MonitorBetsPage extends WelcomePage {
             return true;
         }
         System.out.println("Do not have any bets");
+        return true;
+    }
+    public boolean isCheckACDisplay(String accountCode){
+        //wait for bet update in Monitor Bets page
+        try {
+            Thread.sleep(15000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        int indexAC = getACRowIndex(accountCode);
+        if (indexAC == 0){
+            System.err.println("AC "+ accountCode+ " is not display");
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isEventDisplayCorrect(String accountCode, Event event) {
+        //wait for bet update in Monitor Bets page
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        int indexAC = getACRowIndex(accountCode);
+        if (indexAC == 0){
+            System.err.println("AC "+ accountCode+ " is not display");
+            return false;
+        }
+        String eventName = Label.xpath(tblOrder.getxPathOfCell(1,tblOrder.getColumnIndexByName("Event"),indexAC,null)).getText();
+        String eventNameExpect = event.getHome() + " -vs- "+ event.getAway();
+        if (!eventName.contains(eventNameExpect)){
+            System.err.println("Event "+ eventNameExpect + " is not display");
+            return false;
+        }
+        return true;
+    }
+
+    public void showMasterByName(boolean show, String... masterName) {
+        lblShowMaster.click();
+        waitSpinnerDisappeared();
+        for(String option: masterName){
+            selectOptionOnFilter(option, true);
+        }
+        btnSetSelection.click();
+        waitSpinnerDisappeared();
+        if (show){
+            btnShow.click();
+            waitSpinnerDisappeared();
+        }
+    }
+
+    public void selectOptionOnFilter(String optionName, boolean isChecked) {
+        CheckBox chkOption = CheckBox.xpath(String.format("//th[.=\"%s\"]/preceding-sibling::th[1]/input", optionName));
+        if (isChecked) {
+            if (!chkOption.isSelected()) {
+                chkOption.select();
+            }
+        } else {
+            if (chkOption.isSelected())
+                chkOption.deSelect();
+        }
+    }
+    public void clickToCopyByAccountCode(String accountCode){
+        int index = getACRowIndex(accountCode);
+        tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName(""),index,"em").click();
+        waitSpinnerDisappeared();
+    }
+
+    public String getReportByAccountCode(String accountCode) {
+        int index = getACRowIndex(accountCode);
+        return tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName("Report"),index,null).getText();
+    }
+
+    public String getBGColorByColumnName(String columnName, String accountCode) {
+        int index = getACRowIndex(accountCode);
+        String color = tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName(columnName),index,null).getColour();
+        return Color.fromString(color).asHex().toUpperCase();
+    }
+    public void showBetType(boolean show, String... betType){
+        lblShowBetType.click();
+        waitSpinnerDisappeared();
+        for(String option: betType){
+            selectOptionOnFilter(option, true);
+        }
+        btnSetSelection.click();
+        waitSpinnerDisappeared();
+        if (show){
+            btnShow.click();
+            waitSpinnerDisappeared();
+        }
+    }
+
+    public boolean isOrdersValidStake(String stakeValue) {
+        int orders = tblOrder.getNumberOfRows(false,true);
+        if (orders == 0){
+            System.err.println("No record found");
+            return false;
+        }
+        Double validStake = SBPConstants.MonitorBets.VALID_STAKE.get(stakeValue);
+        for (int i = 0; i < orders; i++){
+            String autualStake = tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName("Stake"),i+1,"span[2]").getText().replace(",","");
+            if (!(Double.valueOf(autualStake) >= validStake)){
+                 System.out.println("FAILED! "+ autualStake+" is not available");
+                 return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkOrderDisplayCorrect(Order order) {
+        int indexAC = getACRowIndex(order.getAccountCode());
+        if (indexAC==0){
+            System.err.println("FAILED! Account code is not shown");
+            return false;
+        }
+        String eventActual = tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName("Event"),indexAC,null).getText();
+        String eventExpect = order.getEvent().getHome() + " -vs- "+ order.getEvent().getAway();
+        String selectionActual = tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName("Selection"),indexAC,null).getText();
+        String hdpPointActual = tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName("HDP"),indexAC,"span[1]").getText();
+        String stakeActual = tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName("Stake"),indexAC,"span[2]").getText().replace(",","");
+        if (!eventActual.contains(eventExpect)){
+            System.out.println("FAILED! Event display incorrect");
+            return false;
+        }
+        if (!selectionActual.equals(order.getSelection())){
+            System.out.println("FAILED! Selection display incorrect");
+            return false;
+        }
+        if (!hdpPointActual.contains(String.valueOf(order.getHdpPoint()))){
+            System.out.println("FAILED! HDP display incorrect");
+            return false;
+        }
+        if (!stakeActual.equals(String.valueOf(order.getRequireStake()))){
+            System.out.println("FAILED! Stake display incorrect");
+            return false;
+        }
+        return true;
+    }
+    public boolean isOrderDisplayCorrect(Order order){
+        if (tblOrder.getNumberOfRows(false,true)==0){
+            System.out.println("No record found!");
+            return false;
+        } else {
+            return checkOrderDisplayCorrect(order);
+        }
+    }
+
+    public boolean isCurrencyDisplayCorrect(String currency) {
+        List<String> lstCur = tblOrder.getColumn(tblOrder.getColumnIndexByName("Stake"),10,false);
+        for (String cur: lstCur){
+            cur = cur.split("\n")[2];
+            if (!cur.equals(currency)){
+                System.out.println(cur+" difference from "+currency);
+                return false;
+            }
+        }
         return true;
     }
 }

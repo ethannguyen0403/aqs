@@ -18,6 +18,7 @@ public class DateTimePicker extends BaseElement {
     private Button btnCurrent;
     private Label lblMonth;
     private Label lblMonthYear;
+    private Table tblYear;
     private Label lblYear;
     private Table tblCalender;
     private Table tblCalenderMonth;
@@ -34,6 +35,7 @@ public class DateTimePicker extends BaseElement {
         btnNext = Button.xpath(String.format("%s//%s", _xpath, "button[@class='next']"));
         btnCurrent = Button.xpath(String.format("%s//%s", _xpath, "button[@class='current']"));
         lblMonthYear = Label.xpath(String.format("%s//%s", _xpath, "th[@class='datepicker-switch']"));
+        tblYear = Table.xpath(String.format("%s//%s", _xpath, "table[contains(@class, 'years')]"), 4);
         tblCalender = Table.xpath(String.format("%s//%s", _xpath, "table[contains(@class, 'days weeks')]"), 7);
         tblCalenderMonth =Table.xpath(String.format("%s//%s", _xpath, "table[@class='months']"), 3);
     }
@@ -118,6 +120,15 @@ public class DateTimePicker extends BaseElement {
             logEndAction(String.format("cannot click %s button on on Calendar because Cell is null", btnName));
         }
     }
+    private void clickYears(String years, String btnName){
+        Cell e = tblYear.getCellByName(years, false);
+        if (e != null){
+            e.click();
+            logEndAction(String.format("clicked year '%s' on Calendar", years));
+        } else {
+            logEndAction(String.format("cannot click %s button on on Calendar because Cell is null", btnName));
+        }
+    }
     private void clickDay(String name, boolean isMoved){
         if(name.isEmpty()){
             logEndAction("Error: Month or date parameter is empty");
@@ -179,9 +190,11 @@ public class DateTimePicker extends BaseElement {
             sd = new SimpleDateFormat("d");
             String dd =  sd.format(date);
             // click year
-            if(!currentYear.equals(y)){
+            if (!currentYear.equals(y)) {
                 lblYear.click();
-                clickDate(y,"");
+                clickYears(y, "btnYear: " + y);
+                //clickDate(y,"");
+                clickMonth(mm);
             }
             //
             if(!currentMonth.equals(mm) && currentYear.equals(y)) {

@@ -40,6 +40,7 @@ public class PTRiskBetListPopup extends WelcomePage {
 
     public void activeTab(String tabName){
         Label.xpath(String.format(lblTabxPath,tabName)).click();
+        waitPageLoad();
     }
 
     public int getAmountForeCastHK1X2InBetSlip(String type1or2, String reportType) {
