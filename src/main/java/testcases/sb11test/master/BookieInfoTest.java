@@ -90,4 +90,20 @@ public class BookieInfoTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @Test(groups = {"regression", "2023.12.29"})
+    @TestRails(id = "16173")
+    @Parameters({"bookieCode"})
+    public void Bookie_Info_16173(String bookieCode){
+        log("@title: Validate X button is disabled when having transaction on Bookie Info");
+        log("@Precondition: Having Bookie account that already had transaction: " + bookieCode);
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Navigate Master > Bookie Info");
+        BookieInfoPage bookieInfoPage = welcomePage.navigatePage(MASTER, BOOKIE_INFO,BookieInfoPage.class);
+        log("@Step 4: Filter with Bookie: " + bookieCode);
+        bookieInfoPage.filterBookie(companyUnit, bookieCode, "", "", "");
+        log("@Verify 1: Validate X button is disabled when having transaction on Bookie Info");
+        Assert.assertTrue(bookieInfoPage.verifyElementIsDisabled(bookieInfoPage.getControlXButton(bookieCode), "class"),
+                "Failed! Bookie Code " + bookieCode + " X button is enabled");
+        log("INFO: Executed completely");
+    }
 }

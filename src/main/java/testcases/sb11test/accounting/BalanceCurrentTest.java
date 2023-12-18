@@ -48,13 +48,15 @@ public class BalanceCurrentTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @Parameters({"clientCode"})
     @TestRails(id = "2170")
-    public void Balance_Current_2170(String clientCode){
+    public void Balance_Current_2170(String clientCode) throws InterruptedException {
         log("@title: Validate Member Summary of Master is displayed successfully when clicking on Master");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Balance [Current]");
         BalanceCurrentPage balanceCurrentPage = welcomePage.navigatePage(ACCOUNTING,BALANCE_CURRENT, BalanceCurrentPage.class);
         log("@Step 3: Select an account");
         log("@Step 4: Click Show");
+        //Wait for companyUnit button showwing
+        Thread.sleep(2000);
         balanceCurrentPage.filterAccount(companyUnit,clientCode);
         log("@Step 5: Click any Master code");
         MemberSummaryPopup memberSummaryPopup = balanceCurrentPage.openMasterMemberSummaryPopup(masterCode);
@@ -67,13 +69,15 @@ public class BalanceCurrentTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @Parameters({"clientCode"})
     @TestRails(id = "2171")
-    public void Balance_Current_2171(String clientCode){
+    public void Balance_Current_2171(String clientCode) throws InterruptedException {
         log("@title: Validate Member Summary of Agent is displayed successfully when clicking on Master");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Balance [Current]");
         BalanceCurrentPage balanceCurrentPage = welcomePage.navigatePage(ACCOUNTING,BALANCE_CURRENT, BalanceCurrentPage.class);
         log("@Step 3: Select an account");
         log("@Step 4: Click Show");
+        //Wait for companyUnit button showwing
+        Thread.sleep(2000);
         balanceCurrentPage.filterAccount(companyUnit,clientCode);
         log("@Step 5: Click any Agent code");
         MemberSummaryPopup memberSummaryPopup = balanceCurrentPage.openAgentMemberSummaryPopup(agentCode);

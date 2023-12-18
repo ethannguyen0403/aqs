@@ -13,6 +13,7 @@
         <parameter name='isProxy' value='false'/>
         <parameter name='username' value='AutoQC'/>
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
+        <parameter name='isAddTestRailResult' value='true'/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
         <parameter name="accountCode" value="Auto-Account01"/>
@@ -29,6 +30,7 @@
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <parameter name="companyName" value="Kastraki Limited"/>
         <parameter name="companyCurrency" value="HKD"/>
+        <parameter name="userNameOneRole" value="onerole"/>
         <groups>
             <run>
                 <include name="regression" />

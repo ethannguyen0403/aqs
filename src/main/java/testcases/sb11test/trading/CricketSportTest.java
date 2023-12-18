@@ -23,10 +23,7 @@ import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.popup.BetListPopup;
 import pages.sb11.trading.popup.CricketBetSlipPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.AccountPercentUtils;
-import utils.sb11.AccountSearchUtils;
-import utils.sb11.BetEntrytUtils;
-import utils.sb11.ClientSystemUtils;
+import utils.sb11.*;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
@@ -113,7 +110,7 @@ public class CricketSportTest extends BaseCaseAQS {
                 .eventDate(date)
                 .home("Auto Team 1")
                 .away("Auto Team 2")
-                .openTime("17:00")
+                .openTime("15:00")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -151,7 +148,7 @@ public class CricketSportTest extends BaseCaseAQS {
                 .eventDate(date)
                 .home("Auto Team 1")
                 .away("Auto Team 2")
-                .openTime("17:00")
+                .openTime("15:30")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -186,7 +183,7 @@ public class CricketSportTest extends BaseCaseAQS {
                 .eventDate(date)
                 .home("Auto Team 1")
                 .away("Auto Team 2")
-                .openTime("17:00")
+                .openTime("16:00")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -254,9 +251,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .sportName(sportName)
                 .leagueName(leagueName)
                 .eventDate(date)
-                .home("Auto Team 1")
-                .away("Auto Team 2")
-                .openTime("17:00")
+                .home("Auto Team 2")
+                .away("Auto Team 1")
+                .openTime("15:10")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -331,9 +328,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .sportName(sportName)
                 .leagueName(leagueName)
                 .eventDate(date)
-                .home("Auto Team 1")
-                .away("Auto Team 2")
-                .openTime("15:00")
+                .home("Auto Team 2")
+                .away("Auto Team 1")
+                .openTime("16:00")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -439,7 +436,7 @@ public class CricketSportTest extends BaseCaseAQS {
                 .eventDate(date)
                 .home("Auto Team 1")
                 .away("Auto Team 2")
-                .openTime("17:00")
+                .openTime("19:30")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -536,9 +533,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .sportName(sportName)
                 .leagueName(leagueName)
                 .eventDate(date)
-                .home("Auto Team 1")
-                .away("Auto Team 2")
-                .openTime("15:00")
+                .home("Auto Team 2")
+                .away("Auto Team 1")
+                .openTime("19:00")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -608,7 +605,7 @@ public class CricketSportTest extends BaseCaseAQS {
                 .eventDate(date)
                 .home("Auto Team 1")
                 .away("Auto Team 2")
-                .openTime("15:00")
+                .openTime("18:35")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -676,9 +673,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .sportName(sportName)
                 .leagueName(leagueName)
                 .eventDate(date)
-                .home("Auto Team 1")
-                .away("Auto Team 2")
-                .openTime("15:00")
+                .home("Auto Team 2")
+                .away("Auto Team 1")
+                .openTime("21:20")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -748,7 +745,7 @@ public class CricketSportTest extends BaseCaseAQS {
                 .eventDate(date)
                 .home("Auto Team 1")
                 .away("Auto Team 2")
-                .openTime("15:00")
+                .openTime("20:20")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -817,9 +814,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .sportName(sportName)
                 .leagueName(leagueName)
                 .eventDate(date)
-                .home("Auto Team 1")
-                .away("Auto Team 2")
-                .openTime("15:00")
+                .home("Auto Team 2")
+                .away("Auto Team 1")
+                .openTime("20:20")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -891,7 +888,7 @@ public class CricketSportTest extends BaseCaseAQS {
                 .eventDate(date)
                 .home("Auto Team 1")
                 .away("Auto Team 2")
-                .openTime("15:00")
+                .openTime("14:14")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -959,9 +956,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .sportName(sportName)
                 .leagueName(leagueName)
                 .eventDate(date)
-                .home("Auto Team 1")
-                .away("Auto Team 2")
-                .openTime("15:00")
+                .home("Auto Team 2")
+                .away("Auto Team 1")
+                .openTime("14:14")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -1038,7 +1035,7 @@ public class CricketSportTest extends BaseCaseAQS {
                 .eventDate(date)
                 .home("Auto Team 1")
                 .away("Auto Team 2")
-                .openTime("17:00")
+                .openTime("23:11")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -1098,7 +1095,6 @@ public class CricketSportTest extends BaseCaseAQS {
         confirmBetsPage.confirmMultipleBets(lstOrder);
         log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
-        Thread.sleep(5000);
         betSettlementPage.filter("Confirmed",date,date,"",accountCode);
         log("Verify 1: Bet 1 : Win/Lose = 100\n" +
                 "Bet 2 : Win/Lose = -50");
@@ -1160,9 +1156,9 @@ public class CricketSportTest extends BaseCaseAQS {
                 .sportName(sportName)
                 .leagueName(leagueName)
                 .eventDate(date)
-                .home("Auto Team 1")
-                .away("Auto Team 2")
-                .openTime("17:00")
+                .home("Auto Team 2")
+                .away("Auto Team 1")
+                .openTime("23:23")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -1224,7 +1220,6 @@ public class CricketSportTest extends BaseCaseAQS {
         confirmBetsPage.confirmMultipleBets(lstOrder);
         log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
-        Thread.sleep(5000);
         betSettlementPage.filter("Confirmed",date,date,"",accountCode);
         log("Verify 1: Bet 1 : Win/Lose = 100\n" +
                 "Bet 2 : Win/Lose = -50");
@@ -1248,6 +1243,46 @@ public class CricketSportTest extends BaseCaseAQS {
         Assert.assertEquals(emailInfo.get(3).get(1), expectedRow1.get(1), "Failed! title of email is incorrect");
         log("INFO: Executed completely");
     }
+    @TestRails(id = "252")
+    @Test(groups = {"regression","2023.11.30"})
+    @Parameters({"accountCode","clientCode"})
+    public void Cricket_Sport_252 (String accountCode, String clientCode) throws IOException {
+        log("@title: Validate Cricket manual bets settled correctly");
+        log("@pre-condition 1: Login the page");
+        log("@pre-condition 2: Already placed a Cricket manual bet");
+        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
+        String accountId = AccountSearchUtils.getAccountId(accountCode);
+        String clientId = ClientSystemUtils.getClientId(clientCode);
+        String clientCode1 = superMasterCode + clientCode;
+        AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
+        String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        Order order = new Order.Builder()
+                .price(1.5).requireStake(15)
+                .oddType("HK").accountCode(accountCode)
+                .createDate(transDate)
+                .eventDate(transDate + " 23:59:00")
+                .selection("Home " + DateUtils.getMilliSeconds())
+                .sport(sportName)
+                .marketType("MB")
+                .build();
+        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_ID_MAP.get(sportName),order);
+        welcomePage.waitSpinnerDisappeared();
+        int betId = BetSettlementUtils.getConfirmedBetId(accountId,SPORT_ID_MAP.get(sportName),order);
+        order.setBetId(String.valueOf(betId));
+        log("@Step 1: Access Trading > Bet Settlement");
+        log("@Step 2: Filter with Cricket sport and place manual bet at pre-condition > observe win/loss of manual bet");
+        BetSettlementPage betSettlementPage = welcomePage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed",date,date,"",accountCode);
+        log("Verify 1: Validated win/loss of cricket manual bet is calculated correctly");
+        Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(order),"5");
+        log("@Step 3:  Click Settle & Send Settlement Email button > observe");
+        betSettlementPage.settleAndSendSettlementEmail(order);
+        log("Verify 2: Bets disappear from Confirm and move to the Settled section.");
+        betSettlementPage.filter("Settled", date, date,"", accountCode);
+        betSettlementPage.verifyOrderManual(order);
+        log("INFO: Executed completely");
+    }
     @TestRails(id = "175")
     @Test(groups = {"regression","2023.11.30"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
@@ -1269,7 +1304,7 @@ public class CricketSportTest extends BaseCaseAQS {
                 .eventDate(date)
                 .home("Auto Team 1")
                 .away("Auto Team 2")
-                .openTime("17:00")
+                .openTime("13:18")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
@@ -1355,14 +1390,13 @@ public class CricketSportTest extends BaseCaseAQS {
     }
     @TestRails(id = "339")
     @Test(groups = {"regression","2023.11.30"})
-    @Parameters({"password"})
-    public void Cricket_Sport_339(String password) throws Exception {
-        String accountNoPermission = "onerole";
+    @Parameters({"password", "userNameOneRole"})
+    public void Cricket_Sport_339(String password, String userNameOneRole) throws Exception {
         log("Validate accounts without permission cannot access the Bet Entry page");
         log("@pre-condition: There is an account that has no permission on the Bet Entry page");
         log("@Step 1: Login to SB11 >> select Trading menu");
         LoginPage loginPage = welcomePage.logout();
-        loginPage.login(accountNoPermission, StringUtils.decrypt(password));
+        loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         log("Verify 1: The Bet Entry page does not exsist");
         List<String> lstSubMenu = welcomePage.headerMenuControl.getListSubMenu();
         Assert.assertFalse(lstSubMenu.contains(BET_ENTRY),"FAILED! Bet Entry displayed incorrect!");

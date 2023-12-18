@@ -72,7 +72,7 @@ public class CricketBetEntryPage extends BetEntryPage {
         ddpLeagueBox.doubleClick();
         ddpLeague.selectByVisibleText(league);
         btnShow.click();
-        //waitPageLoad();
+        waitSpinnerDisappeared();
     }
 
     /**
@@ -121,6 +121,7 @@ public class CricketBetEntryPage extends BetEntryPage {
             selection="Under";
         int colIndex = defineColumn(order.getMarketType(), selection);
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
+        waitPageLoad();
         return new CricketBetSlipPopup();
 
     }

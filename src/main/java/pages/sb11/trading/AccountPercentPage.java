@@ -45,7 +45,11 @@ public class AccountPercentPage extends WelcomePage {
         tbAccPercent.getControlOfCell(1,colPercent, rowIndex,"span[1]//em").click();
         ConfirmUpdatePTPopup confirmUpdatePTPopup = new ConfirmUpdatePTPopup();
         confirmUpdatePTPopup.confirmUpdate(true);
-        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getAccPT(String accountCode){

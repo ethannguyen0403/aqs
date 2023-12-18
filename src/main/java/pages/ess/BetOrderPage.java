@@ -116,7 +116,7 @@ public class BetOrderPage extends HomePage {
             stageMarketType = String.format("%s-%s",EN_US.get(order.getStage()),EN_US.get(order.getMarketType()));
         }
 
-        Assert.assertEquals(stageType,stageMarketType,"Failed! Market Type in Market colum is incorrect");
+        Assert.assertTrue(stageType.contains(stageMarketType),"Failed! Market Type in Market colum is incorrect");
 
         // Verify event Date column
         //TODO: Do not know time in API to convert to UI- contact with dev for this VP

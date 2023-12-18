@@ -17,7 +17,6 @@ public class RetainedEarningsPage extends WelcomePage {
     private int rowOrderAmount = 4;
     private int colDesLimit = 3;
 
-
     protected Label lblTitle = Label.xpath("//div[contains(@class, 'card-header')]//span");
     protected Button btnShow = Button.xpath("//button[contains(@class, 'btn-success')]");
     public DropDownBox ddCompanyUnit = DropDownBox.xpath("//div[text()= 'Company Unit']/parent::div//select");
@@ -26,6 +25,7 @@ public class RetainedEarningsPage extends WelcomePage {
     public Button btnExportToExcel = Button.xpath("//button//i[contains(@class, 'fa-file-excel')]");
     public Button btnExportToPDF = Button.xpath("//button//i[contains(@class, 'fa-file-pdf')]");
     public Label lblAmountAreShow = Label.xpath("//app-aqs-bet//label[contains(text(), 'Amounts are shown in')]");
+    public Label lblAmountRetainedEnding = Label.xpath("//td[contains(., 'Retained Earning Ending')]/following-sibling::td[1]");
 
     public String getTitle(){
         return lblTitle.getText();

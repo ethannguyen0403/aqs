@@ -44,7 +44,7 @@ public class SmartSystemTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2174")
-    public void Smart_System_TC_003(){
+    public void Smart_System_TC_2174(){
         log("@title: Validate Smart System page for Smart Group is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Smart System");
@@ -59,7 +59,7 @@ public class SmartSystemTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2175")
     @Parameters({"masterCode"})
-    public void Smart_System_2175(String masterCode){
+    public void Smart_System_TC_2175(String masterCode){
         log("@title: Validate Master Group Report is displayed when clicking on Master Code");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Smart System");
@@ -78,7 +78,7 @@ public class SmartSystemTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2176")
     @Parameters({"masterCode"})
-    public void Smart_System_2176(String masterCode){
+    public void Smart_System_TC_2176(String masterCode){
         log("@title: Validate Master Group List is displayed when clicking on #Group");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Smart System");
@@ -100,7 +100,7 @@ public class SmartSystemTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2177")
     @Parameters({"masterCode"})
-    public void Smart_System_2177(String masterCode){
+    public void Smart_System_TC_2177(String masterCode){
         log("@title: Validate Master Client List is displayed when clicking on CL");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Smart System");
@@ -119,7 +119,7 @@ public class SmartSystemTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2178")
     @Parameters({"agentCode"})
-    public void Smart_System_2178(String agentCode){
+    public void Smart_System_TC_2178(String agentCode){
         log("@title: Validate Agent Group Report is displayed when clicking on Master Code");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Smart System");
@@ -138,7 +138,7 @@ public class SmartSystemTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2179")
     @Parameters({"agentCode"})
-    public void Smart_System_2179(String agentCode){
+    public void Smart_System_TC_2179(String agentCode){
         log("@title: Validate Agent Group List is displayed when clicking on #Group");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Smart System");
@@ -160,7 +160,7 @@ public class SmartSystemTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2180")
     @Parameters({"agentCode"})
-    public void Smart_System_2180(String agentCode){
+    public void Smart_System_TC_2180(String agentCode){
         log("@title: Validate Agent Client List is displayed when clicking on CL");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Smart System");
@@ -179,7 +179,7 @@ public class SmartSystemTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2181")
     @Parameters({"masterCode","smartGroup"})
-    public void Smart_System_2181(String masterCode, String smartGroup){
+    public void Smart_System_TC_2181(String masterCode, String smartGroup){
         log("@title: Validate Smart Group Report is displayed when clicking on Master Code");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Smart System");
@@ -198,7 +198,7 @@ public class SmartSystemTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2182")
     @Parameters({"masterCode","smartGroup"})
-    public void Smart_System_2182(String masterCode, String smartGroup){
+    public void Smart_System_TC_2182(String masterCode, String smartGroup){
         log("@title: Validate Member popup is displayed when clicking on #Member");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Trading > Smart System");

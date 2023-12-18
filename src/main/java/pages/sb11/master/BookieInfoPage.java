@@ -1,12 +1,11 @@
 package pages.sb11.master;
 
+import com.paltech.element.BaseElement;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.Table;
-import objects.Order;
-import pages.sb11.Header;
 import pages.sb11.WelcomePage;
 
 public class BookieInfoPage extends WelcomePage {
@@ -31,6 +30,7 @@ public class BookieInfoPage extends WelcomePage {
 
     public Table tbBookie = Table.xpath("//table",12);
     int colBookieCode = 4;
+    int colXButton = 8;
 
     public void filterBookie (String companyUnit, String bookieCode, String supportBy, String currency, String status){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
@@ -58,18 +58,28 @@ public class BookieInfoPage extends WelcomePage {
         btnExportToExcel.click();
     }
 
-    private int getBookieCodeRowIndex(String bookieCode){
+    public BaseElement getControlXButton(String bookieCode) {
+        int rowIndex = getBookieCodeRowIndex(bookieCode);
+        return tbBookie.getControlOfCell(1, colXButton, rowIndex, "i");
+    }
+
+    private int getBookieCodeRowIndex(String bookieCode) {
         int i = 1;
+        int indexBookie = tbBookie.getColumnIndexByName("Bookie Name");
         Label lblBookieCode;
-        while (true){
-            lblBookieCode = Label.xpath(tbBookie.getxPathOfCell(1,colBookieCode,i,null));
-            if(!lblBookieCode.isDisplayed()){
-                System.out.println("The bookie code "+bookieCode+" does not display in the list");
+        while (true) {
+            lblBookieCode = Label.xpath(tbBookie.getxPathOfCell(1, indexBookie, i, null));
+            if (!lblBookieCode.isDisplayed()) {
+                System.out.println("The bookie code " + bookieCode + " does not display in the list");
                 return 0;
             }
-            if(lblBookieCode.getText().contains(bookieCode))
+            if (lblBookieCode.getText().contains(bookieCode))
                 return i;
-            i = i +1;
+            i = i + 1;
         }
+    }
+
+    public boolean verifyElementIsDisabled(BaseElement element, String attribute){
+        return element.getAttribute(attribute).contains("disabled");
     }
 }

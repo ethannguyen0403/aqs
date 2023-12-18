@@ -43,11 +43,17 @@ public class HeaderTest extends BaseCaseAQS {
 
     @TestRails(id = "463")
     @Test(groups = {"smoke"})
-    public void HeaderTC_C466(){
-        log("@title: Verify Change Password menu display");
+    public void HeaderTC_C463(){
+        log("@title: Verify Change Password popup display");
         log("@Step 1: Click on profile icon");
         log("@Step 2: Click on Change Password");
         betOrderPage.ddlMenu.clickMenu(CHANGE_PASSWORD);
+        //Wait 2s for change password popup display
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         ChangePasswordPopup changePasswordPage = new ChangePasswordPopup();
         log("Verify Change password popup display with correct info");
         Assert.assertTrue(changePasswordPage.popup.isDisplayed());

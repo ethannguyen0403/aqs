@@ -5,6 +5,7 @@ import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
+import objects.Order;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.soccer.popup.PTRiskBetListPopup;
@@ -53,23 +54,30 @@ public class PTRiskPage extends WelcomePage {
         ddpReportType.selectByVisibleText(reportType);
         waitSpinnerDisappeared();
         ddpLiveNonLive.selectByVisibleText(liveNonlive);
+        waitSpinnerDisappeared();
         if(!fromDate.isEmpty()){
             dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if(!toDate.isEmpty()){
             dtpToDate.selectDate(toDate,"dd/MM/yyyy");
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(4000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
-        btnLeagues.click();
-        btnClearAll.click();
-        filterLeague(leagueName);
-        btnClient.click();
-        btnClearAll.click();
+        if (!leagueName.isEmpty()){
+            filterLeague(leagueName);
+        }
         if (!clientCode.isEmpty()){
+            btnClient.click();
+            btnClearAll.click();
             filterClient(clientCode);
-        } else {
-            btnSetSelection.click();
         }
         btnShow.click();
         waitSpinnerDisappeared();
@@ -90,6 +98,7 @@ public class PTRiskPage extends WelcomePage {
             if(lblSelectValue.getText().replace(" ","").equalsIgnoreCase(clientCode)) {
                 lblSelectValue.click();
                 btnSetSelection.click();
+                waitSpinnerDisappeared();
                 break;
             }
             i = i + 1;
@@ -97,6 +106,9 @@ public class PTRiskPage extends WelcomePage {
     }
 
     private void filterLeague(String leagueName) {
+        btnLeagues.click();
+        waitSpinnerDisappeared();
+        btnClearAll.click();
         int i = 1;
         while (true) {
             Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div[%s]//label[1]",i));
@@ -107,10 +119,32 @@ public class PTRiskPage extends WelcomePage {
             if(lblSelectValue.getText().equalsIgnoreCase(leagueName)) {
                 lblSelectValue.click();
                 btnSetSelection.click();
+                waitSpinnerDisappeared();
                 break;
             }
             i = i + 1;
         }
+    }
+    public void filterSmartMaster(String masterName) {
+        btnSmartMaster.click();
+        waitSpinnerDisappeared();
+        btnClearAll.click();
+        int i = 1;
+        while (true) {
+            Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div[%s]//label[1]",i));
+            if (!lblSelectValue.isDisplayed()) {
+                System.out.println("Cannot find out league in list of Leagues: " + masterName);
+                break;
+            }
+            if(lblSelectValue.getText().equalsIgnoreCase(masterName)) {
+                lblSelectValue.click();
+                btnSetSelection.click();
+                break;
+            }
+            i = i + 1;
+        }
+        btnShow.click();
+        waitSpinnerDisappeared();
     }
 
     public PTRiskBetListPopup openBetList(String homeName) {
@@ -222,5 +256,18 @@ public class PTRiskPage extends WelcomePage {
                 return -1;
             }
         }
+    }
+
+    public boolean verifyRemoveBet(Order order) {
+        Label homeNameXpath = Label.xpath(String.format("//app-pt-risk-control//th[@id='team-infor']//div[text()=\"%s\"]",order.getEvent().getHome()));
+        if (!homeNameXpath.isDisplayed()){
+            return true;
+        } else {
+            PTRiskBetListPopup ptRiskBetListPopup = openBetList(order.getEvent().getHome());
+            if (!ptRiskBetListPopup.verifyOrder(order)){
+                return true;
+            }
+        }
+        return false;
     }
 }

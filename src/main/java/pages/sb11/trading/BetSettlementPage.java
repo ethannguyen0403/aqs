@@ -297,4 +297,22 @@ public class BetSettlementPage extends WelcomePage {
         btnExportSelectedBet.scrollToTop();
         btnExportSelectedBet.click();
     }
+    public void verifyOrderManual(Order order){
+        int rowindex = getOrderIndex(order.getBetId());
+        String brBetrefID = tblOrder.getControlOfCell(1, colBRBettrefId,rowindex,null).getText();
+        String sport = tblOrder.getControlOfCell(1, colSport,rowindex,null).getText();
+        String eventLeague = tblOrder.getControlOfCell(1, colEvenLeagueName,rowindex,null).getText();
+        String selection = tblOrder.getControlOfCell(1, colSelection,rowindex,null).getText();
+        String odds = tblOrder.getControlOfCell(1, colOdds,rowindex,null).getText();
+        String stake = tblOrder.getControlOfCell(1, colStake,rowindex,null).getText();
+        String beType = tblOrder.getControlOfCell(1, colBetType,rowindex,null).getText();
+        String expectedBetType = order.getMarketType();
+        Assert.assertTrue(brBetrefID.contains(order.getBetId()), "Failed BR BetRef id 123 SB Betfef id at row "+rowindex+" is incorrect");
+        Assert.assertEquals(sport,SPORT_SIGN_MAP.get(order.getSport()), "Failed Sport at row "+rowindex+" is incorrect");
+        Assert.assertEquals(eventLeague,"Manual Bet Description", "Failed! Event League Name at row "+rowindex+" is incorrect");
+        Assert.assertEquals(selection,order.getSelection(), "Failed! Selection at row "+rowindex+" is incorrect");
+        Assert.assertEquals(odds,String.format("%.3f (%s)", order.getPrice(),order.getOddType()), "Failed! Odds at row "+rowindex+" is incorrect");
+        Assert.assertEquals(stake,String.format("%.2f", order.getRequireStake()), "Failed! Stake at row "+rowindex+" is incorrect");
+        Assert.assertEquals(beType,expectedBetType, "Failed! Bet Type at row "+rowindex+" is incorrect");
+    }
 }
