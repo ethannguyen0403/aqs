@@ -174,4 +174,7 @@ public class PositionTakingReportPage extends WelcomePage {
         return tblBookie.getControlBasedValueOfDifferentColumnOnRow(bookieName,1,tblBookie.getColumnIndexByName("Bookie Name"),1,"a",
                 tblBookie.getColumnIndexByName(tillToDate),null,false,false).getText();
     }
+    public List<String> getLstClientName(){
+        return tblClient.getColumn(tblClient.getColumnIndexByName("Client Name"),10,true);
+    }
 }

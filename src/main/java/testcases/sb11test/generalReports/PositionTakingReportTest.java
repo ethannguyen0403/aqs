@@ -12,8 +12,10 @@ import pages.sb11.generalReports.ClientStatementPage;
 import pages.sb11.generalReports.PositionTakingReportPage;
 import pages.sb11.generalReports.popup.clientstatement.ClientSummaryPopup;
 import pages.sb11.generalReports.popup.positionTakingReport.AccountPopup;
+import pages.sb11.master.AccountSearchPage;
 import pages.sb11.master.ClientSystemPage;
 import pages.sb11.soccer.MonitorBetsPage;
+import pages.sb11.trading.AccountPercentPage;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 
@@ -155,9 +157,46 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})
+    @TestRails(id = "4198")
+    public void Position_Taking_Report_4198() {
+        log("@title: Validate correct Till [selected To date] displays");
+        log("@Pre-condition 1: Position Taking Report permission is ON for any account");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to General Reports >> Position Taking Report page" +
+                "From Date 1/7/2023 To Date current day");
+        String accountCode = "6EU0288-PT";
+        String clientStatement = "PSM1000 - PSM Group Limited";
+        String agentCode = "PSMEU02-PT";
+        String bookieName = "[EUR >> HKD] Pinnacle2";
+        String fromDate = "01/08/2023";
+        PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
+        log("@Step 3: Filter which has data");
+        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All","","");
+        log("@Step 4: Click any bookie");
+        AccountPopup accountPopup = page.clickToBookieName(bookieName);
+        log("@Step 5: Get the DR-Win/Loss value of any account");
+        String tillToDate = "Till "+DateUtils.getDate(0,"dd-MMM-yyyy",GMT_7);
+        String tillDateValueAc = accountPopup.getTillDateValue(accountCode,tillToDate);
+        accountPopup.clickToClosePopup();
+        log("@Step 6: Go to 'Client Statement >> Client Detail' page");
+        ClientStatementPage clientStatementPage = page.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
+        log("@Step 7: Filter data with the same client in the same company/date range at step #2, e.g.\n" +
+                "View By = Client Point\n" +
+                "Client = PSM Group Limited");
+        clientStatementPage.filter("Client Point",COMPANY_UNIT,FINANCIAL_YEAR,clientStatement,fromDate,"");
+        log("@Step 8: Click agent-PT of account at step #4 (e.g. PSMEU02-PT)");
+        ClientSummaryPopup clientSummaryPopup = clientStatementPage.openSummaryPopup(agentCode);
+        log("@Step 9: Get Win/Lose value");
+        String winloseEx = clientSummaryPopup.getSummaryCellValue(accountCode,clientSummaryPopup.colWinLose);
+        log("@Step 10: Compare value at step #4 and step #8");
+        log("@Verify 1: The correct Win/Lose displays => values at step #4 and step #8 are the same");
+        Assert.assertTrue(tillDateValueAc.contains(winloseEx),"FAILED! Win/Lose value displays incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "4338")
     public void Position_Taking_Report_4338() {
-        log("@title: Validate correct Till [selected To date] displays");
+        log("@title: Validate correct DR-Win/Loss displays");
         log("@Pre-condition 1: Position Taking Report permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> Position Taking Report page");
@@ -183,7 +222,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("@Step 8: Click agent-PT of account at step #4 (e.g. PSMEU02-PT)");
         ClientSummaryPopup clientSummaryPopup = clientStatementPage.openSummaryPopup(agentCode);
         log("@Step 9: Get Win/Lose value");
-        String winloseEx = clientSummaryPopup.getSummaryCellValue(accountCode,8);
+        String winloseEx = clientSummaryPopup.getSummaryCellValue(accountCode,clientSummaryPopup.colWinLose);
         log("@Step 10: Compare value at step #4 and step #8");
         log("@Verify 1: The correct Win/Lose displays => values at step #4 and step #8 are the same");
         Assert.assertEquals(winloseAc,winloseEx,"FAILED! Win/Lose value displays incorrect");
@@ -242,6 +281,33 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("@Step 4: Check the Total value");
         log("@Verify 1: Total win/lose value = sum amount of all bookies for each column displays");
         page.verifyTotalWinLose();
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.29"})
+    @TestRails(id = "4342")
+    public void Position_Taking_Report_4342() {
+        log("@title: Validate the correct client displays if there is a client of a similar account");
+        log("@Pre-condition: Position Taking Report permission is ON");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to General Reports >> Position Taking Report page");
+        String bookie = "Pinnacle2";
+        String fromDate = DateUtils.getDate(-4,"dd/MM/yyyy",GMT_7);
+        String toDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
+        log("@Step 3: Filter which has data");
+        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,bookie,fromDate,toDate);
+        log("@Step 4: Click to the first client name");
+        String clientName = page.getLstClientName().get(0);
+        AccountPopup accountPopup = page.clickToClientName(clientName);
+        log("@Step 5: Get the first Account Code and bookie name");
+        String accountDisplay = accountPopup.getFirstAccountCode();
+        accountPopup.clickToClosePopup();
+        log("@Step 6: Go to Master >> Account Search");
+        AccountSearchPage accountSearchPage = page.navigatePage(MASTER,ACCOUNT_SEARCH,AccountSearchPage.class);
+        log("@Step 7: Search Account Code similar");
+        accountSearchPage.filterAccount(COMPANY_UNIT,"Account Code",accountDisplay);
+        log("@Verify 1: Client Name of similar account at step 4 displays");
+        Assert.assertTrue(accountSearchPage.isClientNameDisplay(clientName));
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})
@@ -331,6 +397,50 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         String totalInHDK = accountPopup.getValueBookieTotalTillColumn();
         log("@Verify 1: The Total value of each column is matched each other");
         Assert.assertEquals(valueTillAc,totalInHDK,"FAILED! The Total value of Till column is not matched");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.29"})
+    @TestRails(id = "4353")
+    public void Position_Taking_Report_4353() {
+        log("@title: Validate the correct PT% of account displays");
+        log("@Pre-condition 1: Position Taking Report permission is ON");
+        log("@Pre-condition 2: Go to Account Percent >> get value Actual WinLoss% of account that if having");
+        String accountPT = "6EU0206001";
+        String bookie = "Pinnacle2";
+        AccountPercentPage accountPercentPage = welcomePage.navigatePage(TRADING,ACCOUNT_PERCENT, AccountPercentPage.class);
+        accountPercentPage.filterAccount(bookie,"",accountPT);
+        String accWL = accountPercentPage.getAccPT(accountPT);
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to General Reports >> Position Taking Report page");
+        String bookieName = "[EUR >> HKD] Pinnacle2";
+        PositionTakingReportPage page = accountPercentPage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
+        log("@Step 3: Filter which has data");
+        String toDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",toDate,toDate);
+        log("@Step 4: Click any Bookie/Client link");
+        String accountCode = "6EU0288-PT";
+        AccountPopup accountPopup = page.clickToBookieName(bookieName);
+        log("@Verify 1: Show the Account Percent if having or showing as 0.00 if there is no setting");
+        accountPopup.checkPTOfAccount(accountCode,accWL);
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.29"})
+    @TestRails(id = "4358")
+    public void Position_Taking_Report_4358() {
+        log("@title: Validate the correct W/L% displays");
+        log("@Pre-condition 1: Position Taking Report permission is ON");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to General Reports >> Position Taking Report page");
+        String bookieName = "[EUR >> HKD] Pinnacle2";
+        PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
+        log("@Step 3: Filter which has data");
+        String toDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",toDate,toDate);
+        log("@Step 4: Click any Bookie/Client link");
+        String accountCode = "6EU0288-PT";
+        AccountPopup accountPopup = page.clickToBookieName(bookieName);
+        log("@Verify 1: The correct W/L%: = (DR-Win/Loss/ DR – Turnover) * 100 displays");
+        accountPopup.verifyWL(accountCode);
         log("INFO: Executed completely");
     }
 }

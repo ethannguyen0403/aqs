@@ -4,6 +4,8 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import controls.Table;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
 
 public class AccountSearchPage extends WelcomePage {
@@ -31,11 +33,27 @@ public class AccountSearchPage extends WelcomePage {
     public Label lblSuperEmailHeader = Label.xpath("//span[text()='CAS Super - Email Header Info']");
     public Label lblAddressBook = Label.xpath("//span[text()='Account - Address Book']");
     public Label lblSmartGroupInfo = Label.xpath("//span[text()='Smart Group Info']");
+    public Label lblNoRecordFound = Label.xpath("//span[contains(text(),'No record found.')]");
+    public Label lblClientNameValue = Label.xpath("((//div[@class='panel-header'])[3]//following-sibling::table//td)[2]");
 
     public void filterAccount (String companyUnit, String type, String accountCodeID){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
         ddpType.selectByVisibleText(type);
         txtAccountSearch.sendKeys(accountCodeID);
         btnShow.click();
+        waitSpinnerDisappeared();
+    }
+
+    public boolean isClientNameDisplay(String clientName) {
+        if (lblNoRecordFound.isDisplayed()){
+            System.out.println("No record found.");
+            return true;
+        } else {
+            if (!clientName.equals(lblClientNameValue.getText())){
+                System.out.println(clientName+" is not displayed");
+                return false;
+            }
+            return true;
+        }
     }
 }
