@@ -85,7 +85,11 @@ public class SBPConstants {
     public final static String LEDGER_GROUP_NAME_EXPENDITURE = "QA Ledger Group Expenditure";
     public final static String LEDGER_GROUP_NAME_LIABILITY = "QA Ledger Group Liability";
     public final static String LEDGER_GROUP_NAME_ASSET = "QA Ledger Group Asset";
+    public final static String LEDGER_GROUP_NAME_ASSET_700 = "QA Asset Account 700";
     public final static String LEDGER_GROUP_NAME_CAPITAL = "QA Ledger Group Capital";
+    public final static String QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT = "500.000.000.000 - QA Ledger Group Asset";
+    public final static String QA_ASSET_PARENT_ACCOUNT_700 = "700.000.000.000 - QA Asset Account 700";
+    public final static String CAPITAL_PARENT_ACCOUNT = "301.000.000.000 - Capital";
     public final static String LEDGER_ASSET_CREDIT_ACC = "050.000.000.000 - AutoAssetCredit";
     public final static String LEDGER_ASSET_DEBIT_ACC = "055.000.000.000 - AutoAssetDebit";
     public final static String LEDGER_LIABILITY_CREDIT_ACC = "040.000.000.000 - AutoLiabilityCredit";
@@ -102,6 +106,8 @@ public class SBPConstants {
     public final static String LEDGER_PARENT_NAME_INCOME = "QA Ledger Group Income";
     public final static String LEDGER_PARENT_NAME_CAPITAL = "QA Ledger Group Capital";
     public final static String INVOICE_PROJECT = "QA-Project01";
+    public final static String QA_SMART_GROUP = "QA Smart Group";
+    public final static String QA_SMART_MASTER = "QA Smart Master";
     public final static List<String> TABLE_HEADER = Arrays.asList("Role", "User", "Sport", "Soccer","Accounting","Trading","Master","General Reports","Invoice","Financial Reports");
     public final static List<String> COMPANY_UNIT_LIST = Arrays.asList("Kastraki Limited", "SK1122", "IB 01", "Fair", "Aquifer");
     public final static List<String> COMPANY_UNIT_LIST_ALL = Arrays.asList("All","Kastraki Limited", "SK1122", "IB 01", "Fair","Aquifer");
@@ -152,7 +158,8 @@ public class SBPConstants {
         {
             put("Soccer", "1");
             put("Cricket", "2");
-
+            put("Basketball", "3");
+            put("Tennis", "4");
         }
     };
 
@@ -221,6 +228,8 @@ public class SBPConstants {
         public final static List<String> TABLE_HEADER_MASTER = Arrays.asList("#", "i", "Bookie", "Master Code", "CUR", "Client","Support By","Edit","","# Agent");
         public final static List<String> TABLE_HEADER_AGENT = Arrays.asList("#", "i", "Bookie", "Agent Code", "CUR", "Client","Type","Support By","Edit","","# Members");
         public final static List<String> GO_TO_LIST = Arrays.asList("Super","Master","Agent");
+        public final static String TOOLTIP_MESSAGE = "This %s cannot be deleted because there's transaction made";
+
     }
 
     public static class LeagueSeasonTeamInfo{
@@ -417,7 +426,7 @@ public class SBPConstants {
     }
 
     public static class RetainedEarningsConstants {
-        public final static List<String> DESCRIPTION_LIST = Arrays.asList("Retained Earnings","Net Income/Loss from Operation", "Dividends");
+        public final static List<String> DESCRIPTION_LIST = Arrays.asList("Beginning Retained Earnings","Net Income/Loss from Operation", "Dividends");
 
     }
 

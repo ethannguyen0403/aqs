@@ -246,11 +246,12 @@ public class BBTPage extends WelcomePage {
     }
 
     public ReportS1Page openReportS1FirstGroup() {
-        if (!lblFirstGroupS1.isDisplayed()) {
+        Label lblFirst = Label.xpath(tblBBT.getSLinkXpath(1, "S1"));
+        if (!lblFirst.isDisplayed()) {
             System.out.println("There is no Group available for opening");
             return null;
         } else {
-            lblFirstGroupS1.click();
+            lblFirst.click();
             waitSpinnerDisappeared();
             DriverManager.getDriver().switchToWindow();
             return new ReportS1Page();
@@ -258,11 +259,12 @@ public class BBTPage extends WelcomePage {
     }
 
     public ReportS12Page openReportS12FirstGroup() {
-        if (!lblFirstGroupS12.isDisplayed()) {
+        Label lblFirst = Label.xpath(tblBBT.getSLinkXpath(1, "S12"));
+        if (!lblFirst.isDisplayed()) {
             System.out.println("There is no Group available for opening");
             return null;
         } else {
-            lblFirstGroupS12.click();
+            lblFirst.click();
             DriverManager.getDriver().switchToWindow();
             waitSpinnerDisappeared();
             return new ReportS12Page();
@@ -449,7 +451,7 @@ public class BBTPage extends WelcomePage {
     public boolean verifyFilterDisplayWithOption(String... options) {
         List<String> listFilter = getAllOptionNameFilter();
         if (listFilter.isEmpty() || listFilter == null) return false;
-        if (!listFilter.containsAll(Arrays.asList(options))) return false;
+        if (!Arrays.asList(options).containsAll(listFilter)) return false;
         return true;
     }
 
@@ -497,10 +499,13 @@ public class BBTPage extends WelcomePage {
         return true;
     }
 
-    public int findRowIndexOfTeamTable(Order order, boolean isHomeTeam){
+    /**
+     * @param isLeftTable define left or right table to find row Index
+     * */
+    public int findRowIndexOfTeamTable(Order order, boolean isLeftTable){
         int rowIndex = 1;
         int tableHomeIndex = findTableIndexByTeam(order.getHome());
-        int tableIndex = isHomeTeam ? tableHomeIndex : tableHomeIndex + 1;
+        int tableIndex = isLeftTable ? tableHomeIndex : tableHomeIndex + 1;
         Table tblTeam = tblBBT.getTableControl(tableIndex);
         while(true){
            Label lblStake = Label.xpath(tblTeam.getxPathOfCell(1, colStake, rowIndex, null));
