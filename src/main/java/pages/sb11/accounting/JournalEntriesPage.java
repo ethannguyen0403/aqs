@@ -117,8 +117,6 @@ public class JournalEntriesPage extends WelcomePage {
     private void filterLedger (boolean isDebit,String fromType, String ledgername, boolean isAdd){
         if (isDebit){
             ddDebitFrom.selectByVisibleText(fromType);
-            ddDebitLedger.getNumberOfItems();
-            ddDebitLedger.getOptions();
             waitSpinnerDisappeared();
             ddDebitLedger.selectByVisibleContainsText(ledgername);
             if(isAdd){
