@@ -25,7 +25,7 @@ public class EventMappingTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2091")
-    public void EventMappingTC_002(){
+    public void EventMappingTC_2091(){
         log("@title: Validate Event Mapping page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Event Mapping");
