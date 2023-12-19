@@ -131,7 +131,7 @@ public class PositionTakingReportPage extends WelcomePage {
         for (int i = 4; i < bookieTblCol;i++){
             String lblwinLoseDate = "(//table)[1]//tbody//td[text()='Total']//following-sibling::td[%s]";
             String winloseDate = Label.xpath(String.format(lblwinLoseDate,i)).getText().replace(",","");
-            winLoseAc = DoubleUtils.roundUpWithTwoPlaces(winLoseAc + Double.valueOf(winloseDate));
+            winLoseAc = DoubleUtils.roundEvenWithTwoPlaces(winLoseAc + Double.valueOf(winloseDate));
         }
         Assert.assertTrue(winLoseAc.equals(winLoseEx),"FAILED! Total Win/Lose displays incorrect!");
     }

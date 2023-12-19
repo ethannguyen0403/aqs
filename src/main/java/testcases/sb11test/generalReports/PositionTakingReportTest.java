@@ -204,7 +204,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         String clientStatement = "PSM1000 - PSM Group Limited";
         String agentCode = "PSMEU02-PT";
         String bookieName = "[EUR >> HKD] Pinnacle2";
-        String fromDate = DateUtils.getDate(-10,"dd/MM/yyyy",GMT_7);
+        String fromDate = DateUtils.getDate(-5,"dd/MM/yyyy",GMT_7);
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
         page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",fromDate,"");
