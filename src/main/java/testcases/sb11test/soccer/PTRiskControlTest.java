@@ -371,12 +371,13 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2127")
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","2023.12.31"})
     @Parameters({"accountCode","accountCurrency"})
     public void PTRiskControlTC_2127(String accountCode,String accountCurrency){
         log("@title: Validate Half time Handicap bet is displayed and disappear when place bet in Bet Entry then removed" );
         int dateNo = -1;
         String companyUnit = "Kastraki Limited";
+        String smartMaster = "QA Smart Master";
         String date = String.format(DateUtils.getDate(dateNo,"dd/MM/yyyy","GMT +7"));
 
         log("@Precondition Step:  Having Half time Handicap bet which have been placed on Bet Entry");
@@ -389,7 +390,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
 
         log("@Step 2: Filter with the event that has bet at Pre-condition");
         ptRiskPage.filter("",COMPANY_UNIT,"Normal","All",date,date, lstOrder.get(0).getEvent().getLeagueName());
-
+        ptRiskPage.filterSmartMaster(smartMaster);
         log("@Step 3: Click on the event name");
         PTRiskBetListPopup ptRiskBetListPopup = ptRiskPage.openBetList(lstOrder.get(0).getEvent().getHome());
 
@@ -411,8 +412,8 @@ public class PTRiskControlTest extends BaseCaseAQS {
 
         log("Verify 2: verify Bet is removed when bet is removed in Confirm bet");
         ptRiskPage.filter("",COMPANY_UNIT,"Normal","All",date,date, lstOrder.get(0).getEvent().getLeagueName());
-        ptRiskBetListPopup = ptRiskPage.openBetList(lstOrder.get(0).getEvent().getHome());
-        Assert.assertFalse(ptRiskBetListPopup.verifyOrder(lstOrder.get(0)),"Failed! The order info is still display");
+        ptRiskPage.filterSmartMaster(smartMaster);
+        Assert.assertTrue(ptRiskPage.verifyRemoveBet(lstOrder.get(0)),"FAILED! Bet still display");
         log("INFO: Executed completely");
     }
 
@@ -437,7 +438,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
             basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
-            basketballBetEntryPage.placeBet(orderBasketball, "1x2", eventBasketball.getHome());
+            basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
             log("@Step 2: Navigate to Soccer > PT Risk Control");
             PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
             ptPage.waitSpinnerDisappeared();
@@ -485,7 +486,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
             basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
-            basketballBetEntryPage.placeBet(orderBasketball, "1x2", eventBasketball.getHome());
+            basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
             log("@Step 2: Navigate to Soccer > PT Risk Control");
             PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
             ptPage.waitSpinnerDisappeared();
@@ -525,7 +526,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
             basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
-            basketballBetEntryPage.placeBet(orderBasketball, "1x2", eventBasketball.getHome());
+            basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
             log("@Step 1: Navigate to Soccer > PT Risk Control");
             PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
             ptPage.waitSpinnerDisappeared();
@@ -598,7 +599,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
             basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
-            basketballBetEntryPage.placeBet(orderBasketball, "1x2", eventBasketball.getHome());
+            basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
             log("@Step 1: Navigate to Soccer > PT Risk Control");
             PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
             ptPage.waitSpinnerDisappeared();

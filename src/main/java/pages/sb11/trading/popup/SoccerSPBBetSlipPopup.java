@@ -1,6 +1,7 @@
 package pages.sb11.trading.popup;
 
 import com.paltech.element.common.*;
+import common.SBPConstants;
 import objects.Order;
 import pages.sb11.trading.SoccerBetEntryPage;
 
@@ -102,9 +103,12 @@ public class SoccerSPBBetSlipPopup {
     }
 
     public void inputFT1x2info(Order order){
-        clickSelection(order.getSelection());
         String marketType = String.format("%s - %s",order.getStage(),order.getMarketType());
         ddMarketType.selectByVisibleText(marketType);
+        if (SBPConstants.SoccerSPBBetSlipPopup.BET_TYPE_HDP_DROPDOWN.contains(marketType)){
+            ddHandicap.selectByVisibleText(String.valueOf(order.getHdpPoint()));
+        }
+        clickSelection(order.getSelection());
         txtOdds.sendKeys(String.format("%.3f",order.getPrice()));
         ddOddType.selectByVisibleText(order.getOddType());
         ddBetType.selectByVisibleText(order.getBetType());

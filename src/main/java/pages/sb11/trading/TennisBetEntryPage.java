@@ -7,27 +7,29 @@ import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
-import objects.Event;
 import objects.Order;
 import pages.sb11.WelcomePage;
-import pages.sb11.trading.popup.BasketballBetSlipPopup;
+import pages.sb11.trading.popup.TennisBetSlipPopup;
 
 import java.util.List;
-import java.util.Locale;
 
-public class BasketballBetEntryPage extends WelcomePage {
-
+public class TennisBetEntryPage extends WelcomePage {
+    public Label lblDate = Label.xpath("//label[text()='Date']");
     public Label lblAccountCode = Label.xpath("//label[contains(text(),'Account Code')]");
     private TextBox txtAccCode = TextBox.id("account-code");
     public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bet-entry-header//label[contains(text(),'Company Unit')]/following::select[1]");
     public DropDownBox ddpLeague = DropDownBox.id("league");
     public DropDownBox ddpSearchBy = DropDownBox.xpath("//select[@class='form-control']");
+    public TextBox txtAccountCode = TextBox.id("account-code");
     private TextBox txtDate = TextBox.xpath("//app-bet-entry-header//input[@name='fromDate']");
-    DateTimePicker dtpDate = DateTimePicker.xpath(txtDate, "//bs-datepicker-container");
     public Button btnShow = Button.xpath("//app-bet-entry-header//button[contains(@class,'btn-show')]");
+    private DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
 
-    int colEvent = 2;
-    Table tblBasketball = Table.xpath("//app-bet-entry-table//table", 13);
+    int totalCol =16;
+    private int colTime = 1;
+    private int colEvent = 2;
+    public Table tblEvent = Table.xpath("//app-bet-entry-table//table",totalCol);
+
 
     public void showLeague(String companyUnit, String date, String league, String accountCode){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
@@ -48,12 +50,32 @@ public class BasketballBetEntryPage extends WelcomePage {
         btnShow.click();
         waitPageLoad();
     }
+    /**
+     * Find column index of Home and Away
+     * @param teamSelection include name Home or Away
+     * @return
+     */
+    public int findColumnIndexOfBetType(String teamSelection) {
+        List<String> headerList = tblEvent.getHeaderNameOfRows();
+        int indexTeamPlaceBet = -1;
+        for (int i = 0; i < headerList.size(); i++) {
+            if (headerList.get(i).equalsIgnoreCase("1x2")) {
+                indexTeamPlaceBet = i;
+                break;
+            }
+        }
+        if (indexTeamPlaceBet == -1) {
+            System.out.println("NOT found selection: " + teamSelection);
+            return indexTeamPlaceBet;
+        }
+        return teamSelection.equalsIgnoreCase("Home") ? indexTeamPlaceBet + 1 : indexTeamPlaceBet + 2;
+    }
 
     public int findEventRowIndex(String eventName){
         int i = 1;
         Label lblEvent;
         while (true){
-            lblEvent = Label.xpath(tblBasketball.getxPathOfCell(1,colEvent,i,null));
+            lblEvent = Label.xpath(tblEvent.getxPathOfCell(1,colEvent,i,null));
             if(!lblEvent.isDisplayed()) {
                 System.out.println("Can NOT found the league "+eventName+" in the table");
                 return -1;
@@ -66,44 +88,17 @@ public class BasketballBetEntryPage extends WelcomePage {
         }
     }
 
-    /**
-    @param teamSelection name of team selection (e.g: Home, Away, Over, Under....)
-    */
-    public int findColumnIndexOfBetType(String typeName, String teamSelection){
-        List<String> headerList = tblBasketball.getHeaderNameOfRows();
-        int indexBetType = -1;
-       for(int i=0; i< headerList.size(); i++){
-            if(headerList.get(i).equalsIgnoreCase(typeName)){
-                indexBetType = i;
-                break;
-            }
-       }
-       switch (typeName.toUpperCase()){
-           case "1X2":
-           case "HDP":
-               return  teamSelection.equalsIgnoreCase("Home") ? indexBetType + 1 : indexBetType + 2;
-           case "TOTAL POINTS":
-               return  teamSelection.equalsIgnoreCase("Over") ? indexBetType + 1 : indexBetType + 2;
-           default:
-               System.out.println("NOT Found value in Basketball table");
-               return -1;
-       }
-    }
-
-    /**
-     * @param eventName name of event usually name of Home team or Away team
-      */
-    public BasketballBetSlipPopup openBetSlip(String typeName, String teamSelection, String eventName){
-        int indexColLabel = findColumnIndexOfBetType(typeName, teamSelection);
+    public TennisBetSlipPopup openBetSlip(String teamName, String eventName){
+        int indexColLabel = findColumnIndexOfBetType(teamName);
         int indexRowEven = findEventRowIndex(eventName);
-        tblBasketball.getControlOfCell(1, indexColLabel, indexRowEven,"span").click();
+        tblEvent.getControlOfCell(1, indexColLabel, indexRowEven,"span").click();
         waitPageLoad();
-        return new BasketballBetSlipPopup();
+        return new TennisBetSlipPopup();
     }
-
-    public void placeBet(Order order, String typeName, String teamSelection) {
-        BasketballBetSlipPopup betSlipPopup = this.openBetSlip(typeName, teamSelection, order.getEvent().getHome());
+    public void placeBet(Order order, String teamName) {
+        TennisBetSlipPopup betSlipPopup = this.openBetSlip(teamName, order.getEvent().getHome());
         betSlipPopup.fillBetSlipInfo1x2(order);
         betSlipPopup.btnPlaceBet.click();
     }
+
 }

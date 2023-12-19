@@ -26,6 +26,8 @@ public class ClientBalancePage extends WelcomePage {
     public int colBookieName = 2;
     public Table tblBookieBalance = Table.xpath("//div[@id='bookie-balance-summary']//table[not(contains(@style,' '))]", 3);
 
+    public Table tblClient = Table.xpath("//app-client-balance//table", 6);
+
 
     public void filter(String viewBy, String companyUnit, String financialYear, String date, String smCode) {
         if (!viewBy.isEmpty())

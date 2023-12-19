@@ -5,6 +5,7 @@ import controls.Table;
 public class BBTTable {
     private String _xpathTable;
     private String _xpathLeagueTime = "//div[contains(@class, 'league-time') and not(contains(@class, 'flex-row-reverse'))]//div[@class='font-weight-bold']";
+    private String _xpathSLink = "//div[contains(@class, 'flex-row-reverse')]";
     private String _xpathLeagueName = "//div[contains(@class, 'header d-flex')]";
     private int _columnNumber;
     private String _rootXpathTable = "//div[contains(@class, 'table-contain')]";
@@ -28,7 +29,10 @@ public class BBTTable {
         return Table.xpath(String.format("%s%s", _rootXpathTable, _xpathTable), _columnNumber);
     }
     public String getLeagueNameXpath(int tableIndex) {
-        return String.format("(%s)[%s]%s//span", _rootXpathTable, tableIndex, _xpathLeagueName);
+        return String.format("(%s)[%s]%s", _rootXpathTable, tableIndex, _xpathLeagueName);
+    }
+    public String getSLinkXpath(int tableIndex, String SLinkName) {
+        return String.format("(%s)[%s]%s//span[normalize-space()= '%s']", _rootXpathTable, tableIndex, _xpathSLink, SLinkName);
     }
 
     public String getLeagueTimeXpath(int tableIndex) {

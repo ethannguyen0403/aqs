@@ -1,5 +1,6 @@
 package pages.sb11.generalReports;
 
+import com.paltech.element.BaseElement;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
@@ -51,19 +52,22 @@ public class LedgerStatementPage extends WelcomePage {
     int colAmountGBP = 8;
     int colRunBalGBP = 9;
     public Table tbLedger = Table.xpath("//app-ledger-statement//table",totalCol);
+    public static final String RED_COLOR = "rgba(252, 0, 0, 1)";
 
     Label lblTitle = Label.xpath("//div[contains(@class,'header-filter')]//span[1]");
     public String getTitlePage () {return lblTitle.getText().trim();}
 
     public void showLedger (String companyUnit, String financialYear, String accountType, String ledgerGroup, String fromDate, String toDate,String report){
-        btnShow.moveAndHoverOnControl();
-        if (!companyUnit.isEmpty())
+        if (!companyUnit.isEmpty()){
             ddCompanyUnit.selectByVisibleText(companyUnit);
+            waitSpinnerDisappeared();
+        }
         if (!financialYear.isEmpty())
             ddFinancialYear.selectByVisibleText(financialYear);
-        if (!accountType.isEmpty())
+        if (!accountType.isEmpty()){
             ddLedgerName.selectByVisibleContainsText(accountType);
-        waitSpinnerDisappeared();
+            waitSpinnerDisappeared();
+        }
         if (!ledgerGroup.isEmpty())
             ddLedgerGroup.selectByVisibleContainsText(ledgerGroup);
         if (!fromDate.isEmpty()){
@@ -75,8 +79,8 @@ public class LedgerStatementPage extends WelcomePage {
         if(!report.isEmpty()){
             ddReport.selectByVisibleText(report);
         }
-        btnShow.click();
-        waitSpinnerDisappeared();
+        btnShow.jsClick();
+        waitPageLoad();
     }
 
     public Transaction verifyLedgerTrans(Transaction trans, boolean isDebit, String ledgerGroup){
@@ -112,6 +116,12 @@ public class LedgerStatementPage extends WelcomePage {
     public String getTotalAmountInOriginCurrency(String toTalName){
         int index = getTotalRowIndex(toTalName);
         return tbLedger.getControlOfCell(1, colAmountTotalOriginCurrency, index, null).getText().trim();
+    }
+
+    public boolean isTotalAmountInOriginCurrencyPositiveNumber(String toTalName) {
+        int index = getTotalRowIndex(toTalName);
+        BaseElement lblTotal = tbLedger.getControlOfCell(1, colAmountTotalOriginCurrency, index, null);
+        return lblTotal.getColour("color").contains(RED_COLOR) ? false : true;
     }
 
     public String getTotalCreDeInOriginCurrency(String toTalName){

@@ -66,6 +66,7 @@ public class BBTPage extends WelcomePage {
     public Icon iconCount = Icon.xpath("//span[contains(@class, 'count-ribbon')]");
     int totalColumnNumber = 8;
     public int colCur = 7;
+    public int colPrice = 3;
     public int colStake = 4;
     public int colName = 1;
     public int colBetType = 2;
@@ -245,11 +246,12 @@ public class BBTPage extends WelcomePage {
     }
 
     public ReportS1Page openReportS1FirstGroup() {
-        if (!lblFirstGroupS1.isDisplayed()) {
+        Label lblFirst = Label.xpath(tblBBT.getSLinkXpath(1, "S1"));
+        if (!lblFirst.isDisplayed()) {
             System.out.println("There is no Group available for opening");
             return null;
         } else {
-            lblFirstGroupS1.click();
+            lblFirst.click();
             waitSpinnerDisappeared();
             DriverManager.getDriver().switchToWindow();
             return new ReportS1Page();
@@ -257,11 +259,12 @@ public class BBTPage extends WelcomePage {
     }
 
     public ReportS12Page openReportS12FirstGroup() {
-        if (!lblFirstGroupS12.isDisplayed()) {
+        Label lblFirst = Label.xpath(tblBBT.getSLinkXpath(1, "S12"));
+        if (!lblFirst.isDisplayed()) {
             System.out.println("There is no Group available for opening");
             return null;
         } else {
-            lblFirstGroupS12.click();
+            lblFirst.click();
             DriverManager.getDriver().switchToWindow();
             waitSpinnerDisappeared();
             return new ReportS12Page();
@@ -445,6 +448,29 @@ public class BBTPage extends WelcomePage {
         return new HashSet<>(actualList).size() == 1 && actualList.get(0).equalsIgnoreCase(expectedValue);
     }
 
+    public boolean verifyFilterDisplayWithOption(String... options) {
+        List<String> listFilter = getAllOptionNameFilter();
+        if (listFilter.isEmpty() || listFilter == null) return false;
+        if (!Arrays.asList(options).containsAll(listFilter)) return false;
+        return true;
+    }
+
+    public List<String> getAllOptionNameFilter() {
+        int indexOption = 1;
+        List<String> optionsName = new ArrayList<>();
+        while (true) {
+            Label lblOption = Label.xpath(String.format("(//div[contains(@class,'card-columns')]//span)[%s]", indexOption));
+            if (lblOption.isDisplayed()) {
+                indexOption++;
+                optionsName.add(lblOption.getText().trim());
+            }
+            if (!lblOption.isDisplayed()) {
+                System.out.println("NOT Found value option label with index: " + indexOption);
+                return optionsName;
+            }
+        }
+    }
+
     public List<String> getSelectedOptionNameOfFilter(){
         List<String> optionsName = new ArrayList<>();
         int indexOption = 1;
@@ -473,10 +499,13 @@ public class BBTPage extends WelcomePage {
         return true;
     }
 
-    public int findRowIndexOfTeamTable(Order order, boolean isHomeTeam){
+    /**
+     * @param isLeftTable define left or right table to find row Index
+     * */
+    public int findRowIndexOfTeamTable(Order order, boolean isLeftTable){
         int rowIndex = 1;
         int tableHomeIndex = findTableIndexByTeam(order.getHome());
-        int tableIndex = isHomeTeam ? tableHomeIndex : tableHomeIndex + 1;
+        int tableIndex = isLeftTable ? tableHomeIndex : tableHomeIndex + 1;
         Table tblTeam = tblBBT.getTableControl(tableIndex);
         while(true){
            Label lblStake = Label.xpath(tblTeam.getxPathOfCell(1, colStake, rowIndex, null));
