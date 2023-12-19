@@ -42,6 +42,7 @@
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
             <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
             <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
+            <class name="testcases.sb11test.user.UserActivityMonitoringTest"/>
         </classes>
     </test>
 </suite>

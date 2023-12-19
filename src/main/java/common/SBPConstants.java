@@ -130,6 +130,7 @@ public class SBPConstants {
     public final static String GMT_7 = "GMT +7";
     public final static String BALANCE_SHEET = "Balance Sheet";
     public final static String POSITION_TAKING_REPORT = "Position Taking Report";
+    public final static String USER_ACTIVITY_MONITORING = "User Activity Monitoring";
     public final static List<String> CRICKET_MARKET_TYPE_NO_LIVE =  Arrays.asList("1x2","DNB","OE","OU");
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
