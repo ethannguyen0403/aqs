@@ -623,7 +623,7 @@ public class BBTTest extends BaseCaseAQS {
         log("@Step 2: Filter with valid data");
         bbtPage.filter(COMPANY_UNIT, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
         log("@Step 3: Click on any HDP points");
-        ReportS1Page reportS1Page = bbtPage.openReportS1FirstGroup();
+        ReportS1Page reportS1Page = bbtPage.openReportSFirstGroup();
 
         log("3. Validate Match Statistics (S) is displayed correctly title");
         Assert.assertTrue(reportS1Page.lblTitlePage.getText().contains("Match Statistics (S)"), "FAILED! Header of S1 Report is not displayed correct");

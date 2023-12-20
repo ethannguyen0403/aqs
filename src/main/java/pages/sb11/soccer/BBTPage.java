@@ -257,6 +257,18 @@ public class BBTPage extends WelcomePage {
             return new ReportS1Page();
         }
     }
+    public ReportS1Page openReportSFirstGroup() {
+        Label lblFirst = Label.xpath(tblBBT.getSLinkXpath(1, "S"));
+        if (!lblFirst.isDisplayed()) {
+            System.out.println("There is no Group available for opening");
+            return null;
+        } else {
+            lblFirst.click();
+            waitSpinnerDisappeared();
+            DriverManager.getDriver().switchToWindow();
+            return new ReportS1Page();
+        }
+    }
 
     public ReportS12Page openReportS12FirstGroup() {
         Label lblFirst = Label.xpath(tblBBT.getSLinkXpath(1, "S12"));
