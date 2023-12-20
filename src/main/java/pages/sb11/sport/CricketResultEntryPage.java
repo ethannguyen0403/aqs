@@ -38,12 +38,16 @@ public class CricketResultEntryPage extends WelcomePage {
     public Button btnSubmit = Button.xpath("//button[contains(text(),'Submit')]");
     public Button btnRevert = Button.xpath("//button[contains(text(),'Revert')]");
 
-    public void goToSport(String sport){
+    public void goToSport(String sport) {
         if(sport.equals("Soccer"))
             btnSoccer.click();
         if(sport.equals("Cricket"))
             btnCricket.click();
-        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void filterResult(String type, String date, String league, String orderBy, String status, boolean isShow){

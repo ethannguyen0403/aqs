@@ -61,6 +61,8 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("@Step 2: Go to General Reports >> Position Taking Report page");
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Select a Financial Year");
+        String preYear = FINANCIAL_YEAR_LIST.get(2).split(" ")[1].split("-")[0];
+        String afterYear = FINANCIAL_YEAR_LIST.get(2).split(" ")[1].split("-")[1];
         page.ddFinancialYear.selectByVisibleText(FINANCIAL_YEAR_LIST.get(2));
         log("@Step 4: Select date range not belongs to Financial Year at step #2");
         log("@Step 5: Click Show button");
@@ -68,7 +70,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("@Verify 1: Error message 'Please select in range 01/08/<Year> and 31/07/<Year +1>' displays\n" +
                 "As example, error message 'Please select in range 01/08/2022 and 31/07/2023.' displays");
         String mesWarning = page.alert.getWarningMessage();
-        Assert.assertEquals(mesWarning,PositionTakingReport.WARNING_FINANCIAL_YEAR_MES,"FAILED! Error message display incorrect.");
+        Assert.assertEquals(mesWarning,String.format(PositionTakingReport.WARNING_FINANCIAL_YEAR_MES,preYear,afterYear),"FAILED! Error message display incorrect.");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})

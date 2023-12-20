@@ -15,7 +15,7 @@ public class CricketResultEntryTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2087")
-    public void Cricket_ResultEntry_2087() throws InterruptedException {
+    public void Cricket_ResultEntry_2087() {
         log("@title: Validate Result Entry for Cricket is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Result Entry");
@@ -23,7 +23,6 @@ public class CricketResultEntryTest extends BaseCaseAQS {
         CricketResultEntryPage cricketResultEntryPage = welcomePage.navigatePage(SPORT,RESULT_ENTRY, CricketResultEntryPage.class);
         cricketResultEntryPage.goToSport("Cricket");
         log("Validate Result Entry page for Cricket sport is displayed with correctly title");
-        Thread.sleep(1000);
         Assert.assertTrue(cricketResultEntryPage.getTitlePage().contains("Cricket"), "Failed! Result Entry page for Cricket sport is not displayed");
         log("INFO: Executed completely");
     }
