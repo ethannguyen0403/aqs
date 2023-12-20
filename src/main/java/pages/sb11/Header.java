@@ -35,6 +35,7 @@ public class Header {
     }
     public pages.sb11.popup.ChangePasswordPopup openChangePasswordPopup(){
         lblChangePassword.click();
+        waitPageLoad();
         return new ChangePasswordPopup();
     }
 

@@ -9,9 +9,7 @@ import utils.AppUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static testcases.BaseCaseAQS.environment;
 
@@ -88,5 +86,24 @@ public class CurrencyRateUtils {
             }
         };
         return WSUtils.getGETJSONObjectWithDynamicHeaders(endpoint, headersParam);
+    }
+    public static List<String> getLstCurrencyCode(String companyID){
+        List<String> lstCurCode = new ArrayList<>();
+        JSONArray jsonArray = null;
+        try {
+            String fromDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT+7");
+            jsonArray = getCurrencyRateJson(companyID, fromDate, fromDate);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        if (Objects.nonNull(jsonArray)) {
+            if (jsonArray.length() > 0) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject orderObj = jsonArray.getJSONObject(i);
+                    lstCurCode.add(i,orderObj.getString("currencyCode"));
+                }
+            }
+        }
+        return lstCurCode;
     }
 }

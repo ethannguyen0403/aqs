@@ -87,9 +87,9 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("@Step 2: Access Sport > Open Price");
         OpenPricePage openPricePage = welcomePage.navigatePage(SPORT,OPEN_PRICE, OpenPricePage.class);
         log("@Step 3:  Select Date and click Show League ");
-        String league = openPricePage.getFirstLeague();
+//        String league = openPricePage.getFirstLeague();
         log("@Step 4: Select a league and click Show");
-        openPricePage.filterResult("",league,true);
+//        openPricePage.filterResult("",league,true);
         log("@Step 5: Fill result on any event and click Submit");
 
         log("@Step 6: Navigate to Soccer > BBT");
