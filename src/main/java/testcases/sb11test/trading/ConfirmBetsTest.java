@@ -11,6 +11,7 @@ import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.popup.BetListPopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.BetEntrytUtils;
+import utils.sb11.EventScheduleUtils;
 import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
 
@@ -233,7 +234,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         confirmBetsPage.deleteOrder(lstOrder.get(0), false);
 
         log("@Verify Users can delete confirmed bet by clicking on 'X' button and it will be no longer displayed");
-        Assert.assertFalse(confirmBetsPage.isOrderDisplayInTheTable(lstOrder.get(0)), "Failed! The order still displayed after deleteing");
+        Assert.assertFalse(confirmBetsPage.isOrderDisplayInTheTable(lstOrder.get(0)), "Failed! The order still displayed after deleting");
 
         log("INFO: Executed completely");
     }
@@ -357,10 +358,10 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("@title:Validate bet info is correctly in Confirm Bet and Bet Setlement after update a bets in Confirm status");
         log("Precondition: Test case C863 to place a Cricket bet");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-        String date = String.format(DateUtils.getDate(-1, "d/MM/yyyy", "GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +7"));
+        String date = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +7"));
+        String dateAPI = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
         // define event info
-        Event eventInfo = new Event.Builder()
+        Event eventCricket = new Event.Builder()
                 .sportName("Cricket")
                 .leagueName("QA League")
                 .eventDate(dateAPI)
@@ -371,10 +372,16 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
+        String leagueID = EventScheduleUtils.getLeagueID(eventCricket.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
+        String homeTeamID = EventScheduleUtils.getTeamID(eventCricket.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(eventCricket.getAway(), leagueID);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), eventCricket.getEventStatus().toUpperCase());
+        String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+        eventCricket.setEventId(eventID);
         List<Order> lstOrder = new ArrayList<>();
         // define order info
         Order order = new Order.Builder()
-                .sport(eventInfo.getSportName())
+                .sport(eventCricket.getSportName())
                 .isNegativeHdp(false)
                 .price(2.15)
                 .requireStake(15.50)
@@ -383,32 +390,32 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .accountCode(accountCode)
                 .accountCurrency(accountCurrency)
                 .marketType("Match-HDP")
-                .selection(eventInfo.getHome())
+                .selection(eventCricket.getHome())
                 .handicapRuns(9.50)
                 .handicapWtks(10)
                 .isLive(false)
-                .home(eventInfo.getHome())
-                .away((eventInfo.getAway()))
-                .event(eventInfo)
+                .home(eventCricket.getHome())
+                .away((eventCricket.getAway()))
+                .event(eventCricket)
                 .build();
         lstOrder.add(order);
-        eventInfo = welcomePage.createEvent(eventInfo);
+
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-        cricketBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
+        cricketBetEntryPage.showLeague(COMPANY_UNIT, date, eventCricket.getLeagueName());
         cricketBetEntryPage.placeBet(order, true);
         order = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder).get(0);
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT, "", "Pending", eventInfo.getSportName(), "All", "Specific Date", date, "", accountCode);
+        confirmBetsPage.filter(COMPANY_UNIT, "", "Pending", eventCricket.getSportName(), "All", "Specific Date", date, "", accountCode);
         confirmBetsPage.confirmBet(order);
 
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Login to SB11 >> Confirm Bets > Filter Status = Confirmed");
         log("@Step 3: Input the account code at the precondition > Show");
-        confirmBetsPage.filter(COMPANY_UNIT, "", "Confirmed", eventInfo.getSportName(), "All", "Specific Date", date, "", accountCode);
+        confirmBetsPage.filter(COMPANY_UNIT, "", "Confirmed", eventCricket.getSportName(), "All", "Specific Date", date, "", accountCode);
 
         log("@Step 4: Find the bet at the precondition > edit any information of the bet (Selection/HDP/Odds/Stake)");
         log("@Step 5: Click on 'Update Bet'");
-        order.setSelection(eventInfo.getAway());
+        order.setSelection(eventCricket.getAway());
         confirmBetsPage.updateOrder(order, false);
 
         log("@Verify 1: Bet info is correctly updated in confirmed bets ");
@@ -416,13 +423,15 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
         betSettlementPage.filter("Confirmed", "", "", "", accountCode);
 
-        log("@Veirfy 2 : Bets display correctly information in Bet Settlement page");
+        log("@Verify 2 : Bets display correctly information in Bet Settlement page");
         betSettlementPage.verifyOrderInfo(order);
+        log("INFO: Executed completely");
 
         log("@Pos-condition: Deleted the order");
         betSettlementPage.deleteOrder(order);
-
-        log("INFO: Executed completely");
+        log("@Pos-condition: Deleted the event Cricket");
+        EventScheduleUtils.deleteEventByAPI(eventID);
+        log("INFO: Executed Pos-condition completely");
     }
 
     @TestRails(id = "1000")
