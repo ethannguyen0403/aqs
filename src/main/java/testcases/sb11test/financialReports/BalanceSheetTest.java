@@ -248,6 +248,11 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 4: Click 'Export To PDF' button");
         page.btnExportToPDF.click();
         page.waitSpinnerDisappeared();
+        try{
+            // Add wait time to make sure file is downloaded
+            Thread.sleep(10000);
+        }catch (Exception e){
+        }
         log("@Verify 1: Validate can export Retained Earnings to PDF file successfully'");
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
         log("@Post-condition: delete download file");
