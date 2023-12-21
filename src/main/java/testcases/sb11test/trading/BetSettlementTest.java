@@ -83,17 +83,16 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("Precondition: Have a soccer bet in confirmed status and have win/lose amount\n" +
                 "For example bet is place back, HDP -0.25 odds 1.050 HKD, stake 12 and winlose value 12.6\n" +
                 "\n");
-        String sport="Soccer";
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,SOCCER,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
+        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
-                .sport(sport).isNegativeHdp(true).hdpPoint(0.25).price(1.050).requireStake(12)
+                .sport(SOCCER).isNegativeHdp(false).hdpPoint(0.25).price(1.110).requireStake(11)
                 .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
                 .marketType("HDP")
                 .stage("FT")
@@ -106,11 +105,11 @@ public class BetSettlementTest extends BaseCaseAQS {
 
         log("@Step 2:Navigate to Trading > Bet Settlement > Search bet of the account at precondition in Confirmed mode");
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,date,accountCode);
+        confirmBetsPage.filter(companyUnit,"","Pending",SOCCER,"All","Specific Date",date,date,accountCode);
         confirmBetsPage.confirmBet(order);
 
         log("@Step 3: Update info of precondition bet, change bet type to Lay");
-        confirmBetsPage.filter(companyUnit,"","Confirmed",sport,"All","Specific Date",date,date,accountCode);
+        confirmBetsPage.filter(companyUnit,"","Confirmed",SOCCER,"All","Specific Date",date,date,accountCode);
         order.setBetType("Lay");
         confirmBetsPage.updateOrder(order,false);
 
