@@ -120,7 +120,6 @@ public class JournalEntriesPage extends WelcomePage {
         if (isDebit){
             ddDebitFrom.selectByVisibleText(fromType);
             waitSpinnerDisappeared();
-            ddDebitFrom.selectByVisibleText(fromType);
             ddDebitLedger.selectByVisibleContainsText(ledgername);
             if(isAdd){
                 btnDebitAdd.click();

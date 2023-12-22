@@ -100,12 +100,12 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "468")
     @Test(groups = {"smoke"})
-    public void BetOrder_C468() throws ParseException {
+    public void BetOrder_C468() {
         log("@title: Verify Bet Slip in Pending section display with correct info");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-9,"d/MM/yyyy","GMT -4"));
         String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
-        String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
+        String fromDateAPI = String.format(DateUtils.getDate(-9,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
         log("@Step 2: Click on AQS menu");
@@ -116,15 +116,15 @@ public class BetOrderTest extends BaseCaseAQS {
         if(betOrderPage.isNodata(orderLst)){
             log("SKIP: No data to click on Market name to open order log popup in Pending order");
             return;}
-        BetSlipPopup betSlipPopup = betOrderPage.openBetSlip(orderLst.get(0).getOrderId(),PENDING);
+        BetSlipPopup betSlipPopup = betOrderPage.openBetSlip(orderLst.get(1).getOrderId(),PENDING);
 
         log("@Verify Bet Slip popup display with correct info: Start date, League - Event name - Market type");
-        String dateconvert = DateUtils.convertDateToNewTimeZone(orderLst.get(0).getEventDate(),"yyyy-MM-dd'T'HH:mm:ss.SSSXXX","","dd/MM HH:mm","GMT+8");
+        String dateconvert = DateUtils.convertDateToNewTimeZone(orderLst.get(1).getEventDate(),"yyyy-MM-dd'T'HH:mm:ss.SSSXXX","","dd/MM\nHH:mm","GMT+8");
         Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(dateconvert),"FAILED! Event date is displayed incorrectly!");
-        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(0).getHome()), "FAILED! Home team name is displayed incorrectly!");
-        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(0).getAway()), "FAILED! Away team name is displayed incorrectly!");
-        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(0).getCompetitionName()), "FAILED! League name is displayed incorrectly!");
-        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(0).getMarketType()), "FAILED! Market type is displayed incorrectly!");
+        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(1).getHome()), "FAILED! Home team name is displayed incorrectly!");
+        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(1).getAway()), "FAILED! Away team name is displayed incorrectly!");
+        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(1).getCompetitionName()), "FAILED! League name is displayed incorrectly!");
+        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(1).getMarketType()), "FAILED! Market type is displayed incorrectly!");
 
         log("INFO: Executed completely");
     }
@@ -217,9 +217,9 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_C472(){
         log("@title: Verify Bet Slip popup display when Confirming in Confirm section");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-5,"d/MM/yyyy","GMT -4"));
         String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
-        String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
+        String fromDateAPI = String.format(DateUtils.getDate(-5,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
         log("@Step 2: Click on AQS menu");
@@ -532,9 +532,9 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_C481(){
         log("@title: Verify there is no Cancel link in Action column Cancelled section");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-9,"d/MM/yyyy","GMT -4"));
         String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
-        String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
+        String fromDateAPI = String.format(DateUtils.getDate(-9,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
         log(String.format("@Step 2: Filter Soccer data from %s to %s ",fromDate,toDate));
@@ -700,12 +700,12 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "488")
     @Test(groups = {"smoke"})
-    public void BetOrder_488(){
+    public void BetOrder_488() throws InterruptedException {
         log("@title: Validate tooltip info display when click on I icon in # column");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-5,"d/MM/yyyy","GMT -4"));
         String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
-        String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
+        String fromDateAPI = String.format(DateUtils.getDate(-5,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
         log(String.format("@Step 2: Filter Soccer data from %s to %s and get an order in pending section",fromDate,toDate));
@@ -717,7 +717,8 @@ public class BetOrderTest extends BaseCaseAQS {
 
         log("@Step 2  In #  column of any section if having order(Pending, Confrim, Cancelled), Click on icon i");
         betOrderPage.getControlOnTableBasedOnOrderID("PENDING", orderLst.get(0).getOrderId(),"TOOLTIP").click();
-
+        //Wait for content of tooltip display
+        Thread.sleep(1000);
         log("verify 1 tooltip display with value: Create By, Create date, Confirm By, Confrim Date, Revert By, Revert Date ");
         Assert.assertTrue(betOrderPage.lblTooltip.isDisplayed(),"Failed! Tooltip is not display");
         String tooltipInfo = betOrderPage.lblTooltip.getText();
