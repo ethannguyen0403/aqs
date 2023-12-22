@@ -5,6 +5,7 @@ import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Tab;
 import com.paltech.utils.DateUtils;
 import common.SBPConstants;
+import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.popup.ConfirmPopup;
@@ -20,6 +21,8 @@ public class ClosingJournalEntriesPage extends WelcomePage {
     public DropDownBox ddCompany = DropDownBox.xpath("//div[text()='Company Unit']//following-sibling::select");
     public DropDownBox ddMonth = DropDownBox.xpath("//div[text()='Month']//following-sibling::select");
     public Button btnPerformCJE = Button.xpath("//button[contains(text(),'Perform CJE')]");
+    int colTable = 3;
+    public Table tblClosing = Table.xpath("//table",colTable);
 
     public void verifyddMonthOption() {
         int curMonth = DateUtils.getMonth(SBPConstants.GMT_7);
@@ -66,5 +69,20 @@ public class ClosingJournalEntriesPage extends WelcomePage {
         } else {
             confirmPopup.btnNo.click();
         }
+    }
+
+    public boolean isRecordHistoryDisplay(String month, String username, String performedDate) {
+        List<String> lstMonth = tblClosing.getColumn(tblClosing.getColumnIndexByName("Month"),5,true);
+        List<String> lstPerformBy = tblClosing.getColumn(tblClosing.getColumnIndexByName("Performed By"),5,true);
+        for (int i = 0; i < lstPerformBy.size();i++){
+            if (lstPerformBy.get(i).equals(username) && lstMonth.get(i).equals(month)){
+                String performAc = tblClosing.getControlOfCell(1,tblClosing.getColumnIndexByName("Performed Date"),i+1,null).getText();
+                if (performAc.contains(performedDate)){
+                    return true;
+                }
+            }
+        }
+        System.out.println("No Record "+username);
+        return false;
     }
 }

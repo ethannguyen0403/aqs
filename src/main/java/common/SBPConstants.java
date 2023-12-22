@@ -127,7 +127,7 @@ public class SBPConstants {
     public final static List<String> STAKE_LIST_ALL = Arrays.asList("ALL","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
     public final static List<String> STAKE_LIST = Arrays.asList("All","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
     public final static List<String> MONTH_NAME_LIST = Arrays.asList("January","February","March","April","May","June","July","August","September","October", "November", "December");
-    public final static String GMT_7 = "GMT +7";
+    public final static String GMT_7 = "GMT+7";
     public final static String BALANCE_SHEET = "Balance Sheet";
     public final static String POSITION_TAKING_REPORT = "Position Taking Report";
     public final static String USER_ACTIVITY_MONITORING = "User Activity Monitoring";
@@ -464,7 +464,8 @@ public class SBPConstants {
     }
     public static class ClosingJournalEntries {
         public final static String SUCCESS_MES_LAST_MONTH = "Closing Journal Entry for %s is completed.";
-        public final static String MES_REMINDER = "You will need to perform CJE for %s to have the correct balances";
+        public final static String MES_REMINDER_BEFORE_2_MONTH = "You will need to perform CJE for %s to have the correct balances";
+        public final static String MES_REMINDER_BEFORE_1_MONTH = "Are you sure to perform Closing Journal Entry for %s?";
     }
 }
 
