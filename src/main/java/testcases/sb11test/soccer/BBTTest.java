@@ -32,7 +32,7 @@ import static common.SBPConstants.BBTPage.*;
 
 public class BBTTest extends BaseCaseAQS {
 
-    @Test(groups = {"regression_qc", "2023.11.30"})
+    @Test(groups = {"regression_stg", "2023.11.30"})
     @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "157")
     public void BBT_TC_157(String password, String userNameOneRole) throws Exception{
@@ -51,7 +51,7 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression_qc", "2023.11.30"})
+    @Test(groups = {"regression_stg", "2023.11.30"})
     @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "158")
     public void BBT_TC_158(String password, String userNameOneRole) throws Exception{
@@ -70,7 +70,7 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression_qc", "2023.11.30"})
+    @Test(groups = {"regression_stg", "2023.11.30"})
     @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "159")
     public void BBT_TC_159(String password, String userNameOneRole) throws Exception{
@@ -383,7 +383,7 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression_stg", "2023.11.30"})
     @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "314")
     public void BBT_TC_314(String password, String userNameOneRole) throws Exception{

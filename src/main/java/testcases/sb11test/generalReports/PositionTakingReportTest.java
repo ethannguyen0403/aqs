@@ -24,7 +24,7 @@ import java.util.List;
 import static common.SBPConstants.*;
 
 public class PositionTakingReportTest extends BaseCaseAQS {
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression_stg","2023.12.29"})
     @TestRails(id = "4185")
     @Parameters({"password", "userNameOneRole"})
     public void Position_Taking_Report_4185(String password, String userNameOneRole) throws Exception {
