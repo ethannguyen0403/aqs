@@ -24,8 +24,6 @@ public class JournalEntriesTest extends BaseCaseAQS {
     String level = "Super";
     String remark = "Auto Testing Transaction " + DateUtils.getMilliSeconds() + ".Please ignore this, Thank you!";
     String clientCode = "QA Client (No.121 QA Client)";
-    String bookieCode = "QA Bookie";
-    String companyUnit = "Kastraki Limited";
     String financialYear = "Year 2023-2024";
     String lgExpenditureGroup = "QA Ledger Group Expenditure";
     String debitExpAcc = "AutoExpenditureDebit";
@@ -216,7 +214,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-        ledgerStatementPage.showLedger(companyUnit,financialYear,"Expenditure",lgExpenditureGroup,"","","");
+        ledgerStatementPage.showLedger(COMPANY_UNIT,financialYear,"Expenditure",lgExpenditureGroup,"","","");
         log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
         log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
         ledgerStatementPage.verifyLedgerTrans(transaction, true, lgExpenditureGroup);

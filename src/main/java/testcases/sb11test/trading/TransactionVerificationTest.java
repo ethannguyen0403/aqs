@@ -12,9 +12,6 @@ import static common.SBPConstants.*;
 
 public class TransactionVerificationTest extends BaseCaseAQS {
 
-    String website ="Fair999";
-    String siteLogin = "SA01";
-
     @Test(groups = {"regression"})
     @TestRails(id = "2197")
     public void TransactionVerification_2197(){
@@ -33,6 +30,8 @@ public class TransactionVerificationTest extends BaseCaseAQS {
         log("Validate UI on Transaction Verification is correctly displayed");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Access Trading > Transaction Verification");
+        String website ="Fair999";
+        String siteLogin = "SA01";
         TransactionVerificationPage transactionVerificationPage = welcomePage.navigatePage(TRADING,TRANSACTION_VERIFICATION,TransactionVerificationPage.class);
         log("Validate UI Info display correctly");
         transactionVerificationPage.filterTxn(website,siteLogin,"");
