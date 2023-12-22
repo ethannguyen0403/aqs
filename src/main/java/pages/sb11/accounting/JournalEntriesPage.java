@@ -4,9 +4,8 @@ import com.paltech.element.common.*;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Transaction;
-import org.openqa.selenium.Keys;
 import pages.sb11.WelcomePage;
-import pages.sb11.generalReports.ClosingJournalEntriesPage;
+import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 
 public class JournalEntriesPage extends WelcomePage {
     public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
@@ -84,8 +83,9 @@ public class JournalEntriesPage extends WelcomePage {
         } else {
             filterClientBookie("Client",true, trans.getClientDebit(), trans.getLevel(),trans.getDebitAccountCode(),true);
         }
+        waitSpinnerDisappeared();
         double debitBalance =
-                Math.abs(Double.parseDouble(tbDebit.getControlOfCell(1, colBalance, 1, null).getText().trim().replace(",", "")));
+                Math.abs(Double.parseDouble(tbDebit.getControlOfCell(1, colBalance, 1, "span").getText().trim().replace(",", "").replace("-","")));
         System.out.println("Debit Balance is " + debitBalance);
         trans.setDebitBalance(debitBalance);
         txtDebitAmount.sendKeys(String.format("%.3f",trans.getAmountDebit()));
@@ -97,8 +97,9 @@ public class JournalEntriesPage extends WelcomePage {
         } else {
             filterClientBookie("Client",false, trans.getClientCredit(), trans.getLevel(),trans.getCreditAccountCode(),true);
         }
+        waitSpinnerDisappeared();
         double creditBalance =
-                Math.abs(Double.parseDouble(tbCredit.getControlOfCell(1, colBalance, 1, null).getText().trim().replace(",", "")));
+                Math.abs(Double.parseDouble(tbCredit.getControlOfCell(1, colBalance, 1, "span").getText().trim().replace(",", "")));
         System.out.println("Credit Balance is " + creditBalance);
         trans.setCreditBalance(creditBalance);
         txtCreditAmount.sendKeys(String.format("%.3f",trans.getAmountCredit()));
@@ -106,6 +107,7 @@ public class JournalEntriesPage extends WelcomePage {
         txtRemark.sendKeys(remark);
         if (!transDate.isEmpty()){
             dtpTrans.selectDate(transDate, "dd/MM/yyyy");
+            waitSpinnerDisappeared();
         }
         ddTransactionType.selectByVisibleText(transType);
 
@@ -118,6 +120,7 @@ public class JournalEntriesPage extends WelcomePage {
         if (isDebit){
             ddDebitFrom.selectByVisibleText(fromType);
             waitSpinnerDisappeared();
+            ddDebitFrom.selectByVisibleText(fromType);
             ddDebitLedger.selectByVisibleContainsText(ledgername);
             if(isAdd){
                 btnDebitAdd.click();

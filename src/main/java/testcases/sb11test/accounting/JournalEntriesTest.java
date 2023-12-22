@@ -5,25 +5,18 @@ import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import pages.sb11.accounting.ChartOfAccountPage;
 import pages.sb11.accounting.JournalEntriesPage;
-import pages.sb11.generalReports.ClosingJournalEntriesPage;
+import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.ChartOfAccountUtils;
-import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.Date;
 import java.util.Locale;
 
 import static common.SBPConstants.*;
-import static common.SBPConstants.LEDGER_PARENT_NAME_ASSET;
 
 public class JournalEntriesTest extends BaseCaseAQS {
 
