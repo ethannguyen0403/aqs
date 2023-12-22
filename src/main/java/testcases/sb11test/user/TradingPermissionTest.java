@@ -62,7 +62,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression_stg"})
     @TestRails(id = "2069")
     @Parameters("username")
     public void Trading_Permission_TC_2069(String username){
@@ -78,7 +78,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression_stg"})
     @TestRails(id = "2070")
     @Parameters("username")
     public void Trading_Permission_TC_2070(String username){
