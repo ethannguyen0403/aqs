@@ -5,12 +5,16 @@ import com.paltech.utils.DateUtils;
 import com.paltech.utils.FileUtils;
 import objects.Transaction;
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.accounting.JournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import pages.sb11.master.AddressBookPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.AccountSearchUtils;
+import utils.sb11.ClientSystemUtils;
+import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
@@ -44,7 +48,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
     @TestRails(id="841")
     @Test(groups = {"smoke"})
-    public void Ledger_Statement_TC841(){
+    @Parameters({"clientCode"})
+    public void Ledger_Statement_TC841(String clientCode) throws IOException {
         log("@title: Validate transaction Debit of Ledger Type = Expenditure");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
@@ -53,17 +58,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitExpAcc)
                 .ledgerCredit(creditExpAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
-                .transDate("")
-                .transType(transType)
-                .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditExpAcc)
-                .ledgerCredit(debitExpAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
                 .amountDebit(1)
@@ -85,8 +79,24 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String accountIdCredit = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
+            String accountIdDebit = AccountSearchUtils.getAccountId(CLIENT_DEBIT_ACC);
+            String typeId = ClientSystemUtils.getClientId(clientCode);
+            String fromType = "Client";
+            String level = "Player";
+            Transaction transactionPost = new Transaction.Builder()
+                    .clientDebit(clientCode)
+                    .clientCredit(clientCode)
+                    .amountDebit(1)
+                    .amountCredit(1)
+                    .remark("Automation Testing Transaction Client: Post-condition for txn ")
+                    .transDate("")
+                    .transType("Tax Rebate")
+                    .level(level)
+                    .debitAccountCode(creditExpAcc)
+                    .creditAccountCode(debitExpAcc)
+                    .build();
+            TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType,typeId);
         }
 
     }
