@@ -42,8 +42,10 @@ public class ClientStatementPage extends WelcomePage {
     }
 
     public void filter(String viewBy, String companyUnit, String financialYear, String clients, String fromDate, String toDate) {
-        if (!viewBy.isEmpty())
+        if (!viewBy.isEmpty()){
             ddpViewBy.selectByVisibleText(viewBy);
+            waitPageLoad();
+        }
         if (!companyUnit.isEmpty())
             ddpCompanyUnit.selectByVisibleText(companyUnit);
         if (!financialYear.isEmpty())

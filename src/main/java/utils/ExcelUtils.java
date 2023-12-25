@@ -8,10 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class ExcelUtils {
@@ -31,7 +28,7 @@ public class ExcelUtils {
             Map<String, String> element;
             for (int i = 1; i < numberOfTestData; i++) {
                 Row rowData = sheet.getRow(i);
-                if (columns.contains(getDataFromCell(rowData.getCell(0)))) {
+                if (getRowData(rowData).contains(columns.get(0))) {
                     Row rowHeader = sheet.getRow(i);
                     for (int j = 1; j < (numberOfTestData - i); j++) {
                         element = new HashMap<>();
@@ -79,7 +76,15 @@ public class ExcelUtils {
         return cellValue;
     }
 
-
+    private static List<String> getRowData(Row row){
+        List<String> cellValue = new ArrayList<>();
+        Iterator<Cell> cell = row.cellIterator();
+        while (cell.hasNext()){
+            Cell value = cell.next();
+            cellValue.add(getDataFromCell(value));
+        }
+        return cellValue;
+    }
     private static String getDataFromCell(Cell cell) {
         String result = "";
         try {

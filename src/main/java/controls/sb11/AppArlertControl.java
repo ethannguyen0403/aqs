@@ -26,6 +26,7 @@ public class AppArlertControl extends BaseElement {
     }
 
     public String getSuscessMessage(){
+        lblSuccessMessage.isDisplayedShort(5);
         return lblSuccessMessage.getText();
     }
 

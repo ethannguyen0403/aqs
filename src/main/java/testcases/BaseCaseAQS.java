@@ -225,6 +225,10 @@ public class BaseCaseAQS {
         }
     }
 
+    public static String getDownloadPath(){
+        return DriverManager.getDriver().getDriverSetting().getDownloadPath();
+    }
+
     /**********************
      * Private methods
      *******************/

@@ -311,10 +311,13 @@ public class ConfirmBetsPage extends WelcomePage {
      */
     public void deleteOrder(Order order, boolean isPending){
         int rowIndex =getOrderIndex(order.getBetId());
-        Icon.xpath(tblOrder.getxPathOfCell(1,defineDeleteColIndex(isPending),rowIndex,"i")).jsClick();
+        Icon xButton =  Icon.xpath(tblOrder.getxPathOfCell(1,defineDeleteColIndex(isPending),rowIndex,"i"));
+        xButton.jsClick();
         ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
         confirmPopupControl.confirmYes();
         waitPageLoad();
+        //Add wait for element completely disappear on DOM
+        xButton.waitForControlInvisible();
     }
 
     /**
@@ -328,7 +331,6 @@ public class ConfirmBetsPage extends WelcomePage {
         ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
         confirmPopupControl.confirmYes();
         waitPageLoad();
-
     }
 
     private void selectBets(List<Order> lstOrder,boolean isPending){
@@ -397,6 +399,11 @@ public class ConfirmBetsPage extends WelcomePage {
      * @return
      */
     public boolean isOrdersDisplayInTheTable(List<Order> lstOrder){
+        try {
+            //Handle for some cases that locator still displayed in the short time after deleting bet
+          Thread.sleep(2000);
+        }catch (Exception e){
+        }
         for (Order order: lstOrder
              ) {
             int index = getOrderIndex(order.getBetId());
