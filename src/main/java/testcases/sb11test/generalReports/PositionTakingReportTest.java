@@ -17,6 +17,7 @@ import pages.sb11.master.ClientSystemPage;
 import pages.sb11.soccer.MonitorBetsPage;
 import pages.sb11.trading.AccountPercentPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.List;
@@ -154,8 +155,9 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
         page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All","","");
+        String curMain = CompanySetUpUtils.getCurrency(COMPANY_UNIT);
         log("@Verify 1: The Bookie Name shows as a link with the format [<Account CUR> >> <Main CUR = HKD>] <bookie name of account that is associated with> (e.g. [CNY >> HKD] Pinnacle2)");
-        Assert.assertTrue(page.isFormatBookieNameDisplay(),"FAILED! The Bookie Names do not show as a link with the format");
+        Assert.assertTrue(page.isFormatBookieNameDisplay("Pinnacle2","EUR",curMain),"FAILED! The Bookie Names do not show as a link with the format");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})

@@ -15,6 +15,7 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.positionTakingReport.AccountPopup;
+import utils.sb11.CompanySetUpUtils;
 import utils.sb11.CurrencyRateUtils;
 
 import java.util.List;
@@ -74,27 +75,14 @@ public class PositionTakingReportPage extends WelcomePage {
         Assert.assertTrue(clientHeaders.contains("Client Name"),"FAILED! Client Name is not displayed");
     }
 
-    public boolean isFormatBookieNameDisplay() {
-        List<String> lstBookieName = tblBookie.getColumn(tblBookie.getColumnIndexByName("Bookie Name"),18,true);
-        List<String> lstBookies = ddBookie.getOptions().subList(1,ddBookie.getNumberOfItems());
-        List<String> lstCurCode = CurrencyRateUtils.getLstCurrencyCode("1");
-        for (int i = 0; i < lstBookieName.size();i++){
-            String bookieName = lstBookieName.get(i).trim();
-            String curCode1 = bookieName.substring(1,4);
-            String curCode2 = bookieName.substring(8,11);
-            String bookieActual = bookieName.split(" ")[3];
-            if (!lstCurCode.contains(curCode1)){
-                System.out.println("Bookie Name "+i+" display wrongly");
-                return false;
-            }
-            if (!curCode2.equals("HKD")){
-                System.out.println("Bookie Name "+i+" display wrongly");
-                return false;
-            }
-            if (!lstBookies.contains(bookieActual)){
-                System.out.println("Bookie Name "+i+" display wrongly");
-                return false;
-            }
+    public boolean isFormatBookieNameDisplay(String bookieName, String bookieCurrency, String mainCurrency) {
+        String formatBookie = "[%s >> %s] %s";
+        String formatEx = String.format(formatBookie,bookieCurrency,mainCurrency,bookieName);
+        int indexBookie = tblBookie.getRowIndexContainValue(formatEx,tblBookie.getColumnIndexByName("Bookie Name"),"a");
+        String formatAc = tblBookie.getControlOfCell(1,tblBookie.getColumnIndexByName("Bookie Name"),indexBookie,"a").getText().trim();
+        if (!formatAc.equals(formatEx)){
+            System.out.println(formatEx+" is not displayed!");
+            return false;
         }
         return true;
     }
@@ -177,4 +165,6 @@ public class PositionTakingReportPage extends WelcomePage {
     public List<String> getLstClientName(){
         return tblClient.getColumn(tblClient.getColumnIndexByName("Client Name"),10,true);
     }
+
+
 }
