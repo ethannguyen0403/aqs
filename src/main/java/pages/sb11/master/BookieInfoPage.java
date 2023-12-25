@@ -82,4 +82,8 @@ public class BookieInfoPage extends WelcomePage {
     public boolean verifyElementIsDisabled(BaseElement element, String attribute){
         return element.getAttribute(attribute).contains("disabled");
     }
+
+    public String getTooltipText(BaseElement element){
+        return element.getAttribute("title").trim();
+    }
 }
