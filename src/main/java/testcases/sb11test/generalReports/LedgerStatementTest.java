@@ -13,6 +13,7 @@ import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import pages.sb11.master.AddressBookPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.AccountSearchUtils;
+import utils.sb11.ChartOfAccountUtils;
 import utils.sb11.ClientSystemUtils;
 import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
@@ -48,8 +49,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
     @TestRails(id="841")
     @Test(groups = {"smoke"})
-    @Parameters({"clientCode"})
-    public void Ledger_Statement_TC841(String clientCode) throws IOException {
+    public void Ledger_Statement_TC841() throws IOException {
         log("@title: Validate transaction Debit of Ledger Type = Expenditure");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
@@ -79,31 +79,34 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
-            String accountIdCredit = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
-            String accountIdDebit = AccountSearchUtils.getAccountId(CLIENT_DEBIT_ACC);
-            String typeId = ClientSystemUtils.getClientId(clientCode);
-            String fromType = "Client";
-            String level = "Player";
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
             Transaction transactionPost = new Transaction.Builder()
-                    .clientDebit(clientCode)
-                    .clientCredit(clientCode)
-                    .amountDebit(1)
-                    .amountCredit(1)
-                    .remark("Automation Testing Transaction Client: Post-condition for txn ")
-                    .transDate("")
-                    .transType("Tax Rebate")
-                    .level(level)
-                    .debitAccountCode(creditExpAcc)
-                    .creditAccountCode(debitExpAcc)
-                    .build();
-            TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType,typeId);
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_EXPENDITURE);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_EXPENDITURE);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
 
     }
 
     @TestRails(id="842")
     @Test(groups = {"smoke"})
-    public void Ledger_Statement_TC842(){
+    public void Ledger_Statement_TC842() throws IOException {
         log("@title: Validate transaction Credit of Ledger Type = Expenditure");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
@@ -112,17 +115,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitExpAcc)
                 .ledgerCredit(creditExpAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
-                .transDate("")
-                .transType(transType)
-                .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditExpAcc)
-                .ledgerCredit(debitExpAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
                 .amountDebit(1)
@@ -144,15 +136,35 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_EXPENDITURE);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_EXPENDITURE);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
 
     }
 
     @TestRails(id="843")
     @Test(groups = {"smoke"})
-    public void Ledger_Statement_TC843(){
+    @Parameters({"clientCode"})
+    public void Ledger_Statement_TC843() throws IOException {
         log("@title: Validate value calculated correctly for Ledger Type = Expenditure (Debit)");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
@@ -161,17 +173,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitExpAcc)
                 .ledgerCredit(creditExpAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
-                .transDate("")
-                .transType(transType)
-                .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditExpAcc)
-                .ledgerCredit(debitExpAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
                 .amountDebit(1)
@@ -199,16 +200,34 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
 
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_EXPENDITURE);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_EXPENDITURE);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
 
     }
 
     @TestRails(id="844")
     @Test(groups = {"smoke"})
-    public void Ledger_Statement_TC844(){
+    public void Ledger_Statement_TC844() throws IOException {
         log("@title: Validate value calculated correctly for Ledger Type = Expenditure (Credit)");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
@@ -217,17 +236,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitExpAcc)
                 .ledgerCredit(creditExpAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
-                .transDate("")
-                .transType(transType)
-                .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditExpAcc)
-                .ledgerCredit(debitExpAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
                 .amountDebit(1)
@@ -253,15 +261,34 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_EXPENDITURE);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_EXPENDITURE);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
 
     }
 
     @TestRails(id="845")
     @Test(groups = {"smoke_qc"})
-    public void Ledger_Statement_TC845(){
+    public void Ledger_Statement_TC845() throws IOException {
         log("@title: Validate transaction Debit of Ledger Type = Asset");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
@@ -278,17 +305,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transDate("")
                 .transType(transType)
                 .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditAstAcc)
-                .ledgerCredit(debitAstAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
-                .transDate("")
-                .transType(transType)
-                .build();
         try {
             log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
             log("@Step 5: Choose Transaction Type = any and click Submit");
@@ -302,15 +318,34 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_ASSET);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
 
     }
 
     @TestRails(id="846")
     @Test(groups = {"smoke_qc"})
-    public void Ledger_Statement_TC846(){
+    public void Ledger_Statement_TC846() throws IOException {
         log("@title: Validate transaction Credit of Ledger Type = Asset");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
@@ -327,17 +362,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transDate("")
                 .transType(transType)
                 .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditAstAcc)
-                .ledgerCredit(debitAstAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
-                .transDate("")
-                .transType(transType)
-                .build();
         try {
             log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
             log("@Step 5: Choose Transaction Type = any and click Submit");
@@ -351,15 +375,34 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_ASSET);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
 
     }
 
     @TestRails(id="847")
     @Test(groups = {"smoke_qc"})
-    public void Ledger_Statement_TC847(){
+    public void Ledger_Statement_TC847() throws IOException {
         log("@title: Validate value calculated correctly for Ledger Type = Asset (Debit)");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
@@ -374,17 +417,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descAsset)
-                .transDate("")
-                .transType(transType)
-                .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditAstAcc)
-                .ledgerCredit(debitAstAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
                 .transDate("")
                 .transType(transType)
                 .build();
@@ -405,15 +437,34 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_ASSET);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
 
     }
 
     @TestRails(id="848")
     @Test(groups = {"smoke_qc"})
-    public void Ledger_Statement_TC848(){
+    public void Ledger_Statement_TC848() throws IOException {
         log("@title: Validate value calculated correctly for Ledger Type = Asset (Credit)");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
@@ -428,17 +479,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descAsset)
-                .transDate("")
-                .transType(transType)
-                .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditAstAcc)
-                .ledgerCredit(debitAstAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
                 .transDate("")
                 .transType(transType)
                 .build();
@@ -459,15 +499,34 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_ASSET);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
 
     }
 
     @TestRails(id="849")
     @Test(groups = {"smoke_qc"})
-    public void Ledger_Statement_TC849(){
+    public void Ledger_Statement_TC849() throws IOException {
         log("@title: Validate transaction Debit of Ledger Type = Liability");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
@@ -484,17 +543,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transDate("")
                 .transType(transType)
                 .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditLibAcc)
-                .ledgerCredit(debitLibAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
-                .transDate("")
-                .transType(transType)
-                .build();
         try {
             log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
             log("@Step 5: Choose Transaction Type = any and click Submit");
@@ -508,15 +556,34 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_LIABILITY_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_LIABILITY_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_LIABILITY);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_LIABILITY);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
 
     }
 
     @TestRails(id="850")
     @Test(groups = {"smoke_qc"})
-    public void Ledger_Statement_TC850(){
+    public void Ledger_Statement_TC850() throws IOException {
         log("@title: Validate transaction Credit of Ledger Type = Liability");
         log("@Step 1: Login to SB11 site");
         log("@Step Precondition: Get Credit/Debit amount on Ledger Statement page");
@@ -534,17 +601,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transDate("")
                 .transType(transType)
                 .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditLibAcc)
-                .ledgerCredit(debitLibAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
-                .transDate("")
-                .transType(transType)
-                .build();
         try {
             log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
             log("@Step 5: Choose Transaction Type = any and click Submit");
@@ -558,15 +614,34 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_LIABILITY_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_LIABILITY_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_LIABILITY);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_LIABILITY);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
 
     }
 
     @TestRails(id="853")
     @Test(groups = {"smoke_qc"})
-    public void Ledger_Statement_TC853(){
+    public void Ledger_Statement_TC853() throws IOException {
         log("@title: Validate transaction Credit of Ledger Type = Capital");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
         Transaction transaction = new Transaction.Builder()
@@ -577,17 +652,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Capital transaction " + DateUtils.getMilliSeconds())
-                .transDate("")
-                .transType(transType)
-                .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditCapitalAcc)
-                .ledgerCredit(debitCapitalAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
                 .transDate("")
                 .transType(transType)
                 .build();
@@ -614,15 +678,34 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_CAPITAL);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_CAPITAL);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
 
     }
 
     @TestRails(id="854")
     @Test(groups = {"smoke_qc"})
-    public void Ledger_Statement_TC854(){
+    public void Ledger_Statement_TC854() throws IOException {
         log("@title: Validate transaction Debit of Ledger Type = Capital");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
         Transaction transaction = new Transaction.Builder()
@@ -633,17 +716,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Capital transaction " + DateUtils.getMilliSeconds())
-                .transDate("")
-                .transType(transType)
-                .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditCapitalAcc)
-                .ledgerCredit(debitCapitalAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
                 .transDate("")
                 .transType(transType)
                 .build();
@@ -671,15 +743,34 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_CAPITAL);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_CAPITAL);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
 
     }
 
     @TestRails(id="855")
     @Test(groups = {"smoke_qc"})
-    public void Ledger_Statement_TC855(){
+    public void Ledger_Statement_TC855() throws IOException {
         log("@title:Validate value calculated correctly for Ledger Type = Capital (Credit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
         Transaction transaction = new Transaction.Builder()
@@ -690,17 +781,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Capital transaction " + DateUtils.getMilliSeconds())
-                .transDate("")
-                .transType(transType)
-                .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditCapitalAcc)
-                .ledgerCredit(debitCapitalAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
                 .transDate("")
                 .transType(transType)
                 .build();
@@ -730,15 +810,33 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-        }
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_CAPITAL);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_CAPITAL);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);        }
 
     }
 
     @TestRails(id="856")
     @Test(groups = {"smoke_qc"})
-    public void Ledger_Statement_TC856(){
+    public void Ledger_Statement_TC856() throws IOException {
         log("@title:Validate value calculated correctly for Ledger Type = Capital (Debit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
         Transaction transaction = new Transaction.Builder()
@@ -749,17 +847,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Capital transaction " + DateUtils.getMilliSeconds())
-                .transDate("")
-                .transType(transType)
-                .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditCapitalAcc)
-                .ledgerCredit(debitCapitalAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
                 .transDate("")
                 .transType(transType)
                 .build();
@@ -788,15 +875,34 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_CAPITAL);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_CAPITAL);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
 
     }
 
     @TestRails(id="857")
     @Test(groups = {"smoke_qc"})
-    public void Ledger_Statement_TC857(){
+    public void Ledger_Statement_TC857() throws IOException {
         log("@title: Validate transaction Credit of Ledger Type = Income");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Income");
         Transaction transaction = new Transaction.Builder()
@@ -807,17 +913,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Income transaction " + DateUtils.getMilliSeconds())
-                .transDate("")
-                .transType(transType)
-                .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditIncomeAcc)
-                .ledgerCredit(debitIncomeAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
                 .transDate("")
                 .transType(transType)
                 .build();
@@ -844,15 +939,34 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_INCOME);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_INCOME);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
 
     }
 
     @TestRails(id="858")
     @Test(groups = {"smoke_qc"})
-    public void Ledger_Statement_TC858(){
+    public void Ledger_Statement_TC858() throws IOException {
         log("@title: Validate transaction Debit of Ledger Type = Income");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Income");
         Transaction transaction = new Transaction.Builder()
@@ -863,17 +977,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Income transaction " + DateUtils.getMilliSeconds())
-                .transDate("")
-                .transType(transType)
-                .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditIncomeAcc)
-                .ledgerCredit(debitIncomeAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
                 .transDate("")
                 .transType(transType)
                 .build();
@@ -902,15 +1005,33 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
-        }
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_INCOME);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_INCOME);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);        }
 
     }
 
     @TestRails(id="859")
     @Test(groups = {"smoke_qc"})
-    public void Ledger_Statement_TC859(){
+    public void Ledger_Statement_TC859() throws IOException {
         log("@title:Validate value calculated correctly for Ledger Type = Income (Credit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Income");
         Transaction transaction = new Transaction.Builder()
@@ -921,17 +1042,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Income transaction " + DateUtils.getMilliSeconds())
-                .transDate("")
-                .transType(transType)
-                .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditIncomeAcc)
-                .ledgerCredit(debitIncomeAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
                 .transDate("")
                 .transType(transType)
                 .build();
@@ -960,14 +1070,33 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_INCOME);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_INCOME);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
 
     }
     @TestRails(id="860")
     @Test(groups = {"smoke_qc"})
-    public void Ledger_Statement_TC860(){
+    public void Ledger_Statement_TC860() throws IOException {
         log("@title:Validate value calculated correctly for Ledger Type = Income (Debit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Income");
         Transaction transaction = new Transaction.Builder()
@@ -978,17 +1107,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Income transaction " + DateUtils.getMilliSeconds())
-                .transDate("")
-                .transType(transType)
-                .build();
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerDebit(creditIncomeAcc)
-                .ledgerCredit(debitIncomeAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descExpenditure)
                 .transDate("")
                 .transType(transType)
                 .build();
@@ -1018,8 +1136,27 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
-            welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-            journalEntriesPage.addTransaction(transactionPost,AccountType.LEDGER,AccountType.LEDGER,transactionPost.getRemark(),transactionPost.getTransDate(),transactionPost.getTransType(),true);
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_INCOME);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_INCOME);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
     }
 
