@@ -193,13 +193,13 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @Parameters({"clientCode","bookieSuperMasterCode"})
     public void Journal_Entries_TC_2164(){
-        log("@title: Validate transaction Debit of Ledger Type = Expenditure");
+        log("@title: Validate user can make transaction successfully between Ledger");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoExpenditureCredit1")
+                .ledgerDebit("AutoCreditExpenditure")
                 .ledgerCredit("AutoCapitalDebit")
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
@@ -259,7 +259,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         String txtMonth = Month.of(DateUtils.getMonth(GMT_7)-1).getDisplayName(TextStyle.FULL.FULL, Locale.CANADA);
         String curYear = String.valueOf(DateUtils.getYear(GMT_7));
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoExpenditureCredit1")
+                .ledgerDebit("AutoCreditExpenditure")
                 .ledgerCredit(creditExpAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
@@ -290,7 +290,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         String txtMonth = Month.of(DateUtils.getMonth(GMT_7)-4).getDisplayName(TextStyle.FULL.FULL, Locale.CANADA);
         String curYear = String.valueOf(DateUtils.getYear(GMT_7));
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoExpenditureCredit1")
+                .ledgerDebit("AutoCreditExpenditure")
                 .ledgerCredit(creditExpAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
