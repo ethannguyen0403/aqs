@@ -89,7 +89,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2779")
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression_stg", "2023.11.30"})
     @Parameters({"password", "userNameOneRole"})
     public void Trial_Balance_C2779(String password, String userNameOneRole) throws Exception {
         log("@title: Validate user can not access Trial Balance page when having no permission");

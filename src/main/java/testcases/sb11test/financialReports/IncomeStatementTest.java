@@ -89,7 +89,7 @@ public class IncomeStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2778")
-    @Test(groups = {"regression_qc", "2023.11.30"})
+    @Test(groups = {"regression_stg", "2023.11.30"})
     @Parameters({"password", "userNameOneRole"})
     public void Income_Statement_TC2778(String password, String userNameOneRole) throws Exception {
         log("@title: Validate user can not access Income Statement page when having no permission");

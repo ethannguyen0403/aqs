@@ -86,7 +86,7 @@ public class CompanySetupTest extends BaseCaseAQS {
 
 
     @TestRails(id = "4334")
-    @Test(groups = {"regression", "2023.10.31"})
+    @Test(groups = {"regression_stg", "2023.10.31"})
     @Parameters({"password", "userNameOneRole"})
     public void Company_Set_up_TC4334(String password, String userNameOneRole) throws Exception{
         log("@title: Validate accounts with permission can access page");

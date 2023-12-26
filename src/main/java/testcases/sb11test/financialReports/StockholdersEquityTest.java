@@ -26,7 +26,7 @@ import static common.SBPConstants.*;
 public class StockholdersEquityTest extends BaseCaseAQS {
 
     @TestRails(id = "2802")
-    @Test(groups = {"regression_qc", "2023.12.29"})
+    @Test(groups = {"regression_stg", "2023.12.29"})
     @Parameters({"password", "userNameOneRole"})
     public void Stockholder_Equity_TC2802(String password, String userNameOneRole) throws Exception {
         log("@title: Validate Stockholders Equity menu is hidden if not active Stockholders Equity permission");
@@ -45,7 +45,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2803")
-    @Test(groups = {"regression_qc", "2023.12.29"})
+    @Test(groups = {"regression_stg", "2023.12.29"})
     @Parameters({"password", "userNameOneRole"})
     public void Stockholder_Equity_TC2803(String password, String userNameOneRole) throws Exception {
         log("@title: Validate Stockholders Equity menu displays if active Stockholders Equity permission");
