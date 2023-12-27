@@ -27,24 +27,13 @@ import static common.SBPConstants.LEDGER_PARENT_NAME_ASSET;
 
 public class JournalEntriesTest extends BaseCaseAQS {
 
-    String transType = "Payment Other";
-    String level = "Super";
-    String remark = "Auto Testing Transaction " + DateUtils.getMilliSeconds() + ".Please ignore this, Thank you!";
-    String clientCode = "QA Client (No.121 QA Client)";
-    String bookieCode = "QA Bookie";
-    String companyUnit = "Kastraki Limited";
-    String financialYear = "Year 2023-2024";
-    String lgExpenditureGroup = "QA Ledger Group Expenditure";
-    String debitExpAcc = "AutoExpenditureDebit";
-    String creditExpAcc = "AutoExpenditureCredit";
-    String lgDebitCur = "AUD";
-    String lgCreditCur = "AUD";
-    String descExpenditure = "Expenditure Transaction " + DateUtils.getMilliSeconds();
-
     @TestRails(id="864")
     @Test(groups = {"smoke"})
     @Parameters({"bookieCode","bookieSuperMasterCode"})
     public void Journal_Entries_864(String bookieCode, String bookieSuperMasterCode) throws InterruptedException {
+        String level = "Super";
+        String remark = "Auto Testing Transaction C864 " + DateUtils.getMilliSeconds() + ".Please ignore this, Thank you!";
+        String transType = "Payment Other";
         log("@title: Validate users can make transactions successfully between bookies");
         Transaction transaction = new Transaction.Builder()
                 .bookieDebit(bookieCode)
@@ -79,8 +68,9 @@ public class JournalEntriesTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @Parameters({"clientCode"})
     @TestRails(id = "4178")
-    public void Journal_Entries_TC_4178(){
+    public void Journal_Entries_TC_4178(String clientCode){
         log("@title: Validate UI on Journal Entries is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Journal Entries");
@@ -116,6 +106,9 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @Parameters({"bookieCode","bookieSuperMasterCode"})
     public void Journal_Entries_TC_4179(String bookieCode, String bookieSuperMasterCode) throws InterruptedException {
+        String level = "Super";
+        String remark = "Auto Testing Transaction C4179 " + DateUtils.getMilliSeconds() + ".Please ignore this, Thank you!";
+        String transType = "Payment Other";
         log("@title: Validate users can make transactions successfully between bookies");
         Transaction transaction = new Transaction.Builder()
                 .bookieDebit(bookieCode)
@@ -153,6 +146,9 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @Parameters({"clientCode","bookieSuperMasterCode"})
     public void Journal_Entries_TC_4180(String clientCode, String bookieSuperMasterCode) throws InterruptedException {
+        String level = "Super";
+        String remark = "Auto Testing Transaction C4180 " + DateUtils.getMilliSeconds() + ".Please ignore this, Thank you!";
+        String transType = "Payment Other";
         log("@title: Validate users can make transactions successfully between client");
         Transaction transaction = new Transaction.Builder()
                 .clientDebit(clientCode)
@@ -188,8 +184,13 @@ public class JournalEntriesTest extends BaseCaseAQS {
 
     @TestRails(id="2164")
     @Test(groups = {"regression"})
-    @Parameters({"clientCode","bookieSuperMasterCode"})
-    public void Journal_Entries_TC_2164(){
+    @Parameters({"companyName"})
+    public void Journal_Entries_TC_2164(String companyName){
+        String lgDebitCur = "AUD";
+        String lgCreditCur = "AUD";
+        String descExpenditure = "Expenditure Transaction C2164" + DateUtils.getMilliSeconds();
+        String transType = "Payment Other";
+        String lgExpenditureGroup = "QA Ledger Group Expenditure";
         log("@title: Validate transaction Debit of Ledger Type = Expenditure");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
@@ -211,7 +212,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-        ledgerStatementPage.showLedger(companyUnit,financialYear,"Expenditure",lgExpenditureGroup,"","","");
+        ledgerStatementPage.showLedger(companyName,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
         log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
         log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
         ledgerStatementPage.verifyLedgerTrans(transaction, true, lgExpenditureGroup);
@@ -247,6 +248,11 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @TestRails(id="15751")
     @Test(groups = {"regression","2023.11.30"})
     public void Journal_Entries_TC_15751() throws InterruptedException {
+        String transType = "Payment Other";
+        String creditExpAcc = "AutoExpenditureCredit";
+        String lgDebitCur = "AUD";
+        String lgCreditCur = "AUD";
+        String descExpenditure = "Expenditure Transaction C15751 " + DateUtils.getMilliSeconds();
         log("@title: Validate reminder displays if perform txn in the last 3 months that have CJE");
         log("@Pre-condition 1: Journal Entries' and 'Journal Entries Ledger' permissions are ON in any account");
         log("@Step 1: Click Accounting >> Journal Entries menu");
@@ -278,6 +284,11 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @TestRails(id="15752")
     @Test(groups = {"regression","2023.11.30"})
     public void Journal_Entries_TC_15752() throws InterruptedException {
+        String transType = "Payment Other";
+        String creditExpAcc = "AutoExpenditureCredit";
+        String lgDebitCur = "AUD";
+        String lgCreditCur = "AUD";
+        String descExpenditure = "Expenditure Transaction C15751 " + DateUtils.getMilliSeconds();
         log("@title: Validate reminder displays if perform txn before the last 3 months that have CJE");
         log("@Pre-condition 1: Journal Entries' and 'Journal Entries Ledger' permissions are ON in any account");
         log("@Step 1: Click Accounting >> Journal Entries menu");
