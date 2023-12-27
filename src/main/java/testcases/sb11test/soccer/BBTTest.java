@@ -928,14 +928,14 @@ public class BBTTest extends BaseCaseAQS {
                         .home("QA Tennis Team 01").away("QA Tennis Team 02")
                         .openTime("16:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderTennis = new Order.Builder().sport("Tennis").price(1.17).requireStake(13.25).oddType("HK").betType("Back")
-                .home("QA Tennis Team 1").away("QA Tennis Team 2").selection("Home").isLive(false).event(eventTennis).build();
+                .home(eventTennis.getHome()).away(eventTennis.getAway()).selection("Home").isLive(false).event(eventTennis).build();
         String leagueID = EventScheduleUtils.getLeagueID(eventTennis.getLeagueName(), SPORT_ID_MAP.get("Tennis"));
         String homeTeamID = EventScheduleUtils.getTeamID(eventTennis.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(eventTennis.getAway(), leagueID);
 
         try {
             log("@title: Validate Back Tennis bet should display correctly on left table");
-            log("@Precondition: Already have some place Back bet on Home for Tennis sport");
+            log("@Precondition - Step 1: Already have some place Back bet on Home for Tennis sport");
             EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Tennis"), "INRUNNING");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             TennisBetEntryPage tennisBetEntryPage = betEntryPage.goToTennis();
@@ -946,7 +946,10 @@ public class BBTTest extends BaseCaseAQS {
             BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
             log("@Step 2: Filter with Tennis sport with valid data at pre-condition > observe");
             bbtPage.filter("", "Tennis", "", "", "", "", "", "", "");
-            log("@Verify 1: Validate Back Tennis bet should display correctly");
+
+            log(String.format("@Verify 1: Validate Home: %s and away: %s team should display correctly", orderTennis.getHome(), orderTennis.getAway()));
+            bbtPage.verifyHomeAwayTeamNameCorrect(orderTennis.getHome(), orderTennis.getAway());
+            log("@Verify 2: Validate Back Tennis bet should display correctly");
             Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(orderTennis, true) != -1, "FAILED! The bet is not show on BBT page");
             log("INFO: Executed completely");
         }finally {
@@ -969,7 +972,7 @@ public class BBTTest extends BaseCaseAQS {
                         .home("QA Tennis Team 01").away("QA Tennis Team 02")
                         .openTime("16:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderTennis = new Order.Builder().sport("Tennis").price(1.17).requireStake(13.25).oddType("HK").betType("Lay")
-                .home("QA Tennis Team 1").away("QA Tennis Team 2").selection("Home").isLive(false).event(eventTennis).build();
+                .home("QA Tennis Team 01").away("QA Tennis Team 02").selection("Home").isLive(false).event(eventTennis).build();
         String leagueID = EventScheduleUtils.getLeagueID(eventTennis.getLeagueName(), SPORT_ID_MAP.get("Tennis"));
         String homeTeamID = EventScheduleUtils.getTeamID(eventTennis.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(eventTennis.getAway(), leagueID);
