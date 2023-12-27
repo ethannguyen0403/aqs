@@ -47,18 +47,36 @@ public class MonitorBetsPage extends WelcomePage {
     public Button btnSetSelection = Button.xpath("//button[text()='Set Selection']");
 
     public void filterResult(String sport, String smartType, String punterType, String betPlacedIn, String betCount, boolean isTodayEvent, String lrbRule, String liveNonLive, String currency, String stake, boolean isShow){
-        ddpSport.selectByVisibleText(sport);
-        ddpSmartType.selectByVisibleText(smartType);
-        ddpPunterType.selectByVisibleText(punterType);
-        ddpBetPlacedIN.selectByVisibleText(betPlacedIn);
-        ddpBetCount.selectByVisibleText(betCount);
-        ddpLRBRule.selectByVisibleText(lrbRule);
+        if (!sport.isEmpty()){
+            ddpSport.selectByVisibleText(sport);
+        }
+        if (!smartType.isEmpty()){
+            ddpSmartType.selectByVisibleText(smartType);
+        }
+        if (!punterType.isEmpty()){
+            ddpPunterType.selectByVisibleText(punterType);
+        }
+        if (!betPlacedIn.isEmpty()){
+            ddpBetPlacedIN.selectByVisibleText(betPlacedIn);
+        }
+        if (!betCount.isEmpty()){
+            ddpBetCount.selectByVisibleText(betCount);
+        }
+        if (!lrbRule.isEmpty()){
+            ddpLRBRule.selectByVisibleText(lrbRule);
+        }
         if (isTodayEvent){
             cbTodayEvent.click();
         }
-        ddpLiveNonLive.selectByVisibleText(liveNonLive);
-        ddpCurrency.selectByVisibleText(currency);
-        ddpStake.selectByVisibleText(stake);
+        if (!liveNonLive.isEmpty()){
+            ddpLiveNonLive.selectByVisibleText(liveNonLive);
+        }
+        if (!currency.isEmpty()){
+            ddpCurrency.selectByVisibleText(currency);
+        }
+        if (!stake.isEmpty()){
+            ddpStake.selectByVisibleText(stake);
+        }
         if (isShow){
             btnShow.click();
             waitSpinnerDisappeared();
@@ -136,20 +154,20 @@ public class MonitorBetsPage extends WelcomePage {
         return true;
     }
 
-    public boolean isEventDisplayCorrect(String accountCode, Event event) {
+    public boolean isEventDisplayCorrect(Order order) {
         //wait for bet update in Monitor Bets page
         try {
             Thread.sleep(10000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        int indexAC = getACRowIndex(accountCode);
+        int indexAC = getACRowIndex(order.getAccountCode());
         if (indexAC == 0){
-            System.err.println("AC "+ accountCode+ " is not display");
+            System.err.println("AC "+ order.getAccountCode()+ " is not display");
             return false;
         }
         String eventName = Label.xpath(tblOrder.getxPathOfCell(1,tblOrder.getColumnIndexByName("Event"),indexAC,null)).getText();
-        String eventNameExpect = event.getHome() + " -vs- "+ event.getAway();
+        String eventNameExpect = order.getEvent().getHome() + " -vs- "+ order.getEvent().getAway();
         if (!eventName.contains(eventNameExpect)){
             System.err.println("Event "+ eventNameExpect + " is not display");
             return false;

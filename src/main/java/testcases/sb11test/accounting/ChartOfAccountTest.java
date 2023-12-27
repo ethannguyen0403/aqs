@@ -14,15 +14,8 @@ import utils.testraildemo.TestRails;
 import static common.SBPConstants.*;
 
 public class ChartOfAccountTest extends BaseCaseAQS {
-
-    String companyUnit = "Kastraki Limited";
     String detailType = "Auto QC Detail Type";
     String parentAccount = "Auto QC Parent Account";
-    String subAccount = "Auto QC Sub-Account";
-    String currency = "HKD";
-    String client = "QA_Client_Test_2";
-    String master = "Master_QA_Client_Test";
-    String agent = "Master_QA_Client_Test00-LED";
 
     @Test(groups = {"regression"})
     @TestRails(id = "2155")
@@ -77,14 +70,14 @@ public class ChartOfAccountTest extends BaseCaseAQS {
         log("@Step 4: Fill full info");
         try {
             log("@Step 5: Click Submit");
-            createDetailTypePopup.addDetailType(detailType,"014","014","014","014","Asset",companyUnit,true);
+            createDetailTypePopup.addDetailType(detailType,"014","014","014","014","Asset",COMPANY_UNIT,true);
             log("Validate that new Detail type is created successfully and display correctly on Detail Type list");
-            chartOfAccountPage.filterDetail(companyUnit,detailType);
+            chartOfAccountPage.filterDetail(COMPANY_UNIT,detailType);
             Assert.assertTrue(chartOfAccountPage.isDetailTypeDisplayed(detailType),"Failed! Created Detail Type is not displayed!");
         } finally {
             log("INFO: Executed completely");
             log("Post-condition: Deleted Create Detail type");
-            chartOfAccountPage.deleteDetail(companyUnit,detailType);
+            chartOfAccountPage.deleteDetail(COMPANY_UNIT,detailType);
         }
     }
     @Test(groups = {"regression","2023.11.30"})
@@ -100,16 +93,16 @@ public class ChartOfAccountTest extends BaseCaseAQS {
         log("@Step 5: Click Submit");
         try {
             CreateDetailTypePopup createDetailTypePopup = chartOfAccountPage.openCreateDetailTypePopup();
-            createDetailTypePopup.addDetailType(detailType,"014","014","014","014","Asset",companyUnit,true);
+            createDetailTypePopup.addDetailType(detailType,"014","014","014","014","Asset",COMPANY_UNIT,true);
             chartOfAccountPage.filterDetail(COMPANY_UNIT,detailType);
             CreateParentAccountPopup createParentAccountPopup = chartOfAccountPage.openCreateParentAccPopup();
             createParentAccountPopup.addParentAcc(parentAccount,"014","014","014","014",detailType,true);
             log("Validate that new Parent Account is created successfully and display correctly on Parent Account list");
-            chartOfAccountPage.filterParent(companyUnit,detailType,parentAccount);
+            chartOfAccountPage.filterParent(COMPANY_UNIT,detailType,parentAccount);
             Assert.assertTrue(chartOfAccountPage.isParentAccountDisplayed(parentAccount),"Failed! Created Parent Account is not displayed!");
         } finally {
             log("Post-condition: Deleted Create Detail type");
-            chartOfAccountPage.deleteDetail(companyUnit,detailType);
+            chartOfAccountPage.deleteDetail(COMPANY_UNIT,detailType);
         }
         log("INFO: Executed completely");
     }
@@ -119,25 +112,27 @@ public class ChartOfAccountTest extends BaseCaseAQS {
         log("@title: Validate can add new Sub Account successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Chart Of Account");
+        String currency = "HKD";
+        String subAccount = "Auto QC Sub-Account";
         ChartOfAccountPage chartOfAccountPage = welcomePage.navigatePage(ACCOUNTING,CHART_OF_ACCOUNT,ChartOfAccountPage.class);
         log("@Step 3: Create Detail Type, Parent Account andClick Add button at Parent Account table");
         log("@Step 4: Fill full info");
         log("@Step 5: Click Submit");
         try {
             CreateDetailTypePopup createDetailTypePopup = chartOfAccountPage.openCreateDetailTypePopup();
-            createDetailTypePopup.addDetailType(detailType,"014","014","014","014","Asset",companyUnit,true);
+            createDetailTypePopup.addDetailType(detailType,"014","014","014","014","Asset",COMPANY_UNIT,true);
             chartOfAccountPage.filterDetail(COMPANY_UNIT,detailType);
             CreateParentAccountPopup createParentAccountPopup = chartOfAccountPage.openCreateParentAccPopup();
             createParentAccountPopup.addParentAcc(parentAccount,"014","014","014","014",detailType,true);
-            chartOfAccountPage.filterParent(companyUnit,detailType,parentAccount);
+            chartOfAccountPage.filterParent(COMPANY_UNIT,detailType,parentAccount);
             CreateSubAccountPopup createSubAccountPopup = chartOfAccountPage.openCreateSubAccPopup();
             createSubAccountPopup.addSubAcc(subAccount,parentAccount,"014","014","014","014",currency,"","","",true);
             log("Validate that new Parent Account is created successfully and display correctly on Parent Account list");
-            chartOfAccountPage.filterSubAcc(companyUnit,detailType,parentAccount,subAccount);
+            chartOfAccountPage.filterSubAcc(COMPANY_UNIT,detailType,parentAccount,subAccount);
             Assert.assertTrue(chartOfAccountPage.isSubAccountDisplayed(subAccount),"Failed! Created Sub Account is not displayed!");
         } finally {
             log("Post-condition: Deleted Create Detail type");
-            chartOfAccountPage.deleteDetail(companyUnit,detailType);
+            chartOfAccountPage.deleteDetail(COMPANY_UNIT,detailType);
         }
         log("INFO: Executed completely");
     }

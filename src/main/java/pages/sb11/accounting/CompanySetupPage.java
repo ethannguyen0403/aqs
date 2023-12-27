@@ -11,6 +11,7 @@ public class CompanySetupPage extends WelcomePage {
 
     public Label lblTitle = Label.xpath("//app-company-set-up//div[contains(@class,'modal-header')]");
     Button btnCreate = Button.xpath("//app-company-set-up//button[contains(@class, 'btn-success')]");
+    public Table tblCompany = Table.xpath("//table",7);
 
     public CompanySetupCreatePopup openCreatePopup(){
         btnCreate.click();

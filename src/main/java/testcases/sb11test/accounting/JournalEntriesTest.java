@@ -5,25 +5,18 @@ import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import pages.sb11.accounting.ChartOfAccountPage;
 import pages.sb11.accounting.JournalEntriesPage;
-import pages.sb11.generalReports.ClosingJournalEntriesPage;
+import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.ChartOfAccountUtils;
-import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.Date;
 import java.util.Locale;
 
 import static common.SBPConstants.*;
-import static common.SBPConstants.LEDGER_PARENT_NAME_ASSET;
 
 public class JournalEntriesTest extends BaseCaseAQS {
 
@@ -31,8 +24,6 @@ public class JournalEntriesTest extends BaseCaseAQS {
     String level = "Super";
     String remark = "Auto Testing Transaction " + DateUtils.getMilliSeconds() + ".Please ignore this, Thank you!";
     String clientCode = "QA Client (No.121 QA Client)";
-    String bookieCode = "QA Bookie";
-    String companyUnit = "Kastraki Limited";
     String financialYear = "Year 2023-2024";
     String lgExpenditureGroup = "QA Ledger Group Expenditure";
     String debitExpAcc = "AutoExpenditureDebit";
@@ -202,13 +193,13 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @Parameters({"clientCode","bookieSuperMasterCode"})
     public void Journal_Entries_TC_2164(){
-        log("@title: Validate transaction Debit of Ledger Type = Expenditure");
+        log("@title: Validate user can make transaction successfully between Ledger");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoExpenditureCredit1")
+                .ledgerDebit("AutoCreditExpenditure")
                 .ledgerCredit("AutoCapitalDebit")
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
@@ -223,7 +214,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-        ledgerStatementPage.showLedger(companyUnit,financialYear,"Expenditure",lgExpenditureGroup,"","","");
+        ledgerStatementPage.showLedger(COMPANY_UNIT,financialYear,"Expenditure",lgExpenditureGroup,"","","");
         log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
         log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
         ledgerStatementPage.verifyLedgerTrans(transaction, true, lgExpenditureGroup);
@@ -268,7 +259,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         String txtMonth = Month.of(DateUtils.getMonth(GMT_7)-1).getDisplayName(TextStyle.FULL.FULL, Locale.CANADA);
         String curYear = String.valueOf(DateUtils.getYear(GMT_7));
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoExpenditureCredit1")
+                .ledgerDebit("AutoCreditExpenditure")
                 .ledgerCredit(creditExpAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
@@ -299,7 +290,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         String txtMonth = Month.of(DateUtils.getMonth(GMT_7)-4).getDisplayName(TextStyle.FULL.FULL, Locale.CANADA);
         String curYear = String.valueOf(DateUtils.getYear(GMT_7));
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoExpenditureCredit1")
+                .ledgerDebit("AutoCreditExpenditure")
                 .ledgerCredit(creditExpAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)

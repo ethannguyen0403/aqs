@@ -79,8 +79,12 @@ public class LedgerStatementPage extends WelcomePage {
         if(!report.isEmpty()){
             ddReport.selectByVisibleText(report);
         }
-        btnShow.jsClick();
-        waitPageLoad();
+        btnShow.click();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Transaction verifyLedgerTrans(Transaction trans, boolean isDebit, String ledgerGroup){
@@ -179,6 +183,7 @@ public class LedgerStatementPage extends WelcomePage {
     public LedgerDetailPopup openLedgerDetail (String ledgerName){
         int rowIndex = getLedgerRowIndex(ledgerName);
         tbLedger.getControlOfCell(1,colLedger, rowIndex,"a").click();
+        waitSpinnerDisappeared();
         return new LedgerDetailPopup();
     }
     public LedgerDetailPopup openLedgerFirstDetail (){

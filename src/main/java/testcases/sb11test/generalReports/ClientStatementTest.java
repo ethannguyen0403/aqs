@@ -362,7 +362,6 @@ public class ClientStatementTest extends BaseCaseAQS {
         accountIdDebit = AccountSearchUtils.getAccountId(CLIENT_DEBIT_ACC);
         typeId = ClientSystemUtils.getClientId(clientCode);
         try {
-            TransactionUtils.addClientBookieTxn(transaction,accountIdDebit,accountIdCredit,fromType,typeId);
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -371,7 +370,12 @@ public class ClientStatementTest extends BaseCaseAQS {
             log("@Step 3: Open Summary popup of agent of the player");
             ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
             log("@Verify the balance is added to the Client account properly");
-            expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
+            actualRecPayVal = popup.getSummaryCellValue(CLIENT_CREDIT_ACC,popup.colRecPay).replace(",","");
+            popup.closeSummaryPopup();
+            TransactionUtils.addClientBookieTxn(transaction,accountIdDebit,accountIdCredit,fromType,typeId);
+            expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit()+ Double.valueOf(actualRecPayVal));
+            clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            clientPage.openSummaryPopup(agentCode);
             actualRecPayVal = popup.getSummaryCellValue(CLIENT_CREDIT_ACC,popup.colRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Client Credit balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
             popup.closeSummaryPopup();
