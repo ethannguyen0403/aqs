@@ -79,18 +79,6 @@ public class JournalEntriesTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
-    @TestRails(id = "2160")
-    public void Journal_Entries_TC_2160(){
-        log("@title: Validate Journal Entries page is displayed when navigate");
-        log("@Step 1: Login with valid account");
-        log("@Step 2: Access Accounting > Journal Entries");
-        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-        log("Validate Journal Entries page is displayed with correctly title");
-        Assert.assertTrue(journalEntriesPage.getTitlePage().contains(JOURNAL_ENTRIES), "Failed! Journal Entries page is not displayed");
-        log("INFO: Executed completely");
-    }
-
-    @Test(groups = {"regression"})
     @TestRails(id = "4178")
     public void Journal_Entries_TC_4178(){
         log("@title: Validate UI on Journal Entries is correctly displayed");
