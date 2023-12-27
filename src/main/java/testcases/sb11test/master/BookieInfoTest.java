@@ -116,7 +116,7 @@ public class BookieInfoTest extends BaseCaseAQS {
         log("@Step 2: Navigate Master > Bookie Info");
         BookieInfoPage bookieInfoPage = welcomePage.navigatePage(MASTER, BOOKIE_INFO,BookieInfoPage.class);
         log("@Step 4: Filter with Bookie: " + bookieCode);
-        bookieInfoPage.filterBookie(companyUnit, bookieCode, "", "", "");
+        bookieInfoPage.filterBookie(COMPANY_UNIT, bookieCode, "", "", "");
         log("@Verify 1: Validate X button is disabled when having transaction on Bookie Info");
         Assert.assertEquals(bookieInfoPage.getTooltipText(bookieInfoPage.getControlXButton(bookieCode)),
                 String.format(BookieSystem.TOOLTIP_MESSAGE, "Bookie"), "FAILED! Text on tool tip is not correct");
