@@ -2,6 +2,7 @@ package testcases.sb11test.soccer;
 
 import com.paltech.utils.DateUtils;
 import common.SBPConstants;
+import objects.Event;
 import objects.Order;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -33,13 +34,28 @@ public class SPPTest extends BaseCaseAQS {
     @TestRails(id = "1002")
     public void SPP_TC_1002(String accountCode, String smartGroup, String superCode,String clientCode,String agentCode){
          /*NOTE: Create QA Smart Master and QA Smart Agent for STG and PR) for consistent data*/
-        String date = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
+        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
+        String dateAPI = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
         String clientValue = String.format("%s - %s",superCode, clientCode );
         log("@title: Validate WL in Client Statement matched with SPP page (#AQS-2073)");
-        log("Precondition:Group code ’"+smartGroup+" has 1 player "+accountCode+"\n" +
+        log("@Precondition: Having at least a settled bet. Group code ’"+smartGroup+" has 1 player "+accountCode+"\n" +
                 "The player has data on the filtered date (e.g."+date+" \n "+
                 "Client: "+clientValue+", client agent: "+agentCode+"\n");
-
+        Order order = new Order.Builder()
+                .price(1.5).requireStake(15)
+                .oddType("HK").accountCode(CLIENT_CREDIT_ACC)
+                .createDate(dateAPI)
+                .eventDate(dateAPI + " 23:59:00")
+                .selection("Home " + DateUtils.getMilliSeconds())
+                .build();
+        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        String accountId = AccountSearchUtils.getAccountId(accountCode);
+        BetEntrytUtils.placeManualBetAPI(companyId, accountId, SPORT_ID_MAP.get("Soccer"), order);
+        BetSettlementUtils.waitForBetIsUpdate(10);
+        int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Soccer"), order);
+        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Soccer"), order);
+        BetSettlementUtils.sendManualBetSettleJson(accountId, order, betId, wagerId, SPORT_ID_MAP.get("Soccer"));
+        BetSettlementUtils.waitForBetIsUpdate(5);
         log("@Step 1: Go to Client Statement >> client point >> select the client");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.filter("Client Point","Kastraki Limited",FINANCIAL_YEAR,clientValue,date,"");
@@ -48,7 +64,7 @@ public class SPPTest extends BaseCaseAQS {
         String winlosePlayer = clientPage.getMemberSummary(agentCode,accountCode).get(7);
 
         log("@Step 3: Go to SPP >> select all leagues >> select the group");
-        log("Step 4: Select the date 15/11/2022 >> click Show");
+        log(String.format("Step 4: Select the date %s >> click Show", date));
         SPPPage sppPage = clientPage.navigatePage(SOCCER,SPP,SPPPage.class);
         sppPage.filter("All", "Group","Smart Group","QA Smart Master","QA Smart Agent",date,date);
         String winloseSPP = sppPage.getRowDataOfGroup(smartGroup).get(sppPage.colWL-1);
@@ -60,25 +76,40 @@ public class SPPTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"smoke"})
-    @Parameters({"bookieCode","accountCode","accountCurrency","bookieMasterCode","smartGroup","bookieSuperMasterCode"})
+    @Parameters({"bookieCode","accountCode","bookieMasterCode","smartGroup","bookieSuperMasterCode"})
     @TestRails(id = "311")
-    public void SPP_TC_311(String bookieCode,String accountCode, String accountCurrency,String bookieMasterCode,String smartGroup,String bookieSuperMasterCode) throws InterruptedException {
+    public void SPP_TC_311(String bookieCode,String accountCode, String bookieMasterCode,String smartGroup,String bookieSuperMasterCode) throws InterruptedException {
         log("@title:Validate WL in Bookie Statement matched with SPP page (#AQS-2073)");
-        log("@Precondition: Group code ’37 Peter 27 l1’ has 1 player 'G60755A5A5AA026'\n" +
-                "The player has data on the filtered date (e.g. 15/11/2022)\n" +
-                "Bookie: BetISN, Master code: Ma-G60755A5A5-Peter, CUR: IDR");
-        String date = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
+        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
+        String dateAPI = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
+        log("@Precondition: Having at least a settled bet. Use a filter date with data Bookie: QA Bookie, Super Master: SM-QA1-QA Test, Account code: Auto-Account01");
+        log("Precondition 1: Place and settled manual bet");
+        Order order = new Order.Builder()
+                .price(1.5).requireStake(15)
+                .oddType("HK").accountCode(CLIENT_CREDIT_ACC)
+                .createDate(dateAPI)
+                .eventDate(dateAPI + " 23:59:00")
+                .selection("Home " + DateUtils.getMilliSeconds())
+                .build();
+        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        String accountId = AccountSearchUtils.getAccountId(accountCode);
+        BetEntrytUtils.placeManualBetAPI(companyId, accountId, SPORT_ID_MAP.get("Soccer"), order);
+        BetSettlementUtils.waitForBetIsUpdate(10);
+        int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Soccer"), order);
+        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Soccer"), order);
+        BetSettlementUtils.sendManualBetSettleJson(accountId, order, betId, wagerId, SPORT_ID_MAP.get("Soccer"));
+        BetSettlementUtils.waitForBetIsUpdate(5);
 
-        log("@Step 1: Go to Bookie Statement >> select currency as IDR to limit the returned data");
-        log("@Step 2: Input bookie code as BetISN >> click Show");
-        log("@Step 3: Find the master code >> click MS link at the master code");
-        log("@Step 4: Find the player >> observe win/loss");
+        log("@Step 1: Go to Bookie Statement >> filter Agent type: Super Master");
+        log("@Step 2: Input bookie code as QA Bookie >> click Show");
+        log("@Step 3: Find the master code: SM-QA1-QA Test >> click MS link at the master code");
         BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,BOOKIE_STATEMENT,BookieStatementPage.class);
-        bookieStatementPage.filter("","","Super Master",date, date,bookieCode,accountCurrency);
+        bookieStatementPage.filter("","","Super Master",date, date,bookieCode,"");
+        log("@Step 4: Find the player >> observe win/loss");
         String winlosePlayer = bookieStatementPage.getWinLossofPlayer(bookieSuperMasterCode, bookieMasterCode,accountCode);
 
         log("@Step 5: Go to SPP >> select all leagues >> select the group");
-        log("@Step 6: Select the date e.g.15/11/2022 >> click Show");
+        log(String.format("Step 6: Select the date %s >> click Show", date));
         log("@Step 7: Observe the win/loss of the group");
         SPPPage sppPage = bookieStatementPage.navigatePage(SOCCER,SPP,SPPPage.class);
         sppPage.filter("All", "Group","Smart Group","QA Smart Master","QA Smart Agent",date,date);

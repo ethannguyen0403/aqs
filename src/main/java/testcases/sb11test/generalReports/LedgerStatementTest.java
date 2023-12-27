@@ -1160,6 +1160,24 @@ public class LedgerStatementTest extends BaseCaseAQS {
         }
     }
 
+    @Test(groups = {"regression", "2023.12.29"})
+    @TestRails(id = "2160")
+    public void Ledger_Statement_2160(){
+        log("@title: Validate at the end of each month all Income and Expenditure sub-accounts (ledgers) must have balance = 0");
+        int month = DateUtils.getMonth("GMT +7") - 1;
+        int year = Integer.valueOf(FINANCIAL_YEAR.replaceAll("[a-zA-z]", "").trim().split("-")[0]);
+        String fromDate = DateUtils.getFirstDateOfMonth(year, month, "dd/MM/yyyy");
+        String toDate = DateUtils.getLastDateOfMonth(year, month, "dd/MM/yyyy");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Click General Reports > Ledger Statement");
+        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        log("@Step 3: Filter ledger statement with data: ");
+        ledgerStatementPage.showLedger(COMPANY_UNIT, FINANCIAL_YEAR, "Income", lgIncomeGroup, fromDate, toDate, REPORT_TYPE.get(1));
+        log("@Verify 1: Validate running Bal of Total in HKD at Amounts are shown in HKD section should be 0");
+        Assert.assertEquals(ledgerStatementPage.getTotalAmountInOriginCurrency("Total in HKD"), "0.00", "FAILED! Running Bal of Total in HKD is not equal to 0");
+        log("INFO: Executed completely");
+    }
+
     @Test(groups = {"regression"})
     @TestRails(id = "2769")
     public void Ledger_Statement_2769(){
@@ -1243,5 +1261,6 @@ public class LedgerStatementTest extends BaseCaseAQS {
         }
         log("INFO: Executed completely");
     }
+
 
 }

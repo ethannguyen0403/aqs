@@ -105,4 +105,21 @@ public class BookieInfoTest extends BaseCaseAQS {
                 "Failed! Bookie Code " + bookieCode + " X button is enabled");
         log("INFO: Executed completely");
     }
+
+    @Test(groups = {"regression", "2023.12.29"})
+    @TestRails(id = "16174")
+    @Parameters({"bookieCode"})
+    public void Bookie_Info_16174(String bookieCode){
+        log("@title: Validate tooltip is displayed correctly when hovering on X button on Bookie Info");
+        log("@Precondition: Having Bookie account that already had transaction: " + bookieCode);
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Navigate Master > Bookie Info");
+        BookieInfoPage bookieInfoPage = welcomePage.navigatePage(MASTER, BOOKIE_INFO,BookieInfoPage.class);
+        log("@Step 4: Filter with Bookie: " + bookieCode);
+        bookieInfoPage.filterBookie(companyUnit, bookieCode, "", "", "");
+        log("@Verify 1: Validate X button is disabled when having transaction on Bookie Info");
+        Assert.assertEquals(bookieInfoPage.getTooltipText(bookieInfoPage.getControlXButton(bookieCode)),
+                String.format(BookieSystem.TOOLTIP_MESSAGE, "Bookie"), "FAILED! Text on tool tip is not correct");
+        log("INFO: Executed completely");
+    }
 }

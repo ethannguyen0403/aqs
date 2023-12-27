@@ -1389,7 +1389,7 @@ public class CricketSportTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id = "339")
-    @Test(groups = {"regression","2023.11.30"})
+    @Test(groups = {"regression_stg","2023.11.30"})
     @Parameters({"password", "userNameOneRole"})
     public void Cricket_Sport_339(String password, String userNameOneRole) throws Exception {
         log("Validate accounts without permission cannot access the Bet Entry page");

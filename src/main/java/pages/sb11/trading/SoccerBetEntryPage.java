@@ -1,7 +1,6 @@
 package pages.sb11.trading;
 import com.paltech.element.BaseElement;
 import com.paltech.element.common.*;
-import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Event;
@@ -11,11 +10,9 @@ import pages.sb11.trading.popup.SoccerBetSlipPopup;
 import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 import utils.sb11.BetEntrytUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Random;
-import java.util.TimeZone;
+
 
 public class SoccerBetEntryPage extends BetEntryPage {
     public Label lblTitle = Label.xpath("//app-bet-entry-header//div[contains(@class,'main-box-header')]/div[1]/span");
@@ -158,10 +155,14 @@ public class SoccerBetEntryPage extends BetEntryPage {
         int rowIndex = getEventRowIndex(eventName);
         int colIndex = defineColumn(isFullTime,type);
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
+        //Some element on Bet slip return true with isDisplay() method in spite of invisibility of Bet slip pop up
+        try {
+            Thread.sleep(2000);
+        }catch (Exception e){
+        }
         SoccerBetSlipPopup popup = new SoccerBetSlipPopup();
         popup.lblEventStartTime.isDisplayed();
         return popup;
-
     }
 
     /**
@@ -244,7 +245,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
         type1 = order.getMarketType();*/
         SoccerBetSlipPopup soccerBetSlipPopup = openBetSlip(accountCode,lstOrder.get(0).getSelection(),fullTime,type);
         soccerBetSlipPopup.placeMultiBet(lstOrder,isCopySPBPS7SameOdds,isCopySPBPS7MinusOdds,isPlaceBet);
-        waitSpinnerDisappeared();
+//        waitSpinnerDisappeared();
     }
     
     /**

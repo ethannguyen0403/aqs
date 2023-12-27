@@ -1,5 +1,6 @@
 package testcases.sb11test.financialReports;
 
+import com.paltech.utils.FileUtils;
 import com.paltech.utils.StringUtils;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -11,7 +12,13 @@ import pages.sb11.financialReports.TrialBalancePage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.role.RoleManagementPage;
 import testcases.BaseCaseAQS;
+import utils.ExcelUtils;
 import utils.testraildemo.TestRails;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import static common.SBPConstants.*;
 
@@ -19,7 +26,7 @@ import static common.SBPConstants.*;
 public class StockholdersEquityTest extends BaseCaseAQS {
 
     @TestRails(id = "2802")
-    @Test(groups = {"regression_qc", "2023.12.29"})
+    @Test(groups = {"regression_stg", "2023.12.29"})
     @Parameters({"password", "userNameOneRole"})
     public void Stockholder_Equity_TC2802(String password, String userNameOneRole) throws Exception {
         log("@title: Validate Stockholders Equity menu is hidden if not active Stockholders Equity permission");
@@ -38,7 +45,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2803")
-    @Test(groups = {"regression_qc", "2023.12.29"})
+    @Test(groups = {"regression_stg", "2023.12.29"})
     @Parameters({"password", "userNameOneRole"})
     public void Stockholder_Equity_TC2803(String password, String userNameOneRole) throws Exception {
         log("@title: Validate Stockholders Equity menu displays if active Stockholders Equity permission");
@@ -126,7 +133,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
     @Test(groups = {"regression", "2023.12.29"})
     public void Stockholder_Equity_TC2808()  {
         log("@title: Validate correct Retained Earnings value displays");
-        log("Precondition: Get 'Retained Earning Ending' amount from Retained Earnings report - in the filtered financial year");
+        log("Precondition: Get 'Retained Earning Ending' amount from Retained Earnings report - in the filtered financial year (e.g. Financial Year 2022-2023) (1)");
         RetainedEarningsPage retainedEarningsPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);
         retainedEarningsPage.filterRetainedEarnings(COMPANY_UNIT, FINANCIAL_YEAR);
@@ -138,6 +145,96 @@ public class StockholdersEquityTest extends BaseCaseAQS {
         stockPage.filter(COMPANY_UNIT, FINANCIAL_YEAR);
         log("@Verify 1: Validate Retained Earnings amount = value at precondition");
         Assert.assertEquals(stockPage.getAmount(StockHoldersEquityPage.RETAINED_EARNING), retainEar, "FAILED! Retained earnings is not correct");
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id = "2809")
+    @Test(groups = {"regression", "2023.12.29"})
+    public void Stockholder_Equity_TC2809()  {
+        log("@title: Validate correct 'Total Stockholder's Equity' value displays");
+        log("@Step 1: Navigate Financial Report > Stockholders Equity");
+        StockHoldersEquityPage stockPage =
+                welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
+        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", COMPANY_UNIT, FINANCIAL_YEAR));
+        stockPage.filter(COMPANY_UNIT, FINANCIAL_YEAR);
+        log("@Verify 1: Validate  'Total Stockholder's Equity' value displays = Capital Issued + Retained Earnings");
+        Double capitalIssued = Double.valueOf(stockPage.getAmount(StockHoldersEquityPage.CAPITAL_ISSUED).replace(",", ""));
+        Double retainEarning = Double.valueOf(stockPage.getAmount(StockHoldersEquityPage.RETAINED_EARNING).replace(",", ""));
+        String totalStock = stockPage.lblAmountTotalStock.getText().trim().replace(",", "");
+
+        Assert.assertEquals(totalStock, String.format("%.2f", capitalIssued+retainEarning), "FAILED! 'Total Stockholder's Equity' value NOT EQUAL Capital Issued + Retained Earnings");
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id = "2813")
+    @Test(groups = {"regression", "2023.12.29"})
+    public void Stockholder_Equity_TC2813() throws IOException {
+        String downloadPath = String.format("%s%s", getDownloadPath(), "stockholders-equity.xlsx");
+        log("@title: Validate 'Export To Excel' button work properly ");
+        log("@Step 1: Navigate Financial Report > Stockholders Equity");
+        StockHoldersEquityPage stockPage =
+                welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
+        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", COMPANY_UNIT, FINANCIAL_YEAR));
+        stockPage.filter(COMPANY_UNIT, FINANCIAL_YEAR);
+        String capitalIssued = stockPage.getAmount(StockHoldersEquityPage.CAPITAL_ISSUED);
+        String retainEarning = stockPage.getAmount(StockHoldersEquityPage.RETAINED_EARNING);
+
+        log("@Step 3: Click 'Export To Excel' button");
+        stockPage.btnExportExcel.click();
+        welcomePage.waitSpinnerDisappeared();
+        try {
+            log("@Verify 1: Validate excel file was downloaded successfully");
+            Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! Excel file was not downloaded successfully");
+            log("@Verify 2: Data in excel file is correct");
+            List<String> columExcel = Arrays.asList("No", "Description", "Amount");
+            List<Map<String, String>>
+                    actualExcelData = ExcelUtils.getDataTest(downloadPath, "Stockholders Equity", columExcel, "Total Stockholder's Equity");
+            Assert.assertEquals(capitalIssued, actualExcelData.get(0).get(columExcel.get(2)), "FAILED! Excel value Capital Issued is not correct.");
+            Assert.assertEquals(retainEarning, actualExcelData.get(1).get(columExcel.get(2)).replace("-", ""), "FAILED! Excel value Retained Earning from Operation is not correct.");
+            log("INFO: Executed completely");
+        }finally {
+            log("@Post-condition: delete download file");
+            FileUtils.removeFile(downloadPath);
+        }
+    }
+
+    @TestRails(id = "2814")
+    @Test(groups = {"regression", "2023.12.29"})
+    public void Stockholder_Equity_TC2814() throws IOException {
+        String downloadPath = String.format("%s%s", getDownloadPath(), "stockholders-equity.pdf");
+        log("@title: Validate 'Export To Excel' button work properly ");
+        log("@Step 1: Navigate Financial Report > Stockholders Equity");
+        StockHoldersEquityPage stockPage =
+                welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
+        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", COMPANY_UNIT, FINANCIAL_YEAR));
+        stockPage.filter(COMPANY_UNIT, FINANCIAL_YEAR);
+        log("@Step 3: Click 'Export To PDF' button");
+        stockPage.btnExportPDF.click();
+        welcomePage.waitSpinnerDisappeared();
+        try {
+            log("@Verify 1: PDF file is exported and downloaded to user's device properly");
+            Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! PDF file was not downloaded successfully");
+            log("INFO: Executed completely");
+        }finally {
+            log("@Post-condition: delete download file");
+            FileUtils.removeFile(downloadPath);
+        }
+    }
+
+    @TestRails(id = "16196")
+    @Test(groups = {"regression", "2023.12.29"})
+    public void Stockholder_Equity_TC16196()  {
+        log("@title: Validate label 'Total Stockholder's Equity' is displayed in bold");
+        RetainedEarningsPage retainedEarningsPage =
+                welcomePage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);
+        retainedEarningsPage.filterRetainedEarnings(COMPANY_UNIT, FINANCIAL_YEAR);
+        log("@Step 1: Navigate Financial Report > Stockholders Equity");
+        StockHoldersEquityPage stockPage =
+                welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
+        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", COMPANY_UNIT, FINANCIAL_YEAR));
+        stockPage.filter(COMPANY_UNIT, FINANCIAL_YEAR);
+        log("@Verify 1: 'Total Stockholder's Equity' value is in bold");
+        Assert.assertTrue(stockPage.verifyLabelIsBold(stockPage.lblTotalStock), "FAILED! Label format is not bold");
         log("INFO: Executed completely");
     }
 }

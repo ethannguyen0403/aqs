@@ -4,12 +4,16 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import com.paltech.utils.DoubleUtils;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Transaction;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import utils.sb11.CurrencyRateUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class JournalReportsPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
@@ -37,8 +41,9 @@ public class JournalReportsPage extends WelcomePage {
     public Label lblAccountName = Label.xpath("//app-journal-reports//span[text() = 'Account Name']");
 
     int colAccName = 8;
+    int colAccountType = 9;
     int colTransType = 2;
-    int colDes = 7;
+    public int colDes = 7;
     int colCur = 10;
     int colAmountDebit = 11;
     int colAmountCredit = 12;
@@ -46,13 +51,18 @@ public class JournalReportsPage extends WelcomePage {
     int colAmountCreditHKD = 14;
 
     public void filterReports(String companyUnit, String dateType, String fromDate, String toDate, String accountType, String clientBookieLedger, String transactionType, String accountName){
-        ddpCompanyUnit.selectByVisibleText(companyUnit);
-        ddpDateType.selectByVisibleText(dateType);
-        if (!fromDate.isEmpty()){
-            dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
+        if(!companyUnit.isEmpty()){
+            ddpCompanyUnit.selectByVisibleText(companyUnit);
         }
+        if(!dateType.isEmpty()){
+            ddpDateType.selectByVisibleText(dateType);
+        }
+        ddpDateType.selectByVisibleText(dateType);
         if (!toDate.isEmpty()){
             dtpToDate.selectDate(toDate, "dd/MM/yyyy");
+        }
+        if (!fromDate.isEmpty()){
+            dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
         }
         if (!accountType.isEmpty()){
             ddpAccountType.selectByVisibleText(accountType);
@@ -63,8 +73,11 @@ public class JournalReportsPage extends WelcomePage {
         if (!transactionType.isEmpty()){
             ddpTransactionType.selectByVisibleText(transactionType);
         }
-        txtAccountName.sendKeys(accountName);
+        if (!accountName.isEmpty()){
+            txtAccountName.sendKeys(accountName);
+        }
         btnSearch.click();
+        waitSpinnerDisappeared();
     }
 
     public Transaction verifyTxn(Transaction trans, boolean isDebit){
@@ -101,6 +114,57 @@ public class JournalReportsPage extends WelcomePage {
         return trans;
     }
 
+    public String getTotalDebitOrCredit(String transDes, boolean isDebit) {
+        int colDeOrCre = isDebit ? 3 : 4;
+        return Label.xpath(
+                String.format("//tr[contains(.,'%s')]/following-sibling::tr[contains(@class, 'total-col ng-star-inserted')][1]/td[%s]",
+                        transDes, colDeOrCre)).getText().trim();
+    }
+
+    public List<String> getDeOrCreValueByAccountType(String accountName, String transDes, String accountType, boolean isDebit) {
+        int colDeOrCre = isDebit ? colAmountDebitHKD : colAmountCreditHKD;
+        int rowIndex = getAccountRowIndex(accountName, transDes);
+        List<String> expectedList = new ArrayList<>();
+        Label lblCreOrDe, lblAccountType;
+        while (true) {
+            lblCreOrDe = Label.xpath(tbJournalReport.getxPathOfCell(1, colDeOrCre, rowIndex, null));
+            lblAccountType = Label.xpath(tbJournalReport.getxPathOfCell(1, colAccountType, rowIndex, null));
+            if (!lblAccountType.isDisplayed()) {
+                System.out.println(String.format("NOT found the account name: %s and description: %s in the table", accountType, transDes));
+                return expectedList;
+            }
+            if (lblAccountType.getText().trim().equalsIgnoreCase(accountType)) {
+                String label = lblCreOrDe.getText().trim();
+                if (label.length() > 2) {
+                    expectedList.add(label);
+                    System.out.println("Found the account name value: " + label);
+                }
+            }
+            rowIndex++;
+        }
+    }
+
+    public void verifyPLCurrentYearIsCorrect(double totalDebit, double totalCredit, String transDes){
+        String actualPLValue;
+        if (totalDebit < totalCredit) {
+            actualPLValue = getDeOrCreValueByAccountType("", transDes, "Ledger - Capital", true).get(0).replace(",", "");
+        } else {
+            actualPLValue = getDeOrCreValueByAccountType("", transDes, "Ledger - Capital", false).get(0).replace(",", "");
+        }
+        Assert.assertEquals(actualPLValue, String.format("%.2f", totalDebit-totalCredit).replace("-", ""), "FAILED! PL for Current Year - HKD - 302.000.001.000 is not correct");
+    }
+
+    public Double calTotalFromList(List<String>... listValue) {
+        List<String> newList = new ArrayList<>();
+        double value = 0.00;
+        for (List<String> list : listValue) {
+            newList.addAll(list);
+        }
+        for (String valueInList : newList) {
+            value = value + Double.valueOf(valueInList.replace(",", ""));
+        }
+        return DoubleUtils.roundUpWithTwoPlaces(value);
+    }
 
     private int getAccountRowIndex(String accountName, String transDes){
         int lstRow = tbJournalReport.getNumberOfRows(false,false);
@@ -111,8 +175,14 @@ public class JournalReportsPage extends WelcomePage {
             if(!lblAccName.isDisplayed()) {
                 continue;
             }
-            if(lblAccName.getText().contains(accountName) && lblTransDes.getText().contains(transDes)){
-                System.out.println("Found the account name "+accountName+" in the table");
+            if (accountName.isEmpty()) {
+                if (lblTransDes.getText().trim().contains(transDes)) {
+                    System.out.println("Found the account name " + transDes + " in the table");
+                    return i;
+                }
+            }
+            if (lblAccName.getText().contains(accountName) && lblTransDes.getText().contains(transDes) && !accountName.isEmpty()) {
+                System.out.println(String.format("Found the account name: %s and description: %s in the table", accountName, transDes));
                 return i;
             }
         }

@@ -79,6 +79,7 @@ public class ManualBetBetEntryPage extends BetEntryPage {
         btnPlaceBet.click();
         ConfirmPopup confirmPopup = new ConfirmPopup();
         confirmPopup.confirm(isConfirm);
+        messageSuccess.isDisplayedShort(5);
         return messageSuccess.getText();
     }
 }

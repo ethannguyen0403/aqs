@@ -30,7 +30,7 @@ import java.util.List;
 import static common.SBPConstants.*;
 
 public class MonitorBetsTest extends BaseCaseAQS {
-    @Test(groups = {"regression","2023.11.29"})
+    @Test(groups = {"regression_stg","2023.11.29"})
     @TestRails(id = "50")
     @Parameters({"password", "userNameOneRole"})
     public void MonitorBetsTC_50(String password, String userNameOneRole) throws Exception {
@@ -45,7 +45,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         Assert.assertFalse(lstSubMenu.contains(MONITOR_BETS),"FAILED! Monitor Bets page displayed incorrect!");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.11.29"})
+    @Test(groups = {"regression_stg","2023.11.29"})
     @TestRails(id = "51")
     @Parameters({"password", "userNameOneRole"})
     public void MonitorBetsTC_51(String password, String userNameOneRole) throws Exception {
