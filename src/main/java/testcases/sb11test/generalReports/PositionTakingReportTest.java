@@ -14,12 +14,14 @@ import pages.sb11.generalReports.popup.clientstatement.ClientSummaryPopup;
 import pages.sb11.generalReports.popup.positionTakingReport.AccountPopup;
 import pages.sb11.master.AccountSearchPage;
 import pages.sb11.master.ClientSystemPage;
+import pages.sb11.master.clientsystempopup.AccountListPopup;
 import pages.sb11.soccer.MonitorBetsPage;
 import pages.sb11.trading.AccountPercentPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
+import java.util.Date;
 import java.util.List;
 
 import static common.SBPConstants.*;
@@ -94,27 +96,32 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         Assert.assertEquals(mesWarning,PositionTakingReport.INVALID_TIME_MES,"FAILED! Error message display incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regressio","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "4194")
     public void Position_Taking_Report_4194() {
-        //Bug AQS-3800
         log("@title: Validate Bookie list is associated with 'PSM Group Limited' client");
         log("@Pre-condition 1: Position Taking Report permission is ON for any account");
         log("@Pre-condition 2: Get the list bookies of 'PSM Group Limited' members in Client System page");
+        String clientName = "PSM Group Limited";
         ClientSystemPage clientSystemPage = welcomePage.navigatePage(MASTER,CLIENT_SYSTEM,ClientSystemPage.class);
+        clientSystemPage.filterClient(COMPANY_UNIT,"",clientName,"","");
+        AccountListPopup accountListPopup = clientSystemPage.openAccountList(clientName);
+        List<String> lstBookieAc = accountListPopup.getLstBookie();
+        accountListPopup.closeToPopup();
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> Position Taking Report page");
-        PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
+        PositionTakingReportPage page = clientSystemPage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data e.g.\n" +
                 "Company Unit = Kastraki Limited\n" +
                 "Financial Year = Year 2022-2023\n" +
                 "Bookie = All\n" +
                 "From Date 5/9/2023 To Date 5/9/2023");
-
+        String fromDate = DateUtils.getDate(-5,"dd/MM/yyyy",GMT_7);
+        String toDate = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        page.filter(COMPANY_UNIT,"","",fromDate,toDate);
         log("@Step 4: Expand Bookie dropdown list and compare with list bookie at precondition");
-
         log("@Verify 1: Bookies list is associated with 'PSM Group Limited' client");
-
+        Assert.assertTrue(page.isBookieDisplay(lstBookieAc),"FAILED! Bookie list display incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})

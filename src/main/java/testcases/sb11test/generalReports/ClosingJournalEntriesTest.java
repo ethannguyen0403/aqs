@@ -2,6 +2,7 @@ package testcases.sb11test.generalReports;
 
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
+import common.SBPConstants;
 import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -302,6 +303,65 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         String performedDate = DateUtils.getDate(0,"dd/MM/yyy HH:mm",GMT_7);
         log("@Verify 1: Confirm dialog will close and No record will add in the History/Log table");
         Assert.assertTrue(page.isRecordHistoryDisplay(month,username,performedDate),"FAILED! The History/Log table display incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.29"})
+    @TestRails(id = "15746")
+    public void Closing_Journal_Entries_15746() {
+        log("@title: Validate the success message displayed at the bottom-right corner when finished");
+        log("@Pre-condition: System Monitoring' permission is ON for any account");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Click General Reports >> System Monitoring menu");
+        log("@Step 3: Click 'Closing Journal Entries' button");
+        Calendar cal  = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -2);
+        SimpleDateFormat s = new SimpleDateFormat("yyyy - MMMM");
+        String month = s.format(new Date(cal.getTimeInMillis()));
+        ClosingJournalEntriesPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING,SystemMonitoringPage.class).goToTabName(CLOSING_JOURNAL_ENTRIES,ClosingJournalEntriesPage.class);
+        log("@Step 4: Select a Company Unit and Month");
+        log("@Step 5: Click Perform CJE button");
+        log("@Step 6: Click Yes button in Confirm dialog");
+        page.filter(COMPANY_UNIT,month,true);
+        String sucMes = page.appArlertControl.getSuscessMessage();
+        log("@Verify 1: A success message will display at the bottom-right corner as 'Closing Journal Entry of <selected Month>is completed.");
+        Assert.assertEquals(sucMes, String.format(ClosingJournalEntries.SUCCESS_MES_LAST_MONTH,month.split(" - ")[1]),"FAILED! The History/Log table display incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.29"})
+    @TestRails(id = "15748")
+    public void Closing_Journal_Entries_15748() {
+        log("@title: Validate History/Log table is sorted by Performed Date ascendingly");
+        log("@Pre-condition: System Monitoring' permission is ON for any account");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Click General Reports >> System Monitoring menu");
+        log("@Step 3: Click 'Closing Journal Entries' button");
+        Calendar cal  = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -2);
+        SimpleDateFormat s = new SimpleDateFormat("yyyy - MMMM");
+        String month = s.format(new Date(cal.getTimeInMillis()));
+        ClosingJournalEntriesPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING,SystemMonitoringPage.class).goToTabName(CLOSING_JOURNAL_ENTRIES,ClosingJournalEntriesPage.class);
+        page.ddMonth.selectByVisibleText(month);
+        log("@Verify 1: History/Log table is sorted by Performed Date ascendingly");
+        page.verifyPerformedDateSort();
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2023.12.29"})
+    @TestRails(id = "15762")
+    public void Closing_Journal_Entries_15762() {
+        log("@title: Validate History/Log table shows details logs on all created CJEs of the filtered company unit and month");
+        log("@Pre-condition: System Monitoring' permission is ON for any account");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Click General Reports >> System Monitoring menu");
+        log("@Step 3: Click 'Closing Journal Entries' button");
+        log("@Step 4: Select company and month at precondition");
+        Calendar cal  = Calendar.getInstance();
+        cal.add(Calendar.MONTH, -2);
+        SimpleDateFormat s = new SimpleDateFormat("yyyy - MMMM");
+        String month = s.format(new Date(cal.getTimeInMillis()));
+        ClosingJournalEntriesPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING,SystemMonitoringPage.class).goToTabName(CLOSING_JOURNAL_ENTRIES,ClosingJournalEntriesPage.class);
+        page.ddMonth.selectByVisibleText(month);
+        log("@Verify 1: Only history/log of selected company (e.g. IB 01) and month (e.g. 2023-August) should display");
+        page.verifyMonthColumnDisplay(month);
         log("INFO: Executed completely");
     }
 }

@@ -11,10 +11,10 @@ import pages.sb11.WelcomePage;
 import pages.sb11.popup.ConfirmPopup;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ClosingJournalEntriesPage extends WelcomePage {
     public Tab tabActive = Tab.xpath("//a[@class='active']");
@@ -84,5 +84,20 @@ public class ClosingJournalEntriesPage extends WelcomePage {
         }
         System.out.println("No Record "+username);
         return false;
+    }
+
+    public void verifyPerformedDateSort() {
+        List<String> lstPerformDate = tblClosing.getColumn(tblClosing.getColumnIndexByName("Performed Date"),5,true);
+        DateTimeFormatter dfm = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        List<String> lstSort = lstPerformDate.stream().map(s -> LocalDateTime.parse(s,dfm)).sorted(Comparator.reverseOrder()).map(dfm::format).collect(Collectors.toList());
+        Assert.assertEquals(lstPerformDate,lstSort,"FAILED! History/Log table is not sorted by Performed Date ascendingly");
+    }
+
+    public void verifyMonthColumnDisplay(String month) {
+        HashSet<List> set =  new HashSet<>();
+        List<String> lstMonth = tblClosing.getColumn(tblClosing.getColumnIndexByName("Month"),5,true);
+        set.add(lstMonth);
+        Assert.assertEquals(set.size(),1,"FAILED! Log has 2 month different");
+        Assert.assertEquals(lstMonth.get(0),month,"FAILED! History/Log display incorrect");
     }
 }
