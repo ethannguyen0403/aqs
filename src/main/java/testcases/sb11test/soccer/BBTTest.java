@@ -903,6 +903,22 @@ public class BBTTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression", "2023.12.29"})
+    @TestRails(id = "9750")
+    public void BBT_TC_9750() {
+        log("@title: Validate can open multiple popups at once");
+        log("@Step 1: Navigate to Soccer > BBT");
+        BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
+        log("@Step 2: Filter default option with Soccer sport");
+        bbtPage.filter("", SOCCER, "", "", "06/12/2023", "06/12/2023", "", "", "");
+        log("@Step 3: Click on S and S12 link");
+        Label.xpath(bbtPage.tblBBT.getSLinkXpath(1, "S")).jsClick();
+        Label.xpath(bbtPage.tblBBT.getSLinkXpath(1, "S12")).jsClick();
+        log("@Verify 1: Validate can open multiple popups at once successfully");
+        Assert.assertEquals(bbtPage.getNumberOfWindow(), 3, "FAILED! Can not open multiple popups S links");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2023.12.29"})
     @TestRails(id = "16177")
     public void BBT_TC_16177() {
         log("@title: Validate 'S' and 'S12' link should not displayed when filtering Tennis sport");

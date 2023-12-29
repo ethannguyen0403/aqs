@@ -27,8 +27,10 @@ public class BalanceCurrentPage extends WelcomePage {
 
     public void filterAccount (String companyUnit, String account){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
+        waitSpinnerDisappeared();
         ddpAccount.selectByVisibleContainsText(account);
         btnShow.click();
+        waitSpinnerDisappeared();
     }
 
     public MemberSummaryPopup openMasterMemberSummaryPopup (String masterCode){
@@ -68,6 +70,10 @@ public class BalanceCurrentPage extends WelcomePage {
             }
             i = i +1;
         }
+    }
+
+    public String getTotalLabel(String agentCode){
+        return Label.xpath(String.format("(//tr[. = '%s']/following-sibling::tr[contains(@class,'total-balance-tr')])[1]/td[1]", agentCode)).getText().trim();
     }
 
     private int getAgentRowIndex(String agentCode){

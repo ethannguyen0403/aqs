@@ -121,6 +121,10 @@ public class BBTPage extends WelcomePage {
         return getGroupTable(groupName);
     }
 
+    public int getNumberOfWindow(){
+        return DriverManager.getDriver().getWindowHandles().size();
+    }
+
     private List<String> getGroupTable(String groupName){
         int index = 1;
         Table tblGroup;
