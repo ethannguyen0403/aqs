@@ -51,13 +51,14 @@
 
             <class name="testcases.sb11test.generalReports.ClosingJournalEntriesTest"/>
             <class name="testcases.sb11test.generalReports.ClientBalanceTest"/>
-
+            <class name="testcases.sb11test.generalReports.ConsolidatedClientBalanceTest"/>
             <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
 
             <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
             <class name="testcases.sb11test.financialReports.BalanceSheetAnalysisTest"/>
             <class name="testcases.sb11test.financialReports.CashFlowStatementTest"/>
             <class name="testcases.sb11test.financialReports.StockholdersEquityTest"/>
+            <class name="testcases.sb11test.generalReports.ConsolidatedClientBalanceTest"/>
         </classes>
     </test>
 </suite>
