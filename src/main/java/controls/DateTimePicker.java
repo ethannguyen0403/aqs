@@ -134,7 +134,7 @@ public class DateTimePicker extends BaseElement {
             logEndAction("Error: Month or date parameter is empty");
             return ;
         }
-        Label lblDay = Label.xpath(String.format("%s//span[text()='%s' and not(contains(@class, 'is-other-month'))]",tblCalender._xpathTable,name));
+        Label lblDay = Label.xpath(String.format("%s//td[@role='gridcell']//span[text()='%s' and not(contains(@class, 'is-other-month'))]",tblCalender._xpathTable,name));
         if(!lblDay.isDisplayed()) {
             logEndAction(String.format("Debug: There is no value '%s' you want", name));
             return;
@@ -183,7 +183,7 @@ public class DateTimePicker extends BaseElement {
 
         try {
             Date date = sd.parse(input);
-            sd = new SimpleDateFormat("YYYY");
+            sd = new SimpleDateFormat("yyyy");
             String y =  sd.format(date);
             sd = new SimpleDateFormat("MMMM");
             String mm =  sd.format(date);

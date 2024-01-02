@@ -603,7 +603,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "484")
     @Test(groups = {"smoke"})
-    public void BetOrder_484(){
+    public void BetOrder_C484(){
         log("@title: Verify pending order info display in UI correctly");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
@@ -768,7 +768,7 @@ public class BetOrderTest extends BaseCaseAQS {
     @TestRails(id="208")
     @Test(groups = {"smoke_qc"})
     @Parameters(("username"))
-    public void BetOrder_0208(String username){
+    public void BetOrder_208(String username){
         log("@title:Validate AQS orders automatically disappeared when orders are auto cancelled (AQS-2205)");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT -4"));
