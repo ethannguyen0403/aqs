@@ -127,10 +127,11 @@ public class SBPConstants {
     public final static List<String> STAKE_LIST_ALL = Arrays.asList("ALL","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
     public final static List<String> STAKE_LIST = Arrays.asList("All","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
     public final static List<String> MONTH_NAME_LIST = Arrays.asList("January","February","March","April","May","June","July","August","September","October", "November", "December");
-    public final static String GMT_7 = "GMT +7";
+    public final static String GMT_7 = "GMT+7";
     public final static String BALANCE_SHEET = "Balance Sheet";
     public final static String POSITION_TAKING_REPORT = "Position Taking Report";
     public final static String USER_ACTIVITY_MONITORING = "User Activity Monitoring";
+    public final static String SYSTEM_MONITORING = "System Monitoring";
     public final static List<String> CRICKET_MARKET_TYPE_NO_LIVE =  Arrays.asList("1x2","DNB","OE","OU");
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
@@ -457,9 +458,14 @@ public class SBPConstants {
         public final static List<String> BET_TYPE_HDP_DROPDOWN = Arrays.asList("Full Time - Handicap - Corners","Full Time - Over Under - Corners");
     }
     public static class PositionTakingReport {
-        public final static String WARNING_FINANCIAL_YEAR_MES = "Please select in range 01/08/2022 and 31/07/2023.";
+        public final static String WARNING_FINANCIAL_YEAR_MES = "Please select in range 01/08/%s and 31/07/%s.";
         public final static String INVALID_TIME_MES = "Invalid time range. You can see data up to 1 months.";
         public final static List<String> DEFAULT_BOOKIE_HEADER_NAME = Arrays.asList("#","Bookie Name","Till %s","DR-Win/Loss");
+    }
+    public static class ClosingJournalEntries {
+        public final static String SUCCESS_MES_LAST_MONTH = "Closing Journal Entry for %s is completed.";
+        public final static String MES_REMINDER_BEFORE_2_MONTH = "You will need to perform CJE for %s to have the correct balances";
+        public final static String MES_REMINDER_BEFORE_1_MONTH = "Are you sure to perform Closing Journal Entry for %s?";
     }
 }
 

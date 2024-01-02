@@ -14,7 +14,6 @@ import java.io.IOException;
 import static common.SBPConstants.*;
 
 public class BookieInfoTest extends BaseCaseAQS {
-    String companyUnit = "Kastraki Limited";
 
     @Test(groups = {"regression"})
     @TestRails(id = "2202")
@@ -62,7 +61,7 @@ public class BookieInfoTest extends BaseCaseAQS {
         BookieInfoPage bookieInfoPage = welcomePage.navigatePage(MASTER, BOOKIE_INFO,BookieInfoPage.class);
         log("@Step 3: Enter an exist Bookie");
         log("@Step 4: Click Search");
-        bookieInfoPage.filterBookie(companyUnit,bookieCode,"","","");
+        bookieInfoPage.filterBookie(COMPANY_UNIT,bookieCode,"","","");
         log("Searched bookie should display correctly on Bookie List");
         Assert.assertTrue(bookieInfoPage.isBookieCodeExist(bookieCode),"Failed! Bookie Code " + bookieCode + " is not exist");
         log("INFO: Executed completely");
@@ -100,7 +99,7 @@ public class BookieInfoTest extends BaseCaseAQS {
         log("@Step 2: Navigate Master > Bookie Info");
         BookieInfoPage bookieInfoPage = welcomePage.navigatePage(MASTER, BOOKIE_INFO,BookieInfoPage.class);
         log("@Step 4: Filter with Bookie: " + bookieCode);
-        bookieInfoPage.filterBookie(companyUnit, bookieCode, "", "", "");
+        bookieInfoPage.filterBookie(COMPANY_UNIT, bookieCode, "", "", "");
         log("@Verify 1: Validate X button is disabled when having transaction on Bookie Info");
         Assert.assertTrue(bookieInfoPage.verifyElementIsDisabled(bookieInfoPage.getControlXButton(bookieCode), "class"),
                 "Failed! Bookie Code " + bookieCode + " X button is enabled");
@@ -117,7 +116,7 @@ public class BookieInfoTest extends BaseCaseAQS {
         log("@Step 2: Navigate Master > Bookie Info");
         BookieInfoPage bookieInfoPage = welcomePage.navigatePage(MASTER, BOOKIE_INFO,BookieInfoPage.class);
         log("@Step 4: Filter with Bookie: " + bookieCode);
-        bookieInfoPage.filterBookie(companyUnit, bookieCode, "", "", "");
+        bookieInfoPage.filterBookie(COMPANY_UNIT, bookieCode, "", "", "");
         log("@Verify 1: Validate X button is disabled when having transaction on Bookie Info");
         Assert.assertEquals(bookieInfoPage.getTooltipText(bookieInfoPage.getControlXButton(bookieCode)),
                 String.format(BookieSystem.TOOLTIP_MESSAGE, "Bookie"), "FAILED! Text on tool tip is not correct");

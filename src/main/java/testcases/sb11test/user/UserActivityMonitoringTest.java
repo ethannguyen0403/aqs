@@ -18,7 +18,7 @@ import static common.SBPConstants.*;
 
 
 public class UserActivityMonitoringTest extends BaseCaseAQS {
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression_stg","2023.12.29"})
     @TestRails(id = "9157")
     @Parameters({"password", "userNameOneRole"})
     public void UserActivityMonitoring_TC_9157(String password, String userNameOneRole) throws Exception {

@@ -27,7 +27,7 @@ public class BetOrderPage extends HomePage {
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
     public TextBox txtFromDate = TextBox.xpath("//div[@class='p-2']/div[contains(text(),'From Date')]//following::input[1]");
     public TextBox txtToDate = TextBox.xpath("//div[@class='p-2']/div[contains(text(),'To Date')]//following::input[1]");
-    public Link lblHideColumn = Link.xpath("//div[contains(@class, 'text-right cursor-pointer')]");
+    public Link lblHideColumn = Link.xpath("//div[contains(text(), 'Hide Columns')]");
     public Label lblTooltip = Label.xpath("//popover-container[@role='tooltip']");
     public Table tbPending = Table.xpath("//div[contains(@class, 'PENDING')]//following::table[1]", 9);
     public Table tbConfirm = Table.xpath("//div[contains(@class, 'CONFIRM')]//following::table[1]", 9);
@@ -272,6 +272,11 @@ public class BetOrderPage extends HomePage {
     }
 
     public ColumnSettingPopup openUserColumnSetting(){
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         lblHideColumn.click();
         return new ColumnSettingPopup();
     }

@@ -417,22 +417,47 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "3415")
+    @Test(groups = {"regression", "2023.12.29"})
+    public void PTRiskControlTC_3415() {
+        log("@title: Validate placed Tennis bet from Merito is displayed correctly in PT Risk Control");
+        log("@Precondition: Having a Merito account that is already mapped with SB11\n" +
+                "Mapped Merito account is already placed some Tennis bet");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Soccer > PT Risk Control");
+        PTRiskPage ptRiskPage = welcomePage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
+        log("@Step 3: Filter with valid data: Sport Tennis, Company Fair, Date 22/05/2023");
+        ptRiskPage.filter("Tennis", "", "Fair", "Normal", "", "22/05/2023", "22/05/2023", "");
+        log("@Step 4: Open Bet list");
+        PTRiskBetListPopup betListPopup = ptRiskPage.openBetList("Dom Stricker");
+        log("Verify 2: Validate data of mapped Merito account is correct");
+        Assert.assertTrue(!betListPopup.getBetListCellValue("JO20000000", betListPopup.colStake).isEmpty(), "FAILED! No data of mapped account");
+    }
+
     @TestRails(id = "3416")
     @Test(groups = {"regression", "2023.10.31"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3416(String accountCode) {
-        orderBasketball.setAccountCode(accountCode);
+        String date = String.format(DateUtils.getDate(0, "dd/MM/yyyy", "GMT +7"));
+        String dateAPI = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
         log("@title: Validate can filter by Basket ball 1x2 matched bets ");
         log("@Precondition: There are some matched Basket ball 1x2 matched bets from Pinnacle/BetISN/Fair or Bet Entry page");
         log("@Precondition-Step 1: Have a specific League Name, Home Team, Away Team for testing line\n" +
                 "League: QA Basketball League\n" +
                 "Home Team: QA Basketball Team 1\n" +
                 "Away Team: QA Basketball Team 2");
-        EventSchedulePage eventSchedulePage = welcomePage.navigatePage(SPORT, EVENT_SCHEDULE, EventSchedulePage.class);
-        welcomePage.waitSpinnerDisappeared();
-        eventSchedulePage.goToSport("Basketball");
-        eventSchedulePage.showLeague(eventBasketball.getLeagueName(), eventBasketball.getEventDate());
-        eventSchedulePage.addEvent(eventBasketball);
+        Event eventBasketball =
+                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(DateUtils.formatDate(currentDate, "yyyy-MM-dd", "dd/MM/yyyy"))
+                        .home("QA Basketball Team 1").away("QA Basketball Team 2")
+                        .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
+        Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
+                .selection(eventBasketball.getHome()).isLive(false).event(eventBasketball).accountCode(accountCode).build();
+        String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
+        String homeTeamID = EventScheduleUtils.getTeamID(eventBasketball.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(eventBasketball.getAway(), leagueID);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getEventStatus().toUpperCase());
+        String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+        eventBasketball.setEventId(eventID);
         log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
         try {
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
@@ -446,21 +471,17 @@ public class PTRiskControlTest extends BaseCaseAQS {
             ptPage.filter("Basketball","", COMPANY_UNIT, "PT + Throw Bets", "All", "", "", eventBasketball.getLeagueName());
 
             log("Verify 1: Validate Basket ball bets return properly");
-            String eventID =
-                    GetSoccerEventUtils.getFirstEvent(currentDate, currentDate, "Basketball", eventBasketball.getLeagueName()).getEventId();
-            eventBasketball.setEventId(eventID);
             List<Order> lstOrder = new ArrayList<>();
             lstOrder.add(orderBasketball);
             String betID = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder).get(0).getBetId();
             PTRiskBetListPopup ptRiskBetListPopup = ptPage.openBetList(eventBasketball.getHome());
             Assert.assertTrue(ptRiskBetListPopup.getBetListCellValue(accountCode, 1).contains(betID), "FAILED!Bet not shown properly.");
+            log("INFO: Executed test completely");
         } finally {
-            log("@Post-condition: Delete Event on event schedule");
-            orderBasketball.setAccountCode(null);
-            eventBasketball.setEventId(null);
-            new PTRiskBetListPopup().closeBetListPopup();
-            welcomePage.navigatePage(SPORT, EVENT_SCHEDULE, EventSchedulePage.class);
-            eventSchedulePage.deleteEvent(eventBasketball);
+
+            log("@Post-condition: Deleted the event Basketball: " + eventID);
+            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("INFO: Executed Pos-condition completely");
         }
     }
 
@@ -468,19 +489,24 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"regression", "2023.10.31"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3417(String accountCode) {
-        orderBasketball.setAccountCode(accountCode);
+        String date = String.format(DateUtils.getDate(0, "dd/MM/yyyy", "GMT +7"));
+        String dateAPI = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
         log("@title: Validate Bet Types only shows option '1x2'");
         log("@Precondition: There are some matched Basket ball 1x2 matched bets from Pinnacle/BetISN/Fair or Bet Entry page");
         log("@Precondition-Step 1: Have a specific League Name, Home Team, Away Team for testing line\n" +
                 "League: QA Basketball League\n" +
                 "Home Team: QA Basketball Team 1\n" +
                 "Away Team: QA Basketball Team 2");
-        EventSchedulePage eventSchedulePage = welcomePage.navigatePage(SPORT, EVENT_SCHEDULE, EventSchedulePage.class);
-        welcomePage.waitSpinnerDisappeared();
-        eventSchedulePage.goToSport("Basketball");
-        eventSchedulePage.showLeague(eventBasketball.getLeagueName(), eventBasketball.getEventDate());
-        welcomePage.waitSpinnerDisappeared();
-        eventSchedulePage.addEvent(eventBasketball);
+        Event eventBasketball =
+                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(DateUtils.formatDate(currentDate, "yyyy-MM-dd", "dd/MM/yyyy"))
+                        .home("QA Basketball Team 1").away("QA Basketball Team 2")
+                        .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
+        Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
+                .selection(eventBasketball.getHome()).isLive(false).event(eventBasketball).accountCode(accountCode).build();
+        String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
+        String homeTeamID = EventScheduleUtils.getTeamID(eventBasketball.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(eventBasketball.getAway(), leagueID);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getEventStatus().toUpperCase());
         log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
         try {
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
@@ -494,14 +520,12 @@ public class PTRiskControlTest extends BaseCaseAQS {
             ptPage.filter("Basketball","", COMPANY_UNIT, "PT + Throw Bets", "All", "", "", eventBasketball.getLeagueName());
             log("Verify 1: Validate Bet Types only shows option '1x2'");
             Assert.assertTrue(ptPage.isBetTypeBasketIs1X2(), "FAILED! Bet type of Basketball is not correct");
+            log("INFO: Executed test completely");
         } finally {
-            log("@Post-condition: Delete Event on event schedule");
-            new PTRiskPage().btnSetSelection.click();
-            orderBasketball.setAccountCode(null);
-            eventBasketball.setEventId(null);
-            new PTRiskBetListPopup().closeBetListPopup();
-            welcomePage.navigatePage(SPORT, EVENT_SCHEDULE, EventSchedulePage.class);
-            eventSchedulePage.deleteEvent(eventBasketball);
+            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+            log("@Post-condition: Deleted the event Basketball: " + eventID);
+            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("INFO: Executed Pos-condition completely");
         }
     }
 
@@ -509,18 +533,25 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"regression", "2023.10.31"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3418(String accountCode) {
-        orderBasketball.setAccountCode(accountCode);
+        String date = String.format(DateUtils.getDate(0, "dd/MM/yyyy", "GMT +7"));
+        String dateAPI = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
         log("@title: Validate forecast table displays the correct value");
         log("@Precondition: There are some matched Basket ball 1x2 matched bets from Pinnacle/BetISN/Fair or Bet Entry page");
         log("@Precondition-Step 1: Have a specific League Name, Home Team, Away Team for testing line\n" +
                 "League: QA Basketball League\n" +
                 "Home Team: QA Basketball Team 1\n" +
                 "Away Team: QA Basketball Team 2");
-        EventSchedulePage eventSchedulePage = welcomePage.navigatePage(SPORT, EVENT_SCHEDULE, EventSchedulePage.class);
-        welcomePage.waitSpinnerDisappeared();
-        eventSchedulePage.goToSport("Basketball");
-        eventSchedulePage.showLeague(eventBasketball.getLeagueName(), eventBasketball.getEventDate());
-        eventSchedulePage.addEvent(eventBasketball);
+        Event eventBasketball =
+                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(DateUtils.formatDate(currentDate, "yyyy-MM-dd", "dd/MM/yyyy"))
+                        .home("QA Basketball Team 1").away("QA Basketball Team 2")
+                        .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
+        Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
+                .selection(eventBasketball.getHome()).isLive(false).event(eventBasketball).accountCode(accountCode).build();
+        String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
+        String homeTeamID = EventScheduleUtils.getTeamID(eventBasketball.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(eventBasketball.getAway(), leagueID);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getEventStatus().toUpperCase());
+
         log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
         try {
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
@@ -565,33 +596,36 @@ public class PTRiskControlTest extends BaseCaseAQS {
                     "-" + String.valueOf(ptRiskBetListPopup.getAmountForeCastHK1X2InBetSlip("2", "Normal")),
                     "FAILED! Amount forecast 2 is not correct");
         } finally {
-            log("@Post-condition: Delete Event on event schedule");
-            orderBasketball.setAccountCode(null);
-            eventBasketball.setEventId(null);
-            new PTRiskBetListPopup().closeBetListPopup();
-            welcomePage.navigatePage(SPORT, EVENT_SCHEDULE, EventSchedulePage.class);
-            eventSchedulePage.deleteEvent(eventBasketball);
+            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+            log("@Post-condition: Deleted the event Basketball: " + eventID);
+            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("INFO: Executed Pos-condition completely");
         }
     }
 
     @TestRails(id = "3419")
-    @Test(groups = {"regression", "2023.10.31"})
+    @Test(groups = {"regression_stg", "2023.10.31"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3419(String accountCode) throws IOException{
         String percent = "6";
-        orderBasketball.setAccountCode(accountCode);
+        String date = String.format(DateUtils.getDate(0, "dd/MM/yyyy", "GMT +7"));
+        String dateAPI = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
         log("@title: Validate the Bet list displays the correct value ");
         log("@Precondition: There are some matched Basket ball 1x2 matched bets from Pinnacle/BetISN/Fair or Bet Entry page");
         log("@Precondition-Step 1: Have a specific League Name, Home Team, Away Team for testing line\n" +
                 "League: QA Basketball League\n" +
                 "Home Team: QA Basketball Team 1\n" +
                 "Away Team: QA Basketball Team 2");
-        EventSchedulePage eventSchedulePage = welcomePage.navigatePage(SPORT, EVENT_SCHEDULE, EventSchedulePage.class);
-        welcomePage.waitSpinnerDisappeared();
-        eventSchedulePage.goToSport("Basketball");
-        eventSchedulePage.showLeague(eventBasketball.getLeagueName(), eventBasketball.getEventDate());
-        welcomePage.waitSpinnerDisappeared();
-        eventSchedulePage.addEvent(eventBasketball);
+        Event eventBasketball =
+                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(DateUtils.formatDate(currentDate, "yyyy-MM-dd", "dd/MM/yyyy"))
+                        .home("QA Basketball Team 1").away("QA Basketball Team 2")
+                        .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
+        Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
+                .selection(eventBasketball.getHome()).isLive(false).event(eventBasketball).accountCode(accountCode).build();
+        String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
+        String homeTeamID = EventScheduleUtils.getTeamID(eventBasketball.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(eventBasketball.getAway(), leagueID);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getEventStatus().toUpperCase());
         log("@Precondition-Step 2: Set % PT of Basketball on Account List");
         AccountListUtils.setAccountListPTAPI(accountCode, percent, true, AccountListUtils.SportName.basketball);
         log("@Precondition-Step 3: Place some Basketball 1x2 match bets");
@@ -614,12 +648,10 @@ public class PTRiskControlTest extends BaseCaseAQS {
             List<String> listPTValue = ptRiskBetListPopup.tblBetList.getColumn(ptRiskBetListPopup.tblBetList.getColumnIndexByName("PT%"), false);
             Assert.assertTrue(listPTValue.contains(percent), "FAILED! The PT value is missing on bet list");
         } finally {
-            log("@Post-condition: Delete Event on event schedule");
-            orderBasketball.setAccountCode(null);
-            eventBasketball.setEventId(null);
-            new PTRiskBetListPopup().closeBetListPopup();
-            welcomePage.navigatePage(SPORT, EVENT_SCHEDULE, EventSchedulePage.class);
-            eventSchedulePage.deleteEvent(eventBasketball);
+            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+            log("@Post-condition: Deleted the event Basketball: " + eventID);
+            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("INFO: Executed Pos-condition completely");
         }
     }
 }
