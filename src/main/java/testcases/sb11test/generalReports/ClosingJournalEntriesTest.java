@@ -97,7 +97,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Pre-condition 1: System Monitoring' permission is ON for any account");
         log("@Pre-condition 2: There are some transactions perform after CJE");
         String numberLeder = "010.000.000.000";
-        String ledger = "AutoExpenditureCredit1";
+        String ledger = "AutoCreditExpenditure";
         Calendar cal  = Calendar.getInstance();
         cal.add(Calendar.MONTH, -1);
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM");
@@ -154,7 +154,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Pre-condition 1: System Monitoring' permission is ON for any account");
         log("@Pre-condition 2: There are some transactions perform after CJE");
         String numberLeder = "010.000.000.000";
-        String ledger = "AutoExpenditureCredit1";
+        String ledger = "AutoCreditExpenditure";
         Calendar cal  = Calendar.getInstance();
         cal.add(Calendar.MONTH, -2);
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM");
@@ -300,7 +300,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Step 5: Click Perform CJE button");
         ConfirmPopup confirmPopup = new ConfirmPopup();
         confirmPopup.btnYes.click();
-        String performedDate = DateUtils.getDate(0,"dd/MM/yyy HH:mm",GMT_7);
+        String performedDate = DateUtils.getDate(0,"dd/MM/yyy HH:mm","GMT+8");
         log("@Verify 1: Confirm dialog will close and No record will add in the History/Log table");
         Assert.assertTrue(page.isRecordHistoryDisplay(month,username,performedDate),"FAILED! The History/Log table display incorrect");
         log("INFO: Executed completely");

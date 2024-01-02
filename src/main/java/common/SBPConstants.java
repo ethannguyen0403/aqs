@@ -47,6 +47,7 @@ public class SBPConstants {
     public final static String BOOKIE_BALANCE = "Bookie Balance";
     public final static String BOOKIE_STATEMENT = "Bookie Statement";
     public final static String CLOSING_JOURNAL_ENTRIES = "Closing Journal Entries";
+    public final static String CONSOLIDATED_CLIENT_BALANCE = "Consolidated Client Balance";
     public final static String JOURNAL_ENTRIES = "Journal Entries";
     public final static String JOURNAL_REPORTS = "Journal Reports";
     public final static String SMART_SYSTEM = "Smart System";
@@ -466,6 +467,9 @@ public class SBPConstants {
         public final static String SUCCESS_MES_LAST_MONTH = "Closing Journal Entry for %s is completed.";
         public final static String MES_REMINDER_BEFORE_2_MONTH = "You will need to perform CJE for %s to have the correct balances";
         public final static String MES_REMINDER_BEFORE_1_MONTH = "Are you sure to perform Closing Journal Entry for %s?";
+    }
+    public static class ConsolidatedClientBalance {
+        public final static List<String> HEADER_NAME = Arrays.asList("#","Client","PIC","Status","Note","Log","Deposit in Ori CUR","Total Balance HKD","GBP","USD","EUR","HKD");
     }
 }
 
