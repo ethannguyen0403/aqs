@@ -417,6 +417,23 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "3415")
+    @Test(groups = {"regression", "2023.12.29"})
+    public void PTRiskControlTC_3415() {
+        log("@title: Validate placed Tennis bet from Merito is displayed correctly in PT Risk Control");
+        log("@Precondition: Having a Merito account that is already mapped with SB11\n" +
+                "Mapped Merito account is already placed some Tennis bet");
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Soccer > PT Risk Control");
+        PTRiskPage ptRiskPage = welcomePage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
+        log("@Step 3: Filter with valid data: Sport Tennis, Company Fair, Date 22/05/2023");
+        ptRiskPage.filter("Tennis", "", "Fair", "Normal", "", "22/05/2023", "22/05/2023", "");
+        log("@Step 4: Open Bet list");
+        PTRiskBetListPopup betListPopup = ptRiskPage.openBetList("Dom Stricker");
+        log("Verify 2: Validate data of mapped Merito account is correct");
+        Assert.assertTrue(!betListPopup.getBetListCellValue("JO20000000", betListPopup.colStake).isEmpty(), "FAILED! No data of mapped account");
+    }
+
     @TestRails(id = "3416")
     @Test(groups = {"regression", "2023.10.31"})
     @Parameters({"accountCode"})

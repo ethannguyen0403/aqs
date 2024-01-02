@@ -12,7 +12,6 @@ import utils.testraildemo.TestRails;
 import static common.SBPConstants.*;
 
 public class BalanceCurrentTest extends BaseCaseAQS {
-    String companyUnit = "Kastraki Limited";
     String masterCode = "QATE";
     String agentCode = "QATE01-PT";
 
@@ -57,7 +56,7 @@ public class BalanceCurrentTest extends BaseCaseAQS {
         log("@Step 4: Click Show");
         //Wait for companyUnit button showwing
         Thread.sleep(2000);
-        balanceCurrentPage.filterAccount(companyUnit,clientCode);
+        balanceCurrentPage.filterAccount(COMPANY_UNIT,clientCode);
         log("@Step 5: Click any Master code");
         MemberSummaryPopup memberSummaryPopup = balanceCurrentPage.openMasterMemberSummaryPopup(masterCode);
         log("Validate Member Summary of Master is displayed with correctly title page and Master code on top right popup");
@@ -78,12 +77,30 @@ public class BalanceCurrentTest extends BaseCaseAQS {
         log("@Step 4: Click Show");
         //Wait for companyUnit button showwing
         Thread.sleep(2000);
-        balanceCurrentPage.filterAccount(companyUnit,clientCode);
+        balanceCurrentPage.filterAccount(COMPANY_UNIT,clientCode);
         log("@Step 5: Click any Agent code");
         MemberSummaryPopup memberSummaryPopup = balanceCurrentPage.openAgentMemberSummaryPopup(agentCode);
         log("Validate Member Summary of Agent is displayed with correctly title page and Master code on top right popup");
         Assert.assertTrue(memberSummaryPopup.getTitlePage().contains("Member Summary"),"Failed! Member Summary popup is not displayed!");
         Assert.assertTrue(memberSummaryPopup.getTitleMaster().contains(agentCode),"Failed! Agent code is displayed incorrectly!");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2023.12.29"})
+    @Parameters({"clientCode", "superCode"})
+    @TestRails(id = "2823")
+    public void Balance_Current_2823(String clientCode, String superCode){
+        log("@title: Validate currency on total row should display as Master's currency");
+        String agentCode = "W2IN";
+        String masterCur = "INR";
+        String accountFilter = String.format("%s - %s", superCode, clientCode);
+        log("@Step 1: Login with valid account");
+        log("@Step 2: Access Accounting > Balance[Current]");
+        BalanceCurrentPage balanceCurrentPage = welcomePage.navigatePage(ACCOUNTING, BALANCE_CURRENT, BalanceCurrentPage.class);
+        log(String.format("@Step 3: Filter with %s > click Show", accountFilter));
+        balanceCurrentPage.filterAccount(COMPANY_UNIT,accountFilter);
+        log("@Verify 1: Total row currency of Agent accounts should display correctly as Master's Currency");
+        Assert.assertEquals(balanceCurrentPage.getTotalLabel(agentCode), String.format("Total in %s", masterCur), "FAILED! Total Currency not corresponding to Master currency");
         log("INFO: Executed completely");
     }
 }
