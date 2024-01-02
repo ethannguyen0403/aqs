@@ -3,11 +3,11 @@ package pages.sb11.generalReports;
 import com.paltech.driver.DriverManager;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
+import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import controls.Table;
 import pages.sb11.WelcomePage;
-import pages.sb11.generalReports.popup.bookieBalance.BookieBalanceDetailPopup;
 import pages.sb11.generalReports.popup.clientBalance.ClientBalanceDetailPopup;
 
 
@@ -43,6 +43,23 @@ public class ClientBalancePage extends WelcomePage {
             txtSMCode.sendKeys(smCode);
         btnShow.click();
         waitSpinnerDisappeared();
+    }
+
+    public int findRowClientIndex(String clientName){
+        int i = 1;
+        Label lblClientName;
+        while (true) {
+            lblClientName = Label.xpath(tblClient.getxPathOfCell(1, colClientName, i, null));
+            if (!lblClientName.isDisplayed()) {
+                System.out.println("Can NOT found the client name " + clientName + " in the table");
+                return -1;
+            }
+            if (lblClientName.getText().trim().equalsIgnoreCase(clientName)) {
+                System.out.println("Found the client name " + clientName + " in the table");
+                return i;
+            }
+            i++;
+        }
     }
     public ClientBalanceDetailPopup goToClientDetail(String clientName){
         filter("","","","",clientName.split("-")[0].trim());

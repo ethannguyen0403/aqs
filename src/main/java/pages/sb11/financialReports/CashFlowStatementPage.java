@@ -1,10 +1,12 @@
 package pages.sb11.financialReports;
 
+import com.paltech.driver.DriverManager;
 import com.paltech.element.common.*;
 import controls.DateTimePicker;
 import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import pages.sb11.financialReports.popup.cashflowStatement.TransactionDetailsPopup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,7 @@ public class CashFlowStatementPage extends WelcomePage {
     DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate, "//bs-datepicker-container");
     Button btnShow = Button.name("btnShow");
 
-    int totalColTransaction = 3;
+    public int totalColTransaction = 3;
     int colNameTotalInOrDecrease = 1;
     int colNetAmount = 2;
     public Table tblTransaction = Table.xpath("(//app-cash-flow//table[contains(@class,'pt-2 mr-1 col-5 table-bookie')])[1]", totalColTransaction);
@@ -56,6 +58,12 @@ public class CashFlowStatementPage extends WelcomePage {
         waitSpinnerDisappeared();
     }
 
+    public double getAmountTotalInHKDTransTable(String transType){
+        int rowIndex = findRowIndexByNameOfCell(tblTransaction, transType, TABLE_TRANSACTION);
+        Label amount = Label.xpath(tblTransaction.getxPathOfCell(1, totalColTransaction, rowIndex, null));
+        return Double.valueOf(amount.getText().replace(",", ""));
+    }
+
     public double getNetAmountOfTransactionTable() {
         int rowIndexTransaction = tblTransaction.getNumberOfRows(false, false);
         Label amount = Label.xpath(tblTransaction.getxPathOfCell(1, colNetAmount, rowIndexTransaction, null));
@@ -79,7 +87,7 @@ public class CashFlowStatementPage extends WelcomePage {
     }
 
     public int findRowIndexByNameOfCell(Table table, String name, CashFlowStatementTable tableType) {
-        int i = 1;
+        int i = 2;
         int colOrder = -1;
         Label lblCell;
         switch (tableType) {
@@ -100,12 +108,20 @@ public class CashFlowStatementPage extends WelcomePage {
                 System.out.println("Can NOT found the row with contains  " + name + " in the table");
                 return 0;
             }
-            if (lblCell.getText().contains(name)) {
+            if (lblCell.getText().trim().contains(name)) {
                 System.out.println("Found the row with contains " + name + " in the table");
                 return i;
             }
             i = i + 1;
         }
+    }
+
+    public TransactionDetailsPopup goToTransactionDetails(String transType){
+        int rowIndex = findRowIndexByNameOfCell(tblTransaction, transType, TABLE_TRANSACTION);
+        tblTransaction.getControlOfCell(1, 2, rowIndex, null).click();
+        waitSpinnerDisappeared();
+        DriverManager.getDriver().switchToWindow();
+        return new TransactionDetailsPopup();
     }
 
     public String getPageTitle() {
