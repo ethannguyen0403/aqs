@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="SB11_STG_Regression" verbose="1">
+<suite name="NOLAN Test Suite" verbose="1">
     <listeners>
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
+        <listener class-name="utils.testraildemo.Listener"/>
     </listeners>
 
-    <test name="SB11 Pre Regression 2023.12.29">
+    <test name="NL-SB11-Local">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='stg'/>
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
         <parameter name='username' value='AutoQC'/>
+        <parameter name='usernameOneRole' value='onerole'/>
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
-        <parameter name='isAddTestRailResult' value='false'/>
+        <!--        <parameter name='password' value='p8PEjV0gJOnWf9U0aEgGEA=='/>  &lt;!&ndash; pass pro&ndash;&gt;-->
+        <!--        <parameter name='isAddTestRailResult' value='true'/>-->
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
         <parameter name="accountCode" value="Auto-Account01"/>
-        <parameter name="accountId" value="860411"/>
         <parameter name="accountCurrency" value="HKD"/>
         <parameter name="clientCode" value ="QA Client (No.121 QA Client)"/>
         <parameter name="bookieCode" value ="QA Bookie"/>
         <parameter name="emailAddress" value="autoacc001stg@yopmail.com"/>
         <parameter name="smartGroup" value="Auto QC Group"/>
-        <parameter name="superCode" value="SM-01U-QA Client"/>
-        <parameter name="masterCode" value="QA Smart Master"/>
-        <parameter name="agentCode" value="QA Smart Agent"/>
+        <parameter name="superCode" value="QA2112"/>
+        <parameter name="agentCode" value="QASAHK00"/>
         <parameter name="bookieMasterCode" value="Ma-QA101-QA Test"/>
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <parameter name="companyName" value="Kastraki Limited"/>
@@ -33,17 +34,16 @@
         <parameter name="userNameOneRole" value="onerole"/>
         <groups>
             <run>
-                <include name="2023.12.29"/>
+<!--                <include name="2023.12.29"/>-->
             </run>
         </groups>
 
         <classes>
-            <class name="testcases.sb11test.soccer.MonitorBetsTest"/>
-            <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
-            <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
-            <class name="testcases.sb11test.generalReports.ClosingJournalEntriesTest"/>
-            <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
-            <class name="testcases.sb11test.user.UserActivityMonitoringTest"/>
+            <class name="testcases.sb11test.financialReports.BalanceSheetTest">
+                <methods>
+                    <include name="Balance_Sheet_2794"/>
+                </methods>
+            </class>
         </classes>
     </test>
 </suite>

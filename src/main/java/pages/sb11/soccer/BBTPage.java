@@ -121,6 +121,10 @@ public class BBTPage extends WelcomePage {
         return getGroupTable(groupName);
     }
 
+    public int getNumberOfWindow(){
+        return DriverManager.getDriver().getWindowHandles().size();
+    }
+
     private List<String> getGroupTable(String groupName){
         int index = 1;
         Table tblGroup;
@@ -511,8 +515,17 @@ public class BBTPage extends WelcomePage {
         return true;
     }
 
+    public void verifyHomeAwayTeamNameCorrect(String homeName, String awayName) {
+        int tableIndex = findTableIndexByTeam(homeName);
+        Assert.assertTrue(tblBBT.getHomeTableControl(tableIndex).getHeaderNameOfRows().contains(homeName),
+                String.format("FAILED! Home team: %s is not displayed on right table", homeName));
+        Assert.assertTrue(tblBBT.getAwayTableControl(tableIndex).getHeaderNameOfRows().contains(awayName),
+                String.format("FAILED! Away team: %s is not displayed on left table", awayName));
+    }
+
     /**
      * @param isLeftTable define left or right table to find row Index
+     * @return row index of bet base on variables of order object: stake and price
      * */
     public int findRowIndexOfTeamTable(Order order, boolean isLeftTable){
         int rowIndex = 1;
@@ -521,8 +534,10 @@ public class BBTPage extends WelcomePage {
         Table tblTeam = tblBBT.getTableControl(tableIndex);
         while(true){
            Label lblStake = Label.xpath(tblTeam.getxPathOfCell(1, colStake, rowIndex, null));
+           Label lblOdds = Label.xpath(tblTeam.getxPathOfCell(1, colPrice, rowIndex, null));
            if(lblStake.isDisplayed()){
-               if(Double.valueOf(lblStake.getText())==order.getRequireStake()){
+               if (Double.valueOf(lblStake.getText()) == order.getRequireStake() &&
+                       lblOdds.getText().contains(String.valueOf(order.getPrice()))) {
                    return rowIndex;
                }
                rowIndex++;

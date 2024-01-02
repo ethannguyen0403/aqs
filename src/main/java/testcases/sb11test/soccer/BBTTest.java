@@ -32,7 +32,7 @@ import static common.SBPConstants.BBTPage.*;
 
 public class BBTTest extends BaseCaseAQS {
 
-    @Test(groups = {"regression_qc", "2023.11.30"})
+    @Test(groups = {"regression_stg", "2023.11.30"})
     @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "157")
     public void BBT_TC_157(String password, String userNameOneRole) throws Exception{
@@ -51,7 +51,7 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression_qc", "2023.11.30"})
+    @Test(groups = {"regression_stg", "2023.11.30"})
     @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "158")
     public void BBT_TC_158(String password, String userNameOneRole) throws Exception{
@@ -70,7 +70,7 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression_qc", "2023.11.30"})
+    @Test(groups = {"regression_stg", "2023.11.30"})
     @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "159")
     public void BBT_TC_159(String password, String userNameOneRole) throws Exception{
@@ -383,7 +383,7 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression_stg", "2023.11.30"})
     @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "314")
     public void BBT_TC_314(String password, String userNameOneRole) throws Exception{
@@ -903,6 +903,22 @@ public class BBTTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression", "2023.12.29"})
+    @TestRails(id = "9750")
+    public void BBT_TC_9750() {
+        log("@title: Validate can open multiple popups at once");
+        log("@Step 1: Navigate to Soccer > BBT");
+        BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
+        log("@Step 2: Filter default option with Soccer sport");
+        bbtPage.filter("", SOCCER, "", "", "06/12/2023", "06/12/2023", "", "", "");
+        log("@Step 3: Click on S and S12 link");
+        Label.xpath(bbtPage.tblBBT.getSLinkXpath(1, "S")).jsClick();
+        Label.xpath(bbtPage.tblBBT.getSLinkXpath(1, "S12")).jsClick();
+        log("@Verify 1: Validate can open multiple popups at once successfully");
+        Assert.assertEquals(bbtPage.getNumberOfWindow(), 3, "FAILED! Can not open multiple popups S links");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2023.12.29"})
     @TestRails(id = "16177")
     public void BBT_TC_16177() {
         log("@title: Validate 'S' and 'S12' link should not displayed when filtering Tennis sport");
@@ -928,14 +944,14 @@ public class BBTTest extends BaseCaseAQS {
                         .home("QA Tennis Team 01").away("QA Tennis Team 02")
                         .openTime("16:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderTennis = new Order.Builder().sport("Tennis").price(1.17).requireStake(13.25).oddType("HK").betType("Back")
-                .home("QA Tennis Team 1").away("QA Tennis Team 2").selection("Home").isLive(false).event(eventTennis).build();
+                .home(eventTennis.getHome()).away(eventTennis.getAway()).selection("Home").isLive(false).event(eventTennis).build();
         String leagueID = EventScheduleUtils.getLeagueID(eventTennis.getLeagueName(), SPORT_ID_MAP.get("Tennis"));
         String homeTeamID = EventScheduleUtils.getTeamID(eventTennis.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(eventTennis.getAway(), leagueID);
 
         try {
             log("@title: Validate Back Tennis bet should display correctly on left table");
-            log("@Precondition: Already have some place Back bet on Home for Tennis sport");
+            log("@Precondition - Step 1: Already have some place Back bet on Home for Tennis sport");
             EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Tennis"), "INRUNNING");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             TennisBetEntryPage tennisBetEntryPage = betEntryPage.goToTennis();
@@ -946,7 +962,10 @@ public class BBTTest extends BaseCaseAQS {
             BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
             log("@Step 2: Filter with Tennis sport with valid data at pre-condition > observe");
             bbtPage.filter("", "Tennis", "", "", "", "", "", "", "");
-            log("@Verify 1: Validate Back Tennis bet should display correctly");
+
+            log(String.format("@Verify 1: Validate Home: %s and away: %s team should display correctly", orderTennis.getHome(), orderTennis.getAway()));
+            bbtPage.verifyHomeAwayTeamNameCorrect(orderTennis.getHome(), orderTennis.getAway());
+            log("@Verify 2: Validate Back Tennis bet should display correctly");
             Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(orderTennis, true) != -1, "FAILED! The bet is not show on BBT page");
             log("INFO: Executed completely");
         }finally {
@@ -969,7 +988,7 @@ public class BBTTest extends BaseCaseAQS {
                         .home("QA Tennis Team 01").away("QA Tennis Team 02")
                         .openTime("16:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderTennis = new Order.Builder().sport("Tennis").price(1.17).requireStake(13.25).oddType("HK").betType("Lay")
-                .home("QA Tennis Team 1").away("QA Tennis Team 2").selection("Home").isLive(false).event(eventTennis).build();
+                .home("QA Tennis Team 01").away("QA Tennis Team 02").selection("Home").isLive(false).event(eventTennis).build();
         String leagueID = EventScheduleUtils.getLeagueID(eventTennis.getLeagueName(), SPORT_ID_MAP.get("Tennis"));
         String homeTeamID = EventScheduleUtils.getTeamID(eventTennis.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(eventTennis.getAway(), leagueID);

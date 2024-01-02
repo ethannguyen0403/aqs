@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
 import pages.sb11.financialReports.CashFlowStatementPage;
 import pages.sb11.financialReports.RetainedEarningsPage;
+import pages.sb11.financialReports.popup.cashflowStatement.TransactionDetailsPopup;
 import pages.sb11.role.RoleManagementPage;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
@@ -63,8 +64,29 @@ public class CashFlowStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "8545")
+    @Test(groups = {"regression", "2023.12.29"})
+    public void Cash_Flow_Statement_TC8545() {
+        log("@title: Validate Total in HKD data is matched correctly with total (Debit in HKD-Credit in HKD) on Transaction Details");
+        String transType = "Payment Client";
+        log("@Precondition:  Login the page\n" +
+                "Already have a transaction from one of Detail Types");
+        CashFlowStatementPage cashFlowStatementPage =
+                welcomePage.navigatePage(FINANCIAL_REPORTS, CASH_FLOW_STATEMENT, CashFlowStatementPage.class);
+        log("@Step 1: Filter with valid data: Date 02/11/2023");
+        cashFlowStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR, "02/11/2023", "02/11/2023");
+        double totalHKDPayClient = cashFlowStatementPage.getAmountTotalInHKDTransTable(transType);
+        log("@Step 2: Open Transaction detail of type: " +  transType);
+        TransactionDetailsPopup popup = cashFlowStatementPage.goToTransactionDetails(transType);
+        double totalCreHKD = popup.getTotalValue(6);
+        double totalDebitHKD = popup.getTotalValue(5);
+        log("@Verify 1: Validate Total in HKD data is matched correctly with total (Debit in HKD - Credit in HKD) at all currencies row on Transaction Details");
+        Assert.assertEquals(totalHKDPayClient, totalDebitHKD-totalCreHKD, "FAILED! Total in HKD data is NOT matched");
+        log("INFO: Executed completely");
+    }
+
     @TestRails(id = "8546")
-    @Test(groups = {"regression", "2023.10.31"})
+    @Test(groups = {"regression_stg", "2023.10.31"})
     @Parameters({"password", "userNameOneRole"})
     public void Cash_Flow_Statement_TC8546(String password, String userNameOneRole) throws Exception {
         log("@title: Validate can't access Cash Flow Statement page when having no permission");

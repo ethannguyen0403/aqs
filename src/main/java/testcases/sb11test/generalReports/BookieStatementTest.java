@@ -147,7 +147,7 @@ public class BookieStatementTest extends BaseCaseAQS {
             log("@Step 4: Click on Super Master RPCRBA link");
             BookieSuperMasterDetailPopup bookiePopup = bookieStatementPage.openBookieSuperMasterDetailPopup(superMasterCode);
             String rpcrbaVal = bookiePopup.getSuperMasterCellValue(bookiePopup.colRPCRBA, true);
-            log("Validate for Bookie Super account chosen in Debit section, value will show positive amount");
+            log("Verify 1: Validate for Bookie Super account chosen in Debit section, value will show positive amount");
             Assert.assertEquals(String.format("%.2f",transaction.getAmountDebit()),rpcrbaVal,"FAILED! Amount Debit and RPCRBA Value does not show in positive, Amount Debit:  " + transaction.getAmountDebit()
                     + " RPCRBA: " + rpcrbaVal);
         } finally {

@@ -10,6 +10,8 @@ import org.testng.Assert;
 import pages.sb11.generalReports.LedgerStatementPage;
 import utils.sb11.CurrencyRateUtils;
 
+import java.util.List;
+
 public class LedgerDetailPopup {
     public Label lblTitle = Label.xpath("//app-ledger-detail//span[contains(@class,'font-weight-bolder')]");
     public Button btnClose = Button.xpath("//app-ledger-detail//em[contains(@class,'fa-times')]");
@@ -163,5 +165,9 @@ public class LedgerDetailPopup {
             }
             i = i +1;
         }
+    }
+    public String getClosingValue(){
+        List<String> lstValue = tbLedger.getColumn(colRunORG,true);
+        return lstValue.get(lstValue.size() - 2);
     }
 }
