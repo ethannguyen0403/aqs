@@ -208,7 +208,7 @@ public class SBPConstants {
     }
 
     public static class TradingPermission{
-        public final static List<String> TABLE_HEADER = Arrays.asList("#", "i", "Username", "Auto-assigned All", "Permission", "Customers");
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "i", "Username", "Auto-assigned All", "Permission", "Exclude Test Data", "Customers");
     }
 
     public static class AutoCreatedAccounts{
