@@ -385,7 +385,7 @@ public class SBPConstants {
     }
 
     public static class CurrencyRates{
-        public final static List<String> TABLE_HEADER = Arrays.asList("#", "i","Currency Name","CUR","OP Rate");
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "i","Currency Name","CUR","Rate to %s");
     }
 
     public static class EventSchedule{
@@ -470,6 +470,7 @@ public class SBPConstants {
     }
     public static class ConsolidatedClientBalance {
         public final static List<String> HEADER_NAME = Arrays.asList("#","Client","PIC","Status","Note","Log","Deposit in Ori CUR","Total Balance HKD","GBP","USD","EUR","HKD");
+        public final static String ERROR_MES_FINANCIAL_YEAR = "Date range should be between 01/08/%s - 31/07/%s.";
     }
 }
 

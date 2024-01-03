@@ -5,13 +5,16 @@ import com.paltech.utils.DateUtils;
 import com.paltech.utils.FileUtils;
 import common.SBPConstants;
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.accounting.CurrencyRatesPage;
 import pages.sb11.soccer.BBGPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
+import java.util.List;
 
 import static common.SBPConstants.*;
 
@@ -30,18 +33,21 @@ public class CurrencyRatesTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
+    @Parameters({"companyCurrency","companyName"})
     @TestRails(id = "2152")
-    public void Currency_Rates_TC_2152(){
+    public void Currency_Rates_TC_2152(String companyCurrency, String companyName){
         log("@title: Validate Currency Rate page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Currency Rate");
         CurrencyRatesPage currencyRatesPage = welcomePage.navigatePage(ACCOUNTING,CURRENCY_RATES,CurrencyRatesPage.class);
         log("@Step 3: Filter with valid data");
-        currencyRatesPage.filterRate("");
+        currencyRatesPage.filterRate(companyName,"");
         log(" Validate UI Info display correctly");
         log("Currency table header columns is correctly display");
         Assert.assertEquals(currencyRatesPage.lblDate.getText(),"Date","Failed! Date datetime picker is not displayed!");
-        Assert.assertEquals(currencyRatesPage.tblCurRate.getHeaderNameOfRows(), CurrencyRates.TABLE_HEADER,"FAILED! Currency Rate table header is incorrect display");
+        List<String> lstTblHeader = CurrencyRates.TABLE_HEADER;
+        lstTblHeader.set(4,String.format(CurrencyRates.TABLE_HEADER.get(4), companyCurrency));
+        Assert.assertEquals(currencyRatesPage.tblCurRate.getHeaderNameOfRows(), lstTblHeader,"FAILED! Currency Rate table header is incorrect display");
         log("INFO: Executed completely");
     }
 
