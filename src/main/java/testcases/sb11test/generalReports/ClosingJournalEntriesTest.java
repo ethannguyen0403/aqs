@@ -46,14 +46,15 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "9842")
     public void Closing_Journal_Entries_9842() {
-        //AQS-3816
         log("@title: Validate can access 'Closing Journal Entries' page if activate System Monitoring permission");
         log("@Pre-condition: System Monitoring' permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Expand General Reports menu");
         log("@Step 3: Click 'System Monitoring' menu");
         log("@Step 4: Select 'Closing Journal Entries' tab");
+        ClosingJournalEntriesPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING,SystemMonitoringPage.class).goToTabName(CLOSING_JOURNAL_ENTRIES,ClosingJournalEntriesPage.class);
         log("@Verify 1: System Monitoring' menu is hidden so that user could not access 'Closing Journal Entries' page");
+        Assert.assertTrue(page.isClosingTabBehindCorrectBets());
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})

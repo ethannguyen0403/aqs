@@ -1,17 +1,22 @@
 package pages.sb11.generalReports;
 
+import com.beust.ah.A;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import com.paltech.utils.DateUtils;
+import com.paltech.utils.DoubleUtils;
 import common.SBPConstants;
+import controls.Cell;
 import controls.DateTimePicker;
 import controls.Table;
+import org.openqa.selenium.support.Color;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import utils.ExcelUtils;
 
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +34,7 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
     public Button btnCreateClient = Button.xpath("//button[text()='Create/Manage Client Groups']");
     int numCol = 12;
     public Table tblInfo = Table.xpath("//table",numCol);
+    Label lblTotalOfTotalBalance = Label.xpath("//th[text()=' Total']//following-sibling::th[5]");
 
 
     public void verifyUIDisplay() {
@@ -55,6 +61,11 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
         }
         if (!toDate.isEmpty()){
             dtpDate.selectDate(toDate,"dd/MM/yyyy");
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if (!status.isEmpty()){
             ddStatus.selectByVisibleText(status);
@@ -117,7 +128,6 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
         Assert.assertEquals(curEURValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("EUR"), 1, null).getText(), "FAILED! EUR column value display incorrect");
         Assert.assertEquals(curHKDValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("HKD"), 1, null).getText(), "FAILED! HKD column value display incorrect");
     }
-
     public List<String> getLstClientDisplay() {
         List<String> lstClient = new ArrayList<>();
         int numRow =  tblInfo.getNumberOfRows(true);
@@ -125,5 +135,65 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
             lstClient.add(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Client"),i,null).getText());
         }
         return lstClient;
+    }
+    public void verifyFilterWorkProperly() {
+        String clientExpect = "QA Client (No.121 QA Client)";
+        String depositExpect = "HKD\n1,075,572,920.31";
+        String totalExpect = "1,075,963,622.55";
+        String hkdExpect = "1,075,807,350.56";
+        Assert.assertEquals(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Client"),1,null).getText().trim(),clientExpect,"FAILED! Client display incorrect");
+        Assert.assertTrue(DropDownBox.xpath(tblInfo.getxPathOfCellSPP(1,tblInfo.getColumnIndexByName("Status"),1,"select")).isDisplayed(),"FAILED! Status display incorrect");
+        Assert.assertEquals(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Deposit in Ori CUR"),1,null).getText().trim(),depositExpect,"FAILED! Deposit in Ori CUR display incorrect");
+        Assert.assertEquals(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Total Balance HKD"),1,null).getText().trim(),totalExpect,"FAILED! Total Balance HKD display incorrect");
+        Assert.assertEquals(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("HKD"),1,null).getText().trim(),hkdExpect,"FAILED! HKD column display incorrect");
+    }
+
+    public void verifyDataTableDisplay() {
+        List<String> lstTotal = getColumnSPP(tblInfo.getColumnIndexByName("Total Balance HKD"),155,true);
+        String blackColorAc = tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("GBP"),1,null).getColour("color");
+        String negativeColorAc = tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Total Balance HKD"),1,null).getColour("color");
+        String positiveColorAc = tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Total Balance HKD"),lstTotal.size()-1,null).getColour("color");
+        Assert.assertTrue(Color.fromString(blackColorAc).asHex().equals("#212529"),"FAILED! Color of 0 display incorrect!");
+        Assert.assertTrue(Color.fromString(negativeColorAc).asHex().equals("#dc3545"),"FAILED! Color of negative number display incorrect!");
+        Assert.assertTrue(Color.fromString(positiveColorAc).asHex().equals("#007bff"),"FAILED! Color of positive number display incorrect!");
+        Double beforeNumb = Double.valueOf(lstTotal.get(0).trim().replace(",",""));
+        Double total = beforeNumb;
+        //check Total Balance in HKD: Data will be sorted by ascendingly
+        for (int i = 1; i < lstTotal.size();i++){
+            total = DoubleUtils.roundWithTwoPlaces(RoundingMode.HALF_EVEN,total+Double.valueOf(lstTotal.get(i).trim().replace(",","")));
+            if (beforeNumb > Double.valueOf(lstTotal.get(i).trim().replace(",",""))){
+                Assert.assertTrue(false,"FAILED! Client "+i+" display incorrect");
+            }
+        }
+        //check deviation of sum actual and sum expect
+        Assert.assertTrue((Double.valueOf(lblTotalOfTotalBalance.getText().trim().replace(",",""))-total) < 0.02,"FAILED! Total of Total Balance HKD display incorrect");
+
+    }
+    public List<String> getColumnSPP(int columnOrder, int limit, boolean isMoved){
+        List<String> lst = new ArrayList<String>();
+        if (columnOrder < 1){
+            System.out.println(String.format("Error: columnOrder %s is to be more than or equal to 1", columnOrder));
+            return lst;
+        }
+        int i = 1;
+        String cellXpath = String.format("%s%s%s", "//table", "//tbody/tr[%s]/", String.format("th[%s]", columnOrder));
+        if(!Cell.xpath(String.format(cellXpath, i)).isDisplayed())
+        {
+            cellXpath = String.format("%s%s%s", "//table", "//body/tr[%s]/", String.format("th[%s]", columnOrder));
+        }
+        while(true) {
+            Cell cell = Cell.xpath(String.format(cellXpath, i));
+            if (!cell.isDisplayedShort(5)){
+                return lst;
+            }
+            lst.add(cell.getText(5));
+            if (lst.size() == limit) {
+                return lst;
+            }
+            if (isMoved){
+                cell.scrollDownInDistance();
+            }
+            i += 1;
+        }
     }
 }
