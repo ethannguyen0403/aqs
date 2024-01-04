@@ -40,7 +40,6 @@ public class OpenPriceTest extends BaseCaseAQS {
         openPricePage.filterResult("","All",true);
         Assert.assertEquals(openPricePage.lblDate.getText(),"Date","Failed! Date datetime picker is not displayed!");
         Assert.assertEquals(openPricePage.btnShowLeagues.getText(),"Show Leagues","Failed! Show League button is not displayed!");
-        Assert.assertTrue(openPricePage.ddpLeague.getOptions().contains("All"),"Failed! League dropdown is not displayed!");
         Assert.assertEquals(openPricePage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
         log("Event table header columns is correctly display");
         log("Header is " + openPricePage.tbOpenPrice.getHeaderNameOfRows());
@@ -55,11 +54,12 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Open Price");
         OpenPricePage openPricePage = welcomePage.navigatePage(SPORT,OPEN_PRICE, OpenPricePage.class);
-        log("@Step 3:  Select Date and click Show League ");
-        openPricePage.filterResult("","All",false);
+        log("@Step 3:  Open League filter");
+        openPricePage.openLeagueFilter();
         log("Validate League list is displayed correctly");
-        int leagueSize = openPricePage.ddpLeague.getNumberOfItems();
-        Assert.assertTrue(leagueSize > 0, "Failed! League list is having no item" );
+        Assert.assertTrue(openPricePage.getAllOptionNameFilter().size()>0, "FAILED! League list is having no item");
+//        int leagueSize = openPricePage.ddpLeague.getNumberOfItems();
+//        Assert.assertTrue(leagueSize > 0, "Failed! League list is having no item" );
         log("INFO: Executed completely");
     }
 
