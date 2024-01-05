@@ -6,7 +6,7 @@ import controls.Table;
 import pages.sb11.WelcomePage;
 
 public class SoccerResultEntryPage extends WelcomePage {
-    Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
+    Label lblTitle = Label.xpath("(//div[contains(@class,'justify-content-between')]//div[@class='pt-2']//span)[2]");
     public String getTitlePage ()
     {
         return lblTitle.getText().trim();

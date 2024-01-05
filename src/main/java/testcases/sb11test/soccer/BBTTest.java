@@ -17,10 +17,7 @@ import pages.sb11.soccer.BBTPage;
 import pages.sb11.trading.*;
 import pages.sb11.trading.BetEntryPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.BBTUtils;
-import utils.sb11.BetEntrytUtils;
-import utils.sb11.EventScheduleUtils;
-import utils.sb11.GetSoccerEventUtils;
+import utils.sb11.*;
 import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;
@@ -958,6 +955,7 @@ public class BBTTest extends BaseCaseAQS {
             tennisBetEntryPage.showLeague(COMPANY_UNIT, "", eventTennis.getLeagueName(), accountCode);
             tennisBetEntryPage.placeBet(orderTennis, orderTennis.getSelection());
 
+            BetSettlementUtils.waitForBetIsUpdate(4);
             log("@Step 1: Navigate to Soccer > BBT");
             BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
             log("@Step 2: Filter with Tennis sport with valid data at pre-condition > observe");
@@ -1038,7 +1036,7 @@ public class BBTTest extends BaseCaseAQS {
         try {
             log("@title: Validate Back Basketball bet should display correctly on left table");
             log("@Precondition: Already have some place Back bet on Home for Basketball sport");
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Tennis"), "INRUNNING");
+            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), "INRUNNING");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
             basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);

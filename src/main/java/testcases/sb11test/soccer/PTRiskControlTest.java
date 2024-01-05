@@ -427,7 +427,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("@Step 2: Access Soccer > PT Risk Control");
         PTRiskPage ptRiskPage = welcomePage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
         log("@Step 3: Filter with valid data: Sport Tennis, Company Fair, Date 22/05/2023");
-        ptRiskPage.filter("Tennis", "", "Fair", "Normal", "", "22/05/2023", "22/05/2023", "");
+        ptRiskPage.filter("Tennis", "", "Fair", "Normal", "All", "22/05/2023", "22/05/2023", "");
         log("@Step 4: Open Bet list");
         PTRiskBetListPopup betListPopup = ptRiskPage.openBetList("Dom Stricker");
         log("Verify 2: Validate data of mapped Merito account is correct");
