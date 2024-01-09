@@ -133,6 +133,9 @@ public class SBPConstants {
     public final static String POSITION_TAKING_REPORT = "Position Taking Report";
     public final static String USER_ACTIVITY_MONITORING = "User Activity Monitoring";
     public final static String SYSTEM_MONITORING = "System Monitoring";
+    public final static String OPERATING_INCOME = "OPERATING INCOME";
+    public final static String OPERATING_EXPENSES = "OPERATING EXPENSES";
+    public final static String NON_OPERATING_INCOME = "NON-OPERATING INCOME";
     public final static List<String> CRICKET_MARKET_TYPE_NO_LIVE =  Arrays.asList("1x2","DNB","OE","OU");
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
@@ -206,7 +209,7 @@ public class SBPConstants {
     }
 
     public static class TradingPermission{
-        public final static List<String> TABLE_HEADER = Arrays.asList("#", "i", "Username", "Auto-assigned All", "Permission", "Customers");
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "i", "Username", "Auto-assigned All", "Permission", "Exclude Test Data", "Customers");
     }
 
     public static class AutoCreatedAccounts{
@@ -244,7 +247,7 @@ public class SBPConstants {
 
     public static class ResultEntry{
         public final static List<String> RESULT_SOCCER_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "HT Score", "FT Score", "HT Corner", "FT Corner", "HT Card", "FT Card");
-        public final static List<String> RESULT_CRICKET_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "Team To Bat First", "Home Team", "Away Team", "IsHdp FB", "Runs", "Wtks", "Runs", "Wtks");
+        public final static List<String> RESULT_CRICKET_TABLE_HEADER = Arrays.asList("#", "i", "Time", "Event", "", "Status", "Team To Bat First", "Home Team", "Away Team", "IsHdp FB", "Result", "Runs", "Wtks", "Runs", "Wtks");
         public final static List<String> RESULT_TYPE = Arrays.asList("NotSet","Home Win","Away Win", "Draw");
 
     }
@@ -452,6 +455,7 @@ public class SBPConstants {
     public static class ClientLedgerRecPayPopupConstants {
         public final static List<String> HEADER_LIST = Arrays.asList("#", "Txn. Date", "Description", "Credit", "Debit", "Credit [%s]", "Debit [%s]");
     }
+
     public static class MemberTransactionPopupConstants {
         public final static List<String> HEADER_LIST = Arrays.asList("#", "Txn.Date", "Txn.Id", "Description", "Debit", "Credit", "Running", "Debit [%s]", "Credit [%s]", "Running [%s]");
     }

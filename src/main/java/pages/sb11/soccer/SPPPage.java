@@ -66,8 +66,10 @@ public class SPPPage extends WelcomePage {
      */
     public void filter(String sport, String reportBy, String punterType, String smartMaster, String smartAgent, String fromDate, String toDate) {
         waitPageLoad();
-        if (!sport.isEmpty())
+        if (!sport.isEmpty()){
+            ddSport.getOptions();
             ddSport.selectByVisibleText(sport);
+        }
         if(!reportBy.isEmpty())
             ddpReportBy.selectByVisibleText(reportBy);
         if(!punterType.isEmpty())

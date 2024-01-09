@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Header {
     public Icon icBell = Icon.xpath("//div[@id='navbarSupportedContent']//div[contains(@class,'fa-bell')]");
-    public Label lblUserName = Label.xpath("//div[@id='navbarSupportedContent']//ul/li[2]/span");
+    public Label lblUserName = Label.xpath("//div[@id='navbarSupportedContent']//ul/li[3]/span");
     public Label lblChangePassword = Label.xpath("//div[@id='navbarSupportedContent']//span[contains(@class,'text-change-pass')]");
     public Button btnLogout = Button.xpath("//div[@id='navbarSupportedContent']//button[text()='Logout']");
     public Icon iconLogo = Icon.xpath("//span[contains(@class,'main-icon')]");
