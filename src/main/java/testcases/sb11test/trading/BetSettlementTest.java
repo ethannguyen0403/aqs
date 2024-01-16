@@ -27,7 +27,7 @@ import static common.SBPConstants.BetSettlement.BET_LIST_STATEMENT_EMAIL;
 
 public class BetSettlementTest extends BaseCaseAQS {
     @TestRails(id="187")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetSettlement_TC187(String accountCode,String accountCurrency) throws InterruptedException {
         log("@title: Validate Win/loss amounts are calculated correctly when having Account Percentage setting\");\n" +
@@ -180,7 +180,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="205")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetSettlement_TC205(String accountCode,String accountCurrency){
         log("@title: Validate that user can Settled and Send Settlement email successfully");
@@ -233,7 +233,7 @@ public class BetSettlementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="206")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void BetSettlement_TC206(String accountCode,String accountCurrency,String emailAddress,String clientCode){
         log("@title: Validate all information display correctly in statement email (AQS-2020)");
@@ -241,8 +241,8 @@ public class BetSettlementTest extends BaseCaseAQS {
                 "The account is configured with email in Address Book");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
-        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
+        String date = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT +7"));
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
@@ -261,7 +261,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         order = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder).get(0);
 
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,date,accountCode);
         confirmBetsPage.confirmBet(order);
 
         log("@Step 2: Navigate to Trading > Bet Settlement and search bet of the account at precondition in Confirmed mode");
