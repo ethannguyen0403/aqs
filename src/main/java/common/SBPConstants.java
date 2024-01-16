@@ -46,6 +46,7 @@ public class SBPConstants {
     public final static String CLIENT_BALANCE = "Client Balance";
     public final static String BOOKIE_BALANCE = "Bookie Balance";
     public final static String BOOKIE_STATEMENT = "Bookie Statement";
+    public final static String FEED_REPORT = "Feed Report";
     public final static String CLOSING_JOURNAL_ENTRIES = "Closing Journal Entries";
     public final static String CONSOLIDATED_CLIENT_BALANCE = "Consolidated Client Balance";
     public final static String JOURNAL_ENTRIES = "Journal Entries";
@@ -475,6 +476,12 @@ public class SBPConstants {
     public static class ConsolidatedClientBalance {
         public final static List<String> HEADER_NAME = Arrays.asList("#","Client","PIC","Status","Note","Log","Deposit in Ori CUR","Total Balance HKD","GBP","USD","EUR","HKD");
         public final static String ERROR_MES_FINANCIAL_YEAR = "Date range should be between 01/08/%s - 31/07/%s.";
+    }
+    public static class FeedReport {
+        public final static String ERROR_MES_INVALID_TIME_RANGE = "Invalid date range. You can see data up to 3 months.";
+        public final static String CONFIRM_MES_ADDING_PROVIDER = "Are you sure to create %s?";
+        public final static String CONFIRM_MES_DELETE_PROVIDER = "Are you sure to delete %s?";
+        public final static String MES_NOTE_PROVIDER_CLIENT = "Can not edit or delete Provider/Client that had feed transactions.";
     }
 }
 

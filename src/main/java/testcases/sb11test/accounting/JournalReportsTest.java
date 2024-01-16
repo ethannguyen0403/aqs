@@ -124,8 +124,8 @@ public class JournalReportsTest extends BaseCaseAQS {
         JournalReportsPage journalReportsPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_REPORTS,JournalReportsPage.class);
         log("@Step 4: Filter the closing journal at end of a month");
         journalReportsPage.filterReports(COMPANY_UNIT,"Transaction Date",date,date,"All","","Contra CUR","");
-        String totalDebit = journalReportsPage.getTotalDebitOrCredit(logClosing, true);
-        String totalCredit = journalReportsPage.getTotalDebitOrCredit(logClosing, false);
+        String totalDebit = journalReportsPage.getTotalByColumn(logClosing, "Foreign Debit");
+        String totalCredit = journalReportsPage.getTotalByColumn(logClosing, "Foreign Credit");
         log("Verify 1: The Total Debit = Total Credit");
         Assert.assertEquals(totalDebit, totalCredit, "FAILED! Credit and Debit are not equal with each other");
         log("INFO: Executed completely");

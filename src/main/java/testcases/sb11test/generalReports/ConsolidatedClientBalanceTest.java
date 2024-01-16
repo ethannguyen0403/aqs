@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
     @TestRails(id="5280")
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression_stg","2023.12.29"})
     @Parameters({"password", "userNameOneRole"})
     public void Consolidated_Client_Balance_5280(String password, String userNameOneRole) throws Exception {
         log("@title: Validate accounts without permission cannot see the menu");
