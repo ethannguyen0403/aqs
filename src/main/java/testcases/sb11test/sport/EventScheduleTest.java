@@ -30,7 +30,6 @@ public class EventScheduleTest extends BaseCaseAQS {
         String leagueName ="QA Soccer League";
         String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Event event = new Event.Builder()
                 .sportName("Soccer")
                 .leagueName(leagueName)
