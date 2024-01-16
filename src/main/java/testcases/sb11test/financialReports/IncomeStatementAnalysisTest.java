@@ -335,7 +335,6 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
             List<String> headerList = Arrays.asList("December - 2023", "January - 2024", "Txns January - 2024", "YEAR 2022-2023", "YEAR 2023-2024");
             List<Map<String, String>> excelData = ExcelUtils.getDataTest(downloadPath, INCOME_STATEMENT_ANALYSIS, headerList, "");
             incomeAnaPage.verifyExcelDataInCommaFormat(excelData, lblYear);
-            log("INFO: Executed completely");
         }finally {
             log("@Post-condition: delete download file");
             FileUtils.removeFile(downloadPath);
@@ -359,7 +358,6 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         try {
             log("@Verify 1: Validate excel file was downloaded successfully");
             Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! PDF file was not downloaded successfully");
-            log("INFO: Executed completely");
         }finally {
             log("@Post-condition: delete download file");
             FileUtils.removeFile(downloadPath);

@@ -82,8 +82,22 @@
             <class name="testcases.sb11test.master.ClientSystemTest"/>
 
             <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
+            <class name="testcases.sb11test.generalReports.ClosingJournalEntriesTest"/>
+            <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
 
             <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
+            <class name="testcases.sb11test.financialReports.RetainedEarningsTest"/>
+            <class name="testcases.sb11test.financialReports.CashFlowStatementTest"/>
+            <class name="testcases.sb11test.financialReports.TrialBalanceTest"/>
+            <class name="testcases.sb11test.financialReports.IncomeStatementTest"/>
+
+            <class name="testcases.sb11test.trading.KeyClientsReportTest"/>
+            <class name="testcases.sb11test.trading.CricketSportTest"/>
+
+            <class name="testcases.sb11test.invoice.InvoicesTest"/>
+            <class name="testcases.sb11test.accounting.CompanySetupTest"/>
+
+            <class name="testcases.sb11test.user.UserActivityMonitoringTest"/>
         </classes>
     </test>
 </suite>
