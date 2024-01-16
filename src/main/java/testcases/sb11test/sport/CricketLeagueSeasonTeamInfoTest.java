@@ -14,10 +14,10 @@ import static common.SBPConstants.COUNTRY_LIST;
 
 public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
 
-    String leagueName = "QA Cricket Auto League";
+    String leagueName = "QA Cricket League Auto ";
     String country = "Asia";
-    String seasonName = "QA Cricket Auto Season";
-    String teamName = "QA Cricket Auto Team";
+    String seasonName = "QA Cricket Season Auto";
+    String teamName = "QA Cricket Team Auto";
 
     @Test(groups = {"regression"})
     @TestRails(id = "2073")

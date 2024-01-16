@@ -3,6 +3,7 @@ package pages.sb11.generalReports;
 import com.paltech.element.common.*;
 import controls.DateTimePicker;
 import controls.Table;
+import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.feedreport.ClientPopup;
@@ -56,6 +57,7 @@ public class FeedReportPage extends WelcomePage {
         try {
             TextBox txtAmount = TextBox.xpath(String.format(txtAmountByNameXpath,providerClientTableName,providerClientName));
             txtAmount.sendKeys(valueAmount);
+            txtAmount.sendKeys(Keys.ENTER);
         } catch (Exception e){
             e.getMessage();
         }
