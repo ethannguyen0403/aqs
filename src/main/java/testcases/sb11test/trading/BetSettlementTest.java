@@ -27,7 +27,7 @@ import static common.SBPConstants.BetSettlement.BET_LIST_STATEMENT_EMAIL;
 
 public class BetSettlementTest extends BaseCaseAQS {
     @TestRails(id="187")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetSettlement_TC187(String accountCode,String accountCurrency) throws InterruptedException {
         log("@title: Validate Win/loss amounts are calculated correctly when having Account Percentage setting\");\n" +
@@ -180,7 +180,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="205")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetSettlement_TC205(String accountCode,String accountCurrency){
         log("@title: Validate that user can Settled and Send Settlement email successfully");
@@ -233,7 +233,7 @@ public class BetSettlementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="206")
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void BetSettlement_TC206(String accountCode,String accountCurrency,String emailAddress,String clientCode){
         log("@title: Validate all information display correctly in statement email (AQS-2020)");
