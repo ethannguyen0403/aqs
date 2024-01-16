@@ -1,6 +1,8 @@
 package testcases.sb11test.financialReports;
 
 import com.paltech.utils.DateUtils;
+import com.paltech.utils.DoubleUtils;
+import com.paltech.utils.FileUtils;
 import com.paltech.utils.StringUtils;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -11,9 +13,13 @@ import pages.sb11.financialReports.TrialBalancePage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.role.RoleManagementPage;
 import testcases.BaseCaseAQS;
+import utils.ExcelUtils;
 import utils.testraildemo.TestRails;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static common.SBPConstants.*;
 
@@ -147,7 +153,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data with Before CJE option");
         incomeAnaPage.filter(COMPANY_UNIT, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
-        String amountIncome = incomeAnaPage.getCellValueOfMonthCol(String.format("%s - %s", month, year), firstCodeIndex);
+        String amountIncome = incomeAnaPage.getCellValueOfMonthCol(String.format("%s - %s", month, year), firstCodeIndex).replace("-", "");
         String chartCodeAccount = incomeAnaPage.getChartCodeAccount(firstCodeIndex);
 
         log("@Step 3: Go to General Reports >> Ledger Statement");
@@ -175,7 +181,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data with After CJE option");
         incomeAnaPage.filter(COMPANY_UNIT, "", String.format("%s - %s", year, month), REPORT_TYPE.get(1));
-        String amountIncome = incomeAnaPage.getCellValueOfMonthCol(String.format("%s - %s", month, year), firstCodeIndex);
+        String amountIncome = incomeAnaPage.getCellValueOfMonthCol(String.format("%s - %s", month, year), firstCodeIndex).replace("-", "");
         String chartCodeAccount = incomeAnaPage.getChartCodeAccount(firstCodeIndex);
 
         log("@Step 3: Go to General Reports >> Ledger Statement");
@@ -191,5 +197,171 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "3412")
+    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    public void IncomeStatement_Analysis_TC3412() {
+        log("@title: Validate Txns. [filtered month] calculates properly");
+        int firstCodeIndex = 3;
+        String month = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[0];
+        String year = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[1];
+        String previousMonth = DateUtils.getMonthYear("GMT +7", -1, "MMMM/yyyy").split("/")[0];
+        String previousYear = DateUtils.getMonthYear("GMT +7", -1, "MMMM/yyyy").split("/")[1];
+        String lblTxns = String.format("Txns. %s", String.format("%s - %s", month, year));
 
+        log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
+        IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
+        log("@Step 2: Filter which have data");
+        incomeAnaPage.filter(COMPANY_UNIT, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
+
+        log("@Verify 1: Validate Txns. [filtered month] = the amount in the filtered month - amount in the previous month");
+        double amountCurrentMonth =
+                Double.valueOf(incomeAnaPage.getCellValueOfMonthCol(String.format("%s - %s", month, year), firstCodeIndex));
+        double amountPreviousMonth =
+                Double.valueOf(incomeAnaPage.getCellValueOfMonthCol(String.format("%s - %s", previousMonth, previousYear), firstCodeIndex));
+        double amountTxns = Double.valueOf(incomeAnaPage.getCellValueOfMonthCol(lblTxns, firstCodeIndex));
+        Assert.assertEquals(amountTxns, amountCurrentMonth-amountPreviousMonth, "FAILED! Txns. [filtered month] value is NOT correct");
+        log("@Verify 2: Validate the red amount will be treated as negative and the blue amount will be treated as Positive");
+        incomeAnaPage.verifyAmountTxnsColorIsCorrect(amountCurrentMonth, amountPreviousMonth,
+                incomeAnaPage.getCellControlOfMonthCol(lblTxns, firstCodeIndex));
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id = "3413")
+    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    public void IncomeStatement_Analysis_TC3413() {
+        log("@title: Validate [previous financial year] displays correct amount ");
+        int firstCodeIndex = 3;
+        String month = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[0];
+        String year = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[1];
+        int previousYear = DateUtils.getYear("GMT +7") - 1;
+        String lblFilterPreviousYear = String.format("Year %s-%s", previousYear - 1, previousYear);
+
+        log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
+        IncomeStatementAnalysisPage incomeAnaPage =
+                welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
+        log("@Step 2: Filter which have data with Before CJE option");
+        incomeAnaPage.filter(COMPANY_UNIT, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
+        String amountIncome = incomeAnaPage.getCellValueOfMonthCol(lblFilterPreviousYear.toUpperCase(), firstCodeIndex).replace("-", "");
+        String chartCodeAccount = incomeAnaPage.getChartCodeAccount(firstCodeIndex);
+
+        log("@Step 3: Go to General Reports >> Ledger Statement");
+        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+        log(String.format("@Step 4: Get value of Account: %s and filter time: 01/08/%s - 31/07/%s on Ledger Statement page",
+                chartCodeAccount, previousYear - 1, previousYear));
+        log("@Step info: If filter financial year =2022-2023, then amounts of previous financial year is the YEAR 2021-2022 can get from ledger statement from 01-08-2021 to 31-07-2022");
+        ledgerStatementPage.showLedger(COMPANY_UNIT, lblFilterPreviousYear, "All", chartCodeAccount,
+                String.format("01/08/%s", previousYear - 1),
+                String.format("31/07/%s", previousYear), REPORT_TYPE.get(0));
+        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal();
+        log("@Verify 1: Validate [previous financial year] display amounts of details type, parent accounts in the previous financial year accordingly");
+        Assert.assertEquals(amountIncome, amountLedger, "FAILED! The amounts of [previous financial year] displays incorrect");
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id = "3414")
+    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    public void IncomeStatement_Analysis_TC3414() {
+        log("@title: Validate [Filtered financial year] displays correct amount");
+        int firstCodeIndex = 3;
+        String month = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[0];
+        String year = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[1];
+        int previousYear = DateUtils.getYear("GMT +7") - 1;
+        String lblFilterYear = String.format("Year %s-%s", previousYear, year);
+
+        log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
+        IncomeStatementAnalysisPage incomeAnaPage =
+                welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
+        log("@Step 2: Filter which have data with Before CJE option");
+        incomeAnaPage.filter(COMPANY_UNIT, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
+        String amountIncome = incomeAnaPage.getCellValueOfMonthCol(lblFilterYear.toUpperCase(), firstCodeIndex).replace("-", "");
+        String chartCodeAccount = incomeAnaPage.getChartCodeAccount(firstCodeIndex);
+
+        log("@Step 3: Go to General Reports >> Ledger Statement");
+        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+        log(String.format("@Step 4: Get value of Account: %s and filter time: 01/08/%s - 31/07/%s on Ledger Statement page",
+                chartCodeAccount, previousYear, year));
+        log("@Step info: If filter financial year =2022-2023, then amounts of previous financial year is the YEAR 2021-2022 can get from ledger statement from 01-08-2021 to 31-07-2022");
+        ledgerStatementPage.showLedger(COMPANY_UNIT, lblFilterYear, "All", chartCodeAccount, String.format("01/08/%s", previousYear),
+                String.format("31/07/%s", year), REPORT_TYPE.get(0));
+        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal();
+        log("@Verify 1: Validate display amounts of details type, parent accounts in the filtered financial year accordingly");
+        Assert.assertEquals(amountIncome, amountLedger, "FAILED! The amounts of [Filtered financial year] displays incorrect");
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id = "4026")
+    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    public void IncomeStatement_Analysis_TC4026() {
+        log("@title:Validate [Net Profit (Loss)] displays correct amoun");
+        String month = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[0];
+        String year = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[1];
+        String lblYear =String.format("%s - %s", month, year);
+        log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
+        IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
+        log("@Step 2: Filter which have data");
+        incomeAnaPage.filter(COMPANY_UNIT, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
+
+        log("@Verify 1: Net Profit (Loss) = Total Operating Income - Total Operating Expenses + Total Non-Operating Income");
+        double amountIncome = Double.valueOf(incomeAnaPage.getTotalAmount(lblYear, incomeAnaPage.getRowIndexByGroup("Total Operating Income")));
+        double amountExpense = Double.valueOf(incomeAnaPage.getTotalAmount(lblYear, incomeAnaPage.getRowIndexByGroup("Total Operating Expenses")));
+        double amountNonIncome = Double.valueOf(incomeAnaPage.getTotalAmount(lblYear, incomeAnaPage.getRowIndexByGroup("Total Non-Operating Income")));
+        double amountNetProfit = Double.valueOf(incomeAnaPage.getNetProfitLoss(lblYear));
+        Assert.assertEquals(amountNetProfit, DoubleUtils.roundUpWithTwoPlaces(amountIncome - amountExpense + amountNonIncome), "FAILED! Net Profit (Loss) is not correct");
+        log("@Verify 2: Validate the red amount will be treated as negative and the blue amount will be treated as Positive");
+        incomeAnaPage.verifyAmountNetProfitColorIsCorrect(amountIncome, amountExpense, amountNonIncome, incomeAnaPage.getNetProfitLossControl(lblYear));
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id = "4027")
+    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    public void IncomeStatement_Analysis_TC4027() throws IOException {
+        log("@title: Validate 'Export To Excel' button work properly");
+        String downloadPath = getDownloadPath() + "income-statement-analysis.xlsx";
+        String month = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[0];
+        String year = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[1];
+        String lblYear =String.format("%s - %s", month, year);
+        log("@Precondition: Income Statement – Analysis permission is ON");
+        log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
+        IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
+        log("@Step 2: Filter which have data");
+        incomeAnaPage.filter(COMPANY_UNIT, "","","");
+        log("@Step 4: Click to export excel button");
+        incomeAnaPage.btnExportExcel.click();
+        welcomePage.waitSpinnerDisappeared();
+        try {
+            log("@Verify 1: Validate excel file was downloaded successfully");
+            Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! Excel file was not downloaded successfully");
+            log("@Verify 2: The correct data should display and should have format 'comma' for thousand number");
+            List<String> headerList = Arrays.asList("December - 2023", "January - 2024", "Txns January - 2024", "YEAR 2022-2023", "YEAR 2023-2024");
+            List<Map<String, String>> excelData = ExcelUtils.getDataTest(downloadPath, INCOME_STATEMENT_ANALYSIS, headerList, "");
+            incomeAnaPage.verifyExcelDataInCommaFormat(excelData, lblYear);
+        }finally {
+            log("@Post-condition: delete download file");
+            FileUtils.removeFile(downloadPath);
+        }
+        log("INFO: Executed completely");
+    }
+
+    @TestRails(id = "4028")
+    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    public void IncomeStatement_Analysis_TC4028() throws IOException {
+        log("@title: Validate 'Export To PDF' button work properly ");
+        String downloadPath = getDownloadPath() + "income-statement-analysis.pdf";
+        log("@Precondition: Income Statement – Analysis permission is ON");
+        log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
+        IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
+        log("@Step 2: Filter which have data");
+        incomeAnaPage.filter(COMPANY_UNIT, "","","");
+        log("@Step 4: Click to export PDF button");
+        incomeAnaPage.btnExportPDF.click();
+        welcomePage.waitSpinnerDisappeared();
+        try {
+            log("@Verify 1: Validate excel file was downloaded successfully");
+            Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! PDF file was not downloaded successfully");
+        }finally {
+            log("@Post-condition: delete download file");
+            FileUtils.removeFile(downloadPath);
+        }
+        log("INFO: Executed completely");
+    }
 }
