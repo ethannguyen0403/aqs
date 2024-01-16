@@ -21,7 +21,7 @@ public class SoccerResultEntryTest extends BaseCaseAQS {
         SoccerResultEntryPage soccerResultEntryPage = welcomePage.navigatePage(SPORT,RESULT_ENTRY, SoccerResultEntryPage.class);
         soccerResultEntryPage.goToSport("Soccer");
         log("Validate Result Entry page for Soccer sport is displayed with correctly title");
-        Assert.assertTrue(soccerResultEntryPage.getTitlePage().contains("Soccer"), "Failed! Result Entry page for Soccer sport is not displayed");
+        Assert.assertTrue(soccerResultEntryPage.getTitlePage().equalsIgnoreCase("Soccer"), "Failed! Result Entry page for Soccer sport is not displayed");
         log("INFO: Executed completely");
     }
 
