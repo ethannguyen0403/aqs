@@ -39,6 +39,8 @@
 
         <classes>
             <class name="testcases.sb11test.generalReports.ConsolidatedClientBalanceTest"/>
+            <class name="testcases.sb11test.generalReports.FeedReportTest"/>
+
             <class name="testcases.sb11test.restapi.RestAPITest"/>
         </classes>
     </test>
