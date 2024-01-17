@@ -323,8 +323,9 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "2128")
     @Test(groups = {"regression"})
-    public void PTRiskControlTC_006(){
+    public void PTRiskControlTC_2128(){
         log("@title: Validate that can copy report successfully");
         String date = String.format(DateUtils.getDate(-3,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Login with valid account");
