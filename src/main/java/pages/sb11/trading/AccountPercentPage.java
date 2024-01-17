@@ -4,13 +4,15 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import common.SBPConstants;
 import controls.Table;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.trading.popup.BLSettingsPopup;
 import pages.sb11.trading.popup.ConfirmUpdatePTPopup;
 
 public class AccountPercentPage extends WelcomePage {
-    Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
+    public Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
     public String getTitlePage ()
     {
         return lblTitle.getText().trim();
@@ -34,6 +36,7 @@ public class AccountPercentPage extends WelcomePage {
         }
         txtAccountCode.sendKeys(accountCode);
         btnSearch.click();
+        waitSpinnerDisappeared();
     }
 
     public void editPercent(String accountCode, String PT){
@@ -75,4 +78,12 @@ public class AccountPercentPage extends WelcomePage {
     }
 
 
+    public void verifyLayoutOfPage() {
+        Assert.assertTrue(getTitlePage().contains(SBPConstants.ACCOUNT_PERCENT),"FAILED! Title page display incorrect");
+        Assert.assertTrue(ddpBookie.isEnabled(),"FAILED! Bookie dropdown display incorrect");
+        Assert.assertTrue(ddpType.isEnabled(),"FAILED! Type dropdown display incorrect");
+        Assert.assertTrue(txtAccountCode.isEnabled(),"FAILED! Account Code textbox display incorrect");
+        Assert.assertTrue(btnSearch.isEnabled(),"FAILED! Search Button display incorrect");
+        Assert.assertEquals(tbAccPercent.getHeaderNameOfRows(),SBPConstants.AccountPercent.TABLE_HEADER,"FAILED! Header table display incorrect");
+    }
 }
