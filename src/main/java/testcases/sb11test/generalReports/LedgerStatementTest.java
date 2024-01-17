@@ -1164,10 +1164,9 @@ public class LedgerStatementTest extends BaseCaseAQS {
     @TestRails(id = "2160")
     public void Ledger_Statement_2160(){
         log("@title: Validate at the end of each month all Income and Expenditure sub-accounts (ledgers) must have balance = 0");
-        int month = DateUtils.getMonth("GMT +7") - 1;
-        int year = Integer.valueOf(FINANCIAL_YEAR.replaceAll("[a-zA-z]", "").trim().split("-")[0]);
-        String fromDate = DateUtils.getFirstDateOfMonth(year, month, "dd/MM/yyyy");
-        String toDate = DateUtils.getLastDateOfMonth(year, month, "dd/MM/yyyy");
+        String monthYear = DateUtils.getMonthYear(GMT_7,-1,"MM/yyyy");
+        String fromDate = DateUtils.getFirstDateOfMonth(Integer.valueOf(monthYear.split("/")[1]),Integer.valueOf(monthYear.split("/")[0]),"dd/MM/yyyy");
+        String toDate = DateUtils.getLastDateOfMonth(Integer.valueOf(monthYear.split("/")[1]),Integer.valueOf(monthYear.split("/")[0]),"dd/MM/yyyy");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click General Reports > Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);

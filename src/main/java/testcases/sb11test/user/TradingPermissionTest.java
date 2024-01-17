@@ -65,7 +65,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
     @Test(groups = {"regression_stg"})
     @TestRails(id = "2069")
     @Parameters("username")
-    public void Trading_Permission_TC_2069(String username){
+    public void Trading_Permission_TC_2069(String username) throws InterruptedException {
         log("@title: Validate that all Permission is disabled after checking Auto-assigned All");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on User > Trading Permission page");
@@ -80,8 +80,8 @@ public class TradingPermissionTest extends BaseCaseAQS {
 
     @Test(groups = {"regression_stg"})
     @TestRails(id = "2070")
-    @Parameters("username")
-    public void Trading_Permission_TC_2070(String username){
+    @Parameters("userNameOneRole")
+    public void Trading_Permission_TC_2070(String username) throws InterruptedException {
         log("@title: Validate that all Permission is enabled after checking Auto-assigned All");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on User > Trading Permission page");

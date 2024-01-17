@@ -28,7 +28,7 @@ import java.util.List;
 import static common.SBPConstants.*;
 
 public class ClosingJournalEntriesTest extends BaseCaseAQS {
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression_stg","2023.12.29"})
     @TestRails(id = "9841")
     @Parameters({"password", "userNameOneRole"})
     public void Closing_Journal_Entries_9841(String password, String userNameOneRole) throws Exception {
@@ -46,14 +46,15 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "9842")
     public void Closing_Journal_Entries_9842() {
-        //AQS-3816
         log("@title: Validate can access 'Closing Journal Entries' page if activate System Monitoring permission");
         log("@Pre-condition: System Monitoring' permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Expand General Reports menu");
         log("@Step 3: Click 'System Monitoring' menu");
         log("@Step 4: Select 'Closing Journal Entries' tab");
+        ClosingJournalEntriesPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING,SystemMonitoringPage.class).goToTabName(CLOSING_JOURNAL_ENTRIES,ClosingJournalEntriesPage.class);
         log("@Verify 1: System Monitoring' menu is hidden so that user could not access 'Closing Journal Entries' page");
+        Assert.assertTrue(page.isClosingTabBehindCorrectBets());
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})
@@ -97,7 +98,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Pre-condition 1: System Monitoring' permission is ON for any account");
         log("@Pre-condition 2: There are some transactions perform after CJE");
         String numberLeder = "010.000.000.000";
-        String ledger = "AutoExpenditureCredit1";
+        String ledger = "AutoCreditExpenditure";
         Calendar cal  = Calendar.getInstance();
         cal.add(Calendar.MONTH, -1);
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM");
@@ -154,7 +155,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Pre-condition 1: System Monitoring' permission is ON for any account");
         log("@Pre-condition 2: There are some transactions perform after CJE");
         String numberLeder = "010.000.000.000";
-        String ledger = "AutoExpenditureCredit1";
+        String ledger = "AutoCreditExpenditure";
         Calendar cal  = Calendar.getInstance();
         cal.add(Calendar.MONTH, -2);
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM");
@@ -300,7 +301,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Step 5: Click Perform CJE button");
         ConfirmPopup confirmPopup = new ConfirmPopup();
         confirmPopup.btnYes.click();
-        String performedDate = DateUtils.getDate(0,"dd/MM/yyy HH:mm",GMT_7);
+        String performedDate = DateUtils.getDate(0,"dd/MM/yyy HH:mm","GMT+8");
         log("@Verify 1: Confirm dialog will close and No record will add in the History/Log table");
         Assert.assertTrue(page.isRecordHistoryDisplay(month,username,performedDate),"FAILED! The History/Log table display incorrect");
         log("INFO: Executed completely");

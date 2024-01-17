@@ -66,6 +66,7 @@ public class JournalReportsPage extends WelcomePage {
         }
         if (!accountType.isEmpty()){
             ddpAccountType.selectByVisibleText(accountType);
+            waitSpinnerDisappeared();
         }
         if (!clientBookieLedger.isEmpty()){
             ddpClientBookieLedger.selectByVisibleText(clientBookieLedger);
@@ -114,11 +115,27 @@ public class JournalReportsPage extends WelcomePage {
         return trans;
     }
 
-    public String getTotalDebitOrCredit(String transDes, boolean isDebit) {
-        int colDeOrCre = isDebit ? 3 : 4;
+    public String getTotalByColumn(String transDes, String columnName){
+        int colIndex = 0;
+        switch (columnName){
+            case "Foreign Debit":
+                colIndex = 3;
+                break;
+            case "Foreign Credit":
+                colIndex = 4;
+                break;
+            case "Debit in HKD":
+                colIndex = 5;
+                break;
+            case "Credit in HKD":
+                colIndex = 6;
+                break;
+            default:
+                System.out.println(columnName+" is incorrect");
+        }
         return Label.xpath(
                 String.format("//tr[contains(.,'%s')]/following-sibling::tr[contains(@class, 'total-col ng-star-inserted')][1]/td[%s]",
-                        transDes, colDeOrCre)).getText().trim();
+                        transDes, colIndex)).getText().trim();
     }
 
     public List<String> getDeOrCreValueByAccountType(String accountName, String transDes, String accountType, boolean isDebit) {

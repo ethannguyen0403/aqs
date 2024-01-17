@@ -119,7 +119,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_deprecated"})
+    @Test(groups = {"smoke"})
     @Parameters("clientCode")
     @TestRails(id = "588")
     public void ClientStatementTC_588(String clientCode) {

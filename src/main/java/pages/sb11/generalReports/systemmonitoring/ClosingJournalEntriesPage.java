@@ -1,11 +1,15 @@
 package pages.sb11.generalReports.systemmonitoring;
 
+import com.paltech.driver.DriverManager;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Tab;
 import com.paltech.utils.DateUtils;
 import common.SBPConstants;
 import controls.Table;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.popup.ConfirmPopup;
@@ -99,5 +103,19 @@ public class ClosingJournalEntriesPage extends WelcomePage {
         set.add(lstMonth);
         Assert.assertEquals(set.size(),1,"FAILED! Log has 2 month different");
         Assert.assertEquals(lstMonth.get(0),month,"FAILED! History/Log display incorrect");
+    }
+
+    public boolean isClosingTabBehindCorrectBets() {
+        List<String> lstTab = new ArrayList<>();
+        List<WebElement> lstTabElement = DriverManager.getDriver().findElements(By.xpath("//app-system-monitoring//ul[contains(@class,'site-menu')]//a"));
+        for (WebElement tab : lstTabElement){
+            lstTab.add(tab.getText());
+        }
+        int indexClosing = lstTab.indexOf("Closing Journal Entries");
+        int indexCorrectBet = lstTab.indexOf("Correct Bets");
+        if (indexClosing < indexCorrectBet){
+            return false;
+        }
+        return true;
     }
 }
