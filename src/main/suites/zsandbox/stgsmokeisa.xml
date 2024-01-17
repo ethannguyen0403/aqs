@@ -12,7 +12,8 @@
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
         <parameter name='username' value='AutoQC'/>
-        <parameter name='password' value='p8PEjV0gJOnWf9U0aEgGEA=='/>
+        <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
+        <parameter name='isAddTestRailResult' value='false'/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
         <parameter name="accountCode" value="Auto-Account01"/>
@@ -25,15 +26,14 @@
         <parameter name="agentCode" value="QASAHK00"/>
         <parameter name="bookieMasterCode" value="Ma-QA101-QA Test"/>
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
-        <parameter name='isAddTestRailResult' value='false'/>
         <groups>
             <run>
-                <include name="smoke" />
+                <include name="smoke1" />
             </run>
         </groups>
 
         <classes>
-            <class name="testcases.sb11test.sport.EventScheduleTest"/>
+            <class name="testcases.sb11test.trading.BetSettlementTest"/>
         </classes>
     </test>
 </suite>

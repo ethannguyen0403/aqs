@@ -241,8 +241,8 @@ public class BetSettlementTest extends BaseCaseAQS {
                 "The account is configured with email in Address Book");
         String sport="Soccer";
         String companyUnit = "Kastraki Limited";
-        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
+        String date = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT +7"));
         Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
@@ -261,7 +261,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         order = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder).get(0);
 
         ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,date,accountCode);
         confirmBetsPage.confirmBet(order);
 
         log("@Step 2: Navigate to Trading > Bet Settlement and search bet of the account at precondition in Confirmed mode");
