@@ -38,6 +38,8 @@
         </groups>
 
         <classes>
+            <class name="testcases.sb11test.trading.AccountPercentTest"/>
+
             <class name="testcases.sb11test.generalReports.ConsolidatedClientBalanceTest"/>
             <class name="testcases.sb11test.generalReports.FeedReportTest"/>
 
