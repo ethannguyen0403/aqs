@@ -97,19 +97,20 @@ public class BetEntrytUtils {
                         "\"fixtureAway\":\"%s\"," +
                         "\"fixtureSport\":\"%s\"," +
                         "\"stage\":\"%s\"," +
-                        "\"handicap\":0," +
+                        "\"handicap\":%s," +
                         "\"odds\":%s," +
                         "\"oddsType\":\"%s\"," +
                         "\"stake\":%s," +
                         "\"betType\":\"%s\"}]}"
                 , order.getEvent().getEventId(), order.getMarketName(), order.getMarketType(), order.getEvent().getEventDate(),order.getSelection(),order.getEvent().getHome(),order.getEvent().getLeagueName(),
-                order.getEvent().getAway(),order.getEvent().getSportName(),order.getStage(),order.getOdds(),order.getOddType(),order.getRequireStake(),order.getBetType());
+                order.getEvent().getAway(),order.getEvent().getSportName(),order.getStage(), order.getHandicap(),order.getOdds(),order.getOddType(),order.getRequireStake(),order.getBetType());
         try {
             WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
         }catch (IOException e){
             System.out.println("Exception: IOException occurs at sendGETRequestDynamicHeaders");
         }
     }
+
 
     public static void placeManualBetAPI(int companyId, String accountId, String sportId, Order order) {
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));

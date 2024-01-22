@@ -31,6 +31,7 @@ public class Order {  private String sport;
     private String createDate;
     private String betId;
     private double runs;
+    private double handicap;
     private int handicapWtks;
     private double handicapRuns;
     private boolean isLive;
@@ -289,6 +290,13 @@ public class Order {  private String sport;
         this.runs = runs;
     }
 
+    public double getHandicap() {
+        return handicap;
+    }
+    public void setHandicap(double handicap) {
+        this.handicap = handicap;
+    }
+
     public int getHandicapWtks() {
         return handicapWtks;
     }
@@ -346,6 +354,7 @@ public class Order {  private String sport;
         private double _runs;
         private int _handicapWtks;
         private double _handicapRuns;
+        private double _handicap;
         private boolean _isLive;
         private String _sport;
         private Event _event;
@@ -492,6 +501,10 @@ public class Order {  private String sport;
             _handicapRuns = val;
             return this;
         }
+        public Builder handicap(double val) {
+            _handicap = val;
+            return this;
+        }
         public Builder isLive(boolean val) {
             _isLive = val;
             return this;
@@ -535,6 +548,7 @@ public class Order {  private String sport;
         this.runs = builder._runs;
         this.handicapRuns = builder._handicapRuns;
         this.handicapWtks = builder._handicapWtks;
+        this.handicap = builder._handicap;
         this.isLive = builder._isLive;
         this.sport = builder._sport;
         this.event = builder._event;

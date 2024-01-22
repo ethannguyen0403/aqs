@@ -298,6 +298,8 @@ public class SBPConstants {
     public static class AccountPercent{
         public final static List<String> TYPE_LIST = Arrays.asList("[All]","With Percent","Without Percent");
         public final static List<String> TABLE_HEADER = Arrays.asList("#","i","Account Code","Actual WinLoss %","CUR","Client Name");
+        public final static String INPUT_REQUIRE_MES = "Please input required field(s).";
+        public final static String EDIT_SUCCESS_MES = "Account percent setting updated successfully!";
     }
     public static class KeyClientsReport{
         public final static List<String> TABLE_HEADER = Arrays.asList("S1 COMPLETED [15/09/2023 - 30/09/2023]","#","Date","Cricket","Soccer","Tennis","Others","Total","C/F. ToDate");

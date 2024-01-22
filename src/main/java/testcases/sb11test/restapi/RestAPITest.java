@@ -65,6 +65,7 @@ public class RestAPITest extends BaseCaseAQS {
                 .createDate(date)
                 .eventDate(dateAPI + " 23:59:00")
                 .odds(1)
+                .handicap(0.00)
                 .oddType("HK")
                 .requireStake(1.00)
                 .betType("BACK")
@@ -147,6 +148,7 @@ public class RestAPITest extends BaseCaseAQS {
                 .createDate(date)
                 .eventDate(dateAPI + " 23:59:00")
                 .odds(1)
+                .handicap(0.00)
                 .oddType("HK")
                 .requireStake(1.00)
                 .betType("BACK")
@@ -230,6 +232,7 @@ public class RestAPITest extends BaseCaseAQS {
                 .createDate(date)
                 .eventDate(dateAPI + " 23:59:00")
                 .odds(1)
+                .handicap(0.00)
                 .oddType("HK")
                 .requireStake(1.00)
                 .betType("OU")
@@ -303,6 +306,7 @@ public class RestAPITest extends BaseCaseAQS {
                 .createDate(date)
                 .eventDate(dateAPI + " 23:59:00")
                 .odds(1)
+                .handicap(0.00)
                 .oddType("HK")
                 .requireStake(1.00)
                 .betType("BACK")
@@ -378,13 +382,13 @@ public class RestAPITest extends BaseCaseAQS {
         ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
         //Place bet
         Order orderHome = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection(event.getHome())
-                .sport(sportName).stage("FullTime").createDate(date).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
+                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
                 .betType("BACK").build();
         Order orderDraw = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection("Draw")
-                .sport(sportName).stage("FullTime").createDate(date).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
+                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
                 .betType("LAY").build();
         Order orderAway = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection(event.getAway())
-                .sport(sportName).stage("FullTime").createDate(date).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(20)
+                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(20)
                 .betType("BACK").build();
         BetEntrytUtils.placeBetAPI(orderHome);
         BetEntrytUtils.placeBetAPI(orderDraw);
@@ -455,13 +459,13 @@ public class RestAPITest extends BaseCaseAQS {
         ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
         //Place bet
         Order orderHome = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection(event.getHome())
-                .sport(sportName).stage("FullTime").createDate(date).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
+                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
                 .betType("BACK").build();
         Order orderDraw = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection("Draw")
-                .sport(sportName).stage("FullTime").createDate(date).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
+                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
                 .betType("LAY").build();
         Order orderAway = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection(event.getAway())
-                .sport(sportName).stage("FullTime").createDate(date).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
+                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
                 .betType("BACK").build();
         BetEntrytUtils.placeBetAPI(orderHome);
         BetEntrytUtils.placeBetAPI(orderDraw);
@@ -532,13 +536,13 @@ public class RestAPITest extends BaseCaseAQS {
         ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
         //Place bet
         Order orderHome = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection(event.getHome())
-                .sport(sportName).stage("FullTime").createDate(date).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
+                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
                 .betType("BACK").build();
         Order orderDraw = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection("Draw")
-                .sport(sportName).stage("FullTime").createDate(date).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
+                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
                 .betType("LAY").build();
         Order orderAway = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection(event.getAway())
-                .sport(sportName).stage("FullTime").createDate(date).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(30)
+                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(30)
                 .betType("BACK").build();
         BetEntrytUtils.placeBetAPI(orderHome);
         BetEntrytUtils.placeBetAPI(orderDraw);
