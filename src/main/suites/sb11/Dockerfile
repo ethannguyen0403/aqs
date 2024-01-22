@@ -1,21 +1,27 @@
-FROM ubuntu:latest
-LABEL authors="Ethan.Nguyen"
+# First stage: complete build environment
+FROM maven:3.8.5-openjdk-18 AS builder
 
-ENTRYPOINT ["top", "-b"]
+WORKDIR /build
+# add pom.xml and source code
+ADD ./pom.xml pom.xml
+ADD ./src src/
 
-# Install required dependencies
-RUN apt-get update -y && \
-    apt-get install -y wget unzip libglu1-mesa && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* \
+# package jar
+RUN mvn clean dependency:copy-dependencies compile
 
-# Set environment variables
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
-ENV PATH $PATH:$JAVA_HOME/bin
+# FROM maven:3.8.7-openjdk-18-slim
+FROM registry.internal.techtank9.com/registry/analyst/automation/coreselenium:base
+
+RUN useradd -ms /bin/bash automation && usermod -aG sudo automation && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+USER mobileautomation
+WORKDIR /home/automation/
+
+# # # copy jar from the first stage
+COPY --from=builder /build/ ./
+COPY ./drivers/chromedriver ./chromedriver
 
 # Install Node.js
-RUN curl -sL https://deb.nodesource.com/setup_21.x | bash - && \
-    apt-get install -y nodejs
+RUN npm install
 
 # Set up Android SDK
 ENV ANDROID_HOME /opt/android-sdk
@@ -37,11 +43,13 @@ RUN yes | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses
 # Install required Android components
 RUN ${ANDROID_HOME}/tools/bin/sdkmanager "platform-tools" "platforms;android-33" "emulator" "system-images;android-33;google_apis;x86_64"
 
-# Install Appium
-RUN npm install -g appium
 
 # Create an Android emulator
 RUN echo "no" | ${ANDROID_HOME}/tools/bin avdmanager create avd -n test_emulator -k "system-images;android-33;google_apis;x86_64" --device "pixel"
 
-# Start Appium when the container starts
-CMD ["appium", "--log-level", "debug"]
+# CMD ["java", "-cp", "/target/classes/;/target/dependency/"]
+
+
+
+
+
