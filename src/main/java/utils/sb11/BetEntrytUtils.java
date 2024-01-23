@@ -93,7 +93,7 @@ public class BetEntrytUtils {
                         "\"clientMetadata\":\"\"," +
                         "\"fixtureHome\":\"%s\"," +
                         "\"fixtureCompetition\":\"%s\"," +
-                        "\"agentName\":\"Auto-Account01\"," +
+                        "\"agentName\":\"%s\"," +
                         "\"fixtureAway\":\"%s\"," +
                         "\"fixtureSport\":\"%s\"," +
                         "\"stage\":\"%s\"," +
@@ -102,8 +102,8 @@ public class BetEntrytUtils {
                         "\"oddsType\":\"%s\"," +
                         "\"stake\":%s," +
                         "\"betType\":\"%s\"}]}"
-                , order.getEvent().getEventId(), order.getMarketName(), order.getMarketType(), order.getEvent().getEventDate(),order.getSelection(),order.getEvent().getHome(),order.getEvent().getLeagueName(),
-                order.getEvent().getAway(),order.getEvent().getSportName(),order.getStage(), order.getHandicap(),order.getOdds(),order.getOddType(),order.getRequireStake(),order.getBetType());
+                , order.getEvent().getEventId(), order.getMarketName(), order.getMarketType(), order.getEvent().getEventDate(),order.getSelection(),order.getEvent().getHome(),order.getEvent().getLeagueName()
+                , order.getAccountCode(), order.getEvent().getAway(),order.getEvent().getSportName(),order.getStage(), order.getHandicap(),order.getOdds(),order.getOddType(),order.getRequireStake(),order.getBetType());
         try {
             WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
         }catch (IOException e){
