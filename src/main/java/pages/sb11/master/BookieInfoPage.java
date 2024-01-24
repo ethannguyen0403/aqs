@@ -56,6 +56,7 @@ public class BookieInfoPage extends WelcomePage {
     public void exportBookieList(){
         btnExportToExcel.scrollToTop();
         btnExportToExcel.click();
+        waitSpinnerDisappeared();
     }
 
     public BaseElement getControlXButton(String bookieCode) {
