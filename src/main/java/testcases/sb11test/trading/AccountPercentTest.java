@@ -298,6 +298,8 @@ public class AccountPercentTest extends BaseCaseAQS {
         BetSettlementUtils.waitForBetIsUpdate(20);
         String winLossEx = betSettlementPage.getWinlossSettledofOrder(order);
         betSettlementPage.settleAndSendSettlementEmail(order);
+        //wait for update in SPP page
+        BetSettlementUtils.waitForBetIsUpdate(20);
         log("@Step 1: Login to site");
         log("@Step 2: Navigate to Soccer > SPP");
         SPPPage sppPage = betSettlementPage.navigatePage(SOCCER,SPP,SPPPage.class);

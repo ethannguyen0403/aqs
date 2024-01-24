@@ -10,6 +10,9 @@ import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
+import utils.sb11.BetEntrytUtils;
+import utils.sb11.ChartOfAccountUtils;
+import utils.sb11.LedgerStatementUtils;
 import utils.testraildemo.TestRails;
 
 import java.time.Month;
@@ -179,8 +182,8 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @Parameters({"companyName"})
     public void Journal_Entries_TC_2164(String companyName){
-        String lgDebitCur = "AUD";
-        String lgCreditCur = "AUD";
+        String lgDebitCur = "HKD";
+        String lgCreditCur = "HKD";
         String descExpenditure = "Expenditure Transaction C2164" + DateUtils.getMilliSeconds();
         String transType = "Payment Other";
         String lgExpenditureGroup = "QA Ledger Group Expenditure";
