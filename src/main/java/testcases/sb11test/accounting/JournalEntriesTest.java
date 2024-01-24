@@ -10,9 +10,6 @@ import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.BetEntrytUtils;
-import utils.sb11.ChartOfAccountUtils;
-import utils.sb11.LedgerStatementUtils;
 import utils.testraildemo.TestRails;
 
 import java.time.Month;
