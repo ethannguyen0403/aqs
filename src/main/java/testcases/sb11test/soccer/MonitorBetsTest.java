@@ -293,8 +293,8 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "138")
-    @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_138(String accountCode, String accountCurrency) throws IOException, UnsupportedFlavorException {
+    @Parameters({"accountCode"})
+    public void MonitorBetsTC_138(String accountCode) throws IOException, UnsupportedFlavorException {
         log("@title: Validate the function of copy bet content works");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: The account is added to any smart group in Trading Smart System Smart Group");
@@ -304,10 +304,13 @@ public class MonitorBetsTest extends BaseCaseAQS {
         String betPlaceIn = "All Hours";
         String betCount = "Last 300 Bets";
         String lrbRule = "[LRB-Rule]";
-        int dateNo = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",false,true,
-                0.5,2.121,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
+        String sport="Soccer";
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        event.setEventDate(dateAPI);
+        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome()).stage("FullTime").odds(1.121)
+                .handicap(-0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
+        BetEntrytUtils.placeBetAPI(order);
         log("@Step 1: Access 'Monitor Bets' page");
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");

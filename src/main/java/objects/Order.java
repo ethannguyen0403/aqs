@@ -23,7 +23,7 @@ public class Order {  private String sport;
     private double hdpPoint;
     private double price;
     private String oddType;
-    private int odds;
+    private double odds;
     private String betType;
     private int liveHomeScore;
     private int liveAwayScore;
@@ -218,11 +218,11 @@ public class Order {  private String sport;
         this.oddType = oddType;
     }
 
-    public int getOdds() {
+    public double getOdds() {
         return odds;
     }
 
-    public void setOdds(int odds) {
+    public void setOdds(double odds) {
         this.odds = odds;
     }
 
@@ -343,7 +343,7 @@ public class Order {  private String sport;
         private double _hdpPoint;
         private double _price;
         private String _oddType;
-        private int _odds;
+        private double _odds;
         private String _betType;
         private int _liveHomeScore;
         private int _liveAwayScore;
@@ -457,7 +457,7 @@ public class Order {  private String sport;
             _oddType = val;
             return this;
         }
-        public Builder odds(int val) {
+        public Builder odds(double val) {
             _odds = val;
             return this;
         }
