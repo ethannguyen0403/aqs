@@ -206,7 +206,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("@Step 3: Click on client name");
         log("@Verify 1: Nothing happens after clicking on Client Name");
         //check href == null
-        Assert.assertTrue(page.tblInfo.getControlOfCellSPP(1,page.tblInfo.getColumnIndexByName("Client"),1,null).getAttribute("href") == null,"FAILED! Client name display incorrect");
+        Assert.assertTrue(page.tblInfo.getControlOfCellSPP(1,page.tblInfo.getColumnIndexByName("Client"),2,null).getAttribute("href") == null,"FAILED! Client name display incorrect");
         log("INFO: Executed completely");
     }
 }
