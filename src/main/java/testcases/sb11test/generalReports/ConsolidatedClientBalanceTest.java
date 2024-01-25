@@ -125,7 +125,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
     }
     @TestRails(id="5286")
     @Parameters({"clientCode"})
-    @Test(groups = {"revise","2024.V.1.0"})
+    @Test(groups = {"revise"})
     public void Consolidated_Client_Balance_5286(String clientCode) {
         log("@title: Validate filters work properly");
         log("@pre-condition: Consolidated Client Balance permission is ON");
@@ -156,7 +156,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="5288")
-    @Test(groups = {"revise","2024.V.1.0"})
+    @Test(groups = {"revise"})
     public void Consolidated_Client_Balance_5288() {
         log("@title: Validate filters work properly");
         log("@pre-condition: Consolidated Client Balance permission is ON");
