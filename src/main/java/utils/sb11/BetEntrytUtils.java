@@ -111,6 +111,12 @@ public class BetEntrytUtils {
         }
     }
 
+    public static void placeBetAPI(List<Order> lstOrder){
+        for (int i = 0; i < lstOrder.size();i++){
+            placeBetAPI(lstOrder.get(i));
+        }
+    }
+
 
     public static void placeManualBetAPI(int companyId, String accountId, String sportId, Order order) {
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));

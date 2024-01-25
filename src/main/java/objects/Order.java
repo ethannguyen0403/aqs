@@ -35,6 +35,8 @@ public class Order {  private String sport;
     private int handicapWtks;
     private double handicapRuns;
     private boolean isLive;
+    private boolean isWinLose;
+    private double winLose;
     private Event event;
 
     public Event getEvent() {
@@ -316,10 +318,24 @@ public class Order {  private String sport;
     public boolean isLive() {
         return isLive;
     }
-
     public void setLive(boolean live) {
         isLive = live;
     }
+    public boolean isWinLose() {
+        return isWinLose;
+    }
+    public void setIsWinLose(boolean winLose) {
+        isWinLose = winLose;
+    }
+    public double getWinLose() {
+        return winLose;
+    }
+    public void setWinLose(double winLose) {
+        this.winLose = winLose;
+    }
+
+
+
 
     public static class Builder {
         private String _selection;
@@ -356,6 +372,8 @@ public class Order {  private String sport;
         private double _handicapRuns;
         private double _handicap;
         private boolean _isLive;
+        private boolean _isWinLose;
+        private double _winLose;
         private String _sport;
         private Event _event;
         public Builder() {
@@ -509,6 +527,14 @@ public class Order {  private String sport;
             _isLive = val;
             return this;
         }
+        public Builder isWinLose(boolean val) {
+            _isWinLose = val;
+            return this;
+        }
+        public Builder winLose(double val) {
+            _winLose = val;
+            return this;
+        }
 
         public Order build() {
             return new Order(this);
@@ -550,6 +576,8 @@ public class Order {  private String sport;
         this.handicapWtks = builder._handicapWtks;
         this.handicap = builder._handicap;
         this.isLive = builder._isLive;
+        this.isWinLose = builder._isWinLose;
+        this.winLose = builder._winLose;
         this.sport = builder._sport;
         this.event = builder._event;
     }

@@ -131,7 +131,7 @@ public class BetSettlementUtils {
            System.out.println(e.getMessage());
         }
     }
-    public static void sendBetSettleJson(Order order, double winlose, boolean updateWinLose){
+    public static void sendBetSettleAPI(Order order){
         try{
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date date = sdf.parse(order.getEventDate());
@@ -155,14 +155,18 @@ public class BetSettlementUtils {
                             "    ],\n" +
                             "    \"transactionDate\": %s\n" +
                             "}"
-                    , order.getBetId(),winlose,updateWinLose,millis);
+                    , order.getBetId(),order.getWinLose(),order.isWinLose(),millis);
 
             WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
         }catch (IOException | ParseException e){
             System.out.println(e.getMessage());
         }
     }
-
+    public static void sendBetSettleAPI(List<Order> lstOrder){
+        for (int i = 0; i < lstOrder.size(); i++){
+            sendBetSettleAPI(lstOrder.get(i));
+        }
+    }
     private static String buildJsonPayload(String fromDatePS7, String toDatePS7, String status,String accountCode, String accountId, String sportID){
         return String.format("{\n" +
                 "  \"fromDatePS7\": \"%s\",\n" +

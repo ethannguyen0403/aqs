@@ -40,4 +40,9 @@ public class ConfirmBetsUtils {
             System.out.println("Exception: IOException occurs at sendGETRequestDynamicHeaders");}
 
     }
+    public static void confirmBetAPI(List<Order> lstOrder){
+        for (int i = 0; i < lstOrder.size(); i++){
+            confirmBetAPI(lstOrder.get(i));
+        }
+    }
 }
