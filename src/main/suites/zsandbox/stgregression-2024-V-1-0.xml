@@ -38,10 +38,14 @@
         </groups>
 
         <classes>
+            <class name="testcases.sb11test.restapi.RestAPITest"/>
+
+            <class name="testcases.sb11test.trading.AccountPercentTest"/>
+
             <class name="testcases.sb11test.generalReports.ConsolidatedClientBalanceTest"/>
             <class name="testcases.sb11test.generalReports.FeedReportTest"/>
 
-            <class name="testcases.sb11test.restapi.RestAPITest"/>
+            <class name="testcases.sb11test.financialReports.IncomeStatementAnalysisTest"/>
         </classes>
     </test>
 </suite>

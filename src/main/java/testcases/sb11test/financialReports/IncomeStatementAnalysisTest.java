@@ -25,7 +25,7 @@ import static common.SBPConstants.*;
 
 public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     @TestRails(id = "2825")
-    @Test(groups = {"regression_stg", "SB11.2024.V.1.0"})
+    @Test(groups = {"regression_stg", "2024.V.1.0"})
     @Parameters({"password", "userNameOneRole"})
     public void IncomeStatement_Analysis_TC2825(String password, String userNameOneRole) throws Exception {
         log("@title: Validate 'Income Statement – Analysis' menu is hidden if not active Income Statement – Analysis permission");
@@ -45,7 +45,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2826")
-    @Test(groups = {"regression_stg", "SB11.2024.V.1.0"})
+    @Test(groups = {"regression_stg", "2024.V.1.0"})
     @Parameters({"password", "userNameOneRole"})
     public void IncomeStatement_Analysis_TC2826(String password, String userNameOneRole) throws Exception {
         log("@title: Validate 'Income Statement – Analysis' menu displays if active Income Statement – Analysis permission");
@@ -64,7 +64,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3405")
-    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0"})
     public void IncomeStatement_Analysis_TC3405() {
         log("@title: Validate 'Income Statement – Analysis' menu displays if active Income Statement – Analysis permission");
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
@@ -79,7 +79,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3406")
-    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0"})
     public void IncomeStatement_Analysis_TC3406() {
         log("@title: Validate Operating Income is only displayed details types with chart codes from 400 to 459 ");
         log("@Precondition: Already have a detail type with chart codes from 400 to 459 that contain transaction");
@@ -94,7 +94,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3407")
-    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0"})
     public void IncomeStatement_Analysis_TC3407() {
         log("@title: Validate Operating Income is only displayed details types with chart codes from 400 to 459 ");
         log("@Precondition: Already have a detail type with chart codes starting with 5, 6 that contain transaction");
@@ -109,7 +109,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3408")
-    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0"})
     public void IncomeStatement_Analysis_TC3408() {
         log("@title: Validate Non-Operating Income is only displayed details types with cart code starting from 460 to 599");
         log("@Precondition: Already have a detail type with chart codes starting from 460 to 599 that contain transaction");
@@ -124,7 +124,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3409")
-    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0"})
     public void IncomeStatement_Analysis_TC3409() {
         log("@title: Validate [Previous month compare to the filtered month] shows amounts in the previous month accordingly");
         String month = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[0];
@@ -142,7 +142,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3410")
-    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0"})
     public void IncomeStatement_Analysis_TC3410() {
         log("@title: Validate [Filtered month] amounts displays correctly with Before CJE option");
         int firstCodeIndex = 3;
@@ -170,7 +170,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3411")
-    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0"})
     public void IncomeStatement_Analysis_TC3411() {
         log("@title: Validate [Filtered month] amounts displays correctly with After CJE option");
         int firstCodeIndex = 3;
@@ -198,7 +198,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3412")
-    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0"})
     public void IncomeStatement_Analysis_TC3412() {
         log("@title: Validate Txns. [filtered month] calculates properly");
         int firstCodeIndex = 3;
@@ -227,7 +227,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3413")
-    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0"})
     public void IncomeStatement_Analysis_TC3413() {
         log("@title: Validate [previous financial year] displays correct amount ");
         int firstCodeIndex = 3;
@@ -259,7 +259,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3414")
-    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0"})
     public void IncomeStatement_Analysis_TC3414() {
         log("@title: Validate [Filtered financial year] displays correct amount");
         int firstCodeIndex = 3;
@@ -290,7 +290,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "4026")
-    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0"})
     public void IncomeStatement_Analysis_TC4026() {
         log("@title:Validate [Net Profit (Loss)] displays correct amoun");
         String month = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[0];
@@ -313,7 +313,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "4027")
-    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0"})
     public void IncomeStatement_Analysis_TC4027() throws IOException {
         log("@title: Validate 'Export To Excel' button work properly");
         String downloadPath = getDownloadPath() + "income-statement-analysis.xlsx";
@@ -343,7 +343,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "4028")
-    @Test(groups = {"regression", "SB11.2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0"})
     public void IncomeStatement_Analysis_TC4028() throws IOException {
         log("@title: Validate 'Export To PDF' button work properly ");
         String downloadPath = getDownloadPath() + "income-statement-analysis.pdf";

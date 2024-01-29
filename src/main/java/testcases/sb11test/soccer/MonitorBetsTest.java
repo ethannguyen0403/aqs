@@ -18,6 +18,7 @@ import pages.sb11.trading.ConfirmBetsPage;
 import pages.sb11.trading.SmartGroupPage;
 import pages.sb11.trading.SmartSystemPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.BetEntrytUtils;
 import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
 
@@ -25,6 +26,7 @@ import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static common.SBPConstants.*;
@@ -89,20 +91,33 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.11.29"})
     @TestRails(id = "132")
-    @Parameters({"accountCurrency"})
-    public void MonitorBetsTC_132(String accountCurrency) {
+    public void MonitorBetsTC_132() {
         log("@title: Validate normal punters are only shown when filter Normal Punter type");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: The account is not added to any smart group in Trading Smart System Smart Group");
         String accNoAdd = "QALKR";
         log("@Pre-condition 3: The account has placed bet(s)");
-        int dateNo = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        List<Order> lstOrder = betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",false,true,
-                0.5,2.12,"HK","Back",0,0,5.5,accNoAdd,accountCurrency,"HDP",false,false );
+        String sport="Soccer";
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        event.setEventDate(dateAPI);
+        Order order = new Order.Builder()
+                .event(event)
+                .accountCode(accNoAdd)
+                .marketName("Goals")
+                .marketType("HDP")
+                .selection(event.getHome())
+                .stage("FullTime")
+                .odds(1)
+                .handicap(-0.5)
+                .oddType("HK")
+                .requireStake(5.5)
+                .betType("BACK")
+                .build();
+        BetEntrytUtils.placeBetAPI(order);
         log("@Step 1: Login to the site");
         log("@Step 2: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = betEntryPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 3: Observe the data by the default filters, Punter Type = Smart Punter");
         monitorBetsPage.filterResult("","","Smart Punter","","",false,"","","","",true);
         log("Verify 1: Bet(s) of normal punter is not shown when filter Smart Punter");
@@ -115,19 +130,33 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.11.29"})
     @TestRails(id = "133")
-    @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_133(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void MonitorBetsTC_133(String accountCode) {
         log("@title: Validate smart punter are shown when filter Smart Punter type");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: The account is added to any smart group in Trading Smart System Smart Group");
         log("@Pre-condition 3: The account has placed bet(s)");
-        int dateNo = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",false,true,
-                0.5,2.12,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
+        String sport="Soccer";
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        event.setEventDate(dateAPI);
+        Order order = new Order.Builder()
+                .event(event)
+                .accountCode(accountCode)
+                .marketName("Goals")
+                .marketType("HDP")
+                .selection(event.getHome())
+                .stage("FullTime")
+                .odds(1)
+                .handicap(-0.5)
+                .oddType("HK")
+                .requireStake(5.5)
+                .betType("BACK")
+                .build();
+        BetEntrytUtils.placeBetAPI(order);
         log("@Step 1: Login to the site");
         log("@Step 2: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = betEntryPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 3: Observe the data by the default filters, Punter Type = Smart Punter");
         monitorBetsPage.filterResult("","","Smart Punter","","",false,"","","","",true);
         log("Verify 1: Bet(s) of smart punter is shown when filter Smart Punter");
@@ -140,86 +169,107 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "134")
-    @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_134(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void MonitorBetsTC_134(String accountCode) throws InterruptedException {
         log("@title: Validate only today events are shown when check on Today Event(s)");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: The account is added to any smart group in Trading Smart System Smart Group");
         log("@Pre-condition 3: The account has placed Today and Yesterday events bet(s)");
-        int dateYesterday = -1;
-        int dateToday = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        String sport="Soccer";
+        String dateToday = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        String dateYes = String.format(DateUtils.getDate(-1,"yyyy-MM-dd",GMT_7));
+        Event eventToday = GetSoccerEventUtils.getFirstEvent(dateToday,dateToday,sport,"");
+        Event eventYesterday = GetSoccerEventUtils.getFirstEvent(dateYes,dateYes,sport,"");
+        eventToday.setEventDate(dateToday);
+        eventYesterday.setEventDate(dateYes);
+        Order orderToday = new Order.Builder().event(eventToday).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(eventToday.getHome())
+                .stage("FullTime").odds(1).handicap(-0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
+        Order orderYes = new Order.Builder().event(eventYesterday).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(eventYesterday.getHome())
+                .stage("FullTime").odds(1).handicap(-0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
         //place bet yesterday
-        List<Order> lstOrder = betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateYesterday,"Home",false,true,
-                0.5,2.12,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
-        betEntryPage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        BetEntrytUtils.placeBetAPI(orderYes);
         //place bet today
-        List<Order> lstOrder1 = betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateToday,"Home",false,true,
-                0.5,2.12,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
+        BetEntrytUtils.placeBetAPI(orderToday);
+        //Wait for order displays
+        Thread.sleep(10000);
         log("@Step 1: Login to the site");
         log("@Step 2: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = betEntryPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 3: Check on Today Event(s) checkbox");
         monitorBetsPage.filterResult("","","","","",true,"","","","",true);
         log("Verify 1: Only bets that placed today will show");
-        Assert.assertTrue(monitorBetsPage.isEventDisplayCorrect(lstOrder1.get(0)),"FAILED! Bet(s) that placed today will not show");
-        Assert.assertFalse(monitorBetsPage.isEventDisplayCorrect(lstOrder.get(0)),"FAILED! Bet(s) that placed yesterday will show");
+        Assert.assertTrue(monitorBetsPage.isEventDisplayCorrect(orderToday),"FAILED! Bet(s) that placed today will not show");
+        Assert.assertFalse(monitorBetsPage.isEventDisplayCorrect(orderYes),"FAILED! Bet(s) that placed yesterday will show");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "135")
     @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_135(String accountCode, String accountCurrency) {
+    public void MonitorBetsTC_135(String accountCode) throws InterruptedException {
         log("@title: Validate only Live bets are shown when filter Live");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: The account is added to any smart group in Trading Smart System Smart Group");
         log("@Pre-condition 3: The account has placed Live and Non-Live events bet(s)");
-        int dateYesterday = -1;
-        int dateToday = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        String sport="Soccer";
+        String dateToday = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        String dateYes = String.format(DateUtils.getDate(-1,"yyyy-MM-dd",GMT_7));
+        Event eventToday = GetSoccerEventUtils.getFirstEvent(dateToday,dateToday,sport,"");
+        Event eventYesterday = GetSoccerEventUtils.getFirstEvent(dateYes,dateYes,sport,"");
+        eventToday.setEventDate(dateToday);
+        eventYesterday.setEventDate(dateYes);
+        Order orderToday = new Order.Builder().event(eventToday).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(eventToday.getHome())
+                .stage("FullTime").odds(1).handicap(-0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
+        Order orderYes = new Order.Builder().event(eventYesterday).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(eventYesterday.getHome())
+                .stage("FullTime").odds(1).handicap(-0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
         //place bet live
-        List<Order> lstOrder = betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateYesterday,"Home",false,true,
-                0.5,2.12,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
-        betEntryPage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        BetEntrytUtils.placeBetAPI(orderYes);
         //place bet non-live
-        List<Order> lstOrder1 =betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateToday,"Home",false,true,
-                0.5,2.12,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
+        BetEntrytUtils.placeBetAPI(orderToday);
+        //Wait for order displays
+        Thread.sleep(10000);
         log("@Step 1: Login to the site");
         log("@Step 2: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = betEntryPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 3: Select Live option at Live/Non Live dropdown list");
         monitorBetsPage.filterResult("","","","","",false,"","Live","","",true);
         log("Verify 1: Only Live bets are shown");
-        Assert.assertTrue(monitorBetsPage.isEventDisplayCorrect(lstOrder.get(0)),"FAILED! Bet(s) that placed live will not show");
-        Assert.assertFalse(monitorBetsPage.isEventDisplayCorrect(lstOrder1.get(0)),"FAILED! Bet(s) that placed non-live shows");
+        Assert.assertTrue(monitorBetsPage.isEventDisplayCorrect(orderYes),"FAILED! Bet(s) that placed live will not show");
+        Assert.assertFalse(monitorBetsPage.isEventDisplayCorrect(orderToday),"FAILED! Bet(s) that placed non-live shows");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "136")
-    @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_136(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void MonitorBetsTC_136(String accountCode) throws InterruptedException {
         log("@title: Validate only non live bets are shown when filter Non Live");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: The account is added to any smart group in Trading Smart System Smart Group");
         log("@Pre-condition 3: The account has placed Live and Non-Live events bet(s)");
-        int dateYesterday = -1;
-        int dateToday = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        String sport="Soccer";
+        String dateToday = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        String dateYes = String.format(DateUtils.getDate(-1,"yyyy-MM-dd",GMT_7));
+        Event eventToday = GetSoccerEventUtils.getFirstEvent(dateToday,dateToday,sport,"");
+        Event eventYesterday = GetSoccerEventUtils.getFirstEvent(dateYes,dateYes,sport,"");
+        eventToday.setEventDate(dateToday);
+        eventYesterday.setEventDate(dateYes);
+        Order orderToday = new Order.Builder().event(eventToday).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(eventToday.getHome())
+                .stage("FullTime").odds(1).handicap(-0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
+        Order orderYes = new Order.Builder().event(eventYesterday).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(eventYesterday.getHome())
+                .stage("FullTime").odds(1).handicap(-0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
         //place bet live
-        List<Order> lstOrder = betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateYesterday,"Home",false,true,
-                0.5,2.12,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
-        betEntryPage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
+        BetEntrytUtils.placeBetAPI(orderYes);
         //place bet non-live
-        List<Order> lstOrder1 = betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateToday,"Home",false,true,
-                0.5,2.12,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
+        BetEntrytUtils.placeBetAPI(orderToday);
+        //Wait for order displays
+        Thread.sleep(10000);
         log("@Step 1: Login to the site");
         log("@Step 2: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = betEntryPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 3: Select Live option at Live/Non Live dropdown list");
         monitorBetsPage.filterResult("","","","","",false,"","Non-Live","","",true);
         log("Verify 1: Only Non-Live bets are shown");
-        Assert.assertTrue(monitorBetsPage.isEventDisplayCorrect(lstOrder1.get(0)),"FAILED! Bet(s) that placed non-live will not show");
-        Assert.assertFalse(monitorBetsPage.isEventDisplayCorrect(lstOrder.get(0)),"FAILED! Bet(s) that placed live shows");
+        Assert.assertTrue(monitorBetsPage.isEventDisplayCorrect(orderToday),"FAILED! Bet(s) that placed non-live will not show");
+        Assert.assertFalse(monitorBetsPage.isEventDisplayCorrect(orderYes),"FAILED! Bet(s) that placed live shows");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})
@@ -243,8 +293,8 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "138")
-    @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_138(String accountCode, String accountCurrency) throws IOException, UnsupportedFlavorException {
+    @Parameters({"accountCode"})
+    public void MonitorBetsTC_138(String accountCode) throws IOException, UnsupportedFlavorException {
         log("@title: Validate the function of copy bet content works");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: The account is added to any smart group in Trading Smart System Smart Group");
@@ -254,10 +304,13 @@ public class MonitorBetsTest extends BaseCaseAQS {
         String betPlaceIn = "All Hours";
         String betCount = "Last 300 Bets";
         String lrbRule = "[LRB-Rule]";
-        int dateNo = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",false,true,
-                0.5,2.121,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
+        String sport="Soccer";
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        event.setEventDate(dateAPI);
+        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome()).stage("FullTime").odds(1.121)
+                .handicap(-0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
+        BetEntrytUtils.placeBetAPI(order);
         log("@Step 1: Access 'Monitor Bets' page");
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
@@ -324,18 +377,21 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "141")
-    @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_141(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void MonitorBetsTC_141(String accountCode) {
         log("@title: Validate HDP background is no color when market type is FT HDP");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: In Smart System > Smart Group, 'Smart Group' is created with BG");
         log("@Pre-condition 3: The account placed bets for market type FT HDP in Bet Entry page");
-        int dateNo = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",true,false,
-                0.5,2.121,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
+        String sport="Soccer";
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        event.setEventDate(dateAPI);
+        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome()).stage("FullTime")
+                .odds(1).handicap(0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
+        BetEntrytUtils.placeBetAPI(order);
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = betEntryPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.showBetType(true,"FT-HDP");
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
@@ -346,18 +402,21 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "16182")
-    @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_16182(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void MonitorBetsTC_16182(String accountCode) {
         log("@title: Validate HDP background is gold (#DBDB70) when market type is HT HDP");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: In Smart System > Smart Group, 'Smart Group' is created with BG");
         log("@Pre-condition 3: The account placed bets for market type HT HDP in Bet Entry page");
-        int dateNo = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",false,false,
-                0.5,2.121,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
+        String sport="Soccer";
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        event.setEventDate(dateAPI);
+        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome()).stage("HalfTime")
+                .odds(1).handicap(0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
+        BetEntrytUtils.placeBetAPI(order);
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = betEntryPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.showBetType(true,"HT-HDP");
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
@@ -368,18 +427,21 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "16183")
-    @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_16183(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void MonitorBetsTC_16183(String accountCode) {
         log("@title: Validate HDP background is gold (#DBDB70) when market type is HT OU");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: In Smart System > Smart Group, 'Smart Group' is created with BG");
         log("@Pre-condition 3: The account placed bets for market type HT OU in Bet Entry page");
-        int dateNo = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Over",false,false,
-                0.5,2.121,"HK","Back",0,0,5.5,accountCode,accountCurrency,"OU",false,false);
+        String sport="Soccer";
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        event.setEventDate(dateAPI);
+        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("OU").selection("Over").stage("HalfTime")
+                .odds(1).handicap(0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
+        BetEntrytUtils.placeBetAPI(order);
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = betEntryPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.showBetType(true,"HT-OU");
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
@@ -390,18 +452,21 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "16186")
-    @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_16186(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void MonitorBetsTC_16186(String accountCode) {
         log("@title: Validate HDP background is light blue (#E0FFFF) when market type is FT OU");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: In Smart System > Smart Group, 'Smart Group' is created with BG");
         log("@Pre-condition 3: The account placed bets for market type FT OU in Bet Entry page");
-        int dateNo = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Over",true,false,
-                0.5,2.121,"HK","Back",0,0,5.5,accountCode,accountCurrency,"OU",false,false);
+        String sport="Soccer";
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        event.setEventDate(dateAPI);
+        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("OU").selection("Over").stage("FullTime")
+                .odds(1).handicap(0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
+        BetEntrytUtils.placeBetAPI(order);
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = betEntryPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.showBetType(true,"FT-OU");
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
@@ -412,16 +477,19 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "16188")
-    @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_16188(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void MonitorBetsTC_16188(String accountCode) {
         log("@title: Validate HDP background is light pink (#FFE1FF) when market type is FT HDP - Corner");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: In Smart System > Smart Group, 'Smart Group' is created with BG");
         log("@Pre-condition 3: The account placed bets for market type FT HDP - Corner in Bet Entry page");
-        int dateNo = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        betEntryPage.placeMoreSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",true,false,
-                0.25,2.121,"HK","Back",0,0,5.5,accountCode,accountCurrency,"Handicap - Corners",false,false);
+        String sport="Soccer";
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        event.setEventDate(dateAPI);
+        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Corners").marketType("HDP").selection(event.getHome()).stage("FullTime")
+                .odds(1).handicap(0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
+        BetEntrytUtils.placeBetAPI(order);
         log("@Step 1: Access 'Monitor Bets' page");
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
@@ -434,16 +502,19 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "16189")
-    @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_16189(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void MonitorBetsTC_16189(String accountCode) {
         log("@title: Validate HDP background is light pink (#FFE1FF) when market type is FT OU - Corner");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: In Smart System > Smart Group, 'Smart Group' is created with BG");
         log("@Pre-condition 3: The account placed bets for market type FT OU - Corner in Bet Entry page");
-        int dateNo = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        betEntryPage.placeMoreSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Over",true,false,
-                0.25,2.121,"HK","Back",0,0,5.5,accountCode,accountCurrency,"Over Under - Corners",false,false);
+        String sport="Soccer";
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        event.setEventDate(dateAPI);
+        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Corners").marketType("OU").selection("Over").stage("FullTime")
+                .odds(1).handicap(0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
+        BetEntrytUtils.placeBetAPI(order);
         log("@Step 1: Access 'Monitor Bets' page");
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
@@ -456,16 +527,19 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "16191")
-    @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_16191(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void MonitorBetsTC_16191(String accountCode) {
         log("@title: Validate HDP background is gold (#DBDB70) when market type is HT OU - Corner");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: In Smart System > Smart Group, 'Smart Group' is created with BG");
         log("@Pre-condition 3: The account placed bets for market type HT OU - Corner in Bet Entry page");
-        int dateNo = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        betEntryPage.placeMoreSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Over",false,false,
-                0.25,2.121,"HK","Back",0,0,5.5,accountCode,accountCurrency,"Over Under - Corners",false,false);
+        String sport="Soccer";
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        event.setEventDate(dateAPI);
+        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Corners").marketType("OU").selection("Over").stage("HalfTime")
+                .odds(1).handicap(0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
+        BetEntrytUtils.placeBetAPI(order);
         log("@Step 1: Access 'Monitor Bets' page");
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
@@ -478,18 +552,21 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "16192")
-    @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_16192(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void MonitorBetsTC_16192(String accountCode) {
         log("@title: Validate HDP background is gold (#DBDB70) when market type is HT HDP - Corner");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: In Smart System > Smart Group, 'Smart Group' is created with BG");
         log("@Pre-condition 3: The account placed bets for market type HT HDP - Corner in Bet Entry page");
-        int dateNo = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        betEntryPage.placeMoreSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",false,false,
-                0.25,2.121,"HK","Back",0,0,5.5,accountCode,accountCurrency,"Handicap - Corners",false,false);
+        String sport="Soccer";
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        event.setEventDate(dateAPI);
+        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Corners").marketType("HDP").selection("Home").stage("HalfTime")
+                .odds(1).handicap(0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
+        BetEntrytUtils.placeBetAPI(order);
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = betEntryPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.showBetType(true,"HT-HDP-CN");
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
@@ -500,21 +577,24 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "142")
-    @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_142(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void MonitorBetsTC_142(String accountCode) {
         log("@title: Validate data is shown according to the filtered stake amount");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: At 'Stake' column in 'Monitor Bets' page\n" +
                 "'Smart Group' = 1,500 HKD\n" +
                 "'Smart Group' = 500 HKD");
         String master = "QA Smart Master";
-        int dateNo = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",true,false,
-                0.5,2.121,"HK","Back",0,0,1500,accountCode,accountCurrency,"HDP",false,false );
-        betEntryPage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",true,false,
-                0.5,2.121,"HK","Back",0,0,500,accountCode,accountCurrency,"HDP",false,false );
+        String sport="Soccer";
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        event.setEventDate(dateAPI);
+        Order order1 = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome()).stage("FullTime")
+                .odds(1).handicap(-0.5).oddType("HK").requireStake(1500).betType("BACK").build();
+        Order order2 = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome()).stage("FullTime")
+                .odds(1).handicap(-0.5).oddType("HK").requireStake(500).betType("BACK").build();
+        BetEntrytUtils.placeBetAPI(order1);
+        BetEntrytUtils.placeBetAPI(order2);
         log("@Step 1: Access 'Monitor Bets' page");
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Select filters with 'Stake' = 'Above 1K");
@@ -527,24 +607,30 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "143")
-    @Parameters({"accountCode","accountCurrency"})
-    public void MonitorBetsTC_143(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void MonitorBetsTC_143(String accountCode) {
         log("@title: Validate order info display/disappear when the order is placed and deleted");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: The player account is added to any smart group in Trading Smart System Smart Group");
         log("@Pre-condition 3: The account placed bets");
         String master = "QA Smart Master";
-        int dateNo = 0;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        List<Order> lstOrder = betEntryPage.placeSoccerBet(COMPANY_UNIT,"Soccer","",dateNo,"Home",true,false,
-                0.5,2.121,"HK","Back",0,0,5.55,accountCode,accountCurrency,"HDP",false,false );
+        String sport="Soccer";
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        event.setEventDate(dateAPI);
+        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome()).stage("FullTime")
+                .odds(1).handicap(-0.5).oddType("HK").requireStake(5.55).betType("BACK").build();
+        BetEntrytUtils.placeBetAPI(order);
+        List<Order> lstOrder = new ArrayList<>();
+        lstOrder.add(order);
+        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         log("@Step 1: Access 'Monitor Bets' page");
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Select filters which has bet of precondition");
         log("@Step 3: Click on 'Show' button");
         monitorBetsPage.showMasterByName(true,master);
         log("Verify 1: Validate informations of Account code in Ac column, Bet Type in Event column, Select column, HDP column");
-        Assert.assertTrue(monitorBetsPage.isOrderDisplayCorrect(lstOrder.get(0)));
+        Assert.assertTrue(monitorBetsPage.isOrderDisplayCorrect(order));
         log("@Step 4: Go to Confirm bets > delete bet of precondition");
         ConfirmBetsPage confirmBetsPage = monitorBetsPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
         confirmBetsPage.filter(COMPANY_UNIT,"","Pending","Soccer","All","Specific Date","","",accountCode);
@@ -552,7 +638,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("Verify 2: Validate bet of precondition is not shown in Monitor Bets");
         monitorBetsPage = confirmBetsPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         monitorBetsPage.filterResult("","","","Last 10 Min","",false,"","","","",true);
-        Assert.assertFalse(monitorBetsPage.isOrderDisplayCorrect(lstOrder.get(0)));
+        Assert.assertFalse(monitorBetsPage.isOrderDisplayCorrect(order));
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})

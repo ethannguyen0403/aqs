@@ -93,23 +93,30 @@ public class BetEntrytUtils {
                         "\"clientMetadata\":\"\"," +
                         "\"fixtureHome\":\"%s\"," +
                         "\"fixtureCompetition\":\"%s\"," +
-                        "\"agentName\":\"Auto-Account01\"," +
+                        "\"agentName\":\"%s\"," +
                         "\"fixtureAway\":\"%s\"," +
                         "\"fixtureSport\":\"%s\"," +
                         "\"stage\":\"%s\"," +
-                        "\"handicap\":0," +
+                        "\"handicap\":%s," +
                         "\"odds\":%s," +
                         "\"oddsType\":\"%s\"," +
                         "\"stake\":%s," +
                         "\"betType\":\"%s\"}]}"
-                , order.getEvent().getEventId(), order.getMarketName(), order.getMarketType(), order.getEvent().getEventDate(),order.getSelection(),order.getEvent().getHome(),order.getEvent().getLeagueName(),
-                order.getEvent().getAway(),order.getEvent().getSportName(),order.getStage(),order.getOdds(),order.getOddType(),order.getRequireStake(),order.getBetType());
+                , order.getEvent().getEventId(), order.getMarketName(), order.getMarketType(), order.getEvent().getEventDate(),order.getSelection(),order.getEvent().getHome(),order.getEvent().getLeagueName()
+                , order.getAccountCode(), order.getEvent().getAway(),order.getEvent().getSportName(),order.getStage(), order.getHandicap(),order.getOdds(),order.getOddType(),order.getRequireStake(),order.getBetType());
         try {
             WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
         }catch (IOException e){
             System.out.println("Exception: IOException occurs at sendGETRequestDynamicHeaders");
         }
     }
+
+    public static void placeBetAPI(List<Order> lstOrder){
+        for (int i = 0; i < lstOrder.size();i++){
+            placeBetAPI(lstOrder.get(i));
+        }
+    }
+
 
     public static void placeManualBetAPI(int companyId, String accountId, String sportId, Order order) {
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));

@@ -125,7 +125,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
     }
     @TestRails(id="5286")
     @Parameters({"clientCode"})
-    @Test(groups = {"regression","2024.V.1.0"})
+    @Test(groups = {"revise"})
     public void Consolidated_Client_Balance_5286(String clientCode) {
         log("@title: Validate filters work properly");
         log("@pre-condition: Consolidated Client Balance permission is ON");
@@ -156,7 +156,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="5288")
-    @Test(groups = {"regression","2024.V.1.0"})
+    @Test(groups = {"revise"})
     public void Consolidated_Client_Balance_5288() {
         log("@title: Validate filters work properly");
         log("@pre-condition: Consolidated Client Balance permission is ON");
@@ -206,7 +206,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("@Step 3: Click on client name");
         log("@Verify 1: Nothing happens after clicking on Client Name");
         //check href == null
-        Assert.assertTrue(page.tblInfo.getControlOfCellSPP(1,page.tblInfo.getColumnIndexByName("Client"),1,null).getAttribute("href") == null,"FAILED! Client name display incorrect");
+        Assert.assertTrue(page.tblInfo.getControlOfCellSPP(1,page.tblInfo.getColumnIndexByName("Client"),2,null).getAttribute("href") == null,"FAILED! Client name display incorrect");
         log("INFO: Executed completely");
     }
 }

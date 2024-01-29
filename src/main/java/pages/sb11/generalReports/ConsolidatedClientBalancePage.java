@@ -150,8 +150,8 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
 
     public void verifyDataTableDisplay() {
         List<String> lstTotal = getColumnSPP(tblInfo.getColumnIndexByName("Total Balance HKD"),155,true);
-        String blackColorAc = tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("GBP"),1,null).getColour("color");
-        String negativeColorAc = tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Total Balance HKD"),1,null).getColour("color");
+        String blackColorAc = tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("GBP"),2,null).getColour("color");
+        String negativeColorAc = tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Total Balance HKD"),2,null).getColour("color");
         String positiveColorAc = tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Total Balance HKD"),lstTotal.size()-1,null).getColour("color");
         Assert.assertTrue(Color.fromString(blackColorAc).asHex().equals("#212529"),"FAILED! Color of 0 display incorrect!");
         Assert.assertTrue(Color.fromString(negativeColorAc).asHex().equals("#dc3545"),"FAILED! Color of negative number display incorrect!");

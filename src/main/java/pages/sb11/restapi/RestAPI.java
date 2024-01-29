@@ -5,18 +5,19 @@ import com.paltech.utils.WSUtils;
 import objects.Order;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import testcases.BaseCaseAQS;
 import utils.AppUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class RestAPI {
+public class RestAPI extends BaseCaseAQS {
     /**
      * @param eventDate: format yyyy-MM-dd
      */
     public static JSONArray sendRequestByEventDate(String eventDate){
-        String api = String.format("https://aqsapi.beatus88.com/aqs-api/v1/cricket-pnl?eventDate=%s",eventDate);
+        String api = String.format("%saqs-api/v1/cricket-pnl?eventDate=%s",environment.getAqsAPI(),eventDate);
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
         Map<String, String> headersParam = new HashMap<String, String>() {
             {
@@ -27,7 +28,7 @@ public class RestAPI {
         return WSUtils.getGETJSONArraytWithDynamicHeaders(api,headersParam);
     }
     public static JSONArray sendRequestByAccountCode(String eventDate, String accountCode){
-        String api = String.format("https://aqsapi.beatus88.com/aqs-api/v1/cricket-pnl?eventDate=%s&accountCode=%s",eventDate,accountCode);
+        String api = String.format("%saqs-api/v1/cricket-pnl?eventDate=%s&accountCode=%s",environment.getAqsAPI(),eventDate,accountCode);
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
         Map<String, String> headersParam = new HashMap<String, String>() {
             {

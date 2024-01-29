@@ -105,7 +105,7 @@ public class FeedReportTest extends BaseCaseAQS {
         fromDate = "01/07/2023";
         page.filter(SBPConstants.COMPANY_UNIT,"Year 2022-2023",fromDate,toDate);
         log("Verify 2: Proper data displays");
-        Assert.assertFalse(page.tblTotalValue.getControlOfCell(1,1,1,null).getText().isEmpty());
+        Assert.assertTrue(page.tblProviderFirst.getControlOfCell(1,1,1,null).getText().trim().contains(fromDate+" - "+toDate));
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.1.0"})

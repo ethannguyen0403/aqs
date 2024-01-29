@@ -30,6 +30,7 @@ public class FeedReportPage extends WelcomePage {
     public String txtAmountByClientNameXpath = "//td[contains(text(),'%s Between')]//parent::tr//following-sibling::tr//td[contains(text(),'%s')]//following-sibling::td//input";
     public Button btnProvider = Button.xpath("//button[contains(text(),'Provider')]");
     public Button btnClient = Button.xpath("//button[contains(text(),'Client')]");
+    public Table tblProviderFirst = Table.xpath("(//table)[2]",7);
 
 
     public void filter(String companyUnit, String financialYear, String fromDate, String toDate) {

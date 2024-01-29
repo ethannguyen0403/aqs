@@ -200,6 +200,20 @@ public class BetSettlementPage extends WelcomePage {
         }
         return winloss;
     }
+    public String getWinlossSettledofOrder(Order order)  {
+        btnSearch.click();
+        int rowindex = getOrderIndex(order.getBetId());
+        String winloss = tblOrder.getControlOfCell(1, tblOrder.getColumnIndexByName("Win/Lose"),rowindex,null).getText();
+        if(winloss.equals("")){
+            //wait for the bet is settled in 3s
+            try {
+                Thread.sleep(20000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return winloss;
+    }
 
     /**
      * Verify order in Bet Settlement page

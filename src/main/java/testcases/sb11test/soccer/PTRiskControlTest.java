@@ -28,7 +28,7 @@ import static common.SBPConstants.*;
 
 public class PTRiskControlTest extends BaseCaseAQS {
     String superMasterCode = "QA2112 - ";
-    Double percent = 0.5;
+    Double percent = 1.0;
     String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
     Event eventBasketball =
             new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(DateUtils.formatDate(currentDate, "yyyy-MM-dd", "dd/MM/yyyy"))
@@ -323,8 +323,9 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "2128")
     @Test(groups = {"regression"})
-    public void PTRiskControlTC_006(){
+    public void PTRiskControlTC_2128(){
         log("@title: Validate that can copy report successfully");
         String date = String.format(DateUtils.getDate(-3,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Login with valid account");
