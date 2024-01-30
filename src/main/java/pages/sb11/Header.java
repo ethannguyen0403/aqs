@@ -49,6 +49,7 @@ public class Header {
      */
     public <T> T navigatePage(String menu, String submenu, Class<T> expectedPage) {
         headerMenuControl.clickSubMenu(menu,submenu);
+        lblUserName.moveAndHoverOnControl();
         waitSpinnerDisappeared();
         return PageFactory.initElements(DriverManager.getDriver(), expectedPage);
     }

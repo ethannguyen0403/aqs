@@ -120,14 +120,14 @@ public class JournalEntriesPage extends WelcomePage {
         if (isDebit){
             ddDebitFrom.selectByVisibleText(fromType);
             waitSpinnerDisappeared();
-            ddDebitLedger.selectByVisibleContainsText(ledgername);
+            ddDebitLedger.selectByVisibleText(ledgername);
             if(isAdd){
                 btnDebitAdd.click();
             }
         } else {
             ddCreditTo.selectByVisibleText(fromType);
             waitSpinnerDisappeared();
-            ddCreditLedger.selectByVisibleContainsText(ledgername);
+            ddCreditLedger.selectByVisibleText(ledgername);
             if(isAdd){
                 btnCreditAdd.click();
             }
@@ -172,7 +172,7 @@ public class JournalEntriesPage extends WelcomePage {
         if (isDebit) {
             ddDebitFrom.selectByVisibleText(fromType);
             waitSpinnerDisappeared();
-            ddDebitLedger.selectByVisibleContainsText(clientBookieCode);
+            ddDebitLedger.selectByVisibleText(clientBookieCode);
             ddDebitLevel.selectByVisibleText(level);
             txtDebitAccount.sendKeys(accountCode);
             txtDebitAccount.sendKeys(accountCode);
@@ -182,7 +182,7 @@ public class JournalEntriesPage extends WelcomePage {
         } else {
             ddCreditTo.selectByVisibleText(fromType);
             waitSpinnerDisappeared();
-            ddCreditLedger.selectByVisibleContainsText(clientBookieCode);
+            ddCreditLedger.selectByVisibleText(clientBookieCode);
             ddCreditLevel.selectByVisibleText(level);
             txtCreditAccount.sendKeys(accountCode);
             txtCreditAccount.sendKeys(accountCode);
