@@ -51,6 +51,7 @@ public class PTRiskPage extends WelcomePage {
 
     public void filter(String clientCode, String companyUnit, String reportType, String liveNonlive, String fromDate, String toDate, String leagueName)  {
         ddpCompanyUnit.selectByVisibleText(companyUnit);
+        waitSpinnerDisappeared();
         ddpReportType.selectByVisibleText(reportType);
         waitSpinnerDisappeared();
         ddpLiveNonLive.selectByVisibleText(liveNonlive);
