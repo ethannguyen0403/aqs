@@ -14,9 +14,7 @@ import pages.sb11.soccer.PerformanceByMonthPage;
 import pages.sb11.soccer.SPPPage;
 import pages.sb11.soccer.popup.PTPerformancePopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.AccountSearchUtils;
-import utils.sb11.BetEntrytUtils;
-import utils.sb11.BetSettlementUtils;
+import utils.sb11.*;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
@@ -45,11 +43,12 @@ public class SPPTest extends BaseCaseAQS {
                 .price(1.5).requireStake(15)
                 .oddType("HK").accountCode(CLIENT_CREDIT_ACC)
                 .createDate(dateAPI)
+                .marketType("HDP")
                 .eventDate(dateAPI + " 23:59:00")
                 .selection("Home " + DateUtils.getMilliSeconds())
                 .build();
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
-        String accountId = AccountSearchUtils.getAccountId(accountCode);
+        String accountId = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
         BetEntrytUtils.placeManualBetAPI(companyId, accountId, SPORT_ID_MAP.get("Soccer"), order);
         BetSettlementUtils.waitForBetIsUpdate(10);
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Soccer"), order);
@@ -61,13 +60,13 @@ public class SPPTest extends BaseCaseAQS {
         clientPage.filter("Client Point","Kastraki Limited",FINANCIAL_YEAR,clientValue,date,"");
 
         log("@Step 2: Click the client agent >> find the player >> observe win/loss");
-        String winlosePlayer = clientPage.getMemberSummary(agentCode,accountCode).get(7);
+        String winlosePlayer = clientPage.getMemberSummary(agentCode,CLIENT_CREDIT_ACC).get(7);
 
         log("@Step 3: Go to SPP >> select all leagues >> select the group");
         log(String.format("Step 4: Select the date %s >> click Show", date));
         SPPPage sppPage = clientPage.navigatePage(SOCCER,SPP,SPPPage.class);
         sppPage.filter("All", "Group","Smart Group","QA Smart Master","QA Smart Agent",date,date);
-        String winloseSPP = sppPage.getRowDataOfGroup(smartGroup).get(sppPage.colWL-1);
+        String winloseSPP = sppPage.getRowDataOfGroup("QA Smart Group").get(sppPage.colWL);
 
         log("@verify 1: Validate the win/loss in the Client statement (step 2) matches with the win/loss of the group in the SPP page");
         Assert.assertTrue(sppPage.verifyAmountDataMatch(winlosePlayer,winloseSPP),
@@ -88,32 +87,32 @@ public class SPPTest extends BaseCaseAQS {
                 .price(1.5).requireStake(15)
                 .oddType("HK").accountCode(CLIENT_CREDIT_ACC)
                 .createDate(dateAPI)
+                .marketType("HDP")
                 .eventDate(dateAPI + " 23:59:00")
                 .selection("Home " + DateUtils.getMilliSeconds())
                 .build();
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
-        String accountId = AccountSearchUtils.getAccountId(accountCode);
+        String accountId = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
         BetEntrytUtils.placeManualBetAPI(companyId, accountId, SPORT_ID_MAP.get("Soccer"), order);
         BetSettlementUtils.waitForBetIsUpdate(10);
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Soccer"), order);
         int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Soccer"), order);
         BetSettlementUtils.sendManualBetSettleJson(accountId, order, betId, wagerId, SPORT_ID_MAP.get("Soccer"));
         BetSettlementUtils.waitForBetIsUpdate(5);
-
         log("@Step 1: Go to Bookie Statement >> filter Agent type: Super Master");
         log("@Step 2: Input bookie code as QA Bookie >> click Show");
         log("@Step 3: Find the master code: SM-QA1-QA Test >> click MS link at the master code");
         BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,BOOKIE_STATEMENT,BookieStatementPage.class);
         bookieStatementPage.filter("","","Super Master",date, date,bookieCode,"");
         log("@Step 4: Find the player >> observe win/loss");
-        String winlosePlayer = bookieStatementPage.getWinLossofPlayer(bookieSuperMasterCode, bookieMasterCode,accountCode);
+        String winlosePlayer = bookieStatementPage.getWinLossofPlayer(bookieSuperMasterCode, bookieMasterCode,CLIENT_CREDIT_ACC);
 
         log("@Step 5: Go to SPP >> select all leagues >> select the group");
         log(String.format("Step 6: Select the date %s >> click Show", date));
         log("@Step 7: Observe the win/loss of the group");
         SPPPage sppPage = bookieStatementPage.navigatePage(SOCCER,SPP,SPPPage.class);
         sppPage.filter("All", "Group","Smart Group","QA Smart Master","QA Smart Agent",date,date);
-        String winloseSPP = sppPage.getRowDataOfGroup(smartGroup).get(sppPage.colWL-1);
+        String winloseSPP = sppPage.getRowDataOfGroup("QA Smart Group").get(sppPage.colWL);
 
         log("@verify 1: Validate the win/loss in the Client statement (step 2) matches with the win/loss of the group in the SPP page");
         Assert.assertTrue(sppPage.verifyAmountDataMatch(winlosePlayer,winloseSPP),
