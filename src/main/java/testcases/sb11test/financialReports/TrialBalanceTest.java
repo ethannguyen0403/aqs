@@ -20,8 +20,8 @@ import static common.SBPConstants.*;
 public class TrialBalanceTest extends BaseCaseAQS {
     String parentAccount = "500.000.000.000 - QA Ledger Group Asset";
     int currentMonth = DateUtils.getMonth("GMT +7");
-    String debitAstAcc = "AutoAssetDebit";
-    String creditAstAcc = "AutoAssetCredit";
+    String debitAstAcc = "AutoAssetDebit - 055.000.000.000";
+    String creditAstAcc = "AutoAssetCredit - 050.000.000.000";
     String lgDebitCur = "HKD";
     String lgCreditCur = "HKD";
     String transType = "Payment Other";

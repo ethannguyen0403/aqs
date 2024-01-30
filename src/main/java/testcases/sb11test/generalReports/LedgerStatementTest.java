@@ -26,16 +26,16 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
     String companyUnit = "Kastraki Limited";
     String transType = "Payment Other";
-    String debitExpAcc = "AutoExpenditureDebit";
-    String creditExpAcc = "AutoExpenditureCredit";
-    String debitAstAcc = "AutoAssetDebit";
-    String creditAstAcc = "AutoAssetCredit";
-    String debitLibAcc = "AutoLiabilityDebit";
-    String creditLibAcc = "AutoLiabilityCredit";
-    String debitCapitalAcc = "AutoCapitalDebit";
-    String creditCapitalAcc = "AutoCapitalCredit";
-    String debitIncomeAcc = "AutoIncomeDebit";
-    String creditIncomeAcc = "AutoIncomeCredit";
+    String debitExpAcc = "AutoExpenditureDebit - 011.000.000.000";
+    String creditExpAcc = "AutoExpenditureCredit - 010.000.000.000";
+    String debitAstAcc = "AutoAssetDebit - 055.000.000.000";
+    String creditAstAcc = "AutoAssetCredit - 050.000.000.000";
+    String debitLibAcc = "AutoLiabilityDebit - 044.000.000.000";
+    String creditLibAcc = "AutoLiabilityCredit - 040.000.000.000";
+    String debitCapitalAcc = "AutoCapitalDebit - 033.000.000.000";
+    String creditCapitalAcc = "AutoCapitalCredit - 030.000.000.000";
+    String debitIncomeAcc = "AutoIncomeDebit - 002.200.000.000";
+    String creditIncomeAcc = "AutoIncomeCredit - 002.000.000.000";
     String lgDebitCur = "HKD";
     String lgCreditCur = "HKD";
     String lgExpenditureGroup = "QA Ledger Group Expenditure";
@@ -68,8 +68,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .build();
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
@@ -125,8 +125,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .build();
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
@@ -183,8 +183,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .build();
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
@@ -244,10 +244,11 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transDate("")
                 .transType(transType)
                 .build();
+
+        log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 5: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
@@ -368,10 +369,11 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transDate("")
                 .transType(transType)
                 .build();
+
+        log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 5: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Asset",lgAssetGroup,"","","");
@@ -430,10 +432,11 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transDate("")
                 .transType(transType)
                 .build();
+
+        log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 5: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Asset",lgAssetGroup,"","","");
@@ -491,10 +494,11 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transDate("")
                 .transType(transType)
                 .build();
+
+        log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 5: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Liability",lgLiabilityGroup,"","","");
@@ -549,10 +553,11 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transDate("")
                 .transType(transType)
                 .build();
+
+        log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 5: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Liability",lgLiabilityGroup,"","","");
@@ -606,13 +611,12 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
+        log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
-            log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
@@ -670,14 +674,12 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-
+        log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
+        log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
-            log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
@@ -735,14 +737,12 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-
+        log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
@@ -801,13 +801,12 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
+        log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
-            log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
@@ -867,13 +866,12 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
@@ -931,13 +929,12 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
+        log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
-            log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
@@ -996,13 +993,12 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
@@ -1061,13 +1057,12 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
+        log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
-            log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 

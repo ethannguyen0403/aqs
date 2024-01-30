@@ -190,8 +190,8 @@ public class JournalEntriesTest extends BaseCaseAQS {
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoCreditExpenditure")
-                .ledgerCredit("AutoCapitalDebit")
+                .ledgerDebit("AutoCreditExpenditure - 012.000.000.000")
+                .ledgerCredit("AutoCapitalDebit - 033.000.000.000")
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
                 .amountDebit(1)
@@ -242,7 +242,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @Test(groups = {"regression","2023.11.30"})
     public void Journal_Entries_TC_15751() throws InterruptedException {
         String transType = "Payment Other";
-        String creditExpAcc = "AutoExpenditureCredit";
+        String creditExpAcc = "AutoExpenditureCredit - 010.000.000.000";
         String lgDebitCur = "AUD";
         String lgCreditCur = "AUD";
         String descExpenditure = "Expenditure Transaction C15751 " + DateUtils.getMilliSeconds();
@@ -255,7 +255,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         String txtMonth = Month.of(DateUtils.getMonth(GMT_7)-1).getDisplayName(TextStyle.FULL.FULL, Locale.CANADA);
         String curYear = String.valueOf(DateUtils.getYear(GMT_7));
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoCreditExpenditure")
+                .ledgerDebit("AutoCreditExpenditure - 012.000.000.000")
                 .ledgerCredit(creditExpAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
@@ -278,7 +278,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @Test(groups = {"regression","2023.11.30"})
     public void Journal_Entries_TC_15752() throws InterruptedException {
         String transType = "Payment Other";
-        String creditExpAcc = "AutoExpenditureCredit";
+        String creditExpAcc = "AutoExpenditureCredit - 010.000.000.000";
         String lgDebitCur = "AUD";
         String lgCreditCur = "AUD";
         String descExpenditure = "Expenditure Transaction C15751 " + DateUtils.getMilliSeconds();
@@ -291,7 +291,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         String txtMonth = Month.of(DateUtils.getMonth(GMT_7)-4).getDisplayName(TextStyle.FULL.FULL, Locale.CANADA);
         String curYear = String.valueOf(DateUtils.getYear(GMT_7));
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoCreditExpenditure")
+                .ledgerDebit("AutoCreditExpenditure - 012.000.000.000")
                 .ledgerCredit(creditExpAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
