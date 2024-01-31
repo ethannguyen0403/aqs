@@ -297,7 +297,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("Precondition: Test case C863 to place a Cricket bet");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         String date = String.format(DateUtils.getDate(-1, "d/MM/yyyy", "GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
         Event eventInfo = new Event.Builder()
                 .sportName("Cricket")
                 .leagueName("QA League")
@@ -309,6 +309,13 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
+
+        String leagueID = EventScheduleUtils.getLeagueID(eventInfo.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
+        String homeTeamID = EventScheduleUtils.getTeamID(eventInfo.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(eventInfo.getAway(), leagueID);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), eventInfo.getEventStatus().toUpperCase());
+        String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+        eventInfo.setEventId(eventID);
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(eventInfo.getSportName())
@@ -329,7 +336,6 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .event(eventInfo)
                 .build();
         lstOrder.add(order);
-        eventInfo = welcomePage.createEvent(eventInfo);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         cricketBetEntryPage.showLeague(COMPANY_UNIT, date, eventInfo.getLeagueName());
         cricketBetEntryPage.placeBet(order, true);
@@ -347,6 +353,9 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         } finally {
             log("@Pos-condition: Deleted the order");
             confirmBetsPage.deleteOrder(lstOrder.get(0), true);
+            log("@Pos-condition: Deleted the event Cricket");
+            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("INFO: Executed Pos-condition completely");
         }
         log("INFO: Executed completely");
     }
