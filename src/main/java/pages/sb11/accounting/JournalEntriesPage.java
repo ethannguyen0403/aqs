@@ -9,16 +9,16 @@ import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 
 public class JournalEntriesPage extends WelcomePage {
     public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
-    public DropDownBox ddDebitFrom = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::select[1]");
-    public DropDownBox ddCreditTo = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::select[1]");
-    public DropDownBox ddDebitLedger = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::select[2]");
-    public DropDownBox ddCreditLedger = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::select[2]");
-    public DropDownBox ddDebitBookieClient = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::select[3]");
-    public DropDownBox ddCreditBookieClient = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::select[3]");
-    public DropDownBox ddDebitCurrency = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::select[4]");
-    public DropDownBox ddCreditCurrency = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::select[4]");
-    public DropDownBox ddDebitLevel = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::select[5]");
-    public DropDownBox ddCreditLevel = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::select[5]");
+    public DropDownBox ddDebitFrom = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::span[text()='From']//following-sibling::select");
+    public DropDownBox ddCreditTo = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::span[text()='To']//following-sibling::select");
+    public DropDownBox ddDebitLedger = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::span[text()='Ledger']//following-sibling::select");
+    public DropDownBox ddCreditLedger = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::span[text()='Ledger']//following-sibling::select");
+    public DropDownBox ddDebitBookieClient = DropDownBox.xpath("////app-transaction-creation//span[contains(text(),'Debit')]//following::span[text()='Bookie']//following-sibling::select");
+    public DropDownBox ddCreditBookieClient = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::span[text()='Bookie']//following-sibling::select");
+    public DropDownBox ddDebitCurrency = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::span[text()='Currency']//following-sibling::select");
+    public DropDownBox ddCreditCurrency = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::span[text()='Currency']//following-sibling::select");
+    public DropDownBox ddDebitLevel = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::span[text()='Level']//following-sibling::select");
+    public DropDownBox ddCreditLevel = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::span[text()='Level']//following-sibling::select");
     public TextBox txtDebitAccount = TextBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::input[1]");
     public TextBox txtCreditAccount = TextBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::input[1]");
     public Button btnDebitAdd = Button.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::button[1]");
@@ -120,6 +120,11 @@ public class JournalEntriesPage extends WelcomePage {
         if (isDebit){
             ddDebitFrom.selectByVisibleText(fromType);
             waitSpinnerDisappeared();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             ddDebitLedger.selectByVisibleText(ledgername);
             if(isAdd){
                 btnDebitAdd.click();
@@ -127,6 +132,11 @@ public class JournalEntriesPage extends WelcomePage {
         } else {
             ddCreditTo.selectByVisibleText(fromType);
             waitSpinnerDisappeared();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             ddCreditLedger.selectByVisibleText(ledgername);
             if(isAdd){
                 btnCreditAdd.click();

@@ -190,7 +190,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit().split(" - ")[0]);
 
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
@@ -254,7 +254,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerCredit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerCredit().split(" - ")[0]);
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
@@ -295,6 +295,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitAstAcc)
                 .ledgerCredit(creditAstAcc)
@@ -303,18 +304,43 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descAsset)
-                .transDate("")
+                .transDate(date)
                 .transType(transType)
                 .build();
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-        log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
-        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-        ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Asset",lgAssetGroup,"","","");
-        log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
-        log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
-        ledgerStatementPage.verifyLedgerTrans(transaction, true, lgAssetGroup);
+        try {
+            log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
+            LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+            ledgerStatementPage.showLedger(companyUnit, FINANCIAL_YEAR, "Asset", lgAssetGroup, date, date, "");
+            log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
+            log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
+            ledgerStatementPage.verifyLedgerTrans(transaction, true, lgAssetGroup);
+        } finally {
+            log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_ASSET);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+        }
         log("INFO: Executed completely");
     }
 
@@ -326,6 +352,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitAstAcc)
                 .ledgerCredit(creditAstAcc)
@@ -334,18 +361,43 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descAsset)
-                .transDate("")
+                .transDate(date)
                 .transType(transType)
                 .build();
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-        log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
-        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-        ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Asset",lgAssetGroup,"","","");
-        log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
-        log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
-        ledgerStatementPage.verifyLedgerTrans(transaction, false, lgAssetGroup);
+        try {
+            log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
+            LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+            ledgerStatementPage.showLedger(companyUnit, FINANCIAL_YEAR, "Asset", lgAssetGroup, date, date, "");
+            log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
+            log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
+            ledgerStatementPage.verifyLedgerTrans(transaction, false, lgAssetGroup);
+        } finally {
+            log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String[] ledgerDebitAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
+            String[] ledgerCreditAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
+            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
+            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
+            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_ASSET);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+        }
         log("INFO: Executed completely");
     }
 
@@ -379,7 +431,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Asset",lgAssetGroup,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit().split(" - ")[0]);
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
@@ -442,7 +494,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Asset",lgAssetGroup,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerCredit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerCredit().split(" - ")[0]);
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
@@ -748,7 +800,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Capital",lgCapitalGroup,"","","");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerCredit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerCredit().split(" - ")[0]);
 
             log("@Verify 1: Original Currency: Debit show value = 0 in black, Credit show value = 10 in blue, Running Bal = Opening Balance (+Credit - Debit) value\n" +
                     "Total column is sum of records\n" +
@@ -812,7 +864,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Capital",lgCapitalGroup,"","","");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit().split(" - ")[0]);
 
             log("@Verify 1: Original Currency: Debit show value = 10 in red, Credit show value = 0 in black, Running Bal = Opening Balance (+ Credit - Debit) value\n" +
                     "Total column is sum of records\n" +
@@ -940,7 +992,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
             log("Step 8: Observe value show on page");
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Income",lgIncomeGroup,"","","");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit().split(" - ")[0]);
 
             log("@Verify 1: Result page shows with 2 parts:\n" +
                     "Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in red, Running Bal and Running Bal CT displayed\n" +
@@ -1004,7 +1056,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction\n");
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Income",lgIncomeGroup,"","","");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerCredit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerCredit().split(" - ")[0]);
 
             log("@Verify 1: Original Currency: Debit show value = 0 in black, Credit show value = 10 in blue, Running Bal = Opening Balance (+Credit - Debit) value\n" +
                     "Total column is sum of records\n" +
@@ -1068,7 +1120,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Income",lgIncomeGroup,"","","");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit().split(" - ")[0]);
 
             log("@Verify 1: Original Currency: Debit show value = 10 in red, Credit show value = 0 in black, Running Bal = Opening Balance (+ Credit - Debit) value\n" +
                     "Total column is sum of records\n" +

@@ -50,9 +50,10 @@ public class SPPTest extends BaseCaseAQS {
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
         String accountId = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
         BetEntrytUtils.placeManualBetAPI(companyId, accountId, SPORT_ID_MAP.get("Soccer"), order);
-        BetSettlementUtils.waitForBetIsUpdate(10);
+        BetSettlementUtils.waitForBetIsUpdate(15);
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Soccer"), order);
         int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Soccer"), order);
+        BetSettlementUtils.waitForBetIsUpdate(5);
         BetSettlementUtils.sendManualBetSettleJson(accountId, order, betId, wagerId, SPORT_ID_MAP.get("Soccer"));
         BetSettlementUtils.waitForBetIsUpdate(5);
         log("@Step 1: Go to Client Statement >> client point >> select the client");
@@ -94,9 +95,10 @@ public class SPPTest extends BaseCaseAQS {
         int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
         String accountId = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
         BetEntrytUtils.placeManualBetAPI(companyId, accountId, SPORT_ID_MAP.get("Soccer"), order);
-        BetSettlementUtils.waitForBetIsUpdate(10);
+        BetSettlementUtils.waitForBetIsUpdate(15);
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Soccer"), order);
         int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Soccer"), order);
+        BetSettlementUtils.waitForBetIsUpdate(5);
         BetSettlementUtils.sendManualBetSettleJson(accountId, order, betId, wagerId, SPORT_ID_MAP.get("Soccer"));
         BetSettlementUtils.waitForBetIsUpdate(5);
         log("@Step 1: Go to Bookie Statement >> filter Agent type: Super Master");
