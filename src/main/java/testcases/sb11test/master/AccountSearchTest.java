@@ -48,7 +48,7 @@ public class AccountSearchTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2225")
     @Parameters({"accountCode"})
-    public void Account_Search_TC_003(String accountCode){
+    public void Account_Search_TC_2225(String accountCode){
         log("@title: Validate can search with Account Code successfully");
         log("@Step 1: Login with valid account");
         log("Step 2: Click Master > Account Search");
@@ -89,7 +89,7 @@ public class AccountSearchTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2226")
     @Parameters({"accountId"})
-    public void Account_Search_TC_004(String accountId){
+    public void Account_Search_TC_2226(String accountId){
         log("@title: Validate can search with Account Id successfully");
         log("@Step 1: Login with valid account");
         log("Step 2: Click Master > Account Search");
