@@ -83,6 +83,12 @@ public class AddressBookPage extends WelcomePage {
 
     public EmailSendingHistoryPopup openEmailSendingHistoryPopup(){
         btnHistory.click();
+        //Wait for popup display
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return new EmailSendingHistoryPopup();
     }
 }
