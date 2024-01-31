@@ -5,7 +5,7 @@
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
-    <test name="SB11 Regression 2024.V.1.0">
+    <test name="Implement SB11 in STG milestone 2024.V.1.0">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='stg'/>
         <parameter name='language' value='en'/>
@@ -13,7 +13,7 @@
         <parameter name='isProxy' value='false'/>
         <parameter name='username' value='AutoQC'/>
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
-        <parameter name='isAddTestRailResult' value='false'/>
+        <parameter name='isAddTestRailResult' value='true'/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
         <parameter name="accountCode" value="Auto-Account01"/>
