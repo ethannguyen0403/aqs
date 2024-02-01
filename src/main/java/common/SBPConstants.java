@@ -467,13 +467,13 @@ public class SBPConstants {
     }
     public static class PositionTakingReport {
         public final static String WARNING_FINANCIAL_YEAR_MES = "Please select in range 01/08/%s and 31/07/%s.";
-        public final static String INVALID_TIME_MES = "Invalid time range. You can see data up to 1 months.";
+        public final static String INVALID_TIME_MES = "Invalid time range. You can see data up to 1 month.";
         public final static List<String> DEFAULT_BOOKIE_HEADER_NAME = Arrays.asList("#","Bookie Name","Till %s","DR-Win/Loss");
     }
     public static class ClosingJournalEntries {
         public final static String SUCCESS_MES_LAST_MONTH = "Closing Journal Entry for %s is completed.";
-        public final static String MES_REMINDER_BEFORE_2_MONTH = "You will need to perform CJE for %s to have the correct balances";
-        public final static String MES_REMINDER_BEFORE_1_MONTH = "Are you sure to perform Closing Journal Entry for %s?";
+        public final static String MES_REMINDER_BEFORE_1_MONTH = "You will need to perform CJE for %s and %s to have the correct balances";
+        public final static String MES_REMINDER_BEFORE_2_MONTH = "Are you sure to perform Closing Journal Entry for %s - %s?";
     }
     public static class ConsolidatedClientBalance {
         public final static List<String> HEADER_NAME = Arrays.asList("#","Client","PIC","Status","Note","Log","Deposit in Ori CUR","Total Balance HKD","GBP","USD","EUR","HKD");
