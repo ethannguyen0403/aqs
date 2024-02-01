@@ -22,13 +22,13 @@ public class ClientBalanceTest extends BaseCaseAQS {
         ClientBalancePage clientBalancePage = welcomePage.navigatePage(GENERAL_REPORTS, CLIENT_BALANCE, ClientBalancePage.class);
         log("@Verify 1: Validate column 'PIC' is displayed correctly next to Status column");
         List<String> headerClient = clientBalancePage.tblClient.getHeaderNameOfRows();
-        Assert.assertTrue(headerClient.indexOf("PIC") - headerClient.indexOf("Status") == 1,
+        Assert.assertTrue(headerClient.indexOf("Status") - headerClient.indexOf("PIC") == 1,
                 "FAILED! Column 'PIC' is NOT displayed  next to Status column");
     }
 
     @Test(groups = {"regression", "2023.12.29"})
     @Parameters({"superCode", "clientCode"})
-    @TestRails(id = "15739")
+    @TestRails(id = "15741")
     public void ClientBalanceTC_15741(String superCode, String clientCode){
         log("@title: Validate can filter with SM code");
         log("@Precondition: Login the page\n" +
