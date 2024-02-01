@@ -21,8 +21,8 @@ public class BetSettlementPage extends WelcomePage {
     public DropDownBox ddbMatchDate = DropDownBox.xpath("//select[@name='dropMatchDate']");
     public TextBox txtFromDate = TextBox.xpath("//div[text()=' From Date ']//..//input");
     public TextBox txtToDate = TextBox.xpath("//div[text()=' To Date ']//..//input");
-    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
-    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
+    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
+    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
     public TextBox txtAccStartWith = TextBox.xpath("//input[@name='txtAccStartsWith']");
     public TextBox txtAccountCode = TextBox.xpath("//input[@name='txtAccountCode']");
     public Button btnSearch = Button.xpath("//div[@class='container-fluid cbody']//button[contains(@class,'icon-search-custom')]");
