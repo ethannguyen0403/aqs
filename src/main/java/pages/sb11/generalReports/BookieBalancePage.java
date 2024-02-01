@@ -25,7 +25,7 @@ public class BookieBalancePage extends WelcomePage {
     public Table tblBookie = Table.xpath("(//table)[1]",3);
     public Table tblCurrency = Table.xpath("(//table)[2]",4);
     public int colBookieName = 2;
-    public Table tblBookieBalance = Table.xpath("//div[@id='bookie-balance-summary']//table[not(contains(@style,' '))]", 3);
+    public Table tblBookieBalance = Table.xpath("//div[@id='bookie-balance-summary']//table[not(contains(@style,' '))]", 7);
     public DropDownBox ddShowTotal = DropDownBox.xpath("//div[contains(text(),'Show Total')]//following::select[1]");
     public void filter(String companyUnit, String financialYear, String date, String bookieCode, String showTotalIn) {
         if(!companyUnit.isEmpty()){
