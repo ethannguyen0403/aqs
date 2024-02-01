@@ -15,6 +15,12 @@ public class BookieAgentSummaryPopup {
     public BookieAgentDetailPopup openAgentDetailPopup(String agentCode){
         int indexMS = tblAgentSummary.getRowIndexContainValue(agentCode,colAgentCode,"a");
         tblAgentSummary.getControlOfCell(1,colAgentCode,indexMS,"a").click();
+        //Wait for popup display
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return new BookieAgentDetailPopup();
     }
 }
