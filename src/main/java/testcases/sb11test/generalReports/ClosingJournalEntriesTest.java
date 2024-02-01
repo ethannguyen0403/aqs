@@ -237,7 +237,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         Assert.assertEquals(mesRemind, String.format(ClosingJournalEntries.MES_REMINDER_BEFORE_2_MONTH,month,year),"FAILED! Reminder message display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression1","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "15743")
     public void Closing_Journal_Entries_15743() throws InterruptedException {
         log("@title: Validate only the confirmation message displays if perform CJE for the lasted month");
