@@ -46,7 +46,7 @@ public class HomePageTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression1"})
     @Parameters({"username","password"})
     @TestRails(id = "2063")
     public void Homepage_TC_003(String username, String password) throws Exception {

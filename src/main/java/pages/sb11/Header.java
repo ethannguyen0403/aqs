@@ -30,6 +30,8 @@ public class Header {
     public LoginPage logout(){
         btnLogout.click();
         LoginPage loginPage = new LoginPage();
+        DriverManager.getDriver().refresh();
+        waitSpinnerDisappeared();
         Assert.assertTrue(loginPage.tabEurope.isDisplayed(),"FAILED! Camouflag page is not displayed");
         return loginPage;
     }
