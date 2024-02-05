@@ -4,6 +4,7 @@ import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.FileUtils;
 import objects.Transaction;
+import org.checkerframework.checker.units.qual.C;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -80,12 +81,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -137,12 +136,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -201,12 +198,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -263,12 +258,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -320,12 +313,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -377,12 +368,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -440,12 +429,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -503,12 +490,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -561,12 +546,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_LIABILITY_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_LIABILITY_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -620,12 +603,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_LIABILITY_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_LIABILITY_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -683,12 +664,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -746,12 +725,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -811,12 +788,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -875,12 +850,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -938,12 +911,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -1003,12 +974,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -1067,12 +1036,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -1132,12 +1099,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)

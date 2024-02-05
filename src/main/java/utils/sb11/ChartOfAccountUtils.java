@@ -179,4 +179,34 @@ public class ChartOfAccountUtils {
         return lstParent;
     }
 
+
+    /**
+     *
+     * @param ledger input Ledger name
+     * @param numberBefore is true when ledger has number account before
+     * @return account Name after splitting
+     */
+    public static String getAccountName(String ledger, boolean numberBefore){
+        String[] ledgerDebitAccountPart = ledger.split("-");
+        if (numberBefore){
+            return ledgerDebitAccountPart[1].replaceAll("\\s+","");
+        } else {
+            return ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        }
+    }
+
+    /**
+     *
+     * @param ledger input Ledger name
+     * @param numberBefore is true when ledger has number account before
+     * @return account number after splitting
+     */
+    public static String getAccountNumber(String ledger, boolean numberBefore){
+        String[] ledgerDebitAccountPart = ledger.split("-");
+        if (numberBefore){
+            return ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        } else {
+            return ledgerDebitAccountPart[1].replaceAll("\\s+","");
+        }
+    }
 }

@@ -239,12 +239,10 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@title: Validate that show the reporting currency of company correctly in 'Client Statement' page");
         log(String.format("@Precondition 1: Company %s has currency as %s", companyName, currency) );
         log("@Precondition 2: Add transaction for the Asset Ledger account to show value Rec/Pay and Member Transaction popup");
-        String[] ledgerDebitAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
-        String[] ledgerCreditAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
-        ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-        ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-        ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-        ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
+        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
+        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
+        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                 .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)

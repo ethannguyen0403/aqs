@@ -55,12 +55,10 @@ public class TrialBalanceTest extends BaseCaseAQS {
     public void Trial_Balance_C2773() throws IOException {
         log("@title: Validate Debit/Credit data is matched correctly with Ledger Statement page");
         String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-        String[] ledgerDebitAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
-        String[] ledgerCreditAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
-        String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-        String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-        String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-        String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
+        String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
+        String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
+        String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
 
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
