@@ -39,9 +39,9 @@ public class TrialBalancePage extends WelcomePage {
         waitSpinnerDisappeared();
     }
 
-    public double getAmountTrialTable(int rowIndex, int colIndex){
+    public String getAmountTrialTable(int rowIndex, int colIndex){
         Label amount = Label.xpath(tblTrial.getxPathOfCell(1, colIndex, rowIndex, null));
-        return Double.valueOf(amount.getText().trim());
+        return amount.getText().trim().replace(",","");
     }
 
     public int findRowIndexOfParentAccount(String accountCode){
@@ -67,5 +67,8 @@ public class TrialBalancePage extends WelcomePage {
          Month monthM = Month.of(month);
         return String.format("%s - %s",year , monthM.getDisplayName(TextStyle.FULL, Locale.ENGLISH));
     }
-
+    public String getAmountValue(String accountCode, int colIndex){
+        int rowIndex = findRowIndexOfParentAccount(accountCode);
+        return getAmountTrialTable(rowIndex,colIndex);
+    }
 }
