@@ -27,6 +27,11 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
     public int colCreditCurrentMonth = 6;
     public int colDebitTxns = 8;
     public int colCreditTxns = 9;
+    String totalBalanceDifXpath = "//td[text()='%s']//following-sibling::td[%s]";
+    public int indexTotalSelectMonthCre = 5;
+    public int indexTotalSelectMonthDe = 4;
+    public int indexDifSelectMonth = 3;
+    String valueDeCreOfParentAcc = "//tr[contains(@class,'header-ledger-group')][%s]//td[1]//following-sibling::td[%s]";
 
     public void filter(String companyUnit, String financialYears, String month, String report) {
         if (!companyUnit.equals("")) {
@@ -124,5 +129,18 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
             }
             i++;
         }
+    }
+
+    /**
+     *
+     * @param typeValue input value "Total Balance" or "Difference"
+     * @param indexTotal input index of value column
+     * @return
+     */
+    public double getDifTotalBalance(String typeValue,int indexTotal){
+        return Double.valueOf(Label.xpath(String.format(totalBalanceDifXpath,typeValue,indexTotal)).getText().trim().replace(",",""));
+    }
+    public String getDeCreOfParentAcc(){
+        return null;
     }
 }
