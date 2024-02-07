@@ -3,10 +3,12 @@ package pages.sb11.financialReports;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
-import com.paltech.utils.DateUtils;
+import com.paltech.utils.DoubleUtils;
 import controls.Table;
 import pages.sb11.WelcomePage;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.Locale;
@@ -21,6 +23,10 @@ public class TrialBalancePage extends WelcomePage {
     public int colDeCurrentMonth = 6;
     public int colCreCurrentMonth = 7;
     public Button btnShow = Button.name("btnShow");
+    String totalBalanceXpath = "//td[text()='Total Balance']/following-sibling::td[%s]//span";
+    public int previousMonthDif = 1;
+    public int curMonthDif = 3;
+    String differenceXpath = "//td[text()='Difference']//following-sibling::td[%s]//span";
 
     public void filter(String companyUnit, String financialYear, String month, String reportType) {
         if (!companyUnit.isEmpty()){
@@ -70,5 +76,33 @@ public class TrialBalancePage extends WelcomePage {
     public String getAmountValue(String accountCode, int colIndex){
         int rowIndex = findRowIndexOfParentAccount(accountCode);
         return getAmountTrialTable(rowIndex,colIndex);
+    }
+    public double getTotalBalance(boolean currentMonth, boolean debit){
+        int indexCol = -1;
+        if (currentMonth){
+            if (debit){
+                indexCol = 4;
+            } else {
+                indexCol = 5;
+            }
+        } else {
+            if (debit){
+                indexCol = 1;
+            } else {
+                indexCol = 2;
+            }
+        }
+        return Double.valueOf(Label.xpath(String.format(totalBalanceXpath,indexCol)).getText().trim().replace(",",""));
+    }
+    public double getSumValueOfCol(int colIndex){
+        double sum = 0.01;
+        int sumCol = tblTrial.getNumberOfRows(false,true);
+        for (int i = 1; i <= sumCol-2; i++){
+            sum = DoubleUtils.roundUpWithTwoPlaces(sum + DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getAmountTrialTable(i,colIndex))));
+        }
+        return sum;
+    }
+    public double getDifferenceValue(int indexDif){
+        return Double.valueOf(Label.xpath(String.format(differenceXpath,indexDif)).getText().trim().replace(",",""));
     }
 }

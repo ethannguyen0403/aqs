@@ -1,6 +1,7 @@
 package testcases.sb11test.financialReports;
 
 import com.paltech.utils.DateUtils;
+import com.paltech.utils.DoubleUtils;
 import com.paltech.utils.StringUtils;
 import objects.Transaction;
 import org.testng.Assert;
@@ -440,5 +441,42 @@ public class TrialBalanceTest extends BaseCaseAQS {
             TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
             log("INFO: Executed completely");
         }
+    }
+    @TestRails(id = "21837")
+    @Test(groups = {"regression", "2024.V.2.0"})
+    public void Trial_Balance_C21837(){
+        log("@title: Validate total balance of each Debit column");
+        log("@Step 1: Access SB11 > Financial Reports > Trial Balance");
+        TrialBalancePage page = welcomePage.navigatePage(FINANCIAL_REPORTS, TRIAL_BALANCE, TrialBalancePage.class);
+        log("@Step 2: Filter with Month that is having data");
+        page.filter(COMPANY_UNIT,"","","");
+        log("@Verify 1: Total amounts = sum up all the absolute values of debit amounts in each column");
+        Assert.assertEquals(page.getSumValueOfCol(page.colDeCurrentMonth),Double.valueOf(page.getTotalBalance(true,true)),"FAILED! Current Month Sum Debit displays incorrect");
+        log("INFO: Executed completely");
+    }
+    @TestRails(id = "21838")
+    @Test(groups = {"regression", "2024.V.2.0"})
+    public void Trial_Balance_C21838(){
+        log("@title: Validate total balance of each Credit column");
+        log("@Step 1: Access SB11 > Financial Reports > Trial Balance");
+        TrialBalancePage page = welcomePage.navigatePage(FINANCIAL_REPORTS, TRIAL_BALANCE, TrialBalancePage.class);
+        log("@Step 2: Filter with Month that is having data");
+        page.filter(COMPANY_UNIT,"","","");
+        log("@Verify 1: Total amounts = sum up all the absolute values of credit amounts in each column");
+        Assert.assertEquals(page.getSumValueOfCol(page.colCreCurrentMonth),page.getTotalBalance(true,false),"FAILED! Current Month Sum Credit displays incorrect");
+        log("INFO: Executed completely");
+    }
+    @TestRails(id = "21839")
+    @Test(groups = {"regression", "2024.V.2.0"})
+    public void Trial_Balance_C21839(){
+        log("@title: Validate amount in 'Difference' row of each month");
+        log("@Step 1: Access SB11 > Financial Reports > Trial Balance");
+        TrialBalancePage page = welcomePage.navigatePage(FINANCIAL_REPORTS, TRIAL_BALANCE, TrialBalancePage.class);
+        log("@Step 2: Filter with Month that is having data");
+        page.filter(COMPANY_UNIT,"","","");
+        log("@Verify 1: Difference = Total Debit - Total Credit");
+        double difAc = DoubleUtils.roundUpWithTwoPlaces(page.getTotalBalance(true,true) - page.getTotalBalance(true,false));
+        Assert.assertEquals(difAc,page.getDifferenceValue(page.curMonthDif),"FAILED! Current Month Sum Credit displays incorrect");
+        log("INFO: Executed completely");
     }
 }
