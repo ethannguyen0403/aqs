@@ -18,7 +18,7 @@ public class JournalReportsTest extends BaseCaseAQS {
     String clientCode = "QA Client (No.121 QA Client)";
     String dateType = "Created Date";
     String debitExpAcc = "AutoExpenditureDebit";
-    String creditExpAcc = "AutoExpenditureCredit";
+    String creditExpAcc = "AutoExpenditureCredit - 010.000.000.000";
     String lgDebitCur = "HKD";
     String lgCreditCur = "HKD";
     String descExpenditure = "Expenditure Transaction " + DateUtils.getMilliSeconds();
@@ -70,7 +70,7 @@ public class JournalReportsTest extends BaseCaseAQS {
         log("@Step 2:  Already making a transaction on Journal Entries page");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoExpenditureCredit1")
+                .ledgerDebit("AutoCreditExpenditure - 012.000.000.000")
                 .ledgerCredit(creditExpAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)

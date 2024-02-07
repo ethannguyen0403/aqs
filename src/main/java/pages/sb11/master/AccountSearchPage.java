@@ -21,19 +21,19 @@ public class AccountSearchPage extends WelcomePage {
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
 
     public Label lblAccountInfo = Label.xpath("//span[text()='Account Info']");
-    public Label lblBookieInfo = Label.xpath("//span[text()='Bookie Info']");
-    public Label lblClientInfo = Label.xpath("//span[text()='Client Info']");
-    public Label lblSuperInfo = Label.xpath("//span[text()='Super Info']");
-    public Label lblCASSuperInfo = Label.xpath("//span[text()='CAS Super Info']");
-    public Label lblMasterInfo = Label.xpath("//span[text()='Master Info']");
-    public Label lblCASMasterInfo = Label.xpath("//span[text()='CAS Master Info']");
-    public Label lblAgentInfo = Label.xpath("//span[text()='Agent Info']");
-    public Label lblCASAgentInfo = Label.xpath("//span[text()='CAS Agent Info']");
-    public Label lblAccountEmailHeader = Label.xpath("//span[text()='Account - Email Header Info']");
-    public Label lblSuperEmailHeader = Label.xpath("//span[text()='CAS Super - Email Header Info']");
-    public Label lblAddressBook = Label.xpath("//span[text()='Account - Address Book']");
-    public Label lblSmartGroupInfo = Label.xpath("//span[text()='Smart Group Info']");
-    public Label lblNoRecordFound = Label.xpath("//span[contains(text(),'No record found.')]");
+    public Label lblBookieInfo = Label.xpath("//app-account-search//span[text()='Bookie Info']");
+    public Label lblClientInfo = Label.xpath("//app-account-search//span[text()='Client Info']");
+    public Label lblSuperInfo = Label.xpath("//app-account-search//span[text()='Super Info']");
+    public Label lblCASSuperInfo = Label.xpath("//app-account-search//span[text()='CAS Super Info']");
+    public Label lblMasterInfo = Label.xpath("//app-account-search//span[text()='Master Info']");
+    public Label lblCASMasterInfo = Label.xpath("//app-account-search//span[text()='CAS Master Info']");
+    public Label lblAgentInfo = Label.xpath("//app-account-search//span[text()='Agent Info']");
+    public Label lblCASAgentInfo = Label.xpath("//app-account-search//span[text()='CAS Agent Info']");
+    public Label lblAccountEmailHeader = Label.xpath("//app-account-search//span[text()='Account - Email Header Info']");
+    public Label lblSuperEmailHeader = Label.xpath("//app-account-search//span[text()='CAS Super - Email Header Info']");
+    public Label lblAddressBook = Label.xpath("//app-account-search//span[text()='Account - Address Book']");
+    public Label lblSmartGroupInfo = Label.xpath("//app-account-search//span[text()='Smart Group Info']");
+    public Label lblNoRecordFound = Label.xpath("//app-account-search//span[contains(text(),'No record found.')]");
     public Label lblClientNameValue = Label.xpath("((//div[@class='panel-header'])[3]//following-sibling::table//td)[2]");
 
     public void filterAccount (String companyUnit, String type, String accountCodeID){

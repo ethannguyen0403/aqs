@@ -80,11 +80,11 @@ public class LedgerDetailPopup {
             double runDebitGBP = DoubleUtils.roundUpWithTwoPlaces(transaction.getDebitBalance() + transaction.getAmountDebit()) * curDebitRate;
 
             Assert.assertTrue(txnDate.contains(transaction.getTransDate()), "Failed! Txn Date is incorrect");
-            Assert.assertEquals(debitORG, String.format("%.2f", transaction.getAmountDebit()), "Failed! Debit ORG amount is incorrect");
-            Assert.assertEquals(runBalORG, String.format("%.2f", transaction.getDebitBalance() + transaction.getAmountDebit()), "Failed! Running Balance ORG amount is incorrect");
+            Assert.assertEquals(debitORG.replace(",",""), String.format("%.2f", transaction.getAmountDebit()), "Failed! Debit ORG amount is incorrect");
+            Assert.assertEquals(runBalORG.replace(",",""), String.format("%.2f", transaction.getDebitBalance() + transaction.getAmountDebit()), "Failed! Running Balance ORG amount is incorrect");
 
-            Assert.assertEquals(debitGBP, String.format("%.2f", amountDebitGBP), "Failed! Debit GBP amount is incorrect");
-            Assert.assertEquals(runBalGBP, String.format("%.2f", runDebitGBP), "Failed! Running Balance GBP amount is incorrect");
+            Assert.assertEquals(debitGBP.replace(",",""), String.format("%.2f", amountDebitGBP), "Failed! Debit GBP amount is incorrect");
+            Assert.assertEquals(runBalGBP.replace(",",""), String.format("%.2f", runDebitGBP), "Failed! Running Balance GBP amount is incorrect");
             verifyTransTotal(transaction,true);
         } else {
             double curCreditRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1",transaction.getLedgerCreditCur()));
@@ -92,11 +92,11 @@ public class LedgerDetailPopup {
             double runCreditGBP = (transaction.getCreditBalance() + transaction.getAmountCredit()) * curCreditRate;
 
             Assert.assertTrue(txnDate.contains(transaction.getTransDate()), "Failed! Txn Date is incorrect");
-            Assert.assertEquals(creditORG, String.format("%.2f", transaction.getAmountCredit()), "Failed! Credit ORG amount is incorrect");
-            Assert.assertEquals(runBalORG, String.format("%.2f", transaction.getCreditBalance() + transaction.getAmountCredit()), "Failed! Running Balance ORG amount is incorrect");
+            Assert.assertEquals(creditORG.replace(",",""), String.format("%.2f", transaction.getAmountCredit()), "Failed! Credit ORG amount is incorrect");
+            Assert.assertEquals(runBalORG.replace(",",""), String.format("%.2f", transaction.getCreditBalance() + transaction.getAmountCredit()), "Failed! Running Balance ORG amount is incorrect");
 
-            Assert.assertEquals(creditGBP, String.format("%.2f", amountCreditGBP), "Failed! Credit GBP amount is incorrect");
-            Assert.assertEquals(runBalGBP, String.format("%.2f", runCreditGBP), "Failed! Credit Balance GBP amount is incorrect");
+            Assert.assertEquals(creditGBP.replace(",",""), String.format("%.2f", amountCreditGBP), "Failed! Credit GBP amount is incorrect");
+            Assert.assertEquals(runBalGBP.replace(",",""), String.format("%.2f", runCreditGBP), "Failed! Credit Balance GBP amount is incorrect");
             //TODO: Assign to Johnny:  Wrong VP at Total Row when have more transactions. Should sum all transactions and compare with total row
             verifyTransTotal(transaction,false);
         }

@@ -31,6 +31,11 @@ public class HeaderMenuControl extends BaseElement {
             return null;
         }
         lblMainMenu.click();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 //        Label lblSubMenu =Label.xpath(String.format("%s//div[contains(@class,'dropdown-menu')]//span[contains(text(),'%s')]",_xpath,subMenu));
         Label lblSubMenu = Label.xpath(String.format("%s//span[text()='%s']/parent::a/following-sibling::div//span[contains(text(),'%s')]",_xpath,menu,subMenu));
         if(!lblSubMenu.isDisplayed()){

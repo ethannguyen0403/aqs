@@ -10,7 +10,7 @@ public class MissedAccountsPage extends WelcomePage {
         return this.lblTitle.getText().trim();
     }
 
-    public Label lblBetISN = Label.xpath("//div[contains(@class,'header-title')]//span[text()='BetISN']");
-    public Label lblPinnacle = Label.xpath("//div[contains(@class,'header-title')]//span[text()='Pinnacle']");
+    public Label lblBetISN = Label.xpath("//div[contains(@class,'header-title')]//span[text()='BET ISN']");
+    public Label lblPinnacle = Label.xpath("//div[contains(@class,'header-title')]//span[text()='PINNACLE']");
     public Label lblFair999 = Label.xpath("//div[contains(@class,'header-title')]//span[text()='Fair999']");
 }

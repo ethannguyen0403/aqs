@@ -115,7 +115,7 @@ public class SBPConstants {
     public final static List<String> COMPANY_UNIT_LIST_ALL = Arrays.asList("All","Kastraki Limited", "SK1122", "IB 01", "Fair","Aquifer");
     public final static List<String> FINANCIAL_YEAR_LIST_NEW = Arrays.asList("Year 2021","Year 2022","Year 2023","Year 2024","Year 2020-2021","Year 2021-2022","Year 2022-2023","Year 2023-2024");
     public final static List<String> FINANCIAL_YEAR_LIST = Arrays.asList("Year 2020-2021","Year 2021-2022","Year 2022-2023","Year 2023-2024");
-    public final static List<String> FINANCIAL_YEAR_LIST_1_YEAR = Arrays.asList("Year 2021","Year 2022","Year 2023");
+    public final static List<String> FINANCIAL_YEAR_LIST_1_YEAR = Arrays.asList("Year 2021","Year 2022","Year 2023","Year 2024");
     public final static List<String> COUNTRY_LIST = Arrays.asList("All", "Afghanistan","Africa","Albania","Algeria","American Samoa","Andorra","Angola","Anguilla","Antigua and Barbuda","Argentina","Armenia","Aruba","Asia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia-Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei Darussalam","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde Islands","Cayman Islands","Central African Republic","Chad","Chile","China","Chinese Taipei","Colombia","Comoros Island","Congo","Cook Islands","Costa Rica","Croatia","Cuba","Curacao","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Dubai","East Timor","Ecuador","Egypt","El Salvador","England","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","EuroCup","Europe","Faroe Islands","FIFA","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Grenada","Guadeloupe","Guam","Guatemala","Guinea","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","International","Iran","Iraq","Ireland Republic","Israel","Israeli-Palestinian","Italy","Ivory Cost","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Korea North","Korea South","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macao","Macedonia FYR","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Mauritania","Mauritius","Mexico","Moldova","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","North America","North Ireland","Norway","Oceania","Oman","Other","Others","Pakistan","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Romania","Russia","Rwanda","Samoa","San Marino","Saudi Arabia","Scotland","Senegal","Serbia","Serbia and Montenegro","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South America","Spain","Sri Lanka","St. Kitts and Nevis","St. Lucia","St. Vincent and the Grenadines","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Tahiti","Tajikistan","Tanzania","Thailand","Togo","Tonga","Trinidad And Tobago","Tunisia","Turkey","Turkmenistan","UEFA","Uganda","Ukraine","United Arab Emirates","United Kingdom","Uruguay","US Virgin Islands","USA","Uzbekistan","Vanuatu","Venezuela","Vietnam","Wales","World","WorldCup","Yemen","Yugoslavia","Zambia","Zanzibar","Zimbabwe");
     public final static List<String> TYPE_LIST = Arrays.asList("Normal","Account");
     public final static List<String> ORDER_BY_LIST = Arrays.asList("KOT","League");
@@ -467,13 +467,13 @@ public class SBPConstants {
     }
     public static class PositionTakingReport {
         public final static String WARNING_FINANCIAL_YEAR_MES = "Please select in range 01/08/%s and 31/07/%s.";
-        public final static String INVALID_TIME_MES = "Invalid time range. You can see data up to 1 months.";
+        public final static String INVALID_TIME_MES = "Invalid time range. You can see data up to 1 month.";
         public final static List<String> DEFAULT_BOOKIE_HEADER_NAME = Arrays.asList("#","Bookie Name","Till %s","DR-Win/Loss");
     }
     public static class ClosingJournalEntries {
         public final static String SUCCESS_MES_LAST_MONTH = "Closing Journal Entry for %s is completed.";
-        public final static String MES_REMINDER_BEFORE_2_MONTH = "You will need to perform CJE for %s to have the correct balances";
-        public final static String MES_REMINDER_BEFORE_1_MONTH = "Are you sure to perform Closing Journal Entry for %s?";
+        public final static String MES_REMINDER_BEFORE_1_MONTH = "You will need to perform CJE for %s and %s to have the correct balances";
+        public final static String MES_REMINDER_BEFORE_2_MONTH = "Are you sure to perform Closing Journal Entry for %s - %s?";
     }
     public static class ConsolidatedClientBalance {
         public final static List<String> HEADER_NAME = Arrays.asList("#","Client","PIC","Status","Note","Log","Deposit in Ori CUR","Total Balance HKD","GBP","USD","EUR","HKD");

@@ -221,9 +221,11 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Step 2: Click General Reports >> System Monitoring menu");
         log("@Step 3: Click 'Closing Journal Entries' button");
         Calendar cal  = Calendar.getInstance();
-        cal.add(Calendar.MONTH, -1);
+        cal.add(Calendar.MONTH, -2);
         SimpleDateFormat s = new SimpleDateFormat("MMMM");
+        SimpleDateFormat t = new SimpleDateFormat("yyyy");
         String month = s.format(new Date(cal.getTimeInMillis()));
+        String year = t.format(new Date(cal.getTimeInMillis()));
         ClosingJournalEntriesPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING,SystemMonitoringPage.class).goToTabName(CLOSING_JOURNAL_ENTRIES,ClosingJournalEntriesPage.class);
         log("@Step 4: Select any month is not the latest month");
         page.ddMonth.selectByIndex(1);
@@ -232,7 +234,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         ConfirmPopup confirmPopup = new ConfirmPopup();
         String mesRemind = confirmPopup.getContentMessage();
         log("@Verify 1: The reminder message 'You will need to perform CJE for <Month(s) after the selected Month> to have the correct balances.' will display");
-        Assert.assertEquals(mesRemind, String.format(ClosingJournalEntries.MES_REMINDER_BEFORE_2_MONTH,month),"FAILED! Reminder message display incorrect");
+        Assert.assertEquals(mesRemind, String.format(ClosingJournalEntries.MES_REMINDER_BEFORE_2_MONTH,month,year),"FAILED! Reminder message display incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})
@@ -244,9 +246,12 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Step 2: Click General Reports >> System Monitoring menu");
         log("@Step 3: Click 'Closing Journal Entries' button");
         Calendar cal  = Calendar.getInstance();
-        cal.add(Calendar.MONTH, -1);
-        SimpleDateFormat s = new SimpleDateFormat("MMMM - yyyy");
-        String month = s.format(new Date(cal.getTimeInMillis()));
+        cal.add(Calendar.MONTH, -3);
+        SimpleDateFormat s = new SimpleDateFormat("MMMM");
+        String month1 = s.format(new Date(cal.getTimeInMillis()));
+        Calendar cal1  = Calendar.getInstance();
+        cal1.add(Calendar.MONTH, -2);
+        String month2 = s.format(new Date(cal1.getTimeInMillis()));
         ClosingJournalEntriesPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING,SystemMonitoringPage.class).goToTabName(CLOSING_JOURNAL_ENTRIES,ClosingJournalEntriesPage.class);
         log("@Step 4: Select any month is not the latest month");
         page.ddMonth.selectByIndex(0);
@@ -255,7 +260,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         ConfirmPopup confirmPopup = new ConfirmPopup();
         String mesRemind = confirmPopup.getContentMessage();
         log("@Verify 1: The confirmation as 'Are you sure to perform Closing Journal Entry for <Month - Year>?' will display");
-        Assert.assertEquals(mesRemind, String.format(ClosingJournalEntries.MES_REMINDER_BEFORE_1_MONTH,month),"FAILED! Reminder message display incorrect");
+        Assert.assertEquals(mesRemind, String.format(ClosingJournalEntries.MES_REMINDER_BEFORE_1_MONTH,month1,month2),"FAILED! Reminder message display incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})
