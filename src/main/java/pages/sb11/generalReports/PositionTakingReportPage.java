@@ -169,9 +169,10 @@ public class PositionTakingReportPage extends WelcomePage {
 
     public boolean isBookieDisplay(List<String> lstBookieAc) {
         List<String> lstBookie = ddBookie.getOptions();
-        lstBookieAc.remove("[All]");
-        for (String bookieName : lstBookieAc){
-            if (!lstBookie.contains(bookieName)){
+        lstBookie.remove("All");
+        lstBookieAc.add("Hhhuat-Ath");
+        for (String bookieName : lstBookie){
+            if (!lstBookieAc.contains(bookieName)){
                 System.out.println(bookieName+" is not belong to Bookie list");
                 return false;
             }
