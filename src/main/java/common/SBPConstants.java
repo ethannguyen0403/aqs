@@ -53,6 +53,7 @@ public class SBPConstants {
     public final static String JOURNAL_REPORTS = "Journal Reports";
     public final static String SMART_SYSTEM = "Smart System";
     public final static String BET_ENTRY = "Bet Entry";
+    public final static String ANALYSE = "Analyse";
     public final static String TRANSACTION_VERIFICATION = "Transaction Verification";
     public final static String RESULT_ENTRY = "Result Entry";
     public final static String ACCOUNT_PERCENT = "Account Percent";
@@ -484,6 +485,9 @@ public class SBPConstants {
         public final static String CONFIRM_MES_ADDING_PROVIDER = "Are you sure to create %s?";
         public final static String CONFIRM_MES_DELETE_PROVIDER = "Are you sure to delete %s?";
         public final static String MES_NOTE_PROVIDER_CLIENT = "Can not edit or delete Provider/Client that had feed transactions.";
+    }
+    public static class Analyse {
+        public final static String ERROR_MES_MORE_1_MONTH = "Date range should not be more than 1 month";
     }
 }
 
