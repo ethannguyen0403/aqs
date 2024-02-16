@@ -38,7 +38,11 @@
         </groups>
 
         <classes>
+            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
+            <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
+
             <class name="testcases.sb11test.financialReports.TrialBalanceTest"/>
+            <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
             <class name="testcases.sb11test.financialReports.BalanceSheetAnalysisTest"/>
         </classes>
     </test>
