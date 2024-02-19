@@ -48,6 +48,7 @@ public class SBPConstants {
     public final static String BOOKIE_STATEMENT = "Bookie Statement";
     public final static String FEED_REPORT = "Feed Report";
     public final static String CLOSING_JOURNAL_ENTRIES = "Closing Journal Entries";
+    public final static String FUND_RECONCILIATION = "Fund Reconciliation";
     public final static String CONSOLIDATED_CLIENT_BALANCE = "Consolidated Client Balance";
     public final static String JOURNAL_ENTRIES = "Journal Entries";
     public final static String JOURNAL_REPORTS = "Journal Reports";

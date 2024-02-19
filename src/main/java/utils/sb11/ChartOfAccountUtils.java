@@ -189,9 +189,9 @@ public class ChartOfAccountUtils {
     public static String getAccountName(String ledger, boolean numberBefore){
         String[] ledgerDebitAccountPart = ledger.split("-");
         if (numberBefore){
-            return ledgerDebitAccountPart[1].replaceAll("\\s+","");
+            return ledgerDebitAccountPart[1].trim();
         } else {
-            return ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            return ledgerDebitAccountPart[0].trim();
         }
     }
 
