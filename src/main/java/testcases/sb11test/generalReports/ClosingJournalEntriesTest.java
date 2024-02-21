@@ -91,7 +91,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         page.verifyddMonthOption();
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression_stg","2023.12.29"})
     @TestRails(id = "9845")
     public void Closing_Journal_Entries_9845() throws IOException {
         log("@title: Validate can perform CJE for the selected month for sub-accounts of the selected Company Unit by clicking 'Perform CJE' button");
@@ -148,7 +148,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         Assert.assertEquals(ledgerDetailPopup.getClosingValue(),"0.00","FAILED! Running Bal. of Closing Journal display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression_stg","2023.12.29"})
     @TestRails(id = "9846")
     public void Closing_Journal_Entries_9846() throws IOException {
         log("@title: Validate can perform CJE for the selected month for sub-accounts of the selected Company Unit by clicking 'Perform CJE' button");
@@ -212,7 +212,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         Assert.assertFalse(ledgerDetailPopup.getClosingValue().contains("0.00"),"FAILED! Running Bal. of Closing Journal display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression_stg","2023.12.29"})
     @TestRails(id = "15742")
     public void Closing_Journal_Entries_15742() throws InterruptedException {
         log("@title: Validate can perform CJE for the selected month for sub-accounts of the selected Company Unit by clicking 'Perform CJE' button");
@@ -237,7 +237,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         Assert.assertEquals(mesRemind, String.format(ClosingJournalEntries.MES_REMINDER_BEFORE_2_MONTH,month,year),"FAILED! Reminder message display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression_stg","2023.12.29"})
     @TestRails(id = "15743")
     public void Closing_Journal_Entries_15743() throws InterruptedException {
         log("@title: Validate only the confirmation message displays if perform CJE for the lasted month");
@@ -263,7 +263,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         Assert.assertEquals(mesRemind, String.format(ClosingJournalEntries.MES_REMINDER_BEFORE_1_MONTH,month1,month2),"FAILED! Reminder message display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression_stg","2023.12.29"})
     @TestRails(id = "15744")
     @Parameters({"username"})
     public void Closing_Journal_Entries_15744(String username) {
@@ -287,7 +287,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         Assert.assertFalse(page.isRecordHistoryDisplay(month,username,performedDate),"FAILED! The History/Log table display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression_stg","2023.12.29"})
     @TestRails(id = "15745")
     @Parameters({"username"})
     public void Closing_Journal_Entries_15745(String username) {
@@ -311,7 +311,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         Assert.assertTrue(page.isRecordHistoryDisplay(month,username,performedDate),"FAILED! The History/Log table display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression_stg","2023.12.29"})
     @TestRails(id = "15746")
     public void Closing_Journal_Entries_15746() {
         log("@title: Validate the success message displayed at the bottom-right corner when finished");
@@ -333,7 +333,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         Assert.assertEquals(sucMes, String.format(ClosingJournalEntries.SUCCESS_MES_LAST_MONTH,month.split(" - ")[1]),"FAILED! The History/Log table display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression_stg","2023.12.29"})
     @TestRails(id = "15748")
     public void Closing_Journal_Entries_15748() {
         log("@title: Validate History/Log table is sorted by Performed Date ascendingly");
@@ -351,7 +351,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         page.verifyPerformedDateSort();
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression_stg","2023.12.29"})
     @TestRails(id = "15762")
     public void Closing_Journal_Entries_15762() {
         log("@title: Validate History/Log table shows details logs on all created CJEs of the filtered company unit and month");
