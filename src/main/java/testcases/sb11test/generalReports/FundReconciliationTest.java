@@ -302,7 +302,6 @@ public class FundReconciliationTest extends BaseCaseAQS {
         log("@title: Validate the Today's Settlement in HKD row displays correct value");
         log("@Pre-condition 1: Fund Reconciliation' permission is ON for any account");
         log("@Pre-condition 2: Having some transaction of Fund Reconciliation for detail types");
-        log("@Pre-condition 3: Having some transaction of Fund Reconciliation for detail types");
         String ledgerDebit = "101.000.001.000 - PC Kam HKD";
         String groupName = "Pretty Cash";
         String desc = "Automation Testing Transaction " + DateUtils.getMilliSeconds();
