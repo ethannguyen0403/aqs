@@ -128,7 +128,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Step 4: Select any Month in dropdown list (e.g. 2023-Octorber) of any company (e.g. Kastraki Limited)");
         log("@Step 5: Click Perform CJE button");
         log("@Step 6: Click Yes button");
-        page.performCJE(COMPANY_UNIT,"",true);
+        page.performCJE(KASTRAKI_LIMITED,"",true);
         String sucMes = page.appArlertControl.getSuscessMessage();
         log("@Verify 1: The successful message 'Closing Journal Entry for <selected Month> (e.g. October) is completed.' displays");
         s = new SimpleDateFormat("MMMM");
@@ -140,7 +140,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         String firstDay = DateUtils.getFirstDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
         String lastDay = DateUtils.getLastDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
 
-        ledgerStatementPage.showLedger(COMPANY_UNIT,"","Expenditure",detailType,firstDay,lastDay,"After CJE");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Expenditure",detailType,firstDay,lastDay,"After CJE");
         log("@Step 9: Click on account at precondition (e.g. 000.000.001.003 - RB Feed Delete Debit1)");
         LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(ledger);
         log("@Verify 2: Running Bal. of Closing Journal 2023-OCTOBER is = 0.00");
@@ -186,13 +186,13 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Step 4: Select Month before perform txn at precondition in dropdown list of any company (e.g. Kastraki Limited)");
         log("@Step 5: Click Perform CJE button then Yes in confirmation dialog");
         String ddMonth = page.ddMonth.getOptions().get(1).trim();
-        page.performCJE(COMPANY_UNIT,ddMonth,true);
+        page.performCJE(KASTRAKI_LIMITED,ddMonth,true);
         log("@Step 6: Go to General Reports >> Ledger Statement");
         LedgerStatementPage ledgerStatementPage = page.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         log("@Step 7: Filter data of detail type of accounts at precondition from 1/9/2023 To 30/09/2023");
         String firstDay = DateUtils.getFirstDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
         String lastDay = DateUtils.getLastDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
-        ledgerStatementPage.showLedger(COMPANY_UNIT,"","Expenditure",detailType,firstDay,lastDay,"After CJE");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Expenditure",detailType,firstDay,lastDay,"After CJE");
         log("@Step 8: Click on account at precondition");
         LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(ledger);
         log("@Verify 1: Running Bal. of Closing Journal 2023-SEPTEMBER is = 0.00");
@@ -204,7 +204,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         month = s.format(new Date(cal.getTimeInMillis()));
         firstDay = DateUtils.getFirstDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
         lastDay = DateUtils.getLastDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
-        ledgerStatementPage.showLedger(COMPANY_UNIT,"","Expenditure",detailType,firstDay,lastDay,"Before CJE");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Expenditure",detailType,firstDay,lastDay,"Before CJE");
         log("@Step 10: Click on account at precondition");
         ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(ledger);
         log("@Verify 2: Running Bal. of Closing Journal 2023-OCTOBER is <> 0.00");
@@ -322,7 +322,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Step 4: Select a Company Unit and Month");
         log("@Step 5: Click Perform CJE button");
         log("@Step 6: Click Yes button in Confirm dialog");
-        page.performCJE(COMPANY_UNIT,month,true);
+        page.performCJE(KASTRAKI_LIMITED,month,true);
         String sucMes = page.appArlertControl.getSuscessMessage();
         log("@Verify 1: A success message will display at the bottom-right corner as 'Closing Journal Entry of <selected Month>is completed.");
         Assert.assertEquals(sucMes, String.format(ClosingJournalEntries.SUCCESS_MES_LAST_MONTH,month.split(" - ")[1]),"FAILED! The History/Log table display incorrect");

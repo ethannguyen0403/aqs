@@ -71,7 +71,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
         StockHoldersEquityPage stockPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
         log("@Step 2: Filter with valid data");
-        stockPage.filter(COMPANY_UNIT, FINANCIAL_YEAR);
+        stockPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR);
         log("@Verify 1: Validate data should show correct");
         Assert.assertTrue(stockPage.tblStakeholder.isDisplayed(), "FAILED! Stockholders Equity table is not shown");
         log("INFO: Executed completely");
@@ -99,7 +99,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
         StockHoldersEquityPage stockPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
         log("@Step 2: Filter with valid data");
-        stockPage.filter(COMPANY_UNIT, FINANCIAL_YEAR);
+        stockPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR);
         log("@Verify 1: Description displays 2 rows 'Capital Issued - Capital Stock' and 'Retained Earnings'");
         Assert.assertTrue(
                 stockPage.getDesRowIndex(RETAINED_EARNING) != -1 && stockPage.getDesRowIndex(StockHoldersEquityPage.CAPITAL_ISSUED) != -1,
@@ -136,13 +136,13 @@ public class StockholdersEquityTest extends BaseCaseAQS {
         log("Precondition: Get 'Retained Earning Ending' amount from Retained Earnings report - in the filtered financial year (e.g. Financial Year 2022-2023) (1)");
         RetainedEarningsPage retainedEarningsPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);
-        retainedEarningsPage.filterRetainedEarnings(COMPANY_UNIT, FINANCIAL_YEAR);
+        retainedEarningsPage.filterRetainedEarnings(KASTRAKI_LIMITED, FINANCIAL_YEAR);
         String retainEar = retainedEarningsPage.lblAmountRetainedEnding.getText().trim();
         log("@Step 1: Navigate Financial Report > Stockholders Equity");
         StockHoldersEquityPage stockPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
-        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", COMPANY_UNIT, FINANCIAL_YEAR));
-        stockPage.filter(COMPANY_UNIT, FINANCIAL_YEAR);
+        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", KASTRAKI_LIMITED, FINANCIAL_YEAR));
+        stockPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR);
         log("@Verify 1: Validate Retained Earnings amount = value at precondition");
         Assert.assertEquals(stockPage.getAmount(StockHoldersEquityPage.RETAINED_EARNING), retainEar, "FAILED! Retained earnings is not correct");
         log("INFO: Executed completely");
@@ -155,8 +155,8 @@ public class StockholdersEquityTest extends BaseCaseAQS {
         log("@Step 1: Navigate Financial Report > Stockholders Equity");
         StockHoldersEquityPage stockPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
-        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", COMPANY_UNIT, FINANCIAL_YEAR));
-        stockPage.filter(COMPANY_UNIT, FINANCIAL_YEAR);
+        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", KASTRAKI_LIMITED, FINANCIAL_YEAR));
+        stockPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR);
         log("@Verify 1: Validate  'Total Stockholder's Equity' value displays = Capital Issued + Retained Earnings");
         Double capitalIssued = Double.valueOf(stockPage.getAmount(StockHoldersEquityPage.CAPITAL_ISSUED).replace(",", ""));
         Double retainEarning = Double.valueOf(stockPage.getAmount(StockHoldersEquityPage.RETAINED_EARNING).replace(",", ""));
@@ -174,8 +174,8 @@ public class StockholdersEquityTest extends BaseCaseAQS {
         log("@Step 1: Navigate Financial Report > Stockholders Equity");
         StockHoldersEquityPage stockPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
-        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", COMPANY_UNIT, FINANCIAL_YEAR));
-        stockPage.filter(COMPANY_UNIT, FINANCIAL_YEAR);
+        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", KASTRAKI_LIMITED, FINANCIAL_YEAR));
+        stockPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR);
         String capitalIssued = stockPage.getAmount(StockHoldersEquityPage.CAPITAL_ISSUED);
         String retainEarning = stockPage.getAmount(StockHoldersEquityPage.RETAINED_EARNING);
 
@@ -206,8 +206,8 @@ public class StockholdersEquityTest extends BaseCaseAQS {
         log("@Step 1: Navigate Financial Report > Stockholders Equity");
         StockHoldersEquityPage stockPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
-        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", COMPANY_UNIT, FINANCIAL_YEAR));
-        stockPage.filter(COMPANY_UNIT, FINANCIAL_YEAR);
+        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", KASTRAKI_LIMITED, FINANCIAL_YEAR));
+        stockPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR);
         log("@Step 3: Click 'Export To PDF' button");
         stockPage.btnExportPDF.click();
         welcomePage.waitSpinnerDisappeared();
@@ -227,12 +227,12 @@ public class StockholdersEquityTest extends BaseCaseAQS {
         log("@title: Validate label 'Total Stockholder's Equity' is displayed in bold");
         RetainedEarningsPage retainedEarningsPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);
-        retainedEarningsPage.filterRetainedEarnings(COMPANY_UNIT, FINANCIAL_YEAR);
+        retainedEarningsPage.filterRetainedEarnings(KASTRAKI_LIMITED, FINANCIAL_YEAR);
         log("@Step 1: Navigate Financial Report > Stockholders Equity");
         StockHoldersEquityPage stockPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
-        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", COMPANY_UNIT, FINANCIAL_YEAR));
-        stockPage.filter(COMPANY_UNIT, FINANCIAL_YEAR);
+        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", KASTRAKI_LIMITED, FINANCIAL_YEAR));
+        stockPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR);
         log("@Verify 1: 'Total Stockholder's Equity' value is in bold");
         Assert.assertTrue(stockPage.verifyLabelIsBold(stockPage.lblTotalStock), "FAILED! Label format is not bold");
         log("INFO: Executed completely");

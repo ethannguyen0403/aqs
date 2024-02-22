@@ -213,7 +213,7 @@ public class BalanceSheetPage extends WelcomePage {
         String parentNameLia = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",5,8);
         String parentValueLia = ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"Balance Sheet",6,8);
 
-        Assert.assertEquals(companyUnit, SBPConstants.COMPANY_UNIT,"FAILED! Company unit displays incorrect");
+        Assert.assertEquals(companyUnit, SBPConstants.KASTRAKI_LIMITED,"FAILED! Company unit displays incorrect");
         Assert.assertEquals(namePage, SBPConstants.BALANCE_SHEET,"FAILED! Page name displays incorrect");
         Assert.assertEquals(rangeTime, "01 December 2023 - 31 December 2023","FAILED! Range time displays incorrect");
         Assert.assertEquals(titleAsset, "ASSET","FAILED! Asset title displays incorrect");

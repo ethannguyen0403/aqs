@@ -28,7 +28,7 @@ public class IncomeStatementTest extends BaseCaseAQS {
         IncomeStatementPage incomeStatementPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT, IncomeStatementPage.class);
         log("@Step 2: Filter with current Month");
-        incomeStatementPage.filterIncomeReport(COMPANY_UNIT, "", "", "");
+        incomeStatementPage.filterIncomeReport(KASTRAKI_LIMITED, "", "", "");
         log("@Verify 1: Validate chart code of Operating Income in range 400 to 459");
         List<String> chartCodeOperationIncome = incomeStatementPage.getListAccountCode(incomeStatementPage.findTableIndex("OPERATING INCOME"));
         Assert.assertTrue(incomeStatementPage.verifyCodeStartingInRange(chartCodeOperationIncome, 400, 459), "FAILED! Chart code Operation Income NOT in range 400 to 459");
@@ -43,7 +43,7 @@ public class IncomeStatementTest extends BaseCaseAQS {
         IncomeStatementPage incomeStatementPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT, IncomeStatementPage.class);
         log("@Step 2: Filter with current Month");
-        incomeStatementPage.filterIncomeReport(COMPANY_UNIT, "", "", "");
+        incomeStatementPage.filterIncomeReport(KASTRAKI_LIMITED, "", "", "");
         log("@Verify 1: Validate chart code of Operating expenses are started with 5, 6");
         List<String> chartCodeOperationIncome = incomeStatementPage.getListAccountCode(incomeStatementPage.findTableIndex("OPERATING EXPENSES"));
         Assert.assertTrue(incomeStatementPage.verifyAllCodeStartWithNumber(chartCodeOperationIncome, "5", "6"), "FAILED! Chart code Operation expenses are not start with 5, 6");
@@ -75,7 +75,7 @@ public class IncomeStatementTest extends BaseCaseAQS {
         IncomeStatementPage incomeStatementPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT, IncomeStatementPage.class);
         log("@Step 2: Filter with current Month");
-        incomeStatementPage.filterIncomeReport(COMPANY_UNIT, "", "", "");
+        incomeStatementPage.filterIncomeReport(KASTRAKI_LIMITED, "", "", "");
         log("@Step 2: Click on Export to excel and Export to pdf button");
         incomeStatementPage.btnExportToExcel.click();
         welcomePage.waitSpinnerDisappeared();

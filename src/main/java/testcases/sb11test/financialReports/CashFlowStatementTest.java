@@ -74,7 +74,7 @@ public class CashFlowStatementTest extends BaseCaseAQS {
         CashFlowStatementPage cashFlowStatementPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, CASH_FLOW_STATEMENT, CashFlowStatementPage.class);
         log("@Step 1: Filter with valid data: Date 02/11/2023");
-        cashFlowStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR, "02/11/2023", "02/11/2023");
+        cashFlowStatementPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "02/11/2023", "02/11/2023");
         double totalHKDPayClient = cashFlowStatementPage.getAmountTotalInHKDTransTable(transType);
         log("@Step 2: Open Transaction detail of type: " +  transType);
         TransactionDetailsPopup popup = cashFlowStatementPage.goToTransactionDetails(transType);

@@ -49,6 +49,7 @@ public class SBPConstants {
     public final static String FEED_REPORT = "Feed Report";
     public final static String CLOSING_JOURNAL_ENTRIES = "Closing Journal Entries";
     public final static String FUND_RECONCILIATION = "Fund Reconciliation";
+    public final static String AR_AND_AP_RECONCILIATION = "A/R and A/P Reconciliation";
     public final static String CONSOLIDATED_CLIENT_BALANCE = "Consolidated Client Balance";
     public final static String JOURNAL_ENTRIES = "Journal Entries";
     public final static String JOURNAL_REPORTS = "Journal Reports";
@@ -82,7 +83,7 @@ public class SBPConstants {
 
     public final static String PLACE_BET_SUCCESS_MSG ="The bet was placed successfully";
     public final static String FINANCIAL_YEAR = "Year 2023-2024";
-    public final static String COMPANY_UNIT = "Kastraki Limited";
+    public final static String KASTRAKI_LIMITED = "Kastraki Limited";
     public final static String CLIENT_CREDIT_ACC = "ClientCredit-AutoQC";
     public final static String CLIENT_DEBIT_ACC = "ClientDebit-AutoQC";
     public final static String LEDGER_GROUP_NAME_INCOME = "QA Ledger Group Income";
@@ -489,6 +490,11 @@ public class SBPConstants {
     }
     public static class Analyse {
         public final static String ERROR_MES_MORE_1_MONTH = "Date range should not be more than 1 month";
+    }
+    public static class ARandAPReconciliation {
+        public final static List<String> COMPANY_UNIT_LIST = Arrays.asList("Kastraki Limited","Fair");
+        public final static List<String> DETAIL_TYPE_LIST_KASTRAKI_LIMITED = Arrays.asList("All","105.000.000.000 - A/R Project", "107.000.000.000 - Other Receivables","202.000.000.000 - Other Payable");
+        public final static List<String> DETAIL_TYPE_LIST_FAIR = Arrays.asList("All","105.000.000.000 - Other Receivables", "300.000.000.000 - Account Payable (A/P)");
     }
 }
 

@@ -9,7 +9,6 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.soccer.PTRiskPage;
 import pages.sb11.soccer.popup.PTRiskBetListPopup;
-import pages.sb11.sport.EventSchedulePage;
 import pages.sb11.trading.BasketballBetEntryPage;
 import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.ConfirmBetsPage;
@@ -56,7 +55,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
 
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT,"","All");
+        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,"","All");
         String league = soccerBetEntryPage.getRandomLeague();
         Event event = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,league);
         event.setEventDate(dateAPI);
@@ -78,7 +77,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         PTRiskPage ptPage = soccerBetEntryPage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
         ptPage.waitSpinnerDisappeared();
         log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
-        ptPage.filter(clientCode,COMPANY_UNIT,"Normal","All","","", event.getLeagueName());
+        ptPage.filter(clientCode, KASTRAKI_LIMITED,"Normal","All","","", event.getLeagueName());
         log("Step 4: Open bet list of league");
         PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(event.getHome());
         actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
@@ -107,7 +106,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode,percent);
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT,"","All");
+        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,"","All");
         String league = soccerBetEntryPage.getRandomLeague();
         Event eventInfo = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
@@ -128,7 +127,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
         ptPage.waitSpinnerDisappeared();
         log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
-        ptPage.filter(clientCode,COMPANY_UNIT,"Normal","All","","", eventInfo.getLeagueName());
+        ptPage.filter(clientCode, KASTRAKI_LIMITED,"Normal","All","","", eventInfo.getLeagueName());
         log("Step 4: Open bet list of league");
         PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(eventInfo.getHome());
         actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
@@ -157,7 +156,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode,percent);
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT,"","All");
+        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,"","All");
         String league = soccerBetEntryPage.getRandomLeague();
         Event eventInfo = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
@@ -178,7 +177,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
         ptPage.waitSpinnerDisappeared();
         log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
-        ptPage.filter(clientCode,COMPANY_UNIT,"Normal","All","","", eventInfo.getLeagueName());
+        ptPage.filter(clientCode, KASTRAKI_LIMITED,"Normal","All","","", eventInfo.getLeagueName());
         log("Step 4: Open bet list of league");
         PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(eventInfo.getHome());
         actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
@@ -207,7 +206,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode,percent);
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT,"","All");
+        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,"","All");
         String league = soccerBetEntryPage.getRandomLeague();
         Event eventInfo = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,league);
         List<Order> lstOrder = new ArrayList<>();
@@ -228,7 +227,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
         ptPage.waitSpinnerDisappeared();
         log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
-        ptPage.filter(clientCode,COMPANY_UNIT,"Normal","All","","", eventInfo.getLeagueName());
+        ptPage.filter(clientCode, KASTRAKI_LIMITED,"Normal","All","","", eventInfo.getLeagueName());
         log("Step 4: Open bet list of league");
         PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(eventInfo.getHome());
         actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
@@ -359,7 +358,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("@Step 1: Access Soccer > PT Risk Control");
         PTRiskPage ptRiskPage = welcomePage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
         log("@Step 2: Filter with event that having bet at Pre-condition");
-        ptRiskPage.filter("",COMPANY_UNIT,"Normal","All",date,date, lstOrder.get(0).getEvent().getLeagueName());
+        ptRiskPage.filter("", KASTRAKI_LIMITED,"Normal","All",date,date, lstOrder.get(0).getEvent().getLeagueName());
 
         log("@Step 3: Click on event name");
         PTRiskBetListPopup ptRiskBetListPopup = ptRiskPage.openBetList(lstOrder.get(0).getEvent().getHome());
@@ -392,7 +391,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         PTRiskPage ptRiskPage = betEntryPage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
 
         log("@Step 2: Filter with the event that has bet at Pre-condition");
-        ptRiskPage.filter("",COMPANY_UNIT,"Normal","All",date,date, lstOrder.get(0).getEvent().getLeagueName());
+        ptRiskPage.filter("", KASTRAKI_LIMITED,"Normal","All",date,date, lstOrder.get(0).getEvent().getLeagueName());
         ptRiskPage.filterSmartMaster(smartMaster);
         log("@Step 3: Click on the event name");
         PTRiskBetListPopup ptRiskBetListPopup = ptRiskPage.openBetList(lstOrder.get(0).getEvent().getHome());
@@ -414,7 +413,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         ptRiskPage = confirmBetsPage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
 
         log("Verify 2: verify Bet is removed when bet is removed in Confirm bet");
-        ptRiskPage.filter("",COMPANY_UNIT,"Normal","All",date,date, lstOrder.get(0).getEvent().getLeagueName());
+        ptRiskPage.filter("", KASTRAKI_LIMITED,"Normal","All",date,date, lstOrder.get(0).getEvent().getLeagueName());
         ptRiskPage.filterSmartMaster(smartMaster);
         Assert.assertTrue(ptRiskPage.verifyRemoveBet(lstOrder.get(0)),"FAILED! Bet still display");
         log("INFO: Executed completely");
@@ -465,13 +464,13 @@ public class PTRiskControlTest extends BaseCaseAQS {
         try {
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
-            basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
+            basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
             basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
             log("@Step 2: Navigate to Soccer > PT Risk Control");
             PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
             ptPage.waitSpinnerDisappeared();
             log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
-            ptPage.filter("Basketball","", COMPANY_UNIT, "PT + Throw Bets", "All", "", "", eventBasketball.getLeagueName());
+            ptPage.filter("Basketball","", KASTRAKI_LIMITED, "PT + Throw Bets", "All", "", "", eventBasketball.getLeagueName());
 
             log("Verify 1: Validate Basket ball bets return properly");
             List<Order> lstOrder = new ArrayList<>();
@@ -514,13 +513,13 @@ public class PTRiskControlTest extends BaseCaseAQS {
         try {
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
-            basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
+            basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
             basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
             log("@Step 2: Navigate to Soccer > PT Risk Control");
             PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
             ptPage.waitSpinnerDisappeared();
             log("@Step 3: Filter with League and Client placed bet");
-            ptPage.filter("Basketball","", COMPANY_UNIT, "PT + Throw Bets", "All", "", "", eventBasketball.getLeagueName());
+            ptPage.filter("Basketball","", KASTRAKI_LIMITED, "PT + Throw Bets", "All", "", "", eventBasketball.getLeagueName());
             log("Verify 1: Validate Bet Types only shows option '1x2'");
             Assert.assertTrue(ptPage.isBetTypeBasketIs1X2(), "FAILED! Bet type of Basketball is not correct");
             log("INFO: Executed test completely");
@@ -559,14 +558,14 @@ public class PTRiskControlTest extends BaseCaseAQS {
         try {
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
-            basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
+            basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
             basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
             log("@Step 1: Navigate to Soccer > PT Risk Control");
             PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
             ptPage.waitSpinnerDisappeared();
 
             log("@Step 2: Filter with Report Type = PT + Throw Bets, League and Client placed bet");
-            ptPage.filter("Basketball", "", COMPANY_UNIT, "PT + Throw Bets", "All", "", "", eventBasketball.getLeagueName());
+            ptPage.filter("Basketball", "", KASTRAKI_LIMITED, "PT + Throw Bets", "All", "", "", eventBasketball.getLeagueName());
             log("Verify 1: Forecast win/loss amount at 'X' selection always shows as 0");
             Map<String, String> entryValuePTRiskThrows =
                     ptPage.getEntriesValueOfTableSport(eventBasketball.getLeagueName(), eventBasketball.getHome(), "1", "2");
@@ -583,7 +582,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
             ptRiskBetListPopup.closeBetListPopup();
 
             log("@Step 3: Filter with Report Type = Normal, League and Client placed bet");
-            ptPage.filter("Basketball", "", COMPANY_UNIT, "Normal", "All", "", "", eventBasketball.getLeagueName());
+            ptPage.filter("Basketball", "", KASTRAKI_LIMITED, "Normal", "All", "", "", eventBasketball.getLeagueName());
             String headerRowIndex = "1";
             String valueRowIndex = "2";
             Map<String, String> entryValuePTRiskNormal =
@@ -635,13 +634,13 @@ public class PTRiskControlTest extends BaseCaseAQS {
         try {
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
-            basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
+            basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
             basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
             log("@Step 1: Navigate to Soccer > PT Risk Control");
             PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
             ptPage.waitSpinnerDisappeared();
             log("@Step 2: Filter with League and Client placed bet");
-            ptPage.filter("Basketball","", COMPANY_UNIT, "PT + Throw Bets", "All", "", "", eventBasketball.getLeagueName());
+            ptPage.filter("Basketball","", KASTRAKI_LIMITED, "PT + Throw Bets", "All", "", "", eventBasketball.getLeagueName());
             log("@Step 3: Open Bet List");
             PTRiskBetListPopup ptRiskBetListPopup = ptPage.openBetList(eventBasketball.getHome());
             log("Verify 1: There will be only 1 tab '1x2'");

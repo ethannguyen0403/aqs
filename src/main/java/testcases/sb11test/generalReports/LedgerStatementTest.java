@@ -1130,7 +1130,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 2: Click General Reports > Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         log("@Step 3: Filter ledger statement with data: ");
-        ledgerStatementPage.showLedger(COMPANY_UNIT, FINANCIAL_YEAR, "Income", lgIncomeGroup, fromDate, toDate, REPORT_TYPE.get(1));
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Income", lgIncomeGroup, fromDate, toDate, REPORT_TYPE.get(1));
         log("@Verify 1: Validate running Bal of Total in HKD at Amounts are shown in HKD section should be 0");
         Assert.assertEquals(ledgerStatementPage.getTotalAmountInOriginCurrency("Total in HKD"), "0.00", "FAILED! Running Bal of Total in HKD is not equal to 0");
         log("INFO: Executed completely");
@@ -1241,7 +1241,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 "Account Type = Capital\n" +
                 "Detail Type = 302.000.000.000 - Retained Earnings\n" +
                 "Report = After CJE");
-        ledgerStatementPage.showLedger(COMPANY_UNIT,"","Capital",ledgerGroup,fromDate,toDate,"After CJE");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Capital",ledgerGroup,fromDate,toDate,"After CJE");
         log("@Step 3: Get Running Bal. of account 302.000.001.000 - PL for Current Year - HKD at 'Amounts are shown in HKD' column (A)");
         double valueA = ledgerStatementPage.getValueAmount(ledgerName,ledgerStatementPage.colRunBalGBP);
         log("@Step 4: Go to Accounting >> Journal Entries");
@@ -1275,11 +1275,11 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "e.g. Company Unit = Kastraki Limited\n" +
                     "Mont = 2023 - October");
             log("@Step 11: Click Yes button in confirm dialog");
-            closingJournalEntriesPage.performCJE(COMPANY_UNIT,"",true);
+            closingJournalEntriesPage.performCJE(KASTRAKI_LIMITED,"",true);
             log("@Step 12: Back to General Reports >> Ledger Statement page");
             ledgerStatementPage = closingJournalEntriesPage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             log("@Step 13: Filter data as step #2");
-            ledgerStatementPage.showLedger(COMPANY_UNIT,"","Capital",ledgerGroup,fromDate,toDate,"After CJE");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Capital",ledgerGroup,fromDate,toDate,"After CJE");
             log("@Verify 1: Running Bal. in 'Amounts are shown in HKD' column = (A) - [(B) -(C)]");
             double valueD = valueB - valueC;
             double valueEx = valueA - valueD;

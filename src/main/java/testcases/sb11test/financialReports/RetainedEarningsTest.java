@@ -85,7 +85,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("@title: Validate correct Retained Earnings value displays");
         log("Precondition: Get value of Parent Account '302.000.000.000 - Retained Earnings' from Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
-        ledgerStatementPage.showLedger(COMPANY_UNIT, FINANCIAL_YEAR, "All", detailTypeRetained, "", "","");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "All", detailTypeRetained, "", "","");
         ledgerValue = ledgerStatementPage.getTotalAmountInOriginCurrency("Total in HKD");
         log("@Step 1: Navigate to Financial Reports > Retained Earnings");
         RetainedEarningsPage retainedEarningsPage =
@@ -106,13 +106,13 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("@Step 1: Navigate to Financial Reports > Income Statement");
         log("@Step 2: Get value of Net Profit (Loss) with default filter");
         IncomeStatementPage incomeStatementPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT, IncomeStatementPage.class);
-        incomeStatementPage.filterIncomeReport(COMPANY_UNIT, "", "", REPORT_TYPE.get(0));
+        incomeStatementPage.filterIncomeReport(KASTRAKI_LIMITED, "", "", REPORT_TYPE.get(0));
         netProfitLoss = incomeStatementPage.getNetProfitLoss();
         log("@Step 3: Navigate to Financial Reports > Retained Earnings");
         RetainedEarningsPage retainedEarningsPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);
         log("@Step 4: Filter Retained Earnings with Financial Year = Year 2022-2023");
-        retainedEarningsPage.filterRetainedEarnings(COMPANY_UNIT, FINANCIAL_YEAR_LIST.get(2));
+        retainedEarningsPage.filterRetainedEarnings(KASTRAKI_LIMITED, FINANCIAL_YEAR_LIST.get(2));
         log("@Verify 1: Validate page displayed value of 'Net Income/Loss from Operation' correct");
         Assert.assertEquals(netProfitLoss, retainedEarningsPage.getAmount(RetainedEarningsConstants.DESCRIPTION_LIST.get(1)),
                 "FAILED! Description cell value Net Profit (Loss) is displayed incorrect.");
@@ -127,13 +127,13 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("@title: Validate correct Dividends value displays");
         log("Precondition: Get value of Parent Account '303.000.000.000 - Dividend' from Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
-        ledgerStatementPage.showLedger(COMPANY_UNIT, FINANCIAL_YEAR, "All", detailTypeDividend, "", "","");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "All", detailTypeDividend, "", "","");
         ledgerValue = ledgerStatementPage.getTotalAmountInOriginCurrency("Total in HKD");
         log("@Step 1: Navigate to Financial Reports > Retained Earnings");
         RetainedEarningsPage retainedEarningsPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);
         log("@Step 2: Filter Retained Earnings with default data");
-        retainedEarningsPage.filterRetainedEarnings(COMPANY_UNIT, FINANCIAL_YEAR);
+        retainedEarningsPage.filterRetainedEarnings(KASTRAKI_LIMITED, FINANCIAL_YEAR);
         log("@Verify 1: Validate page displayed value 'Dividend' correct");
         Assert.assertEquals(ledgerValue, retainedEarningsPage.getAmount(RetainedEarningsConstants.DESCRIPTION_LIST.get(2)),
                 "FAILED! Total retained is displayed incorrect.");
