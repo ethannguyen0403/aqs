@@ -126,7 +126,7 @@ public class AnalyseTest extends BaseCaseAQS {
         log("@Step 4: Click Back button");
         createNewLinePopup.btnBack.click();
         page.waitSpinnerDisappeared();
-        log("@Verify 1: Line is updated correctly");
+        log("@Verify 1: It will come back to Analyse main page properly");
         Assert.assertTrue(page.lblTitle.getText().contains("Analyse"),"FAILED! Analyse report page displays incorrect");
         log("INFO: Executed completely");
     }
