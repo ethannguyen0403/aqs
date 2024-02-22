@@ -2,7 +2,6 @@ package testcases.sb11test.generalReports;
 
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
-import common.SBPConstants;
 import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -129,7 +128,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Step 4: Select any Month in dropdown list (e.g. 2023-Octorber) of any company (e.g. Kastraki Limited)");
         log("@Step 5: Click Perform CJE button");
         log("@Step 6: Click Yes button");
-        page.filter(COMPANY_UNIT,"",true);
+        page.performCJE(COMPANY_UNIT,"",true);
         String sucMes = page.appArlertControl.getSuscessMessage();
         log("@Verify 1: The successful message 'Closing Journal Entry for <selected Month> (e.g. October) is completed.' displays");
         s = new SimpleDateFormat("MMMM");
@@ -187,7 +186,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Step 4: Select Month before perform txn at precondition in dropdown list of any company (e.g. Kastraki Limited)");
         log("@Step 5: Click Perform CJE button then Yes in confirmation dialog");
         String ddMonth = page.ddMonth.getOptions().get(1).trim();
-        page.filter(COMPANY_UNIT,ddMonth,true);
+        page.performCJE(COMPANY_UNIT,ddMonth,true);
         log("@Step 6: Go to General Reports >> Ledger Statement");
         LedgerStatementPage ledgerStatementPage = page.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         log("@Step 7: Filter data of detail type of accounts at precondition from 1/9/2023 To 30/09/2023");
@@ -212,10 +211,10 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         Assert.assertFalse(ledgerDetailPopup.getClosingValue().contains("0.00"),"FAILED! Running Bal. of Closing Journal display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "15742")
     public void Closing_Journal_Entries_15742() throws InterruptedException {
-        log("@title: Validate can perform CJE for the selected month for sub-accounts of the selected Company Unit by clicking 'Perform CJE' button");
+        log("@title: Validate there is a reminder after user clicks Perform CJE button");
         log("@Pre-condition: System Monitoring' permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Click General Reports >> System Monitoring menu");
@@ -237,7 +236,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         Assert.assertEquals(mesRemind, String.format(ClosingJournalEntries.MES_REMINDER_BEFORE_2_MONTH,month,year),"FAILED! Reminder message display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "15743")
     public void Closing_Journal_Entries_15743() throws InterruptedException {
         log("@title: Validate only the confirmation message displays if perform CJE for the lasted month");
@@ -263,7 +262,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         Assert.assertEquals(mesRemind, String.format(ClosingJournalEntries.MES_REMINDER_BEFORE_1_MONTH,month1,month2),"FAILED! Reminder message display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "15744")
     @Parameters({"username"})
     public void Closing_Journal_Entries_15744(String username) {
@@ -278,10 +277,8 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         String month = s.format(new Date(cal.getTimeInMillis()));
         ClosingJournalEntriesPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING,SystemMonitoringPage.class).goToTabName(CLOSING_JOURNAL_ENTRIES,ClosingJournalEntriesPage.class);
         log("@Step 4: Click Perform CJE button");
-        page.btnPerformCJE.click();
         log("@Step 5: Click No button in Confirm dialog");
-        ConfirmPopup confirmPopup = new ConfirmPopup();
-        confirmPopup.btnNo.click();
+        page.performCJE("","",false);
         String performedDate = DateUtils.getDate(0,"dd/MM/yyy HH:mm",GMT_7);
         log("@Verify 1: Confirm dialog will close and No record will add in the History/Log table");
         Assert.assertFalse(page.isRecordHistoryDisplay(month,username,performedDate),"FAILED! The History/Log table display incorrect");
@@ -302,10 +299,8 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         String month = s.format(new Date(cal.getTimeInMillis()));
         ClosingJournalEntriesPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING,SystemMonitoringPage.class).goToTabName(CLOSING_JOURNAL_ENTRIES,ClosingJournalEntriesPage.class);
         log("@Step 4: Select a Company Unit");
-        page.btnPerformCJE.click();
         log("@Step 5: Click Perform CJE button");
-        ConfirmPopup confirmPopup = new ConfirmPopup();
-        confirmPopup.btnYes.click();
+        page.performCJE("","",true);
         String performedDate = DateUtils.getDate(0,"dd/MM/yyy HH:mm","GMT+8");
         log("@Verify 1: Confirm dialog will close and No record will add in the History/Log table");
         Assert.assertTrue(page.isRecordHistoryDisplay(month,username,performedDate),"FAILED! The History/Log table display incorrect");
@@ -327,13 +322,13 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Step 4: Select a Company Unit and Month");
         log("@Step 5: Click Perform CJE button");
         log("@Step 6: Click Yes button in Confirm dialog");
-        page.filter(COMPANY_UNIT,month,true);
+        page.performCJE(COMPANY_UNIT,month,true);
         String sucMes = page.appArlertControl.getSuscessMessage();
         log("@Verify 1: A success message will display at the bottom-right corner as 'Closing Journal Entry of <selected Month>is completed.");
         Assert.assertEquals(sucMes, String.format(ClosingJournalEntries.SUCCESS_MES_LAST_MONTH,month.split(" - ")[1]),"FAILED! The History/Log table display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "15748")
     public void Closing_Journal_Entries_15748() {
         log("@title: Validate History/Log table is sorted by Performed Date ascendingly");
@@ -351,7 +346,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         page.verifyPerformedDateSort();
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "15762")
     public void Closing_Journal_Entries_15762() {
         log("@title: Validate History/Log table shows details logs on all created CJEs of the filtered company unit and month");

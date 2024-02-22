@@ -2,10 +2,8 @@ package testcases.sb11test.generalReports;
 
 import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
-import com.paltech.utils.DoubleUtils;
 import com.paltech.utils.FileUtils;
 import objects.Transaction;
-import org.checkerframework.checker.units.qual.C;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -14,19 +12,13 @@ import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.generalReports.SystemMonitoringPage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
-import pages.sb11.master.AddressBookPage;
 import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.AccountSearchUtils;
 import utils.sb11.ChartOfAccountUtils;
-import utils.sb11.ClientSystemUtils;
 import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 import static common.SBPConstants.*;
 
@@ -1283,7 +1275,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     "e.g. Company Unit = Kastraki Limited\n" +
                     "Mont = 2023 - October");
             log("@Step 11: Click Yes button in confirm dialog");
-            closingJournalEntriesPage.filter(COMPANY_UNIT,"",true);
+            closingJournalEntriesPage.performCJE(COMPANY_UNIT,"",true);
             log("@Step 12: Back to General Reports >> Ledger Statement page");
             ledgerStatementPage = closingJournalEntriesPage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             log("@Step 13: Filter data as step #2");
