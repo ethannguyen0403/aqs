@@ -119,7 +119,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_deprecated"})
+    @Test(groups = {"smoke"})
     @Parameters("clientCode")
     @TestRails(id = "588")
     public void ClientStatementTC_588(String clientCode) {
@@ -416,12 +416,10 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerType;
         String ledgerGroupId;
         String parentId;
-        String[] ledgerDebitAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
-        String[] ledgerCreditAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
-        ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-        ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-        ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-        ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
+        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
+        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
+        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Asset Ledger account into Debit");
@@ -494,12 +492,10 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerType;
         String ledgerGroupId;
         String parentId;
-        String[] ledgerDebitAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
-        String[] ledgerCreditAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
-        ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-        ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-        ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-        ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
+        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
+        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
+        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Asset Ledger account into Credit");
@@ -572,12 +568,10 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerType;
         String ledgerGroupId;
         String parentId;
-        String[] ledgerDebitAccountPart = LEDGER_LIABILITY_DEBIT_ACC.split("-");
-        String[] ledgerCreditAccountPart = LEDGER_LIABILITY_CREDIT_ACC.split("-");
-        ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-        ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-        ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-        ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_CREDIT_ACC,true);
+        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_CREDIT_ACC,true);
+        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_DEBIT_ACC,true);
+        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Liability Ledger account into Debit");
@@ -650,12 +644,10 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerType;
         String ledgerGroupId;
         String parentId;
-        String[] ledgerDebitAccountPart = LEDGER_LIABILITY_DEBIT_ACC.split("-");
-        String[] ledgerCreditAccountPart = LEDGER_LIABILITY_CREDIT_ACC.split("-");
-        ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-        ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-        ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-        ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_CREDIT_ACC,true);
+        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_CREDIT_ACC,true);
+        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_DEBIT_ACC,true);
+        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Liability Ledger account into Credit");
@@ -728,12 +720,10 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerType;
         String ledgerGroupId;
         String parentId;
-        String[] ledgerDebitAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
-        String[] ledgerCreditAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
-        ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-        ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-        ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-        ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_CREDIT_ACC,true);
+        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_CREDIT_ACC,true);
+        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_DEBIT_ACC,true);
+        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Capital Ledger account into Debit");
@@ -806,12 +796,10 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerType;
         String ledgerGroupId;
         String parentId;
-        String[] ledgerDebitAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
-        String[] ledgerCreditAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
-        ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-        ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-        ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-        ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_CREDIT_ACC,true);
+        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_CREDIT_ACC,true);
+        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_DEBIT_ACC,true);
+        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Capital Ledger account into Credit");
@@ -884,12 +872,10 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerType;
         String ledgerGroupId;
         String parentId;
-        String[] ledgerDebitAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
-        String[] ledgerCreditAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
-        ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-        ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-        ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-        ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_CREDIT_ACC,true);
+        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_CREDIT_ACC,true);
+        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_DEBIT_ACC,true);
+        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Income Ledger account into Debit");
@@ -961,12 +947,10 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerType;
         String ledgerGroupId;
         String parentId;
-        String[] ledgerDebitAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
-        String[] ledgerCreditAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
-        ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-        ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-        ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-        ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_CREDIT_ACC,true);
+        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_CREDIT_ACC,true);
+        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_DEBIT_ACC,true);
+        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Income Ledger account into Credit");
@@ -1039,12 +1023,10 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerType;
         String ledgerGroupId;
         String parentId;
-        String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
-        String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
-        ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-        ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-        ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-        ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_CREDIT_ACC,true);
+        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_CREDIT_ACC,true);
+        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Expenditure Ledger account into Debit");
@@ -1117,12 +1099,10 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerType;
         String ledgerGroupId;
         String parentId;
-        String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
-        String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
-        ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-        ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-        ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-        ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_CREDIT_ACC,true);
+        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_CREDIT_ACC,true);
+        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Expenditure Ledger account into Credit");
@@ -1287,12 +1267,11 @@ public class ClientStatementTest extends BaseCaseAQS {
         String ledgerType;
         String ledgerGroupId;
         String parentId;
-        String[] ledgerDebitAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
-        String[] ledgerCreditAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
-        ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-        ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-        ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-        ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+
+        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
+        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
+        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
+        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Asset Ledger account to show value Rec/Pay");

@@ -23,6 +23,7 @@ public class Order {  private String sport;
     private double hdpPoint;
     private double price;
     private String oddType;
+    private double odds;
     private String betType;
     private int liveHomeScore;
     private int liveAwayScore;
@@ -30,9 +31,12 @@ public class Order {  private String sport;
     private String createDate;
     private String betId;
     private double runs;
+    private double handicap;
     private int handicapWtks;
     private double handicapRuns;
     private boolean isLive;
+    private boolean isWinLose;
+    private double winLose;
     private Event event;
 
     public Event getEvent() {
@@ -216,6 +220,14 @@ public class Order {  private String sport;
         this.oddType = oddType;
     }
 
+    public double getOdds() {
+        return odds;
+    }
+
+    public void setOdds(double odds) {
+        this.odds = odds;
+    }
+
     public String getBetType() {
         return betType;
     }
@@ -280,6 +292,13 @@ public class Order {  private String sport;
         this.runs = runs;
     }
 
+    public double getHandicap() {
+        return handicap;
+    }
+    public void setHandicap(double handicap) {
+        this.handicap = handicap;
+    }
+
     public int getHandicapWtks() {
         return handicapWtks;
     }
@@ -299,10 +318,24 @@ public class Order {  private String sport;
     public boolean isLive() {
         return isLive;
     }
-
     public void setLive(boolean live) {
         isLive = live;
     }
+    public boolean isWinLose() {
+        return isWinLose;
+    }
+    public void setIsWinLose(boolean winLose) {
+        isWinLose = winLose;
+    }
+    public double getWinLose() {
+        return winLose;
+    }
+    public void setWinLose(double winLose) {
+        this.winLose = winLose;
+    }
+
+
+
 
     public static class Builder {
         private String _selection;
@@ -326,6 +359,7 @@ public class Order {  private String sport;
         private double _hdpPoint;
         private double _price;
         private String _oddType;
+        private double _odds;
         private String _betType;
         private int _liveHomeScore;
         private int _liveAwayScore;
@@ -336,7 +370,10 @@ public class Order {  private String sport;
         private double _runs;
         private int _handicapWtks;
         private double _handicapRuns;
+        private double _handicap;
         private boolean _isLive;
+        private boolean _isWinLose;
+        private double _winLose;
         private String _sport;
         private Event _event;
         public Builder() {
@@ -438,6 +475,10 @@ public class Order {  private String sport;
             _oddType = val;
             return this;
         }
+        public Builder odds(double val) {
+            _odds = val;
+            return this;
+        }
         public Builder betType(String val) {
             _betType = val;
             return this;
@@ -478,8 +519,20 @@ public class Order {  private String sport;
             _handicapRuns = val;
             return this;
         }
+        public Builder handicap(double val) {
+            _handicap = val;
+            return this;
+        }
         public Builder isLive(boolean val) {
             _isLive = val;
+            return this;
+        }
+        public Builder isWinLose(boolean val) {
+            _isWinLose = val;
+            return this;
+        }
+        public Builder winLose(double val) {
+            _winLose = val;
             return this;
         }
 
@@ -510,6 +563,7 @@ public class Order {  private String sport;
         this.hdpPoint = builder._hdpPoint;
         this.price = builder._price;
         this.oddType = builder._oddType;
+        this.odds = builder._odds;
         this.betType = builder._betType;
         this.liveHomeScore = builder._liveHomeScore;
         this.liveAwayScore = builder._liveAwayScore;
@@ -520,7 +574,10 @@ public class Order {  private String sport;
         this.runs = builder._runs;
         this.handicapRuns = builder._handicapRuns;
         this.handicapWtks = builder._handicapWtks;
+        this.handicap = builder._handicap;
         this.isLive = builder._isLive;
+        this.isWinLose = builder._isWinLose;
+        this.winLose = builder._winLose;
         this.sport = builder._sport;
         this.event = builder._event;
     }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ESSConstants {
-    public final static String NO_RECORD_FOUND = "No record found";
+    public final static String NO_RECORD_FOUND = "No record found.";
     public final static String NO_RECORDS_FOUND = "No records found.";
     public final static String DASH_YYYY_MM_DD = "yyyy-MM-dd";
     public final static String DASH_DD_MM_YYYY = "dd-MM-yyyy";

@@ -28,7 +28,7 @@ import static common.SBPConstants.*;
 
 public class PTRiskControlTest extends BaseCaseAQS {
     String superMasterCode = "QA2112 - ";
-    Double percent = 0.5;
+    Double percent = 1.5;
     String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
     Event eventBasketball =
             new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(DateUtils.formatDate(currentDate, "yyyy-MM-dd", "dd/MM/yyyy"))
@@ -51,40 +51,42 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("Precondition: Having account with Pending HPD/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
         String sport="Soccer";
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode,percent);
+
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(COMPANY_UNIT,"","All");
         String league = soccerBetEntryPage.getRandomLeague();
-        Event eventInfo = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,league);
+        Event event = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,league);
+        event.setEventDate(dateAPI);
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
                 .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(1.6).requireStake(12)
                 .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
                 .marketType("HDP")
                 .stage("FT")
-                .selection(eventInfo.getHome())
-                .event(eventInfo)
+                .selection(event.getHome())
+                .event(event)
                 .build();
         lstOrder.add(order);
-        soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
+        soccerBetEntryPage.placeBet(accountCode,event.getHome(),true,"Home",lstOrder,false,false,true);
         soccerBetEntryPage.waitSpinnerDisappeared();
 
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to Soccer > PT Risk Control");
-        PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
+        PTRiskPage ptPage = soccerBetEntryPage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
         ptPage.waitSpinnerDisappeared();
         log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
-        ptPage.filter(clientCode,COMPANY_UNIT,"Normal","All","","", eventInfo.getLeagueName());
+        ptPage.filter(clientCode,COMPANY_UNIT,"Normal","All","","", event.getLeagueName());
         log("Step 4: Open bet list of league");
-        PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(eventInfo.getHome());
+        PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(event.getHome());
         actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
         log("@Validate data of account setting Account Percent show on PT% column");
         Assert.assertEquals(String.valueOf(percent),actualPTVal);
         ptRiskPopup.closeBetListPopup();
         log("@Validate win/lose forecast of odds type HK on HDP row show correctly");
-        Assert.assertTrue(ptPage.isForecastCorrect("10","-3","-6",true));
+        Assert.assertTrue(ptPage.isForecastCorrect("29","-9","-18",true));
     }
 
     @Test(groups = {"smoke"})
@@ -134,7 +136,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         Assert.assertEquals(String.valueOf(percent),actualPTVal);
         ptRiskPopup.closeBetListPopup();
         log("@Validate win/lose forecast of odds type EU on HDP row show correctly");
-        Assert.assertTrue(ptPage.isForecastCorrect("6","-3","-6",true));
+        Assert.assertTrue(ptPage.isForecastCorrect("18","-9","-18",true));
     }
 
     @Test(groups = {"smoke"})
@@ -184,7 +186,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         Assert.assertEquals(String.valueOf(percent),actualPTVal);
         ptRiskPopup.closeBetListPopup();
         log("@Validate win/lose forecast of odds type MY on HDP row show correctly");
-        Assert.assertTrue(ptPage.isForecastCorrect("3","-3","-6",true));
+        Assert.assertTrue(ptPage.isForecastCorrect("9","-9","-18",true));
     }
 
     @Test(groups = {"smoke"})
@@ -234,7 +236,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         Assert.assertEquals(String.valueOf(percent),actualPTVal);
         ptRiskPopup.closeBetListPopup();
         log("@Validate win/lose forecast of odds type ID on HDP row show correctly");
-        Assert.assertTrue(ptPage.isForecastCorrect("9","-3","-6",true));
+        Assert.assertTrue(ptPage.isForecastCorrect("27","-9","-18",true));
     }
 
     @Test(groups = {"regression"})
@@ -323,8 +325,9 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @TestRails(id = "2128")
     @Test(groups = {"regression"})
-    public void PTRiskControlTC_006(){
+    public void PTRiskControlTC_2128(){
         log("@title: Validate that can copy report successfully");
         String date = String.format(DateUtils.getDate(-3,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Login with valid account");

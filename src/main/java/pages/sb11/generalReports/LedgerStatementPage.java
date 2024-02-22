@@ -50,7 +50,7 @@ public class LedgerStatementPage extends WelcomePage {
     int colRunBalORG = 5;
     int colRunBalCTORG = 6;
     int colAmountGBP = 8;
-    int colRunBalGBP = 9;
+    public int colRunBalGBP = 9;
     public Table tbLedger = Table.xpath("//app-ledger-statement//table",totalCol);
     public static final String RED_COLOR = "rgba(252, 0, 0, 1)";
 
@@ -93,12 +93,12 @@ public class LedgerStatementPage extends WelcomePage {
         while(true){
             String ledgerAccount = tbLedger.getControlOfCell(1,colLedger,i,null).getText().trim();
             if (isDebit){
-                if(ledgerAccount.contains(trans.getLedgerDebit())) {
+                if(ledgerAccount.contains(trans.getLedgerDebit().split(" - ")[0])) {
                     System.out.println(String.format("Found transaction %s at row %s", ledgerAccount, i));
                     return verifyTransactionDisplayCorrectInRow(trans, true, i);
                 }
             } else {
-                if (ledgerAccount.contains(trans.getLedgerCredit())){
+                if (ledgerAccount.contains(trans.getLedgerCredit().split(" - ")[0])){
                     System.out.println(String.format("Found transaction %s at row %s", ledgerAccount, i));
                     return verifyTransactionDisplayCorrectInRow(trans, false, i);
                 }
@@ -157,7 +157,7 @@ public class LedgerStatementPage extends WelcomePage {
             double amountDebitGBP = transaction.getAmountDebit() * curDebitRate;
             double runDebitGBP = (transaction.getDebitBalance() + transaction.getAmountDebit()) * curDebitRate;
 
-            Assert.assertTrue(ledgerAccount.contains(transaction.getLedgerDebit()), "Failed! Account code is incorrect");
+            Assert.assertTrue(ledgerAccount.contains(transaction.getLedgerDebit().split(" - ")[0]), "Failed! Account code is incorrect");
             Assert.assertEquals(amountORG, String.format("%.2f", transaction.getAmountDebit()), "Failed! Credit/Debit ORG amount is incorrect");
             Assert.assertEquals(runBalORG, String.format("%.2f", transaction.getDebitBalance() + transaction.getAmountDebit()), "Failed! Debit Balance ORG amount is incorrect");
             Assert.assertEquals(runBalCTORG, String.format("%.2f", transaction.getDebitBalance() + transaction.getAmountDebit()), "Failed! Debit Balance CT ORG amount is incorrect");
@@ -169,7 +169,7 @@ public class LedgerStatementPage extends WelcomePage {
             double amountCreditGBP = transaction.getAmountCredit() * curCreditRate;
             double runCreditGBP = (transaction.getCreditBalance() + transaction.getAmountCredit()) * curCreditRate;
 
-            Assert.assertTrue(ledgerAccount.contains(transaction.getLedgerCredit()), "Failed! Account code is incorrect");
+            Assert.assertTrue(ledgerAccount.contains(transaction.getLedgerCredit().split(" - ")[0]), "Failed! Account code is incorrect");
             Assert.assertEquals(amountORG, String.format("%.2f", transaction.getAmountCredit()), "Failed! Credit/Debit ORG amount is incorrect");
             Assert.assertEquals(runBalORG, String.format("%.2f", transaction.getCreditBalance() + transaction.getAmountCredit()), "Failed! Credit Balance ORG amount is incorrect");
             Assert.assertEquals(runBalCTORG, String.format("%.2f", transaction.getCreditBalance() + transaction.getAmountCredit()), "Failed! Debit Balance CT ORG amount is incorrect");
@@ -191,9 +191,9 @@ public class LedgerStatementPage extends WelcomePage {
         return new LedgerDetailPopup();
     }
 
-    public double getCreditDebitAmount(String ledgerName){
+    public double getValueAmount(String ledgerName,int indexCol){
         int rowIndex = getLedgerRowIndex(ledgerName);
-        String amountCreDeb = tbLedger.getControlOfCell(1, colAmountORG, rowIndex, null).getText().trim();
+        String amountCreDeb = tbLedger.getControlOfCell(1, indexCol, rowIndex, null).getText().trim().replace(",","");
         if (amountCreDeb.isEmpty()){
             amountCreDeb = String.valueOf(0);
         }

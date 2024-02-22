@@ -1,5 +1,6 @@
 package utils;
 
+import org.apache.poi.openxml4j.util.ZipSecureFile;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -60,13 +61,14 @@ public class ExcelUtils {
         InputStream input = null;
         try {
             input = new FileInputStream(new File(filePath));
+            ZipSecureFile.setMinInflateRatio(0);
             XSSFWorkbook workbook = new XSSFWorkbook(input);
             XSSFSheet sheet = workbook.getSheet(sheetName);
             Row row = sheet.getRow(rowIndex-1);
             cellValue = getDataFromCell(row.getCell(colIndex-1));
             if (workbook != null) workbook.close();
         } catch (Exception e) {
-            throw new RuntimeException("ERROR: Can't read excel file: " + filePath);
+            throw new RuntimeException("ERROR: Can't read excel file: " + filePath + e.getMessage());
         } finally {
             try {
                 if (input != null) input.close();

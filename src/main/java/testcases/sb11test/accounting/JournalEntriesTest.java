@@ -10,8 +10,11 @@ import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
+import utils.sb11.ChartOfAccountUtils;
+import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
+import java.io.IOException;
 import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.Locale;
@@ -178,9 +181,9 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @TestRails(id="2164")
     @Test(groups = {"regression"})
     @Parameters({"companyName"})
-    public void Journal_Entries_TC_2164(String companyName){
-        String lgDebitCur = "AUD";
-        String lgCreditCur = "AUD";
+    public void Journal_Entries_TC_2164(String companyName) throws IOException {
+        String lgDebitCur = "HKD";
+        String lgCreditCur = "HKD";
         String descExpenditure = "Expenditure Transaction C2164" + DateUtils.getMilliSeconds();
         String transType = "Payment Other";
         String lgExpenditureGroup = "QA Ledger Group Expenditure";
@@ -190,8 +193,8 @@ public class JournalEntriesTest extends BaseCaseAQS {
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoCreditExpenditure")
-                .ledgerCredit("AutoCapitalDebit")
+                .ledgerDebit("AutoExpenditureDebit - 011.000.000.000")
+                .ledgerCredit("AutoExpenditureCredit - 010.000.000.000")
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
                 .amountDebit(1)
@@ -203,12 +206,35 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-        log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
-        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-        ledgerStatementPage.showLedger(companyName,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
-        log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
-        log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
-        ledgerStatementPage.verifyLedgerTrans(transaction, true, lgExpenditureGroup);
+        try {
+            log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
+            LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.showLedger(companyName,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
+            log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
+            log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
+            ledgerStatementPage.verifyLedgerTrans(transaction, true, lgExpenditureGroup);
+        } finally {
+            log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_CREDIT_ACC,true);
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_EXPENDITURE);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_EXPENDITURE);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+        }
         log("INFO: Executed completely");
     }
     @TestRails(id="15749")
@@ -242,7 +268,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @Test(groups = {"regression","2023.11.30"})
     public void Journal_Entries_TC_15751() throws InterruptedException {
         String transType = "Payment Other";
-        String creditExpAcc = "AutoExpenditureCredit";
+        String creditExpAcc = "AutoExpenditureCredit - 010.000.000.000";
         String lgDebitCur = "AUD";
         String lgCreditCur = "AUD";
         String descExpenditure = "Expenditure Transaction C15751 " + DateUtils.getMilliSeconds();
@@ -255,7 +281,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         String txtMonth = Month.of(DateUtils.getMonth(GMT_7)-1).getDisplayName(TextStyle.FULL.FULL, Locale.CANADA);
         String curYear = String.valueOf(DateUtils.getYear(GMT_7));
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoCreditExpenditure")
+                .ledgerDebit("AutoCreditExpenditure - 012.000.000.000")
                 .ledgerCredit(creditExpAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)
@@ -278,7 +304,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     @Test(groups = {"regression","2023.11.30"})
     public void Journal_Entries_TC_15752() throws InterruptedException {
         String transType = "Payment Other";
-        String creditExpAcc = "AutoExpenditureCredit";
+        String creditExpAcc = "AutoExpenditureCredit - 010.000.000.000";
         String lgDebitCur = "AUD";
         String lgCreditCur = "AUD";
         String descExpenditure = "Expenditure Transaction C15751 " + DateUtils.getMilliSeconds();
@@ -291,7 +317,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         String txtMonth = Month.of(DateUtils.getMonth(GMT_7)-4).getDisplayName(TextStyle.FULL.FULL, Locale.CANADA);
         String curYear = String.valueOf(DateUtils.getYear(GMT_7));
         Transaction transaction = new Transaction.Builder()
-                .ledgerDebit("AutoCreditExpenditure")
+                .ledgerDebit("AutoCreditExpenditure - 012.000.000.000")
                 .ledgerCredit(creditExpAcc)
                 .ledgerDebitCur(lgDebitCur)
                 .ledgerCreditCur(lgCreditCur)

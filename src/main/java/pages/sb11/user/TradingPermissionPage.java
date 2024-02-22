@@ -51,7 +51,7 @@ public class TradingPermissionPage extends WelcomePage {
         }
     }
 
-    public void verifyPermissionEnabled(String username, boolean isEnabled){
+    public void verifyPermissionEnabled(String username, boolean isEnabled) throws InterruptedException {
         ClientAgentPermissionPopup clientAgentPermissionPopup = new ClientAgentPermissionPopup();
         ClientPermissionPopup clientPermissionPopup = new ClientPermissionPopup();
         SmartMasterPermissionPopup smartMasterPermissionPopup = new SmartMasterPermissionPopup();
@@ -61,22 +61,27 @@ public class TradingPermissionPage extends WelcomePage {
         if (isEnabled){
             Icon.xpath(tbTradPermission.getxPathOfCell(1,colClientAgent,rowIndex,null)).click();
             System.out.println("Title page is " + clientAgentPermissionPopup.getTitlePage());
+            Thread.sleep(2000);
             Assert.assertTrue(clientAgentPermissionPopup.getTitlePage().contains("Client Agent Permission"),"Failed! Client Agent Permission popup is not displayed");
             clientAgentPermissionPopup.close();
             waitSpinnerDisappeared();
             Icon.xpath(tbTradPermission.getxPathOfCell(1,colClient,rowIndex,null)).click();
+            Thread.sleep(2000);
             Assert.assertTrue(clientPermissionPopup.getTitlePage().contains("Client Permission"),"Failed! Client Permission popup is not displayed");
             clientPermissionPopup.close();
 
             Icon.xpath(tbTradPermission.getxPathOfCell(1,colSmartM,rowIndex,null)).click();
+            Thread.sleep(2000);
             Assert.assertTrue(smartMasterPermissionPopup.getTitlePage().contains("Smart Master Permission"),"Failed! Smart Master Permission popup is not displayed");
             smartMasterPermissionPopup.close();
 
             Icon.xpath(tbTradPermission.getxPathOfCell(1,colSmartA,rowIndex,null)).click();
+            Thread.sleep(2000);
             Assert.assertTrue(smartAgentPermissionPopup.getTitlePage().contains("Smart Agent Permission"),"Failed! Smart Agent Permission popup is not displayed");
             smartAgentPermissionPopup.close();
 
             Icon.xpath(tbTradPermission.getxPathOfCell(1,colSmartG,rowIndex,null)).click();
+            Thread.sleep(2000);
             Assert.assertTrue(smartGroupPermissionPopup.getTitlePage().contains("Smart Group Permission"),"Failed! Smart Group Permission popup is not displayed");
             smartGroupPermissionPopup.close();
 

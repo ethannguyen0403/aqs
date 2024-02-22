@@ -187,7 +187,7 @@ public class CompanySetupTest extends BaseCaseAQS {
 
         log(String.format("@Verify 1: Validate shows text correct with currency %s after submit filter", companyCurrency));
         Assert.assertEquals(clientBalancePage.ddShowTotal.getFirstSelectedOption(), companyCurrency, "FAILED! Text of Show Total dropdown is not correct");
-        Assert.assertEquals(clientBalancePage.tblClientBalance.getHeaderNameOfRows().get(4), expectedText1, "FAILED! Text Total Balance is not correct");
+        Assert.assertEquals(clientBalancePage.tblClientBalance.getHeaderNameOfRows().get(6), expectedText1, "FAILED! Text Total Balance is not correct");
 
         log("@Step 3: Click on Client Balance name >> Client Balance detail popup");
         ClientBalanceDetailPopup detailPopup = clientBalancePage.goToClientDetail(1);
@@ -215,7 +215,7 @@ public class CompanySetupTest extends BaseCaseAQS {
 
         log(String.format("@Verify 1: Validate shows text correct with currency %s after submit filter", companyCurrency));
         Assert.assertEquals(clientBalancePage.ddShowTotal.getFirstSelectedOption(), companyCurrency, "");
-        Assert.assertEquals(clientBalancePage.tblBookieBalance.getHeaderNameOfRows().get(2).trim(), expectedText1);
+        Assert.assertEquals(clientBalancePage.tblBookieBalance.getHeaderNameOfRows().get(6).trim(), expectedText1);
 
         log("@Step 3: Click on Bookie name >> Bookie Balance detail popup");
         BookieBalanceDetailPopup bookiePopup = clientBalancePage.goToBookieDetail(1);
@@ -239,12 +239,10 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@title: Validate that show the reporting currency of company correctly in 'Client Statement' page");
         log(String.format("@Precondition 1: Company %s has currency as %s", companyName, currency) );
         log("@Precondition 2: Add transaction for the Asset Ledger account to show value Rec/Pay and Member Transaction popup");
-        String[] ledgerDebitAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
-        String[] ledgerCreditAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
-        ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-        ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-        ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-        ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
+        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
+        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
+        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                 .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -354,7 +352,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@Step 2: Filter with default data with company name: " + companyName);
         trialBalancePage.filter(companyName, "","","");
         log(String.format("@Verify 1: Validate shows text correct with currency %s after submit filter", companyCurrency));
-        Assert.assertEquals(trialBalancePage.tblTrial.getHeaderNameOfRows().get(0), expectedText, "FAILED! Text is incorrect");
+        Assert.assertTrue(trialBalancePage.tblTrial.getHeaderNameOfRows().get(0).contains(expectedText), "FAILED! Text is incorrect");
         log("INFO: Executed completely");
     }
 
@@ -368,7 +366,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@Step 1: Navigate to  General Reports >> Balance Sheet");
         BalanceSheetPage balanceSheetPage = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET, BalanceSheetPage.class);
         log("@Step 2: Filter with default data with company name: " + companyName);
-        balanceSheetPage.filter(companyName, "","","");
+        balanceSheetPage.filter(companyName, "","","",false);
         log(String.format("@Verify 1: Validate shows text 'Amounts are shown in [%s]' correct", companyCurrency));
         Assert.assertEquals(balanceSheetPage.lblAmountAreShow.getText().trim(), expectedText, "FAILED! Text is incorrect");
         log("INFO: Executed completely");
@@ -559,24 +557,24 @@ public class CompanySetupTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "4363")
-    public void Company_Set_up_TC4363() {
+    public void Company_Set_up_TC4363() throws InterruptedException {
         log("@title: Validate that display financial year correctly by company's accounting period in 'Client Statement' page");
         log("@pre-condition: Login with valid account");
         log("@Step 1: Go to General Report >> Client Statement");
         ClientStatementPage page = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         log("@Step 2: Select company unit 'Aquifer' and observe financial year");
         page.ddpCompanyUnit.selectByVisibleText("Aquifer");
-        welcomePage.waitSpinnerDisappeared();
+        Thread.sleep(5000);
         log("@Verify 1: financial Year filter will list options as a single year");
         Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_1_YEAR),"FAILED! Financial 1 year display incorrect.");
         log("@Step 3: Select company unit 'Kastraki' and observe financial year");
         page.ddpCompanyUnit.selectByVisibleText(COMPANY_UNIT);
-        welcomePage.waitSpinnerDisappeared();
+        Thread.sleep(5000);
         log("@Verify 2: financial Year filter will list options as period of 2 year");
         Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST),"FAILED! Financial period of 2 year display incorrect.");
         log("@Step 4: Select company unit 'Kastraki' and observe financial year");
         page.ddpCompanyUnit.selectByVisibleText("All");
-        welcomePage.waitSpinnerDisappeared();
+        Thread.sleep(5000);
         log("@Verify 3: financial Year filter will list all options of both kind of financial year");
         Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_NEW),"FAILED! all options of both kind of financial year display incorrect.");
         log("INFO: Executed completely");

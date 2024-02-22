@@ -124,7 +124,7 @@ public class BetOrderTest extends BaseCaseAQS {
         Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(1).getHome()), "FAILED! Home team name is displayed incorrectly!");
         Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(1).getAway()), "FAILED! Away team name is displayed incorrectly!");
         Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(1).getCompetitionName()), "FAILED! League name is displayed incorrectly!");
-        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(1).getMarketType()), "FAILED! Market type is displayed incorrectly!");
+        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(ESSConstants.HomePage.EN_US.get(orderLst.get(1).getMarketType())), "FAILED! Market type is displayed incorrectly!");
 
         log("INFO: Executed completely");
     }
@@ -603,7 +603,7 @@ public class BetOrderTest extends BaseCaseAQS {
 
     @TestRails(id = "484")
     @Test(groups = {"smoke"})
-    public void BetOrder_484(){
+    public void BetOrder_C484(){
         log("@title: Verify pending order info display in UI correctly");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
@@ -650,9 +650,9 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_486(){
         log("@title: Verify Cancelled order info display in UI correctly");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-2,"d/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-5,"d/MM/yyyy","GMT -4"));
         String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
-        String fromDateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT -4"));
+        String fromDateAPI = String.format(DateUtils.getDate(-5,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
         log(String.format("@Step 2: Filter Soccer data from %s to %s ",fromDate,toDate));
@@ -768,7 +768,7 @@ public class BetOrderTest extends BaseCaseAQS {
     @TestRails(id="208")
     @Test(groups = {"smoke_qc"})
     @Parameters(("username"))
-    public void BetOrder_0208(String username){
+    public void BetOrder_208(String username){
         log("@title:Validate AQS orders automatically disappeared when orders are auto cancelled (AQS-2205)");
         log("@Step 1: Login with valid account");
         String fromDate = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT -4"));

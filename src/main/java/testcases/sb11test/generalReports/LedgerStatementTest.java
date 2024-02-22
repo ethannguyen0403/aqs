@@ -2,15 +2,20 @@ package testcases.sb11test.generalReports;
 
 import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
+import com.paltech.utils.DoubleUtils;
 import com.paltech.utils.FileUtils;
 import objects.Transaction;
+import org.checkerframework.checker.units.qual.C;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.accounting.JournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
+import pages.sb11.generalReports.SystemMonitoringPage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
+import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 import pages.sb11.master.AddressBookPage;
+import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.AccountSearchUtils;
 import utils.sb11.ChartOfAccountUtils;
@@ -19,6 +24,9 @@ import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import static common.SBPConstants.*;
 
@@ -26,16 +34,16 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
     String companyUnit = "Kastraki Limited";
     String transType = "Payment Other";
-    String debitExpAcc = "AutoExpenditureDebit";
-    String creditExpAcc = "AutoExpenditureCredit";
-    String debitAstAcc = "AutoAssetDebit";
-    String creditAstAcc = "AutoAssetCredit";
-    String debitLibAcc = "AutoLiabilityDebit";
-    String creditLibAcc = "AutoLiabilityCredit";
-    String debitCapitalAcc = "AutoCapitalDebit";
-    String creditCapitalAcc = "AutoCapitalCredit";
-    String debitIncomeAcc = "AutoIncomeDebit";
-    String creditIncomeAcc = "AutoIncomeCredit";
+    String debitExpAcc = "AutoExpenditureDebit - 011.000.000.000";
+    String creditExpAcc = "AutoExpenditureCredit - 010.000.000.000";
+    String debitAstAcc = "AutoAssetDebit - 055.000.000.000";
+    String creditAstAcc = "AutoAssetCredit - 050.000.000.000";
+    String debitLibAcc = "AutoLiabilityDebit - 044.000.000.000";
+    String creditLibAcc = "AutoLiabilityCredit - 040.000.000.000";
+    String debitCapitalAcc = "AutoCapitalDebit - 033.000.000.000";
+    String creditCapitalAcc = "AutoCapitalCredit - 030.000.000.000";
+    String debitIncomeAcc = "AutoIncomeDebit - 002.200.000.000";
+    String creditIncomeAcc = "AutoIncomeCredit - 002.000.000.000";
     String lgDebitCur = "HKD";
     String lgCreditCur = "HKD";
     String lgExpenditureGroup = "QA Ledger Group Expenditure";
@@ -68,8 +76,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .build();
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
@@ -80,12 +88,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -125,8 +131,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .build();
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
@@ -137,12 +143,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -183,14 +187,14 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .build();
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit().split(" - ")[0]);
 
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
@@ -201,12 +205,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -244,16 +246,17 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transDate("")
                 .transType(transType)
                 .build();
+
+        log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 5: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerCredit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerCredit().split(" - ")[0]);
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
@@ -262,12 +265,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_EXPENDITURE_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_EXPENDITURE_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -294,6 +295,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitAstAcc)
                 .ledgerCredit(creditAstAcc)
@@ -302,29 +304,26 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descAsset)
-                .transDate("")
+                .transDate(date)
                 .transType(transType)
                 .build();
+        log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 5: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
-            LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Asset",lgAssetGroup,"","","");
+            LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+            ledgerStatementPage.showLedger(companyUnit, FINANCIAL_YEAR, "Asset", lgAssetGroup, date, date, "");
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerStatementPage.verifyLedgerTrans(transaction, true, lgAssetGroup);
-            log("INFO: Executed completely");
         } finally {
-            log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
+            log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -340,7 +339,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
             TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
-
+        log("INFO: Executed completely");
     }
 
     @TestRails(id="846")
@@ -351,6 +350,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitAstAcc)
                 .ledgerCredit(creditAstAcc)
@@ -359,29 +359,26 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descAsset)
-                .transDate("")
+                .transDate(date)
                 .transType(transType)
                 .build();
+        log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 5: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
-            LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Asset",lgAssetGroup,"","","");
+            LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+            ledgerStatementPage.showLedger(companyUnit, FINANCIAL_YEAR, "Asset", lgAssetGroup, date, date, "");
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerStatementPage.verifyLedgerTrans(transaction, false, lgAssetGroup);
-            log("INFO: Executed completely");
         } finally {
-            log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
+            log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -397,7 +394,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
             TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
-
+        log("INFO: Executed completely");
     }
 
     @TestRails(id="847")
@@ -420,16 +417,17 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transDate("")
                 .transType(transType)
                 .build();
+
+        log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 5: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Asset",lgAssetGroup,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit().split(" - ")[0]);
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
@@ -438,12 +436,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -482,16 +478,17 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transDate("")
                 .transType(transType)
                 .build();
+
+        log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 5: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Asset",lgAssetGroup,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerCredit().split(" - ")[0]);
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
@@ -500,12 +497,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Asset Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_ASSET_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_ASSET_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -543,10 +538,11 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transDate("")
                 .transType(transType)
                 .build();
+
+        log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 5: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Liability",lgLiabilityGroup,"","","");
@@ -557,12 +553,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_LIABILITY_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_LIABILITY_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -601,10 +595,11 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transDate("")
                 .transType(transType)
                 .build();
+
+        log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 5: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 5: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Liability",lgLiabilityGroup,"","","");
@@ -615,12 +610,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_LIABILITY_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_LIABILITY_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -658,13 +651,12 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
+        log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
-            log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
@@ -679,12 +671,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -722,14 +712,12 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-
+        log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
+        log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
-            log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
@@ -744,12 +732,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -787,20 +773,18 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-
+        log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Capital",lgCapitalGroup,"","","");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerCredit().split(" - ")[0]);
 
             log("@Verify 1: Original Currency: Debit show value = 0 in black, Credit show value = 10 in blue, Running Bal = Opening Balance (+Credit - Debit) value\n" +
                     "Total column is sum of records\n" +
@@ -811,12 +795,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -853,19 +835,18 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
+        log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
-            log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Capital",lgCapitalGroup,"","","");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit().split(" - ")[0]);
 
             log("@Verify 1: Original Currency: Debit show value = 10 in red, Credit show value = 0 in black, Running Bal = Opening Balance (+ Credit - Debit) value\n" +
                     "Total column is sum of records\n" +
@@ -876,12 +857,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_CAPITAL_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_CAPITAL_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -919,13 +898,12 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
@@ -940,12 +918,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -983,19 +959,18 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
+        log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
-            log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
             log("Step 8: Observe value show on page");
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Income",lgIncomeGroup,"","","");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit().split(" - ")[0]);
 
             log("@Verify 1: Result page shows with 2 parts:\n" +
                     "Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in red, Running Bal and Running Bal CT displayed\n" +
@@ -1006,12 +981,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -1048,35 +1021,32 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction\n");
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Income",lgIncomeGroup,"","","");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerCredit().split(" - ")[0]);
 
             log("@Verify 1: Original Currency: Debit show value = 0 in black, Credit show value = 10 in blue, Running Bal = Opening Balance (+Credit - Debit) value\n" +
                     "Total column is sum of records\n" +
                     "Amounts in GBP will get value from Original Currency then convert to GBP to show");
-            ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
+            ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
             ledgerDetailPopup.closePopup();
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -1113,19 +1083,18 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
+        log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         try {
-            log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
-            log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-            log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
-            log("@Step 6: Choose Transaction Type = any and click Submit");
-            journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
-
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
             ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Income",lgIncomeGroup,"","","");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit());
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(transaction.getLedgerDebit().split(" - ")[0]);
 
             log("@Verify 1: Original Currency: Debit show value = 10 in red, Credit show value = 0 in black, Running Bal = Opening Balance (+ Credit - Debit) value\n" +
                     "Total column is sum of records\n" +
@@ -1137,12 +1106,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String[] ledgerDebitAccountPart = LEDGER_INCOME_CREDIT_ACC.split("-");
-            String[] ledgerCreditAccountPart = LEDGER_INCOME_DEBIT_ACC.split("-");
-            String ledgerCreditAccountName = ledgerCreditAccountPart[1].replaceAll("\\s+","");
-            String ledgerCreditAccountNumber = ledgerCreditAccountPart[0].replaceAll("\\s+","");
-            String ledgerDebitAccountName = ledgerDebitAccountPart[1].replaceAll("\\s+","");
-            String ledgerDebitAccountNumber = ledgerDebitAccountPart[0].replaceAll("\\s+","");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -1164,10 +1131,9 @@ public class LedgerStatementTest extends BaseCaseAQS {
     @TestRails(id = "2160")
     public void Ledger_Statement_2160(){
         log("@title: Validate at the end of each month all Income and Expenditure sub-accounts (ledgers) must have balance = 0");
-        int month = DateUtils.getMonth("GMT +7") - 1;
-        int year = Integer.valueOf(FINANCIAL_YEAR.replaceAll("[a-zA-z]", "").trim().split("-")[0]);
-        String fromDate = DateUtils.getFirstDateOfMonth(year, month, "dd/MM/yyyy");
-        String toDate = DateUtils.getLastDateOfMonth(year, month, "dd/MM/yyyy");
+        String monthYear = DateUtils.getMonthYear(GMT_7,-1,"MM/yyyy");
+        String fromDate = DateUtils.getFirstDateOfMonth(Integer.valueOf(monthYear.split("/")[1]),Integer.valueOf(monthYear.split("/")[0]),"dd/MM/yyyy");
+        String toDate = DateUtils.getLastDateOfMonth(Integer.valueOf(monthYear.split("/")[1]),Integer.valueOf(monthYear.split("/")[0]),"dd/MM/yyyy");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click General Reports > Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
@@ -1243,7 +1209,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2768")
     public void Ledger_Statement_2768(){
-        String dowloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "download.pdf";
+        String dowloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "ledger-statement.pdf";
         log("@title: Validate can export Ledger Statement to PDF file successfully");
         log("@Step 1: Login with valid account");
         log("Step 2: Click General Reports > Ledger Statement");
@@ -1260,6 +1226,95 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log(e.getMessage());
         }
         log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression_stg","2024.V.2.0"})
+    @TestRails(id = "15754")
+    public void Ledger_Statement_15754() throws IOException {
+        log("@title: Validate there is only 1 CJE transaction with the updated/latest amounts after users trigger a CJE manually");
+        log("@pre-condition 1: Ledger Statement permission is ON");
+        log("@pre-condition 2: Journal Entry and Journal Entry Ledger permission is ON");
+        log("@pre-condition 3: System Monitoring permission is ON");
+        String ledgerGroup = "302.000.000.000 - Retained Earnings";
+        String ledgerName = "302.000.001.000 - PL for Current Year - HKD";
+        int year = DateUtils.getYear(GMT_7);
+        int month = DateUtils.getMonth(GMT_7);
+        String fromDate = DateUtils.getFirstDateOfMonth(year,month-1,"dd/MM/yyyy");
+        String toDate = DateUtils.getLastDateOfMonth(year,month-1,"dd/MM/yyyy");
+        log("@Step 1: Go to General Reports >> Ledger Statement page");
+        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        log("Step 2: Filter data of 302.000.000.000 - Retained Earnings in testing month\n" +
+                "e.g. Company Unit = Kastraki Limited\n" +
+                "Financial Year = 2023-2024\n" +
+                "Account Type = Capital\n" +
+                "Detail Type = 302.000.000.000 - Retained Earnings\n" +
+                "Report = After CJE");
+        ledgerStatementPage.showLedger(COMPANY_UNIT,"","Capital",ledgerGroup,fromDate,toDate,"After CJE");
+        log("@Step 3: Get Running Bal. of account 302.000.001.000 - PL for Current Year - HKD at 'Amounts are shown in HKD' column (A)");
+        double valueA = ledgerStatementPage.getValueAmount(ledgerName,ledgerStatementPage.colRunBalGBP);
+        log("@Step 4: Go to Accounting >> Journal Entries");
+        JournalEntriesPage journalEntriesPage = ledgerStatementPage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 5: Perform a txn in the last 3 months which has CJE for an Income/Expenditure Ledger account\n" +
+                "e.g. Debit: Amount = 106.9HKD (B)\n" +
+                "Credit: Amount = 106.4HKD (C)");
+        double valueB = 100.9;
+        double valueC = 100.4;
+        Transaction transaction = new Transaction.Builder()
+                .ledgerDebit(debitIncomeAcc)
+                .ledgerCredit(creditIncomeAcc)
+                .ledgerDebitCur(lgDebitCur)
+                .ledgerCreditCur(lgCreditCur)
+                .amountDebit(valueB)
+                .amountCredit(valueC)
+                .remark( "Auto run for Income transaction " + DateUtils.getMilliSeconds())
+                .transDate(fromDate)
+                .transType(transType)
+                .build();
+        log("@Step 6: Click Submit button");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
+        log("@Step 7: Click Yes button in reminder dialog");
+        ConfirmPopup confirmPopup = new ConfirmPopup();
+        confirmPopup.btnOK.click();
+        try {
+            log("@Step 8: Go to General Reports >> System Monitoring page");
+            log("@Step 9: Click Closing Journal Entries button");
+            ClosingJournalEntriesPage closingJournalEntriesPage = journalEntriesPage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(CLOSING_JOURNAL_ENTRIES,ClosingJournalEntriesPage.class);
+            log("@Step 10: Click Perform CJE for month that perform txn at step #5\n" +
+                    "e.g. Company Unit = Kastraki Limited\n" +
+                    "Mont = 2023 - October");
+            log("@Step 11: Click Yes button in confirm dialog");
+            closingJournalEntriesPage.filter(COMPANY_UNIT,"",true);
+            log("@Step 12: Back to General Reports >> Ledger Statement page");
+            ledgerStatementPage = closingJournalEntriesPage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            log("@Step 13: Filter data as step #2");
+            ledgerStatementPage.showLedger(COMPANY_UNIT,"","Capital",ledgerGroup,fromDate,toDate,"After CJE");
+            log("@Verify 1: Running Bal. in 'Amounts are shown in HKD' column = (A) - [(B) -(C)]");
+            double valueD = valueB - valueC;
+            double valueEx = valueA - valueD;
+            Assert.assertTrue((valueEx - ledgerStatementPage.getValueAmount(ledgerName,ledgerStatementPage.colRunBalGBP)) < 0.01,"FAILED! Running Bal displays incorrect");
+        } finally {
+            log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
+            String currentDate = DateUtils.getFirstDateOfMonth(year,month-1,"yyyy-MM-dd");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_CREDIT_ACC,true);
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(valueB).amountCredit(valueC)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_INCOME);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_INCOME);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+            log("INFO: Executed completely");
+        }
     }
 
 

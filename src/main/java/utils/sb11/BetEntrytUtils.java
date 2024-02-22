@@ -2,7 +2,9 @@ package utils.sb11;
 
 import com.google.common.collect.Lists;
 import com.paltech.constant.Configs;
+import com.paltech.utils.DateUtils;
 import com.paltech.utils.WSUtils;
+import objects.Event;
 import objects.Order;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -73,6 +75,48 @@ public class BetEntrytUtils {
         }
         return lstOrder;
     }
+    public static void placeBetAPI(Order order){
+        String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
+        Map<String, String> headersParam = new HashMap<String, String>() {
+            {
+                put("Authorization", autho);
+                put("Content-Type", Configs.HEADER_JSON);
+            }
+        };
+        String api = environment.getSbpLoginURL() + "aqs-bet-entry/entry-bet/place";
+        String jsn = String.format("{\"cloneOrderType\":\"NONE\",\"orders\":[{\"" +
+                        "eventId\":%s," +
+                        "\"marketName\":\"%s\"," +
+                        "\"marketType\":\"%s\"," +
+                        "\"fixtureStart\":\"%sT10:00:00.000+00:00\"," +
+                        "\"selection\":\"%s\"," +
+                        "\"clientMetadata\":\"\"," +
+                        "\"fixtureHome\":\"%s\"," +
+                        "\"fixtureCompetition\":\"%s\"," +
+                        "\"agentName\":\"%s\"," +
+                        "\"fixtureAway\":\"%s\"," +
+                        "\"fixtureSport\":\"%s\"," +
+                        "\"stage\":\"%s\"," +
+                        "\"handicap\":%s," +
+                        "\"odds\":%s," +
+                        "\"oddsType\":\"%s\"," +
+                        "\"stake\":%s," +
+                        "\"betType\":\"%s\"}]}"
+                , order.getEvent().getEventId(), order.getMarketName(), order.getMarketType(), order.getEvent().getEventDate(),order.getSelection(),order.getEvent().getHome(),order.getEvent().getLeagueName()
+                , order.getAccountCode(), order.getEvent().getAway(),order.getEvent().getSportName(),order.getStage(), order.getHandicap(),order.getOdds(),order.getOddType(),order.getRequireStake(),order.getBetType());
+        try {
+            WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
+        }catch (IOException e){
+            System.out.println("Exception: IOException occurs at sendGETRequestDynamicHeaders");
+        }
+    }
+
+    public static void placeBetAPI(List<Order> lstOrder){
+        for (int i = 0; i < lstOrder.size();i++){
+            placeBetAPI(lstOrder.get(i));
+        }
+    }
+
 
     public static void placeManualBetAPI(int companyId, String accountId, String sportId, Order order) {
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));

@@ -266,7 +266,7 @@ public class MonitorBetsPage extends WelcomePage {
             System.out.println("FAILED! Selection display incorrect");
             return false;
         }
-        if (!hdpPointActual.contains(String.valueOf(order.getHdpPoint()))){
+        if (!hdpPointActual.contains(String.valueOf(order.getHandicap()))){
             System.out.println("FAILED! HDP display incorrect");
             return false;
         }

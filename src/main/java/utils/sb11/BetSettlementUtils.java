@@ -71,6 +71,10 @@ public class BetSettlementUtils {
                 put("Content-Type", Configs.HEADER_JSON);
             }
         };
+        int handicap = 0;
+        if (order.getMarketType().equals("OverUnder")){
+            handicap = 1;
+        }
         String api = environment.getSbpLoginURL() + "aqs-agent-service/trading/bet-settlement/settle?";
         String jsn = String.format("{\n" +
                         "  \"bets\": [\n" +
@@ -84,7 +88,7 @@ public class BetSettlementUtils {
                         "      \"marketType\": \"MB\",\n" +
                         "      \"status\": \"SETTLED\",\n" +
                         "      \"selection\": \"%s\",\n" +
-                        "      \"handicap\": 0,\n" +
+                        "      \"handicap\": %s,\n" +
                         "      \"live\": \"\",\n" +
                         "      \"liveScores\": \"\",\n" +
                         "      \"odds\": %s,\n" +
@@ -119,7 +123,7 @@ public class BetSettlementUtils {
                         "    ]\n" +
                         "  }\n" +
                         "}"
-                , order.getCreateDate() +"T16:59:00.000+00:00", order.getCreateDate() + "T16:59:00.000+00:00", order.getRequireStake(), order.getSelection(),
+                , order.getCreateDate() +"T16:59:00.000+00:00", order.getCreateDate() + "T16:59:00.000+00:00", order.getRequireStake(), order.getSelection(),handicap,
                 order.getPrice(), betId, order.getPrice(), order.getOddType(), order.getOddType(), wagerId, sportId, millis, accountId, betId, wagerId);
 
             WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
@@ -127,7 +131,42 @@ public class BetSettlementUtils {
            System.out.println(e.getMessage());
         }
     }
+    public static void sendBetSettleAPI(Order order){
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = sdf.parse(order.getEventDate());
+            long millis = date.getTime();
+            String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
+            Map<String, String> headersParam = new HashMap<String, String>() {
+                {
+                    put("Authorization", autho);
+                    put("Content-Type", Configs.HEADER_JSON);
+                }
+            };
+            String api = environment.getSbpLoginURL() + "aqs-agent-service/trading/bet-settlement/settle?";
+            String jsn = String.format("{\n" +
+                            "    \"bets\": [\n" +
+                            "        {\n" +
+                            "            \"id\": %s,\n" +
+                            "            \"winLose\": \"%s\",\n" +
+                            "            \"source\": \"PS7\",\n" +
+                            "            \"canUpdateWinLoss\": %s\n" +
+                            "        }\n" +
+                            "    ],\n" +
+                            "    \"transactionDate\": %s\n" +
+                            "}"
+                    , order.getBetId(),order.getWinLose(),order.isWinLose(),millis);
 
+            WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
+        }catch (IOException | ParseException e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public static void sendBetSettleAPI(List<Order> lstOrder){
+        for (int i = 0; i < lstOrder.size(); i++){
+            sendBetSettleAPI(lstOrder.get(i));
+        }
+    }
     private static String buildJsonPayload(String fromDatePS7, String toDatePS7, String status,String accountCode, String accountId, String sportID){
         return String.format("{\n" +
                 "  \"fromDatePS7\": \"%s\",\n" +

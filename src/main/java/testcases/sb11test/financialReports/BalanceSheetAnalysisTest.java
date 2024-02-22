@@ -1,6 +1,7 @@
 package testcases.sb11test.financialReports;
 
 import com.paltech.utils.DateUtils;
+import com.paltech.utils.DoubleUtils;
 import com.paltech.utils.FileUtils;
 import com.paltech.utils.StringUtils;
 import org.testng.Assert;
@@ -12,6 +13,7 @@ import pages.sb11.financialReports.TrialBalancePage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.role.RoleManagementPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.BalanceSheetAnalysisUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
@@ -147,46 +149,41 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         Assert.assertEquals(creditTxns, String.format("%.2f", creditSelectedMonth-creditPreviousMonth), "FAILED! Txns data is not correct");
     }
 
-    @Test(groups = {"regression", "2023.12.29"})
+    @Test(groups = {"regression", "2024.V.2.0"})
     @TestRails(id = "9146")
     public void BalanceSheetAnalysisTC_9146(){
-        log("@title: Validate 'Asset = Liability + Capital' row sums up correctly 3 amounts in 'Asset', 'Liability', 'Capital' rows of each columns");
-        log("@Step 1: Login with valid account");
-        log("@Step 2: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
-        BalanceSheetAnalysisPage balanceAnalysisPage = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
-        log("@Step 3: Filter with month that has data");
-        balanceAnalysisPage.filter(COMPANY_UNIT, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
-        log("@Verify 1: Validate 'Asset = Liability + Capital' row sums up correctly 3 amounts in 'Asset', 'Liability', 'Capital' rows of each columns.");
+        log("@title: Validate Total Balance row sums up correctly 3 amounts in 'Asset', 'Liability', 'Capital' rows of each columns");
+        log("@Step 1: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
+        BalanceSheetAnalysisPage page = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
+        log("@Step 2: Filter with month that has data > observe");
+        page.filter(COMPANY_UNIT, "", "", "");
+        log("@Verify 1: Validate Total Balance row sums up correctly 3 amounts in 'Asset', 'Liability', 'Capital' rows of each columns");
         Double creditAssetSelectedMonth = Double.valueOf(
-                balanceAnalysisPage.getColumnDebitCreditOfAccountSelectedMonth("Asset", false).replace(",", ""));
+                page.getColumnDebitCreditOfAccountSelectedMonth("Asset", false).replace(",", ""));
         Double creditLiabilitySelectedMonth = Double.valueOf(
-                balanceAnalysisPage.getColumnDebitCreditOfAccountSelectedMonth("Liability", false).replace(",", ""));
+                page.getColumnDebitCreditOfAccountSelectedMonth("Liability", false).replace(",", ""));
         Double creditCapitalSelectedMonth = Double.valueOf(
-                balanceAnalysisPage.getColumnDebitCreditOfAccountSelectedMonth("Capital", false).replace(",", ""));
-        String total = balanceAnalysisPage.getColumnDebitCreditOfAccountSelectedMonth("Asset = Liability + Capital", false).replace(",", "");
+                page.getColumnDebitCreditOfAccountSelectedMonth("Capital", false).replace(",", ""));
+        double total = DoubleUtils.roundUpWithTwoPlaces(creditAssetSelectedMonth + creditLiabilitySelectedMonth + creditCapitalSelectedMonth);
 
-        Assert.assertEquals(total, String.format("%.2f", creditLiabilitySelectedMonth + creditCapitalSelectedMonth + creditAssetSelectedMonth),
+        Assert.assertEquals(page.getDifTotalBalance("Total Balance",page.indexTotalSelectMonthCre), total,
                 "FAILED! Asset is not correct");
+        log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.12.29"})
+    @Test(groups = {"regression", "2024.V.2.0"})
     @TestRails(id = "9147")
     public void BalanceSheetAnalysisTC_9147(){
-        log("@title: Validate 'Difference' row sums up correctly the Debit and Credit amounts in 'Asset = Liability + Capital' row for each section");
-        log("@Step 1: Login with valid account");
-        log("@Step 2: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
-        BalanceSheetAnalysisPage balanceAnalysisPage = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
-        log("@Step 3: Filter with month that has data");
-        balanceAnalysisPage.filter(COMPANY_UNIT, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
-        log("@Verify 1: Validate 'Difference' row sums up correctly the Debit and Credit amounts in 'Asset = Liability + Capital' row for each section.");
-        Double creditAsLiCaSelectedMonth = Double.valueOf(
-                balanceAnalysisPage.getColumnDebitCreditOfAccountSelectedMonth("Asset = Liability + Capital", false).replace(",", ""));
-        Double debitAsLiCaSelectedMonth = Double.valueOf(
-                balanceAnalysisPage.getColumnDebitCreditOfAccountSelectedMonth("Asset = Liability + Capital", true).replace(",", ""));
-
-        Assert.assertEquals(balanceAnalysisPage.lblDifferenceSelectedMonth.getText().trim().replace(",", ""),
-                String.format("%.2f", debitAsLiCaSelectedMonth + (-creditAsLiCaSelectedMonth)).replace("-", ""),
-                "FAILED! Difference is not correct");
+        log("@title: Validate Difference row sums up correctly the Debit and Credit amounts");
+        log("@Step 1: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
+        BalanceSheetAnalysisPage page = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
+        log("@Step 2: Filter with month that has data");
+        page.filter(COMPANY_UNIT, "", "", "");
+        log("@Step 3: Check the Difference value");
+        double difEx = DoubleUtils.roundEvenWithTwoPlaces(page.getDifTotalBalance("Total Balance",page.indexTotalSelectMonthDe) - page.getDifTotalBalance("Total Balance",page.indexTotalSelectMonthCre) + 0.01);
+        log("@Verify 1: Difference = absolute (Total Balance Debit) - absolute (Total Balance Credit)");
+        Assert.assertEquals(page.getDifTotalBalance("Difference",page.indexDifSelectMonth),difEx,"FAILED! Difference is not correct");
+        log("INFO: Executed completely");
     }
 
     @Test(groups = {"regression", "2023.12.29"})
@@ -211,5 +208,61 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
             log("@Post-condition: delete download file");
             FileUtils.removeFile(downloadPath);
         }
+    }
+    @Test(groups = {"regression", "2024.V.2.0"})
+    @TestRails(id = "21840")
+    public void BalanceSheetAnalysisTC_21840(){
+        log("@title: Validate the Asset value is sum up all absolute values of credit/debit amounts in each column");
+        log("@Step 1: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
+        BalanceSheetAnalysisPage page = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
+        log("@Step 2: Filter with month that has data");
+        page.filter(COMPANY_UNIT, "", "", "Before CJE");
+        log("@Step 3: Check Asset value");
+        int year = DateUtils.getYear(GMT_7);
+        int month = DateUtils.getMonth(GMT_7);
+        double sumDeEx = BalanceSheetAnalysisUtils.getSumCreDe("Asset","totalDebit",year,month,false);
+        double sumCreEx = BalanceSheetAnalysisUtils.getSumCreDe("Asset","totalCredit",year,month,false);
+        log("@Verify 1: The Asset value = sum up all absolute values of credit/debit amounts in each column");
+        Assert.assertTrue((Double.valueOf(page.getColumnDebitCreditOfAccountSelectedMonth("Asset",true).replace(",",""))-sumDeEx) <= 0.02,
+                "FAILED! Debit sum display incorrect");
+        Assert.assertTrue((Double.valueOf(page.getColumnDebitCreditOfAccountSelectedMonth("Asset",false).replace(",","")) - sumCreEx) <= 0.02,
+                "FAILED! Debit sum display incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression", "2024.V.2.0"})
+    @TestRails(id = "21842")
+    public void BalanceSheetAnalysisTC_21842(){
+        log("@title: Validate the Liability value is sum up all absolute values of credit/debit amounts in each column");
+        log("@Step 1: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
+        BalanceSheetAnalysisPage page = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
+        log("@Step 2: Filter with month that has data");
+        page.filter(COMPANY_UNIT, "", "", "Before CJE");
+        log("@Step 3: Check Liability value");
+        int year = DateUtils.getYear(GMT_7);
+        int month = DateUtils.getMonth(GMT_7);
+        double sumDeEx = BalanceSheetAnalysisUtils.getSumCreDe("Liability","totalDebit",year,month,false);
+        double sumCreEx = BalanceSheetAnalysisUtils.getSumCreDe("Liability","totalCredit",year,month,false);
+        log("@Verify 1: The Liability value = sum up all absolute values of credit/debit amounts in each column");
+        Assert.assertTrue((Double.valueOf(page.getColumnDebitCreditOfAccountSelectedMonth("Liability",true).replace(",","")) - sumDeEx) <= 0.02,"FAILED! Debit sum display incorrect");
+        Assert.assertTrue((Double.valueOf(page.getColumnDebitCreditOfAccountSelectedMonth("Liability",false).replace(",","")) - sumCreEx) <= 0.02,"FAILED! Debit sum display incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression", "2024.V.2.0"})
+    @TestRails(id = "21843")
+    public void BalanceSheetAnalysisTC_21843(){
+        log("@title: Validate the Capital value is sum up all absolute values of credit/debit amounts in each column");
+        log("@Step 1: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
+        BalanceSheetAnalysisPage page = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
+        log("@Step 2: Filter with month that has data");
+        page.filter(COMPANY_UNIT, "", "", "Before CJE");
+        log("@Step 3: Check Liability value");
+        int year = DateUtils.getYear(GMT_7);
+        int month = DateUtils.getMonth(GMT_7);
+        double sumDeEx = BalanceSheetAnalysisUtils.getSumCreDe("Capital","totalDebit",year,month,false);
+        double sumCreEx = BalanceSheetAnalysisUtils.getSumCreDe("Capital","totalCredit",year,month,false);
+        log("@Verify 1: The Liability value = sum up all absolute values of credit/debit amounts in each column");
+        Assert.assertTrue((Double.valueOf(page.getColumnDebitCreditOfAccountSelectedMonth("Capital",true).replace(",","")) - sumDeEx) <= 0.02,"FAILED! Debit sum display incorrect");
+        Assert.assertTrue((Double.valueOf(page.getColumnDebitCreditOfAccountSelectedMonth("Capital",false).replace(",","")) - sumCreEx) <= 0.02,"FAILED! Debit sum display incorrect");
+        log("INFO: Executed completely");
     }
 }
