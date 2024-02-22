@@ -50,7 +50,7 @@ public class LedgerStatementPage extends WelcomePage {
     int colRunBalORG = 5;
     int colRunBalCTORG = 6;
     int colAmountGBP = 8;
-    int colRunBalGBP = 9;
+    public int colRunBalGBP = 9;
     public Table tbLedger = Table.xpath("//app-ledger-statement//table",totalCol);
     public static final String RED_COLOR = "rgba(252, 0, 0, 1)";
 
@@ -191,9 +191,9 @@ public class LedgerStatementPage extends WelcomePage {
         return new LedgerDetailPopup();
     }
 
-    public double getCreditDebitAmount(String ledgerName){
+    public double getValueAmount(String ledgerName,int indexCol){
         int rowIndex = getLedgerRowIndex(ledgerName);
-        String amountCreDeb = tbLedger.getControlOfCell(1, colAmountORG, rowIndex, null).getText().trim();
+        String amountCreDeb = tbLedger.getControlOfCell(1, indexCol, rowIndex, null).getText().trim().replace(",","");
         if (amountCreDeb.isEmpty()){
             amountCreDeb = String.valueOf(0);
         }

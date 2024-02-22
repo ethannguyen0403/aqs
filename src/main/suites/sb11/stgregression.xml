@@ -109,6 +109,8 @@
 
             <class name="testcases.sb11test.invoice.InvoicesTest"/>
 
+            <class name="testcases.sb11test.restapi.RestAPITest"/>
+
         </classes>
     </test>
 </suite>

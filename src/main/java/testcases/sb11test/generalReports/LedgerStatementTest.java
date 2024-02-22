@@ -2,6 +2,7 @@ package testcases.sb11test.generalReports;
 
 import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
+import com.paltech.utils.DoubleUtils;
 import com.paltech.utils.FileUtils;
 import objects.Transaction;
 import org.checkerframework.checker.units.qual.C;
@@ -10,8 +11,11 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.accounting.JournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
+import pages.sb11.generalReports.SystemMonitoringPage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
+import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 import pages.sb11.master.AddressBookPage;
+import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.AccountSearchUtils;
 import utils.sb11.ChartOfAccountUtils;
@@ -20,6 +24,9 @@ import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import static common.SBPConstants.*;
 
@@ -1219,6 +1226,95 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log(e.getMessage());
         }
         log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression_stg","2024.V.2.0"})
+    @TestRails(id = "15754")
+    public void Ledger_Statement_15754() throws IOException {
+        log("@title: Validate there is only 1 CJE transaction with the updated/latest amounts after users trigger a CJE manually");
+        log("@pre-condition 1: Ledger Statement permission is ON");
+        log("@pre-condition 2: Journal Entry and Journal Entry Ledger permission is ON");
+        log("@pre-condition 3: System Monitoring permission is ON");
+        String ledgerGroup = "302.000.000.000 - Retained Earnings";
+        String ledgerName = "302.000.001.000 - PL for Current Year - HKD";
+        int year = DateUtils.getYear(GMT_7);
+        int month = DateUtils.getMonth(GMT_7);
+        String fromDate = DateUtils.getFirstDateOfMonth(year,month-1,"dd/MM/yyyy");
+        String toDate = DateUtils.getLastDateOfMonth(year,month-1,"dd/MM/yyyy");
+        log("@Step 1: Go to General Reports >> Ledger Statement page");
+        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        log("Step 2: Filter data of 302.000.000.000 - Retained Earnings in testing month\n" +
+                "e.g. Company Unit = Kastraki Limited\n" +
+                "Financial Year = 2023-2024\n" +
+                "Account Type = Capital\n" +
+                "Detail Type = 302.000.000.000 - Retained Earnings\n" +
+                "Report = After CJE");
+        ledgerStatementPage.showLedger(COMPANY_UNIT,"","Capital",ledgerGroup,fromDate,toDate,"After CJE");
+        log("@Step 3: Get Running Bal. of account 302.000.001.000 - PL for Current Year - HKD at 'Amounts are shown in HKD' column (A)");
+        double valueA = ledgerStatementPage.getValueAmount(ledgerName,ledgerStatementPage.colRunBalGBP);
+        log("@Step 4: Go to Accounting >> Journal Entries");
+        JournalEntriesPage journalEntriesPage = ledgerStatementPage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 5: Perform a txn in the last 3 months which has CJE for an Income/Expenditure Ledger account\n" +
+                "e.g. Debit: Amount = 106.9HKD (B)\n" +
+                "Credit: Amount = 106.4HKD (C)");
+        double valueB = 100.9;
+        double valueC = 100.4;
+        Transaction transaction = new Transaction.Builder()
+                .ledgerDebit(debitIncomeAcc)
+                .ledgerCredit(creditIncomeAcc)
+                .ledgerDebitCur(lgDebitCur)
+                .ledgerCreditCur(lgCreditCur)
+                .amountDebit(valueB)
+                .amountCredit(valueC)
+                .remark( "Auto run for Income transaction " + DateUtils.getMilliSeconds())
+                .transDate(fromDate)
+                .transType(transType)
+                .build();
+        log("@Step 6: Click Submit button");
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
+        log("@Step 7: Click Yes button in reminder dialog");
+        ConfirmPopup confirmPopup = new ConfirmPopup();
+        confirmPopup.btnOK.click();
+        try {
+            log("@Step 8: Go to General Reports >> System Monitoring page");
+            log("@Step 9: Click Closing Journal Entries button");
+            ClosingJournalEntriesPage closingJournalEntriesPage = journalEntriesPage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(CLOSING_JOURNAL_ENTRIES,ClosingJournalEntriesPage.class);
+            log("@Step 10: Click Perform CJE for month that perform txn at step #5\n" +
+                    "e.g. Company Unit = Kastraki Limited\n" +
+                    "Mont = 2023 - October");
+            log("@Step 11: Click Yes button in confirm dialog");
+            closingJournalEntriesPage.filter(COMPANY_UNIT,"",true);
+            log("@Step 12: Back to General Reports >> Ledger Statement page");
+            ledgerStatementPage = closingJournalEntriesPage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            log("@Step 13: Filter data as step #2");
+            ledgerStatementPage.showLedger(COMPANY_UNIT,"","Capital",ledgerGroup,fromDate,toDate,"After CJE");
+            log("@Verify 1: Running Bal. in 'Amounts are shown in HKD' column = (A) - [(B) -(C)]");
+            double valueD = valueB - valueC;
+            double valueEx = valueA - valueD;
+            Assert.assertTrue((valueEx - ledgerStatementPage.getValueAmount(ledgerName,ledgerStatementPage.colRunBalGBP)) < 0.01,"FAILED! Running Bal displays incorrect");
+        } finally {
+            log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
+            String currentDate = DateUtils.getFirstDateOfMonth(year,month-1,"yyyy-MM-dd");
+            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_DEBIT_ACC,true);
+            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_CREDIT_ACC,true);
+            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_CREDIT_ACC,true);
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
+                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .amountDebit(valueB).amountCredit(valueC)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+
+            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_INCOME);
+            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_INCOME);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+            log("INFO: Executed completely");
+        }
     }
 
 

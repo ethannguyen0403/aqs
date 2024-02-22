@@ -4,6 +4,7 @@ import com.paltech.driver.DriverManager;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
+import com.paltech.element.common.RadioButton;
 import com.paltech.utils.DoubleUtils;
 import common.SBPConstants;
 import org.openqa.selenium.By;
@@ -35,10 +36,11 @@ public class BalanceSheetPage extends WelcomePage {
     public Label lblAmountAreShow = Label.xpath("//app-balance-sheet//label[contains(text(), 'Amounts are shown in')]");
     public Button btnExportToExcel = Button.xpath("//button//i[contains(@class, 'fa-file-excel')]");
     public Button btnExportToPDF = Button.xpath("//button//i[contains(@class, 'fa-file-pdf')]");
+    public RadioButton rbTxns = RadioButton.xpath("//label[text()='Show Info with Balance/Txns']//preceding-sibling::input[@type='checkbox']");
     @Override
     public String getTitlePage() { return lblTitle.getText().trim();}
 
-    public void filter(String companyUnit, String financialYear, String month, String reportType) {
+    public void filter(String companyUnit, String financialYear, String month, String reportType, boolean showTxns) {
         if (!companyUnit.isEmpty()){
             ddCompanyUnit.selectByVisibleText(companyUnit);
         }
@@ -50,6 +52,9 @@ public class BalanceSheetPage extends WelcomePage {
         }
         if (!reportType.isEmpty()){
             ddReport.selectByVisibleText(reportType);
+        }
+        if (showTxns) {
+            rbTxns.click();
         }
         btnShow.click();
         waitSpinnerDisappeared();

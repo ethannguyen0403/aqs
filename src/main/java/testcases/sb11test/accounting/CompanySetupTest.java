@@ -366,7 +366,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@Step 1: Navigate to  General Reports >> Balance Sheet");
         BalanceSheetPage balanceSheetPage = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET, BalanceSheetPage.class);
         log("@Step 2: Filter with default data with company name: " + companyName);
-        balanceSheetPage.filter(companyName, "","","");
+        balanceSheetPage.filter(companyName, "","","",false);
         log(String.format("@Verify 1: Validate shows text 'Amounts are shown in [%s]' correct", companyCurrency));
         Assert.assertEquals(balanceSheetPage.lblAmountAreShow.getText().trim(), expectedText, "FAILED! Text is incorrect");
         log("INFO: Executed completely");
