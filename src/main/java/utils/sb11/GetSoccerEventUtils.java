@@ -55,8 +55,8 @@ public class GetSoccerEventUtils {
                         .openTime(orderObj.getString("openTime"))
                         .eventId(Long.toString(orderObj.getLong("eventId")))
                         .sportName(sport)
-                        .leagueName(league)
-                        .build();
+                        .leagueName(league.replaceAll("  +", " ").trim())
+                        .build();//sometimes league have redundant space in String
             }
         }
         return null;
