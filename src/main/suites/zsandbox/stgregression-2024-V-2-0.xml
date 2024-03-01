@@ -44,6 +44,7 @@
             <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
             <class name="testcases.sb11test.generalReports.FundReconciliationTest"/>
             <class name="testcases.sb11test.generalReports.ARandAPReconciliationTest"/>
+            <class name="testcases.sb11test.generalReports.IPMonitoringTest"/>
 
             <class name="testcases.sb11test.financialReports.TrialBalanceTest"/>
             <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
