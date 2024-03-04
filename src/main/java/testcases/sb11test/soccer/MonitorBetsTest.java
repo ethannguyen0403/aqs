@@ -13,7 +13,6 @@ import pages.sb11.soccer.Last12DaysPerformancePage;
 import pages.sb11.soccer.MonitorBetsPage;
 import pages.sb11.soccer.PendingBetsPage;
 import pages.sb11.soccer.PerformanceByMonthPage;
-import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.ConfirmBetsPage;
 import pages.sb11.trading.SmartGroupPage;
 import pages.sb11.trading.SmartSystemPage;
@@ -633,7 +632,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         Assert.assertTrue(monitorBetsPage.isOrderDisplayCorrect(order));
         log("@Step 4: Go to Confirm bets > delete bet of precondition");
         ConfirmBetsPage confirmBetsPage = monitorBetsPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT,"","Pending","Soccer","All","Specific Date","","",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending","Soccer","All","Specific Date","","",accountCode);
         confirmBetsPage.deleteOrder(lstOrder.get(0),true);
         log("Verify 2: Validate bet of precondition is not shown in Monitor Bets");
         monitorBetsPage = confirmBetsPage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);

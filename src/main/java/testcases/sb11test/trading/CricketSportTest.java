@@ -1,13 +1,11 @@
 package testcases.sb11test.trading;
 
-import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
 import common.SBPConstants;
 import objects.Event;
 import objects.Order;
 import objects.Team;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -126,7 +124,7 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@Step 4: Go to Bet Entry and Result Entry >> find the event");
         BetEntryPage betEntryPage = eventSchedulePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-        cricketBetEntryPage.showLeague(COMPANY_UNIT,date,leagueName);
+        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,leagueName);
         log("@Verify 2: The event is able to find in Result Entry and Bet Entry");
         Assert.assertTrue(cricketBetEntryPage.isLeagueExist(leagueName),"FAILED! League "+ leagueName+" does not display in the list");
         Assert.assertTrue(cricketBetEntryPage.isEventExist(event), "FAILED! Event "+event.getHome() +" & "+ event.getAway()+" under league "+ leagueName+" does not display in the list");
@@ -195,7 +193,7 @@ public class CricketSportTest extends BaseCaseAQS {
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(COMPANY_UNIT,date,event.getLeagueName());
+        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
         log("@Step 4: Click …. At 1x2 Home >> observe the dialog");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -231,7 +229,7 @@ public class CricketSportTest extends BaseCaseAQS {
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         log("@Step 7: Go to Confirm Bets");
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
         log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
         confirmBetsPage.verifyOrder(lstOrder.get(0));
         log("@Postcondition: Delete the event");
@@ -265,7 +263,7 @@ public class CricketSportTest extends BaseCaseAQS {
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(COMPANY_UNIT,date,event.getLeagueName());
+        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
         log("@Step 4: Click …. At 1x2 Away");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -301,7 +299,7 @@ public class CricketSportTest extends BaseCaseAQS {
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         log("@Step 7: Go to Confirm Bets");
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
         log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
         confirmBetsPage.verifyOrder(lstOrder.get(0));
         log("@Postcondition: Delete the event");
@@ -344,7 +342,7 @@ public class CricketSportTest extends BaseCaseAQS {
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(COMPANY_UNIT,date,event.getLeagueName());
+        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
         log("@Step 4: Click …. at selection Draw");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -386,7 +384,7 @@ public class CricketSportTest extends BaseCaseAQS {
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         log("@Step 1: Go to Confirm Bets");
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
         confirmBetsPage.confirmMultipleBets(lstOrder);
         log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
@@ -450,7 +448,7 @@ public class CricketSportTest extends BaseCaseAQS {
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(COMPANY_UNIT,date,event.getLeagueName());
+        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
         log("@Step 4: Click …. at selection Draw");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -492,7 +490,7 @@ public class CricketSportTest extends BaseCaseAQS {
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         log("@Step 1: Go to Confirm Bets");
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
         confirmBetsPage.confirmMultipleBets(lstOrder);
         log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
@@ -547,7 +545,7 @@ public class CricketSportTest extends BaseCaseAQS {
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(COMPANY_UNIT,date,event.getLeagueName());
+        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
         log("@Step 4: Click …. at selection Draw");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -583,7 +581,7 @@ public class CricketSportTest extends BaseCaseAQS {
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         log("@Step 7: Go to Confirm Bets");
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
         log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
         confirmBetsPage.verifyOrder(lstOrder.get(0));
         log("@Postcondition: Delete the event");
@@ -617,7 +615,7 @@ public class CricketSportTest extends BaseCaseAQS {
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(COMPANY_UNIT,date,event.getLeagueName());
+        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
         log("@Step 4: Click …. at Odd selection");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -653,7 +651,7 @@ public class CricketSportTest extends BaseCaseAQS {
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         log("@Step 7: Go to Confirm Bets");
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
         log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
         confirmBetsPage.verifyOrder(lstOrder.get(0));
         log("@Postcondition: Delete the event");
@@ -687,7 +685,7 @@ public class CricketSportTest extends BaseCaseAQS {
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(COMPANY_UNIT,date,event.getLeagueName());
+        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
         log("@Step 4: Click …. at Even selection");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -723,7 +721,7 @@ public class CricketSportTest extends BaseCaseAQS {
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         log("@Step 7: Go to Confirm Bets");
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
         log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
         confirmBetsPage.verifyOrder(lstOrder.get(0));
         log("@Postcondition: Delete the event");
@@ -757,7 +755,7 @@ public class CricketSportTest extends BaseCaseAQS {
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(COMPANY_UNIT,date,event.getLeagueName());
+        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
         log("@Step 4: Click …. at Over selection");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -794,7 +792,7 @@ public class CricketSportTest extends BaseCaseAQS {
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         log("@Step 7: Go to Confirm Bets");
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
         log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
         confirmBetsPage.verifyOrder(lstOrder.get(0));
         log("@Postcondition: Delete the event");
@@ -828,7 +826,7 @@ public class CricketSportTest extends BaseCaseAQS {
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(COMPANY_UNIT,date,event.getLeagueName());
+        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
         log("@Step 4: Click …. at Under selection");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -865,7 +863,7 @@ public class CricketSportTest extends BaseCaseAQS {
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         log("@Step 7: Go to Confirm Bets");
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
         log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
         confirmBetsPage.verifyOrder(lstOrder.get(0));
         log("@Postcondition: Delete the event");
@@ -900,7 +898,7 @@ public class CricketSportTest extends BaseCaseAQS {
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(COMPANY_UNIT,date,event.getLeagueName());
+        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
         log("@Step 4: Click …. at Home selection");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -936,7 +934,7 @@ public class CricketSportTest extends BaseCaseAQS {
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         log("@Step 7: Go to Confirm Bets");
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
         log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
         confirmBetsPage.verifyOrder(lstOrder.get(0));
         log("@Postcondition: Delete the event");
@@ -970,7 +968,7 @@ public class CricketSportTest extends BaseCaseAQS {
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(COMPANY_UNIT,date,event.getLeagueName());
+        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
         log("@Step 4: Click …. at Away selection");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -1006,7 +1004,7 @@ public class CricketSportTest extends BaseCaseAQS {
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         log("@Step 7: Go to Confirm Bets");
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
         log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
         confirmBetsPage.verifyOrder(lstOrder.get(0));
         log("@Postcondition: Delete the event");
@@ -1049,7 +1047,7 @@ public class CricketSportTest extends BaseCaseAQS {
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(COMPANY_UNIT,date,event.getLeagueName());
+        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
         log("@Step 4: Click …. at selection Draw");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -1091,7 +1089,7 @@ public class CricketSportTest extends BaseCaseAQS {
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         log("@Step 1: Go to Confirm Bets");
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
         confirmBetsPage.confirmMultipleBets(lstOrder);
         log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
@@ -1172,7 +1170,7 @@ public class CricketSportTest extends BaseCaseAQS {
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(COMPANY_UNIT,date,event.getLeagueName());
+        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
         log("@Step 4: Click …. at selection");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -1216,7 +1214,7 @@ public class CricketSportTest extends BaseCaseAQS {
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         log("@Step 1: Go to Confirm Bets");
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
         confirmBetsPage.confirmMultipleBets(lstOrder);
         log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
@@ -1265,7 +1263,7 @@ public class CricketSportTest extends BaseCaseAQS {
                 .sport(sportName)
                 .marketType("MB")
                 .build();
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_ID_MAP.get(sportName),order);
         welcomePage.waitSpinnerDisappeared();
         int betId = BetSettlementUtils.getConfirmedBetId(accountId,SPORT_ID_MAP.get(sportName),order);
@@ -1318,7 +1316,7 @@ public class CricketSportTest extends BaseCaseAQS {
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
         CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
         log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(COMPANY_UNIT,date,event.getLeagueName());
+        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
         log("@Step 4: Click …. at selection Draw");
         List<Order> lstOrder = new ArrayList<>();
         Order order = new Order.Builder()
@@ -1360,7 +1358,7 @@ public class CricketSportTest extends BaseCaseAQS {
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         log("@Step 1: Go to Confirm Bets");
         ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(COMPANY_UNIT,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
         confirmBetsPage.confirmMultipleBets(lstOrder);
         log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
@@ -1412,7 +1410,7 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@Step 2: Input invalid account code");
         page.txtAccountCode.sendKeys("123");
         log("@Step 3: Click Show");
-        page.showLeague(COMPANY_UNIT,"","All");
+        page.showLeague(KASTRAKI_LIMITED,"","All");
         log("Verify 1: Message 'Please input valid Account Code.' displays");
         Assert.assertTrue(page.lblMsgInvalid.isDisplayed(),"FAILED! Message display incorrect!");
         log("INFO: Executed completely");

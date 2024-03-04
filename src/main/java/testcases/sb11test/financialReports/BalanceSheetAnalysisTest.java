@@ -54,7 +54,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         BalanceSheetAnalysisPage balanceAnalysisPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 3: Filter with month that has data");
-        balanceAnalysisPage.filter(COMPANY_UNIT, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
+        balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
         log("@Step 4: Click to export excel button");
         balanceAnalysisPage.btnExportExcel.click();
         welcomePage.waitSpinnerDisappeared();
@@ -76,7 +76,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
         BalanceSheetAnalysisPage balanceAnalysisPage = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 3: Filter with month that has data");
-        balanceAnalysisPage.filter(COMPANY_UNIT, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
+        balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
         log("@Verify 1: Data should sort by Parent Account Number ascendingly");
         List<String> assetAccount = balanceAnalysisPage.getParentAccountList("Asset");
         Assert.assertTrue(balanceAnalysisPage.verifyParentAccountSortAsc(assetAccount, true), "FAILED! Parent account of Asset is not sorted asc. List: "+ assetAccount);
@@ -94,7 +94,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         String lastDayOfMonth = DateUtils.getLastDateOfMonth(year, month, "dd/MM/yyyy");
 
         LedgerStatementPage ledgerPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
-        ledgerPage.showLedger(COMPANY_UNIT, FINANCIAL_YEAR, "Asset", QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT, firstDayOfMonth, lastDayOfMonth, REPORT_TYPE.get(0));
+        ledgerPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Asset", QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT, firstDayOfMonth, lastDayOfMonth, REPORT_TYPE.get(0));
         String totalLedger = ledgerPage.getTotalAmountInOriginCurrency("Total in HKD");
         boolean isPositiveNumber = ledgerPage.isTotalAmountInOriginCurrencyPositiveNumber("Total in HKD");
 
@@ -102,7 +102,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
         BalanceSheetAnalysisPage balanceAnalysisPage = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 3: Filter with month that has transactions at pre-condition");
-        balanceAnalysisPage.filter(COMPANY_UNIT, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
+        balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
         log("@Verify 1: Validate Debit column data is displayed correctly positive amount from Ledger Statement - 'Amounts are shown in HKD' section");
         String creditValue = balanceAnalysisPage.getColumnDebitCreditOfAccountSelectedMonth(LEDGER_GROUP_NAME_ASSET, isPositiveNumber);
         Assert.assertEquals(creditValue, totalLedger, "FAILED! Data of Balance sheet table is not correct");
@@ -119,7 +119,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         String lastDayOfMonth = DateUtils.getLastDateOfMonth(year, month, "dd/MM/yyyy");
 
         LedgerStatementPage ledgerPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
-        ledgerPage.showLedger(COMPANY_UNIT, FINANCIAL_YEAR, "Asset", QA_ASSET_PARENT_ACCOUNT_700, firstDayOfMonth, lastDayOfMonth, REPORT_TYPE.get(0));
+        ledgerPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Asset", QA_ASSET_PARENT_ACCOUNT_700, firstDayOfMonth, lastDayOfMonth, REPORT_TYPE.get(0));
         String totalLedger = ledgerPage.getTotalAmountInOriginCurrency("Total in HKD");
         boolean isPositiveNumber = ledgerPage.isTotalAmountInOriginCurrencyPositiveNumber("Total in HKD");
 
@@ -127,7 +127,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
         BalanceSheetAnalysisPage balanceAnalysisPage = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 3: Filter with month that has transactions at pre-condition");
-        balanceAnalysisPage.filter(COMPANY_UNIT, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
+        balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
         log("@Verify 1: Validate Credit column data is displayed correctly negative amount from Ledger Statement - 'Amounts are shown in HKD' section");
         String debitValue = balanceAnalysisPage.getColumnDebitCreditOfAccountSelectedMonth(LEDGER_GROUP_NAME_ASSET_700, isPositiveNumber);
         Assert.assertEquals(debitValue, totalLedger, "FAILED! Data of Balance sheet table is not correct");
@@ -141,7 +141,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
         BalanceSheetAnalysisPage balanceAnalysisPage = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 3: Filter with month that has data");
-        balanceAnalysisPage.filter(COMPANY_UNIT, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
+        balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
         log("@Verify 1: Validate Txns column data is displayed = Debit/Credit amount of the selected month then minus the amount in the previous month ");
         Double creditSelectedMonth = Double.valueOf(balanceAnalysisPage.getColumnDebitCreditOfAccountSelectedMonth(LEDGER_GROUP_NAME_ASSET, false));
         Double creditPreviousMonth = Double.valueOf(balanceAnalysisPage.getColumnDebitCreditOfAccountPreviousMonth(LEDGER_GROUP_NAME_ASSET, false));
@@ -156,7 +156,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
         BalanceSheetAnalysisPage page = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 2: Filter with month that has data > observe");
-        page.filter(COMPANY_UNIT, "", "", "");
+        page.filter(KASTRAKI_LIMITED, "", "", "");
         log("@Verify 1: Validate Total Balance row sums up correctly 3 amounts in 'Asset', 'Liability', 'Capital' rows of each columns");
         Double creditAssetSelectedMonth = Double.valueOf(
                 page.getColumnDebitCreditOfAccountSelectedMonth("Asset", false).replace(",", ""));
@@ -178,7 +178,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
         BalanceSheetAnalysisPage page = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 2: Filter with month that has data");
-        page.filter(COMPANY_UNIT, "", "", "");
+        page.filter(KASTRAKI_LIMITED, "", "", "");
         log("@Step 3: Check the Difference value");
         double difEx = DoubleUtils.roundEvenWithTwoPlaces(page.getDifTotalBalance("Total Balance",page.indexTotalSelectMonthDe) - page.getDifTotalBalance("Total Balance",page.indexTotalSelectMonthCre) + 0.01);
         log("@Verify 1: Difference = absolute (Total Balance Debit) - absolute (Total Balance Credit)");
@@ -196,7 +196,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         BalanceSheetAnalysisPage balanceAnalysisPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 3: Filter with month that has data");
-        balanceAnalysisPage.filter(COMPANY_UNIT, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
+        balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
         log("@Step 4: Click to export PDF button");
         balanceAnalysisPage.btnExportPDF.click();
         welcomePage.waitSpinnerDisappeared();
@@ -216,7 +216,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
         BalanceSheetAnalysisPage page = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 2: Filter with month that has data");
-        page.filter(COMPANY_UNIT, "", "", "Before CJE");
+        page.filter(KASTRAKI_LIMITED, "", "", "Before CJE");
         log("@Step 3: Check Asset value");
         int year = DateUtils.getYear(GMT_7);
         int month = DateUtils.getMonth(GMT_7);
@@ -236,7 +236,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
         BalanceSheetAnalysisPage page = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 2: Filter with month that has data");
-        page.filter(COMPANY_UNIT, "", "", "Before CJE");
+        page.filter(KASTRAKI_LIMITED, "", "", "Before CJE");
         log("@Step 3: Check Liability value");
         int year = DateUtils.getYear(GMT_7);
         int month = DateUtils.getMonth(GMT_7);
@@ -254,7 +254,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
         BalanceSheetAnalysisPage page = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 2: Filter with month that has data");
-        page.filter(COMPANY_UNIT, "", "", "Before CJE");
+        page.filter(KASTRAKI_LIMITED, "", "", "Before CJE");
         log("@Step 3: Check Liability value");
         int year = DateUtils.getYear(GMT_7);
         int month = DateUtils.getMonth(GMT_7);

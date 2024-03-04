@@ -36,7 +36,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 2: Access Soccer > BBG");
         BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
         log("@Step 3: Filter with valid data");
-        bbgPage.filter("Soccer",COMPANY_UNIT,"Group", "Pending Bets",fromdate,todate,"All","All");
+        bbgPage.filter("Soccer", KASTRAKI_LIMITED,"Group", "Pending Bets",fromdate,todate,"All","All");
         log(" Validate UI Info display correctly");
         log("Company Unit, Report By, Punter Type, Sport, From Date, To Date and Show button");
         Assert.assertEquals(bbgPage.ddpSport.getOptions(),SPORT_LIST,"Failed! Sport dropdown is not displayed");
@@ -66,7 +66,7 @@ public class BBGTest extends BaseCaseAQS {
         BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
 
         log("@Step 3: Filter with valid data");
-        bbgPage.filter("Soccer",COMPANY_UNIT,"Group", "Pending Bets",fromdate,todate,"All","All");
+        bbgPage.filter("Soccer", KASTRAKI_LIMITED,"Group", "Pending Bets",fromdate,todate,"All","All");
 
         log("@Step 3:Click on any Price");
         String smartGroup = bbgPage.getFristSmartGroupName();
@@ -93,7 +93,7 @@ public class BBGTest extends BaseCaseAQS {
         BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
 
         log("@Step 3: Filter with valid data");
-        bbgPage.filter("Soccer",COMPANY_UNIT,"Group", "Pending Bets",fromdate,todate,"All","All");
+        bbgPage.filter("Soccer", KASTRAKI_LIMITED,"Group", "Pending Bets",fromdate,todate,"All","All");
 
         log("@Step 3:Click on any Trader");
         String smartGroupCurrency = bbgPage.getFristSmartGroupCurrency();

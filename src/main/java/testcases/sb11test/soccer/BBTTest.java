@@ -116,7 +116,7 @@ public class BBTTest extends BaseCaseAQS {
 
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(COMPANY_UNIT, currentDay, eventInfo.getLeagueName());
+        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED, currentDay, eventInfo.getLeagueName());
         soccerBetEntryPage.placeBet(accountCode,order.getHome(),true,"Home",Arrays.asList(order),true,false,true);
 
         log("@Step 1: Navigate to Soccer > BBT");
@@ -450,13 +450,13 @@ public class BBTTest extends BaseCaseAQS {
         String toDateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", GMT_7));
         String fromDate = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7));
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
 
         List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
-        bbtPage.filter(COMPANY_UNIT, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
+        bbtPage.filter(KASTRAKI_LIMITED, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
         log("@Step 3: Click on any Smart group code");
         List<String> lstFirstRowData = bbtPage.getFirstRowGroupData();
         MonthPerformancePage monthPerformancePage = bbtPage.openMonthPerformanceFirstGroup();
@@ -476,13 +476,13 @@ public class BBTTest extends BaseCaseAQS {
         String toDateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", GMT_7));
         String fromDate = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7));
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
 
         List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
-        bbtPage.filter(COMPANY_UNIT, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
+        bbtPage.filter(KASTRAKI_LIMITED, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
         log("@Step 3: Click on any HDP points");
         List<String> lstFirstRowData = bbtPage.getFirstRowGroupData();
         Last50BetsPage last50BetsPage = bbtPage.openLast50BetsFirstGroup();
@@ -502,13 +502,13 @@ public class BBTTest extends BaseCaseAQS {
         String toDateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", GMT_7));
         String fromDate = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7));
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
 
         List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
-        bbtPage.filter(COMPANY_UNIT, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
+        bbtPage.filter(KASTRAKI_LIMITED, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
         log("@Step 3: Click on any Price");
         List<String> lstFirstRowData = bbtPage.getFirstRowGroupData();
         LeaguePerformancePage leaguePerformancePage = bbtPage.openLeaguePerformanceFirstGroup();
@@ -530,13 +530,13 @@ public class BBTTest extends BaseCaseAQS {
         String toDateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", GMT_7));
         String fromDate = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7));
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
 
         List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
-        bbtPage.filter(COMPANY_UNIT, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
+        bbtPage.filter(KASTRAKI_LIMITED, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
         log("@Step 3: Click on any HDP points");
         List<String> lstFirstRowData = bbtPage.getFirstRowGroupData();
         LiveLast50BetsPage liveLast50BetsPage = bbtPage.openLiveLast50BetsFirstGroup();
@@ -558,13 +558,13 @@ public class BBTTest extends BaseCaseAQS {
         String toDateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", GMT_7));
         String fromDate = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7));
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
 
         List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
-        bbtPage.filter(COMPANY_UNIT, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
+        bbtPage.filter(KASTRAKI_LIMITED, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
         log("@Step 3: Click on any HDP points");
         List<String> lstFirstRowData = bbtPage.getFirstRowGroupData();
         NonLiveLast50BetsPage nonLiveLast50BetsPage = bbtPage.openNonLiveLast50BetsFirstGroup();
@@ -586,13 +586,13 @@ public class BBTTest extends BaseCaseAQS {
         String toDateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", GMT_7));
         String fromDate = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7));
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
 
         List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
-        bbtPage.filter(COMPANY_UNIT, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
+        bbtPage.filter(KASTRAKI_LIMITED, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
         log("@Step 3: Click on any HDP points");
         List<String> lstFirstRowData = bbtPage.getFirstRowGroupData();
         PendingBetsPage pendingBetsPage = bbtPage.openPendingBetFirstGroup();
@@ -612,13 +612,13 @@ public class BBTTest extends BaseCaseAQS {
         String toDateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", GMT_7));
         String fromDate = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7));
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
 
         List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
-        bbtPage.filter(COMPANY_UNIT, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
+        bbtPage.filter(KASTRAKI_LIMITED, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
         log("@Step 3: Click on any HDP points");
         ReportS1Page reportS1Page = bbtPage.openReportSFirstGroup();
 
@@ -635,13 +635,13 @@ public class BBTTest extends BaseCaseAQS {
         String toDateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", GMT_7));
         String fromDate = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7));
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
 
         List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
-        bbtPage.filter(COMPANY_UNIT, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
+        bbtPage.filter(KASTRAKI_LIMITED, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
         log("@Step 3: Click on any HDP points");
         ReportS12Page reportS12Page = bbtPage.openReportS12FirstGroup();
 
@@ -658,13 +658,13 @@ public class BBTTest extends BaseCaseAQS {
         String toDateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", GMT_7));
         String fromDate = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7));
         String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
 
         List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with valid data");
-        bbtPage.filter(COMPANY_UNIT, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
+        bbtPage.filter(KASTRAKI_LIMITED, SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
         log("@Step 3: Click on any HDP points");
         Last12DaysPerformancePage last12DaysPage = bbtPage.openLast12DayPerformanceFirstGroup();
 
@@ -717,7 +717,7 @@ public class BBTTest extends BaseCaseAQS {
             log("@Precondition-Step 2: Place some Tennis 1x2 match bets");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             TennisBetEntryPage tennisBetEntryPage = betEntryPage.goToTennis();
-            tennisBetEntryPage.showLeague(COMPANY_UNIT, "", eventTennis.getLeagueName(), accountCode);
+            tennisBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventTennis.getLeagueName(), accountCode);
             tennisBetEntryPage.placeBet(orderTennis, orderTennis.getSelection());
             log("@Step 1: Navigate to Soccer > BBT");
             BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
@@ -774,7 +774,7 @@ public class BBTTest extends BaseCaseAQS {
             EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), "INRUNNING");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
-            basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
+            basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
             basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
 
             log("@Step 1: Navigate to Soccer > BBT");
@@ -815,7 +815,7 @@ public class BBTTest extends BaseCaseAQS {
             EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), "INRUNNING");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
-            basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
+            basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
             basketballBetEntryPage.placeBet(orderBasketball, "1x2", "Away");
 
             log("@Step 1: Navigate to Soccer > BBT");
@@ -878,7 +878,7 @@ public class BBTTest extends BaseCaseAQS {
             EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), "INRUNNING");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
             CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-            cricketBetEntryPage.showLeague(COMPANY_UNIT, currentDay, eventCricket.getLeagueName());
+            cricketBetEntryPage.showLeague(KASTRAKI_LIMITED, currentDay, eventCricket.getLeagueName());
             cricketBetEntryPage.placeBet(order, true);
 
             log("@Step 1: Navigate to Soccer > BBT");
@@ -952,7 +952,7 @@ public class BBTTest extends BaseCaseAQS {
             EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Tennis"), "INRUNNING");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             TennisBetEntryPage tennisBetEntryPage = betEntryPage.goToTennis();
-            tennisBetEntryPage.showLeague(COMPANY_UNIT, "", eventTennis.getLeagueName(), accountCode);
+            tennisBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventTennis.getLeagueName(), accountCode);
             tennisBetEntryPage.placeBet(orderTennis, orderTennis.getSelection());
 
             BetSettlementUtils.waitForBetIsUpdate(4);
@@ -997,7 +997,7 @@ public class BBTTest extends BaseCaseAQS {
             log("@Precondition:  Already have some place Lay bet on Home for Tennis sport");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             TennisBetEntryPage tennisBetEntryPage = betEntryPage.goToTennis();
-            tennisBetEntryPage.showLeague(COMPANY_UNIT, "", eventTennis.getLeagueName(), accountCode);
+            tennisBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventTennis.getLeagueName(), accountCode);
             tennisBetEntryPage.placeBet(orderTennis, orderTennis.getSelection());
 
             log("@Step 1: Navigate to Soccer > BBT");
@@ -1039,7 +1039,7 @@ public class BBTTest extends BaseCaseAQS {
             EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), "INRUNNING");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
-            basketballBetEntryPage.showLeague(COMPANY_UNIT, "", eventBasketball.getLeagueName(), accountCode);
+            basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
             basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
 
             log("@Step 1: Navigate to Soccer > BBT");

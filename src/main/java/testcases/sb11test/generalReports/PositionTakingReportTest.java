@@ -2,12 +2,10 @@ package testcases.sb11test.generalReports;
 
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
-import common.SBPConstants;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
-import pages.sb11.financialReports.BalanceSheetPage;
 import pages.sb11.generalReports.ClientStatementPage;
 import pages.sb11.generalReports.PositionTakingReportPage;
 import pages.sb11.generalReports.popup.clientstatement.ClientSummaryPopup;
@@ -15,13 +13,11 @@ import pages.sb11.generalReports.popup.positionTakingReport.AccountPopup;
 import pages.sb11.master.AccountSearchPage;
 import pages.sb11.master.ClientSystemPage;
 import pages.sb11.master.clientsystempopup.AccountListPopup;
-import pages.sb11.soccer.MonitorBetsPage;
 import pages.sb11.trading.AccountPercentPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
-import java.util.Date;
 import java.util.List;
 
 import static common.SBPConstants.*;
@@ -104,7 +100,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("@Pre-condition 2: Get the list bookies of 'PSM Group Limited' members in Client System page");
         String clientName = "PSM Group Limited";
         ClientSystemPage clientSystemPage = welcomePage.navigatePage(MASTER,CLIENT_SYSTEM,ClientSystemPage.class);
-        clientSystemPage.filterClient(COMPANY_UNIT,"",clientName,"","");
+        clientSystemPage.filterClient(KASTRAKI_LIMITED,"",clientName,"","");
         AccountListPopup accountListPopup = clientSystemPage.openAccountList(clientName);
         List<String> lstBookieAc = accountListPopup.getLstBookie();
         accountListPopup.closeToPopup();
@@ -118,7 +114,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
                 "From Date 5/9/2023 To Date 5/9/2023");
         String fromDate = DateUtils.getDate(-5,"dd/MM/yyyy",GMT_7);
         String toDate = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
-        page.filter(COMPANY_UNIT,"","",fromDate,toDate);
+        page.filter(KASTRAKI_LIMITED,"","",fromDate,toDate);
         log("@Step 4: Expand Bookie dropdown list and compare with list bookie at precondition");
         log("@Verify 1: Bookies list is associated with 'PSM Group Limited' client");
         Assert.assertTrue(page.isBookieDisplay(lstBookieAc),"FAILED! Bookie list display incorrect");
@@ -133,7 +129,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("@Step 2: Go to General Reports >> Position Taking Report page");
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All","","");
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All","","");
         log("@Verify 1: Data table displays with 2 sections: one is showing data for Bookies and one is showing data for Clients");
         page.verifyBookieClientSectionDisplay();
         log("INFO: Executed completely");
@@ -147,7 +143,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("@Step 2: Go to General Reports >> Position Taking Report page");
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All","","");
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All","","");
         log("@Verify 1: The Total winloss of the 2 sections are the same");
         Assert.assertEquals(page.lblTotalWLBookie.getText(),page.lblTotalWLClient.getText(),"FAILED! Total Win Lose of 2 sections are not the same");
         log("INFO: Executed completely");
@@ -161,8 +157,8 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("@Step 2: Go to General Reports >> Position Taking Report page");
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All","","");
-        String curMain = CompanySetUpUtils.getCurrency(COMPANY_UNIT);
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All","","");
+        String curMain = CompanySetUpUtils.getCurrency(KASTRAKI_LIMITED);
         log("@Verify 1: The Bookie Name shows as a link with the format [<Account CUR> >> <Main CUR = HKD>] <bookie name of account that is associated with> (e.g. [CNY >> HKD] Pinnacle2)");
         Assert.assertTrue(page.isFormatBookieNameDisplay("Pinnacle2","EUR",curMain),"FAILED! The Bookie Names do not show as a link with the format");
         log("INFO: Executed completely");
@@ -182,7 +178,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         String fromDate = "01/08/2023";
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All","","");
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All","","");
         log("@Step 4: Click any bookie");
         AccountPopup accountPopup = page.clickToBookieName(bookieName);
         log("@Step 5: Get the DR-Win/Loss value of any account");
@@ -194,7 +190,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("@Step 7: Filter data with the same client in the same company/date range at step #2, e.g.\n" +
                 "View By = Client Point\n" +
                 "Client = PSM Group Limited");
-        clientStatementPage.filter("Client Point",COMPANY_UNIT,FINANCIAL_YEAR,clientStatement,fromDate,"");
+        clientStatementPage.filter("Client Point", KASTRAKI_LIMITED,FINANCIAL_YEAR,clientStatement,fromDate,"");
         log("@Step 8: Click agent-PT of account at step #4 (e.g. PSMEU02-PT)");
         ClientSummaryPopup clientSummaryPopup = clientStatementPage.openSummaryPopup(agentCode);
         log("@Step 9: Get Win/Lose value");
@@ -218,7 +214,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         String fromDate = DateUtils.getDate(-5,"dd/MM/yyyy",GMT_7);
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",fromDate,"");
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All",fromDate,"");
         log("@Step 4: Click any bookie");
         AccountPopup accountPopup = page.clickToBookieName(bookieName);
         log("@Step 5: Get the DR-Win/Loss value of any account");
@@ -229,7 +225,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("@Step 7: Filter data with the same client in the same company/date range at step #2, e.g.\n" +
                 "View By = Client Point\n" +
                 "Client = PSM Group Limited");
-        clientStatementPage.filter("Client Point",COMPANY_UNIT,FINANCIAL_YEAR,clientStatement,fromDate,"");
+        clientStatementPage.filter("Client Point", KASTRAKI_LIMITED,FINANCIAL_YEAR,clientStatement,fromDate,"");
         log("@Step 8: Click agent-PT of account at step #4 (e.g. PSMEU02-PT)");
         ClientSummaryPopup clientSummaryPopup = clientStatementPage.openSummaryPopup(agentCode);
         log("@Step 9: Get Win/Lose value");
@@ -254,7 +250,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         String toDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",fromDate,toDate);
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All",fromDate,toDate);
         log("@Step 4: Click any bookie");
         AccountPopup accountPopup = page.clickToBookieName(bookieName);
         log("@Step 5: Get the [selected To/From date] (e.g. 05-Sep-23) value of any account");
@@ -267,7 +263,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
                 "View By = Client Point\n" +
                 "Client = PSM Group Limited\n"+
                 "From Date To Date ((=Todate check at step #4)");
-        clientStatementPage.filter("Client Point",COMPANY_UNIT,FINANCIAL_YEAR,clientStatement,toDate,toDate);
+        clientStatementPage.filter("Client Point", KASTRAKI_LIMITED,FINANCIAL_YEAR,clientStatement,toDate,toDate);
         log("@Step 8: Click agent-PT of account at step #4 (e.g. PSMEU02-PT)");
         ClientSummaryPopup clientSummaryPopup = clientStatementPage.openSummaryPopup(agentCode);
         log("@Step 9: Get Win/Lose value");
@@ -288,7 +284,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         String toDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",fromDate,toDate);
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All",fromDate,toDate);
         log("@Step 4: Check the Total value");
         log("@Verify 1: Total win/lose value = sum amount of all bookies for each column displays");
         page.verifyTotalWinLose();
@@ -306,7 +302,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         String toDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,bookie,fromDate,toDate);
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,bookie,fromDate,toDate);
         log("@Step 4: Click to the first client name");
         String clientName = page.getLstClientName().get(0);
         AccountPopup accountPopup = page.clickToClientName(clientName);
@@ -316,7 +312,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("@Step 6: Go to Master >> Account Search");
         AccountSearchPage accountSearchPage = page.navigatePage(MASTER,ACCOUNT_SEARCH,AccountSearchPage.class);
         log("@Step 7: Search Account Code similar");
-        accountSearchPage.filterAccount(COMPANY_UNIT,"Account Code",accountDisplay);
+        accountSearchPage.filterAccount(KASTRAKI_LIMITED,"Account Code",accountDisplay);
         log("@Verify 1: Client Name of similar account at step 4 displays");
         Assert.assertTrue(accountSearchPage.isClientNameDisplay(clientName));
         log("INFO: Executed completely");
@@ -330,7 +326,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("@Step 2: Go to General Reports >> Position Taking Report page");
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All","","");
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All","","");
         log("@Verify 1: Client Name (e.g. PSM Group Limited) displays");
         Assert.assertEquals(page.tblClient.getControlOfCell(1,page.clientNameCol,1,"a").getText(),"PSM Group Limited","FAILED! Client Name display incorrect");
         log("INFO: Executed completely");
@@ -346,14 +342,14 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("@Step 3: Filter which has data on more than 4 day");
         String fromDate = DateUtils.getDate(-4,"dd/MM/yyyy",GMT_7);
         String toDate = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
-        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",fromDate,toDate);
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All",fromDate,toDate);
         log("@Verify 1: The pagination will displays as below:\n" +
                 "[selected To date](e.g. 05-Sep-23)\n"+
                 "Each page will show max is 4 days then click Next/Previous to view data on other days on the next /previous page");
         String selectToDate = DateUtils.getDate(0,"dd-MMM-yy",GMT_7);
         page.verifyDateColumnDisplay(selectToDate,5);
         log("@Step 4: Click Next/Previous button");
-        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",fromDate,toDate);
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All",fromDate,toDate);
         page.btnNext.click();
         page.waitSpinnerDisappeared();
         log("@Verify 2: Columns Bookie Name/Client Name, Till [selected To date], DR-Win/Loss still keep when clicking Next/Previous button");
@@ -375,7 +371,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         String clientName = "PSM Group Limited";
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All","","");
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All","","");
         log("@Step 4: Click a Bookie link");
         AccountPopup accountPopup = page.clickToBookieName(bookieName);
         log("@Verify 1: The Position Taking Report >> Account(s) dialog displays");
@@ -398,7 +394,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
         String toDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
-        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",toDate,toDate);
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All",toDate,toDate);
         log("@Step 4: Get Total value of each column in any Bookie  (e.g. [EUR >> HKD] BETISN -> Till 05-Sep-2023 =-25,179.78)");
         String tillToDate = "Till "+ DateUtils.getDate(-1,"dd-MMM-yyyy",GMT_7);
         String valueTillAc = page.getValueTillColumn(bookieName,tillToDate);
@@ -427,7 +423,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         PositionTakingReportPage page = accountPercentPage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
         String toDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
-        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",toDate,toDate);
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All",toDate,toDate);
         log("@Step 4: Click any Bookie/Client link");
         String accountCode = "6EU0288-PT";
         AccountPopup accountPopup = page.clickToBookieName(bookieName);
@@ -446,7 +442,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
         String toDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
-        page.filter(COMPANY_UNIT,FINANCIAL_YEAR,"All",toDate,toDate);
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All",toDate,toDate);
         log("@Step 4: Click any Bookie/Client link");
         String accountCode = "6EU0288-PT";
         AccountPopup accountPopup = page.clickToBookieName(bookieName);

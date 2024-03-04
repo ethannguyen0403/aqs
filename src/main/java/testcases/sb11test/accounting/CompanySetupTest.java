@@ -260,7 +260,7 @@ public class CompanySetupTest extends BaseCaseAQS {
             log("@Step 1: Navigate to  General Reports >> Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS, CLIENT_STATEMENT, ClientStatementPage.class);
             log("@Step 2: Filter with default data with company name: " + companyName);
-            clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            clientPage.filter(viewBy, KASTRAKI_LIMITED,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
             clientPage.waitSpinnerDisappeared();
             log("@Verify 1: Show Grand total in: " + currency);
             Assert.assertEquals(clientPage.lblGrandTotal.getText().trim()+" "+clientPage.lblGrandTotalCur.getText().trim(), expectedText2, "FAILED! Text is incorrect");
@@ -427,7 +427,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@Step 3: Click on 'Show' button");
         clientCode = superMasterCode + clientCode;
         String fromDate = String.format("01/%s/%s",DateUtils.getMonth(GMT_7), DateUtils.getYear(GMT_7));
-        clientPage.filter(viewBy,COMPANY_UNIT,FINANCIAL_YEAR,clientCode,fromDate,"");
+        clientPage.filter(viewBy, KASTRAKI_LIMITED,FINANCIAL_YEAR,clientCode,fromDate,"");
         log("@Step 4: Observe the result");
         log("@Step 5: Open Member Summary");
         ClientSummaryPopup clientSummaryPopup = clientPage.openSummaryPopup("QASAHK00");
@@ -501,7 +501,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@Verify 1: financial Year filter will list options as a single year");
         Assert.assertTrue(page.ddFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_1_YEAR),"FAILED! Financial 1 year display incorrect.");
         log("@Step 3: Select company unit 'Kastraki' and observe financial year");
-        page.ddCompanyUnit.selectByVisibleText(COMPANY_UNIT);
+        page.ddCompanyUnit.selectByVisibleText(KASTRAKI_LIMITED);
         welcomePage.waitSpinnerDisappeared();
         log("@Verify 2: financial Year filter will list options as period of 2 year");
         Assert.assertTrue(page.ddFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST),"FAILED! Financial period of 2 year display incorrect.");
@@ -520,7 +520,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@Verify 1: financial Year filter will list options as a single year");
         Assert.assertTrue(page.ddFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_1_YEAR),"FAILED! Financial 1 year display incorrect.");
         log("@Step 3: Select company unit 'Kastraki' and observe financial year");
-        page.ddCompanyUnit.selectByVisibleText(COMPANY_UNIT);
+        page.ddCompanyUnit.selectByVisibleText(KASTRAKI_LIMITED);
         welcomePage.waitSpinnerDisappeared();
         log("@Verify 2: financial Year filter will list options as period of 2 year");
         Assert.assertTrue(page.ddFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST),"FAILED! Financial period of 2 year display incorrect.");
@@ -544,7 +544,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@Verify 1: financial Year filter will list options as a single year");
         Assert.assertTrue(page.ddFinancial.getOptions().equals(FINANCIAL_YEAR_LIST_1_YEAR),"FAILED! Financial 1 year display incorrect.");
         log("@Step 3: Select company unit 'Kastraki' and observe financial year");
-        page.ddCompanyUnit.selectByVisibleText(COMPANY_UNIT);
+        page.ddCompanyUnit.selectByVisibleText(KASTRAKI_LIMITED);
         welcomePage.waitSpinnerDisappeared();
         log("@Verify 2: financial Year filter will list options as period of 2 year");
         Assert.assertTrue(page.ddFinancial.getOptions().equals(FINANCIAL_YEAR_LIST),"FAILED! Financial period of 2 year display incorrect.");
@@ -568,7 +568,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@Verify 1: financial Year filter will list options as a single year");
         Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_1_YEAR),"FAILED! Financial 1 year display incorrect.");
         log("@Step 3: Select company unit 'Kastraki' and observe financial year");
-        page.ddpCompanyUnit.selectByVisibleText(COMPANY_UNIT);
+        page.ddpCompanyUnit.selectByVisibleText(KASTRAKI_LIMITED);
         Thread.sleep(5000);
         log("@Verify 2: financial Year filter will list options as period of 2 year");
         Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST),"FAILED! Financial period of 2 year display incorrect.");
@@ -592,7 +592,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@Verify 1: financial Year filter will list options as a single year");
         Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_1_YEAR),"FAILED! Financial 1 year display incorrect.");
         log("@Step 3: Select company unit 'Kastraki' and observe financial year");
-        page.ddpCompanyUnit.selectByVisibleText(COMPANY_UNIT);
+        page.ddpCompanyUnit.selectByVisibleText(KASTRAKI_LIMITED);
         welcomePage.waitSpinnerDisappeared();
         log("@Verify 2: financial Year filter will list options as period of 2 year");
         Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST),"FAILED! Financial period of 2 year display incorrect.");

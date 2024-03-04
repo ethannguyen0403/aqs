@@ -2,7 +2,6 @@ package testcases.sb11test.soccer;
 
 import com.paltech.utils.DateUtils;
 import common.SBPConstants;
-import objects.Event;
 import objects.Order;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -47,7 +46,7 @@ public class SPPTest extends BaseCaseAQS {
                 .eventDate(dateAPI + " 23:59:00")
                 .selection("Home " + DateUtils.getMilliSeconds())
                 .build();
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
         String accountId = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
         BetEntrytUtils.placeManualBetAPI(companyId, accountId, SPORT_ID_MAP.get("Soccer"), order);
         BetSettlementUtils.waitForBetIsUpdate(15);
@@ -92,7 +91,7 @@ public class SPPTest extends BaseCaseAQS {
                 .eventDate(dateAPI + " 23:59:00")
                 .selection("Home " + DateUtils.getMilliSeconds())
                 .build();
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
         String accountId = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
         BetEntrytUtils.placeManualBetAPI(companyId, accountId, SPORT_ID_MAP.get("Soccer"), order);
         BetSettlementUtils.waitForBetIsUpdate(15);
@@ -266,7 +265,7 @@ public class SPPTest extends BaseCaseAQS {
                 .eventDate(eventDate)
                 .selection("Home " + DateUtils.getMilliSeconds())
                 .build();
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get(sport),order);
         welcomePage.waitSpinnerDisappeared();
@@ -302,7 +301,7 @@ public class SPPTest extends BaseCaseAQS {
                 .eventDate(apiCurrentDate + " 23:59:00")
                 .selection("Home " + DateUtils.getMilliSeconds())
                 .build();
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Cricket"),order);
 
         BetSettlementUtils.waitForBetIsUpdate(15);
@@ -340,7 +339,7 @@ public class SPPTest extends BaseCaseAQS {
                 .eventDate(apiCurrentDate + " 23:59:00")
                 .selection("Home " + DateUtils.getMilliSeconds())
                 .build();
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Cricket"),order);
         welcomePage.waitSpinnerDisappeared();
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Cricket"),order);
@@ -377,7 +376,7 @@ public class SPPTest extends BaseCaseAQS {
                 .eventDate(apiCurrentDate + " 23:59:00")
                 .selection("Home " + DateUtils.getMilliSeconds())
                 .build();
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Cricket"),order);
         welcomePage.waitSpinnerDisappeared();
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Cricket"),order);
@@ -417,7 +416,7 @@ public class SPPTest extends BaseCaseAQS {
                 .eventDate(apiCurrentDate + " 23:59:00")
                 .selection("Home " + DateUtils.getMilliSeconds())
                 .build();
-        int companyId = BetEntrytUtils.getCompanyID(COMPANY_UNIT);
+        int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Cricket"),order);
         welcomePage.waitSpinnerDisappeared();
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Cricket"),order);

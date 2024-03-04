@@ -60,7 +60,7 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Step 3: Expand Company Unit dropdown list");
         log("Verify 1: Only displays option 'Kastraki Limited'");
         Assert.assertTrue(page.ddCompanyUnit.getNumberOfItems() == 1,"FAILED! Company Unit dropdown display incorrect");
-        Assert.assertTrue(page.ddCompanyUnit.getOptions().get(0).equals(SBPConstants.COMPANY_UNIT),"FAILED! Company Unit dropdown display incorrect");
+        Assert.assertTrue(page.ddCompanyUnit.getOptions().get(0).equals(SBPConstants.KASTRAKI_LIMITED),"FAILED! Company Unit dropdown display incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.1.0"})
@@ -74,7 +74,7 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Step 3: Select Financial Year (e.g. Year 2022-2023)");
         String fromDate = "01/07/2023";
         String toDate = "31/07/2023";
-        page.filter(SBPConstants.COMPANY_UNIT,"Year 2022-2023",fromDate,toDate);
+        page.filter(SBPConstants.KASTRAKI_LIMITED,"Year 2022-2023",fromDate,toDate);
         log("@Step 4: Click From/To Date field");
         log("Verify 1: From/To Date field displays based on selected Financial Year at step #3\n" +
                 "e.g. Year 2022-2023 -> can select date from 1/8/2022 to 31/7/2023");
@@ -96,14 +96,14 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Step 4: Select From Date (e.g. 1/8/2022)");
         log("@Step 5: Select To Date more than 3 months from date (e.g. 1/7/2023)");
         log("@Step 6: Click Show button");
-        page.filter(SBPConstants.COMPANY_UNIT,"Year 2022-2023",fromDate,toDate);
+        page.filter(SBPConstants.KASTRAKI_LIMITED,"Year 2022-2023",fromDate,toDate);
         log("Verify 1: Error message 'Invalid time range. You can see data up to 3 months.' displays");
         page.btnShow.click();
         Assert.assertEquals(page.appArlertControl.getWarningMessage(),SBPConstants.FeedReport.ERROR_MES_INVALID_TIME_RANGE,"FAILED! Error message display incorrect");
         log("@Step 7: Select To Date within 3 months from date (e.g. 1/11/2022)");
         log("@Step 8: Click Show button");
         fromDate = "01/07/2023";
-        page.filter(SBPConstants.COMPANY_UNIT,"Year 2022-2023",fromDate,toDate);
+        page.filter(SBPConstants.KASTRAKI_LIMITED,"Year 2022-2023",fromDate,toDate);
         log("Verify 2: Proper data displays");
         Assert.assertTrue(page.tblProviderFirst.getControlOfCell(1,1,1,null).getText().trim().contains(fromDate+" - "+toDate));
         log("INFO: Executed completely");
@@ -134,7 +134,7 @@ public class FeedReportTest extends BaseCaseAQS {
         String date = DateUtils.getDate(0,"dd/MM/yyyy",SBPConstants.GMT_7);
         FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(SBPConstants.COMPANY_UNIT,"",date,date);
+        page.filter(SBPConstants.KASTRAKI_LIMITED,"",date,date);
         log("@Step 4: Input amount in any Provider/Client row");
         page.inputAmount(providerName,providerName,valueAmount,date,true,false);
         log("Verify 1: Submit Transaction button should be enable");
@@ -154,7 +154,7 @@ public class FeedReportTest extends BaseCaseAQS {
         FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Filter which has data");
         log("@Step 4: Select transaction date");
-        page.filter(SBPConstants.COMPANY_UNIT,"",date,date);
+        page.filter(SBPConstants.KASTRAKI_LIMITED,"",date,date);
         String previousProvider = page.getTotalProvider();
         log("@Step 5: Input amount (e.g. 1080) into any existing provider/client row");
         log("@Step 6: Click Submit Transaction button");
@@ -168,7 +168,7 @@ public class FeedReportTest extends BaseCaseAQS {
                 "Date Type = Transaction Date\n" +
                 "From Date To Date = <transaction date at step #4>\n" +
                 "Account Type = All");
-        journalReportsPage.filterReports(SBPConstants.COMPANY_UNIT,"Transaction Date",date,date,"All","","Payment Feed","");
+        journalReportsPage.filterReports(SBPConstants.KASTRAKI_LIMITED,"Transaction Date",date,date,"All","","Payment Feed","");
         log("Verify 2:  Feed Provider/Client at step #5 will have Sub-Account in Debit and Sub-Account in Credit, so:\n" +
                 "The inputted amount at step #5 of Sub-account in Debit will show in Debit column");
         Transaction transaction = new Transaction.Builder()
@@ -421,7 +421,7 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Step 3: Filter which has data");
         String fromDate = DateUtils.getDate(-10,"dd/MM/yyyy",SBPConstants.GMT_7);
         String toDate = DateUtils.getDate(0,"dd/MM/yyyy",SBPConstants.GMT_7);
-        page.filter(SBPConstants.COMPANY_UNIT,"",fromDate,toDate);
+        page.filter(SBPConstants.KASTRAKI_LIMITED,"",fromDate,toDate);
         log("Verify 1: Summary table displays correct data\n" +
                 "CUR: HKD (as all the amount in this summary table will be in HKD)\n" +
                 "Provider = sum up 'Total in HKD' amounts of all providers (1)\n" +
@@ -442,7 +442,7 @@ public class FeedReportTest extends BaseCaseAQS {
         FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Filter which has data");
         String fromDate = DateUtils.getDate(-3,"dd/MM/yyyy",SBPConstants.GMT_7);
-        page.filter(SBPConstants.COMPANY_UNIT,"",fromDate,fromDate);
+        page.filter(SBPConstants.KASTRAKI_LIMITED,"",fromDate,fromDate);
         log("@Step 4: Get Payment (1)\n" +
                 "Get Payment[HKD] (2) of Provider at Precondition");
         page.inputAmount(providerName,providerName,"1.00",fromDate,true,true);
@@ -451,7 +451,7 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Step 5: Go to Accounting >> Journal Reports");
         JournalReportsPage journalReportsPage = page.navigatePage(SBPConstants.ACCOUNTING,SBPConstants.JOURNAL_REPORTS,JournalReportsPage.class);
         log("@Step 6: Filter by data of provider at step #3");
-        journalReportsPage.filterReports(SBPConstants.COMPANY_UNIT,"Transaction Date",fromDate,fromDate,"All","","Payment Feed","");
+        journalReportsPage.filterReports(SBPConstants.KASTRAKI_LIMITED,"Transaction Date",fromDate,fromDate,"All","","Payment Feed","");
         log("@Step 7: Get Total Foreign Debit/Total Foreign Credit of Sub-account at precondition (3)\n" +
                 "Get Total Foreign Debit in HKD/Total Foreign Credit in HKD of Sub-account at precondition (4)");
         String foreignDebit = journalReportsPage.getTotalByColumn(providerName,"Foreign Debit");
@@ -479,7 +479,7 @@ public class FeedReportTest extends BaseCaseAQS {
         FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Filter which has data");
         String fromDate = DateUtils.getDate(-3,"dd/MM/yyyy",SBPConstants.GMT_7);
-        page.filter(SBPConstants.COMPANY_UNIT,"",fromDate,fromDate);
+        page.filter(SBPConstants.KASTRAKI_LIMITED,"",fromDate,fromDate);
         log("@Step 4: Get Payment (1)\n" +
                 "Get Payment[HKD] (2) of Provider at Precondition");
         page.inputAmount(providerName + " CLIENT",clientName,"1.00",fromDate,false,true);
@@ -488,7 +488,7 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Step 5: Go to Accounting >> Journal Reports");
         JournalReportsPage journalReportsPage = page.navigatePage(SBPConstants.ACCOUNTING,SBPConstants.JOURNAL_REPORTS,JournalReportsPage.class);
         log("@Step 6: Filter by data of provider at step #3");
-        journalReportsPage.filterReports(SBPConstants.COMPANY_UNIT,"Transaction Date",fromDate,fromDate,"All","","Received Feed","");
+        journalReportsPage.filterReports(SBPConstants.KASTRAKI_LIMITED,"Transaction Date",fromDate,fromDate,"All","","Received Feed","");
         log("@Step 7: Get Total Foreign Debit/Total Foreign Credit of Sub-account at precondition (3)\n" +
                 "Get Total Foreign Debit in HKD/Total Foreign Credit in HKD of Sub-account at precondition (4)");
         String foreignDebit = journalReportsPage.getTotalByColumn(providerName + " Client","Foreign Debit");
