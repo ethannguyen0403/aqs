@@ -54,6 +54,8 @@ public class AnalyseTest extends BaseCaseAQS {
         log("@Step 3: Click Create/Manage Lines button");
         CreateNewLinePopup createNewLinePopup = page.openCreateNewLinePopup();
         log("@Verify 1: Analyse modal displays for user create or manage existing line");
+        //wait for popup
+        page.waitPageLoad();
         Assert.assertTrue(createNewLinePopup.lblTitle.getText().contains("Create New Line"),"FAILED! Analyse modal displays incorrect");
         log("INFO: Executed completely");
     }
