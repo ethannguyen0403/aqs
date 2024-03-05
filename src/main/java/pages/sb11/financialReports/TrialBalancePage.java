@@ -46,7 +46,7 @@ public class TrialBalancePage extends WelcomePage {
     }
 
     public String getAmountTrialTable(int rowIndex, int colIndex){
-        Label amount = Label.xpath(tblTrial.getxPathOfCell(1, colIndex, rowIndex, null));
+        Label amount = Label.xpath(tblTrial.getxPathOfCell(1, colIndex, rowIndex, "span"));
         return amount.getText().trim().replace(",","");
     }
 
@@ -54,7 +54,7 @@ public class TrialBalancePage extends WelcomePage {
         int i = 1;
         Label lblAccountCode;
         while (true) {
-            lblAccountCode = Label.xpath(tblTrial.getxPathOfCell(1, colCode, i, null));
+            lblAccountCode = Label.xpath(tblTrial.getxPathOfCell(1, colCode, i, "span"));
             if (!lblAccountCode.isDisplayed()) {
                 System.out.println("Can NOT found the account code  " + accountCode + " in the table");
                 return 0;
@@ -98,11 +98,38 @@ public class TrialBalancePage extends WelcomePage {
         double sum = 0.01;
         int sumCol = tblTrial.getNumberOfRows(false,true);
         for (int i = 1; i <= sumCol-2; i++){
-            sum = DoubleUtils.roundUpWithTwoPlaces(sum + DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getAmountTrialTable(i,colIndex))));
+            sum = DoubleUtils.roundEvenWithTwoPlaces(sum + DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getAmountTrialTable(i,colIndex))));
         }
         return sum;
     }
     public double getDifferenceValue(int indexDif){
         return Double.valueOf(Label.xpath(String.format(differenceXpath,indexDif)).getText().trim().replace(",",""));
+    }
+
+    public boolean verifyTotalBalance(int colIndex, boolean currentMonth, boolean debit) {
+        double sumAc = getSumValueOfCol(colIndex);
+        double sumEx = getTotalBalance(currentMonth,debit);
+        if (sumAc==sumEx){
+            return true;
+        } else if (DoubleUtils.roundWithTwoPlaces(RoundingMode.HALF_EVEN,sumAc-sumEx) >= 0.01 || DoubleUtils.roundWithTwoPlaces(RoundingMode.HALF_EVEN,sumEx-sumAc) == 0.01){
+            return true;
+        }
+        return false;
+    }
+    public boolean verifyDifferenceValue(boolean currentMonth){
+        double difAc = Math.abs(DoubleUtils.roundUpWithTwoPlaces(getTotalBalance(currentMonth,true) - getTotalBalance(currentMonth,false)));
+        int colIndex;
+        if (currentMonth){
+            colIndex = 3;
+        } else {
+            colIndex = 1;
+        }
+        double difEx = getDifferenceValue(colIndex);
+        if (difAc==difEx){
+            return true;
+        } else if (DoubleUtils.roundWithTwoPlaces(RoundingMode.HALF_EVEN,difAc-difEx) >= 0.01 || DoubleUtils.roundWithTwoPlaces(RoundingMode.HALF_EVEN,difEx-difAc) == 0.01){
+            return true;
+        }
+        return false;
     }
 }
