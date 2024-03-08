@@ -13,7 +13,7 @@
         <parameter name='isProxy' value='false'/>
         <parameter name='username' value='AutoQC'/>
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
-        <parameter name='isAddTestRailResult' value='true'/>
+        <parameter name='isAddTestRailResult' value='false'/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="aqs"/>
         <groups>
@@ -24,12 +24,14 @@
         </groups>
 
         <classes>
+            <class name="testcases.aqstest.AccountTest"/>
             <class name="testcases.aqstest.LoginTest"/>
             <class name="testcases.aqstest.LogoutTest"/>
             <class name="testcases.aqstest.HeaderTest"/>
             <class name="testcases.aqstest.BetOrderTest"/>
             <class name="testcases.aqstest.RoleTest"/>
             <class name="testcases.aqstest.ManagerTest"/>
+            <class name="testcases.aqstest.MasterTest"/>
         </classes>
     </test>
 </suite>
