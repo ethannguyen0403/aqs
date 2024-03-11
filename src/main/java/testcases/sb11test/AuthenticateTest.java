@@ -12,7 +12,7 @@ public class AuthenticateTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @Parameters("username")
     @TestRails(id = "2059")
-    public void LoginTC_001(String username){
+    public void Authenticate_2059(String username){
         log("@title: Verify that can login successfully");
         log("@Step 1: Login with valid account");
         log("Verify that can login successfully");
@@ -25,7 +25,7 @@ public class AuthenticateTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @Parameters("username")
     @TestRails(id = "2060")
-    public void LogoutTC_001(){
+    public void Authenticate_2060(){
         log("@title: Verify that can login successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click Logout button");
