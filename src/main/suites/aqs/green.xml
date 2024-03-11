@@ -24,12 +24,14 @@
         </groups>
 
         <classes>
+            <class name="testcases.aqstest.AccountTest"/>
             <class name="testcases.aqstest.LoginTest"/>
             <class name="testcases.aqstest.LogoutTest"/>
             <class name="testcases.aqstest.HeaderTest"/>
             <class name="testcases.aqstest.BetOrderTest"/>
             <class name="testcases.aqstest.RoleTest"/>
             <class name="testcases.aqstest.ManagerTest"/>
+            <class name="testcases.aqstest.MasterTest"/>
         </classes>
 
 
