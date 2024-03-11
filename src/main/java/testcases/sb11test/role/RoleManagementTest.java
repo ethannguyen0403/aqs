@@ -12,7 +12,7 @@ public class RoleManagementTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2064")
-    public void Role_Management_TC_001(){
+    public void Role_Management_TC_2064(){
         log("@title: Validate Role Management page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on Role > Role Management");
