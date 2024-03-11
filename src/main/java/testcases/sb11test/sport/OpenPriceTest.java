@@ -82,6 +82,7 @@ public class OpenPriceTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2096")
     public void OpenPriceTC_2096(){
+        //TODO: implement this case
         log("@title: Validate updated Open Price is displayed correctly on BBT page");
         log("Validate League list is displayed correctly");
         Assert.assertTrue(false, "Need to implement this case");
