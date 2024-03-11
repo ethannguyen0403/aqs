@@ -79,24 +79,12 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression_s"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2096")
     public void OpenPriceTC_2096(){
         log("@title: Validate updated Open Price is displayed correctly on BBT page");
-        log("@Step 1: Login with valid account");
-        log("@Step 2: Access Sport > Open Price");
-        OpenPricePage openPricePage = welcomePage.navigatePage(SPORT,OPEN_PRICE, OpenPricePage.class);
-        log("@Step 3:  Select Date and click Show League ");
-//        String league = openPricePage.getFirstLeague();
-        log("@Step 4: Select a league and click Show");
-//        openPricePage.filterResult("",league,true);
-        log("@Step 5: Fill result on any event and click Submit");
-
-        log("@Step 6: Navigate to Soccer > BBT");
-        BBTPage bbtPage = openPricePage.navigatePage(SOCCER,BBT, BBTPage.class);
-        log("@Step 7: Filter with event at step 4");
-
         log("Validate League list is displayed correctly");
-        log("INFO: Executed completely");
+        Assert.assertTrue(false, "Need to implement this case");
+        log("INFO: Executed Completely!");
     }
 }
