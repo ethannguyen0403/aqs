@@ -62,7 +62,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         Assert.assertTrue(journalEntriesPage.messageSuccess.getText().contains("Transaction has been created"), "Failed! Message is displayed incorrectly!");
         log("INFO: Executed completely");
     }
-
+    //TODO: implement case 4177
     @Test(groups = {"regression"})
     @Parameters({"clientCode"})
     @TestRails(id = "4178")
