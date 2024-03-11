@@ -624,7 +624,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         }
 
     }
-
+    //TODO: implement case 851 852
     @TestRails(id="853")
     @Test(groups = {"smoke_qc"})
     public void Ledger_Statement_TC853() throws IOException {
