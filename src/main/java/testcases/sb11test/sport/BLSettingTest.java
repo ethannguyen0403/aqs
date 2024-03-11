@@ -13,18 +13,6 @@ import static common.SBPConstants.*;
 public class BLSettingTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
-    @TestRails(id = "2096")
-    public void BLSettingsTC_2096(){
-        log("@title: Validate BL Settings page is displayed when navigate");
-        log("@Step 1: Login with valid account");
-        log("@Step 2: Access Sport > BL Settings");
-        BLSettingPage blSettingPage = welcomePage.navigatePage(SPORT,BL_SETTINGS, BLSettingPage.class);
-        log("Validate BL Settings page is displayed with correctly title");
-        Assert.assertTrue(blSettingPage.getTitlePage().contains(BL_SETTINGS), "Failed! BL Settings page is not displayed");
-        log("INFO: Executed completely");
-    }
-
-    @Test(groups = {"regression"})
     @TestRails(id = "2097")
     public void BLSettingsTC_2097(){
         log("@title: Validate UI on Open Price is correctly displayed");

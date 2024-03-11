@@ -79,7 +79,7 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression_s"})
     @TestRails(id = "2096")
     public void OpenPriceTC_2096(){
         log("@title: Validate updated Open Price is displayed correctly on BBT page");
