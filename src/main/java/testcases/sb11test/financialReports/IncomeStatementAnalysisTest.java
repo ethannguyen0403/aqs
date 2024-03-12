@@ -364,4 +364,40 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         }
         log("INFO: Executed completely");
     }
+    @TestRails(id = "23954")
+    @Test(groups = {"regression", "2024.V.2.0"})
+    public void IncomeStatement_Analysis_TC23954() {
+        log("@title: Validate data are sorted by Chart Code of Detail Types ascendingly");
+        log("@pre-condition: Income Statement - Analysis permission is ON");
+        log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
+        IncomeStatementAnalysisPage page = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
+        log("@Step 2: Filter with month that has data");
+        page.filter(KASTRAKI_LIMITED, "", "", "");
+        log("@Step 3: Observe the sorting");
+        log("@Verify 1: Data are sorted by Chart Code of Detail Types ascendingly");
+        List<String> lstOperatingIn = page.getLstDetailTypeOfGroup("OPERATING INCOME");
+        page.verifySortDetailType(lstOperatingIn);
+        List<String> lstOperatingEs = page.getLstDetailTypeOfGroup("OPERATING EXPENSES");
+        page.verifySortDetailType(lstOperatingEs);
+        List<String> lstNonIn = page.getLstDetailTypeOfGroup("NON-OPERATING INCOME");
+        page.verifySortDetailType(lstNonIn);
+        log("INFO: Executed completely");
+    }
+    @TestRails(id = "23955")
+    @Test(groups = {"regression", "2024.V.2.0"})
+    public void IncomeStatement_Analysis_TC23955() {
+        log("@title: Validate Parent Accounts are sorted by Parent Account Number ascendingly within the same Detail Types");
+        log("@pre-condition: Income Statement - Analysis permission is ON");
+        log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
+        IncomeStatementAnalysisPage page = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
+        log("@Step 2: Filter with month that has data");
+        page.filter(KASTRAKI_LIMITED, "", "", "");
+        log("@Step 3: Observe the sorting of Parent account within the same Detail Types");
+        log("@Verify 1: Parent Accounts are sorted by Parent Account Number ascendingly");
+        page.verifySortParentAcc("OPERATING INCOME");
+        page.verifySortParentAcc("OPERATING EXPENSES");
+        page.verifySortParentAcc("NON-OPERATING INCOME");
+        log("INFO: Executed completely");
+    }
+
 }

@@ -57,7 +57,7 @@ public class BookieSystemTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
-    @TestRails(id = "2215")
+    @TestRails(id = "2216")
     @Parameters({"superCode","bookieCode"})
     public void Bookie_System_TC_003(String superCode, String bookieCode){
         log("@title: Validate Master List popup is displayed when clicking data on #Master column");

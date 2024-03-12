@@ -392,6 +392,7 @@ public class SBPConstants {
         public final static List<String> SMART_TYPE_LIST = Arrays.asList("Group","Master","Agent");
         public final static List<String> REPORT_TYPE_LIST = Arrays.asList("Pending Bets","Settled Bets");
         public final static List<String> WIN_LOSE_TYPE_LIST = Arrays.asList("All", "Win Bets", "Lose Bets", "Draw Bets");
+        public final static String MES_OVER_THAN_7 = "Date range should not be more than 7 days.";
     }
 
     public static class CurrencyRates{

@@ -209,4 +209,25 @@ public class ChartOfAccountUtils {
             return ledgerDebitAccountPart[1].replaceAll("\\s+","");
         }
     }
+    public static String getChartCode(String detailtypeName){
+        String chartCode = null;
+        JSONArray jsonArr = null;
+        try {
+            jsonArr = getLedgerGroupListJson();
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        if (Objects.nonNull(jsonArr)) {
+            if (jsonArr.length() > 0) {
+                for (int i = 0; i < jsonArr.length(); i++) {
+                    JSONObject orderObj = jsonArr.getJSONObject(i);
+                    if (orderObj.getString("ledgerGroupName").equals(detailtypeName)){
+                        chartCode = orderObj.getString("chartCode");
+                        break;
+                    }
+                }
+            }
+        }
+        return chartCode;
+    }
 }

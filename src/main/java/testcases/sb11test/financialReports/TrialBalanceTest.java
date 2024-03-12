@@ -284,7 +284,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
             log("Pre-condition 2: Get value of debit/credit that will display in trial balance");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             String fromDate = DateUtils.getFirstDateOfMonth(DateUtils.getYear(GMT_7),currentMonth,"dd/MM/yyyy");
-            ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Liability", parentDebit, fromDate, "", "");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Liability", LEDGER_GROUP_NAME_LIABILITY, fromDate, "", "");
             String valueDeEx = ledgerStatementPage.getGrandTotalByRunningBal();
 
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Liability", ledgerNega, fromDate, "", "");
@@ -293,8 +293,8 @@ public class TrialBalanceTest extends BaseCaseAQS {
             TrialBalancePage page = welcomePage.navigatePage(FINANCIAL_REPORTS, TRIAL_BALANCE, TrialBalancePage.class);
             log("@Step 2: Filter with Month that is having data");
             page.filter(KASTRAKI_LIMITED,"","","");
-            String valueDeAc = page.getAmountValue(ChartOfAccountUtils.getAccountNumber(parentDebit,true),page.colDeCurrentMonth);
-            String valueCreAc = page.getAmountValue(ChartOfAccountUtils.getAccountNumber(ledgerNega,true),page.colCreCurrentMonth);
+            String valueDeAc = page.getAmountValue(ChartOfAccountUtils.getChartCode(ChartOfAccountUtils.getAccountName(parentDebit,true)),page.colDeCurrentMonth);
+            String valueCreAc = page.getAmountValue(ChartOfAccountUtils.getChartCode(ChartOfAccountUtils.getAccountName(ledgerNega,true)),page.colCreCurrentMonth);
             log("@Verify 1: The amount is positive, display it in Debit");
             Assert.assertEquals(valueDeAc,valueDeEx,"FAILED! Value Debit display incorrect");
             log("@Verify 2: The amount is negative, display it in Credit");
@@ -414,7 +414,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
             log("Pre-condition 2: Get value of debit/credit that will display in trial balance");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             String fromDate = DateUtils.getFirstDateOfMonth(DateUtils.getYear(GMT_7),currentMonth,"dd/MM/yyyy");
-            ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Income", parentDebit, fromDate, "", "");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Income", LEDGER_GROUP_NAME_INCOME, fromDate, "", "");
             String valueDeEx = ledgerStatementPage.getGrandTotalByRunningBal();
 
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Income", ledgerNega, fromDate, "", "");
@@ -423,8 +423,8 @@ public class TrialBalanceTest extends BaseCaseAQS {
             TrialBalancePage page = welcomePage.navigatePage(FINANCIAL_REPORTS, TRIAL_BALANCE, TrialBalancePage.class);
             log("@Step 2: Filter with Month that is having data");
             page.filter(KASTRAKI_LIMITED,"","","");
-            String valueDeAc = page.getAmountValue(ChartOfAccountUtils.getAccountNumber(parentDebit,true),page.colDeCurrentMonth);
-            String valueCreAc = page.getAmountValue(ChartOfAccountUtils.getAccountNumber(ledgerNega,true),page.colCreCurrentMonth);
+            String valueDeAc = page.getAmountValue(ChartOfAccountUtils.getChartCode(ChartOfAccountUtils.getAccountName(parentDebit,true)),page.colDeCurrentMonth);
+            String valueCreAc = page.getAmountValue(ChartOfAccountUtils.getChartCode(ChartOfAccountUtils.getAccountName(ledgerNega,true)),page.colCreCurrentMonth);
             log("@Verify 1: The amount is positive, display it in Debit");
             Assert.assertEquals(valueDeAc,valueDeEx,"FAILED! Value Debit display incorrect");
             log("@Verify 2: The amount is negative, display it in Credit");
@@ -451,7 +451,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("@Step 2: Filter with Month that is having data");
         page.filter(KASTRAKI_LIMITED,"","","");
         log("@Verify 1: Total amounts = sum up all the absolute values of debit amounts in each column");
-        Assert.assertEquals(page.getSumValueOfCol(page.colDeCurrentMonth),Double.valueOf(page.getTotalBalance(true,true)),"FAILED! Current Month Sum Debit displays incorrect");
+        Assert.assertTrue(page.verifyTotalBalance(page.colDeCurrentMonth,true,true),"FAILED! Current Month Sum Debit displays incorrect");
         log("INFO: Executed completely");
     }
     @TestRails(id = "21838")
@@ -463,7 +463,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("@Step 2: Filter with Month that is having data");
         page.filter(KASTRAKI_LIMITED,"","","");
         log("@Verify 1: Total amounts = sum up all the absolute values of credit amounts in each column");
-        Assert.assertEquals(page.getSumValueOfCol(page.colCreCurrentMonth),page.getTotalBalance(true,false),"FAILED! Current Month Sum Credit displays incorrect");
+        Assert.assertTrue(page.verifyTotalBalance(page.colCreCurrentMonth,true,false),"FAILED! Current Month Sum Credit displays incorrect");
         log("INFO: Executed completely");
     }
     @TestRails(id = "21839")
@@ -475,8 +475,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("@Step 2: Filter with Month that is having data");
         page.filter(KASTRAKI_LIMITED,"","","");
         log("@Verify 1: Difference = Total Debit - Total Credit");
-        double difAc = DoubleUtils.roundUpWithTwoPlaces(page.getTotalBalance(true,true) - page.getTotalBalance(true,false));
-        Assert.assertEquals(difAc,page.getDifferenceValue(page.curMonthDif),"FAILED! Current Month Sum Credit displays incorrect");
+        Assert.assertTrue(page.verifyDifferenceValue(true),"FAILED! Current Month Sum Credit displays incorrect");
         log("INFO: Executed completely");
     }
 }

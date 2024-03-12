@@ -83,6 +83,7 @@
             <class name="testcases.sb11test.trading.AccountPercentTest"/>
             <class name="testcases.sb11test.trading.KeyClientsReportTest"/>
             <class name="testcases.sb11test.trading.CricketSportTest"/>
+            <class name="testcases.sb11test.trading.AnalyseTest"/>
 
             <class name="testcases.sb11test.master.BookieInfoTest"/>
             <class name="testcases.sb11test.master.ClientSystemTest"/>
@@ -98,12 +99,16 @@
             <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
             <class name="testcases.sb11test.generalReports.ConsolidatedClientBalanceTest"/>
             <class name="testcases.sb11test.generalReports.ClientBalanceTest"/>
+            <class name="testcases.sb11test.generalReports.FeedReportTest"/>
+            <class name="testcases.sb11test.generalReports.FundReconciliationTest"/>
+            <class name="testcases.sb11test.generalReports.ARandAPReconciliationTest"/>
+            <class name="testcases.sb11test.generalReports.IPMonitoringTest"/>
 
             <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
-            <class name="testcases.sb11test.financialReports.RetainedEarningsTest"/>
             <class name="testcases.sb11test.financialReports.CashFlowStatementTest"/>
             <class name="testcases.sb11test.financialReports.TrialBalanceTest"/>
             <class name="testcases.sb11test.financialReports.IncomeStatementTest"/>
+            <class name="testcases.sb11test.financialReports.IncomeStatementAnalysisTest"/>
             <class name="testcases.sb11test.financialReports.BalanceSheetAnalysisTest"/>
             <class name="testcases.sb11test.financialReports.StockholdersEquityTest"/>
 

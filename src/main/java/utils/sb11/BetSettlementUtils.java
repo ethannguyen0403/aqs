@@ -72,9 +72,12 @@ public class BetSettlementUtils {
             }
         };
         int handicap = 0;
-        if (order.getMarketType().equals("OverUnder")){
-            handicap = 1;
+        if (!(order.getMarketType() == null)){
+            if (order.getMarketType().equals("OverUnder")){
+                handicap = 1;
+            }
         }
+
         String api = environment.getSbpLoginURL() + "aqs-agent-service/trading/bet-settlement/settle?";
         String jsn = String.format("{\n" +
                         "  \"bets\": [\n" +

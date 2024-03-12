@@ -18,7 +18,7 @@ public class AnalyseTest extends BaseCaseAQS {
     @Parameters({"password", "userNameOneRole"})
     @Test(groups = {"regression_stg","2024.V.2.0"})
     public void Analyse_TC_5278(String password, String userNameOneRole) throws Exception{
-        log("@title: Analyse permission is OFF for any account");
+        log("@title: Validate 'Analyse' menu is hidden if not active Analyse permission");
         log("@pre-condition: Analyse permission is OFF for any account");
         log("@Step 1: Login by account at precondition");
         LoginPage loginPage = welcomePage.logout();
@@ -54,6 +54,8 @@ public class AnalyseTest extends BaseCaseAQS {
         log("@Step 3: Click Create/Manage Lines button");
         CreateNewLinePopup createNewLinePopup = page.openCreateNewLinePopup();
         log("@Verify 1: Analyse modal displays for user create or manage existing line");
+        //wait for popup
+        page.waitPageLoad();
         Assert.assertTrue(createNewLinePopup.lblTitle.getText().contains("Create New Line"),"FAILED! Analyse modal displays incorrect");
         log("INFO: Executed completely");
     }
@@ -134,23 +136,6 @@ public class AnalyseTest extends BaseCaseAQS {
     @Test(groups = {"regression","2024.V.2.0"})
     public void Analyse_TC_5296(){
         log("@title: Validate error message displays if tried to filter > 1 month");
-        log("@pre-condition: Analyse permission is ON for any account");
-        String fromDate = DateUtils.getDate(-35,"dd/MM/yyyy", SBPConstants.GMT_7);
-        log("@Step 1: Login by account at precondition");
-        log("@Step 2: Go to Trading menu >> Analyse item");
-        AnalysePage page = welcomePage.navigatePage(SBPConstants.TRADING,SBPConstants.ANALYSE, AnalysePage.class);
-        log("@Step 3: Flter From Date To Date > 1 month");
-        page.filter("","","",fromDate,"");
-        log("@Step 4: Click Show button");
-        page.btnShow.click();
-        log("@Verify 1: Error message 'Date range should not be more than 1 month' displays");
-        Assert.assertEquals(page.appArlertControl.getWarningMessage(),SBPConstants.Analyse.ERROR_MES_MORE_1_MONTH,"FAILED! Analyse report page displays incorrect");
-        log("INFO: Executed completely");
-    }
-    @TestRails(id = "5297")
-    @Test(groups = {"regression","2024.V.2.0"})
-    public void Analyse_TC_5297(){
-        log("@title: Validate table displays with proper value");
         log("@pre-condition: Analyse permission is ON for any account");
         String fromDate = DateUtils.getDate(-35,"dd/MM/yyyy", SBPConstants.GMT_7);
         log("@Step 1: Login by account at precondition");

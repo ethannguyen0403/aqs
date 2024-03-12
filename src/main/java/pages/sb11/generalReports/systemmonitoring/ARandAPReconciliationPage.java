@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.popup.ConfirmPopup;
+import utils.sb11.ChartOfAccountUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,9 +38,10 @@ public class ARandAPReconciliationPage extends WelcomePage {
         btnShow.click();
         waitSpinnerDisappeared();
     }
-    public String getValueByDesc(String desc, int indexColum){
-        int indexRow = tblData.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
-        return Label.xpath(tblData.getxPathOfCell(1,indexColum,indexRow,"span")).getText();
+    public String getValueByDesc(String subAccName,String desc, int indexColum){
+        Table tblSubAcc = Table.xpath(String.format("//span[contains(text(),'%s')]//ancestor::table",subAccName),10);
+        int indexRow = tblSubAcc.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
+        return Label.xpath(tblSubAcc.getxPathOfCell(1,indexColum,indexRow,"span")).getText();
     }
     public void tickConfirmAuthorise(String desc, String colName){
         int indexRow = tblData.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
@@ -63,8 +65,9 @@ public class ARandAPReconciliationPage extends WelcomePage {
         CheckBox cbConfirm = CheckBox.xpath(tblData.getxPathOfCell(1,tblHeader.getColumnIndexByName(colName)-1,indexRow,"input"));
         return cbConfirm.isEnabled();
     }
-    public String getSumDebitCredit(String debitcredit){
-        List<String> lstData = tblData.getColumn(tblHeader.getColumnIndexByName(debitcredit)-1,50,true);
+    public String getSumDebitCredit(String subAccName, String debitcredit){
+        Table tblSubAcc = Table.xpath(String.format("//span[contains(text(),'%s')]//ancestor::table",subAccName),10);
+        List<String> lstData = tblSubAcc.getColumn(tblHeader.getColumnIndexByName(debitcredit)-1,50,true);
         double sum = 0.00;
         for (int i = 1; i < lstData.size()-1;i++){
             if (!lstData.get(i).isEmpty()){
@@ -73,10 +76,11 @@ public class ARandAPReconciliationPage extends WelcomePage {
         }
         return String.format("%.2f",sum);
     }
-    public String getSumAuthorizedTrans(String authoriseName){
+    public String getSumAuthorizedTrans(String subAccName, String authoriseName){
         double sum = 0.00;
-        List<String> lstAuthor = tblData.getColumn(tblHeader.getColumnIndexByName("Authorised By")-1,50,true);
-        List<String> lstDebit = tblData.getColumn(tblHeader.getColumnIndexByName("Debit")-1,50,true);
+        Table tblSubAcc = Table.xpath(String.format("//span[contains(text(),'%s')]//ancestor::table",subAccName),10);
+        List<String> lstAuthor = tblSubAcc.getColumn(tblHeader.getColumnIndexByName("Authorised By")-1,50,true);
+        List<String> lstDebit = tblSubAcc.getColumn(tblHeader.getColumnIndexByName("Debit")-1,50,true);
         for (int i = 2; i < lstAuthor.size()-1;i++){
             if (lstAuthor.get(i).equals(authoriseName)){
                 sum = sum + Double.valueOf(lstDebit.get(i));
@@ -110,6 +114,16 @@ public class ARandAPReconciliationPage extends WelcomePage {
             lstEx.add(lstSubAcc.get(i).getText());
         }
         return lstEx;
+    }
+    public void verifyDetailTypeSortByAsc(List<String> lstSort){
+        List<String> lstSorted = ChartOfAccountUtils.getLstLedgerGroup();
+        List<String> lstEx = new ArrayList<>();
+        for (String string : lstSorted){
+            if (lstSort.contains(string)){
+                lstEx.add(string);
+            }
+        }
+        Assert.assertEquals(lstSort,lstEx,"FAILED! The list is not sorted by Ascending");
     }
     public void isSortByAsc(List<String> lstSort){
         List<String> lstSorted = new ArrayList<>();

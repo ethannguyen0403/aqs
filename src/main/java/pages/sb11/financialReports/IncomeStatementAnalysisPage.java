@@ -1,20 +1,21 @@
 package pages.sb11.financialReports;
 
+import com.paltech.driver.DriverManager;
 import com.paltech.element.BaseElement;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.relevantcodes.extentreports.LogStatus;
 import controls.Table;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.Reporter;
 import pages.sb11.WelcomePage;
 import testcases.BaseCaseAQS;
+import utils.sb11.ChartOfAccountUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -206,5 +207,62 @@ public class IncomeStatementAnalysisPage extends WelcomePage {
         Pattern pattern = Pattern.compile("^\\d{1,3}([ ,]?\\d{3})*([.,]\\d+)?$");
         Matcher matcher = pattern.matcher(number);
         return matcher.find();
+    }
+
+    public List<String> getLstDetailTypeOfGroup(String groupName){
+        List<String> lstDetailTypeEx = new ArrayList<>();
+        List<WebElement> lstDetailType = DriverManager.getDriver().findElements(By.xpath(String.format("//table//td[text()='%s']/parent::tr/following-sibling::tr",groupName)));
+        for (int i = 0; i < lstDetailType.size(); i++){
+            if (lstDetailType.get(i).getAttribute("class").contains("tbl-total-head")){
+                lstDetailTypeEx.add(Label.xpath(String.format("(//table//td[text()='%s']/parent::tr/following-sibling::tr)[%s]//td[1]",groupName,i+1)).getText());
+            } else if (lstDetailType.get(i).getAttribute("class").contains("tbl-total-foot")){
+                break;
+            }
+        }
+        return lstDetailTypeEx;
+    }
+
+    public List<String> getLstParentAccInGroup(String detaiType){
+        List<String> lstParentEx = new ArrayList<>();
+        List<WebElement> lstParent = DriverManager.getDriver().findElements(By.xpath(String.format("//table//td[text()='%s']/parent::tr/following-sibling::tr",detaiType)));
+        for (int i = 0; i < lstParent.size(); i++){
+            if (lstParent.get(i).getAttribute("class").contains("tbl-total-parent")){
+                lstParentEx.add(Label.xpath(String.format("(//table//td[text()='%s']/parent::tr/following-sibling::tr)[%s]//td[1]",detaiType,i+1)).getText());
+            } else if (lstParent.get(i).getAttribute("class").contains("tbl-total-head") || lstParent.get(i).getAttribute("class").contains("tbl-total-foot")){
+                break;
+            }
+        }
+        return lstParentEx;
+    }
+
+    public void verifySortDetailType(List<String> lstDetailType) {
+        if (lstDetailType.size()==1){
+            Assert.assertTrue(true);
+        } else {
+            List<String> lstSorted = ChartOfAccountUtils.getLstLedgerGroup();
+            List<String> lstEx = new ArrayList<>();
+            for (String string : lstSorted){
+                if (lstDetailType.contains(string)){
+                    lstEx.add(string);
+                }
+            }
+            Assert.assertEquals(lstDetailType,lstEx,"FAILED! The list is not sorted by Ascending");
+        }
+    }
+
+    public void verifySortParentAcc(String groupName) {
+        List<String> lstDetailType = getLstDetailTypeOfGroup(groupName);
+        for (int i = 0; i < lstDetailType.size();i++){
+            List<String> lstParent = getLstParentAccInGroup(lstDetailType.get(i));
+            isSortByAsc(lstParent);
+        }
+    }
+    public void isSortByAsc(List<String> lstSort){
+        List<String> lstSorted = new ArrayList<>();
+        for (String string : lstSort){
+            lstSorted.add(string);
+        }
+        Collections.sort(lstSorted);
+        Assert.assertEquals(lstSort,lstSorted,"FAILED! The list is not sorted by Ascending");
     }
 }

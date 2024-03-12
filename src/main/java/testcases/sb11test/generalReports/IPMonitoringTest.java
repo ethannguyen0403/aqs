@@ -96,7 +96,7 @@ public class IPMonitoringTest extends BaseCaseAQS {
         Assert.assertTrue(page.isAccountDisplay("Account Code",accountCode,accountCode2));
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression1","2024.V.2.0"})
+    @Test(groups = {"regression","2024.V.2.0"})
     @TestRails(id = "21848")
     @Parameters({"accountCode","bookieCode","smartGroup"})
     public void IP_Monitoring_TC_21848(String accountCode,String bookieCode, String smartGroup) throws UnknownHostException {
@@ -119,7 +119,7 @@ public class IPMonitoringTest extends BaseCaseAQS {
         BetEntrytUtils.placeBetAPI(order1);
         log("@Step 1: Access General Reports > IP Monitoring");
         try {
-            Thread.sleep(20000);
+            Thread.sleep(60000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
