@@ -13,7 +13,7 @@ import java.util.Objects;
 import static testcases.BaseCaseAQS.environment;
 
 public class AccountSearchUtils {
-    private static JSONObject getAccountInfoJson(String accountCode){
+    public static JSONObject getAccountInfoJson(String accountCode){
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
         Map<String, String> headersParam = new HashMap<String, String>() {
             {
