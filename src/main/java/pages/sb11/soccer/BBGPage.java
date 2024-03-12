@@ -51,14 +51,22 @@ public class BBGPage extends WelcomePage {
     public Button btnSetSelection = Button.xpath("//button[contains(text(),'Set Selection')]");
 
     public void filter(String sport, String companyUnit, String smartType, String reportType, String fromDate, String toDate, String stake, String currency){
-        if (!companyUnit.isEmpty())
+        if (!companyUnit.isEmpty()){
             ddpCompanyUnit.selectByVisibleText(companyUnit);
-        if(!sport.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!sport.isEmpty()){
             ddpSport.selectByVisibleText(sport);
-        if(!smartType.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!smartType.isEmpty()){
             ddpSmartType.selectByVisibleText(smartType);
-        if(!reportType.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!reportType.isEmpty()){
             ddpReportType.selectByVisibleText(reportType);
+            waitSpinnerDisappeared();
+        }
         if(!fromDate.isEmpty()){
             dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
             waitSpinnerDisappeared();
@@ -67,10 +75,14 @@ public class BBGPage extends WelcomePage {
             dtpToDate.selectDate(toDate,"dd/MM/yyyy");
             waitSpinnerDisappeared();
         }
-        if(!stake.isEmpty())
+        if(!stake.isEmpty()){
             ddpStake.selectByVisibleText(stake);
-        if(!currency.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!currency.isEmpty()){
             ddpCurrency.selectByVisibleText(currency);
+            waitSpinnerDisappeared();
+        }
         btnShow.click();
         waitSpinnerDisappeared();
     }

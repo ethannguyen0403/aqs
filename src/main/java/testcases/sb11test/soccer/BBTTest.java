@@ -35,11 +35,8 @@ public class BBTTest extends BaseCaseAQS {
     public void BBT_TC_157(String password, String userNameOneRole) throws Exception{
         log("@title: Validate accounts without permission cannot see the menu");
         log("Precondition: Deactivate BBT option in one role account");
-        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRole("one role").switchPermissions("BBT", false);
-        roleManagementPage.selectRole("one role").switchPermissions(PT_RISK_CONTROL, true);
         log("@Step 1: Re-login with one role account account has 'BBT' permission is OFF");
-        LoginPage loginPage = roleManagementPage.logout();
+        LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         PTRiskPage ptRiskPage =
                 welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
@@ -55,11 +52,8 @@ public class BBTTest extends BaseCaseAQS {
         String bbtURL = environment.getSbpLoginURL() + "#/aqs-report/bbt";
         log("@title: Validate accounts without permission cannot access page ");
         log("Precondition: Deactivate BBT option in one role account");
-        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRole("one role").switchPermissions("BBT", false);
-        roleManagementPage.selectRole("one role").switchPermissions(PT_RISK_CONTROL, true);
         log("@Step 1: Re-login with one role account account has 'BBT' permission is OFF");
-        LoginPage loginPage = roleManagementPage.logout();
+        LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         log("@Verify 1: BBT (Bets By Team) cannot access by external link " + bbtURL);
         DriverManager.getDriver().get(bbtURL);
@@ -68,17 +62,12 @@ public class BBTTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression_stg", "2023.11.30"})
-    @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "159")
-    public void BBT_TC_159(String password, String userNameOneRole) throws Exception{
+    public void BBT_TC_159() {
         String bbtURL = environment.getSbpLoginURL() + "#/aqs-report/bbt";
         log("@title: Validate accounts with permission can access page ");
         log("Precondition: Account is activated permission 'BBT'");
-        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRole("one role").switchPermissions("BBT", true);
         log("@Step 1: Re-login with one role account account has 'BBT' permission is ON");
-        LoginPage loginPage = roleManagementPage.logout();
-        loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         log("@Verify 1: BBT (Bets By Team) access successfully by external link " + bbtURL);
         DriverManager.getDriver().get(bbtURL);
         Assert.assertTrue(new BBTPage().lblTitle.getText().contains("Bets By Team"), "Failed! BBT page is not displayed");
