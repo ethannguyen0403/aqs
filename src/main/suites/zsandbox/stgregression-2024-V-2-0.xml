@@ -49,6 +49,8 @@
             <class name="testcases.sb11test.financialReports.TrialBalanceTest"/>
             <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
             <class name="testcases.sb11test.financialReports.BalanceSheetAnalysisTest"/>
+
+            <class name="testcases.sb11test.soccer.BBGTest"/>
         </classes>
     </test>
 </suite>
