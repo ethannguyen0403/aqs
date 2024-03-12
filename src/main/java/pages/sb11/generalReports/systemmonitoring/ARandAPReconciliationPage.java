@@ -118,13 +118,14 @@ public class ARandAPReconciliationPage extends WelcomePage {
     public void verifyDetailTypeSortByAsc(List<String> lstSort){
         List<String> lstSorted = ChartOfAccountUtils.getLstLedgerGroup();
         List<String> lstEx = new ArrayList<>();
-        for (String string : lstSort){
+        for (String string : lstSorted){
             if (lstSort.contains(string)){
                 lstEx.add(string);
             }
         }
         Assert.assertEquals(lstSort,lstEx,"FAILED! The list is not sorted by Ascending");
-    }public void isSortByAsc(List<String> lstSort){
+    }
+    public void isSortByAsc(List<String> lstSort){
         List<String> lstSorted = new ArrayList<>();
         for (String string : lstSort){
             lstSorted.add(string);

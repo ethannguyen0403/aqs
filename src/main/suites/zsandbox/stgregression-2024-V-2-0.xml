@@ -45,10 +45,12 @@
             <class name="testcases.sb11test.generalReports.FundReconciliationTest"/>
             <class name="testcases.sb11test.generalReports.ARandAPReconciliationTest"/>
             <class name="testcases.sb11test.generalReports.IPMonitoringTest"/>
+            <class name="testcases.sb11test.generalReports.IPMonitoringTest"/>
 
             <class name="testcases.sb11test.financialReports.TrialBalanceTest"/>
             <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
             <class name="testcases.sb11test.financialReports.BalanceSheetAnalysisTest"/>
+            <class name="testcases.sb11test.financialReports.IncomeStatementAnalysisTest"/>
 
             <class name="testcases.sb11test.soccer.BBGTest"/>
         </classes>
