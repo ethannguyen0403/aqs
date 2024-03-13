@@ -76,6 +76,7 @@ public class EventSchedulePage extends WelcomePage {
         }
         btnShow.click();
         waitPageLoad();
+        btnShow.click();
     }
 
     public void selectLeagueInScheduleList(String league){
