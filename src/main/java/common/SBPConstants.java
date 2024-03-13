@@ -16,6 +16,7 @@ public class SBPConstants {
     public final static String MISSED_ACCOUNTS = "Missed Accounts";
     public final static String AUTO_CREATED_ACCOUNTS = "Auto-created Accounts";
     public final static String ADDRESS_BOOK = "Address Book";
+    public final static String TERMS_AND_CONDITIONS = "Terms And Conditions";
     public final static String TRADING = "Trading";
     public final static String ACCOUNTING = "Accounting";
     public final static String COMPANY_SETUP = "Company Set-up";
