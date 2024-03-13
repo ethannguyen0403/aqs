@@ -29,7 +29,8 @@
         <groups>
             <run>
                 <include name="smoke" />
-                <include name="smoke_qc" /><!--For test case only run on QAT and STG-->
+                <!--For test case only run on QAT and STG-->
+                <include name="smoke_qc" />
             </run>
         </groups>
 
