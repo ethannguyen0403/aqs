@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="SB11_STG_Regression" verbose="1">
+    <listeners>
+        <listener class-name="com.paltech.utils.ExtentReporterNG"/>
+    </listeners>
+
+    <test name="Implement SB11 in STG milestone 2024.V.2.0">
+        <parameter name='browser' value='window10.local.chrome'/>
+        <parameter name='env' value='stg'/>
+        <parameter name='language' value='en'/>
+        <parameter name='isLogin' value='true'/>
+        <parameter name='isProxy' value='false'/>
+        <parameter name='username' value='AutoQC'/>
+        <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
+        <parameter name='isThrown' value='true'/>
+        <parameter name="appname" value="sp11"/>
+        <parameter name="accountCode" value="Auto-Account01"/>
+        <parameter name="accountId" value="860411"/>
+        <parameter name="accountCurrency" value="HKD"/>
+        <parameter name="clientCode" value ="QA Client (No.121 QA Client)"/>
+        <parameter name="bookieCode" value ="QA Bookie"/>
+        <parameter name="emailAddress" value="autoacc001stg@yopmail.com"/>
+        <parameter name="smartGroup" value="Auto QC Group"/>
+        <parameter name="superCode" value="SM-01U-QA Client"/>
+        <parameter name="masterCode" value="QA Smart Master"/>
+        <parameter name="agentCode" value="QA Smart Agent"/>
+        <parameter name="bookieMasterCode" value="Ma-QA101-QA Test"/>
+        <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
+        <parameter name="companyName" value="Kastraki Limited"/>
+        <parameter name="companyCurrency" value="HKD"/>
+        <parameter name="userNameOneRole" value="onerole"/>
+        <parameter name='isAddTestRailResult' value='false'/>
+        <groups>
+            <run>
+                <include name="ethan"/>
+            </run>
+        </groups>
+
+        <classes>
+            <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
+        </classes>
+    </test>
+</suite>
