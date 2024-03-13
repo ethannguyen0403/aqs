@@ -20,7 +20,7 @@ public class EventScheduleTest extends BaseCaseAQS {
 
     @TestRails(id="1041")
     @Parameters({"accountCode"})
-    @Test(groups = {"smoke","isa"})
+    @Test(groups = {"smoke"})
     public void EventSchedule_TC1041(){
         log("@title: Validate the events is added in Schedule list and show correctly in Bet entry");
         log("@Precondition: Have a specific League Name, Home Team, Away Team for testing line\n" +

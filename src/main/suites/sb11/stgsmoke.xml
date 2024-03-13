@@ -28,9 +28,9 @@
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <groups>
             <run>
-                <include name="isa" />
+                <include name="smoke" />
                 <!--For test case only run on QAT and STG-->
-<!--                <include name="smoke_qc" />-->
+                <include name="smoke_qc" />
             </run>
         </groups>
 
