@@ -75,8 +75,7 @@ public class EventSchedulePage extends WelcomePage {
             dtpDateTime.selectDate(date,"dd/MM/yyyy");
         }
         btnShow.click();
-        waitPageLoad();
-        btnShow.click();
+        waitSpinnerDisappeared();
     }
 
     public void selectLeagueInScheduleList(String league){
