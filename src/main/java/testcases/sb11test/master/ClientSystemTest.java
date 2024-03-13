@@ -167,7 +167,7 @@ public class ClientSystemTest extends BaseCaseAQS {
         log("@Step 2: Access Master > Client System");
         ClientSystemPage clientSystemPage = welcomePage.navigatePage(MASTER, CLIENT_SYSTEM,ClientSystemPage.class);
         log("@Step 3: Filter with client code: " + clientCode);
-        clientSystemPage.filterClient(COMPANY_UNIT, "", clientCode, "", "");
+        clientSystemPage.filterClient(KASTRAKI_LIMITED, "", clientCode, "", "");
         log("@Verify 1: Validate X button is disabled when having transaction on Bookie Info");
         Assert.assertTrue(clientSystemPage.verifyElementIsDisabled(clientSystemPage.getControlXButton(superCode), "class"), "FAILED! X button is enabled");
         log("INFO: Executed completely");
@@ -183,7 +183,7 @@ public class ClientSystemTest extends BaseCaseAQS {
         log("@Step 2: Access Master > Client System");
         ClientSystemPage clientSystemPage = welcomePage.navigatePage(MASTER, CLIENT_SYSTEM,ClientSystemPage.class);
         log("@Step 3: Filter with client code: " + clientCode);
-        clientSystemPage.filterClient(COMPANY_UNIT, "", clientCode, "", "");
+        clientSystemPage.filterClient(KASTRAKI_LIMITED, "", clientCode, "", "");
         log("@Step 4: Hover on x button of Super master " + superCode);
         log("@Verify 1: Validate tooltip is displayed correct when hovering on X button");
         Assert.assertEquals(clientSystemPage.getTooltipText(clientSystemPage.getControlXButton(superCode)),

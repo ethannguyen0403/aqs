@@ -50,6 +50,14 @@ public class CurrencyRatesTest extends BaseCaseAQS {
         Assert.assertEquals(currencyRatesPage.tblCurRate.getHeaderNameOfRows(), lstTblHeader,"FAILED! Currency Rate table header is incorrect display");
         log("INFO: Executed completely");
     }
+    @Test(groups = {"regression"})
+    @TestRails(id = "2153")
+    public void Currency_Rates_TC_2153(){
+        //TODO: implement this case
+        log("@title: Validate can update New CL Rate successfully");
+        Assert.assertTrue(false, "Need to implement this case");
+        log("INFO: Executed Completely!");
+    }
 
     @Test(groups = {"regression"})
     @TestRails(id = "2154")

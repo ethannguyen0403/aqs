@@ -103,7 +103,7 @@ public class JournalReportsTest extends BaseCaseAQS {
         log("@Step 2: Access Accounting > Journal Report");
         JournalReportsPage journalReportsPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_REPORTS,JournalReportsPage.class);
         log("@Step 4: Filter the closing journal at end of a month");
-        journalReportsPage.filterReports(COMPANY_UNIT,"Transaction Date",date,date,"All","","Contra CUR","");
+        journalReportsPage.filterReports(KASTRAKI_LIMITED,"Transaction Date",date,date,"All","","Contra CUR","");
         List<String> descriptList = journalReportsPage.tbJournalReport.getColumn(journalReportsPage.colDes, false);
         log("Verify 1: There is the log of the Closing Journal");
         Assert.assertTrue(descriptList.contains(logClosing), "FAILED! No log of the Closing Journal");
@@ -123,7 +123,7 @@ public class JournalReportsTest extends BaseCaseAQS {
         log("@Step 2: Access Accounting > Journal Report");
         JournalReportsPage journalReportsPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_REPORTS,JournalReportsPage.class);
         log("@Step 4: Filter the closing journal at end of a month");
-        journalReportsPage.filterReports(COMPANY_UNIT,"Transaction Date",date,date,"All","","Contra CUR","");
+        journalReportsPage.filterReports(KASTRAKI_LIMITED,"Transaction Date",date,date,"All","","Contra CUR","");
         String totalDebit = journalReportsPage.getTotalByColumn(logClosing, "Foreign Debit");
         String totalCredit = journalReportsPage.getTotalByColumn(logClosing, "Foreign Credit");
         log("Verify 1: The Total Debit = Total Credit");

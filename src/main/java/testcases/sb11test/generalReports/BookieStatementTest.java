@@ -3,11 +3,8 @@ package testcases.sb11test.generalReports;
 import com.paltech.utils.DateUtils;
 import objects.Transaction;
 import org.testng.Assert;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.generalReports.BookieStatementPage;
-import pages.sb11.generalReports.ClientBalancePage;
-import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.generalReports.popup.bookiestatement.*;
 import testcases.BaseCaseAQS;
 import utils.sb11.AccountSearchUtils;
@@ -16,7 +13,6 @@ import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static common.SBPConstants.*;
 
@@ -42,7 +38,7 @@ public class BookieStatementTest extends BaseCaseAQS {
         BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
         Thread.sleep(20000);
         log("@Step 3: Filter with Bookie has made transaction");
-        bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Super Master",DateUtils.getDateBeforeCurrentDate(1,"dd/MM/yyyy"),
+        bookieStatementPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR,"Super Master",DateUtils.getDateBeforeCurrentDate(1,"dd/MM/yyyy"),
                 "",bookieCode,"");
         superMasterTotalHKDVal = bookieStatementPage.getSuperMasterCellValue(superMasterCode, bookieStatementPage.colMasterTotal);
         BookieSuperMasterDetailPopup bookiePopup = bookieStatementPage.openBookieSuperMasterDetailPopup(superMasterCode);
@@ -77,7 +73,7 @@ public class BookieStatementTest extends BaseCaseAQS {
         bookieStatementPage.waitSpinnerDisappeared();
         Thread.sleep(20000);
         log("@Step 3: Filter with Bookie has made transaction amd open MS link");
-        bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Agent",DateUtils.getDateBeforeCurrentDate(1,"dd/MM/yyyy"),
+        bookieStatementPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR,"Agent",DateUtils.getDateBeforeCurrentDate(1,"dd/MM/yyyy"),
                 "",bookieName,"");
         BookieMemberSummaryPopup bookieMemberPopup = bookieStatementPage.openBookieMemberSummaryDetailPopup(masterCode,agentCode);
 
@@ -143,7 +139,7 @@ public class BookieStatementTest extends BaseCaseAQS {
 
             log("@Step 3: Filter with Bookie has made transaction");
             bookieStatementPage.txtBookieCode.sendKeys(bookieCode);
-            bookieStatementPage.filter(COMPANY_UNIT, FINANCIAL_YEAR,"Super Master","","",bookieCode,"");
+            bookieStatementPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR,"Super Master","","",bookieCode,"");
             log("@Step 4: Click on Super Master RPCRBA link");
             BookieSuperMasterDetailPopup bookiePopup = bookieStatementPage.openBookieSuperMasterDetailPopup(superMasterCode);
             String rpcrbaVal = bookiePopup.getSuperMasterCellValue(bookiePopup.colRPCRBA, true);

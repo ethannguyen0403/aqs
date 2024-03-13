@@ -1,6 +1,5 @@
 package pages.sb11.generalReports;
 
-import com.beust.ah.A;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
@@ -102,7 +101,7 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
         String curEURValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 9, 7);
         String curHKDValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 10, 7);
 
-        Assert.assertEquals(companyUnit, SBPConstants.COMPANY_UNIT + " and Fair", "FAILED! Company unit display incorrect");
+        Assert.assertEquals(companyUnit, SBPConstants.KASTRAKI_LIMITED + " and Fair", "FAILED! Company unit display incorrect");
         Assert.assertEquals(namePage, SBPConstants.CONSOLIDATED_CLIENT_BALANCE, "FAILED! Name page display incorrect");
         Assert.assertEquals(rangeTime, DateUtils.getDate(0, "dd MMMM yyyy",SBPConstants.GMT_7), "FAILED! Range time display incorrect");
         Assert.assertEquals(viewBy, "View by: Client Point", "FAILED! View by type display incorrect");

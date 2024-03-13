@@ -8,7 +8,6 @@ import com.paltech.utils.DateUtils;
 import common.SBPConstants;
 import controls.Table;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
@@ -59,7 +58,7 @@ public class ClosingJournalEntriesPage extends WelcomePage {
         return prev_month.format(new Date(calendar .getTimeInMillis()));
     }
 
-    public void filter(String companyUnit, String month, boolean perform) {
+    public void performCJE(String companyUnit, String month, boolean perform) {
         if (!companyUnit.isEmpty()){
             ddCompany.selectByVisibleText(companyUnit);
         }

@@ -1,10 +1,8 @@
 package testcases.sb11test.accounting;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.sb11.accounting.ChartOfAccountPage;
-import pages.sb11.accounting.CurrencyRatesPage;
 import pages.sb11.soccer.popup.coa.CreateDetailTypePopup;
 import pages.sb11.soccer.popup.coa.CreateParentAccountPopup;
 import pages.sb11.soccer.popup.coa.CreateSubAccountPopup;
@@ -70,14 +68,14 @@ public class ChartOfAccountTest extends BaseCaseAQS {
         log("@Step 4: Fill full info");
         try {
             log("@Step 5: Click Submit");
-            createDetailTypePopup.addDetailType(detailType,"014","014","014","014","Asset",COMPANY_UNIT,true);
+            createDetailTypePopup.addDetailType(detailType,"014","014","014","014","Asset", KASTRAKI_LIMITED,true);
             log("Validate that new Detail type is created successfully and display correctly on Detail Type list");
-            chartOfAccountPage.filterDetail(COMPANY_UNIT,detailType);
+            chartOfAccountPage.filterDetail(KASTRAKI_LIMITED,detailType);
             Assert.assertTrue(chartOfAccountPage.isDetailTypeDisplayed(detailType),"Failed! Created Detail Type is not displayed!");
         } finally {
             log("INFO: Executed completely");
             log("Post-condition: Deleted Create Detail type");
-            chartOfAccountPage.deleteDetail(COMPANY_UNIT,detailType);
+            chartOfAccountPage.deleteDetail(KASTRAKI_LIMITED,detailType);
         }
     }
     @Test(groups = {"regression","2023.11.30"})
@@ -93,16 +91,16 @@ public class ChartOfAccountTest extends BaseCaseAQS {
         log("@Step 5: Click Submit");
         try {
             CreateDetailTypePopup createDetailTypePopup = chartOfAccountPage.openCreateDetailTypePopup();
-            createDetailTypePopup.addDetailType(detailType,"014","014","014","014","Asset",COMPANY_UNIT,true);
-            chartOfAccountPage.filterDetail(COMPANY_UNIT,detailType);
+            createDetailTypePopup.addDetailType(detailType,"014","014","014","014","Asset", KASTRAKI_LIMITED,true);
+            chartOfAccountPage.filterDetail(KASTRAKI_LIMITED,detailType);
             CreateParentAccountPopup createParentAccountPopup = chartOfAccountPage.openCreateParentAccPopup();
             createParentAccountPopup.addParentAcc(parentAccount,"014","014","014","014",detailType,true);
             log("Validate that new Parent Account is created successfully and display correctly on Parent Account list");
-            chartOfAccountPage.filterParent(COMPANY_UNIT,detailType,parentAccount);
+            chartOfAccountPage.filterParent(KASTRAKI_LIMITED,detailType,parentAccount);
             Assert.assertTrue(chartOfAccountPage.isParentAccountDisplayed(parentAccount),"Failed! Created Parent Account is not displayed!");
         } finally {
             log("Post-condition: Deleted Create Detail type");
-            chartOfAccountPage.deleteDetail(COMPANY_UNIT,detailType);
+            chartOfAccountPage.deleteDetail(KASTRAKI_LIMITED,detailType);
         }
         log("INFO: Executed completely");
     }
@@ -120,19 +118,19 @@ public class ChartOfAccountTest extends BaseCaseAQS {
         log("@Step 5: Click Submit");
         try {
             CreateDetailTypePopup createDetailTypePopup = chartOfAccountPage.openCreateDetailTypePopup();
-            createDetailTypePopup.addDetailType(detailType,"014","014","014","014","Asset",COMPANY_UNIT,true);
-            chartOfAccountPage.filterDetail(COMPANY_UNIT,detailType);
+            createDetailTypePopup.addDetailType(detailType,"014","014","014","014","Asset", KASTRAKI_LIMITED,true);
+            chartOfAccountPage.filterDetail(KASTRAKI_LIMITED,detailType);
             CreateParentAccountPopup createParentAccountPopup = chartOfAccountPage.openCreateParentAccPopup();
             createParentAccountPopup.addParentAcc(parentAccount,"014","014","014","014",detailType,true);
-            chartOfAccountPage.filterParent(COMPANY_UNIT,detailType,parentAccount);
+            chartOfAccountPage.filterParent(KASTRAKI_LIMITED,detailType,parentAccount);
             CreateSubAccountPopup createSubAccountPopup = chartOfAccountPage.openCreateSubAccPopup();
             createSubAccountPopup.addSubAcc(subAccount,parentAccount,"014","014","014","014",currency,"","","",true);
             log("Validate that new Parent Account is created successfully and display correctly on Parent Account list");
-            chartOfAccountPage.filterSubAcc(COMPANY_UNIT,detailType,parentAccount,subAccount);
+            chartOfAccountPage.filterSubAcc(KASTRAKI_LIMITED,detailType,parentAccount,subAccount);
             Assert.assertTrue(chartOfAccountPage.isSubAccountDisplayed(subAccount),"Failed! Created Sub Account is not displayed!");
         } finally {
             log("Post-condition: Deleted Create Detail type");
-            chartOfAccountPage.deleteDetail(COMPANY_UNIT,detailType);
+            chartOfAccountPage.deleteDetail(KASTRAKI_LIMITED,detailType);
         }
         log("INFO: Executed completely");
     }

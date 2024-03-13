@@ -43,6 +43,7 @@
             <class name="testcases.sb11test.soccer.SPPTest"/>
             <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
             <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
+            <class name="testcases.sb11test.financialReports.RetainedEarningsTest"/>
         </classes>
     </test>
 </suite>

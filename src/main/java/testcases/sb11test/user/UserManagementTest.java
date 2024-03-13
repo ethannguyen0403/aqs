@@ -14,7 +14,7 @@ public class UserManagementTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2065")
     @Parameters("username")
-    public void User_Management_TC_001(String username){
+    public void User_Management_TC_2065(String username){
         log("@title: Validate User Management page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on User > User Management");

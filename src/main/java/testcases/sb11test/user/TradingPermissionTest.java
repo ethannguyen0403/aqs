@@ -1,14 +1,9 @@
 package testcases.sb11test.user;
 
-import com.paltech.element.common.Icon;
-import common.ESSConstants;
-import common.SBPConstants;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.user.TradingPermissionPage;
-import pages.sb11.user.UserManagementPage;
-import pages.sb11.user.popup.ClientAgentPermissionPopup;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 
@@ -56,7 +51,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         TradingPermissionPage tradingPermissionPage = welcomePage.navigatePage(USER,TRADING_PERMISSION,TradingPermissionPage.class);
         log("@Step 3: Select Company Unit, User Role and enter an exist username on list");
         log("@Step 4: Click Show");
-        tradingPermissionPage.filterAccount(COMPANY_UNIT,"All",username);
+        tradingPermissionPage.filterAccount(KASTRAKI_LIMITED,"All",username);
         log("Validate searched user is displayed correctly on Customer table");
         Assert.assertEquals(tradingPermissionPage.tbTradPermission.getColumn(tradingPermissionPage.colUsername,10,false).get(0),username,"Failed! " + username + " is not displayed!");
         log("INFO: Executed completely");
@@ -71,7 +66,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         log("@Step 2: Click on User > Trading Permission page");
         TradingPermissionPage tradingPermissionPage = welcomePage.navigatePage(USER,TRADING_PERMISSION,TradingPermissionPage.class);
         log("@Step 3: Check Auto-assigned All checkbox of any item");
-        tradingPermissionPage.filterAccount(COMPANY_UNIT,"All",username);
+        tradingPermissionPage.filterAccount(KASTRAKI_LIMITED,"All",username);
         tradingPermissionPage.clickAutoAssignAll(username,true);
         log("Validate that all Permission is disabled: Client Agent, Client, Smart (M), Smart (A), Smart (G)");
         tradingPermissionPage.verifyPermissionEnabled(username,false);
@@ -87,7 +82,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         log("@Step 2: Click on User > Trading Permission page");
         TradingPermissionPage tradingPermissionPage = welcomePage.navigatePage(USER,TRADING_PERMISSION,TradingPermissionPage.class);
         log("@Step 3: Uncheck Auto-assigned All checkbox of any item");
-        tradingPermissionPage.filterAccount(COMPANY_UNIT,"All",username);
+        tradingPermissionPage.filterAccount(KASTRAKI_LIMITED,"All",username);
         log("Validate that all Permission is enabled and can be clickable");
         try{
             tradingPermissionPage.clickAutoAssignAll(username,false);

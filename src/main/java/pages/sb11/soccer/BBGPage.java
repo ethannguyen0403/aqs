@@ -1,16 +1,20 @@
 package pages.sb11.soccer;
 
 import com.paltech.driver.DriverManager;
-import com.paltech.element.common.Button;
-import com.paltech.element.common.DropDownBox;
-import com.paltech.element.common.Label;
-import com.paltech.element.common.TextBox;
+import com.paltech.element.common.*;
 import controls.DateTimePicker;
+import controls.Row;
 import controls.Table;
+import org.json.JSONObject;
 import pages.sb11.WelcomePage;
 import pages.sb11.soccer.controls.BetByGroupTableControl;
 import pages.sb11.soccer.popup.bbg.BBGLastDaysPerformacesPopup;
 import pages.sb11.soccer.popup.bbg.BetByTeamPricePopup;
+import utils.sb11.AccountSearchUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class BBGPage extends WelcomePage {
     public Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
@@ -43,29 +47,60 @@ public class BBGPage extends WelcomePage {
 
     int totalColumnNumber = 13;
     public Table tblBBG = Table.xpath("//app-bbg//table",totalColumnNumber);
+    public Label lblFirstAccount = Label.xpath("(//app-bbg//table//tbody//tr//td[2])[1]");
+    public Button btnSetSelection = Button.xpath("//button[contains(text(),'Set Selection')]");
 
     public void filter(String sport, String companyUnit, String smartType, String reportType, String fromDate, String toDate, String stake, String currency){
-        if (!companyUnit.isEmpty())
+        if (!companyUnit.isEmpty()){
             ddpCompanyUnit.selectByVisibleText(companyUnit);
-        if(!sport.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!sport.isEmpty()){
             ddpSport.selectByVisibleText(sport);
-        if(!smartType.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!smartType.isEmpty()){
             ddpSmartType.selectByVisibleText(smartType);
-        if(!reportType.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!reportType.isEmpty()){
             ddpReportType.selectByVisibleText(reportType);
-        String currentDate = txtFromDate.getAttribute("value");
-        if(!fromDate.isEmpty())
-            if(!currentDate.equals(fromDate))
-                dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-        currentDate = txtToDate.getAttribute("value");
-        if(!toDate.isEmpty())
-            if(!currentDate.equals(toDate))
-                dtpToDate.selectDate(toDate,"dd/MM/yyyy");
-        waitSpinnerDisappeared();
-        if(!stake.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!fromDate.isEmpty()){
+            dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+            waitSpinnerDisappeared();
+        }
+        if(!toDate.isEmpty()){
+            dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+            waitSpinnerDisappeared();
+        }
+        if(!stake.isEmpty()){
             ddpStake.selectByVisibleText(stake);
-        if(!currency.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!currency.isEmpty()){
             ddpCurrency.selectByVisibleText(currency);
+            waitSpinnerDisappeared();
+        }
+        btnShow.click();
+        waitSpinnerDisappeared();
+    }
+    public void filterGroups(String groupCode){
+        btnShowGroup.click();
+        waitSpinnerDisappeared();
+        CheckBox cbGroup = CheckBox.xpath("//div[contains(@class,'card-columns')]//span[text()='"+groupCode+"']//preceding::input[1]");
+        cbGroup.jsClick();
+        btnSetSelection.click();
+        btnShow.click();
+        waitSpinnerDisappeared();
+    }
+    public void filterBetTypes(String type){
+        btnShowBetTypes.click();
+        waitSpinnerDisappeared();
+        CheckBox cbGroup = CheckBox.xpath("//div[contains(@class,'card-columns')]//span[text()='"+type+"']//preceding::input[1]");
+        cbGroup.jsClick();
+        btnSetSelection.click();
         btnShow.click();
         waitSpinnerDisappeared();
     }
@@ -104,4 +139,28 @@ public class BBGPage extends WelcomePage {
             i = i+1;
         }
     }
+    public List<String> getFirstRowGroupData() {
+        List <String> lstData = new ArrayList<>();
+        if (!lblFirstAccount.isDisplayed()) {
+            System.out.println("There is no Group available for opening");
+            return null;
+        } else {
+            Row firstGroupRow = Row.xpath("(//app-bbg//table//tbody//tr)[1]/td");
+            for (int i = 0; i < firstGroupRow.getWebElements().size(); i++) {
+                String xpathData = String.format("(//app-bbg//table//tbody//tr)[1]//td[%s]",i+1);
+                Label lblDataCell = Label.xpath(xpathData);
+                lstData.add(lblDataCell.getText());
+            }
+            return lstData;
+        }
+    }
+
+    public boolean verifyAccBelongToKastraki(String firstAcc) {
+        JSONObject jsonObject = AccountSearchUtils.getAccountInfoJson(firstAcc);
+        if (Objects.nonNull(jsonObject)){
+            return true;
+        }
+        return false;
+    }
+
 }

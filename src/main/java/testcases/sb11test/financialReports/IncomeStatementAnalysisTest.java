@@ -70,7 +70,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which has data");
-        incomeAnaPage.filter(COMPANY_UNIT,"","","");
+        incomeAnaPage.filter(KASTRAKI_LIMITED,"","","");
         log("@Verify 1: There are 3 groups which will be fixed OPERATING INCOME, OPERATING EXPENSES, and NON-OPERATING INCOME");
         Assert.assertTrue(incomeAnaPage.getRowIndexByGroup(OPERATING_INCOME)!=-1, String.format("FAILED! %s is not displayed", OPERATING_INCOME));
         Assert.assertTrue(incomeAnaPage.getRowIndexByGroup(OPERATING_EXPENSES)!=-1, String.format("FAILED! %s is not displayed", OPERATING_EXPENSES));
@@ -86,7 +86,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which has data");
-        incomeAnaPage.filter(COMPANY_UNIT,"","","");
+        incomeAnaPage.filter(KASTRAKI_LIMITED,"","","");
         log("@Verify 1: Validate Operating Income is only displayed details types with chart codes from 400 to 459");
         List<String> codeList = incomeAnaPage.getCodeListOfGroup(OPERATING_INCOME);
         Assert.assertTrue(incomeAnaPage.verifyCodeStartingInRange(codeList, 400, 459), "FAILED! Chart code Operation Income NOT in range 400 to 459");
@@ -101,7 +101,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which has data");
-        incomeAnaPage.filter(COMPANY_UNIT,"","","");
+        incomeAnaPage.filter(KASTRAKI_LIMITED,"","","");
         log("@Verify 1: Validate chart code of Operating expenses are started with 5, 6");
         List<String> codeList = incomeAnaPage.getCodeListOfGroup(OPERATING_EXPENSES);
         Assert.assertTrue(incomeAnaPage.verifyAllCodeStartWithNumber(codeList, "5", "6"), "FAILED! Chart code Operation expenses are not start with 5, 6");
@@ -116,7 +116,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which has data");
-        incomeAnaPage.filter(COMPANY_UNIT,"","","");
+        incomeAnaPage.filter(KASTRAKI_LIMITED,"","","");
         log("@Verify 1: Validate chart code of Operating expenses are started with 5, 6");
         List<String> codeList = incomeAnaPage.getCodeListOfGroup(NON_OPERATING_INCOME);
         Assert.assertTrue(incomeAnaPage.verifyCodeStartingInRange(codeList, 460, 500), "FAILED! Chart code Operation Income NOT in range 460 to 5xx");
@@ -134,7 +134,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which has data");
-        incomeAnaPage.filter(COMPANY_UNIT, "",String.format("%s - %s", year, month),"");
+        incomeAnaPage.filter(KASTRAKI_LIMITED, "",String.format("%s - %s", year, month),"");
         log("@Verify 1: [Previous month compare to the filtered month] has the format 'Month-YYYY' (e.g.JUNE-2022')\n" +
                 "and Amounts of parent accounts in the previous month should display accordingly");
         incomeAnaPage.verifyPreviousMonthDisplay(String.format("%s - %s", month, year), String.format("%s - %s", previousMonth, previousYear));
@@ -152,7 +152,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data with Before CJE option");
-        incomeAnaPage.filter(COMPANY_UNIT, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
+        incomeAnaPage.filter(KASTRAKI_LIMITED, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
         String amountIncome = incomeAnaPage.getCellValueOfMonthCol(String.format("%s - %s", month, year), firstCodeIndex).replace("-", "");
         String chartCodeAccount = incomeAnaPage.getChartCodeAccount(firstCodeIndex);
 
@@ -161,7 +161,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log(String.format("@Step 4: Get value of Account: %s on Ledger Statement page", chartCodeAccount));
         log("@Step info: For example, when filtering Year 2021-2022 and Month '2022-July':\n" +
                 "Data shows in JUNE-2022 gets from 01-08-2021 to 30-06-2022 in the ledger statement");
-        ledgerStatementPage.showLedger(COMPANY_UNIT, "", "All", chartCodeAccount, String.format("01/08/%s", previousYear),
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, "", "All", chartCodeAccount, String.format("01/08/%s", previousYear),
                 DateUtils.getLastDateOfMonth(DateUtils.getYear("GMT +7"), DateUtils.getMonth("GMT +7"), "dd/MM/yyyy"),REPORT_TYPE.get(0));
         String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal();
         log("@Verify 1: The amounts of parent accounts and detail types in the filtered month displays accordingly");
@@ -180,7 +180,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data with After CJE option");
-        incomeAnaPage.filter(COMPANY_UNIT, "", String.format("%s - %s", year, month), REPORT_TYPE.get(1));
+        incomeAnaPage.filter(KASTRAKI_LIMITED, "", String.format("%s - %s", year, month), REPORT_TYPE.get(1));
         String amountIncome = incomeAnaPage.getCellValueOfMonthCol(String.format("%s - %s", month, year), firstCodeIndex).replace("-", "");
         String chartCodeAccount = incomeAnaPage.getChartCodeAccount(firstCodeIndex);
 
@@ -189,7 +189,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log(String.format("@Step 4: Get value of Account: %s on Ledger Statement page", chartCodeAccount));
         log("@Step info: For example, when filtering Year 2021-2022 and Month '2022-July':\n" +
                 "Data shows in JUNE-2022 gets from 01-08-2021 to 30-06-2022 in the ledger statement");
-        ledgerStatementPage.showLedger(COMPANY_UNIT, "", "All", chartCodeAccount, String.format("01/08/%s", previousYear),
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, "", "All", chartCodeAccount, String.format("01/08/%s", previousYear),
                 DateUtils.getLastDateOfMonth(DateUtils.getYear("GMT +7"), DateUtils.getMonth("GMT +7"), "dd/MM/yyyy"),REPORT_TYPE.get(1));
         String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal();
         log("@Verify 1: The amounts of parent accounts and detail types in the filtered month displays accordingly");
@@ -211,7 +211,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data");
-        incomeAnaPage.filter(COMPANY_UNIT, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
+        incomeAnaPage.filter(KASTRAKI_LIMITED, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
 
         log("@Verify 1: Validate Txns. [filtered month] = the amount in the filtered month - amount in the previous month");
         double amountCurrentMonth =
@@ -240,7 +240,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         IncomeStatementAnalysisPage incomeAnaPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data with Before CJE option");
-        incomeAnaPage.filter(COMPANY_UNIT, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
+        incomeAnaPage.filter(KASTRAKI_LIMITED, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
         String amountIncome = incomeAnaPage.getCellValueOfMonthCol(lblFilterPreviousYear.toUpperCase(), firstCodeIndex).replace("-", "");
         String chartCodeAccount = incomeAnaPage.getChartCodeAccount(firstCodeIndex);
 
@@ -249,7 +249,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log(String.format("@Step 4: Get value of Account: %s and filter time: 01/08/%s - 31/07/%s on Ledger Statement page",
                 chartCodeAccount, previousYear - 1, previousYear));
         log("@Step info: If filter financial year =2022-2023, then amounts of previous financial year is the YEAR 2021-2022 can get from ledger statement from 01-08-2021 to 31-07-2022");
-        ledgerStatementPage.showLedger(COMPANY_UNIT, lblFilterPreviousYear, "All", chartCodeAccount,
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, lblFilterPreviousYear, "All", chartCodeAccount,
                 String.format("01/08/%s", previousYear - 1),
                 String.format("31/07/%s", previousYear), REPORT_TYPE.get(0));
         String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal();
@@ -272,7 +272,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         IncomeStatementAnalysisPage incomeAnaPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data with Before CJE option");
-        incomeAnaPage.filter(COMPANY_UNIT, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
+        incomeAnaPage.filter(KASTRAKI_LIMITED, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
         String amountIncome = incomeAnaPage.getCellValueOfMonthCol(lblFilterYear.toUpperCase(), firstCodeIndex).replace("-", "");
         String chartCodeAccount = incomeAnaPage.getChartCodeAccount(firstCodeIndex);
 
@@ -281,7 +281,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log(String.format("@Step 4: Get value of Account: %s and filter time: 01/08/%s - 31/07/%s on Ledger Statement page",
                 chartCodeAccount, previousYear, year));
         log("@Step info: If filter financial year =2022-2023, then amounts of previous financial year is the YEAR 2021-2022 can get from ledger statement from 01-08-2021 to 31-07-2022");
-        ledgerStatementPage.showLedger(COMPANY_UNIT, lblFilterYear, "All", chartCodeAccount, String.format("01/08/%s", previousYear),
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, lblFilterYear, "All", chartCodeAccount, String.format("01/08/%s", previousYear),
                 String.format("31/07/%s", year), REPORT_TYPE.get(0));
         String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal();
         log("@Verify 1: Validate display amounts of details type, parent accounts in the filtered financial year accordingly");
@@ -299,7 +299,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data");
-        incomeAnaPage.filter(COMPANY_UNIT, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
+        incomeAnaPage.filter(KASTRAKI_LIMITED, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
 
         log("@Verify 1: Net Profit (Loss) = Total Operating Income - Total Operating Expenses + Total Non-Operating Income");
         double amountIncome = Double.valueOf(incomeAnaPage.getTotalAmount(lblYear, incomeAnaPage.getRowIndexByGroup("Total Operating Income")));
@@ -324,7 +324,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data");
-        incomeAnaPage.filter(COMPANY_UNIT, "","","");
+        incomeAnaPage.filter(KASTRAKI_LIMITED, "","","");
         log("@Step 4: Click to export excel button");
         incomeAnaPage.btnExportExcel.click();
         welcomePage.waitSpinnerDisappeared();
@@ -351,7 +351,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data");
-        incomeAnaPage.filter(COMPANY_UNIT, "","","");
+        incomeAnaPage.filter(KASTRAKI_LIMITED, "","","");
         log("@Step 4: Click to export PDF button");
         incomeAnaPage.btnExportPDF.click();
         welcomePage.waitSpinnerDisappeared();
@@ -364,4 +364,40 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         }
         log("INFO: Executed completely");
     }
+    @TestRails(id = "23954")
+    @Test(groups = {"regression", "2024.V.2.0"})
+    public void IncomeStatement_Analysis_TC23954() {
+        log("@title: Validate data are sorted by Chart Code of Detail Types ascendingly");
+        log("@pre-condition: Income Statement - Analysis permission is ON");
+        log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
+        IncomeStatementAnalysisPage page = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
+        log("@Step 2: Filter with month that has data");
+        page.filter(KASTRAKI_LIMITED, "", "", "");
+        log("@Step 3: Observe the sorting");
+        log("@Verify 1: Data are sorted by Chart Code of Detail Types ascendingly");
+        List<String> lstOperatingIn = page.getLstDetailTypeOfGroup("OPERATING INCOME");
+        page.verifySortDetailType(lstOperatingIn);
+        List<String> lstOperatingEs = page.getLstDetailTypeOfGroup("OPERATING EXPENSES");
+        page.verifySortDetailType(lstOperatingEs);
+        List<String> lstNonIn = page.getLstDetailTypeOfGroup("NON-OPERATING INCOME");
+        page.verifySortDetailType(lstNonIn);
+        log("INFO: Executed completely");
+    }
+    @TestRails(id = "23955")
+    @Test(groups = {"regression", "2024.V.2.0"})
+    public void IncomeStatement_Analysis_TC23955() {
+        log("@title: Validate Parent Accounts are sorted by Parent Account Number ascendingly within the same Detail Types");
+        log("@pre-condition: Income Statement - Analysis permission is ON");
+        log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
+        IncomeStatementAnalysisPage page = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
+        log("@Step 2: Filter with month that has data");
+        page.filter(KASTRAKI_LIMITED, "", "", "");
+        log("@Step 3: Observe the sorting of Parent account within the same Detail Types");
+        log("@Verify 1: Parent Accounts are sorted by Parent Account Number ascendingly");
+        page.verifySortParentAcc("OPERATING INCOME");
+        page.verifySortParentAcc("OPERATING EXPENSES");
+        page.verifySortParentAcc("NON-OPERATING INCOME");
+        log("INFO: Executed completely");
+    }
+
 }

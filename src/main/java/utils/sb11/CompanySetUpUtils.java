@@ -7,10 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.AppUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static testcases.BaseCaseAQS.environment;
 
@@ -38,5 +35,16 @@ public class CompanySetUpUtils {
             }
         }
         return currencyCU;
+    }
+    public static List<String> getListCompany(){
+        List<String> lstEx = new ArrayList<>();
+        JSONArray jsonArray = getCompanySetupJson();
+        if (!jsonArray.isEmpty()){
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+                lstEx.add(obj.getString("companyName"));
+            }
+        }
+        return lstEx;
     }
 }

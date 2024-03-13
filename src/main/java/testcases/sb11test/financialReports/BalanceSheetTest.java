@@ -12,14 +12,9 @@ import pages.sb11.LoginPage;
 import pages.sb11.financialReports.BalanceSheetPage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import testcases.BaseCaseAQS;
-import utils.ExcelUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 import static common.SBPConstants.*;
 
@@ -67,7 +62,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.ddReport.isEnabled(),"FAILED! Report dropdown display incorrect!");
         log("@Step 5: Select 'After CJE' option");
         log("@Step 6: Click Show button");
-        page.filter(COMPANY_UNIT,"","","After CJE",false);
+        page.filter(KASTRAKI_LIMITED,"","","After CJE",false);
         log("@Verify 2: Data filtering correctly");
         Assert.assertFalse(page.lblTotalOfAsset.getText().trim().split("\n")[1].equals("0.00"),"FAILED! Data filtering incorrectly");
         log("INFO: Executed completely");
@@ -81,7 +76,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 2: Go to Financial Reports >> Balance Sheet page");
         BalanceSheetPage page = welcomePage.navigatePage(SBPConstants.FINANCIAL_REPORTS,SBPConstants.BALANCE_SHEET,BalanceSheetPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(SBPConstants.COMPANY_UNIT,SBPConstants.FINANCIAL_YEAR,"","",false);
+        page.filter(SBPConstants.KASTRAKI_LIMITED,SBPConstants.FINANCIAL_YEAR,"","",false);
         log("@Verify 1: An ASSET section displays on the left side");
         Assert.assertTrue(page.isSectionDisplayCorrect("ASSET"),"FAILED! ASSET section displays incorrect.");
         log("INFO: Executed completely");
@@ -95,7 +90,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 2: Go to Financial Reports >> Balance Sheet page");
         BalanceSheetPage page = welcomePage.navigatePage(SBPConstants.FINANCIAL_REPORTS,SBPConstants.BALANCE_SHEET,BalanceSheetPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(SBPConstants.COMPANY_UNIT,SBPConstants.FINANCIAL_YEAR,"","",false);
+        page.filter(SBPConstants.KASTRAKI_LIMITED,SBPConstants.FINANCIAL_YEAR,"","",false);
         log("@Verify 1: LIABILITY and CAPITAL section display on the right side");
         Assert.assertTrue(page.isSectionDisplayCorrect("LIABILITY"),"FAILED! LIABILITY section displays incorrect.");
         Assert.assertTrue(page.isSectionDisplayCorrect("CAPITAL"),"FAILED! CAPITAL section displays incorrect.");
@@ -110,7 +105,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 2: Go to Financial Reports >> Balance Sheet page");
         BalanceSheetPage page = welcomePage.navigatePage(SBPConstants.FINANCIAL_REPORTS,SBPConstants.BALANCE_SHEET,BalanceSheetPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(SBPConstants.COMPANY_UNIT,SBPConstants.FINANCIAL_YEAR,"","",false);
+        page.filter(SBPConstants.KASTRAKI_LIMITED,SBPConstants.FINANCIAL_YEAR,"","",false);
         log("@Verify 1: Parent Accounts will be grouped by Detail Types");
         Assert.assertTrue(page.isParentAccountsDisplayCorrect(),"FAILED! ParentAccounts display Incorrect.");
         log("INFO: Executed completely");
@@ -124,7 +119,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 2: Go to Financial Reports >> Balance Sheet page");
         BalanceSheetPage page = welcomePage.navigatePage(SBPConstants.FINANCIAL_REPORTS,SBPConstants.BALANCE_SHEET,BalanceSheetPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(SBPConstants.COMPANY_UNIT,SBPConstants.FINANCIAL_YEAR,"","",false);
+        page.filter(SBPConstants.KASTRAKI_LIMITED,SBPConstants.FINANCIAL_YEAR,"","",false);
         log("@Verify 1: Data will be sorted by Chart Code of Detail Types ascendingly");
         Assert.assertTrue(page.isDetailTypeSortCorrect("ASSET"),"FAILED! Detail Type sort Incorrect in Asset table");
         Assert.assertTrue(page.isDetailTypeSortCorrect("LIABILITY"),"FAILED! Detail Type sort Incorrect in Liability table");
@@ -140,7 +135,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 2: Go to Financial Reports >> Balance Sheet page");
         BalanceSheetPage page = welcomePage.navigatePage(SBPConstants.FINANCIAL_REPORTS,SBPConstants.BALANCE_SHEET,BalanceSheetPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(SBPConstants.COMPANY_UNIT,SBPConstants.FINANCIAL_YEAR,"","",false);
+        page.filter(SBPConstants.KASTRAKI_LIMITED,SBPConstants.FINANCIAL_YEAR,"","",false);
         log("@Verify 1: There is a total amount for each Detail Type = sum of balance amounts of all Parent Accounts' under it");
         Assert.assertTrue(page.isTotalAmountDisplayCorrect(),"FAILED! Total amount of each Detail Type displays Incorrect");
         log("INFO: Executed completely");
@@ -164,7 +159,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         String detailTypeName = "QA Ledger Group Asset";
         String financialYear = "Year 2023-2024";
         String report = "Before CJE";
-        ledgerStatementPage.showLedger(COMPANY_UNIT,financialYear,LedgerStatement.ACCOUNT_TYPE.get(1),detailTypeName,fromDate,toDate,report);
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,financialYear,LedgerStatement.ACCOUNT_TYPE.get(1),detailTypeName,fromDate,toDate,report);
         log("@Step 4: Get 'Amounts are shown in HKD' section > Running Bal.' column at Total in HKD row");
         String totalAmountOfParentAcount = ledgerStatementPage.getGrandTotalByRunningBal();
         log("@Step 5: Get 'Amounts are shown in HKD' section > Running Bal.' column at Total in HKD row");
@@ -174,7 +169,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
                 "Month = 2023 - July\n" +
                 "Report = Before CJE");
         String month = "2023 - August";
-        page.filter(COMPANY_UNIT,financialYear,month,report,false);
+        page.filter(KASTRAKI_LIMITED,financialYear,month,report,false);
         log("@Verify 1: Balance Amount = value that get at step");
         Assert.assertEquals(page.getTotalAmount(detailTypeName).getText(),totalAmountOfParentAcount,"FAILED! Balance Amount displays incorrect!");
         log("INFO: Executed completely");
@@ -188,7 +183,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 2: Go to Financial Reports >> Balance Sheet page");
         BalanceSheetPage page = welcomePage.navigatePage(SBPConstants.FINANCIAL_REPORTS,SBPConstants.BALANCE_SHEET,BalanceSheetPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(SBPConstants.COMPANY_UNIT,SBPConstants.FINANCIAL_YEAR,"","",false);
+        page.filter(SBPConstants.KASTRAKI_LIMITED,SBPConstants.FINANCIAL_YEAR,"","",false);
         log("@Verify 1: Total Assets' = sum of all balance amounts of Asset section");
         Assert.assertEquals(page.lblValueTotalOfAsset.getText().replace(",",""),page.getTotalOfAllParent("ASSET").replace("-",""),"FAILED! Balance Amount of Asset section display incorrect!");
         log("INFO: Executed completely");
@@ -202,7 +197,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 2: Go to Financial Reports >> Balance Sheet page");
         BalanceSheetPage page = welcomePage.navigatePage(SBPConstants.FINANCIAL_REPORTS,SBPConstants.BALANCE_SHEET,BalanceSheetPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(SBPConstants.COMPANY_UNIT,SBPConstants.FINANCIAL_YEAR,"","",false);
+        page.filter(SBPConstants.KASTRAKI_LIMITED,SBPConstants.FINANCIAL_YEAR,"","",false);
         log("@Verify 1: 'Total Liability and Capital' is correct = total balance amounts of Liability + Capital sections value (plus blue number and deduct red number)");
         Double totalBoth = Double.valueOf(page.getTotalOfAllParent("LIABILITY")) + Double.valueOf(page.getTotalOfAllParent("CAPITAL"));
         Assert.assertEquals(page.checkNegativeValue(page.lblValueTotalLiabilityCapital),totalBoth);
@@ -217,7 +212,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 2: Go to Financial Reports >> Balance Sheet page");
         BalanceSheetPage page = welcomePage.navigatePage(SBPConstants.FINANCIAL_REPORTS, SBPConstants.BALANCE_SHEET, BalanceSheetPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(SBPConstants.COMPANY_UNIT, SBPConstants.FINANCIAL_YEAR, "", "",false);
+        page.filter(SBPConstants.KASTRAKI_LIMITED, SBPConstants.FINANCIAL_YEAR, "", "",false);
         log("@Verify 1: The UI displays properly:");
         Assert.assertTrue(page.lblTotalOfAsset.getAttribute("Class").contains("font-weight-bold"), "FAILED! Total numbers will not be bold");
         Assert.assertTrue(Label.xpath(String.format(page.titleSectionXpath,"ASSET")).getAttribute("Class").contains("font-weight-bold"),"FAILED! Name Section will not be bold");
@@ -237,7 +232,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 2: Go to Financial Reports >> Balance Sheet page");
         BalanceSheetPage page = welcomePage.navigatePage(SBPConstants.FINANCIAL_REPORTS, SBPConstants.BALANCE_SHEET, BalanceSheetPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(SBPConstants.COMPANY_UNIT, "Year 2023-2024", "2023 - December", "",false);
+        page.filter(SBPConstants.KASTRAKI_LIMITED, "Year 2023-2024", "2023 - December", "",false);
         log("@Step 4: Click 'Export To Excel' button");
         page.btnExportToExcel.click();
         page.waitSpinnerDisappeared();
@@ -263,7 +258,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 2: Go to Financial Reports >> Balance Sheet page");
         BalanceSheetPage page = welcomePage.navigatePage(SBPConstants.FINANCIAL_REPORTS, SBPConstants.BALANCE_SHEET, BalanceSheetPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(SBPConstants.COMPANY_UNIT, SBPConstants.FINANCIAL_YEAR, "", "",false);
+        page.filter(SBPConstants.KASTRAKI_LIMITED, SBPConstants.FINANCIAL_YEAR, "", "",false);
         log("@Step 4: Click 'Export To PDF' button");
         page.btnExportToPDF.click();
         page.waitSpinnerDisappeared();
@@ -287,7 +282,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         BalanceSheetPage page = welcomePage.navigatePage(SBPConstants.FINANCIAL_REPORTS, SBPConstants.BALANCE_SHEET, BalanceSheetPage.class);
         log("@Step 2: Tick 'Show Info with Balance/Txns' checkbox");
         log("@Step 3: Filter with detail type at pre-condition > observe");
-        page.filter(SBPConstants.COMPANY_UNIT, SBPConstants.FINANCIAL_YEAR, "", "",true);
+        page.filter(SBPConstants.KASTRAKI_LIMITED, SBPConstants.FINANCIAL_YEAR, "", "",true);
         log("@Verify 1: Validate Asset/Liability/Capital detail type with balance = 0 are displayed when ticking 'Show Info with Balance/Txns' checkbox");
         Assert.assertTrue(page.getTotalAmount("QA Ledger Auto Asset").getText().equals("0.00"),"FAILED! Balance of Asset displays incorrect");
         Assert.assertTrue(page.getTotalAmount("QA Ledger Auto Liability").getText().equals("0.00"),"FAILED! Balance of Asset displays incorrect");

@@ -16,7 +16,7 @@ public class HomePageTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @Parameters("username")
     @TestRails(id = "2061")
-    public void Homepage_TC_001(){
+    public void Homepage_TC_2061(){
         log("@title: Validate menu in header section is correctly display");
         log("@Step 1: Login with valid account");
         log(" Validate logo: 123sbasia display");
@@ -29,7 +29,7 @@ public class HomePageTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @Parameters("username")
     @TestRails(id = "2062")
-    public void Homepage_TC_002(){
+    public void Homepage_TC_2062(){
         log("@title: Validate Change Password popup display");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on Change Password");
@@ -49,7 +49,7 @@ public class HomePageTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @Parameters({"username","password"})
     @TestRails(id = "2063")
-    public void Homepage_TC_003(String username, String password) throws Exception {
+    public void Homepage_TC_2063(String username, String password) throws Exception {
         log("@title: Validate that changing password is worked correctly");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click on Change Password");

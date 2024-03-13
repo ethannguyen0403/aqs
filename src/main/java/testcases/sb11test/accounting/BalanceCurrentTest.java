@@ -56,7 +56,7 @@ public class BalanceCurrentTest extends BaseCaseAQS {
         log("@Step 4: Click Show");
         //Wait for companyUnit button showwing
         Thread.sleep(2000);
-        balanceCurrentPage.filterAccount(COMPANY_UNIT,clientCode);
+        balanceCurrentPage.filterAccount(KASTRAKI_LIMITED,clientCode);
         log("@Step 5: Click any Master code");
         MemberSummaryPopup memberSummaryPopup = balanceCurrentPage.openMasterMemberSummaryPopup(masterCode);
         log("Validate Member Summary of Master is displayed with correctly title page and Master code on top right popup");
@@ -77,7 +77,7 @@ public class BalanceCurrentTest extends BaseCaseAQS {
         log("@Step 4: Click Show");
         //Wait for companyUnit button showwing
         Thread.sleep(2000);
-        balanceCurrentPage.filterAccount(COMPANY_UNIT,clientCode);
+        balanceCurrentPage.filterAccount(KASTRAKI_LIMITED,clientCode);
         log("@Step 5: Click any Agent code");
         MemberSummaryPopup memberSummaryPopup = balanceCurrentPage.openAgentMemberSummaryPopup(agentCode);
         log("Validate Member Summary of Agent is displayed with correctly title page and Master code on top right popup");
@@ -98,7 +98,7 @@ public class BalanceCurrentTest extends BaseCaseAQS {
         log("@Step 2: Access Accounting > Balance[Current]");
         BalanceCurrentPage balanceCurrentPage = welcomePage.navigatePage(ACCOUNTING, BALANCE_CURRENT, BalanceCurrentPage.class);
         log(String.format("@Step 3: Filter with %s > click Show", accountFilter));
-        balanceCurrentPage.filterAccount(COMPANY_UNIT,accountFilter);
+        balanceCurrentPage.filterAccount(KASTRAKI_LIMITED,accountFilter);
         log("@Verify 1: Total row currency of Agent accounts should display correctly as Master's Currency");
         Assert.assertEquals(balanceCurrentPage.getTotalLabel(agentCode), String.format("Total in %s", masterCur), "FAILED! Total Currency not corresponding to Master currency");
         log("INFO: Executed completely");

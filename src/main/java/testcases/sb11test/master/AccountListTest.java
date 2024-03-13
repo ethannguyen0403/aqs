@@ -18,7 +18,7 @@ public class AccountListTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2227")
-    public void Account_List_TC_001(){
+    public void Account_List_TC_2227(){
         log("@title: Validate Account List page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("Step 2: Click Master > Account List");
@@ -29,8 +29,8 @@ public class AccountListTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
-    @TestRails(id = "2224")
-    public void Account_List_TC_002(){
+    @TestRails(id = "2228")
+    public void Account_List_TC_2228(){
         log("@title: Validate UI on Account List is correctly displayed");
         log("@Step 1: Login with valid account");
         log("Step 2: Click Master > Account List");
@@ -52,9 +52,9 @@ public class AccountListTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression"})
-    @TestRails(id = "2225")
+    @TestRails(id = "2229")
     @Parameters({"clientCode","accountCode"})
-    public void Account_List_TC_003(String clientCode, String accountCode){
+    public void Account_List_TC_2229(String clientCode, String accountCode){
         log("@title: Validate can update PT for an Account successfully");
         log("@Step 1: Login with valid account");
         log("Step 2: Click Master > Account List");

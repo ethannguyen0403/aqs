@@ -49,7 +49,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter(COMPANY_UNIT,"",transDate);
+        page.filter(KASTRAKI_LIMITED,"",transDate);
         log("@Verify 1: Debit/Credit will get from the debit/credit amounts of each transaction and putting in the corresponding column");
         Assert.assertEquals(page.getValueByDesc(desc,page.tblHeader.getColumnIndexByName("Debit")-1),String.format("%.2f",valueDebit),"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
@@ -85,7 +85,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter(COMPANY_UNIT,"",transDate);
+        page.filter(KASTRAKI_LIMITED,"",transDate);
         log("@Verify 1: Description field will displays the Memo/Description of each transaction accordingly");
         Assert.assertEquals(page.getValueByDesc(desc,page.tblHeader.getColumnIndexByName("Description")-1),desc,"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
@@ -122,7 +122,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter(COMPANY_UNIT,"",transDate);
+        page.filter(KASTRAKI_LIMITED,"",transDate);
         log("@Step 4: Tick in the Confirm checkbox");
         log("@Step 5: Click Yes button");
         page.tickConfirmAuthorise(desc,"Confirm");
@@ -162,7 +162,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter(COMPANY_UNIT,"",transDate);
+        page.filter(KASTRAKI_LIMITED,"",transDate);
         log("@Verify 1: CUR will display the currency of the sub-account");
         Assert.assertEquals(page.getValueByDesc(desc,page.tblHeader.getColumnIndexByName("CUR")-1),curEx,"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
@@ -197,13 +197,13 @@ public class FundReconciliationTest extends BaseCaseAQS {
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         String detailType = "101.000.000.000 - Cash";
-        ledgerStatementPage.showLedger(COMPANY_UNIT,"","Asset",detailType,transDate,transDate,"");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Asset",detailType,transDate,transDate,"");
         double runningBal = ledgerStatementPage.getValueAmount(ledgerAccountName,ledgerStatementPage.colRunBalGBP);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >>Fund Reconciliation");
         FundReconciliationPage page = ledgerStatementPage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
-        page.filter(COMPANY_UNIT,"",transDate);
+        page.filter(KASTRAKI_LIMITED,"",transDate);
         log("@Verify 1: Running Balance will displays correctly:\n"+
                 ". The 'Opening Balance' row: shows the Opening Balance of the sub-account in the filtered date (same as in Ledger Statement)\n" +
                 "  . The transaction rows: is Opening balance +/- debit/credit amounts, according to the logic of Account Type");
@@ -245,7 +245,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter(COMPANY_UNIT,"",transDate);
+        page.filter(KASTRAKI_LIMITED,"",transDate);
         log("@Step 4: Tick in the Authorise checkbox");
         log("@Step 5: Click Yes button");
         page.tickConfirmAuthorise(desc,"Authorise");
@@ -284,7 +284,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter(COMPANY_UNIT,"",transDate);
+        page.filter(KASTRAKI_LIMITED,"",transDate);
         log("@Verify 1: Closing Balance row will sums of all rows of Debit/Credit amounts\n" +
                 "For Running Balance, it's the final amount of the last record.");
         String sumDebit = page.getSumDebitCredit("Debit");
@@ -327,7 +327,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter(COMPANY_UNIT,"",transDate);
+        page.filter(KASTRAKI_LIMITED,"",transDate);
         log("@Step 4: Tick in the Authorise checkbox");
         log("@Step 5: Click Yes button");
         page.tickConfirmAuthorise(desc,"Authorise");
