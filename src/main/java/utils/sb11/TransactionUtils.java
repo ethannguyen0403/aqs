@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static common.SBPConstants.CLIENT_CREDIT_ACC;
+import static common.SBPConstants.CLIENT_DEBIT_ACC;
 import static testcases.BaseCaseAQS.environment;
 
 public class TransactionUtils {
@@ -254,6 +256,40 @@ public class TransactionUtils {
 
     public static void addLedgerTxn(Transaction trans, String accountIdFrom, String accountIdTo, String ledgerType) throws IOException {
         sendLedgerTransactionJson(trans, accountIdFrom, accountIdTo, ledgerType);
+    }
+
+    /**
+     *
+     * @param trans
+     * @param fromType should be: Ledger, Bookie, Client
+     * @param debitGroupName input: LedgerGroupName, BookieName, ClientName
+     * @param creditGroupName
+     */
+    public static void addTransByAPI(Transaction trans, String fromType, String debitGroupName, String creditGroupName, String debitParentName, String creditParentName, String clientBookieName) throws IOException {
+        if (fromType.equals("Ledger")){
+            //debit
+            String ledgerDebitGroupId = ChartOfAccountUtils.getLedgerGroupId(debitGroupName);
+            String parentDebitId = ChartOfAccountUtils.getParentId(ledgerDebitGroupId, debitParentName);
+            String ledgerType = ChartOfAccountUtils.getLedgerType(parentDebitId,trans.getLedgerDebit());
+            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentDebitId,trans.getLedgerDebit());
+            //credit
+            String ledgerCreditGroupId = ChartOfAccountUtils.getLedgerGroupId(creditGroupName);
+            String parentCreditId = ChartOfAccountUtils.getParentId(ledgerCreditGroupId, creditParentName);
+            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentCreditId,trans.getLedgerCredit());
+            addLedgerTxn(trans,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+        } else if (fromType.equals("Bookie")){
+            String typeId = BookieInfoUtils.getBookieId(clientBookieName);
+            String accountIdDebit = AccountSearchUtils.getAccountId(debitGroupName);
+            String accountIdCredit = AccountSearchUtils.getAccountId(creditGroupName);
+            addClientBookieTxn(trans,accountIdDebit,accountIdCredit,fromType,typeId);
+        } else if (fromType.equals("Client")) {
+            String typeId = ClientSystemUtils.getClientId(clientBookieName);
+            String accountIdCredit = AccountSearchUtils.getAccountId(debitGroupName);
+            String accountIdDebit = AccountSearchUtils.getAccountId(creditGroupName);
+            addClientBookieTxn(trans,accountIdDebit,accountIdCredit,fromType,typeId);
+        } else {
+            System.out.println("Input wrongly From Type");
+        }
     }
 
     public static Transaction getTransactionId(Transaction trans, String fromType) {

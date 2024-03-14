@@ -10,7 +10,7 @@ import java.util.List;
 public class ClientMemberTransactionPopup {
     int summaryColTotal = 10;
     public int colOpeningRunning = 5;
-    public int colTotalRunning = 4;
+    public int colTotalRunning = 3;
 
     public Table tblWinloseSummary = Table.xpath("//app-report-dialog//table[@aria-label='transaction table']",summaryColTotal);
 
@@ -24,23 +24,7 @@ public class ClientMemberTransactionPopup {
     }
 
     public String getTotalRunning(int colIndex) {
-        String returnValue = "";
-        Label lblCellValue;
-        Label lblTotal;
-        int i = 1;
-        while (true) {
-            lblCellValue = Label.xpath(tblWinloseSummary.getxPathOfCell(1, colIndex, i, null));
-            lblTotal = Label.xpath(tblWinloseSummary.getxPathOfCell(1, 1, i, null));
-            if (!lblCellValue.isDisplayed()) {
-                System.out.println("Total row is not found in Summary table");
-                return null;
-            }
-            if (lblTotal.getText().equalsIgnoreCase("Total")) {
-                returnValue = lblCellValue.getText();
-                return returnValue;
-            }
-            i = i + 1;
-        }
+        return Label.xpath(String.format("(//td[contains(text(),'Total')]/following-sibling::td)[%s]",colIndex)).getText();
     }
 
     public String getOpeningRunning(int colIndex) {
