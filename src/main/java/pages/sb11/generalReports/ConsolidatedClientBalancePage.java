@@ -1,5 +1,7 @@
 package pages.sb11.generalReports;
 
+import com.paltech.driver.DriverManager;
+import com.paltech.element.BaseElement;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
@@ -9,7 +11,10 @@ import com.paltech.utils.DoubleUtils;
 import common.SBPConstants;
 import controls.Cell;
 import controls.DateTimePicker;
+import controls.Row;
 import controls.Table;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
@@ -85,21 +90,21 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
         String picColumn = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 3, 6);
         String statusColumn = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 4, 6);
         String depositColumn = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 5, 6);
-        String totalColumn = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 6, 6);
-        String curGBP = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 7, 6);
-        String curUSD = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 8, 6);
-        String curEUR = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 9, 6);
-        String curHKD = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 10, 6);
+        String totalColumn = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 7, 6);
+        String curGBP = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 8, 6);
+        String curUSD = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 9, 6);
+        String curEUR = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 10, 6);
+        String curHKD = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 11, 6);
 
-        String noValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 1, 7);
-        String clientValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 2, 7);
-        String picValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 3, 7);
-        String depositValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 5, 7);
-        String totalValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 6, 7);
-        String curGBPValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 7, 7);
-        String curUSDValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 8, 7);
-        String curEURValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 9, 7);
-        String curHKDValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 10, 7);
+        String noValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 1, 8);
+        String clientValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 2, 8);
+        String picValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 3, 8);
+        String depositValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 5, 8);
+        String totalValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 7, 8);
+        String curGBPValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 8, 8);
+        String curUSDValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 9, 8);
+        String curEURValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 10, 8);
+        String curHKDValue = ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Consolidated Client Balance", 11, 8);
 
         Assert.assertEquals(companyUnit, SBPConstants.KASTRAKI_LIMITED + " and Fair", "FAILED! Company unit display incorrect");
         Assert.assertEquals(namePage, SBPConstants.CONSOLIDATED_CLIENT_BALANCE, "FAILED! Name page display incorrect");
@@ -110,22 +115,22 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
         Assert.assertEquals(lstHeaderAc.get(tblInfo.getColumnIndexByName("Client") - 1), clientColumn, "FAILED! Client header display incorrect");
         Assert.assertEquals(lstHeaderAc.get(tblInfo.getColumnIndexByName("PIC") - 1), picColumn, "FAILED! PIC header display incorrect");
         Assert.assertEquals(lstHeaderAc.get(tblInfo.getColumnIndexByName("Status") - 1), statusColumn, "FAILED! Status header display incorrect");
-        Assert.assertEquals(lstHeaderAc.get(tblInfo.getColumnIndexByName("Deposit in Ori CUR") - 1), depositColumn, "FAILED! Deposit header display incorrect");
+        Assert.assertEquals(lstHeaderAc.get(tblInfo.getColumnIndexByName("Deposit") - 1), depositColumn, "FAILED! Deposit header display incorrect");
         Assert.assertEquals(lstHeaderAc.get(tblInfo.getColumnIndexByName("Total Balance HKD") - 1), totalColumn, "FAILED! Total header display incorrect");
         Assert.assertEquals(lstHeaderAc.get(tblInfo.getColumnIndexByName("GBP") - 1), curGBP, "FAILED! GBP header display incorrect");
         Assert.assertEquals(lstHeaderAc.get(tblInfo.getColumnIndexByName("USD") - 1), curUSD, "FAILED! USD header display incorrect");
         Assert.assertEquals(lstHeaderAc.get(tblInfo.getColumnIndexByName("EUR") - 1), curEUR, "FAILED! EUR header display incorrect");
         Assert.assertEquals(lstHeaderAc.get(tblInfo.getColumnIndexByName("HKD") - 1), curHKD, "FAILED! HKD header display incorrect");
 
-        Assert.assertEquals(noValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName(SBPConstants.ConsolidatedClientBalance.HEADER_NAME.get(0)), 1, null).getText(), "FAILED! No column value display incorrect");
-        Assert.assertEquals(clientValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("Client"), 1, null).getText(), "FAILED! Client column value display incorrect");
-        Assert.assertEquals(picValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("PIC"), 1, null).getText(), "FAILED! PIC column value display incorrect");
-        Assert.assertEquals(depositValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("Deposit in Ori CUR"), 1, null).getText(), "FAILED! Deposit column value display incorrect");
-        Assert.assertEquals(totalValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("Total Balance HKD"), 1, null).getText(), "FAILED! Total Balance HKD column value display incorrect");
-        Assert.assertEquals(curGBPValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("GBP"), 1, null).getText(), "FAILED! GBP column value display incorrect");
-        Assert.assertEquals(curUSDValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("USD"), 1, null).getText(), "FAILED! USD column value display incorrect");
-        Assert.assertEquals(curEURValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("EUR"), 1, null).getText(), "FAILED! EUR column value display incorrect");
-        Assert.assertEquals(curHKDValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("HKD"), 1, null).getText(), "FAILED! HKD column value display incorrect");
+        Assert.assertEquals(noValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName(SBPConstants.ConsolidatedClientBalance.HEADER_NAME.get(0)), 2, null).getText(), "FAILED! No column value display incorrect");
+        Assert.assertEquals(clientValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("Client"), 2, null).getText(), "FAILED! Client column value display incorrect");
+        Assert.assertEquals(picValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("PIC"), 2, null).getText(), "FAILED! PIC column value display incorrect");
+        Assert.assertEquals(depositValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("Deposit"), 2, null).getText(), "FAILED! Deposit column value display incorrect");
+        Assert.assertEquals(totalValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("Total Balance HKD"), 2, null).getText(), "FAILED! Total Balance HKD column value display incorrect");
+        Assert.assertEquals(curGBPValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("GBP"), 2, null).getText(), "FAILED! GBP column value display incorrect");
+        Assert.assertEquals(curUSDValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("USD"), 2, null).getText(), "FAILED! USD column value display incorrect");
+        Assert.assertEquals(curEURValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("EUR"), 2, null).getText(), "FAILED! EUR column value display incorrect");
+        Assert.assertEquals(curHKDValue, tblInfo.getControlOfCellSPP(1, tblInfo.getColumnIndexByName("HKD"), 2, null).getText(), "FAILED! HKD column value display incorrect");
     }
     public List<String> getLstClientDisplay() {
         List<String> lstClient = new ArrayList<>();
@@ -135,64 +140,47 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
         }
         return lstClient;
     }
-    public void verifyFilterWorkProperly() {
-        String clientExpect = "QA Client (No.121 QA Client)";
-        String depositExpect = "HKD\n1,075,572,920.31";
-        String totalExpect = "1,075,963,622.55";
-        String hkdExpect = "1,075,807,350.56";
-        Assert.assertEquals(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Client"),1,null).getText().trim(),clientExpect,"FAILED! Client display incorrect");
-        Assert.assertTrue(DropDownBox.xpath(tblInfo.getxPathOfCellSPP(1,tblInfo.getColumnIndexByName("Status"),1,"select")).isDisplayed(),"FAILED! Status display incorrect");
-        Assert.assertEquals(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Deposit in Ori CUR"),1,null).getText().trim(),depositExpect,"FAILED! Deposit in Ori CUR display incorrect");
-        Assert.assertEquals(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Total Balance HKD"),1,null).getText().trim(),totalExpect,"FAILED! Total Balance HKD display incorrect");
-        Assert.assertEquals(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("HKD"),1,null).getText().trim(),hkdExpect,"FAILED! HKD column display incorrect");
+    public void verifyFilterWorkProperly(String clientName, String deposit, String totalBalance, String hkdValue) {
+        Assert.assertEquals(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Client"),2,null).getText().trim(),clientName,"FAILED! Client display incorrect");
+        Assert.assertTrue(DropDownBox.xpath(tblInfo.getxPathOfCellSPP(1,tblInfo.getColumnIndexByName("Status"),2,"select")).isDisplayed(),"FAILED! Status display incorrect");
+        Assert.assertEquals(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Deposit"),2,null).getText().trim(),deposit,"FAILED! Deposit display incorrect");
+        Assert.assertEquals(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Total Balance HKD"),2,null).getText().trim(),totalBalance,"FAILED! Total Balance HKD display incorrect");
+        Assert.assertEquals(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("HKD"),2,null).getText().trim(),hkdValue,"FAILED! HKD column display incorrect");
     }
 
     public void verifyDataTableDisplay() {
-        List<String> lstTotal = getColumnSPP(tblInfo.getColumnIndexByName("Total Balance HKD"),155,true);
-        String blackColorAc = tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("GBP"),2,null).getColour("color");
-        String negativeColorAc = tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Total Balance HKD"),2,null).getColour("color");
-        String positiveColorAc = tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Total Balance HKD"),lstTotal.size()-1,null).getColour("color");
+        int numberRow = getNumberRowByGroup("Player");
+        String blackColorAc = getCellOfRow("Player","GBP",1).getColour("color");
+        String negativeColorAc = getCellOfRow("Player","Total Balance HKD",1).getColour("color");
+        String positiveColorAc = getCellOfRow("Player","Total Balance HKD",numberRow).getColour("color");
         Assert.assertTrue(Color.fromString(blackColorAc).asHex().equals("#212529"),"FAILED! Color of 0 display incorrect!");
         Assert.assertTrue(Color.fromString(negativeColorAc).asHex().equals("#dc3545"),"FAILED! Color of negative number display incorrect!");
         Assert.assertTrue(Color.fromString(positiveColorAc).asHex().equals("#007bff"),"FAILED! Color of positive number display incorrect!");
-        Double beforeNumb = Double.valueOf(lstTotal.get(0).trim().replace(",",""));
+        Double beforeNumb = Double.valueOf(getCellOfRow("Player","Total Balance HKD",1).getText().trim().replace(",",""));
         Double total = beforeNumb;
         //check Total Balance in HKD: Data will be sorted by ascendingly
-        for (int i = 1; i < lstTotal.size();i++){
-            total = DoubleUtils.roundWithTwoPlaces(RoundingMode.HALF_EVEN,total+Double.valueOf(lstTotal.get(i).trim().replace(",","")));
-            if (beforeNumb > Double.valueOf(lstTotal.get(i).trim().replace(",",""))){
+        for (int i = 2; i <= numberRow;i++){
+            Double afterNum = Double.valueOf(getCellOfRow("Player","Total Balance HKD",i).getText().trim().replace(",",""));
+            total = DoubleUtils.roundWithTwoPlaces(RoundingMode.HALF_EVEN,total + afterNum);
+            if (beforeNumb > afterNum){
                 Assert.assertTrue(false,"FAILED! Client "+i+" display incorrect");
             }
         }
-        //check deviation of sum actual and sum expect
-        Assert.assertTrue((Double.valueOf(lblTotalOfTotalBalance.getText().trim().replace(",",""))-total) < 0.02,"FAILED! Total of Total Balance HKD display incorrect");
-
     }
-    public List<String> getColumnSPP(int columnOrder, int limit, boolean isMoved){
-        List<String> lst = new ArrayList<String>();
-        if (columnOrder < 1){
-            System.out.println(String.format("Error: columnOrder %s is to be more than or equal to 1", columnOrder));
-            return lst;
-        }
-        int i = 1;
-        String cellXpath = String.format("%s%s%s", "//table", "//tbody/tr[%s]/", String.format("th[%s]", columnOrder));
-        if(!Cell.xpath(String.format(cellXpath, i)).isDisplayed())
-        {
-            cellXpath = String.format("%s%s%s", "//table", "//body/tr[%s]/", String.format("th[%s]", columnOrder));
-        }
-        while(true) {
-            Cell cell = Cell.xpath(String.format(cellXpath, i));
-            if (!cell.isDisplayedShort(5)){
-                return lst;
+    public int getNumberRowByGroup(String groupName){
+        int numberRow = 0;
+        List<WebElement> lstInfo = DriverManager.getDriver().findElements(By.xpath(String.format("//table//span[contains(text(),'%s')]//ancestor::tr//following-sibling::tr",groupName)));
+        for (WebElement element : lstInfo){
+            if (element.getAttribute("Class").contains("bg-white")){
+                numberRow = numberRow + 1;
+            } else if (element.getAttribute("Class").contains("consolidated-group-row")){
+                return numberRow;
             }
-            lst.add(cell.getText(5));
-            if (lst.size() == limit) {
-                return lst;
-            }
-            if (isMoved){
-                cell.scrollDownInDistance();
-            }
-            i += 1;
         }
+        return numberRow;
+    }
+    public Label getCellOfRow(String groupName, String columnName, int rowIndex){
+        int columnIndex = tblInfo.getColumnIndexByName(columnName);
+        return Label.xpath(String.format("(//table//span[contains(text(),'%s')]//ancestor::tr//following-sibling::tr[contains(@class,'bg-white')])[%s]//th[%s]",groupName,rowIndex,columnIndex));
     }
 }

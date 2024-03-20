@@ -482,7 +482,7 @@ public class SBPConstants {
         public final static String MES_REMINDER_BEFORE_2_MONTH = "Are you sure to perform Closing Journal Entry for %s - %s?";
     }
     public static class ConsolidatedClientBalance {
-        public final static List<String> HEADER_NAME = Arrays.asList("#","Client","PIC","Status","Note","Log","Deposit in Ori CUR","Total Balance HKD","GBP","USD","EUR","HKD");
+        public final static List<String> HEADER_NAME = Arrays.asList("#","Client","PIC","Status","Note","Log","Deposit","Total Balance HKD","GBP","USD","EUR","HKD");
         public final static String ERROR_MES_FINANCIAL_YEAR = "Date range should be between 01/08/%s - 31/07/%s.";
     }
     public static class FeedReport {
