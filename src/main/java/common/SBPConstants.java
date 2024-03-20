@@ -473,7 +473,7 @@ public class SBPConstants {
     }
     public static class PositionTakingReport {
         public final static String WARNING_FINANCIAL_YEAR_MES = "Please select in range 01/08/%s and 31/07/%s.";
-        public final static String INVALID_TIME_MES = "Invalid time range. You can see data up to 1 month.";
+        public final static String INVALID_TIME_MES = "Invalid date range. You can see data up to 1 month.";
         public final static List<String> DEFAULT_BOOKIE_HEADER_NAME = Arrays.asList("#","Bookie Name","Till %s","DR-Win/Loss");
     }
     public static class ClosingJournalEntries {
