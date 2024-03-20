@@ -47,36 +47,29 @@ public class CompanySetupTest extends BaseCaseAQS {
     String agentLedCode = "QATE00-LED";
 
     @TestRails(id = "4332")
-    @Test(groups = {"regression", "2023.10.31"})
-    @Parameters({"password"})
+    @Test(groups = {"regression", "2023.10.31","ethan"})
+    @Parameters({"password","userNameOneRole"})
     public void Company_Set_up_TC4332(String password, String usernameOneRole) throws Exception{
         log("@title: Validate accounts without permission cannot see the menu");
         log("@Precondition: Deactivate Company Set-up option in one role account");
-        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRole("one role").switchPermissions("Company Set-up", false);
-        roleManagementPage.switchPermissions(JOURNAL_ENTRIES, true);
         log("@Step 1: Re-login with one role account account has 'Company Set-up' permission is OFF");
-        LoginPage loginPage = roleManagementPage.logout();
+        LoginPage loginPage = welcomePage.logout();
         loginPage.login(usernameOneRole, StringUtils.decrypt(password));
-        JournalEntries retainedEarningsPage =
-                welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntries.class);
         log("@Verify 1: Company Set-up menu is hidden displays");
-        Assert.assertTrue(!welcomePage.headerMenuControl.isSubmenuDisplay(ACCOUNTING, COMPANY_SETUP),
+        Assert.assertFalse(welcomePage.headerMenuControl.isSubmenuDisplay(ACCOUNTING, COMPANY_SETUP),
                 "FAILED! Cash Flow Statement menu is displayed");
         log("INFO: Executed completely");
     }
 
     @TestRails(id = "4333")
-    @Test(groups = {"regression", "2023.10.31"})
-    @Parameters({"password"})
+    @Test(groups = {"regression", "2023.10.31","ethan"})
+    @Parameters({"password","userNameOneRole"})
     public void Company_Set_up_TC4333(String password, String usernameOneRole) throws Exception{
         String companyURL = environment.getSbpLoginURL() + "#/aqs-report/company-set-up";
         log("@title: Validate accounts without permission cannot access page by external link");
         log("@Precondition: Deactivate Company Set-up option in one role account");
-        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRole("one role").switchPermissions("Company Set-up", false);
         log("@Step 1: Re-login with one role account account has 'Company Set-up' permission is OFF");
-        LoginPage loginPage = roleManagementPage.logout();
+        LoginPage loginPage = welcomePage.logout();
         loginPage.login(usernameOneRole, StringUtils.decrypt(password));
         log("@Verify 1: Company Set-up menu can not access by external link: " + companyURL);
         DriverManager.getDriver().get(companyURL);
