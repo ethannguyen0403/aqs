@@ -126,6 +126,7 @@ public class EventSchedulePage extends WelcomePage {
     }
 
     private void fillEventInfo(Event event, int rowIndex){
+        waitSpinnerDisappeared();
         DropDownBox ddpHomeTeam = DropDownBox.xpath(tblEvent.getxPathOfCell(1,colHomeTeam,rowIndex,"select"));
         DropDownBox ddpAwayTeam = DropDownBox.xpath(tblEvent.getxPathOfCell(1,colAwayTeam,rowIndex,"select"));
         TextBox txtTime = TextBox.xpath(tblEvent.getxPathOfCell(1,colTime,rowIndex,"input"));

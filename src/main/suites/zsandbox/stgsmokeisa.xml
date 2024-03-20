@@ -28,12 +28,12 @@
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
         <groups>
             <run>
-                <include name="smoke1" />
+                <include name="isa" />
             </run>
         </groups>
 
         <classes>
-            <class name="testcases.sb11test.trading.BetSettlementTest"/>
+            <class name="testcases.sb11test.sport.EventScheduleTest"/>
         </classes>
     </test>
 </suite>
