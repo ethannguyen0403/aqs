@@ -53,7 +53,7 @@ public class ClientBalancePage extends WelcomePage {
         int i = 1;
         Label lblClientName;
         while (true) {
-            lblClientName = Label.xpath(tblClient.getxPathOfCell(1, colClientName, i, null));
+            lblClientName = Label.xpath(tblClient.getxPathOfCellSPP(1, tblClientBalance.getColumnIndexByName("Client"), i, null));
             if (!lblClientName.isDisplayed()) {
                 System.out.println("Can NOT found the client name " + clientName + " in the table");
                 return -1;

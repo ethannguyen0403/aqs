@@ -30,7 +30,7 @@
         <parameter name="companyName" value="Kastraki Limited"/>
         <parameter name="companyCurrency" value="HKD"/>
         <parameter name="userNameOneRole" value="onerole"/>
-        <parameter name='isAddTestRailResult' value='false'/>
+        <parameter name='isAddTestRailResult' value='true'/>
         <groups>
             <run>
                 <include name="ethan"/>
@@ -38,7 +38,23 @@
         </groups>
 
         <classes>
+            <class name="testcases.sb11test.sport.EventScheduleTest"/>
+
+            <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
+
+            <class name="testcases.sb11test.accounting.CompanySetupTest"/>
             <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
+
+            <class name="testcases.sb11test.trading.BetEntryTest"/>
+            <class name="testcases.sb11test.trading.BetSettlementTest"/>
+
+            <class name="testcases.sb11test.generalReports.ClientBalanceTest"/>
+            <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
+            <class name="testcases.sb11test.generalReports.ARandAPReconciliationTest"/>
+            <class name="testcases.sb11test.generalReports.ConsolidatedClientBalanceTest"/>
+            <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
+
+            <class name="testcases.sb11test.financialReports.BalanceSheetAnalysisTest"/>
         </classes>
     </test>
 </suite>
