@@ -136,7 +136,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
         log("Precondition: Get 'Retained Earning Ending' amount from Retained Earnings report - in the filtered financial year (e.g. Financial Year 2022-2023) (1)");
         RetainedEarningsPage retainedEarningsPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);
-        retainedEarningsPage.filterRetainedEarnings(KASTRAKI_LIMITED, FINANCIAL_YEAR);
+        retainedEarningsPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR);
         String retainEar = retainedEarningsPage.lblAmountRetainedEnding.getText().trim();
         log("@Step 1: Navigate Financial Report > Stockholders Equity");
         StockHoldersEquityPage stockPage =
@@ -227,7 +227,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
         log("@title: Validate label 'Total Stockholder's Equity' is displayed in bold");
         RetainedEarningsPage retainedEarningsPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);
-        retainedEarningsPage.filterRetainedEarnings(KASTRAKI_LIMITED, FINANCIAL_YEAR);
+        retainedEarningsPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR);
         log("@Step 1: Navigate Financial Report > Stockholders Equity");
         StockHoldersEquityPage stockPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);

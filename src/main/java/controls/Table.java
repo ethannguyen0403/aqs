@@ -176,7 +176,7 @@ public class Table extends BaseElement {
         Row row;
         int i = 1;
         while(true) {
-            xpath = String.format("%s%s", this._xpathTable, String.format("/thead/tr[%s]",i));
+            xpath = String.format("%s%s", this._xpathTable, String.format("/thead/tr[contains(@class,'table-header')][%s]",i));
             row = Row.xpath(xpath);
             if (!row.isDisplayedShort(2)) {
                 if (!row.isDisplayed()) {
