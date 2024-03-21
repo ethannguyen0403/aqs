@@ -27,7 +27,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     private String detailTypeDividend = "303.000.000.000 - Dividend";
 
     @TestRails(id = "2815")
-    @Test(groups = {"smoke_qc", "2023.10.31"})
+    @Test(groups = {"regression_stg", "2023.10.31"})
     @Parameters({"password", "userNameOneRole"})
     public void Retained_Earnings_TC2815(String password, String userNameOneRole) throws Exception {
         log("@title: Validate 'Retained Earnings' menu is hidden if not active Retained Earnings permission");
@@ -47,7 +47,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
 
 
     @TestRails(id = "2816")
-    @Test(groups = {"smoke", "2023.10.31"})
+    @Test(groups = {"regression", "2023.10.31"})
     public void Retained_Earnings_TC2816() {
         log("@title: Validate 'Retained Earnings' menu displays if active Retained Earnings permission");
         log("@Step 1: Login to SB11 site with account has 'Retained Earnings' permission is ON");
@@ -63,7 +63,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="2817")
-    @Test(groups =  {"smoke", "2023.10.31"})
+    @Test(groups =  {"regression", "2023.10.31"})
     public void Retained_Earnings_TC2817() {
         log("@title: Validate Description displays 3 rows 'Retained Earnings', 'Net Income/Loss from Operation' and 'Dividends'");
         log("@Step 1: Login to SB11 site with account has 'Retained Earnings' permission is ON");
@@ -79,7 +79,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="2818")
-    @Test(groups =  {"smoke", "2023.10.31"})
+    @Test(groups =  {"regression", "2023.10.31"})
     public void Retained_Earnings_TC2818() {
         String ledgerValue = "";
         log("@title: Validate correct Retained Earnings value displays");
@@ -98,7 +98,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="2819")
-    @Test(groups =  {"smoke", "2023.10.31"})
+    @Test(groups =  {"regression", "2023.10.31"})
     public void Retained_Earnings_TC2819() {
         String netProfitLoss = "";
 
@@ -120,7 +120,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="2820")
-    @Test(groups =  {"smoke", "2023.10.31"})
+    @Test(groups =  {"regression", "2023.10.31"})
     public void Retained_Earnings_TC2820() {
         String ledgerValue = "";
 
@@ -141,7 +141,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="2821")
-    @Test(groups =  {"smoke", "2023.10.31"})
+    @Test(groups =  {"regression", "2023.10.31"})
     public void Retained_Earnings_TC2821() {
         String downloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "retained-earnings.xlsx";
         List<String> columExcel = Arrays.asList("No", "Description", "Amount");
@@ -177,7 +177,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="2822")
-    @Test(groups =  {"smoke", "2023.10.31"})
+    @Test(groups =  {"regression", "2023.10.31"})
     public void Retained_Earnings_TC2822() {
         String downloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "retained-earnings.pdf";
         log("@title: Validate 'Export To PDF' button work properly");

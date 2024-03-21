@@ -1158,10 +1158,10 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan"})
     @Parameters({"clientCode"})
     @TestRails(id = "882")
-    public void ClientStatementTC_882(String clientCode) throws IOException, ParseException {
+    public void ClientStatementTC_882(String clientCode) {
         log("@Validate Win/Lose Summary dialog displays with properly value when clicked on Win/Lose link");
         String agentCode = "QASAHK00";
         String expectedRecPayVal;
@@ -1194,7 +1194,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         expectedRecPayVal = popup.getSummaryCellValue(CLIENT_CREDIT_ACC,popup.colWinLose);
         log("@Step 4: Open win lose summary popup of player");
         ClientSummaryWinlosePopup winlosePopup = popup.openWinLoseSummaryPopup(CLIENT_CREDIT_ACC);
-
+        winlosePopup.waitSpinnerDisappeared();
         log("@Validate the WinLose balance show properly");
         actualRecPayVal = winlosePopup.getGrandTotal(winlosePopup.colWinLoseTotal) ;
         Assert.assertEquals(expectedRecPayVal,actualRecPayVal,"FAILED! Win/Loss balance is not shown correctly, actual: "+actualRecPayVal+ " and expected: "+expectedRecPayVal);
@@ -1202,10 +1202,10 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan"})
     @Parameters({"clientCode"})
     @TestRails(id = "999")
-    public void ClientStatementTC_999(String clientCode) throws IOException, ParseException {
+    public void ClientStatementTC_999(String clientCode) {
         log("@Validate Member Transactions dialog displays with properly value when clicked on Account link");
         String agentCode = "QASAHK00";
         String expectOpeningRunningVal;

@@ -71,6 +71,9 @@ public class GetSoccerEventUtils {
             e.printStackTrace();
         }
         if(Objects.nonNull(jsonObject)){
+            if(league.isEmpty()){
+                league = getRandomLeague(jsonObject);
+            }
             if(!jsonObject.has(league))
                 return null;
             JSONArray resultArr  = jsonObject.getJSONArray(league);
@@ -92,6 +95,12 @@ public class GetSoccerEventUtils {
             }
         }
         return null;
+    }
+    public static String getRandomLeague(JSONObject jsonObject) {
+        String[] keys = JSONObject.getNames(jsonObject);
+        Random random = new Random();
+        int randomIndex = random.nextInt(keys.length);
+        return keys[randomIndex];
     }
 
     public static Event setEventID(Event event) {

@@ -10,6 +10,10 @@ import controls.Table;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.clientBalance.ClientBalanceDetailPopup;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 
 public class ClientBalancePage extends WelcomePage {
     public DropDownBox ddViewBy = DropDownBox.xpath("//div[contains(text(),'View By')]//following::select[1]");
@@ -49,7 +53,7 @@ public class ClientBalancePage extends WelcomePage {
         int i = 1;
         Label lblClientName;
         while (true) {
-            lblClientName = Label.xpath(tblClient.getxPathOfCell(1, colClientName, i, null));
+            lblClientName = Label.xpath(tblClient.getxPathOfCellSPP(1, tblClientBalance.getColumnIndexByName("Client"), i, null));
             if (!lblClientName.isDisplayed()) {
                 System.out.println("Can NOT found the client name " + clientName + " in the table");
                 return -1;
@@ -76,4 +80,16 @@ public class ClientBalancePage extends WelcomePage {
         return new ClientBalanceDetailPopup();
     }
 
+    /**
+     * Method get value on columns: deposit, total balance hkd, hkd
+     * @return
+     */
+    public List<String> getValueOfFirstClient(){
+        List<String> lstValue = new ArrayList<>();
+        List<String> colEx = Arrays.asList("Deposit","Total Balance HKD","HKD");
+        for (int i = 0; i < colEx.size(); i++){
+            lstValue.add(tblClientBalance.getControlOfCellSPP(1,tblClientBalance.getColumnIndexByName(colEx.get(i)),1,null).getText());
+        }
+        return lstValue;
+    }
 }

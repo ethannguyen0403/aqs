@@ -8,16 +8,18 @@ import pages.sb11.generalReports.ClientStatementPage;
 
 public class ClientSummaryWinlosePopup {
     int summaryColTotal = 8;
-    public int colWinLoseTotal = 4;
+    public int colWinLoseTotal = 3;
+    Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span");
 
     Table tblWinloseSummary = Table.xpath("//app-win-loss-detail-log//table[@aria-label='group table']",summaryColTotal);
+    Label lblSpin = Label.xpath("//div[contains(@class,'la-ball-clip-rotate')]");
 
     public String getGrandTotal(int colIndex) {
-        String returnValue = null;
-        Label lblCellValue;
-        lblCellValue = Label.xpath(tblWinloseSummary.getxPathOfCell(1, colIndex, 5, null));
-        returnValue = lblCellValue.getText();
-        return returnValue;
+        return Label.xpath(String.format("(//td[text()='Grand Total']/following-sibling::td)[%s]",colIndex)).getText();
     }
-
+    public void waitSpinnerDisappeared() {
+        while(lblSpin.isDisplayed()) {
+            lblSpin.waitForControlInvisible();
+        }
+    }
 }

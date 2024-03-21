@@ -4,12 +4,13 @@ import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.FileUtils;
 import com.paltech.utils.StringUtils;
-import common.SBPConstants;
+import static common.SBPConstants.*;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
 import pages.sb11.accounting.CompanySetupPage;
+import pages.sb11.generalReports.ClientBalancePage;
 import pages.sb11.generalReports.ConsolidatedClientBalancePage;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
@@ -29,7 +30,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         log("@Step 2: Check menu item 'Consolidated Client Balance' under menu 'General Reports'");
         log("@Verify 1: Menu 'Consolidated Client Balance' is not shown");
-        Assert.assertFalse(welcomePage.headerMenuControl.isSubmenuDisplay(SBPConstants.GENERAL_REPORTS,SBPConstants.CONSOLIDATED_CLIENT_BALANCE));
+        Assert.assertFalse(welcomePage.headerMenuControl.isSubmenuDisplay(GENERAL_REPORTS,CONSOLIDATED_CLIENT_BALANCE));
         log("INFO: Executed completely");
     }
     @TestRails(id="5281")
@@ -55,18 +56,18 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("@pre-condition: Account is inactivated permission 'Consolidated Client Balance'");
         log("@Step 1: Navigate to the site");
         log("@Step 2: Expand menu 'General Reports' and access 'Consolidated Client Balance' page");
-        ConsolidatedClientBalancePage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
+        ConsolidatedClientBalancePage page = welcomePage.navigatePage(GENERAL_REPORTS,CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
         log("@Verify 1: User can access page successfully");
         Assert.assertTrue(page.lblTitle.getText().contains("Consolidated Client Balance"),"FAILED! Title page displays incorrect");
         log("INFO: Executed completely");
     }
     @TestRails(id="5283")
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan"})
     public void Consolidated_Client_Balance_5283() {
         log("@title: Validate UI on Consolidated Client Balance is correctly displayed");
         log("@pre-condition: Account is activated permission 'Company Set-up'");
         log("@Step 1: Go to General Reports >> Consolidated Client Balance");
-        ConsolidatedClientBalancePage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
+        ConsolidatedClientBalancePage page = welcomePage.navigatePage(GENERAL_REPORTS,CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
         log("@Step 2: Observe the page");
         log("@Verify 1:  Validate UI Info display correctly:\n" +
                 "View By: contains the only option 'Client Point' as we only support this view in the report for now\n" +
@@ -77,13 +78,14 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="5284")
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan"})
     public void Consolidated_Client_Balance_5284() {
         log("@title: Validate 'Export To Excel' button work properly");
-        String downloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "consolidated-client-balance.xlsx";
+        String downloadPath = getDownloadPath() + "consolidated-client-balance.xlsx";
+
         log("@pre-condition: Account is activated permission 'Consolidated Client Balance'");
         log("@Step 1: Go to General Reports >> Consolidated Client Balance");
-        ConsolidatedClientBalancePage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
+        ConsolidatedClientBalancePage page = welcomePage.navigatePage(GENERAL_REPORTS,CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
         log("@Step 2: Filter which have data");
         page.filter("","","","");
         log("@Step 3: Click 'Export To Excel' button");
@@ -108,7 +110,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         String downloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "consolidated-client-balance-pdf.pdf";
         log("@pre-condition: Account is activated permission 'Consolidated Client Balance'");
         log("@Step 1: Go to General Reports >> Consolidated Client Balance");
-        ConsolidatedClientBalancePage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
+        ConsolidatedClientBalancePage page = welcomePage.navigatePage(GENERAL_REPORTS,CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
         log("@Step 2: Filter which have data");
         page.filter("","","","");
         log("@Step 3: Click 'Export To Excel' button");
@@ -125,18 +127,23 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
     }
     @TestRails(id="5286")
     @Parameters({"clientCode"})
-    @Test(groups = {"regression","2024.V.1.0"})
+    @Test(groups = {"regression","2024.V.1.0","ethan"})
     public void Consolidated_Client_Balance_5286(String clientCode) {
         log("@title: Validate filters work properly");
-        log("@pre-condition: Consolidated Client Balance permission is ON");
+        log("@pre-condition 1: Consolidated Client Balance permission is ON");
+        log("@pre-condition 2: Get deposit, total balance, HKD value in client balance page of current day");
+        String clientName = "QA Client (No.121 QA Client)";
+        ClientBalancePage clientBalancePage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_BALANCE,ClientBalancePage.class);
+        clientBalancePage.filter("Client Point",KASTRAKI_LIMITED,"","",clientCode);
+        List<String> lstEx = clientBalancePage.getValueOfFirstClient();
         log("@Step 1: Go to General Reports >> Consolidated Client Balance");
-        ConsolidatedClientBalancePage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
+        ConsolidatedClientBalancePage page = clientBalancePage.navigatePage(GENERAL_REPORTS,CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
         log("@Step 2: Select financial year");
         log("@Step 3: Select date which has data");
         log("@Step 3: Click the Show button");
-        page.filter("","01/01/2024","",clientCode);
+        page.filter("","","",clientCode);
         log("@Verify 1: Data shows correctly by filters");
-        page.verifyFilterWorkProperly();
+        page.verifyFilterWorkProperly(clientName,lstEx.get(0),lstEx.get(1),lstEx.get(2));
         log("INFO: Executed completely");
     }
     @TestRails(id="5287")
@@ -146,7 +153,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("@title: Validate can search clients by report name/client name successfully");
         log("@pre-condition: Account is activated permission 'Consolidated Client Balance'");
         log("@Step 1: Go to General Reports >> Consolidated Client Balance");
-        ConsolidatedClientBalancePage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
+        ConsolidatedClientBalancePage page = welcomePage.navigatePage(GENERAL_REPORTS,CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
         log("@Step 2: Enter an exist client name");
         log("@Step 3: Click Search");
         page.filter("","","",clientCode);
@@ -156,12 +163,12 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="5288")
-    @Test(groups = {"regression","2024.V.1.0"})
+    @Test(groups = {"regression","2024.V.1.0","ethan"})
     public void Consolidated_Client_Balance_5288() {
         log("@title: Validate filters work properly");
         log("@pre-condition: Consolidated Client Balance permission is ON");
         log("@Step 1: Go to General Reports >> Consolidated Client Balance");
-        ConsolidatedClientBalancePage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
+        ConsolidatedClientBalancePage page = welcomePage.navigatePage(GENERAL_REPORTS,CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
         log("@Step 2: Select financial year");
         log("@Step 3: Select date which has data");
         log("@Step 4: Click the Show button");
@@ -178,10 +185,10 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("@title: Validate the error message displays if date does not belong to Financial Year");
         log("@pre-condition: Consolidated Client Balance permission is ON");
         log("@Step 1: Go to General Reports >> Consolidated Client Balance");
-        ConsolidatedClientBalancePage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
+        ConsolidatedClientBalancePage page = welcomePage.navigatePage(GENERAL_REPORTS,CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
         log("@Step 2: Select a Financial Year (e.g. 2022-2023)");
-        int oldYear = DateUtils.getYear(SBPConstants.GMT_7)-2;
-        int preYear = DateUtils.getYear(SBPConstants.GMT_7)-1;
+        int oldYear = DateUtils.getYear(GMT_7)-2;
+        int preYear = DateUtils.getYear(GMT_7)-1;
         log("@Step 3: Select date range not belongs to Financial Year at step #2");
         log("@Step 4: Click Show button");
         String financialYear = String.format("Year %s-%s",oldYear,preYear);
@@ -189,7 +196,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         page.btnShow.click();
         log("@Verify 1: The error message 'Please select in range 01/08/<Year> and 31/07/<Year +1>' displays");
         String errorMes = page.appArlertControl.getWarningMessage();
-        Assert.assertEquals(errorMes,String.format(SBPConstants.ConsolidatedClientBalance.ERROR_MES_FINANCIAL_YEAR,oldYear,preYear),
+        Assert.assertEquals(errorMes,String.format(ConsolidatedClientBalance.ERROR_MES_FINANCIAL_YEAR,oldYear,preYear),
                 "FAILED! Error message displays incorrect");
         log("INFO: Executed completely");
     }
@@ -200,7 +207,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("@title: Validate the error message displays if date does not belong to Financial Year");
         log("@pre-condition: Consolidated Client Balance permission is ON");
         log("@Step 1: Go to General Reports >> Consolidated Client Balance");
-        ConsolidatedClientBalancePage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
+        ConsolidatedClientBalancePage page = welcomePage.navigatePage(GENERAL_REPORTS,CONSOLIDATED_CLIENT_BALANCE, ConsolidatedClientBalancePage.class);
         log("@Step 2: Filter values which has data");
         page.filter("","","",clientCode);
         log("@Step 3: Click on client name");

@@ -40,6 +40,8 @@
         <classes>
             <class name="testcases.sb11test.trading.AnalyseTest"/>
 
+            <class name="testcases.sb11test.master.TermsAndConditionsTest"/>
+
             <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
             <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
             <class name="testcases.sb11test.generalReports.FundReconciliationTest"/>

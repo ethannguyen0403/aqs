@@ -190,7 +190,7 @@ public class BetEntryTest extends BaseCaseAQS {
     }
 
     @TestRails(id="191")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetEntry_TC191(String accountCode,String accountCurrency) throws ParseException {
         log("@title: Validate Bet Slip info display correctly when open Soccer> FT>HDP>Home");
@@ -237,7 +237,7 @@ public class BetEntryTest extends BaseCaseAQS {
     }
 
     @TestRails(id="341")
-    @Test(groups = {"smoke_qc"})
+    @Test(groups = {"smoke_qc","ethan"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetEntry_TC341(String accountCode,String accountCurrency){
         log("@title: Validate can place bet for soccer with option copy bet to SPBPS7 as same odds\n");

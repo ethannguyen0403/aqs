@@ -16,6 +16,7 @@ public class SBPConstants {
     public final static String MISSED_ACCOUNTS = "Missed Accounts";
     public final static String AUTO_CREATED_ACCOUNTS = "Auto-created Accounts";
     public final static String ADDRESS_BOOK = "Address Book";
+    public final static String TERMS_AND_CONDITIONS = "Terms And Conditions";
     public final static String TRADING = "Trading";
     public final static String ACCOUNTING = "Accounting";
     public final static String COMPANY_SETUP = "Company Set-up";
@@ -472,7 +473,7 @@ public class SBPConstants {
     }
     public static class PositionTakingReport {
         public final static String WARNING_FINANCIAL_YEAR_MES = "Please select in range 01/08/%s and 31/07/%s.";
-        public final static String INVALID_TIME_MES = "Invalid time range. You can see data up to 1 month.";
+        public final static String INVALID_TIME_MES = "Invalid date range. You can see data up to 1 month.";
         public final static List<String> DEFAULT_BOOKIE_HEADER_NAME = Arrays.asList("#","Bookie Name","Till %s","DR-Win/Loss");
     }
     public static class ClosingJournalEntries {
@@ -481,7 +482,7 @@ public class SBPConstants {
         public final static String MES_REMINDER_BEFORE_2_MONTH = "Are you sure to perform Closing Journal Entry for %s - %s?";
     }
     public static class ConsolidatedClientBalance {
-        public final static List<String> HEADER_NAME = Arrays.asList("#","Client","PIC","Status","Note","Log","Deposit in Ori CUR","Total Balance HKD","GBP","USD","EUR","HKD");
+        public final static List<String> HEADER_NAME = Arrays.asList("#","Client","PIC","Status","Note","Log","Deposit","Total Balance HKD","GBP","USD","EUR","HKD");
         public final static String ERROR_MES_FINANCIAL_YEAR = "Date range should be between 01/08/%s - 31/07/%s.";
     }
     public static class FeedReport {

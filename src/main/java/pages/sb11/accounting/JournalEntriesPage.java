@@ -13,8 +13,8 @@ public class JournalEntriesPage extends WelcomePage {
     public DropDownBox ddCreditTo = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::span[text()='To']//following-sibling::select");
     public DropDownBox ddDebitLedger = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::span[text()='Ledger']//following-sibling::select");
     public DropDownBox ddCreditLedger = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::span[text()='Ledger']//following-sibling::select");
-    public DropDownBox ddDebitBookieClient = DropDownBox.xpath("////app-transaction-creation//span[contains(text(),'Debit')]//following::span[text()='Bookie']//following-sibling::select");
-    public DropDownBox ddCreditBookieClient = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::span[text()='Bookie']//following-sibling::select");
+    public DropDownBox ddDebitBookieClient = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::span[text()='Bookie']//following-sibling::select | //app-transaction-creation//span[contains(text(),'Debit')]//following::span[text()='Client']//following-sibling::select");
+    public DropDownBox ddCreditBookieClient = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::span[text()='Bookie']//following-sibling::select | //app-transaction-creation//span[contains(text(),'Credit')]//following::span[text()='Client']//following-sibling::select");
     public DropDownBox ddDebitCurrency = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::span[text()='Currency']//following-sibling::select");
     public DropDownBox ddCreditCurrency = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::span[text()='Currency']//following-sibling::select");
     public DropDownBox ddDebitLevel = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::span[text()='Level']//following-sibling::select");
@@ -182,7 +182,7 @@ public class JournalEntriesPage extends WelcomePage {
         if (isDebit) {
             ddDebitFrom.selectByVisibleText(fromType);
             waitSpinnerDisappeared();
-            ddDebitLedger.selectByVisibleText(clientBookieCode);
+            ddDebitBookieClient.selectByVisibleText(clientBookieCode);
             ddDebitLevel.selectByVisibleText(level);
             txtDebitAccount.sendKeys(accountCode);
             txtDebitAccount.sendKeys(accountCode);
@@ -192,7 +192,7 @@ public class JournalEntriesPage extends WelcomePage {
         } else {
             ddCreditTo.selectByVisibleText(fromType);
             waitSpinnerDisappeared();
-            ddCreditLedger.selectByVisibleText(clientBookieCode);
+            ddCreditBookieClient.selectByVisibleText(clientBookieCode);
             ddCreditLevel.selectByVisibleText(level);
             txtCreditAccount.sendKeys(accountCode);
             txtCreditAccount.sendKeys(accountCode);

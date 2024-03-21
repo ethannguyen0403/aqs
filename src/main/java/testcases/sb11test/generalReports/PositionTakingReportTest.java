@@ -72,7 +72,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         Assert.assertEquals(mesWarning,String.format(PositionTakingReport.WARNING_FINANCIAL_YEAR_MES,preYear,afterYear),"FAILED! Error message display incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan"})
     @TestRails(id = "4188")
     public void Position_Taking_Report_4188() {
         log("@title: Validate the filtered range is limited to 1 month");
@@ -235,7 +235,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         Assert.assertEquals(winloseAc,winloseEx,"FAILED! Win/Lose value displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan"})
     @TestRails(id = "4339")
     public void Position_Taking_Report_4339() {
         log("@title: Validate correct [selected To/From date] displays");
@@ -273,7 +273,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         Assert.assertEquals(winloseAc,winloseEx,"FAILED! Win/Lose value displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan"})
     @TestRails(id = "4340")
     public void Position_Taking_Report_4340() {
         log("@title: Validate correct Total in Bookie section displays");
@@ -287,7 +287,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All",fromDate,toDate);
         log("@Step 4: Check the Total value");
         log("@Verify 1: Total win/lose value = sum amount of all bookies for each column displays");
-        page.verifyTotalWinLose();
+        Assert.assertTrue(page.isTotalWinLoseDisplay(),"FAILED! Total win/lose value = sum amount of all bookies for each column displays incorrect.");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})
@@ -331,7 +331,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         Assert.assertEquals(page.tblClient.getControlOfCell(1,page.clientNameCol,1,"a").getText(),"PSM Group Limited","FAILED! Client Name display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan"})
     @TestRails(id = "4346")
     public void Position_Taking_Report_4346() {
         log("@title: Validate there is a pagination if filtering more than 4 days");

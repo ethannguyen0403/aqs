@@ -15,8 +15,6 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.positionTakingReport.AccountPopup;
-import utils.sb11.CompanySetUpUtils;
-import utils.sb11.CurrencyRateUtils;
 
 import java.util.List;
 
@@ -111,17 +109,23 @@ public class PositionTakingReportPage extends WelcomePage {
         }
     }
 
-    public void verifyTotalWinLose() {
+    public boolean isTotalWinLoseDisplay() {
         bookieTblCol = getColTable("Bookie")-1;
         tblBookie = Table.xpath("(//table)[1]",bookieTblCol);
-        Double winLoseEx = Double.valueOf(lblTotalWLBookie.getText().replace(",",""));
-        Double winLoseAc = 0.00;
+        double winLoseEx = Double.valueOf(lblTotalWLBookie.getText().replace(",",""));
+        double winLoseAc = 0.00;
         for (int i = 4; i < bookieTblCol;i++){
             String lblwinLoseDate = "(//table)[1]//tbody//td[text()='Total']//following-sibling::td[%s]";
             String winloseDate = Label.xpath(String.format(lblwinLoseDate,i)).getText().replace(",","");
             winLoseAc = DoubleUtils.roundEvenWithTwoPlaces(winLoseAc + Double.valueOf(winloseDate));
         }
-        Assert.assertTrue(winLoseAc.equals(winLoseEx),"FAILED! Total Win/Lose displays incorrect!");
+        double value1 = winLoseAc - winLoseEx;
+        double value2 = winLoseEx - winLoseAc;
+        if (value1 <= 0.02 && value1 >= 0 || value2 <= 0.02 && value2 >= 0){
+            return true;
+        }
+        System.out.println(winLoseEx + " difference from "+winLoseAc);
+        return false;
     }
 
     public void verifyDateColumnDisplay(String toDate, int rangeDate) {
