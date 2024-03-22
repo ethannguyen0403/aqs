@@ -86,14 +86,14 @@ public class BalanceCurrentTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.12.29"})
-    @Parameters({"clientCode", "superCode"})
+    @Test(groups = {"regression", "2023.12.29","ethan"})
+    @Parameters({"clientCode"})
     @TestRails(id = "2823")
-    public void Balance_Current_2823(String clientCode, String superCode){
+    public void Balance_Current_2823(String clientCode){
         log("@title: Validate currency on total row should display as Master's currency");
         String agentCode = "W2IN";
         String masterCur = "INR";
-        String accountFilter = String.format("%s - %s", superCode, clientCode);
+        String accountFilter = String.format("%s - %s", "QA2112", clientCode);
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Balance[Current]");
         BalanceCurrentPage balanceCurrentPage = welcomePage.navigatePage(ACCOUNTING, BALANCE_CURRENT, BalanceCurrentPage.class);

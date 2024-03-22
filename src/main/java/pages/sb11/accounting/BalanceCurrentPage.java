@@ -73,7 +73,7 @@ public class BalanceCurrentPage extends WelcomePage {
     }
 
     public String getTotalLabel(String agentCode){
-        return Label.xpath(String.format("(//tr[. = '%s']/following-sibling::tr[contains(@class,'total-balance-tr')])[1]/td[1]", agentCode)).getText().trim();
+        return Label.xpath(String.format("(//tr[. = '%s']/following-sibling::tr[contains(@class,'total-balance-tr')])[1]/td[1]/span", agentCode)).getText().trim();
     }
 
     private int getAgentRowIndex(String agentCode){
