@@ -28,6 +28,7 @@ public class BookieSuperPage {
     public Label lblSuperCode = Label.xpath("//div[contains(text(),'Super Code')]");
 
     public Table tbSuper = Table.xpath("//table",10);
+    Label lblSpin = Label.xpath("//div[contains(@class,'la-ball-clip-rotate')]");
     int colSuperCode = 4;
     int colMaster = 10;
 
@@ -42,6 +43,8 @@ public class BookieSuperPage {
     public MasterListPopup openMasterList(String superCode){
         int rowIndex = getSuperCodeRowIndex(superCode);
         tbSuper.getControlOfCell(1,colMaster,rowIndex,null).click();
+        waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
         return new MasterListPopup();
     }
 
@@ -57,6 +60,11 @@ public class BookieSuperPage {
             if(lblSuperCode.getText().contains(superCode))
                 return i;
             i = i +1;
+        }
+    }
+    public void waitSpinnerDisappeared() {
+        while(lblSpin.isDisplayed()) {
+            lblSpin.waitForControlInvisible();
         }
     }
 }

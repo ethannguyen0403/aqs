@@ -237,7 +237,7 @@ public class SBPConstants {
         public final static List<String> STATUS_LIST = Arrays.asList("All", "Active","Closed","In-active");
         public final static List<String> CURRENCY_LIST = Arrays.asList("All","AUD","CAD","CNY","AED","EUR","HKD","INR","IDR","JPY","MYR","KPW","PKR","PHP","SGD","ZAR","KRW","LKR","GBP","TWD","THB","USD","VND");
         public final static List<String> TABLE_HEADER_SUPER = Arrays.asList("#", "i", "Bookie", "Super Code", "CUR", "Client","Support By","Edit","","# Master");
-        public final static List<String> TABLE_HEADER_MASTER = Arrays.asList("#", "i", "Bookie", "Master Code", "CUR", "Client","Support By","Edit","","# Agent");
+        public final static List<String> TABLE_HEADER_MASTER = Arrays.asList("#", "i", "Bookie", "Master Code", "CUR", "Client","Support By","Edit");
         public final static List<String> TABLE_HEADER_AGENT = Arrays.asList("#", "i", "Bookie", "Agent Code", "CUR", "Client","Type","Support By","Edit","","# Members");
         public final static List<String> GO_TO_LIST = Arrays.asList("Super","Master","Agent");
         public final static String TOOLTIP_MESSAGE = "This %s cannot be deleted because there's transaction made";

@@ -180,7 +180,10 @@ public class Table extends BaseElement {
             row = Row.xpath(xpath);
             if (!row.isDisplayedShort(2)) {
                 if (!row.isDisplayed()) {
-                    return lstRow;
+                    row = Row.xpath(String.format("%s%s", this._xpathTable, String.format("/thead/tr[%s]",i)));
+                    if (!row.isDisplayed()){
+                        return lstRow;
+                    }
                 }
             }else{
                 lstRow.addAll(row.getRow(this._columnNumber, true));

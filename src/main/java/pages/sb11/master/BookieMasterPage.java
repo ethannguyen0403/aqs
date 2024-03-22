@@ -29,8 +29,9 @@ public class BookieMasterPage {
     public Label lblMasterCode = Label.xpath("//div[contains(text(),'Master Code')]");
 
     public Table tbMaster = Table.xpath("//table",10);
+    Label lblSpin = Label.xpath("//div[contains(@class,'la-ball-clip-rotate')]");
     int colMasterCode = 4;
-    int colAgent = 10;
+    public Table tblAgent = Table.xpath("(//table)[2]",1);
 
     public void filterMasterCode (String companyUnit, String bookieCode, String superCode, String masterCode){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
@@ -39,11 +40,13 @@ public class BookieMasterPage {
         if (!masterCode.isEmpty())
             txtMasterCode.sendKeys(masterCode);
         btnSearch.click();
+        waitSpinnerDisappeared();
     }
 
     public AgentListPopup openAgentList(String masterCode){
         int rowIndex = getMasterCodeRowIndex(masterCode);
-        tbMaster.getControlOfCell(1,colAgent,rowIndex,null).click();
+        tblAgent.getControlOfCell(1,tblAgent.getColumnIndexByName("# Agent"),rowIndex,null).click();
+        waitSpinnerDisappeared();
         return new AgentListPopup();
     }
 
@@ -61,5 +64,9 @@ public class BookieMasterPage {
             i = i +1;
         }
     }
-
+    public void waitSpinnerDisappeared() {
+        while(lblSpin.isDisplayed()) {
+            lblSpin.waitForControlInvisible();
+        }
+    }
 }
