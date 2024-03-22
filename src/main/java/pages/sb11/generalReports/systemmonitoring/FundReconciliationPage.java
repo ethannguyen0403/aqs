@@ -30,20 +30,17 @@ public class FundReconciliationPage extends WelcomePage {
         btnShow.click();
         waitSpinnerDisappeared();
     }
-    public String getValueByDesc(String desc, int indexColum){
-        int indexRow = tblData.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
-        return Label.xpath(tblData.getxPathOfCell(1,indexColum,indexRow,"span")).getText();
+    public String getValueByDesc(String desc, String colName){
+        int indexCol = tblHeader.getColumnIndexByName(colName);
+        int indexRow = tblData.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description"),"span");
+        return Label.xpath(tblData.getxPathOfCell(1,indexCol,indexRow,"span")).getText();
     }
     public void tickConfirmAuthorise(String desc, String colName){
-        int indexRow = tblData.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
-        CheckBox cbConfirm = CheckBox.xpath(tblData.getxPathOfCell(1,tblHeader.getColumnIndexByName(colName)-1,indexRow,"input"));
+        int indexRow = tblData.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description"),"span");
+        CheckBox cbConfirm = CheckBox.xpath(tblData.getxPathOfCell(1,tblHeader.getColumnIndexByName(colName),indexRow,"input"));
         if (cbConfirm.isEnabled()){
             cbConfirm.click();
-            try {
-                Thread.sleep(1500);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            waitSpinnerDisappeared();
             ConfirmPopup confirmPopup = new ConfirmPopup();
             confirmPopup.btnYes.click();
             waitSpinnerDisappeared();
@@ -52,7 +49,7 @@ public class FundReconciliationPage extends WelcomePage {
         }
     }
     public String getSumDebitCredit(String debitcredit){
-        List<String> lstData = tblData.getColumn(tblHeader.getColumnIndexByName(debitcredit)-1,50,true);
+        List<String> lstData = tblData.getColumn(tblHeader.getColumnIndexByName(debitcredit),50,true);
         double sum = 0.00;
         for (int i = 1; i < lstData.size()-1;i++){
             if (!lstData.get(i).isEmpty()){
@@ -63,8 +60,8 @@ public class FundReconciliationPage extends WelcomePage {
     }
     public String getSumAuthorizedTrans(String authoriseName){
         double sum = 0.00;
-        List<String> lstAuthor = tblData.getColumn(tblHeader.getColumnIndexByName("Authorised By")-1,50,true);
-        List<String> lstDebit = tblData.getColumn(tblHeader.getColumnIndexByName("Debit")-1,50,true);
+        List<String> lstAuthor = tblData.getColumn(tblHeader.getColumnIndexByName("Authorised By"),50,true);
+        List<String> lstDebit = tblData.getColumn(tblHeader.getColumnIndexByName("Debit"),50,true);
         for (int i = 2; i < lstAuthor.size()-1;i++){
             if (lstAuthor.get(i).equals(authoriseName)){
                 sum = sum + Double.valueOf(lstDebit.get(i));
