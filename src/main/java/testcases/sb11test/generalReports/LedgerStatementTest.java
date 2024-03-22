@@ -1221,7 +1221,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression_stg","2024.V.2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan"})
     @TestRails(id = "15754")
     public void Ledger_Statement_15754() {
         log("@title: Validate there is only 1 CJE Income transaction with the updated/latest amounts after users trigger a CJE manually");
@@ -1249,9 +1249,9 @@ public class LedgerStatementTest extends BaseCaseAQS {
         JournalEntriesPage journalEntriesPage = ledgerStatementPage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 5: Perform a txn in the last 3 months which has CJE for an Income Ledger account\n" +
                 "e.g. Debit: Amount = 106.9HKD (B)\n" +
-                "Credit: Amount = 106.4HKD (C)");
+                "Credit: Amount = 106.9HKD (C)");
         double valueB = 100.9;
-        double valueC = 100.4;
+        double valueC = 100.9;
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitIncomeAcc)
                 .ledgerCredit(creditIncomeAcc)
@@ -1281,11 +1281,9 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 13: Filter data as step #2");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Capital",ledgerGroup,fromDate,toDate,"After CJE");
         log("@Verify 1: Running Bal. in 'Amounts are shown in HKD' column = (A) + [(B) -(C)]");
-        double valueD = valueB - valueC;
-        double valueEx = DoubleUtils.roundEvenWithTwoPlaces(valueA + valueD);
-        Assert.assertEquals(ledgerStatementPage.getValueAmount(ledgerName,ledgerStatementPage.colRunBalGBP), valueEx,"FAILED! Running Bal displays incorrect");
+        ledgerStatementPage.verifyRunningBalAfterTriggering(valueA,valueB,valueC);
     }
-    @Test(groups = {"regression_stg","2024.V.2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan"})
     @TestRails(id = "23700")
     public void Ledger_Statement_23700() {
         log("@title: Validate there is only 1 CJE Expenditure transaction with the updated/latest amounts after users trigger a CJE manually");
@@ -1315,7 +1313,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 "e.g. Debit: Amount = 106.9HKD (B)\n" +
                 "Credit: Amount = 106.4HKD (C)");
         double valueB = 100.9;
-        double valueC = 100.4;
+        double valueC = 100.9;
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitExpAcc)
                 .ledgerCredit(creditExpAcc)
@@ -1345,9 +1343,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 13: Filter data as step #2");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Capital",ledgerGroup,fromDate,toDate,"After CJE");
         log("@Verify 1: Running Bal. in 'Amounts are shown in HKD' column = (A) + [(B) -(C)]");
-        double valueD = valueB - valueC;
-        double valueEx = DoubleUtils.roundEvenWithTwoPlaces(valueA + valueD);
-        Assert.assertEquals(ledgerStatementPage.getValueAmount(ledgerName,ledgerStatementPage.colRunBalGBP), valueEx,"FAILED! Running Bal displays incorrect");
+        ledgerStatementPage.verifyRunningBalAfterTriggering(valueA,valueB,valueC);
     }
 
 

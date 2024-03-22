@@ -113,6 +113,7 @@ public class JournalEntriesPage extends WelcomePage {
 
         if (isSubmit){
             btnSubmit.click();
+            waitSpinnerDisappeared();
         }
     }
 

@@ -5,6 +5,7 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import com.paltech.utils.DoubleUtils;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Transaction;
@@ -323,5 +324,18 @@ public class LedgerStatementPage extends WelcomePage {
             }
         }
         return Label.xpath(String.format("(//span[contains(text(),'%s')]/ancestor::tr//following-sibling::tr[@class='total-row']//td)[%s]",parentName,indexCol)).getText().trim();
+    }
+
+    public void verifyRunningBalAfterTriggering(double runBalBefore, double amountDebit, double amountCredit) {
+        String ledgerName = "302.000.001.000 - PL for Current Year - HKD";
+        double valueEx = DoubleUtils.roundEvenWithTwoPlaces(runBalBefore + (amountDebit-amountCredit));
+        double valueAc = getValueAmount(ledgerName,colRunBalGBP);
+        double valueFinal1 = valueAc - valueEx;
+        double valueFinal2 = valueEx - valueAc;
+        if (valueFinal1 <= 0.01 && valueFinal1 >= 0 || valueFinal2 <= 0.01 && valueFinal2 >= 0){
+            Assert.assertTrue(true,"FAILED! Value displays incorrect.");
+        } else {
+            Assert.assertEquals(valueAc,valueEx,"FAILED! Value displays incorrect.");
+        }
     }
 }
