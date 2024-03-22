@@ -21,7 +21,7 @@ import java.net.UnknownHostException;
 
 import static common.SBPConstants.*;
 public class IPMonitoringTest extends BaseCaseAQS {
-    @Test(groups = {"regression_stg","2024.V.2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan"})
     @TestRails(id = "21844")
     @Parameters({"password", "userNameOneRole"})
     public void IP_Monitoring_TC_21844(String password, String userNameOneRole) throws Exception{
@@ -35,7 +35,7 @@ public class IPMonitoringTest extends BaseCaseAQS {
         Assert.assertFalse(welcomePage.headerMenuControl.isSubmenuDisplay(GENERAL_REPORTS,IP_MONITORING));
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.2.0"})
+    @Test(groups = {"regression","2024.V.2.0","ethan"})
     @TestRails(id = "21845")
     @Parameters({"password", "userNameOneRole"})
     public void IP_Monitoring_TC_21845(String password, String userNameOneRole) throws Exception{
@@ -51,7 +51,7 @@ public class IPMonitoringTest extends BaseCaseAQS {
         Assert.assertFalse(new IPMonitoringPage().lblTitle.isDisplayed(), "FAILED! IP Monitoring page can access by external link");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.2.0"})
+    @Test(groups = {"regression","2024.V.2.0","ethan"})
     @TestRails(id = "21846")
     public void IP_Monitoring_TC_21846() {
         log("@title: Validate IP Monitoring page is displayed when navigate");
@@ -63,7 +63,7 @@ public class IPMonitoringTest extends BaseCaseAQS {
         Assert.assertTrue(new IPMonitoringPage().lblTitle.isDisplayed(), "FAILED! IP Monitoring page can not access by external link");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.2.0"})
+    @Test(groups = {"regression","2024.V.2.0","ethan"})
     @TestRails(id = "21847")
     @Parameters({"accountCode","bookieCode"})
     public void IP_Monitoring_TC_21847(String accountCode,String bookieCode) throws UnknownHostException {
@@ -96,7 +96,7 @@ public class IPMonitoringTest extends BaseCaseAQS {
         Assert.assertTrue(page.isAccountDisplay("Account Code",accountCode,accountCode2));
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.2.0"})
+    @Test(groups = {"regression","2024.V.2.0","ethan"})
     @TestRails(id = "21848")
     @Parameters({"accountCode","bookieCode","smartGroup"})
     public void IP_Monitoring_TC_21848(String accountCode,String bookieCode, String smartGroup) throws UnknownHostException {
