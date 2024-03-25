@@ -101,6 +101,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         String clientName = "PSM Group Limited";
         ClientSystemPage clientSystemPage = welcomePage.navigatePage(MASTER,CLIENT_SYSTEM,ClientSystemPage.class);
         clientSystemPage.filterClient(KASTRAKI_LIMITED,"",clientName,"","");
+        clientSystemPage.waitSpinnerDisappeared();
         AccountListPopup accountListPopup = clientSystemPage.openAccountList(clientName);
         List<String> lstBookieAc = accountListPopup.getLstBookie();
         accountListPopup.closeToPopup();

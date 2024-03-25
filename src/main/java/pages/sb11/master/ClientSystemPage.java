@@ -83,7 +83,8 @@ public class ClientSystemPage extends WelcomePage {
 
     public AccountListPopup openAccountList(String clientCode){
         int rowIndex = getClientCodeRowIndex(clientCode);
-        tbSuperMaster.getControlOfCell(1,colMember,rowIndex,null).click();
+        tbSuperMaster.getControlOfCell(1, tbSuperMaster.getColumnIndexByName("#Memb"),rowIndex,null).click();
+        waitSpinnerDisappeared();
         return new AccountListPopup();
     }
 
@@ -102,8 +103,9 @@ public class ClientSystemPage extends WelcomePage {
     private int getClientCodeRowIndex(String clientCode){
         int i = 1;
         Label lblClientCode;
+        int indexCol = tbClient.getColumnIndexByName("Client Name");
         while (true){
-            lblClientCode = Label.xpath(tbClient.getxPathOfCell(1,colClientName,i,null));
+            lblClientCode = Label.xpath(tbClient.getxPathOfCell(1,indexCol,i,null));
             if(!lblClientCode.isDisplayed()){
                 System.out.println("The client code "+clientCode+" does not display in the list");
                 return 0;
