@@ -452,7 +452,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
         String homeTeamID = EventScheduleUtils.getTeamID(eventBasketball.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(eventBasketball.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getEventStatus().toUpperCase());
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getOpenTime(),eventBasketball.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         eventBasketball.setEventId(eventID);
         log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
@@ -503,7 +503,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
         String homeTeamID = EventScheduleUtils.getTeamID(eventBasketball.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(eventBasketball.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getEventStatus().toUpperCase());
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getOpenTime(), eventBasketball.getEventStatus().toUpperCase());
         log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
         try {
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
@@ -547,7 +547,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
         String homeTeamID = EventScheduleUtils.getTeamID(eventBasketball.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(eventBasketball.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getEventStatus().toUpperCase());
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getOpenTime(), eventBasketball.getEventStatus().toUpperCase());
 
         log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
         try {
@@ -622,7 +622,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
         String homeTeamID = EventScheduleUtils.getTeamID(eventBasketball.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(eventBasketball.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getEventStatus().toUpperCase());
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getOpenTime(), eventBasketball.getEventStatus().toUpperCase());
         log("@Precondition-Step 2: Set % PT of Basketball on Account List");
         AccountListUtils.setAccountListPTAPI(accountCode, percent, true, AccountListUtils.SportName.basketball);
         log("@Precondition-Step 3: Place some Basketball 1x2 match bets");

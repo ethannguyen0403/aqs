@@ -1,6 +1,7 @@
 package utils.sb11;
 
 import com.paltech.constant.Configs;
+import com.paltech.utils.DateUtils;
 import com.paltech.utils.WSUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,8 +19,9 @@ public class EventScheduleUtils {
 
     /**
      * @param dateAPI should follow format yyyy-MM-dd
+     * @param openTime: -10 hour with local time
      * */
-    public static void addEventByAPI(String awayId, String homeId, String leagueId, String dateAPI, String sportID, String status) {
+    public static void addEventByAPI(String awayId, String homeId, String leagueId, String dateAPI, String sportID, String openTime , String status) {
         try {
             String bearerToken = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
             Map<String, String> headersParam = new HashMap<String, String>() {
@@ -29,7 +31,7 @@ public class EventScheduleUtils {
                 }
             };
             String endPoint = String.format("%saqs-agent-service/event/event/add", environment.getSbpLoginURL());
-            String jsonBody = buildJsonPayload(awayId, homeId, leagueId, dateAPI, sportID, status);
+            String jsonBody = buildJsonPayload(awayId, homeId, leagueId, dateAPI, openTime, sportID, status);
             WSUtils.sendPOSTRequestDynamicHeaders(endPoint, jsonBody, headersParam);
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -183,7 +185,8 @@ public class EventScheduleUtils {
         return WSUtils.getGETJSONArraytWithDynamicHeaders(api, headers);
     }
 
-    private static String buildJsonPayload(String awayId, String homeId, String leagueId,String dateAPI, String sportID, String status){
+    private static String buildJsonPayload(String awayId, String homeId, String leagueId,String dateAPI, String openTime, String sportID, String status){
+        String datel = DateUtils.getDate(0,"yyyy-MM-dd",GMT_7);
         return String.format("[{\n" +
                 "  \"away\": \"\",\n" +
                 "  \"awayTeam\": \"%s\",\n" +
@@ -195,14 +198,14 @@ public class EventScheduleUtils {
                 "  \"liven\": false,\n" +
                 "  \"livetv\": \"TV\",\n" +
                 "  \"openDate\": \"%s\",\n" +
-                "  \"startDate\": \"%s 10:00:00\",\n" +
+                "  \"startDate\": \"%s 08:00:00\",\n" +
                 "  \"openDatel\": \"%sT06:45:27.885Z\",\n" +
-                "  \"openTime\": \"10:00\",\n" +
+                "  \"openTime\": \"%s\",\n" +
                 "  \"sportId\": %s,\n" +
                 "  \"status\": \"%s\",\n" +
                 "  \"idxValue\": 0,\n" +
                 "  \"seasonId\": 0,\n" +
                 "  \"userTz\": -7\n" +
-                "}]", awayId, homeId, leagueId, dateAPI, dateAPI, dateAPI, sportID, status);
+                "}]", awayId, homeId, leagueId, dateAPI, dateAPI, datel, openTime, sportID, status);
     }
 }

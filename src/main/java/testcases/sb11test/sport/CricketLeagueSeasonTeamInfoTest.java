@@ -14,7 +14,7 @@ import static common.SBPConstants.COUNTRY_LIST;
 
 public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
 
-    String leagueName = "QA Cricket League Auto ";
+    String leagueName = "QA Cricket League Auto";
     String country = "Asia";
     String seasonName = "QA Cricket Season Auto";
     String teamName = "QA Cricket Team Auto";
@@ -70,6 +70,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         log("@title: Validate that can add new Cricket League successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > League/Season/Team Info");
+        String leagueName = "QA Cricket League Auto 1";
         CricketLeagueSeasonTeamInfoPage cricketLeagueSeasonTeamInfoPage = welcomePage.navigatePage(SPORT,LEAGUE_SEASON_TEAM_INFO, CricketLeagueSeasonTeamInfoPage.class);
         cricketLeagueSeasonTeamInfoPage.goToCricket();
         log("@Step 3:  Click + button on League table");

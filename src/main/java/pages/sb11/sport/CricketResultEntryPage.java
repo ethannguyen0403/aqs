@@ -43,30 +43,32 @@ public class CricketResultEntryPage extends WelcomePage {
             btnSoccer.click();
         if(sport.equals("Cricket"))
             btnCricket.click();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        waitSpinnerDisappeared();
     }
 
     public void filterResult(String type, String date, String league, String orderBy, String status, boolean isShow){
         ddpType.selectByVisibleText(type);
+        waitSpinnerDisappeared();
         if(!date.isEmpty()){
             dtpDateTime.selectDate(date,"dd/MM/yyyy");
+            waitSpinnerDisappeared();
             btnShowLeagues.click();
             waitSpinnerDisappeared();
         }
         ddpLeague.selectByVisibleText(league);
+        waitSpinnerDisappeared();
         ddpOrderBy.selectByVisibleText(orderBy);
+        waitSpinnerDisappeared();
         ddpStatus.selectByVisibleText(status);
+        waitSpinnerDisappeared();
         if (isShow){
             btnShow.click();
+            waitSpinnerDisappeared();
         }
     }
     public int getEventIndex(Event event){
         Label lblEvent, lblTime;
-        String eventExpect = event.getHome() + "\n-vs-\n" + event.getAway();
+        String eventExpect = event.getHome() + "\n -vs- \n" + event.getAway();
         String timeExpect = event.getOpenTime();
         int i = 2;
         while (i < 10) {

@@ -313,7 +313,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String leagueID = EventScheduleUtils.getLeagueID(eventInfo.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
         String homeTeamID = EventScheduleUtils.getTeamID(eventInfo.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(eventInfo.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), eventInfo.getEventStatus().toUpperCase());
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), eventInfo.getOpenTime(),eventInfo.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         eventInfo.setEventId(eventID);
         List<Order> lstOrder = new ArrayList<>();
@@ -384,7 +384,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String leagueID = EventScheduleUtils.getLeagueID(eventCricket.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
         String homeTeamID = EventScheduleUtils.getTeamID(eventCricket.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(eventCricket.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), eventCricket.getEventStatus().toUpperCase());
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), eventCricket.getOpenTime(),eventCricket.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         eventCricket.setEventId(eventID);
         List<Order> lstOrder = new ArrayList<>();

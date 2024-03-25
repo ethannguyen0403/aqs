@@ -99,7 +99,8 @@ public class BetSettlementPage extends WelcomePage {
             throw new RuntimeException(e);
         }
         btnSearch.click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
     }
 
     /**
@@ -121,7 +122,7 @@ public class BetSettlementPage extends WelcomePage {
         int i = 1;
         Label lblOrderID;
         while (true){
-            lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1,colBRBettrefId,i,null));
+            lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1,colBRBettrefId,i,"span[2]"));
             if(!lblOrderID.isDisplayed()){
                 System.out.println("The order id "+ orderId +" does not display in the table");
                 return 0;
@@ -221,7 +222,7 @@ public class BetSettlementPage extends WelcomePage {
      */
     public void verifyOrderInfo(Order order){
         int rowindex = getOrderIndex(order.getBetId());
-        String brBetrefID = tblOrder.getControlOfCell(1, colBRBettrefId,rowindex,null).getText();
+        String brBetrefID = tblOrder.getControlOfCell(1, colBRBettrefId,rowindex,"//span[2]").getText();
         String sport = tblOrder.getControlOfCell(1, colSport,rowindex,null).getText();
         String eventLeague = tblOrder.getControlOfCell(1, colEvenLeagueName,rowindex,null).getText();
         String selection = tblOrder.getControlOfCell(1, colSelection,rowindex,null).getText();
