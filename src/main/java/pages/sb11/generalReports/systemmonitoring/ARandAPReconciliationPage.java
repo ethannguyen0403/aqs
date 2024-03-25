@@ -40,12 +40,12 @@ public class ARandAPReconciliationPage extends WelcomePage {
     }
     public String getValueByDesc(String subAccName,String desc, int indexColum){
         Table tblSubAcc = Table.xpath(String.format("//span[contains(text(),'%s')]//ancestor::table",subAccName),10);
-        int indexRow = tblSubAcc.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
+        int indexRow = tblSubAcc.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description"),"span");
         return Label.xpath(tblSubAcc.getxPathOfCell(1,indexColum,indexRow,"span")).getText();
     }
     public void tickConfirmAuthorise(String desc, String colName){
-        int indexRow = tblData.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
-        CheckBox cbConfirm = CheckBox.xpath(tblData.getxPathOfCell(1,tblHeader.getColumnIndexByName(colName)-1,indexRow,"input"));
+        int indexRow = tblData.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description"),"span");
+        CheckBox cbConfirm = CheckBox.xpath(tblData.getxPathOfCell(1,tblHeader.getColumnIndexByName(colName),indexRow,"input"));
         if (cbConfirm.isEnabled()){
             cbConfirm.click();
             try {
@@ -61,13 +61,13 @@ public class ARandAPReconciliationPage extends WelcomePage {
         }
     }
     public boolean isCheckCanTick(String desc, String colName){
-        int indexRow = tblData.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
-        CheckBox cbConfirm = CheckBox.xpath(tblData.getxPathOfCell(1,tblHeader.getColumnIndexByName(colName)-1,indexRow,"input"));
+        int indexRow = tblData.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description"),"span");
+        CheckBox cbConfirm = CheckBox.xpath(tblData.getxPathOfCell(1,tblHeader.getColumnIndexByName(colName),indexRow,"input"));
         return cbConfirm.isEnabled();
     }
     public String getSumDebitCredit(String subAccName, String debitcredit){
         Table tblSubAcc = Table.xpath(String.format("//span[contains(text(),'%s')]//ancestor::table",subAccName),10);
-        List<String> lstData = tblSubAcc.getColumn(tblHeader.getColumnIndexByName(debitcredit)-1,50,true);
+        List<String> lstData = tblSubAcc.getColumn(tblHeader.getColumnIndexByName(debitcredit),50,true);
         double sum = 0.00;
         for (int i = 1; i < lstData.size()-1;i++){
             if (!lstData.get(i).isEmpty()){
@@ -79,8 +79,8 @@ public class ARandAPReconciliationPage extends WelcomePage {
     public String getSumAuthorizedTrans(String subAccName, String authoriseName){
         double sum = 0.00;
         Table tblSubAcc = Table.xpath(String.format("//span[contains(text(),'%s')]//ancestor::table",subAccName),10);
-        List<String> lstAuthor = tblSubAcc.getColumn(tblHeader.getColumnIndexByName("Authorised By")-1,50,true);
-        List<String> lstDebit = tblSubAcc.getColumn(tblHeader.getColumnIndexByName("Debit")-1,50,true);
+        List<String> lstAuthor = tblSubAcc.getColumn(tblHeader.getColumnIndexByName("Authorised By"),50,true);
+        List<String> lstDebit = tblSubAcc.getColumn(tblHeader.getColumnIndexByName("Debit"),50,true);
         for (int i = 2; i < lstAuthor.size()-1;i++){
             if (lstAuthor.get(i).equals(authoriseName)){
                 sum = sum + Double.valueOf(lstDebit.get(i));

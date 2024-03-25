@@ -106,7 +106,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
         page.filter(KASTRAKI_LIMITED,"",transDate);
         log("@Verify 1: Description field will displays the Memo/Description of each transaction accordingly");
-        Assert.assertEquals(page.getValueByDesc(ledgerDebit,desc,page.tblHeader.getColumnIndexByName("Description")-1),desc,
+        Assert.assertEquals(page.getValueByDesc(ledgerDebit,desc,page.tblHeader.getColumnIndexByName("Description")),desc,
                 "FAILED! Description displays incorrect");
         log("INFO: Executed completely");
     }
@@ -144,7 +144,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
         page.filter(KASTRAKI_LIMITED,"",transDate);
         log("@Verify 1: CUR will display the currency of the sub-account");
-        Assert.assertEquals(page.getValueByDesc(ledgerDebit,desc,page.tblHeader.getColumnIndexByName("CUR")-1),curEx,
+        Assert.assertEquals(page.getValueByDesc(ledgerDebit,desc,page.tblHeader.getColumnIndexByName("CUR")),curEx,
                 "FAILED! CUR displays incorrect");
         log("INFO: Executed completely");
     }
@@ -181,7 +181,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
         page.filter(KASTRAKI_LIMITED,"",transDate);
         log("@Verify 1: Debit/Credit will get from the debit/credit amounts of each transaction");
-        Assert.assertEquals(page.getValueByDesc(ledgerDebit,desc,page.tblHeader.getColumnIndexByName("Debit")-1),String.format("%.2f",valueDebit),
+        Assert.assertEquals(page.getValueByDesc(ledgerDebit,desc,page.tblHeader.getColumnIndexByName("Debit")),String.format("%.2f",valueDebit),
                 "FAILED! Debit displays incorrect");
         log("INFO: Executed completely");
     }
@@ -225,10 +225,10 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("@Verify 1: Running Balance will displays correctly:\n" +
                 "The 'Opening Balance' row: shows the Opening Balance of the sub-account in the filtered date (same as in Ledger Statement)\n" +
                 "The transaction rows: is Opening balance +/- debit/credit amounts, according to the logic of Account Type");
-        double openBalance = Double.valueOf(page.getValueByDesc(ledgerDebit,"Opening Balance",page.tblHeader.getColumnIndexByName("Running Balance")-1));
+        double openBalance = Double.valueOf(page.getValueByDesc(ledgerDebit,"Opening Balance",page.tblHeader.getColumnIndexByName("Running Balance")));
         Assert.assertEquals(openBalance,runningBal,"FAILED! Opening Balance displays incorrect");
-        String runningEx = String.format("%.2f",openBalance + Double.valueOf(page.getValueByDesc(ledgerDebit, desc,page.tblHeader.getColumnIndexByName("Debit")-1)));
-        Assert.assertEquals(page.getValueByDesc(ledgerDebit,desc,page.tblHeader.getColumnIndexByName("Running Balance")-1),runningEx,"FAILED! Transaction displays incorrect");
+        String runningEx = String.format("%.2f",openBalance + Double.valueOf(page.getValueByDesc(ledgerDebit, desc,page.tblHeader.getColumnIndexByName("Debit"))));
+        Assert.assertEquals(page.getValueByDesc(ledgerDebit,desc,page.tblHeader.getColumnIndexByName("Running Balance")),runningEx,"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
     }
     @TestRails(id="17669")
@@ -348,7 +348,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("@Step 5: Click Yes button");
         page.tickConfirmAuthorise(desc,"Confirm");
         log("@Verify 1: Processed By will display the user who ticked on the Confirm checkbox.");
-        Assert.assertEquals(page.getValueByDesc(ledgerDebit,desc,page.tblHeader.getColumnIndexByName("Processed By")-1),username,"FAILED! Transaction displays incorrect");
+        Assert.assertEquals(page.getValueByDesc(ledgerDebit,desc,page.tblHeader.getColumnIndexByName("Processed By")),username,"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
     }
     @TestRails(id="17677")
@@ -388,7 +388,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("@Step 5: Click Yes button");
         page.tickConfirmAuthorise(desc,"Authorise");
         log("@Verify 1: Authorised By will display the user who ticked on the Authorise checkbox of each transaction.");
-        Assert.assertEquals(page.getValueByDesc(ledgerDebit,desc,page.tblHeader.getColumnIndexByName("Authorised By")-1),username,"FAILED! Transaction displays incorrect");
+        Assert.assertEquals(page.getValueByDesc(ledgerDebit,desc,page.tblHeader.getColumnIndexByName("Authorised By")),username,"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
     }
     @TestRails(id="17678")
@@ -427,10 +427,10 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 "For Running Balance, it's the final amount of the last record.");
         String sumDebit = page.getSumDebitCredit(ledgerDebit,"Debit");
         String sumCredit = page.getSumDebitCredit(ledgerDebit, "Credit");
-        Assert.assertEquals(page.getValueByDesc(ledgerDebit,"Closing Balance",page.tblHeader.getColumnIndexByName("Debit")-1),sumDebit,"FAILED! Sum of Debit displays incorrect");
-        Assert.assertEquals(page.getValueByDesc(ledgerDebit,"Closing Balance",page.tblHeader.getColumnIndexByName("Credit")-1),sumCredit,"FAILED! Sum of Credit displays incorrect");
-        Assert.assertEquals(page.tblData.getColumn(page.tblHeader.getColumnIndexByName("Running Balance")-1,50,true).get(page.tblData.getNumberOfRows(false,true)-2),
-                page.getValueByDesc(ledgerDebit,"Closing Balance",page.tblHeader.getColumnIndexByName("Running Balance")-1),"FAILED! Running Balance displays incorrect");
+        Assert.assertEquals(page.getValueByDesc(ledgerDebit,"Closing Balance",page.tblHeader.getColumnIndexByName("Debit")),sumDebit,"FAILED! Sum of Debit displays incorrect");
+        Assert.assertEquals(page.getValueByDesc(ledgerDebit,"Closing Balance",page.tblHeader.getColumnIndexByName("Credit")),sumCredit,"FAILED! Sum of Credit displays incorrect");
+        Assert.assertEquals(page.tblData.getColumn(page.tblHeader.getColumnIndexByName("Running Balance"),50,true).get(page.tblData.getNumberOfRows(false,true)-2),
+                page.getValueByDesc(ledgerDebit,"Closing Balance",page.tblHeader.getColumnIndexByName("Running Balance")),"FAILED! Running Balance displays incorrect");
         log("INFO: Executed completely");
     }
     @TestRails(id="17679")
@@ -440,7 +440,6 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("@title: Validate the Today's Settlement in HKD row displays correct value");
         log("@pre-condition 1: 'A/R and A/P Reconciliation' permission is ON for any account");
         log("@pre-condition 2: Having some transaction of A/R and A/P Reconciliation for detail types");
-        String ledgerDebit = "107.000.000.001 - Auto Other Receivables";
         String ledgerDebitName = "Auto Other Receivables";
         String ledgerDebitNumber = "107.000.000.001";
         String groupName = "Other Receivables";
@@ -466,7 +465,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         page.tickConfirmAuthorise(desc,"Authorise");
         log("@Verify 1: Today's Settlement in HKD row will sums up all the amounts of the authorized transactions and then converts to HKD using rate of the filtered date.");
         String todaySettleEx = page.getSumAuthorizedTrans(ledgerDebitNumber,username);
-        Assert.assertEquals(page.tblTodaySettle.getControlOfCell(1,page.tblHeader.getColumnIndexByName("Debit")-1,1,"span").getText(),
+        Assert.assertEquals(page.tblTodaySettle.getControlOfCell(1,page.tblHeader.getColumnIndexByName("Debit"),1,"span").getText(),
                 todaySettleEx,"FAILED! Today's Settlement value display incorrect");
         log("INFO: Executed completely");
     }
