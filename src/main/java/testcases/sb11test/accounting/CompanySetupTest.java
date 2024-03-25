@@ -622,7 +622,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@Step 1: Navigate to  Financial Reports >> Retained Earning");
         RetainedEarningsPage retainedEarningsPage = welcomePage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);
         log("@Step 2: Filter with default data with company name: " + companyName);
-        retainedEarningsPage.filterRetainedEarnings(companyName, "");
+        retainedEarningsPage.filter(companyName, "");
         log(String.format("@Verify 1: Validate shows text 'Amounts are shown in [%s]' correct", companyCurrency));
         Assert.assertEquals(retainedEarningsPage.lblAmountAreShow.getText().trim(), expectedText, "FAILED! Text is incorrect");
         log("INFO: Executed completely");

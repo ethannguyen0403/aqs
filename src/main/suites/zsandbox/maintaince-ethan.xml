@@ -30,7 +30,7 @@
         <parameter name="companyName" value="Kastraki Limited"/>
         <parameter name="companyCurrency" value="HKD"/>
         <parameter name="userNameOneRole" value="onerole"/>
-        <parameter name='isAddTestRailResult' value='true'/>
+        <parameter name='isAddTestRailResult' value='false'/>
         <groups>
             <run>
                 <include name="ethan"/>
@@ -42,19 +42,30 @@
 
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
 
+            <class name="testcases.sb11test.accounting.BalanceCurrentTest"/>
             <class name="testcases.sb11test.accounting.CompanySetupTest"/>
             <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
 
             <class name="testcases.sb11test.trading.BetEntryTest"/>
             <class name="testcases.sb11test.trading.BetSettlementTest"/>
 
+            <class name="testcases.sb11test.master.BookieSystemTest"/>
+
             <class name="testcases.sb11test.generalReports.ClientBalanceTest"/>
             <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
             <class name="testcases.sb11test.generalReports.ARandAPReconciliationTest"/>
             <class name="testcases.sb11test.generalReports.ConsolidatedClientBalanceTest"/>
+            <class name="testcases.sb11test.generalReports.IPMonitoringTest"/>
+            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
             <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
+            <class name="testcases.sb11test.generalReports.FundReconciliationTest"/>
 
+            <class name="testcases.sb11test.invoice.InvoicesTest"/>
+
+            <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
             <class name="testcases.sb11test.financialReports.BalanceSheetAnalysisTest"/>
+            <class name="testcases.sb11test.financialReports.IncomeStatementAnalysisTest"/>
+            <class name="testcases.sb11test.financialReports.RetainedEarningsTest"/>
         </classes>
     </test>
 </suite>

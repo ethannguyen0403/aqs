@@ -25,38 +25,26 @@ import static common.SBPConstants.*;
 
 public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     @TestRails(id = "2825")
-    @Test(groups = {"regression_stg", "2024.V.1.0"})
+    @Test(groups = {"regression_stg", "2024.V.1.0","ethan"})
     @Parameters({"password", "userNameOneRole"})
     public void IncomeStatement_Analysis_TC2825(String password, String userNameOneRole) throws Exception {
         log("@title: Validate 'Income Statement – Analysis' menu is hidden if not active Income Statement – Analysis permission");
         log("Precondition: Deactivate Income Statement – Analysis option in one role account");
-        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRole("one role").switchPermissions(TRIAL_BALANCE, true);
-        roleManagementPage.selectRole("one role").switchPermissions(INCOME_STATEMENT_ANALYSIS, false);
         log("@Step 1: Re-login with one role account account has 'Income Statement – Analysis' permission is OFF");
-        LoginPage loginPage = roleManagementPage.logout();
+        LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
-        TrialBalancePage page =
-                welcomePage.navigatePage(FINANCIAL_REPORTS, TRIAL_BALANCE, TrialBalancePage.class);
         log("@Verify 1: Income Statement – Analysis menu is hidden displays");
-        Assert.assertTrue(!welcomePage.headerMenuControl.isSubmenuDisplay(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS),
+        Assert.assertFalse(welcomePage.headerMenuControl.isSubmenuDisplay(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS),
                 "FAILED!  Income Statement – Analysis menu is displayed");
         log("INFO: Executed completely");
     }
 
     @TestRails(id = "2826")
-    @Test(groups = {"regression_stg", "2024.V.1.0"})
-    @Parameters({"password", "userNameOneRole"})
-    public void IncomeStatement_Analysis_TC2826(String password, String userNameOneRole) throws Exception {
+    @Test(groups = {"regression", "2024.V.1.0","ethan"})
+    public void IncomeStatement_Analysis_TC2826() {
         log("@title: Validate 'Income Statement – Analysis' menu displays if active Income Statement – Analysis permission");
         log("Precondition: Active Income Statement – Analysis option in one role account");
-        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRole("one role").switchPermissions(INCOME_STATEMENT_ANALYSIS, true);
         log("@Step 1: Re-login with one role account account has 'Income Statement – Analysis' permission is OFF");
-        LoginPage loginPage = roleManagementPage.logout();
-        loginPage.login(userNameOneRole, StringUtils.decrypt(password));
-        TrialBalancePage page =
-                welcomePage.navigatePage(FINANCIAL_REPORTS, TRIAL_BALANCE, TrialBalancePage.class);
         log("@Verify 1: 'Income Statement – Analysis' menu displays");
         Assert.assertTrue(welcomePage.headerMenuControl.isSubmenuDisplay(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS),
                 "FAILED!  Income Statement – Analysis menu is NOT displayed");
@@ -64,7 +52,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3405")
-    @Test(groups = {"regression", "2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan"})
     public void IncomeStatement_Analysis_TC3405() {
         log("@title: Validate 'Income Statement – Analysis' menu displays if active Income Statement – Analysis permission");
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
@@ -79,7 +67,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3406")
-    @Test(groups = {"regression", "2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan"})
     public void IncomeStatement_Analysis_TC3406() {
         log("@title: Validate Operating Income is only displayed details types with chart codes from 400 to 459 ");
         log("@Precondition: Already have a detail type with chart codes from 400 to 459 that contain transaction");
@@ -94,7 +82,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3407")
-    @Test(groups = {"regression", "2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan"})
     public void IncomeStatement_Analysis_TC3407() {
         log("@title: Validate Operating Income is only displayed details types with chart codes from 400 to 459 ");
         log("@Precondition: Already have a detail type with chart codes starting with 5, 6 that contain transaction");
@@ -109,7 +97,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3408")
-    @Test(groups = {"regression", "2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan"})
     public void IncomeStatement_Analysis_TC3408() {
         log("@title: Validate Non-Operating Income is only displayed details types with cart code starting from 460 to 599");
         log("@Precondition: Already have a detail type with chart codes starting from 460 to 599 that contain transaction");
@@ -124,7 +112,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3409")
-    @Test(groups = {"regression", "2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan"})
     public void IncomeStatement_Analysis_TC3409() {
         log("@title: Validate [Previous month compare to the filtered month] shows amounts in the previous month accordingly");
         String month = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[0];
@@ -142,7 +130,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3410")
-    @Test(groups = {"regression", "2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan"})
     public void IncomeStatement_Analysis_TC3410() {
         log("@title: Validate [Filtered month] amounts displays correctly with Before CJE option");
         int firstCodeIndex = 3;
@@ -152,17 +140,20 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data with Before CJE option");
-        incomeAnaPage.filter(KASTRAKI_LIMITED, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
-        String amountIncome = incomeAnaPage.getCellValueOfMonthCol(String.format("%s - %s", month, year), firstCodeIndex).replace("-", "");
-        String chartCodeAccount = incomeAnaPage.getChartCodeAccount(firstCodeIndex);
+        String timeFilter = String.format("%s - %s", year, month);
+        incomeAnaPage.filter(KASTRAKI_LIMITED, "", timeFilter, REPORT_TYPE.get(0));
+        String colTime = String.format("%s - %s", month, year);
+        String amountIncome = incomeAnaPage.getCellValueOfMonthCol(colTime, firstCodeIndex).replace("-", "");
+        String numberCodeAccount = incomeAnaPage.getChartCodeAccount(firstCodeIndex).split(" - ")[0];
 
         log("@Step 3: Go to General Reports >> Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
-        log(String.format("@Step 4: Get value of Account: %s on Ledger Statement page", chartCodeAccount));
+        log(String.format("@Step 4: Get value of Account: %s on Ledger Statement page", numberCodeAccount));
         log("@Step info: For example, when filtering Year 2021-2022 and Month '2022-July':\n" +
                 "Data shows in JUNE-2022 gets from 01-08-2021 to 30-06-2022 in the ledger statement");
-        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, "", "All", chartCodeAccount, String.format("01/08/%s", previousYear),
-                DateUtils.getLastDateOfMonth(DateUtils.getYear("GMT +7"), DateUtils.getMonth("GMT +7"), "dd/MM/yyyy"),REPORT_TYPE.get(0));
+        int yearLedger = DateUtils.getYear(GMT_7);
+        int monthLedger = DateUtils.getMonth(GMT_7);
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, "", "All", numberCodeAccount, String.format("01/08/%s", previousYear), DateUtils.getLastDateOfMonth(yearLedger,monthLedger,"dd/MM/yyyy"),REPORT_TYPE.get(0));
         String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal();
         log("@Verify 1: The amounts of parent accounts and detail types in the filtered month displays accordingly");
         Assert.assertEquals(amountIncome, amountLedger, "FAILED!  The amounts of parent accounts and detail types in the filtered month displays incorrect");
@@ -170,7 +161,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3411")
-    @Test(groups = {"regression", "2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan"})
     public void IncomeStatement_Analysis_TC3411() {
         log("@title: Validate [Filtered month] amounts displays correctly with After CJE option");
         int firstCodeIndex = 3;
@@ -182,14 +173,14 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Filter which have data with After CJE option");
         incomeAnaPage.filter(KASTRAKI_LIMITED, "", String.format("%s - %s", year, month), REPORT_TYPE.get(1));
         String amountIncome = incomeAnaPage.getCellValueOfMonthCol(String.format("%s - %s", month, year), firstCodeIndex).replace("-", "");
-        String chartCodeAccount = incomeAnaPage.getChartCodeAccount(firstCodeIndex);
+        String numberCodeAccount = incomeAnaPage.getChartCodeAccount(firstCodeIndex).split(" - ")[0];
 
         log("@Step 3: Go to General Reports >> Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
-        log(String.format("@Step 4: Get value of Account: %s on Ledger Statement page", chartCodeAccount));
+        log(String.format("@Step 4: Get value of Account: %s on Ledger Statement page", numberCodeAccount));
         log("@Step info: For example, when filtering Year 2021-2022 and Month '2022-July':\n" +
                 "Data shows in JUNE-2022 gets from 01-08-2021 to 30-06-2022 in the ledger statement");
-        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, "", "All", chartCodeAccount, String.format("01/08/%s", previousYear),
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, "", "All", numberCodeAccount, String.format("01/08/%s", previousYear),
                 DateUtils.getLastDateOfMonth(DateUtils.getYear("GMT +7"), DateUtils.getMonth("GMT +7"), "dd/MM/yyyy"),REPORT_TYPE.get(1));
         String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal();
         log("@Verify 1: The amounts of parent accounts and detail types in the filtered month displays accordingly");
@@ -198,7 +189,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3412")
-    @Test(groups = {"regression", "2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan"})
     public void IncomeStatement_Analysis_TC3412() {
         log("@title: Validate Txns. [filtered month] calculates properly");
         int firstCodeIndex = 3;
@@ -227,7 +218,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3413")
-    @Test(groups = {"regression", "2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan"})
     public void IncomeStatement_Analysis_TC3413() {
         log("@title: Validate [previous financial year] displays correct amount ");
         int firstCodeIndex = 3;
@@ -259,7 +250,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3414")
-    @Test(groups = {"regression", "2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan"})
     public void IncomeStatement_Analysis_TC3414() {
         log("@title: Validate [Filtered financial year] displays correct amount");
         int firstCodeIndex = 3;
@@ -290,30 +281,24 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "4026")
-    @Test(groups = {"regression", "2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan"})
     public void IncomeStatement_Analysis_TC4026() {
         log("@title:Validate [Net Profit (Loss)] displays correct amoun");
         String month = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[0];
         String year = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[1];
-        String lblYear =String.format("%s - %s", month, year);
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data");
         incomeAnaPage.filter(KASTRAKI_LIMITED, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
-
         log("@Verify 1: Net Profit (Loss) = Total Operating Income - Total Operating Expenses + Total Non-Operating Income");
-        double amountIncome = Double.valueOf(incomeAnaPage.getTotalAmount(lblYear, incomeAnaPage.getRowIndexByGroup("Total Operating Income")));
-        double amountExpense = Double.valueOf(incomeAnaPage.getTotalAmount(lblYear, incomeAnaPage.getRowIndexByGroup("Total Operating Expenses")));
-        double amountNonIncome = Double.valueOf(incomeAnaPage.getTotalAmount(lblYear, incomeAnaPage.getRowIndexByGroup("Total Non-Operating Income")));
-        double amountNetProfit = Double.valueOf(incomeAnaPage.getNetProfitLoss(lblYear));
-        Assert.assertEquals(amountNetProfit, DoubleUtils.roundUpWithTwoPlaces(amountIncome - amountExpense + amountNonIncome), "FAILED! Net Profit (Loss) is not correct");
+        Assert.assertTrue(incomeAnaPage.isValueNetProfitDisplay(month,year), "FAILED! Net Profit (Loss) is not correct");
         log("@Verify 2: Validate the red amount will be treated as negative and the blue amount will be treated as Positive");
-        incomeAnaPage.verifyAmountNetProfitColorIsCorrect(amountIncome, amountExpense, amountNonIncome, incomeAnaPage.getNetProfitLossControl(lblYear));
+        incomeAnaPage.verifyAmountNetProfitColorIsCorrect(month,year);
         log("INFO: Executed completely");
     }
 
     @TestRails(id = "4027")
-    @Test(groups = {"regression", "2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan"})
     public void IncomeStatement_Analysis_TC4027() throws IOException {
         log("@title: Validate 'Export To Excel' button work properly");
         String downloadPath = getDownloadPath() + "income-statement-analysis.xlsx";
@@ -343,7 +328,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "4028")
-    @Test(groups = {"regression", "2024.V.1.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan"})
     public void IncomeStatement_Analysis_TC4028() throws IOException {
         log("@title: Validate 'Export To PDF' button work properly ");
         String downloadPath = getDownloadPath() + "income-statement-analysis.pdf";
@@ -365,7 +350,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id = "23954")
-    @Test(groups = {"regression", "2024.V.2.0"})
+    @Test(groups = {"regression", "2024.V.2.0","ethan"})
     public void IncomeStatement_Analysis_TC23954() {
         log("@title: Validate data are sorted by Chart Code of Detail Types ascendingly");
         log("@pre-condition: Income Statement - Analysis permission is ON");
@@ -375,16 +360,13 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         page.filter(KASTRAKI_LIMITED, "", "", "");
         log("@Step 3: Observe the sorting");
         log("@Verify 1: Data are sorted by Chart Code of Detail Types ascendingly");
-        List<String> lstOperatingIn = page.getLstDetailTypeOfGroup("OPERATING INCOME");
-        page.verifySortDetailType(lstOperatingIn);
-        List<String> lstOperatingEs = page.getLstDetailTypeOfGroup("OPERATING EXPENSES");
-        page.verifySortDetailType(lstOperatingEs);
-        List<String> lstNonIn = page.getLstDetailTypeOfGroup("NON-OPERATING INCOME");
-        page.verifySortDetailType(lstNonIn);
+        page.verifySortDetailType("OPERATING INCOME");
+        page.verifySortDetailType("OPERATING EXPENSES");
+        page.verifySortDetailType("NON-OPERATING INCOME");
         log("INFO: Executed completely");
     }
     @TestRails(id = "23955")
-    @Test(groups = {"regression", "2024.V.2.0"})
+    @Test(groups = {"regression", "2024.V.2.0","ethan"})
     public void IncomeStatement_Analysis_TC23955() {
         log("@title: Validate Parent Accounts are sorted by Parent Account Number ascendingly within the same Detail Types");
         log("@pre-condition: Income Statement - Analysis permission is ON");

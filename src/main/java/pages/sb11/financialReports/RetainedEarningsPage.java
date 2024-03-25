@@ -18,12 +18,12 @@ public class RetainedEarningsPage extends WelcomePage {
     private int colDesLimit = 3;
 
     protected Label lblTitle = Label.xpath("//div[contains(@class, 'card-header')]//span");
-    protected Button btnShow = Button.xpath("//button[contains(@class, 'btn-success')]");
+    protected Button btnShow = Button.xpath("//button[text()='Show']");
     public DropDownBox ddCompanyUnit = DropDownBox.xpath("//div[text()= 'Company Unit']/parent::div//select");
     public DropDownBox ddFinancialYear = DropDownBox.xpath("//div[text()= 'Financial Year']/parent::div//select");
     Table tblTotal = Table.xpath("//app-retained-earnings//table[@id='my-table']", totalCol);
     public Button btnExportToExcel = Button.xpath("//button//i[contains(@class, 'fa-file-excel')]");
-    public Button btnExportToPDF = Button.xpath("//button//i[contains(@class, 'fa-file-pdf')]");
+    public Button btnExportToPDF = Button.xpath("//button//em[contains(@class, 'fa-file-pdf')]");
     public Label lblAmountAreShow = Label.xpath("//app-aqs-bet//label[contains(text(), 'Amounts are shown in')]");
     public Label lblAmountRetainedEnding = Label.xpath("//td[contains(., 'Retained Earning Ending')]/following-sibling::td[1]");
 
@@ -31,11 +31,11 @@ public class RetainedEarningsPage extends WelcomePage {
         return lblTitle.getText();
     }
 
-    public void filterRetainedEarnings(String companyUnit, String financialYears) {
-        if (!companyUnit.equals("")) {
+    public void filter(String companyUnit, String financialYears) {
+        if (!companyUnit.isEmpty()) {
             ddCompanyUnit.selectByVisibleText(companyUnit);
         }
-        if (!financialYears.equals("")) {
+        if (!financialYears.isEmpty()) {
             ddFinancialYear.selectByVisibleText(financialYears);
         }
         btnShow.click();
@@ -43,7 +43,7 @@ public class RetainedEarningsPage extends WelcomePage {
     }
 
     public RetainedEarningsPage filterRetainedEarnings() {
-        filterRetainedEarnings("", "");
+        filter("", "");
         return this;
     }
 
@@ -53,29 +53,24 @@ public class RetainedEarningsPage extends WelcomePage {
         return matcher.find();
     }
 
-    public List<String> getListOfCol(int colIndex, int limit) {
-        return tblTotal.getColumn(colIndex, limit, false);
-    }
-
     public List<String> getDescriptionListValue() {
-        return getListOfCol(colDes, colDesLimit);
-
+        return tblTotal.getColumn(tblTotal.getColumnIndexByName("Description"), 3, false);
     }
 
     public String getTotalRetained(){
         return tblTotal.getControlOfCell(1,2, rowOrderAmount, null).getText().trim();
     }
 
-    public RetainedEarningsPage exportExcel(){
+    public void exportExcel(){
         btnExportToExcel.scrollToTop();
         btnExportToExcel.click();
-        return this;
+        waitSpinnerDisappeared();
     }
 
-    public RetainedEarningsPage exportPDF(){
+    public void exportPDF(){
         btnExportToPDF.scrollToTop();
         btnExportToPDF.click();
-        return this;
+        waitSpinnerDisappeared();
     }
 
 

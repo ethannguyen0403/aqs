@@ -13,25 +13,26 @@ public class BookieSystemPage extends WelcomePage {
         return this.lblTitle.getText().trim();
     }
 
-    public Button btnSuper = Button.xpath("//div[contains(@routerlink,'super')]");
-    public Button btnMaster = Button.xpath("//div[contains(@routerlink,'master')]");
-    public Button btnAgent = Button.xpath("//div[contains(@routerlink,'agent')]");
+    public Button btnSuper = Button.xpath("//span[text()='Super Section']");
+    public Button btnMaster = Button.xpath("//span[text()='Master Section']");
+    public Button btnAgent = Button.xpath("//span[text()='Agent Section']");
 
     public Table tbSuper = Table.xpath("//table",10);
 
     public BookieSuperPage goToSuper(){
         btnSuper.click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
         return new BookieSuperPage();
     }
     public BookieMasterPage goToMaster(){
         btnMaster.click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
         return new BookieMasterPage();
     }
     public BookieAgentPage goToAgent(){
         btnAgent.click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
         return new BookieAgentPage();
     }
 }

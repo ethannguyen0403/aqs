@@ -15,23 +15,24 @@ public class BookieAgentPage {
         return this.lblTitle.getText().trim();
     }
 
-    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
-    public DropDownBox ddpBookie = DropDownBox.xpath("//div[contains(text(),'Bookie')]//following::select[1]");
-    public DropDownBox ddpSuper = DropDownBox.xpath("//div[contains(text(),'Super')]//following::select[1]");
-    public DropDownBox ddpMaster = DropDownBox.xpath("//div[contains(text(),'Master')]//following::select[1]");
+    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//span[contains(text(),'Company Unit')]//following::select[1]");
+    public DropDownBox ddpBookie = DropDownBox.xpath("//div[@class='card-body']//span[contains(text(),'Bookie')]//following::select[1]");
+    public DropDownBox ddpSuper = DropDownBox.xpath("//span[contains(text(),'Super')]//following::select[1]");
+    public DropDownBox ddpMaster = DropDownBox.xpath("//div[@class='card-body']//span[contains(text(),'Master')]//following::select[1]");
     public DropDownBox ddpGoTo = DropDownBox.xpath("//span[contains(text(),'Go To')]//following::select[1]");
 
-    public TextBox txtAgentCode = TextBox.xpath("//div[contains(text(),'Agent Code')]//following::input[1]");
+    public TextBox txtAgentCode = TextBox.xpath("//span[contains(text(),'Agent Code')]//following::input[1]");
 
     public Button btnSearch = Button.xpath("//button[contains(text(),'Search')]");
     public Button btnMoreFilters = Button.xpath("//button[contains(text(),'More Filters')]");
     public Button btnAddAgent = Button.xpath("//button[contains(text(),'Add Agent')]");
 
-    public Label lblAgentCode = Label.xpath("//div[contains(text(),'Agent Code')]");
+    public Label lblAgentCode = Label.xpath("//div[@class='card-body']//span[contains(text(),'Agent Code')]");
 
-    public Table tbAgent = Table.xpath("//table",10);
+    public Table tbAgent = Table.xpath("//table",11);
     int colAgentCode = 4;
     int colMembers = 10;
+    Label lblSpin = Label.xpath("//div[contains(@class,'la-ball-clip-rotate')]");
 
     public void filterAgentCode (String companyUnit, String bookieCode, String superCode, String masterCode, String agentCode){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
@@ -45,7 +46,8 @@ public class BookieAgentPage {
 
     public AccountListPopup openAccountList(String agentCode){
         int rowIndex = getAgentCodeRowIndex(agentCode);
-        tbAgent.getControlOfCell(1,colMembers,rowIndex,null).click();
+        tbAgent.getControlOfCell(1,tbAgent.getColumnIndexByName("# Members"),rowIndex,null).click();
+        waitSpinnerDisappeared();
         return new AccountListPopup();
     }
 
@@ -61,6 +63,11 @@ public class BookieAgentPage {
             if(lblAgentCode.getText().contains(agentCode))
                 return i;
             i = i +1;
+        }
+    }
+    public void waitSpinnerDisappeared() {
+        while(lblSpin.isDisplayed()) {
+            lblSpin.waitForControlInvisible();
         }
     }
 }

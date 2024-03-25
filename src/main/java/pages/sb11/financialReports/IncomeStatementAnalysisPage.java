@@ -5,6 +5,8 @@ import com.paltech.element.BaseElement;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
+import com.paltech.utils.DateUtils;
+import com.paltech.utils.DoubleUtils;
 import com.relevantcodes.extentreports.LogStatus;
 import controls.Table;
 import org.openqa.selenium.By;
@@ -97,7 +99,17 @@ public class IncomeStatementAnalysisPage extends WelcomePage {
         }
     }
 
-    public void verifyAmountNetProfitColorIsCorrect(double income, double expense, double nonIncome, BaseElement cellControl) {
+    /**
+     *
+     * @param month input value with format MMMM
+     * @param year input value with format yyyy
+     */
+    public void verifyAmountNetProfitColorIsCorrect(String month, String year) {
+        String lblYear = String.format("%s - %s", month, year);
+        double income = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Operating Income")).replace(",","")));
+        double expense = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Operating Expenses")).replace(",","")));
+        double nonIncome = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Non-Operating Income")).replace(",","")));
+        BaseElement cellControl = getNetProfitLossControl(lblYear);
         if (income - expense + nonIncome > 0) {
             verifyElementColorIsCorrect(cellControl, true);
         } else if (income - expense + nonIncome < 0) {
@@ -185,8 +197,9 @@ public class IncomeStatementAnalysisPage extends WelcomePage {
     }
 
     public String getChartCodeAccount(int rowIndex) {
-        return String.format("%s - %s", tblIncomeAnalysis.getControlOfCell(1, colGroupCode, rowIndex, null).getText().trim(),
-                tblIncomeAnalysis.getControlOfCell(1, colGroupName, rowIndex, null).getText().trim());
+        String numberAcc = Label.xpath(tblIncomeAnalysis.getxPathOfCell(1, colGroupCode, rowIndex, null)).getText().trim();
+        String nameAcc = Label.xpath(tblIncomeAnalysis.getxPathOfCell(1, colGroupName, rowIndex, null)).getText().trim();
+        return String.format("%s - %s", numberAcc, nameAcc);
     }
 
     public void verifyPreviousMonthDisplay(String monthFilter, String expectedPreviousMonth){
@@ -235,7 +248,8 @@ public class IncomeStatementAnalysisPage extends WelcomePage {
         return lstParentEx;
     }
 
-    public void verifySortDetailType(List<String> lstDetailType) {
+    public void verifySortDetailType(String groupName) {
+        List<String> lstDetailType = getLstDetailTypeOfGroup(groupName);
         if (lstDetailType.size()==1){
             Assert.assertTrue(true);
         } else {
@@ -264,5 +278,25 @@ public class IncomeStatementAnalysisPage extends WelcomePage {
         }
         Collections.sort(lstSorted);
         Assert.assertEquals(lstSort,lstSorted,"FAILED! The list is not sorted by Ascending");
+    }
+    /**
+     *
+     * @param month input value with format MMMM
+     * @param year input value with format yyyy
+     */
+    public boolean isValueNetProfitDisplay(String month,String year) {
+        String lblYear = String.format("%s - %s", month, year);
+        double amountIncome = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Operating Income")).replace(",","")));
+        double amountExpense = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Operating Expenses")).replace(",","")));
+        double amountNonIncome = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Non-Operating Income")).replace(",","")));
+        double amountNetProfitAc = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getNetProfitLoss(lblYear).replace(",","")));
+        double amountNetProfitEx = DoubleUtils.roundUpWithTwoPlaces(amountIncome - amountExpense + amountNonIncome);
+        double netProfit1 = amountNetProfitAc - amountNetProfitEx;
+        double netProfit2 = amountNetProfitEx - amountNetProfitAc;
+        if (netProfit1 < 0.02 && netProfit1 >=0 || netProfit2 < 0.02 && netProfit2 >=0){
+            return true;
+        }
+        System.out.println(amountNetProfitAc+" difference from "+amountNetProfitEx);
+        return false;
     }
 }

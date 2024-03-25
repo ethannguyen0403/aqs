@@ -48,7 +48,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.getTitlePage().contains(SBPConstants.BALANCE_SHEET),"FAILED! Title page displayed incorrect!");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.2.0"})
+    @Test(groups = {"regression","2024.V.2.0","ethan"})
     @TestRails(id = "2783")
     public void Balance_Sheet_2783() {
         log("@title: Validate Report filter enables and works properly if filtering any 'Month'");
@@ -64,7 +64,9 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 6: Click Show button");
         page.filter(KASTRAKI_LIMITED,"","","After CJE",false);
         log("@Verify 2: Data filtering correctly");
-        Assert.assertFalse(page.lblTotalOfAsset.getText().trim().split("\n")[1].equals("0.00"),"FAILED! Data filtering incorrectly");
+        Assert.assertFalse(page.getDetailTypeNameByAccountType("ASSET").size() == 0,"FAILED! Data filtering incorrectly");
+        Assert.assertFalse(page.getDetailTypeNameByAccountType("LIABILITY").size() == 0,"FAILED! Data filtering incorrectly");
+        Assert.assertFalse(page.getDetailTypeNameByAccountType("CAPITAL").size() == 0,"FAILED! Data filtering incorrectly");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.10.31"})

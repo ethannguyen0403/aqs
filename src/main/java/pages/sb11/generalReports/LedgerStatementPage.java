@@ -5,6 +5,7 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import com.paltech.utils.DoubleUtils;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Transaction;
@@ -117,6 +118,38 @@ public class LedgerStatementPage extends WelcomePage {
         btnExportToPDF.click();
     }
 
+    /**
+     *
+     * @param subAccName
+     * @param section input 'Original Currency', 'Shown in HKD', 'CUR Translation'
+     * @param columnName
+     * @return value of sub-acc
+     */
+    public String getValueOfSubAcc(String subAccName, String section, String columnName){
+        int indexRow = getLedgerRowIndex(subAccName);
+//        int indexRow = tbLedger.getRowIndexContainValue(subAccName,"Ledger",null);
+        int indexCol = 0;
+        if (section.equals("Original Currency")){
+            indexCol = tbLedger.getColumnIndexByName(columnName);
+        } else if (section.equals("Shown in HKD")){
+            switch (columnName){
+                case "Credit/Debit":
+                    indexCol = 8;
+                    break;
+                default:
+                    indexCol = 9;
+            }
+        } else if (section.equals("CUR Translation")){
+            switch (columnName){
+                case "CT-Credit/Debit":
+                    indexCol = 11;
+                    break;
+                default:
+                    indexCol = 12;
+            }
+        }
+        return tbLedger.getControlOfCell(1,indexCol,indexRow,null).getText().trim();
+    }
     public String getTotalAmountInOriginCurrency(String toTalName){
         int index = getTotalRowIndex(toTalName);
         return tbLedger.getControlOfCell(1, colAmountTotalOriginCurrency, index, null).getText().trim();
@@ -262,5 +295,47 @@ public class LedgerStatementPage extends WelcomePage {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatDate);
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone(gmt));
         return simpleDateFormat.format(calendar.getTime());
+    }
+
+    /**
+     *
+     * @param parentName
+     * @param section input 'Shown in HKD', 'CUR Translation'
+     * @param colName
+     * @return total value
+     */
+    public String getTotalInHKD(String parentName, String section, String colName) {
+        int indexCol = 0;
+        if (section.equals("Shown in HKD")){
+            switch (colName){
+                case "Credit/Debit":
+                    indexCol = 3;
+                    break;
+                default:
+                    indexCol = 4;
+            }
+        } else if (section.equals("CUR Translation")){
+            switch (colName){
+                case "CT-Credit/Debit":
+                    indexCol = 6;
+                    break;
+                default:
+                    indexCol = 7;
+            }
+        }
+        return Label.xpath(String.format("(//span[contains(text(),'%s')]/ancestor::tr//following-sibling::tr[@class='total-row']//td)[%s]",parentName,indexCol)).getText().trim();
+    }
+
+    public void verifyRunningBalAfterTriggering(double runBalBefore, double amountDebit, double amountCredit) {
+        String ledgerName = "302.000.001.000 - PL for Current Year - HKD";
+        double valueEx = DoubleUtils.roundEvenWithTwoPlaces(runBalBefore + (amountDebit-amountCredit));
+        double valueAc = getValueAmount(ledgerName,colRunBalGBP);
+        double valueFinal1 = valueAc - valueEx;
+        double valueFinal2 = valueEx - valueAc;
+        if (valueFinal1 <= 0.01 && valueFinal1 >= 0 || valueFinal2 <= 0.01 && valueFinal2 >= 0){
+            Assert.assertTrue(true,"FAILED! Value displays incorrect.");
+        } else {
+            Assert.assertEquals(valueAc,valueEx,"FAILED! Value displays incorrect.");
+        }
     }
 }

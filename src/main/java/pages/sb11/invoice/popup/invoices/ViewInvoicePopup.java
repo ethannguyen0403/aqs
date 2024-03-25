@@ -40,6 +40,12 @@ public class ViewInvoicePopup {
 
     public void exportPDF(){
         btnSaveAsPDF.click();
+        //wait for downloading file
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void verifyInvoice(Invoice invoice) {
