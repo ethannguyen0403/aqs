@@ -24,7 +24,7 @@ import static common.SBPConstants.*;
 public class JournalEntriesTest extends BaseCaseAQS {
 
     @TestRails(id="864")
-    @Test(groups = {"smoke","ethan"})
+    @Test(groups = {"smoke","ethan1"})
     @Parameters({"bookieCode","bookieSuperMasterCode"})
     public void Journal_Entries_864(String bookieCode, String bookieSuperMasterCode) throws InterruptedException {
         String level = "Super";
@@ -46,7 +46,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
                 .build();
         log("@Step 1: Access Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Step 2: In Debit section > From dropdown, select 'Bookie'");
         log("@Step 3: Choose a bookie from Bookie dropdown (e.g. 'QA Bookie')");
         log("@Step 4: Choose Client (e.g. QA Client (No.121 Client), and Level is 'Super'");
