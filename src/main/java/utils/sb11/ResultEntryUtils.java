@@ -1,6 +1,7 @@
 package utils.sb11;
 
 import com.paltech.constant.Configs;
+import com.paltech.driver.DriverManager;
 import com.paltech.utils.WSUtils;
 import objects.Event;
 import objects.Order;
@@ -14,13 +15,6 @@ import static testcases.BaseCaseAQS.environment;
 
 public class ResultEntryUtils {
     public static void setResultCricket(Event event, String status, String result){
-        String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
-        Map<String, String> headersParam = new HashMap<String, String>() {
-            {
-                put("Authorization", autho);
-                put("Content-Type", Configs.HEADER_JSON);
-            }
-        };
         int homeScore = 0;
         int awayScore = 0;
         switch (result){
@@ -58,6 +52,15 @@ public class ResultEntryUtils {
                         "    }\n" +
                         "]"
                 , Integer.valueOf(event.getEventId()),status,homeScore,awayScore);
+        String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
+        Map<String, String> headersParam = new HashMap<String, String>() {
+            {
+                put("authorization", autho);
+                put("Content-Type", Configs.HEADER_JSON);
+                put("Accept","application/json, text/plain, */*");
+            }
+        };
+
         try {
             WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
         }catch (IOException e){

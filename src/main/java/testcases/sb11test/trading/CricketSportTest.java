@@ -102,6 +102,7 @@ public class CricketSportTest extends BaseCaseAQS {
         eventSchedulePage.goToSport(sportName);
         log("@Step 2: Select a Home Team and Away Team >> input Time value");
         String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
+        String dateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7"));
         Event event = new Event.Builder()
                 .sportName(sportName)
                 .leagueName(leagueName)
@@ -117,21 +118,26 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@Step 3: Select status as Schedule >> Click Submit");
         eventSchedulePage.showLeague(event.getLeagueName(),event.getEventDate());
         eventSchedulePage.addEvent(event);
-        log("Verify 1: The event is scheduled successfully and displayed in the schedule list.");
-        Assert.assertTrue(eventSchedulePage.getSuccessMessage().contains("Event schedule is created successfully"),"FAILED! Success message is incorrect displayed");
-        eventSchedulePage.showScheduleList(leagueName,true,event.getHome(),date);
-        Assert.assertTrue(eventSchedulePage.verifyEventInSchedulelist(event),"Failed! Event info incorrect after created");
-        log("@Step 4: Go to Bet Entry and Result Entry >> find the event");
-        BetEntryPage betEntryPage = eventSchedulePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
-        CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,leagueName);
-        log("@Verify 2: The event is able to find in Result Entry and Bet Entry");
-        Assert.assertTrue(cricketBetEntryPage.isLeagueExist(leagueName),"FAILED! League "+ leagueName+" does not display in the list");
-        Assert.assertTrue(cricketBetEntryPage.isEventExist(event), "FAILED! Event "+event.getHome() +" & "+ event.getAway()+" under league "+ leagueName+" does not display in the list");
-        log("@Postcondition: Delete the event");
-        eventSchedulePage = cricketBetEntryPage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
-        eventSchedulePage.deleteEvent(event);
-        log("INFO: Executed completely");
+        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
+        String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+        event.setEventId(eventID);
+        try {
+            log("Verify 1: The event is scheduled successfully and displayed in the schedule list.");
+            Assert.assertTrue(eventSchedulePage.getSuccessMessage().contains("Event schedule is created successfully"),"FAILED! Success message is incorrect displayed");
+            eventSchedulePage.showScheduleList(leagueName,true,event.getHome(),date);
+            Assert.assertTrue(eventSchedulePage.verifyEventInSchedulelist(event),"Failed! Event info incorrect after created");
+            log("@Step 4: Go to Bet Entry and Result Entry >> find the event");
+            BetEntryPage betEntryPage = eventSchedulePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
+            CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
+            cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,leagueName);
+            log("@Verify 2: The event is able to find in Result Entry and Bet Entry");
+            Assert.assertTrue(cricketBetEntryPage.isLeagueExist(leagueName),"FAILED! League "+ leagueName+" does not display in the list");
+            Assert.assertTrue(cricketBetEntryPage.isEventExist(event), "FAILED! Event "+event.getHome() +" & "+ event.getAway()+" under league "+ leagueName+" does not display in the list");
+        } finally {
+            log("@Postcondition: Delete the event");
+            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            log("INFO: Executed completely");
+        }
     }
     @TestRails(id = "64")
     @Test(groups = {"regression","2023.11.30","ethan"})
@@ -139,33 +145,32 @@ public class CricketSportTest extends BaseCaseAQS {
         log("Validate users can set result for an event");
         log("@pre-condition 1: Account is activated permission");
         log("@pre-condition 2: There is an existed Cricket league and event");
-        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
-        Event event = new Event.Builder()
-                .sportName(sportName)
-                .leagueName(leagueName)
-                .eventDate(date)
-                .home("Auto Team 1")
-                .away("Auto Team 2")
-                .openTime("15:30")
-                .eventStatus("Scheduled")
-                .eventDate(date)
-                .isLive(false)
-                .isN(false)
-                .build();
-        event = welcomePage.createEvent(event);
-        log("@Step 1: Go to Result Entry >> select a date >> click Show Leagues >> Select a league");
-        CricketResultEntryPage cricketResultEntryPage = welcomePage.navigatePage(SPORT,RESULT_ENTRY, CricketResultEntryPage.class);
-        cricketResultEntryPage.goToSport(sportName);
-        cricketResultEntryPage.filterResult("Normal",date,leagueName,"KOT","All",true);
-        log("@Step 2: Input Runs, Wkts for team A & B >> select Result >> Click Submit");
-        cricketResultEntryPage.submitEvent(event,"","","151","5","156","7","");
-        log("Verify 1: The inputted values save successfully");
-        String expect = "Update "+event.getHome()+" -vs- "+event.getAway()+" successfully.";
-        Assert.assertEquals(cricketResultEntryPage.getSuccessMessage(),expect);
-        log("@Postcondition: Delete the event");
-        EventSchedulePage eventSchedulePage = cricketResultEntryPage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
-        eventSchedulePage.deleteEvent(event);
-        log("INFO: Executed completely");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
+        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:10").eventStatus("Scheduled")
+                .isLive(false).isN(false).build();
+
+        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
+        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
+        String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+        event.setEventId(eventID);
+        try {
+            log("@Step 1: Go to Result Entry >> select a date >> click Show Leagues >> Select a league");
+            CricketResultEntryPage cricketResultEntryPage = welcomePage.navigatePage(SPORT,RESULT_ENTRY, CricketResultEntryPage.class);
+            cricketResultEntryPage.goToSport(sportName);
+            cricketResultEntryPage.filterResult("Normal",date,leagueName,"KOT","All",true);
+            log("@Step 2: Input Runs, Wkts for team A & B >> select Result >> Click Submit");
+            cricketResultEntryPage.submitEvent(event,"","","151","5","156","7","");
+            log("Verify 1: The inputted values save successfully");
+            String expect = "Update "+event.getHome()+" -vs- "+event.getAway()+" successfully.";
+            Assert.assertEquals(cricketResultEntryPage.getSuccessMessage(),expect);
+        } finally {
+            log("@Postcondition: Delete the event");
+            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            log("INFO: Executed completely");
+        }
     }
     @TestRails(id = "65")
     @Test(groups = {"regression","2023.11.30","ethan"})
@@ -174,68 +179,68 @@ public class CricketSportTest extends BaseCaseAQS {
         log("Validate users can place 1x2 bet with selection as Home");
         log("@pre-condition 1: Account is activated permission");
         log("@pre-condition 2: There is an existed Cricket league and event");
-        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
-        Event event = new Event.Builder()
-                .sportName(sportName)
-                .leagueName(leagueName)
-                .eventDate(date)
-                .home("Auto Team 1")
-                .away("Auto Team 2")
-                .openTime("16:00")
-                .eventStatus("Scheduled")
-                .eventDate(date)
-                .isLive(false)
-                .isN(false)
-                .build();
-        event = welcomePage.createEvent(event);
-        log("@Step 1: Login to SB11");
-        log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
-        CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-        log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
-        log("@Step 4: Click …. At 1x2 Home >> observe the dialog");
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(event.getSportName())
-                .isNegativeHdp(false)
-                .price(2.00)
-                .requireStake(100)
-                .oddType("HK")
-                .betType("Back")
-                .accountCode(accountCode)
-                .accountCurrency(accountCurrency)
-                .marketType("1x2")
-                .selection(event.getHome())
-                .handicapRuns(9)
-                .handicapWtks(10)
-                .isLive(false)
-                .home(event.getHome())
-                .away((event.getAway()))
-                .event(event)
-                .build();
-        lstOrder.add(order);
-        CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
-        log("Verify 1: Validate the info in the bet slip displays correctly.");
-        cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
-        log("@Step 5: Input odds as 2 >> input stake as 100");
-        log("@Step 6: Click 'Place Bet'");
-        cricketBetSlipPopup.placeBet(order,true);
-        log("Verify 2: The bet is placed successfully");
-        Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-        BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
-        order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
-        betListPopup.close();
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-        log("@Step 7: Go to Confirm Bets");
-        ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
-        log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
-        confirmBetsPage.verifyOrder(lstOrder.get(0));
-        log("@Postcondition: Delete the event");
-        EventSchedulePage eventSchedulePage = confirmBetsPage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
-        eventSchedulePage.deleteEvent(event);
-        log("INFO: Executed completely");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
+        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:10").eventStatus("Scheduled")
+                .isLive(false).isN(false).build();
+
+        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
+        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
+        String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+        event.setEventId(eventID);
+        try {
+            log("@Step 1: Login to SB11");
+            log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
+            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
+            CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
+            log("@Step 3: Select the league >> input an account code >> click Show");
+            cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
+            log("@Step 4: Click …. At 1x2 Home >> observe the dialog");
+            List<Order> lstOrder = new ArrayList<>();
+            Order order = new Order.Builder()
+                    .sport(event.getSportName())
+                    .isNegativeHdp(false)
+                    .price(2.00)
+                    .requireStake(100)
+                    .oddType("HK")
+                    .betType("Back")
+                    .accountCode(accountCode)
+                    .accountCurrency(accountCurrency)
+                    .marketType("1x2")
+                    .selection(event.getHome())
+                    .handicapRuns(9)
+                    .handicapWtks(10)
+                    .isLive(false)
+                    .home(event.getHome())
+                    .away((event.getAway()))
+                    .event(event)
+                    .build();
+            lstOrder.add(order);
+            CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
+            cricketBetEntryPage.waitSpinnerDisappeared();
+            log("Verify 1: Validate the info in the bet slip displays correctly.");
+            cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
+            log("@Step 5: Input odds as 2 >> input stake as 100");
+            log("@Step 6: Click 'Place Bet'");
+            cricketBetSlipPopup.placeBet(order,true);
+            log("Verify 2: The bet is placed successfully");
+            Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
+            betListPopup.close();
+            lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+            log("@Step 7: Go to Confirm Bets");
+            ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+            confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+            log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
+            confirmBetsPage.verifyOrder(lstOrder.get(0));
+        } finally {
+            log("@Postcondition: Delete the event");
+            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            log("INFO: Executed completely");
+        }
     }
     @TestRails(id = "68")
     @Test(groups = {"regression","2023.11.30","ethan"})
@@ -564,6 +569,7 @@ public class CricketSportTest extends BaseCaseAQS {
                     .build();
             lstOrder.add(order);
             CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
+            cricketBetEntryPage.waitSpinnerDisappeared();
             log("Verify 1: Validate the info in the bet slip displays correctly.");
             cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
             log("@Step 5: Input odds as 2 >> input stake as 100");
@@ -633,6 +639,7 @@ public class CricketSportTest extends BaseCaseAQS {
                     .build();
             lstOrder.add(order);
             CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
+            cricketBetEntryPage.waitSpinnerDisappeared();
             log("Verify 1: Validate the info in the bet slip displays correctly.");
             cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
             log("@Step 5: Input odds as 2 >> input stake as 100");
@@ -656,74 +663,74 @@ public class CricketSportTest extends BaseCaseAQS {
         }
     }
     @TestRails(id = "244")
-    @Test(groups = {"regression","2023.11.30"})
+    @Test(groups = {"regression","2023.11.30","ethan"})
     @Parameters({"accountCode","accountCurrency"})
     public void Cricket_Sport_244 (String accountCode, String accountCurrency) {
         log("Validate users can place bet on Odd/Even market with selection as Even");
         log("@pre-condition 1: Account is activated permission");
         log("@pre-condition 2: There is an existed Cricket league and event");
-        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
-        Event event = new Event.Builder()
-                .sportName(sportName)
-                .leagueName(leagueName)
-                .eventDate(date)
-                .home("Auto Team 2")
-                .away("Auto Team 1")
-                .openTime("21:20")
-                .eventStatus("Scheduled")
-                .eventDate(date)
-                .isLive(false)
-                .isN(false)
-                .build();
-        event = welcomePage.createEvent(event);
-        log("@Step 1: Login to SB11");
-        log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
-        CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-        log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
-        log("@Step 4: Click …. at Even selection");
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(event.getSportName())
-                .isNegativeHdp(false)
-                .price(2.00)
-                .requireStake(100)
-                .oddType("HK")
-                .betType("Back")
-                .accountCode(accountCode)
-                .accountCurrency(accountCurrency)
-                .marketType("OE")
-                .selection("Even")
-                .handicapRuns(9)
-                .handicapWtks(10)
-                .isLive(false)
-                .home(event.getHome())
-                .away(event.getAway())
-                .event(event)
-                .build();
-        lstOrder.add(order);
-        CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
-        log("Verify 1: Validate the info in the bet slip displays correctly.");
-        cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
-        log("@Step 5: Input odds as 2 >> input stake as 100");
-        log("@Step 6: Click 'Place Bet'");
-        cricketBetSlipPopup.placeBet(order,true);
-        log("Verify 2: The bet is placed successfully");
-        Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-        BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
-        order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
-        betListPopup.close();
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-        log("@Step 7: Go to Confirm Bets");
-        ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
-        log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
-        confirmBetsPage.verifyOrder(lstOrder.get(0));
-        log("@Postcondition: Delete the event");
-        EventSchedulePage eventSchedulePage = confirmBetsPage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
-        eventSchedulePage.deleteEvent(event);
-        log("INFO: Executed completely");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
+        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 2").away("Auto Team 1").openTime("15:00").eventStatus("Scheduled")
+                .isLive(false).isN(false).build();
+
+        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
+        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
+        String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+        event.setEventId(eventID);
+        try {
+            log("@Step 1: Login to SB11");
+            log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
+            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
+            CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
+            log("@Step 3: Select the league >> input an account code >> click Show");
+            cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
+            log("@Step 4: Click …. at Even selection");
+            List<Order> lstOrder = new ArrayList<>();
+            Order order = new Order.Builder()
+                    .sport(event.getSportName())
+                    .isNegativeHdp(false)
+                    .price(2.00)
+                    .requireStake(100)
+                    .oddType("HK")
+                    .betType("Back")
+                    .accountCode(accountCode)
+                    .accountCurrency(accountCurrency)
+                    .marketType("OE")
+                    .selection("Even")
+                    .handicapRuns(9)
+                    .handicapWtks(10)
+                    .isLive(false)
+                    .home(event.getHome())
+                    .away(event.getAway())
+                    .event(event)
+                    .build();
+            lstOrder.add(order);
+            CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
+            cricketBetEntryPage.waitSpinnerDisappeared();
+            log("Verify 1: Validate the info in the bet slip displays correctly.");
+            cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
+            log("@Step 5: Input odds as 2 >> input stake as 100");
+            log("@Step 6: Click 'Place Bet'");
+            cricketBetSlipPopup.placeBet(order,true);
+            log("Verify 2: The bet is placed successfully");
+            Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
+            betListPopup.close();
+            lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+            log("@Step 7: Go to Confirm Bets");
+            ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+            confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+            log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
+            confirmBetsPage.verifyOrder(lstOrder.get(0));
+        } finally {
+            log("@Postcondition: Delete the event");
+            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            log("INFO: Executed completely");
+        }
     }
     @TestRails(id = "245")
     @Test(groups = {"regression","2023.11.30"})
@@ -732,140 +739,140 @@ public class CricketSportTest extends BaseCaseAQS {
         log("Validate users can place a bet on Over/Under market with selection as Over");
         log("@pre-condition 1: Account is activated permission");
         log("@pre-condition 2: There is an existed Cricket league and event");
-        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
-        Event event = new Event.Builder()
-                .sportName(sportName)
-                .leagueName(leagueName)
-                .eventDate(date)
-                .home("Auto Team 1")
-                .away("Auto Team 2")
-                .openTime("20:20")
-                .eventStatus("Scheduled")
-                .eventDate(date)
-                .isLive(false)
-                .isN(false)
-                .build();
-        event = welcomePage.createEvent(event);
-        log("@Step 1: Login to SB11");
-        log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
-        CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-        log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
-        log("@Step 4: Click …. at Over selection");
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(event.getSportName())
-                .isNegativeHdp(false)
-                .price(2.00)
-                .requireStake(100)
-                .oddType("HK")
-                .betType("Back")
-                .accountCode(accountCode)
-                .accountCurrency(accountCurrency)
-                .marketType("OU")
-                .selection("Over")
-                .handicapRuns(9)
-                .handicapWtks(10)
-                .runs(10.00)
-                .isLive(false)
-                .home(event.getHome())
-                .away(event.getAway())
-                .event(event)
-                .build();
-        lstOrder.add(order);
-        CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
-        log("Verify 1: Validate the info in the bet slip displays correctly.");
-        cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
-        log("@Step 5: Input odds as 2 >> input stake as 100");
-        log("@Step 6: Click 'Place Bet'");
-        cricketBetSlipPopup.placeBet(order,true);
-        log("Verify 2: The bet is placed successfully");
-        Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-        BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
-        order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
-        betListPopup.close();
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-        log("@Step 7: Go to Confirm Bets");
-        ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
-        log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
-        confirmBetsPage.verifyOrder(lstOrder.get(0));
-        log("@Postcondition: Delete the event");
-        EventSchedulePage eventSchedulePage = confirmBetsPage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
-        eventSchedulePage.deleteEvent(event);
-        log("INFO: Executed completely");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
+        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
+                .isLive(false).isN(false).build();
+
+        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
+        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
+        String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+        event.setEventId(eventID);
+        try {
+            log("@Step 1: Login to SB11");
+            log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
+            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
+            CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
+            log("@Step 3: Select the league >> input an account code >> click Show");
+            cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
+            log("@Step 4: Click …. at Over selection");
+            List<Order> lstOrder = new ArrayList<>();
+            Order order = new Order.Builder()
+                    .sport(event.getSportName())
+                    .isNegativeHdp(false)
+                    .price(2.00)
+                    .requireStake(100)
+                    .oddType("HK")
+                    .betType("Back")
+                    .accountCode(accountCode)
+                    .accountCurrency(accountCurrency)
+                    .marketType("OU")
+                    .selection("Over")
+                    .handicapRuns(9)
+                    .handicapWtks(10)
+                    .runs(10.00)
+                    .isLive(false)
+                    .home(event.getHome())
+                    .away(event.getAway())
+                    .event(event)
+                    .build();
+            lstOrder.add(order);
+            CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
+            cricketBetEntryPage.waitSpinnerDisappeared();
+            log("Verify 1: Validate the info in the bet slip displays correctly.");
+            cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
+            log("@Step 5: Input odds as 2 >> input stake as 100");
+            log("@Step 6: Click 'Place Bet'");
+            cricketBetSlipPopup.placeBet(order,true);
+            log("Verify 2: The bet is placed successfully");
+            Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
+            betListPopup.close();
+            lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+            log("@Step 7: Go to Confirm Bets");
+            ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+            confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+            log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
+            confirmBetsPage.verifyOrder(lstOrder.get(0));
+        } finally {
+            log("@Postcondition: Delete the event");
+            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            log("INFO: Executed completely");
+        }
     }
     @TestRails(id = "246")
-    @Test(groups = {"regression","2023.11.30"})
+    @Test(groups = {"regression","2023.11.30","ethan"})
     @Parameters({"accountCode","accountCurrency"})
     public void Cricket_Sport_246 (String accountCode, String accountCurrency) {
         log("Validate users can place a bet on Over/Under market with selection as Under");
         log("@pre-condition 1: Account is activated permission");
         log("@pre-condition 2: There is an existed Cricket league and event");
-        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
-        Event event = new Event.Builder()
-                .sportName(sportName)
-                .leagueName(leagueName)
-                .eventDate(date)
-                .home("Auto Team 2")
-                .away("Auto Team 1")
-                .openTime("20:20")
-                .eventStatus("Scheduled")
-                .eventDate(date)
-                .isLive(false)
-                .isN(false)
-                .build();
-        event = welcomePage.createEvent(event);
-        log("@Step 1: Login to SB11");
-        log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
-        CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-        log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
-        log("@Step 4: Click …. at Under selection");
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(event.getSportName())
-                .isNegativeHdp(false)
-                .price(2.00)
-                .requireStake(100)
-                .oddType("HK")
-                .betType("Back")
-                .accountCode(accountCode)
-                .accountCurrency(accountCurrency)
-                .marketType("OU")
-                .selection("Over")
-                .handicapRuns(9)
-                .handicapWtks(10)
-                .runs(10.00)
-                .isLive(false)
-                .home(event.getHome())
-                .away(event.getAway())
-                .event(event)
-                .build();
-        lstOrder.add(order);
-        CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
-        log("Verify 1: Validate the info in the bet slip displays correctly.");
-        cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
-        log("@Step 5: Input odds as 2 >> input stake as 100");
-        log("@Step 6: Click 'Place Bet'");
-        cricketBetSlipPopup.placeBet(order,true);
-        log("Verify 2: The bet is placed successfully");
-        Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-        BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
-        order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
-        betListPopup.close();
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-        log("@Step 7: Go to Confirm Bets");
-        ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
-        log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
-        confirmBetsPage.verifyOrder(lstOrder.get(0));
-        log("@Postcondition: Delete the event");
-        EventSchedulePage eventSchedulePage = confirmBetsPage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
-        eventSchedulePage.deleteEvent(event);
-        log("INFO: Executed completely");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
+        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 2").away("Auto Team 1").openTime("15:00").eventStatus("Scheduled")
+                .isLive(false).isN(false).build();
+
+        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
+        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
+        String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+        event.setEventId(eventID);
+        try {
+            log("@Step 1: Login to SB11");
+            log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
+            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
+            CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
+            log("@Step 3: Select the league >> input an account code >> click Show");
+            cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
+            log("@Step 4: Click …. at Under selection");
+            List<Order> lstOrder = new ArrayList<>();
+            Order order = new Order.Builder()
+                    .sport(event.getSportName())
+                    .isNegativeHdp(false)
+                    .price(2.00)
+                    .requireStake(100)
+                    .oddType("HK")
+                    .betType("Back")
+                    .accountCode(accountCode)
+                    .accountCurrency(accountCurrency)
+                    .marketType("OU")
+                    .selection("Over")
+                    .handicapRuns(9)
+                    .handicapWtks(10)
+                    .runs(10.00)
+                    .isLive(false)
+                    .home(event.getHome())
+                    .away(event.getAway())
+                    .event(event)
+                    .build();
+            lstOrder.add(order);
+            CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
+            cricketBetEntryPage.waitSpinnerDisappeared();
+            log("Verify 1: Validate the info in the bet slip displays correctly.");
+            cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
+            log("@Step 5: Input odds as 2 >> input stake as 100");
+            log("@Step 6: Click 'Place Bet'");
+            cricketBetSlipPopup.placeBet(order,true);
+            log("Verify 2: The bet is placed successfully");
+            Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
+            betListPopup.close();
+            lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+            log("@Step 7: Go to Confirm Bets");
+            ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+            confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+            log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
+            confirmBetsPage.verifyOrder(lstOrder.get(0));
+        } finally {
+            log("@Postcondition: Delete the event");
+            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            log("INFO: Executed completely");
+        }
     }
 
     @TestRails(id = "247")
@@ -875,141 +882,141 @@ public class CricketSportTest extends BaseCaseAQS {
         log("Validate users can place a bet on DNB market with selection as home");
         log("@pre-condition 1: Account is activated permission");
         log("@pre-condition 2: There is an existed Cricket league and event");
-        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
-        Event event = new Event.Builder()
-                .sportName(sportName)
-                .leagueName(leagueName)
-                .eventDate(date)
-                .home("Auto Team 1")
-                .away("Auto Team 2")
-                .openTime("14:14")
-                .eventStatus("Scheduled")
-                .eventDate(date)
-                .isLive(false)
-                .isN(false)
-                .build();
-        event = welcomePage.createEvent(event);
-        log("@Step 1: Login to SB11");
-        log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
-        CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-        log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
-        log("@Step 4: Click …. at Home selection");
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(event.getSportName())
-                .isNegativeHdp(false)
-                .price(2.00)
-                .requireStake(100)
-                .oddType("HK")
-                .betType("Back")
-                .accountCode(accountCode)
-                .accountCurrency(accountCurrency)
-                .marketType("DNB")
-                .selection(event.getHome())
-                .handicapRuns(9)
-                .handicapWtks(10)
-                .isLive(false)
-                .home(event.getHome())
-                .away(event.getAway())
-                .event(event)
-                .build();
-        lstOrder.add(order);
-        CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
-        log("Verify 1: Validate the info in the bet slip displays correctly.");
-        cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
-        log("@Step 5: Input odds as 2 >> input stake as 100");
-        log("@Step 6: Click 'Place Bet'");
-        cricketBetSlipPopup.placeBet(order,true);
-        log("Verify 2: The bet is placed successfully");
-        Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-        BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
-        order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
-        betListPopup.close();
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-        log("@Step 7: Go to Confirm Bets");
-        ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
-        log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
-        confirmBetsPage.verifyOrder(lstOrder.get(0));
-        log("@Postcondition: Delete the event");
-        EventSchedulePage eventSchedulePage = confirmBetsPage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
-        eventSchedulePage.deleteEvent(event);
-        log("INFO: Executed completely");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
+        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
+                .isLive(false).isN(false).build();
+
+        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
+        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
+        String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+        event.setEventId(eventID);
+        try {
+            log("@Step 1: Login to SB11");
+            log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
+            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
+            CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
+            log("@Step 3: Select the league >> input an account code >> click Show");
+            cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
+            log("@Step 4: Click …. at Home selection");
+            List<Order> lstOrder = new ArrayList<>();
+            Order order = new Order.Builder()
+                    .sport(event.getSportName())
+                    .isNegativeHdp(false)
+                    .price(2.00)
+                    .requireStake(100)
+                    .oddType("HK")
+                    .betType("Back")
+                    .accountCode(accountCode)
+                    .accountCurrency(accountCurrency)
+                    .marketType("DNB")
+                    .selection(event.getHome())
+                    .handicapRuns(9)
+                    .handicapWtks(10)
+                    .isLive(false)
+                    .home(event.getHome())
+                    .away(event.getAway())
+                    .event(event)
+                    .build();
+            lstOrder.add(order);
+            CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
+            cricketBetEntryPage.waitSpinnerDisappeared();
+            log("Verify 1: Validate the info in the bet slip displays correctly.");
+            cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
+            log("@Step 5: Input odds as 2 >> input stake as 100");
+            log("@Step 6: Click 'Place Bet'");
+            cricketBetSlipPopup.placeBet(order,true);
+            log("Verify 2: The bet is placed successfully");
+            Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
+            betListPopup.close();
+            lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+            log("@Step 7: Go to Confirm Bets");
+            ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+            confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+            log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
+            confirmBetsPage.verifyOrder(lstOrder.get(0));
+        } finally {
+            log("@Postcondition: Delete the event");
+            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            log("INFO: Executed completely");
+        }
     }
     @TestRails(id = "248")
-    @Test(groups = {"regression","2023.11.30"})
+    @Test(groups = {"regression","2023.11.30","ethan"})
     @Parameters({"accountCode","accountCurrency"})
     public void Cricket_Sport_248 (String accountCode, String accountCurrency) {
         log("\tValidate users can place a bet on DNB market with selection as away");
         log("@pre-condition 1: Account is activated permission");
         log("@pre-condition 2: There is an existed Cricket league and event");
-        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
-        Event event = new Event.Builder()
-                .sportName(sportName)
-                .leagueName(leagueName)
-                .eventDate(date)
-                .home("Auto Team 2")
-                .away("Auto Team 1")
-                .openTime("14:14")
-                .eventStatus("Scheduled")
-                .eventDate(date)
-                .isLive(false)
-                .isN(false)
-                .build();
-        event = welcomePage.createEvent(event);
-        log("@Step 1: Login to SB11");
-        log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
-        CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-        log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
-        log("@Step 4: Click …. at Away selection");
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(event.getSportName())
-                .isNegativeHdp(false)
-                .price(2.00)
-                .requireStake(100)
-                .oddType("HK")
-                .betType("Back")
-                .accountCode(accountCode)
-                .accountCurrency(accountCurrency)
-                .marketType("DNB")
-                .selection(event.getAway())
-                .handicapRuns(9)
-                .handicapWtks(10)
-                .isLive(false)
-                .home(event.getHome())
-                .away(event.getAway())
-                .event(event)
-                .build();
-        lstOrder.add(order);
-        CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
-        log("Verify 1: Validate the info in the bet slip displays correctly.");
-        cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
-        log("@Step 5: Input odds as 2 >> input stake as 100");
-        log("@Step 6: Click 'Place Bet'");
-        cricketBetSlipPopup.placeBet(order,true);
-        log("Verify 2: The bet is placed successfully");
-        Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-        BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
-        order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
-        betListPopup.close();
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-        log("@Step 7: Go to Confirm Bets");
-        ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
-        log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
-        confirmBetsPage.verifyOrder(lstOrder.get(0));
-        log("@Postcondition: Delete the event");
-        EventSchedulePage eventSchedulePage = confirmBetsPage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
-        eventSchedulePage.deleteEvent(event);
-        log("INFO: Executed completely");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
+        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
+                .isLive(false).isN(false).build();
+
+        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
+        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
+        String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+        event.setEventId(eventID);
+        try {
+            log("@Step 1: Login to SB11");
+            log("@Step 2: Go to Bet Entry >> Cricket >> select a date");
+            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
+            CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
+            log("@Step 3: Select the league >> input an account code >> click Show");
+            cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
+            log("@Step 4: Click …. at Away selection");
+            List<Order> lstOrder = new ArrayList<>();
+            Order order = new Order.Builder()
+                    .sport(event.getSportName())
+                    .isNegativeHdp(false)
+                    .price(2.00)
+                    .requireStake(100)
+                    .oddType("HK")
+                    .betType("Back")
+                    .accountCode(accountCode)
+                    .accountCurrency(accountCurrency)
+                    .marketType("DNB")
+                    .selection(event.getAway())
+                    .handicapRuns(9)
+                    .handicapWtks(10)
+                    .isLive(false)
+                    .home(event.getHome())
+                    .away(event.getAway())
+                    .event(event)
+                    .build();
+            lstOrder.add(order);
+            CricketBetSlipPopup cricketBetSlipPopup = cricketBetEntryPage.openBetSlip(order);
+            cricketBetEntryPage.waitSpinnerDisappeared();
+            log("Verify 1: Validate the info in the bet slip displays correctly.");
+            cricketBetSlipPopup.verifyBetSlipDisplayCorrect(order);
+            log("@Step 5: Input odds as 2 >> input stake as 100");
+            log("@Step 6: Click 'Place Bet'");
+            cricketBetSlipPopup.placeBet(order,true);
+            log("Verify 2: The bet is placed successfully");
+            Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
+            betListPopup.close();
+            lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+            log("@Step 7: Go to Confirm Bets");
+            ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+            confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+            log("Verify 3: The bet is able to find on the 'Pending' mode and displays with correct info.");
+            confirmBetsPage.verifyOrder(lstOrder.get(0));
+        } finally {
+            log("@Postcondition: Delete the event");
+            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            log("INFO: Executed completely");
+        }
     }
     @TestRails(id = "249")
-    @Test(groups = {"regression","2023.11.30"})
+    @Test(groups = {"regression","2023.11.30","ethan"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void Cricket_Sport_249 (String accountCode, String accountCurrency, String emailAddress, String clientCode) throws InterruptedException, IOException {
         log("Validate bet that placed on market Odd/Even settled correctly");
@@ -1018,99 +1025,102 @@ public class CricketSportTest extends BaseCaseAQS {
                 "Bet 1 was placed on the Odd selection, Odd/Even, stake = 100, odds = 2\n" +
                 "Bet 2 was placed on the Even selection, Odd/Even, stake = 100, odds = 2\n" +
                 "The event settled with result as Home Win");
-        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
         String clientCode1 = superMasterCode + clientCode;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
-        Event event = new Event.Builder()
-                .sportName(sportName)
-                .leagueName(leagueName)
-                .eventDate(date)
-                .home("Auto Team 1")
-                .away("Auto Team 2")
-                .openTime("23:11")
-                .eventStatus("Scheduled")
-                .eventDate(date)
-                .isLive(false)
-                .isN(false)
-                .build();
-        event = welcomePage.createEvent(event);
-        CricketResultEntryPage cricketResultEntryPage = welcomePage.navigatePage(SPORT,RESULT_ENTRY,CricketResultEntryPage.class);
-        cricketResultEntryPage.goToSport(sportName);
-        cricketResultEntryPage.filterResult("Normal",date,leagueName,"KOT","All",true);
-        cricketResultEntryPage.submitEvent(event,"","","205","5","6","5",ResultEntry.RESULT_TYPE.get(1));
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
-        CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-        log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
-        log("@Step 4: Click …. at selection Draw");
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(event.getSportName())
-                .isNegativeHdp(false)
-                .price(2.00)
-                .requireStake(100)
-                .oddType("HK")
-                .betType("Back")
-                .accountCode(accountCode)
-                .accountCurrency(accountCurrency)
-                .marketType("OE")
-                .selection("Odd")
-                .isLive(false)
-                .home(event.getHome())
-                .away((event.getAway()))
-                .event(event)
-                .build();
-        Order order1 = new Order.Builder()
-                .sport(event.getSportName())
-                .isNegativeHdp(false)
-                .price(2.00)
-                .requireStake(100)
-                .oddType("HK")
-                .betType("Back")
-                .accountCode(accountCode)
-                .accountCurrency(accountCurrency)
-                .marketType("OE")
-                .selection("Even")
-                .isLive(false)
-                .home(event.getHome())
-                .away(event.getAway())
-                .event(event)
-                .build();
-        lstOrder.add(order);
-        lstOrder.add(order1);
-        cricketBetEntryPage.placeBet(order,true);
-        cricketBetEntryPage.placeBet(order1,true);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-        log("@Step 1: Go to Confirm Bets");
-        ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
-        confirmBetsPage.confirmMultipleBets(lstOrder);
-        log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
-        BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed",date,date,"",accountCode);
-        log("Verify 1: Bet 1 : Win/Lose = 100\n" +
-                "Bet 2 : Win/Lose = -50");
-        Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(0)),"200");
-        Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(1)),"-100");
-        log("@Step 3: Select the bets >> click Settle and Send Settlement Email");
-        betSettlementPage.settleAndSendSettlementEmail(order);
-        log("Verify 2: Bets disappear from Confirm and move to the Settled section.");
-        betSettlementPage.filter("Settled", date, date,"", accountCode);
-        betSettlementPage.verifyOrderInfo(order);
-        List<ArrayList<String>> emailInfo = betSettlementPage.getFirstActiveMailBox("https://yopmail.com/",emailAddress);
-        List<String> expectedRow1 = Arrays.asList("Member Code: "+accountCode,"Member Name: "+accountCode);
-        log("@Verify 3 .Information of Description, Selection, HDP, Live, Price, Stake, Win/Lose, Type, Date, Total Win, C/F (displayed), Balance show correctly");
-        Assert.assertEquals(emailInfo.get(0).get(0),"Statement of Account for the Account "+accountCode,"Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(0).get(1),"Mr "+ clientCode,"Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(0).get(2),"Please find enclosed statement for account "+accountCode,"Failed! title of email is incorrect");
-        Assert.assertTrue(emailInfo.get(0).get(3).contains(String.format("Therefore the amount + %s", accountCurrency)) ,"Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(0).get(4),"This amount shall be KIV to the next period.","Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(1), BET_LIST_STATEMENT_EMAIL, "Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(3).get(0), expectedRow1.get(0), "Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(3).get(1), expectedRow1.get(1), "Failed! title of email is incorrect");
-        log("INFO: Executed completely");
+
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
+        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
+                .isLive(false).isN(false).build();
+
+        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
+        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
+        String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+        event.setEventId(eventID);
+        try {
+            CricketResultEntryPage cricketResultEntryPage = welcomePage.navigatePage(SPORT,RESULT_ENTRY,CricketResultEntryPage.class);
+            cricketResultEntryPage.goToSport(sportName);
+            cricketResultEntryPage.filterResult("Normal",date,leagueName,"KOT","All",true);
+            cricketResultEntryPage.submitEvent(event,"","","205","5","6","5",ResultEntry.RESULT_TYPE.get(1));
+            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
+            CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
+            log("@Step 3: Select the league >> input an account code >> click Show");
+            cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
+            log("@Step 4: Click …. at selection Draw");
+            List<Order> lstOrder = new ArrayList<>();
+            Order order = new Order.Builder()
+                    .sport(event.getSportName())
+                    .isNegativeHdp(false)
+                    .price(2.00)
+                    .requireStake(100)
+                    .oddType("HK")
+                    .betType("Back")
+                    .accountCode(accountCode)
+                    .accountCurrency(accountCurrency)
+                    .marketType("OE")
+                    .selection("Odd")
+                    .isLive(false)
+                    .home(event.getHome())
+                    .away((event.getAway()))
+                    .event(event)
+                    .build();
+            Order order1 = new Order.Builder()
+                    .sport(event.getSportName())
+                    .isNegativeHdp(false)
+                    .price(2.00)
+                    .requireStake(100)
+                    .oddType("HK")
+                    .betType("Back")
+                    .accountCode(accountCode)
+                    .accountCurrency(accountCurrency)
+                    .marketType("OE")
+                    .selection("Even")
+                    .isLive(false)
+                    .home(event.getHome())
+                    .away(event.getAway())
+                    .event(event)
+                    .build();
+            lstOrder.add(order);
+            lstOrder.add(order1);
+            cricketBetEntryPage.placeBet(order,true);
+            cricketBetEntryPage.placeBet(order1,true);
+            lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+            log("@Step 1: Go to Confirm Bets");
+            ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+            confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+            confirmBetsPage.confirmMultipleBets(lstOrder);
+            log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
+            BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
+            betSettlementPage.filter("Confirmed",date,date,"",accountCode);
+            log("Verify 1: Bet 1 : Win/Lose = 100\n" +
+                    "Bet 2 : Win/Lose = -50");
+            Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(0)),"200");
+            Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(1)),"-100");
+            log("@Step 3: Select the bets >> click Settle and Send Settlement Email");
+            betSettlementPage.settleAndSendSettlementEmail(order);
+            log("Verify 2: Bets disappear from Confirm and move to the Settled section.");
+            betSettlementPage.filter("Settled", date, date,"", accountCode);
+            betSettlementPage.verifyOrderInfo(order);
+            List<ArrayList<String>> emailInfo = betSettlementPage.getFirstActiveMailBox("https://yopmail.com/",emailAddress);
+            List<String> expectedRow1 = Arrays.asList("Member Code: "+accountCode,"Member Name: "+accountCode);
+            log("@Verify 3 .Information of Description, Selection, HDP, Live, Price, Stake, Win/Lose, Type, Date, Total Win, C/F (displayed), Balance show correctly");
+            Assert.assertEquals(emailInfo.get(0).get(0),"Statement of Account for the Account "+accountCode,"Failed! title of email is incorrect");
+            Assert.assertEquals(emailInfo.get(0).get(1),"Mr "+ clientCode,"Failed! title of email is incorrect");
+            Assert.assertEquals(emailInfo.get(0).get(2),"Please find enclosed statement for account "+accountCode,"Failed! title of email is incorrect");
+            Assert.assertTrue(emailInfo.get(0).get(3).contains(String.format("Therefore the amount + %s", accountCurrency)) ,"Failed! title of email is incorrect");
+            Assert.assertEquals(emailInfo.get(0).get(4),"This amount shall be KIV to the next period.","Failed! title of email is incorrect");
+            Assert.assertEquals(emailInfo.get(1), BET_LIST_STATEMENT_EMAIL, "Failed! title of email is incorrect");
+            Assert.assertEquals(emailInfo.get(3).get(0), expectedRow1.get(0), "Failed! title of email is incorrect");
+            Assert.assertEquals(emailInfo.get(3).get(1), expectedRow1.get(1), "Failed! title of email is incorrect");
+        } finally {
+            log("@Postcondition: Delete the event");
+            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            log("INFO: Executed completely");
+        }
     }
     @TestRails(id = "250")
     @Test(groups = {"regression","2023.11.30"})
@@ -1132,7 +1142,7 @@ public class CricketSportTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id = "251")
-    @Test(groups = {"regression","2023.11.30"})
+    @Test(groups = {"regression","2023.11.30","ethan"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void Cricket_Sport_251 (String accountCode, String accountCurrency, String emailAddress, String clientCode) throws InterruptedException, IOException {
         log("Validate bet that placed on market Over/Under settled correctly");
@@ -1141,104 +1151,107 @@ public class CricketSportTest extends BaseCaseAQS {
                 "Bet 1 was placed on the Over selection, Over/Under, stake = 100, odds = 2\n" +
                 "Bet 2 was placed on the Under selection, Over/Under, stake = 100, odds = 2\n" +
                 "The event settled with result as Home Win");
-        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
         String clientCode1 = superMasterCode + clientCode;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
-        Event event = new Event.Builder()
-                .sportName(sportName)
-                .leagueName(leagueName)
-                .eventDate(date)
-                .home("Auto Team 2")
-                .away("Auto Team 1")
-                .openTime("23:23")
-                .eventStatus("Scheduled")
-                .eventDate(date)
-                .isLive(false)
-                .isN(false)
-                .build();
-        event = welcomePage.createEvent(event);
-        CricketResultEntryPage cricketResultEntryPage = welcomePage.navigatePage(SPORT,RESULT_ENTRY,CricketResultEntryPage.class);
-        cricketResultEntryPage.goToSport(sportName);
-        cricketResultEntryPage.filterResult("Normal",date,leagueName,"KOT","All",true);
-        cricketResultEntryPage.submitEvent(event,"","","205","5","5","5",ResultEntry.RESULT_TYPE.get(1));
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
-        CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-        log("@Step 3: Select the league >> input an account code >> click Show");
-        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
-        log("@Step 4: Click …. at selection");
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(event.getSportName())
-                .isNegativeHdp(false)
-                .price(2.00)
-                .requireStake(100)
-                .runs(100)
-                .oddType("HK")
-                .betType("Back")
-                .accountCode(accountCode)
-                .accountCurrency(accountCurrency)
-                .marketType("OU")
-                .selection("Over")
-                .isLive(false)
-                .home(event.getHome())
-                .away((event.getAway()))
-                .event(event)
-                .build();
-        Order order1 = new Order.Builder()
-                .sport(event.getSportName())
-                .isNegativeHdp(false)
-                .price(2.00)
-                .requireStake(100)
-                .runs(100)
-                .oddType("HK")
-                .betType("Back")
-                .accountCode(accountCode)
-                .accountCurrency(accountCurrency)
-                .marketType("OU")
-                .selection("Under")
-                .isLive(false)
-                .home(event.getHome())
-                .away(event.getAway())
-                .event(event)
-                .build();
-        lstOrder.add(order);
-        lstOrder.add(order1);
-        cricketBetEntryPage.placeBet(order,true);
-        cricketBetEntryPage.placeBet(order1,true);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-        log("@Step 1: Go to Confirm Bets");
-        ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
-        confirmBetsPage.confirmMultipleBets(lstOrder);
-        log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
-        BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed",date,date,"",accountCode);
-        log("Verify 1: Bet 1 : Win/Lose = 100\n" +
-                "Bet 2 : Win/Lose = -50");
-        Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(0)),"200");
-        Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(1)),"-100");
-        log("@Step 3: Select the bets >> click Settle and Send Settlement Email");
-        betSettlementPage.settleAndSendSettlementEmail(order);
-        log("Verify 2: Bets disappear from Confirm and move to the Settled section.");
-        betSettlementPage.filter("Settled", date, date,"", accountCode);
-        betSettlementPage.verifyOrderInfo(order);
-        List<ArrayList<String>> emailInfo = betSettlementPage.getFirstActiveMailBox("https://yopmail.com/",emailAddress);
-        List<String> expectedRow1 = Arrays.asList("Member Code: "+accountCode,"Member Name: "+accountCode);
-        log("@Verify 3 .Information of Description, Selection, HDP, Live, Price, Stake, Win/Lose, Type, Date, Total Win, C/F (displayed), Balance show correctly");
-        Assert.assertEquals(emailInfo.get(0).get(0),"Statement of Account for the Account "+accountCode,"Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(0).get(1),"Mr "+ clientCode,"Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(0).get(2),"Please find enclosed statement for account "+accountCode,"Failed! title of email is incorrect");
-        Assert.assertTrue(emailInfo.get(0).get(3).contains(String.format("Therefore the amount + %s", accountCurrency)) ,"Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(0).get(4),"This amount shall be KIV to the next period.","Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(1), BET_LIST_STATEMENT_EMAIL, "Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(3).get(0), expectedRow1.get(0), "Failed! title of email is incorrect");
-        Assert.assertEquals(emailInfo.get(3).get(1), expectedRow1.get(1), "Failed! title of email is incorrect");
-        log("INFO: Executed completely");
+
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
+        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
+                .isLive(false).isN(false).build();
+
+        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
+        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
+        String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+        event.setEventId(eventID);
+        try {
+            CricketResultEntryPage cricketResultEntryPage = welcomePage.navigatePage(SPORT,RESULT_ENTRY,CricketResultEntryPage.class);
+            cricketResultEntryPage.goToSport(sportName);
+            cricketResultEntryPage.filterResult("Normal",date,leagueName,"KOT","All",true);
+            cricketResultEntryPage.submitEvent(event,"","","205","5","5","5",ResultEntry.RESULT_TYPE.get(1));
+            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
+            CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
+            log("@Step 3: Select the league >> input an account code >> click Show");
+            cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
+            log("@Step 4: Click …. at selection");
+            List<Order> lstOrder = new ArrayList<>();
+            Order order = new Order.Builder()
+                    .sport(event.getSportName())
+                    .isNegativeHdp(false)
+                    .price(2.00)
+                    .requireStake(100)
+                    .runs(100)
+                    .oddType("HK")
+                    .betType("Back")
+                    .accountCode(accountCode)
+                    .accountCurrency(accountCurrency)
+                    .marketType("OU")
+                    .selection("Over")
+                    .isLive(false)
+                    .home(event.getHome())
+                    .away((event.getAway()))
+                    .event(event)
+                    .build();
+            Order order1 = new Order.Builder()
+                    .sport(event.getSportName())
+                    .isNegativeHdp(false)
+                    .price(2.00)
+                    .requireStake(100)
+                    .runs(100)
+                    .oddType("HK")
+                    .betType("Back")
+                    .accountCode(accountCode)
+                    .accountCurrency(accountCurrency)
+                    .marketType("OU")
+                    .selection("Under")
+                    .isLive(false)
+                    .home(event.getHome())
+                    .away(event.getAway())
+                    .event(event)
+                    .build();
+            lstOrder.add(order);
+            lstOrder.add(order1);
+            cricketBetEntryPage.placeBet(order,true);
+            cricketBetEntryPage.placeBet(order1,true);
+            lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+            log("@Step 1: Go to Confirm Bets");
+            ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+            confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
+            confirmBetsPage.confirmMultipleBets(lstOrder);
+            log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
+            BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
+            betSettlementPage.filter("Confirmed",date,date,"",accountCode);
+            log("Verify 1: Bet 1 : Win/Lose = 100\n" +
+                    "Bet 2 : Win/Lose = -50");
+            Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(0)),"200");
+            Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(1)),"-100");
+            log("@Step 3: Select the bets >> click Settle and Send Settlement Email");
+            betSettlementPage.settleAndSendSettlementEmail(order);
+            log("Verify 2: Bets disappear from Confirm and move to the Settled section.");
+            betSettlementPage.filter("Settled", date, date,"", accountCode);
+            betSettlementPage.verifyOrderInfo(order);
+            List<ArrayList<String>> emailInfo = betSettlementPage.getFirstActiveMailBox("https://yopmail.com/",emailAddress);
+            List<String> expectedRow1 = Arrays.asList("Member Code: "+accountCode,"Member Name: "+accountCode);
+            log("@Verify 3 .Information of Description, Selection, HDP, Live, Price, Stake, Win/Lose, Type, Date, Total Win, C/F (displayed), Balance show correctly");
+            Assert.assertEquals(emailInfo.get(0).get(0),"Statement of Account for the Account "+accountCode,"Failed! title of email is incorrect");
+            Assert.assertEquals(emailInfo.get(0).get(1),"Mr "+ clientCode,"Failed! title of email is incorrect");
+            Assert.assertEquals(emailInfo.get(0).get(2),"Please find enclosed statement for account "+accountCode,"Failed! title of email is incorrect");
+            Assert.assertTrue(emailInfo.get(0).get(3).contains(String.format("Therefore the amount + %s", accountCurrency)) ,"Failed! title of email is incorrect");
+            Assert.assertEquals(emailInfo.get(0).get(4),"This amount shall be KIV to the next period.","Failed! title of email is incorrect");
+            Assert.assertEquals(emailInfo.get(1), BET_LIST_STATEMENT_EMAIL, "Failed! title of email is incorrect");
+            Assert.assertEquals(emailInfo.get(3).get(0), expectedRow1.get(0), "Failed! title of email is incorrect");
+            Assert.assertEquals(emailInfo.get(3).get(1), expectedRow1.get(1), "Failed! title of email is incorrect");
+        } finally {
+            log("@Postcondition: Delete the event");
+            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            log("INFO: Executed completely");
+        }
     }
     @TestRails(id = "252")
-    @Test(groups = {"regression","2023.11.30"})
+    @Test(groups = {"regression","2023.11.30","ethan"})
     @Parameters({"accountCode","clientCode"})
     public void Cricket_Sport_252 (String accountCode, String clientCode) throws IOException {
         log("@title: Validate Cricket manual bets settled correctly");
@@ -1278,7 +1291,7 @@ public class CricketSportTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id = "175")
-    @Test(groups = {"regression","2023.11.30","ethan1"})
+    @Test(groups = {"regression","2023.11.30","ethan"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void Cricket_Sport_175 (String accountCode, String accountCurrency, String emailAddress, String clientCode) throws InterruptedException, IOException {
         log("Validate bet that placed on market DNB settled correctly");
@@ -1300,6 +1313,7 @@ public class CricketSportTest extends BaseCaseAQS {
         String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
         EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
+        welcomePage.waitSpinnerDisappeared();
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         event.setEventId(eventID);
         welcomePage.waitSpinnerDisappeared();

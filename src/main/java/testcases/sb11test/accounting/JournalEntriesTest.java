@@ -24,7 +24,7 @@ import static common.SBPConstants.*;
 public class JournalEntriesTest extends BaseCaseAQS {
 
     @TestRails(id="864")
-    @Test(groups = {"smoke","ethan1"})
+    @Test(groups = {"smoke","ethan"})
     @Parameters({"bookieCode","bookieSuperMasterCode"})
     public void Journal_Entries_864(String bookieCode, String bookieSuperMasterCode) throws InterruptedException {
         String level = "Super";

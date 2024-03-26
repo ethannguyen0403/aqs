@@ -15,7 +15,7 @@ public class CricketResultEntryPage extends WelcomePage {
     public Button btnSoccer = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Soccer')]");
     public Button btnCricket = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Cricket')]");
     public Button btnShowLeagues = Button.xpath("//button[contains(text(),'Show Leagues')]");
-    public Button btnShow = Button.xpath("//button[@class='btn btn-show']");
+    public Button btnShow = Button.xpath("//button[text()='Show']");
     public DropDownBox ddpType = DropDownBox.id("type");
     public DropDownBox ddpLeague = DropDownBox.id("sport");
     public DropDownBox ddpOrderBy = DropDownBox.id("betType");
@@ -54,6 +54,7 @@ public class CricketResultEntryPage extends WelcomePage {
             waitSpinnerDisappeared();
             btnShowLeagues.click();
             waitSpinnerDisappeared();
+            waitSpinnerDisappeared();
         }
         ddpLeague.selectByVisibleText(league);
         waitSpinnerDisappeared();
@@ -68,7 +69,7 @@ public class CricketResultEntryPage extends WelcomePage {
     }
     public int getEventIndex(Event event){
         Label lblEvent, lblTime;
-        String eventExpect = event.getHome() + "\n -vs- \n" + event.getAway();
+        String eventExpect = event.getHome() + "\n-vs-\n" + event.getAway();
         String timeExpect = event.getOpenTime();
         int i = 2;
         while (i < 10) {

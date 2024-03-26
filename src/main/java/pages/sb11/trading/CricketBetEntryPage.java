@@ -105,6 +105,7 @@ public class CricketBetEntryPage extends BetEntryPage {
     public CricketBetSlipPopup openBetSlip(Order order){
         txtAccCode.type(order.getAccountCode());
         btnShow.click();
+        waitSpinnerDisappeared();
         int rowIndex = getEventRowIndex(order.getHome());
         String selection = "DRAW";
         if(order.getSelection().equals(order.getHome()))
@@ -121,7 +122,7 @@ public class CricketBetEntryPage extends BetEntryPage {
             selection="Under";
         int colIndex = defineColumn(order.getMarketType(), selection);
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
         return new CricketBetSlipPopup();
 
     }

@@ -48,6 +48,7 @@
 
             <class name="testcases.sb11test.trading.BetEntryTest"/>
             <class name="testcases.sb11test.trading.BetSettlementTest"/>
+            <class name="testcases.sb11test.trading.CricketSportTest"/>
 
             <class name="testcases.sb11test.master.BookieSystemTest"/>
 
