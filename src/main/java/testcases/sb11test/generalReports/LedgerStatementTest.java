@@ -520,17 +520,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 2: Navigate to Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-        Transaction transaction = new Transaction.Builder()
-                .ledgerDebit(debitLibAcc)
-                .ledgerCredit(creditLibAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark(descLiability)
-                .transDate("")
-                .transType(transType)
-                .build();
+        Transaction transaction = new Transaction.Builder().ledgerDebit(debitLibAcc).ledgerCredit(creditLibAcc).ledgerDebitCur(lgDebitCur).ledgerCreditCur(lgCreditCur)
+                .amountDebit(1).amountCredit(1).remark(descLiability).transDate("").transType(transType).build();
 
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
@@ -546,10 +537,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_DEBIT_ACC,true);
-            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_DEBIT_ACC,true);
-            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_CREDIT_ACC,true);
-            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_CREDIT_ACC,true);
+            String ledgerCreditAccountName = LEDGER_LIABILITY_DEBIT_NAME;
+            String ledgerCreditAccountNumber = LEDGER_LIABILITY_DEBIT_NUMBER;
+            String ledgerDebitAccountName = LEDGER_LIABILITY_CREDIT_NAME;
+            String ledgerDebitAccountNumber = LEDGER_LIABILITY_CREDIT_NUMBER;
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
                     .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
@@ -558,12 +549,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
 
-            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_LIABILITY);
-            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_LIABILITY);
-            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
-            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
-            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_LIABILITY,LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
         }
 
     }
@@ -659,7 +645,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 1: Result page shows with 2 parts:\n" +
                     "Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed\n" +
                     "Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
-            ledgerStatementPage.verifyLedgerTrans(transaction, false, transaction.getRemark());
+            ledgerStatementPage.verifyLedgerTrans(transaction, false, lgCapitalGroup);
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
@@ -720,7 +706,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 1: Result page shows with 2 parts:\n" +
                     "Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in red, Running Bal and Running Bal CT displayed\n" +
                     "Amounts in GBP (conver to GBP): Credit/Debit column = value inputted at step 5 in red, Running Bal get value from Original Currency");
-            ledgerStatementPage.verifyLedgerTrans(transaction, true, transaction.getRemark());
+            ledgerStatementPage.verifyLedgerTrans(transaction, true, lgCapitalGroup);
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
@@ -906,7 +892,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("@Verify 1: Result page shows with 2 parts:\n" +
                     "Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed\n" +
                     "Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
-            ledgerStatementPage.verifyLedgerTrans(transaction, false, transaction.getRemark());
+            ledgerStatementPage.verifyLedgerTrans(transaction, false, lgIncomeGroup);
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");

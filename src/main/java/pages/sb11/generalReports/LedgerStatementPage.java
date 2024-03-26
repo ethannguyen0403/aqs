@@ -89,19 +89,19 @@ public class LedgerStatementPage extends WelcomePage {
     }
 
     public Transaction verifyLedgerTrans(Transaction trans, boolean isDebit, String ledgerGroup){
-        int startIndex = getStartRowWithLedgerGroup(ledgerGroup);
-        int i = startIndex +1;
+        int i = 1;
+        Table tblLedgerGroup = Table.xpath(String.format("//span[contains(text(),'%s')]/ancestor::table",ledgerGroup),totalCol);
         while(true){
-            String ledgerAccount = tbLedger.getControlOfCell(1,colLedger,i,null).getText().trim();
+            String ledgerAccount = tblLedgerGroup.getControlOfCell(1,colLedger,i,null).getText().trim();
             if (isDebit){
                 if(ledgerAccount.contains(trans.getLedgerDebit().split(" - ")[0])) {
                     System.out.println(String.format("Found transaction %s at row %s", ledgerAccount, i));
-                    return verifyTransactionDisplayCorrectInRow(trans, true, i);
+                    return verifyTransactionDisplayCorrectInRow(trans, true, i, ledgerGroup);
                 }
             } else {
                 if (ledgerAccount.contains(trans.getLedgerCredit().split(" - ")[0])){
                     System.out.println(String.format("Found transaction %s at row %s", ledgerAccount, i));
-                    return verifyTransactionDisplayCorrectInRow(trans, false, i);
+                    return verifyTransactionDisplayCorrectInRow(trans, false, i, ledgerGroup);
                 }
             }
             i = i +1;
@@ -175,15 +175,16 @@ public class LedgerStatementPage extends WelcomePage {
         return lblGrandTotalbyRunningBal.getText();
     }
 
-    private Transaction verifyTransactionDisplayCorrectInRow(Transaction transaction, boolean isDebit, int rowIndex){
+    private Transaction verifyTransactionDisplayCorrectInRow(Transaction transaction, boolean isDebit, int rowIndex, String parentAcc){
+        Table tblLedgerGroup = Table.xpath(String.format("//span[contains(text(),'%s')]/ancestor::table",parentAcc),totalCol);
         // TODO: Johnny Use API to get OP Rate of according currency instead of init data in Constant class
-        String ledgerAccount = tbLedger.getControlOfCell(1, colLedger, rowIndex, null).getText().trim();
-        String cur = tbLedger.getControlOfCell(1, colCur, rowIndex, null).getText().trim();
-        String amountORG = tbLedger.getControlOfCell(1, colAmountORG, rowIndex, null).getText().trim().replace(",","");
-        String amountGBP = tbLedger.getControlOfCell(1, colAmountGBP, rowIndex, null).getText().trim().replace(",","");
-        String runBalORG = tbLedger.getControlOfCell(1, colRunBalORG,rowIndex,null).getText().trim().replace(",","");
-        String runBalCTORG = tbLedger.getControlOfCell(1,colRunBalCTORG,rowIndex,null).getText().trim().replace(",","");
-        String runBalGBP = tbLedger.getControlOfCell(1, colRunBalGBP,rowIndex,null).getText().trim().replace(",","");
+        String ledgerAccount = tblLedgerGroup.getControlOfCell(1, colLedger, rowIndex, null).getText().trim();
+        String cur = tblLedgerGroup.getControlOfCell(1, colCur, rowIndex, null).getText().trim();
+        String amountORG = tblLedgerGroup.getControlOfCell(1, colAmountORG, rowIndex, null).getText().trim().replace(",","");
+        String amountGBP = tblLedgerGroup.getControlOfCell(1, colAmountGBP, rowIndex, null).getText().trim().replace(",","");
+        String runBalORG = tblLedgerGroup.getControlOfCell(1, colRunBalORG,rowIndex,null).getText().trim().replace(",","");
+        String runBalCTORG = tblLedgerGroup.getControlOfCell(1,colRunBalCTORG,rowIndex,null).getText().trim().replace(",","");
+        String runBalGBP = tblLedgerGroup.getControlOfCell(1, colRunBalGBP,rowIndex,null).getText().trim().replace(",","");
 
         if (isDebit){
             double curDebitRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1",transaction.getLedgerDebitCur()));
@@ -269,8 +270,9 @@ public class LedgerStatementPage extends WelcomePage {
     private int getStartRowWithLedgerGroup(String ledgerGroup){
         int i = 1;
         Label lblLedgerGroup;
+        Table tblLedgerGroup = Table.xpath(String.format("//a[contains(text(),'%s')]/ancestor::table",ledgerGroup),totalCol);
         while (true){
-            lblLedgerGroup = Label.xpath(tbLedger.getxPathOfCell(1,1,i,null));
+            lblLedgerGroup = Label.xpath(tblLedgerGroup.getxPathOfCell(1,1,i,null));
             if(!lblLedgerGroup.isDisplayed()){
                 System.out.println("The ledger group "+ledgerGroup+" does not display in the list");
                 return 0;

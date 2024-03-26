@@ -100,7 +100,11 @@ public class SBPConstants {
     public final static String LEDGER_ASSET_CREDIT_ACC = "050.000.000.000 - AutoAssetCredit";
     public final static String LEDGER_ASSET_DEBIT_ACC = "055.000.000.000 - AutoAssetDebit";
     public final static String LEDGER_LIABILITY_CREDIT_ACC = "040.000.000.000 - AutoLiabilityCredit";
+    public final static String LEDGER_LIABILITY_CREDIT_NAME = "AutoLiabilityCredit";
+    public final static String LEDGER_LIABILITY_CREDIT_NUMBER = "040.000.000.000";
     public final static String LEDGER_LIABILITY_DEBIT_ACC = "044.000.000.000 - AutoLiabilityDebit";
+    public final static String LEDGER_LIABILITY_DEBIT_NAME = "AutoLiabilityDebit";
+    public final static String LEDGER_LIABILITY_DEBIT_NUMBER = "044.000.000.000";
     public final static String LEDGER_CAPITAL_CREDIT_ACC = "030.000.000.000 - AutoCapitalCredit";
     public final static String LEDGER_CAPITAL_DEBIT_ACC = "033.000.000.000 - AutoCapitalDebit";
     public final static String LEDGER_INCOME_CREDIT_ACC = "002.000.000.000 - AutoIncomeCredit";
