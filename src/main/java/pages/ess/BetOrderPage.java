@@ -196,6 +196,7 @@ public class BetOrderPage extends HomePage {
 
     public BetListPopup openBetList(String orderID,String status){
         getControlOnTableBasedOnOrderID(status,orderID,"Bets").click();
+        waitSpinLoad();
         return new BetListPopup();
 
     }

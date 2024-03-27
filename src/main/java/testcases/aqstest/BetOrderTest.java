@@ -116,15 +116,15 @@ public class BetOrderTest extends BaseCaseAQS {
         if(betOrderPage.isNodata(orderLst)){
             log("SKIP: No data to click on Market name to open order log popup in Pending order");
             return;}
-        BetSlipPopup betSlipPopup = betOrderPage.openBetSlip(orderLst.get(1).getOrderId(),PENDING);
+        BetSlipPopup betSlipPopup = betOrderPage.openBetSlip(orderLst.get(0).getOrderId(),PENDING);
 
         log("@Verify Bet Slip popup display with correct info: Start date, League - Event name - Market type");
-        String dateconvert = DateUtils.convertDateToNewTimeZone(orderLst.get(1).getEventDate(),"yyyy-MM-dd'T'HH:mm:ss.SSSXXX","","dd/MM\nHH:mm","GMT+8");
+        String dateconvert = DateUtils.convertDateToNewTimeZone(orderLst.get(0).getEventDate(),"yyyy-MM-dd'T'HH:mm:ss.SSSXXX","","dd/MM\nHH:mm","GMT+8");
         Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(dateconvert),"FAILED! Event date is displayed incorrectly!");
-        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(1).getHome()), "FAILED! Home team name is displayed incorrectly!");
-        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(1).getAway()), "FAILED! Away team name is displayed incorrectly!");
-        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(1).getCompetitionName()), "FAILED! League name is displayed incorrectly!");
-        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(ESSConstants.HomePage.EN_US.get(orderLst.get(1).getMarketType())), "FAILED! Market type is displayed incorrectly!");
+        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(0).getHome()), "FAILED! Home team name is displayed incorrectly!");
+        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(0).getAway()), "FAILED! Away team name is displayed incorrectly!");
+        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(orderLst.get(0).getCompetitionName()), "FAILED! League name is displayed incorrectly!");
+        Assert.assertTrue(betSlipPopup.lblHeader.getText().contains(ESSConstants.HomePage.EN_US.get(orderLst.get(0).getMarketType())), "FAILED! Market type is displayed incorrectly!");
 
         log("INFO: Executed completely");
     }
