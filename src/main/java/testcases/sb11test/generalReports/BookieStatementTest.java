@@ -93,14 +93,13 @@ public class BookieStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan"})
     @TestRails(id = "184")
     public void BookieStatementTC_184() throws IOException, InterruptedException {
         String bookieName = "QA Bookie";
         String bookieCode = "QA01";
         String superMasterCode = "SM-QA1-QA Test";
         String level = "Super";
-        String fromType = "Bookie";
         String accountCodeDebit = "SM-QA1-QA Test";
         String accountCodeCredit = "SM-FE9-QA Test";
 
@@ -108,21 +107,12 @@ public class BookieStatementTest extends BaseCaseAQS {
         log("Precondition: Add txn for Bookie Super in Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("Automation Testing Transaction Bookie: " + DateUtils.getMilliSeconds())
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .level(level)
-                .debitAccountCode(accountCodeDebit)
-                .creditAccountCode(accountCodeCredit)
+                .amountDebit(1).amountCredit(1).remark("Automation Testing Transaction Bookie: " + DateUtils.getMilliSeconds())
+                .transDate(transDate).transType("Tax Rebate").level(level)
+                .debitAccountCode(accountCodeDebit).creditAccountCode(accountCodeCredit)
                 .build();
-        welcomePage.waitSpinnerDisappeared();
-        String typeId = BookieInfoUtils.getBookieId(bookieName);
-        String accountSuperIdDebit = AccountSearchUtils.getAccountId(accountCodeDebit);
-        String accountSuperIdCredit = AccountSearchUtils.getAccountId(accountCodeCredit);
         try {
-            TransactionUtils.addClientBookieTxn(transaction,accountSuperIdDebit,accountSuperIdCredit,fromType,typeId);
+            TransactionUtils.addTransByAPI(transaction,"Bookie",accountCodeDebit,accountCodeCredit,"","",bookieName);
 
             log("@Step 1: Login with valid account");
             log("@Step 2: Click General Reports > Bookie Statement");
@@ -139,18 +129,12 @@ public class BookieStatementTest extends BaseCaseAQS {
         } finally {
             log("Post-Condition: Add txn for Bookie Super in Credit");
             Transaction transactionPost = new Transaction.Builder()
-                    .amountDebit(1)
-                    .amountCredit(1)
-                    .remark("Automation Testing Transaction Bookie Post-condition: " + DateUtils.getMilliSeconds())
-                    .transDate(transDate)
-                    .transType("Tax Rebate")
-                    .level(level)
-                    .debitAccountCode(accountCodeCredit)
-                    .creditAccountCode(accountCodeDebit)
+                    .amountDebit(1).amountCredit(1).remark("Automation Testing Transaction Bookie Post-condition: " + DateUtils.getMilliSeconds())
+                    .transDate(transDate).transType("Tax Rebate").level(level)
+                    .debitAccountCode(accountCodeCredit).creditAccountCode(accountCodeDebit)
                     .build();
-            TransactionUtils.addClientBookieTxn(transactionPost,accountSuperIdCredit,accountSuperIdDebit,fromType,typeId);
+            TransactionUtils.addTransByAPI(transactionPost,"Bookie",accountCodeCredit,accountCodeDebit,"","",bookieName);
         }
-
         log("INFO: Executed completely");
     }
 }

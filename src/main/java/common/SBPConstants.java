@@ -98,7 +98,11 @@ public class SBPConstants {
     public final static String QA_ASSET_PARENT_ACCOUNT_700 = "700.000.000.000 - QA Asset Account 700";
     public final static String CAPITAL_PARENT_ACCOUNT = "301.000.000.000 - Capital";
     public final static String LEDGER_ASSET_CREDIT_ACC = "050.000.000.000 - AutoAssetCredit";
+    public final static String LEDGER_ASSET_CREDIT_NUMBER = "050.000.000.000";
+    public final static String LEDGER_ASSET_CREDIT_NAME = "AutoAssetCredit";
     public final static String LEDGER_ASSET_DEBIT_ACC = "055.000.000.000 - AutoAssetDebit";
+    public final static String LEDGER_ASSET_DEBIT_NUMBER = "055.000.000.000";
+    public final static String LEDGER_ASSET_DEBIT_NAME = "AutoAssetDebit";
     public final static String LEDGER_LIABILITY_CREDIT_ACC = "040.000.000.000 - AutoLiabilityCredit";
     public final static String LEDGER_LIABILITY_CREDIT_NAME = "AutoLiabilityCredit";
     public final static String LEDGER_LIABILITY_CREDIT_NUMBER = "040.000.000.000";
@@ -110,7 +114,11 @@ public class SBPConstants {
     public final static String LEDGER_INCOME_CREDIT_ACC = "002.000.000.000 - AutoIncomeCredit";
     public final static String LEDGER_INCOME_DEBIT_ACC = "002.200.000.000 - AutoIncomeDebit";
     public final static String LEDGER_EXPENDITURE_CREDIT_ACC = "010.000.000.000 - AutoExpenditureCredit";
+    public final static String LEDGER_EXPENDITURE_CREDIT_NAME = "AutoExpenditureCredit";
+    public final static String LEDGER_EXPENDITURE_CREDIT_NUMBER = "010.000.000.000";
     public final static String LEDGER_EXPENDITURE_DEBIT_ACC = "011.000.000.000 - AutoExpenditureDebit";
+    public final static String LEDGER_EXPENDITURE_DEBIT_NAME = "AutoExpenditureDebit";
+    public final static String LEDGER_EXPENDITURE_DEBIT_NUMBER = "011.000.000.000";
     public final static String LEDGER_PARENT_NAME_ASSET = "QA Ledger Group Asset";
     public final static String LEDGER_PARENT_NAME_EXPENDITURE = "QA Ledger Group Expenditure";
     public final static String LEDGER_PARENT_NAME_LIABILITY = "QA Ledger Group Liability";

@@ -261,41 +261,28 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan"})
     @Parameters({"clientCode"})
     @TestRails(id = "866")
     public void ClientStatementTC_866(String clientCode) throws IOException {
         log("@Validate the balance is deducted from the account if a Client account and an amount are inputted into the 'Debit' form");
         String agentCode = "QASAHK00";
         String level = "Player";
-        String fromType = "Client";
-        String typeId;
         String actualRecPayVal;
         String expectedRecPayVal;
-        String accountIdCredit = null;
-        String accountIdDebit = null;
         long remark = DateUtils.getMilliSeconds();
 
         log("Precondition: Add transaction for the Client account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
-                .clientDebit(clientCode)
-                .clientCredit(clientCode)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("TC_866 Automation Testing Transaction Client: " + remark)
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .level(level)
+                .clientDebit(clientCode).clientCredit(clientCode)
+                .amountDebit(1).amountCredit(1).remark("TC_866 Automation Testing Transaction Client: " + remark)
+                .transDate(transDate).transType("Tax Rebate").level(level)
                 .debitAccountCode(CLIENT_DEBIT_ACC)
                 .creditAccountCode(CLIENT_CREDIT_ACC)
                 .build();
-        welcomePage.waitSpinnerDisappeared();
-        accountIdCredit = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
-        accountIdDebit = AccountSearchUtils.getAccountId(CLIENT_DEBIT_ACC);
-        typeId = ClientSystemUtils.getClientId(clientCode);
         try {
-            TransactionUtils.addClientBookieTxn(transaction,accountIdDebit,accountIdCredit,fromType,typeId);
+            TransactionUtils.addTransByAPI(transaction,"Client",CLIENT_DEBIT_ACC,CLIENT_CREDIT_ACC,"","",clientCode);
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -305,62 +292,43 @@ public class ClientStatementTest extends BaseCaseAQS {
             ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
             log("@Verify the balance is deducted from the Client account properly");
             expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
-            actualRecPayVal = popup.getSummaryCellValue(CLIENT_DEBIT_ACC,popup.colRecPay).replace(",","");
+            actualRecPayVal = popup.getSummaryCellValue(CLIENT_CREDIT_ACC,popup.colRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Client Debit balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-            popup.closeSummaryPopup();
         } finally {
             log("@Post-condition: Add transaction for the Client account into Credit");
             Transaction transactionPost = new Transaction.Builder()
-                    .clientDebit(clientCode)
-                    .clientCredit(clientCode)
-                    .amountDebit(1)
-                    .amountCredit(1)
-                    .remark("TC_866 Automation Testing Transaction Client: Post-condition for txn " + remark)
-                    .transDate("")
-                    .transType("Tax Rebate")
-                    .level(level)
+                    .clientDebit(clientCode).clientCredit(clientCode)
+                    .amountDebit(1).amountCredit(1).remark("TC_866 Automation Testing Transaction Client: Post-condition for txn " + remark)
+                    .transDate(transDate).transType("Tax Rebate").level(level)
                     .debitAccountCode(CLIENT_CREDIT_ACC)
                     .creditAccountCode(CLIENT_DEBIT_ACC)
                     .build();
-            TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType,typeId);
+            TransactionUtils.addTransByAPI(transactionPost,"Client",CLIENT_CREDIT_ACC,CLIENT_DEBIT_ACC,"","",clientCode);
         }
 
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan"})
     @Parameters({"clientCode"})
     @TestRails(id = "867")
     public void ClientStatementTC_867(String clientCode) throws IOException {
         log("@Validate the balance is added from the account if a Client account and an amount are inputted into the 'Credit' form");
         String agentCode = "QASAHK00";
         String level = "Player";
-        String fromType = "Client";
-        String typeId;
         String actualRecPayVal;
         String expectedRecPayVal;
-        String accountIdCredit = null;
-        String accountIdDebit = null;
         long remark = DateUtils.getMilliSeconds();
 
         log("Precondition: Add transaction for the Client account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
-                .clientDebit(clientCode)
-                .clientCredit(clientCode)
-                .amountDebit(1)
-                .amountCredit(1)
-                .remark("TC_867 Automation Testing Transaction Client: " + remark)
-                .transDate(transDate)
-                .transType("Tax Rebate")
-                .level(level)
+                .clientDebit(clientCode).clientCredit(clientCode)
+                .amountDebit(1).amountCredit(1).remark("TC_867 Automation Testing Transaction Client: " + remark)
+                .transDate(transDate).transType("Tax Rebate").level(level)
                 .debitAccountCode(CLIENT_DEBIT_ACC)
                 .creditAccountCode(CLIENT_CREDIT_ACC)
                 .build();
-        welcomePage.waitSpinnerDisappeared();
-        accountIdCredit = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
-        accountIdDebit = AccountSearchUtils.getAccountId(CLIENT_DEBIT_ACC);
-        typeId = ClientSystemUtils.getClientId(clientCode);
         try {
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
@@ -370,30 +338,26 @@ public class ClientStatementTest extends BaseCaseAQS {
             log("@Step 3: Open Summary popup of agent of the player");
             ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
             log("@Verify the balance is added to the Client account properly");
-            actualRecPayVal = popup.getSummaryCellValue(CLIENT_CREDIT_ACC,popup.colRecPay).replace(",","");
+            actualRecPayVal = popup.getSummaryCellValue(CLIENT_DEBIT_ACC,popup.colRecPay).replace(",","");
             popup.closeSummaryPopup();
-            TransactionUtils.addClientBookieTxn(transaction,accountIdDebit,accountIdCredit,fromType,typeId);
+            TransactionUtils.addTransByAPI(transaction,"Client",CLIENT_DEBIT_ACC,CLIENT_CREDIT_ACC,"","",clientCode);
             expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit()+ Double.valueOf(actualRecPayVal));
             clientPage.filter(viewBy, KASTRAKI_LIMITED,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
             clientPage.openSummaryPopup(agentCode);
-            actualRecPayVal = popup.getSummaryCellValue(CLIENT_CREDIT_ACC,popup.colRecPay).replace(",","");
+            actualRecPayVal = popup.getSummaryCellValue(CLIENT_DEBIT_ACC,popup.colRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Client Credit balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
             popup.closeSummaryPopup();
         } finally {
             log("@Post-condition: Add transaction for the Client account into Credit");
             Transaction transactionPost = new Transaction.Builder()
-                    .clientDebit(clientCode)
-                    .clientCredit(clientCode)
-                    .amountDebit(1)
-                    .amountCredit(1)
+                    .clientDebit(clientCode).clientCredit(clientCode)
+                    .amountDebit(1).amountCredit(1)
                     .remark("TC_867 Automation Testing Transaction Client: Post-condition for txn " + remark)
-                    .transDate(transDate)
-                    .transType("Tax Rebate")
-                    .level(level)
+                    .transDate(transDate).transType("Tax Rebate").level(level)
                     .debitAccountCode(CLIENT_CREDIT_ACC)
                     .creditAccountCode(CLIENT_DEBIT_ACC)
                     .build();
-            TransactionUtils.addClientBookieTxn(transactionPost,accountIdCredit,accountIdDebit,fromType,typeId);
+            TransactionUtils.addTransByAPI(transactionPost,"Client",CLIENT_CREDIT_ACC,CLIENT_DEBIT_ACC,"","",clientCode);
         }
 
         log("INFO: Executed completely");

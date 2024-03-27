@@ -176,11 +176,11 @@ public class Table extends BaseElement {
         Row row;
         int i = 1;
         while(true) {
-            xpath = String.format("%s%s", this._xpathTable, String.format("/thead/tr[contains(@class,'table-header')][%s]",i));
+            xpath = String.format("%s%s", this._xpathTable, String.format("/thead/tr[%s]",i));
             row = Row.xpath(xpath);
             if (!row.isDisplayedShort(2)) {
                 if (!row.isDisplayed()) {
-                    row = Row.xpath(String.format("%s%s", this._xpathTable, String.format("/thead/tr[%s]",i)));
+                    row = Row.xpath(String.format("%s%s", this._xpathTable, String.format("/thead/tr[contains(@class,'table-header')][%s]",i)));
                     if (!row.isDisplayed()){
                         return lstRow;
                     } else {

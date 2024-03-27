@@ -46,36 +46,25 @@ public class TrialBalanceTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2773")
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression", "2023.11.30","ethan"})
     public void Trial_Balance_C2773() throws IOException {
         log("@title: Validate Debit/Credit data is matched correctly with Ledger Statement page");
         String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-        String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
-        String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
-        String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
-        String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
-
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(LEDGER_ASSET_CREDIT_NAME).ledgerCreditNumber(LEDGER_ASSET_CREDIT_NUMBER)
+                .ledgerDebit(LEDGER_ASSET_DEBIT_NAME).ledgerDebitNumber(LEDGER_ASSET_DEBIT_NUMBER)
                 .amountDebit(1).amountCredit(1)
                 .remark(desc)
                 .transDate(currentDate)
                 .transType(transType).build();
-
-        String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
-        String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_ASSET);
-        String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
-        String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
-        String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
+        log("@Precondition: Having a ledger transaction with parent Account: " + parentAccount);
+        TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,"");
         try {
-            log("@Precondition: Having a ledger transaction with parent Account: " + parentAccount);
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
             log("@Step 1: Navigate to General Reports > Ledger Statement and get Total Credit/Debit amount");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             String fromDate = DateUtils.getFirstDateOfMonth(DateUtils.getYear(GMT_7),currentMonth,"dd/MM/yyyy");
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Asset", parentAccount, fromDate, "", "");
-            String totalDeCre = ledgerStatementPage.getTotalCreDeInOriginCurrency("Total in HKD");
+            String totalRun = ledgerStatementPage.getTotalInHKD(LEDGER_GROUP_NAME_ASSET,"Shown in HKD","Running Bal.");
             log("@Step 2: Navigate to SB11 > Financial Reports > Trial Balance");
             TrialBalancePage trialBalancePage =
                     welcomePage.navigatePage(FINANCIAL_REPORTS, TRIAL_BALANCE, TrialBalancePage.class);
@@ -85,17 +74,17 @@ public class TrialBalanceTest extends BaseCaseAQS {
             String accountCode = ChartOfAccountUtils.getAccountNumber(parentAccount,true);
             String amountDebitCurrenMonth = trialBalancePage.getAmountValue(accountCode,trialBalancePage.colDeCurrentMonth);
             log("@Verify 1: Validate Debit/Credit data should match correctly with the Ledger Statement page");
-            Assert.assertEquals(amountDebitCurrenMonth,totalDeCre, "FAILED!Debit/Credit data NOT match correctly with the Ledger Statement page");
+            Assert.assertEquals(amountDebitCurrenMonth,totalRun, "FAILED!Debit/Credit data NOT match correctly with the Ledger Statement page");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName).ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountNumber).ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_ASSET_DEBIT_NAME).ledgerCreditNumber(LEDGER_ASSET_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_ASSET_CREDIT_NAME).ledgerDebitNumber(LEDGER_ASSET_CREDIT_NUMBER)
                     .amountDebit(1).amountCredit(1)
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,"");
             log("INFO: Executed completely");
         }
     }
