@@ -74,7 +74,7 @@ public class SPPTest extends BaseCaseAQS {
 
     }
 
-    @Test(groups = {"smoke1"})
+    @Test(groups = {"smoke"})
     @Parameters({"bookieCode","accountCode","bookieMasterCode","smartGroup","bookieSuperMasterCode"})
     @TestRails(id = "311")
     public void SPP_TC_311(String bookieCode,String accountCode, String bookieMasterCode,String smartGroup,String bookieSuperMasterCode) throws InterruptedException {
