@@ -3,8 +3,10 @@ package pages.sb11.generalReports.popup.bookiestatement;
 import com.paltech.driver.DriverManager;
 import com.paltech.element.common.Icon;
 import com.paltech.element.common.Label;
+import com.paltech.utils.DoubleUtils;
 import controls.Row;
 import controls.Table;
+import org.testng.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,5 +122,21 @@ public class BookieMemberSummaryPopup {
         lblAccCode.click();
         DriverManager.getDriver().switchToWindow();
         return new MemberDetailPage();
+    }
+
+    public boolean isGrandTotalValueDisplay() {
+        double totalVal = Double.valueOf(getTotalCellValue(colTotal,true).replace(",",""));
+
+        double winLoseTotalVal = Double.valueOf(getTotalCellValue(colTotalWinLose,true).replace(",",""));
+        double opWinLoseTotalVal = Double.valueOf(getTotalCellValue(colTotalOpenWinLose,true).replace(",",""));
+        double rpcrbaTotalVal = Double.valueOf(getTotalCellValue(colTotalRPCRBA,true).replace(",",""));
+        double openRPCRBATotalVal = Double.valueOf(getTotalCellValue(colTotalOpenRPCRBA,true).replace(",",""));
+        double openBalanceTotalVal = Double.valueOf(getTotalCellValue(colTotalOpenBalance,true).replace(",",""));
+        double expectedVal = DoubleUtils.roundEvenWithTwoPlaces(winLoseTotalVal + opWinLoseTotalVal + rpcrbaTotalVal + openRPCRBATotalVal + openBalanceTotalVal);
+        if ((totalVal - expectedVal) >= 0 && (totalVal - expectedVal) <= 0.1 || (expectedVal - totalVal) <= 0.1 && (expectedVal - totalVal) >= 0){
+            return true;
+        }
+        System.out.println("FAILED! Grand Total is not matched with sum value, Total: " + totalVal + " expected: " + expectedVal);
+        return false;
     }
 }
