@@ -251,7 +251,7 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
-        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 2").away("Auto Team 1").openTime("15:10").eventStatus("Scheduled")
+        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:10").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
@@ -328,7 +328,7 @@ public class CricketSportTest extends BaseCaseAQS {
         String clientCode1 = superMasterCode + clientCode;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
 
-        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 2").away("Auto Team 1").openTime("16:00").eventStatus("Scheduled")
+        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("16:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
@@ -531,7 +531,7 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
-        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 2").away("Auto Team 1").openTime("16:00").eventStatus("Scheduled")
+        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("16:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
@@ -671,7 +671,7 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
-        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 2").away("Auto Team 1").openTime("15:00").eventStatus("Scheduled")
+        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
@@ -812,7 +812,7 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
-        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 2").away("Auto Team 1").openTime("15:00").eventStatus("Scheduled")
+        Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
