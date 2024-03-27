@@ -421,6 +421,7 @@ public class SBPConstants {
         public final static List<String> CURRENCY_LIST = Arrays.asList("[All]","AED","AUD","CAD","CNY","EUR","GBP","HKD","IDR","INR","JPY","KPW","KRW","LKR","MYR","PHP","PKR","SGD","THB","TWD","USD","VND","ZAR");
         public final static List<String> TRANSACTION_TYPE_LIST = Arrays.asList("[Choose One]","Payment Bookie","Payment Client","Payment Feed","Payment Operational","Payment Other","Payment Provider",
                 "Received Bookie","Received Client","Received Comm/Rebate","Received Dividend/Share","Received Feed","Received Other","Contra Bookie","Contra Client","Contra Bookie Client","Contra CUR");
+        public final static String MES_TRANS_HAS_BEEN_CREATED = "Transaction has been created";
         public final static String MES_IF_TXN_IN_3_LAST_MONTH = "After submitting this transaction, you will need to perform Closing Journal Entries for %s - %s Please click on the 'Closing Journal Entries' link and perform.";
         public final static String MES_IF_TXN_BEFORE_3_LAST_MONTH = "After submitting this transaction, you will need to perform Closing Journal Entries for %s - %s Please contact Support Team to perform this CJE.";
     }

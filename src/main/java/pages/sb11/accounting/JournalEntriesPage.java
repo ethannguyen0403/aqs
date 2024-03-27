@@ -83,7 +83,6 @@ public class JournalEntriesPage extends WelcomePage {
         } else {
             filterClientBookie("Client",true, trans.getClientDebit(), trans.getLevel(),trans.getDebitAccountCode(),true);
         }
-        waitSpinnerDisappeared();
         double debitBalance =
                 Math.abs(Double.parseDouble(tbDebit.getControlOfCell(1, colBalance, 1, "span").getText().trim().replace(",", "").replace("-","")));
         System.out.println("Debit Balance is " + debitBalance);
@@ -110,10 +109,8 @@ public class JournalEntriesPage extends WelcomePage {
             waitSpinnerDisappeared();
         }
         ddTransactionType.selectByVisibleText(transType);
-
         if (isSubmit){
             btnSubmit.click();
-            waitSpinnerDisappeared();
         }
     }
 
@@ -183,8 +180,15 @@ public class JournalEntriesPage extends WelcomePage {
         if (isDebit) {
             ddDebitFrom.selectByVisibleText(fromType);
             waitSpinnerDisappeared();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             ddDebitBookieClient.selectByVisibleText(clientBookieCode);
+            waitSpinnerDisappeared();
             ddDebitLevel.selectByVisibleText(level);
+            waitSpinnerDisappeared();
             txtDebitAccount.sendKeys(accountCode);
             txtDebitAccount.sendKeys(accountCode);
             if (isAdd) {
@@ -193,8 +197,15 @@ public class JournalEntriesPage extends WelcomePage {
         } else {
             ddCreditTo.selectByVisibleText(fromType);
             waitSpinnerDisappeared();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             ddCreditBookieClient.selectByVisibleText(clientBookieCode);
+            waitSpinnerDisappeared();
             ddCreditLevel.selectByVisibleText(level);
+            waitSpinnerDisappeared();
             txtCreditAccount.sendKeys(accountCode);
             txtCreditAccount.sendKeys(accountCode);
             if (isAdd) {

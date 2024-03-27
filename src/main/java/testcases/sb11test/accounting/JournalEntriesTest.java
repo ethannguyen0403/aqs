@@ -1,6 +1,7 @@
 package testcases.sb11test.accounting;
 
 import com.paltech.utils.DateUtils;
+import common.SBPConstants;
 import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -58,8 +59,9 @@ public class JournalEntriesTest extends BaseCaseAQS {
         journalEntriesPage.addTransaction(transaction,"Bookie","Bookie",transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
         //wait for message display
         Thread.sleep(1000);
+        String transMes = journalEntriesPage.appArlertControl.getSuscessMessage();
         log("Validate Message informs 'Transaction has been created.' is displayed");
-        Assert.assertTrue(journalEntriesPage.messageSuccess.getText().contains("Transaction has been created"), "Failed! Message is displayed incorrectly!");
+        Assert.assertEquals(transMes, JournalEntries.MES_TRANS_HAS_BEEN_CREATED, "Failed! Message is displayed incorrectly!");
         log("INFO: Executed completely");
     }
     //TODO: implement case 4177
