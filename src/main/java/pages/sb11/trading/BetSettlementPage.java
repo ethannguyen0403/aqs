@@ -238,7 +238,7 @@ public class BetSettlementPage extends WelcomePage {
         Assert.assertEquals(selection,order.getSelection(), "Failed! Selection at row "+rowindex+" is incorrect");
 
         String expectedBetType = order.getMarketType();
-        String expectedHDP = hdp.startsWith("+") ? "+" : "";
+        String expectedHDP = hdp.startsWith("+") ? "+"+hdp : hdp;
         String hdpSign = order.isNegativeHdp() ? "-" : "";
         if(order.getEvent().getSportName().equalsIgnoreCase("Soccer")){
             if (order.getMarketType().contains(("1x2"))){
@@ -248,7 +248,9 @@ public class BetSettlementPage extends WelcomePage {
                 expectedBetType = String.format("%s-%s", EN_US.get(order.getStage()), EN_US.get(expectedBetType));
                 expectedHDP = String.format("%s%s", hdpSign, order.getHdpPoint());
             }
-            Assert.assertEquals(live,  String.format("%s - %s", order.getLiveHomeScore(),order.getLiveHomeScore()), "Failed! Live is incorrect");
+            if (order.isLive()){
+                Assert.assertEquals(live,  String.format("%s - %s", order.getLiveHomeScore(),order.getLiveHomeScore()), "Failed! Live is incorrect");
+            }
         }else if (order.getEvent().getSportName().equalsIgnoreCase("Cricket")) {
             expectedHDP =  String.format("%s%s / %s%s", hdpSign + expectedHDP, order.getHandicapWtks(), hdpSign + expectedHDP, order.getHandicapRuns());
             Assert.assertEquals(live, "", "Failed! Live is incorrect");

@@ -196,33 +196,20 @@ public class BetSettlementTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd",GMT_7));
         Event event = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,"");
         event.setEventDate(dateAPI);
-        Order order = new Order.Builder()
-                .event(event)
-                .accountCode(accountCode)
-                .marketName("Goals")
-                .marketType("HDP")
-                .selection(event.getHome())
-                .stage("FullTime")
-                .odds(1.75)
-                .handicap(2.15)
-                .oddType("HK")
-                .requireStake(15.50)
-                .liveHomeScore(0)
-                .liveAwayScore(0)
-                .betType("BACK")
-                .build();
+        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome()).stage("FullTime").price(1.75)
+                .odds(1.75).oddType("HK").hdpPoint(2.15).handicap(2.15).oddType("HK").requireStake(15.50).betType("BACK").isLive(false).build();
         BetEntrytUtils.placeBetAPI(order);
         List<Order> lstOrder = new ArrayList<>();
         lstOrder.add(order);
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         ConfirmBetsUtils.confirmBetAPI(lstOrder);
         BetSettlementUtils.waitForBetIsUpdate(60);
-        log("@Step 2: Navigate to Trading > Bet Settlement and search bet of the account at precondition in Confirmed mode");
+        log("@Step 1: Navigate to Trading > Bet Settlement and search bet of the account at precondition in Confirmed mode");
         BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
         betSettlementPage.filter("Confirmed",fromDate,"","",accountCode);
 
-        log("@Step 3. Select the bet and click Settle & Send Settlement Email button > Yes and observe message");
-        log("@Step 4: Switch to Settled mode and search bet of the account then observe list result");
+        log("@Step 2. Select the bet and click Settle & Send Settlement Email button > Yes and observe message");
+        log("@Step 3: Switch to Settled mode and search bet of the account then observe list result");
 
         betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
         List<String> listSuccessMessage = betSettlementPage.getListSuccessMessage();
