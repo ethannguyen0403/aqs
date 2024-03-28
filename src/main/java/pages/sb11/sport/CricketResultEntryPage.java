@@ -70,16 +70,14 @@ public class CricketResultEntryPage extends WelcomePage {
     public int getEventIndex(Event event){
         Label lblEvent, lblTime;
         String eventExpect = event.getHome() + "\n-vs-\n" + event.getAway();
-        String timeExpect = event.getOpenTime();
         int i = 2;
         while (i < 10) {
-            lblEvent = Label.xpath(tbResult.getxPathOfCell(1,colEvent,i,"div"));
-            lblTime = Label.xpath(tbResult.getxPathOfCell(1,colTime,i,null));
+            lblEvent = Label.xpath(tbResult.getxPathOfCell(1,colEvent,i,"div[contains(@class,'d-inline-flex')]"));
             if (!lblEvent.isDisplayed()){
                 System.out.println("Event is not display");
                 return -1;
             }
-            if (lblEvent.getText().equals(eventExpect) && lblTime.getText().equals(timeExpect)){
+            if (lblEvent.getText().equals(eventExpect)){
                 return i;
             }
             i++;

@@ -35,6 +35,8 @@ public class ResultEntryUtils {
         String jsn = String.format("[\n" +
                         "    {\n" +
                         "        \"eventId\": %s,\n" +
+                        "        \"homeTeamName\": \"%s\",\n" +
+                        "        \"awayTeamName\": \"%s\",\n" +
                         "        \"eventStatus\": \"%s\",\n" +
                         "        \"scores\": [\n" +
                         "            {\n" +
@@ -51,13 +53,15 @@ public class ResultEntryUtils {
                         "        \"checked\": true\n" +
                         "    }\n" +
                         "]"
-                , Integer.valueOf(event.getEventId()),status,homeScore,awayScore);
+                , Integer.valueOf(event.getEventId()),event.getHome(),event.getAway(),status,homeScore,awayScore);
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
         Map<String, String> headersParam = new HashMap<String, String>() {
             {
                 put("authorization", autho);
-                put("Content-Type", Configs.HEADER_JSON);
-                put("Accept","application/json, text/plain, */*");
+                put("content-type", Configs.HEADER_JSON);
+                put("accept","application/json, text/plain, */*");
+                put("Accept-Encoding","gzip, deflate, br");
+                put("x-auth-user-id","330");
             }
         };
 
