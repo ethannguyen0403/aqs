@@ -175,8 +175,14 @@ public class ConfirmBetsPage extends WelcomePage {
      * @return
      */
     public void verifyOrder(Order order){
-        int orderIndex = getOrderIndex(order.getOrderId());
-        System.out.println(String.format("verity order %s  at row %s", order.getOrderId(), orderIndex));
+        int orderIndex = -1;
+        if (Objects.nonNull(order.getOrderId())){
+            orderIndex = getOrderIndex(order.getOrderId());
+            System.out.println(String.format("verity order %s at row %s", order.getOrderId(), orderIndex));
+        } else {
+            orderIndex = getOrderIndex(order.getBetId());
+            System.out.println(String.format("verity order %s at row %s", order.getBetId(), orderIndex));
+        }
         String dateEvent = tblOrder.getControlOfCell(1, colEventDate, orderIndex, null).getText().trim();
         String country = tblOrder.getControlOfCell(1, colCountry, orderIndex, null).getText().trim();
         String league = tblOrder.getControlOfCell(1, colLeague, orderIndex, null).getText().trim();

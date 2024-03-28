@@ -90,7 +90,12 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         page.filter("","","","");
         log("@Step 3: Click 'Export To Excel' button");
         page.btnExportExcel.click();
-        page.waitSpinnerDisappeared();
+        //wait for computer download file
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         log("@Verify 1: Excel file is exported and downloaded to user's device properly");
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
         log("@Step 4: Open exported file");

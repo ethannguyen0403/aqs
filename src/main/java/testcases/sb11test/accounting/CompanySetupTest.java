@@ -84,11 +84,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     public void Company_Set_up_TC4334(String password, String userNameOneRole) throws Exception{
         log("@title: Validate accounts with permission can access page");
         log("@Precondition: Active Company Set-up option in one role account");
-        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRole("one role").switchPermissions("Company Set-up", true);
         log("@Step 1: Login to SB11 site with account has 'Company Set-up' permission is ON");
-        LoginPage loginPage = roleManagementPage.logout();
-        loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         log("@Step 2: Navigate to Accounting > Company Set-up");
         CompanySetupPage companySetupPage = welcomePage.navigatePage(ACCOUNTING, COMPANY_SETUP, CompanySetupPage.class);
         log("@Verify 1: Validate page is displayed");

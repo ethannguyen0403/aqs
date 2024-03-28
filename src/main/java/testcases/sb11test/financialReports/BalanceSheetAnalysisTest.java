@@ -191,7 +191,12 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
         log("@Step 4: Click to export PDF button");
         balanceAnalysisPage.btnExportPDF.click();
-        welcomePage.waitSpinnerDisappeared();
+        //wait for computer download file
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         try {
             log("@Verify 1: Validate PDF file was downloaded successfully");
             Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! PDF file was not downloaded successfully");

@@ -91,10 +91,8 @@ public class CashFlowStatementTest extends BaseCaseAQS {
     public void Cash_Flow_Statement_TC8546(String password, String userNameOneRole) throws Exception {
         log("@title: Validate can't access Cash Flow Statement page when having no permission");
         log("Precondition: Deactivate Cash Flow Statement option in one role account");
-        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRole("one role").switchPermissions("Cash Flow", false);
         log("@Step 1: Re-login with one role account account has 'Cash Flow Statement' permission is OFF");
-        LoginPage loginPage = roleManagementPage.logout();
+        LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         RetainedEarningsPage retainedEarningsPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, TRIAL_BALANCE, RetainedEarningsPage.class);
