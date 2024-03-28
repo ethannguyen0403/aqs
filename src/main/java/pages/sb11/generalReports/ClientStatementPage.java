@@ -44,26 +44,28 @@ public class ClientStatementPage extends WelcomePage {
     public void filter(String viewBy, String companyUnit, String financialYear, String clients, String fromDate, String toDate) {
         if (!viewBy.isEmpty()){
             ddpViewBy.selectByVisibleText(viewBy);
-            waitPageLoad();
+            waitSpinnerDisappeared();
         }
-        if (!companyUnit.isEmpty())
+        if (!companyUnit.isEmpty()){
             ddpCompanyUnit.selectByVisibleText(companyUnit);
-        if (!financialYear.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if (!financialYear.isEmpty()){
             ddpFinancialYear.selectByVisibleText(financialYear);
-        waitSpinnerDisappeared();
+            waitSpinnerDisappeared();
+        }
         ddpClients.selectByVisibleText(clients);
-        String currentDate = txtFromDate.getAttribute("value");
-        if (!fromDate.isEmpty())
-            if (!currentDate.equals(fromDate))
-                dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
-        currentDate = txtToDate.getAttribute("value");
-        if (!toDate.isEmpty())
-            if (!currentDate.equals(toDate))
-                dtpToDate.selectDate(toDate, "dd/MM/yyyy");
+        if (!fromDate.isEmpty()){
+            dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
+            waitSpinnerDisappeared();
+        }
+        if (!toDate.isEmpty()){
+            dtpToDate.selectDate(toDate, "dd/MM/yyyy");
+            waitSpinnerDisappeared();
+        }
         btnShow.click();
         waitSpinnerDisappeared();
-        waitPageLoad();
-
+        waitSpinnerDisappeared();
     }
 
     public String getSuperCellValue(int colIndex) {
