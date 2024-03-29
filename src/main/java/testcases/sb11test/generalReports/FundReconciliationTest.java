@@ -259,7 +259,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         String sumCredit = page.getSumDebitCredit(ledgerName,"Credit");
         Assert.assertEquals(page.getValueByDesc(ledgerName,"Closing Balance","Debit"),sumDebit,"FAILED! Sum of Debit displays incorrect");
         Assert.assertEquals(page.getValueByDesc(ledgerName,"Closing Balance","Credit"),sumCredit,"FAILED! Sum of Credit displays incorrect");
-        Assert.assertEquals(page.tblData.getColumn(page.tblHeader.getColumnIndexByName("Running Balance"),50,true).get(page.tblData.getNumberOfRows(false,true)-2),
+        Assert.assertEquals(page.tblData.getColumn(page.tblHeader.getColumnIndexByName("Running Balance")-1,50,true).get(page.tblData.getNumberOfRows(false,true)-2),
                 page.getValueByDesc(ledgerName,"Closing Balance","Running Balance"),"FAILED! Running Balance displays incorrect");
         log("INFO: Executed completely");
     }
@@ -296,7 +296,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         page.tickConfirmAuthorise(ledgerName,desc,"Authorise");
         log("@Verify 1: Today's Settlement in HKD row will sums up all the amounts of the authorized transactions and then converts to HKD using rate of the filtered date.");
         String todaySettleEx = page.getSumAuthorizedTrans(ledgerName,username);
-        Assert.assertEquals(page.tblTodaySettle.getControlOfCell(1,page.tblHeader.getColumnIndexByName("Debit"),1,"span").getText(),
+        Assert.assertEquals(page.tblTodaySettle.getControlOfCell(1,page.tblHeader.getColumnIndexByName("Debit")-1,1,"span").getText(),
                 todaySettleEx,"FAILED! Today's Settlement value display incorrect");
         log("INFO: Executed completely");
     }

@@ -24,7 +24,7 @@ public class ClientSummaryPopup {
     public int colOpening = 7;
     public int colClosing = 11;
 
-    Table tblSummary = Table.xpath("//app-member-summary//table[@aria-label='table']",summaryColTotal);
+    public Table tblSummary = Table.xpath("//app-member-summary//table[@aria-label='table']",summaryColTotal);
     Table tblLedgerSummary = Table.xpath("//app-ledger-member-summary//table[@aria-label='table']",summaryColTotal);
     Icon closeIcon = Icon.xpath("//span[contains(@class,'close-icon')]");
 
@@ -63,7 +63,7 @@ public class ClientSummaryPopup {
         int i = 1;
         while (true) {
             lblCellValue = Label.xpath(tblSummary.getxPathOfCell(1, colIndex, i, null));
-            lblAccountCode = Label.xpath(tblSummary.getxPathOfCell(1, colAccountCode, i, null));
+            lblAccountCode = Label.xpath(tblSummary.getxPathOfCell(1,tblSummary.getColumnIndexByName("Account Code"), i, "span"));
             if (!lblCellValue.isDisplayed()) {
                 System.out.println("Account Code is not found in Summary table");
                 return null;
