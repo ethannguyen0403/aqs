@@ -236,7 +236,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         Assert.assertEquals(winloseAc,winloseEx,"FAILED! Win/Lose value displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29","ethan1"})
+    @Test(groups = {"regression","2023.12.29","ethan"})
     @TestRails(id = "4339")
     public void Position_Taking_Report_4339() {
         log("@title: Validate correct [selected To/From date] displays");
