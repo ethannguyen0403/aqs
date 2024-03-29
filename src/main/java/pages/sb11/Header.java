@@ -29,13 +29,14 @@ public class Header {
     }
     public LoginPage logout(){
         btnLogout.click();
+        waitSpinnerDisappeared();
         LoginPage loginPage = new LoginPage();
         Assert.assertTrue(loginPage.tabEurope.isDisplayed(),"FAILED! Camouflag page is not displayed");
         return loginPage;
     }
     public pages.sb11.popup.ChangePasswordPopup openChangePasswordPopup(){
         lblChangePassword.click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
         return new ChangePasswordPopup();
     }
 

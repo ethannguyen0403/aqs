@@ -339,7 +339,12 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         incomeAnaPage.filter(KASTRAKI_LIMITED, "","","");
         log("@Step 4: Click to export PDF button");
         incomeAnaPage.btnExportPDF.click();
-        welcomePage.waitSpinnerDisappeared();
+        //wait for computer download file
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         try {
             log("@Verify 1: Validate excel file was downloaded successfully");
             Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! PDF file was not downloaded successfully");
