@@ -176,7 +176,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         String detailType = "101.000.000.000 - Cash";
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Asset",detailType,transDate,transDate,"");
-        double runningBal = ledgerStatementPage.getValueAmount(ledgerName,ledgerStatementPage.colRunBalGBP);
+        double runningBal = ledgerStatementPage.getValueAmount(ledgerNumber+" - "+ledgerName,ledgerStatementPage.colRunBalGBP);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >>Fund Reconciliation");
         FundReconciliationPage page = ledgerStatementPage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);

@@ -126,8 +126,6 @@ public class LedgerStatementPage extends WelcomePage {
      * @return value of sub-acc
      */
     public String getValueOfSubAcc(String subAccName, String section, String columnName){
-        int indexRow = getLedgerRowIndex(subAccName);
-//        int indexRow = tbLedger.getRowIndexContainValue(subAccName,"Ledger",null);
         int indexCol = 0;
         if (section.equals("Original Currency")){
             indexCol = tbLedger.getColumnIndexByName(columnName);
@@ -148,27 +146,23 @@ public class LedgerStatementPage extends WelcomePage {
                     indexCol = 12;
             }
         }
-        return tbLedger.getControlOfCell(1,indexCol,indexRow,null).getText().trim();
+        return tbLedger.getControlBasedValueOfDifferentColumnOnRow(subAccName,1,colLedger,1,null,indexCol,null,false,false).getText().trim();
     }
     public String getTotalAmountInOriginCurrency(String toTalName){
-        int index = getTotalRowIndex(toTalName);
-        return tbLedger.getControlOfCell(1, colAmountTotalOriginCurrency, index, null).getText().trim();
+        return tbLedger.getControlBasedValueOfDifferentColumnOnRow(toTalName,1,colTotal,1,null,colAmountTotalOriginCurrency,null,false,false).getText().trim();
     }
 
     public boolean isTotalAmountInOriginCurrencyPositiveNumber(String toTalName) {
-        int index = getTotalRowIndex(toTalName);
-        BaseElement lblTotal = tbLedger.getControlOfCell(1, colAmountTotalOriginCurrency, index, null);
+        BaseElement lblTotal = tbLedger.getControlBasedValueOfDifferentColumnOnRow(toTalName,1,colTotal,1,null,colAmountTotalOriginCurrency,null,false,false);
         return lblTotal.getColour("color").contains(RED_COLOR) ? false : true;
     }
 
     public String getTotalCreDeInOriginCurrency(String toTalName){
-        int index = getTotalRowIndex(toTalName);
-        return tbLedger.getControlOfCell(1, colCreDeTotalOriginCurrency, index, null).getText().trim();
+        return tbLedger.getControlBasedValueOfDifferentColumnOnRow(toTalName,1,colTotal,1,null,colCreDeTotalOriginCurrency,null,false,false).getText().trim();
     }
 
     public String getDescriptionTotalAmountInOriginCurrency(String toTalName){
-        int index = getTotalRowIndex(toTalName);
-        return tbLedger.getControlOfCell(1, colToTalOriginCurrency, index, null).getText().trim();
+        return tbLedger.getControlBasedValueOfDifferentColumnOnRow(toTalName,1,colTotal,1,null,colToTalOriginCurrency,null,false,false).getText().trim();
     }
 
     public String getGrandTotalByRunningBal(){
@@ -214,9 +208,15 @@ public class LedgerStatementPage extends WelcomePage {
         return transaction;
     }
 
-    public LedgerDetailPopup openLedgerDetail (String ledgerName){
-        int rowIndex = getLedgerRowIndex(ledgerName);
-        tbLedger.getControlOfCell(1,colLedger, rowIndex,"a").click();
+    /**
+     *
+     * @param parentName
+     * @param ledgerName input number + name of ledger
+     * @return
+     */
+    public LedgerDetailPopup openLedgerDetail (String parentName,String ledgerName){
+        Table tblLedger = Table.xpath(String.format("//span[contains(text(),'%s')]/ancestor::table",parentName),totalCol);
+        tblLedger.getControlBasedValueOfDifferentColumnOnRow(ledgerName,1,colLedger,1,null,colLedger,"a",false,false).click();
         waitSpinnerDisappeared();
         return new LedgerDetailPopup();
     }
@@ -226,45 +226,11 @@ public class LedgerStatementPage extends WelcomePage {
     }
 
     public double getValueAmount(String ledgerName,int indexCol){
-        int rowIndex = getLedgerRowIndex(ledgerName);
-        String amountCreDeb = tbLedger.getControlOfCell(1, indexCol, rowIndex, null).getText().trim().replace(",","");
+        String amountCreDeb = tbLedger.getControlBasedValueOfDifferentColumnOnRow(ledgerName,1,colLedger,1,null,indexCol,null,false,false).getText().trim().replace(",","");
         if (amountCreDeb.isEmpty()){
             amountCreDeb = String.valueOf(0);
         }
         return parseDouble(amountCreDeb);
-    }
-
-    private int getLedgerRowIndex(String ledgername){
-        int i = 1;
-        Label lblLedger;
-        while (true){
-            lblLedger = Label.xpath(tbLedger.getxPathOfCell(1,colLedger,i,null));
-            if(!lblLedger.isDisplayed()) {
-                System.out.println("Can NOT found the ledger name "+ledgername+" in the table");
-                return 0;
-            }
-            if(lblLedger.getText().contains(ledgername)){
-                System.out.println("Found the ledger name "+ledgername+" in the table");
-                return i;
-            }
-            i = i +1;
-        }
-    }
-    private int getTotalRowIndex(String totalName){
-        int i = 1;
-        Label lblTotal;
-        while (true){
-            lblTotal = Label.xpath(tbLedger.getxPathOfCell(1,colTotal,i,null));
-            if(!lblTotal.isDisplayed()) {
-                System.out.println("Can NOT found the ledger name "+lblTotal+" in the table");
-                return 0;
-            }
-            if(lblTotal.getText().contains(totalName)){
-                System.out.println("Found the ledger name "+lblTotal+" in the table");
-                return i;
-            }
-            i = i +1;
-        }
     }
 
     private int getStartRowWithLedgerGroup(String ledgerGroup){

@@ -219,7 +219,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         String detailType = "202.000.000.000 - Other Payable";
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"",ledgerType,detailType,transDate,transDate,"");
-        double runningBal = ledgerStatementPage.getValueAmount(ledgerAccountName,ledgerStatementPage.colRunBalGBP);
+        double runningBal = ledgerStatementPage.getValueAmount(ledgerDebit,ledgerStatementPage.colRunBalGBP);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >> A/R and A/P Reconciliation");
         ARandAPReconciliationPage page = ledgerStatementPage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(AR_AND_AP_RECONCILIATION, ARandAPReconciliationPage.class);

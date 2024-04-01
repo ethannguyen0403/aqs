@@ -135,7 +135,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
 
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Expenditure",detailType,firstDay,lastDay,"After CJE");
         log("@Step 9: Click on account at precondition (e.g. 000.000.001.003 - RB Feed Delete Debit1)");
-        LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(ledger);
+        LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_PARENT_NAME_EXPENDITURE,numberLeder +" - "+ledger);
         log("@Verify 2: Running Bal. of Closing Journal 2023-OCTOBER is = 0.00");
         Assert.assertEquals(ledgerDetailPopup.getClosingValue(),"0.00","FAILED! Running Bal. of Closing Journal display incorrect");
         log("INFO: Executed completely");
@@ -182,7 +182,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         String lastDay = DateUtils.getLastDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Expenditure",detailType,firstDay,lastDay,"After CJE");
         log("@Step 8: Click on account at precondition");
-        LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(ledger);
+        LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_PARENT_NAME_EXPENDITURE,numberLeder +" - "+ledger);
         log("@Verify 1: Running Bal. of Closing Journal 2023-SEPTEMBER is = 0.00");
         Assert.assertEquals(ledgerDetailPopup.getClosingValue(),"0.00","FAILED! Running Bal. of Closing Journal display incorrect");
         ledgerDetailPopup.closePopup();
@@ -194,7 +194,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         lastDay = DateUtils.getLastDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Expenditure",detailType,firstDay,lastDay,"After CJE");
         log("@Step 10: Click on account at precondition");
-        ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(ledger);
+        ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_PARENT_NAME_EXPENDITURE,numberLeder +" - "+ledger);
         log("@Verify 2: Running Bal. of Closing Journal 2023-OCTOBER is <> 0.00");
         Assert.assertFalse(ledgerDetailPopup.getClosingValue().contains("0.00"),"FAILED! Running Bal. of Closing Journal "+ledgerDetailPopup.getClosingValue()+"display incorrect");
         log("INFO: Executed completely");

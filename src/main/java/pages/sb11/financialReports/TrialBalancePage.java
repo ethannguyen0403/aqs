@@ -50,23 +50,6 @@ public class TrialBalancePage extends WelcomePage {
         return amount.getText().trim().replace(",","");
     }
 
-    public int findRowIndexOfParentAccount(String accountCode){
-        int i = 1;
-        Label lblAccountCode;
-        while (true) {
-            lblAccountCode = Label.xpath(tblTrial.getxPathOfCell(1, colCode, i, "span"));
-            if (!lblAccountCode.isDisplayed()) {
-                System.out.println("Can NOT found the account code  " + accountCode + " in the table");
-                return 0;
-            }
-            if (lblAccountCode.getText().contains(accountCode)) {
-                System.out.println("Found the the account code " + accountCode + " in the table");
-                return i;
-            }
-            i++;
-        }
-    }
-
     /** Gets the month-of-year field from 1 to 12 to correct format of Filter Month 'year - monthName'
      * */
     public String convertMonthToFilterMonth(int month, int year){
@@ -74,8 +57,8 @@ public class TrialBalancePage extends WelcomePage {
         return String.format("%s - %s",year , monthM.getDisplayName(TextStyle.FULL, Locale.ENGLISH));
     }
     public String getAmountValue(String accountCode, int colIndex){
-        int rowIndex = findRowIndexOfParentAccount(accountCode);
-        return getAmountTrialTable(rowIndex,colIndex);
+        String expectedText = tblTrial.getControlBasedValueOfDifferentColumnOnRow(accountCode,1,colCode,1,"span",colIndex,"span",true,false).getText();
+        return expectedText.trim().replace(",","");
     }
     public double getTotalBalance(boolean currentMonth, boolean debit){
         int indexCol = -1;
