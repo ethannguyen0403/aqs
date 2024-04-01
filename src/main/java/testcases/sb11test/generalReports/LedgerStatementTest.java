@@ -1044,7 +1044,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
 
     }
     @TestRails(id="860")
-    @Test(groups = {"smoke_qc1"})
+    @Test(groups = {"smoke_qc"})
     public void Ledger_Statement_TC860() throws IOException {
         log("@title:Validate value calculated correctly for Ledger Type = Income (Debit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Income");
@@ -1061,12 +1061,12 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .build();
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
-//        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Credit, select any available source (Client, Bookie, Ledger) then click Add");
         log("@Step 4: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 6: Choose Transaction Type = any and click Submit");
-//        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
         try {
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
@@ -1102,7 +1102,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
             String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
             String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
-//            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
         }
     }
 
