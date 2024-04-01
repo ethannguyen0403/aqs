@@ -24,9 +24,10 @@ public class ClientSummaryPopup {
     public int colOpening = 7;
     public int colClosing = 11;
 
-    Table tblSummary = Table.xpath("//app-member-summary//table[@aria-label='table']",summaryColTotal);
+    public Table tblSummary = Table.xpath("//app-member-summary//table[@aria-label='table']",summaryColTotal);
     Table tblLedgerSummary = Table.xpath("//app-ledger-member-summary//table[@aria-label='table']",summaryColTotal);
     Icon closeIcon = Icon.xpath("//span[contains(@class,'close-icon')]");
+    public Label lblSpin = Label.xpath("//div[contains(@class,'la-ball-clip-rotate')]");
 
     public String getGrandTotal(String currency, int colIndex) {
         String returnValue;
@@ -60,10 +61,11 @@ public class ClientSummaryPopup {
         String returnValue = "";
         Label lblCellValue;
         Label lblAccountCode;
+        int indexCol = tblSummary.getColumnIndexByName("Account Code");
         int i = 1;
         while (true) {
             lblCellValue = Label.xpath(tblSummary.getxPathOfCell(1, colIndex, i, null));
-            lblAccountCode = Label.xpath(tblSummary.getxPathOfCell(1, colAccountCode, i, null));
+            lblAccountCode = Label.xpath(tblSummary.getxPathOfCell(1,indexCol, i, null));
             if (!lblCellValue.isDisplayed()) {
                 System.out.println("Account Code is not found in Summary table");
                 return null;
@@ -191,5 +193,9 @@ public class ClientSummaryPopup {
         }
     }
 
-
+    public void waitSpinnerDisappeared() {
+        while(lblSpin.isDisplayed()) {
+            lblSpin.waitForControlInvisible();
+        }
+    }
 }

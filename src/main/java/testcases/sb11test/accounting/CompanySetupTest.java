@@ -84,11 +84,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     public void Company_Set_up_TC4334(String password, String userNameOneRole) throws Exception{
         log("@title: Validate accounts with permission can access page");
         log("@Precondition: Active Company Set-up option in one role account");
-        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRole("one role").switchPermissions("Company Set-up", true);
         log("@Step 1: Login to SB11 site with account has 'Company Set-up' permission is ON");
-        LoginPage loginPage = roleManagementPage.logout();
-        loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         log("@Step 2: Navigate to Accounting > Company Set-up");
         CompanySetupPage companySetupPage = welcomePage.navigatePage(ACCOUNTING, COMPANY_SETUP, CompanySetupPage.class);
         log("@Verify 1: Validate page is displayed");
@@ -219,11 +215,9 @@ public class CompanySetupTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "4349")
-    @Test(groups = {"regression", "2023.10.31"})
+    @Test(groups = {"regression", "2023.10.31","ethan"})
     @Parameters({"clientCode"})
     public void Company_Set_up_TC4349(String clientCode) throws IOException {
-        String ledgerCreditAccountId, ledgerCreditAccountName, ledgerCreditAccountNumber, ledgerDebitAccountId, ledgerDebitAccountName,
-                ledgerDebitAccountNumber, ledgerType, ledgerGroupId, parentId;
         String companyName = "Kastraki Limited";
         String currency = "HKD";
         String expectedText1 = "Total in " + currency;
@@ -232,24 +226,14 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@title: Validate that show the reporting currency of company correctly in 'Client Statement' page");
         log(String.format("@Precondition 1: Company %s has currency as %s", companyName, currency) );
         log("@Precondition 2: Add transaction for the Asset Ledger account to show value Rec/Pay and Member Transaction popup");
-        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
-        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
-        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
-        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(LEDGER_ASSET_CREDIT_NAME).ledgerCreditNumber(LEDGER_ASSET_CREDIT_NUMBER)
+                .ledgerDebit(LEDGER_ASSET_DEBIT_NAME).ledgerDebitNumber(LEDGER_ASSET_DEBIT_NUMBER)
                 .amountDebit(1).amountCredit(1)
                 .remark("Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds()).transDate(currentDate)
                 .transType("Tax Rebate").build();
-        welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
-        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_PARENT_NAME_ASSET);
-        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try{
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
             log("@Step 1: Navigate to  General Reports >> Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS, CLIENT_STATEMENT, ClientStatementPage.class);
             log("@Step 2: Filter with default data with company name: " + companyName);
@@ -262,24 +246,24 @@ public class CompanySetupTest extends BaseCaseAQS {
             log("@Verify 2: Show Total in: " + currency);
             Assert.assertEquals(popup.getGrandTotal(currency, 1)+ " " + popup.getGrandTotal(currency, 2), expectedText1, "FAILED! Text is incorrect");
             log("@Step 4: Open RecPay summary popup of player by click on link");
-            ClientLedgerRecPayPopup recPayPopup = popup.openLedgerRecPaySummaryPopup(ledgerDebitAccountName,popup.colLedgerRecPay);
+            ClientLedgerRecPayPopup recPayPopup = popup.openLedgerRecPaySummaryPopup(LEDGER_ASSET_DEBIT_NAME,popup.colLedgerRecPay);
 
             log("@Verify 3: Validate Rec/Pay/CA/RB/Adj Txns dialog shows header with currency: " + currency);
             recPayPopup.verifyHeaderCorrectWithCompanyCur(ClientLedgerRecPayPopupConstants.HEADER_LIST, currency);
             recPayPopup.switchToFirstWindow();
             log("@Step 5: Open Transaction popup");
-            ClientMemberTransactionPopup transPopup = popup.openMemberTransactionPopupLedger(ledgerDebitAccountName);
+            ClientMemberTransactionPopup transPopup = popup.openMemberTransactionPopupLedger(LEDGER_ASSET_DEBIT_NAME);
             log("@Verify 3:  Member Transactions popup shows header with currency: " + currency);
             transPopup.verifyHeaderCorrectWithCompanyCur(MemberTransactionPopupConstants.HEADER_LIST, currency);
         }finally {
             log("@Post-condition: Add transaction for the Asset Ledger account into Debit");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName).ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountName).ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_ASSET_DEBIT_NAME).ledgerCreditNumber(LEDGER_ASSET_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_ASSET_CREDIT_NAME).ledgerDebitNumber(LEDGER_ASSET_CREDIT_NUMBER)
                     .amountDebit(1).amountCredit(1)
                     .remark("Automation Testing Transaction Client: Post-condition" + DateUtils.getMilliSeconds()).transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
         }
         log("INFO: Executed completely");
     }

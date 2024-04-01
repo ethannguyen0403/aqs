@@ -80,7 +80,7 @@ public class JournalReportsTest extends BaseCaseAQS {
                 .transDate("")
                 .transType(transType)
                 .build();
-        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
         log("@Step 3: Access Accounting > Journal Reports");
         JournalReportsPage journalReportsPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_REPORTS,JournalReportsPage.class);
         log("@Step 4: Filter with transaction at pre-condition");

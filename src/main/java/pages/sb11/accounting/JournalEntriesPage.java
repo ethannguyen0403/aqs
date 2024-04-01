@@ -1,11 +1,17 @@
 package pages.sb11.accounting;
 
 import com.paltech.element.common.*;
+import com.paltech.utils.DateUtils;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Transaction;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
+import pages.sb11.popup.ConfirmPopup;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class JournalEntriesPage extends WelcomePage {
     public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
@@ -75,7 +81,7 @@ public class JournalEntriesPage extends WelcomePage {
 //        }
 //    }
 
-    public void addTransaction(Transaction trans, String debitAccountType, String creditAccountType, String remark, String transDate, String transType, boolean isSubmit){
+    public void addTransaction(Transaction trans, String debitAccountType, String creditAccountType, String remark, String transDate, String transType, boolean isSubmit,boolean isConfirm){
         if (debitAccountType == "Ledger") {
             filterLedger(true, "Ledger", trans.getLedgerDebit(), true);
         } else if (debitAccountType == "Bookie") {
@@ -83,7 +89,6 @@ public class JournalEntriesPage extends WelcomePage {
         } else {
             filterClientBookie("Client",true, trans.getClientDebit(), trans.getLevel(),trans.getDebitAccountCode(),true);
         }
-        waitSpinnerDisappeared();
         double debitBalance =
                 Math.abs(Double.parseDouble(tbDebit.getControlOfCell(1, colBalance, 1, "span").getText().trim().replace(",", "").replace("-","")));
         System.out.println("Debit Balance is " + debitBalance);
@@ -110,10 +115,12 @@ public class JournalEntriesPage extends WelcomePage {
             waitSpinnerDisappeared();
         }
         ddTransactionType.selectByVisibleText(transType);
-
         if (isSubmit){
             btnSubmit.click();
-            waitSpinnerDisappeared();
+        }
+        if (isConfirm){
+            ConfirmPopup confirmPopup = new ConfirmPopup();
+            confirmPopup.btnOK.click();
         }
     }
 
@@ -183,8 +190,15 @@ public class JournalEntriesPage extends WelcomePage {
         if (isDebit) {
             ddDebitFrom.selectByVisibleText(fromType);
             waitSpinnerDisappeared();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             ddDebitBookieClient.selectByVisibleText(clientBookieCode);
+            waitSpinnerDisappeared();
             ddDebitLevel.selectByVisibleText(level);
+            waitSpinnerDisappeared();
             txtDebitAccount.sendKeys(accountCode);
             txtDebitAccount.sendKeys(accountCode);
             if (isAdd) {
@@ -193,8 +207,15 @@ public class JournalEntriesPage extends WelcomePage {
         } else {
             ddCreditTo.selectByVisibleText(fromType);
             waitSpinnerDisappeared();
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             ddCreditBookieClient.selectByVisibleText(clientBookieCode);
+            waitSpinnerDisappeared();
             ddCreditLevel.selectByVisibleText(level);
+            waitSpinnerDisappeared();
             txtCreditAccount.sendKeys(accountCode);
             txtCreditAccount.sendKeys(accountCode);
             if (isAdd) {
@@ -208,5 +229,19 @@ public class JournalEntriesPage extends WelcomePage {
         lblClosingJournalEntries.click();
         waitSpinnerDisappeared();
         return new ClosingJournalEntriesPage();
+    }
+
+    /**
+     *
+     * @param expectedDay
+     * @param expectedMonth
+     * @param format input pattern of Month and Year
+     * @return
+     */
+    public String getDayOfMonth(int expectedDay, int expectedMonth, String format) {
+        Calendar cal  = Calendar.getInstance();
+        cal.add(Calendar.MONTH, expectedMonth);
+        SimpleDateFormat s = new SimpleDateFormat(format);
+        return String.format("%s/%s",expectedDay,s.format(new Date(cal.getTimeInMillis())));
     }
 }

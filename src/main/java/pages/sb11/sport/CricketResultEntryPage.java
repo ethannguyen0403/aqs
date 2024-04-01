@@ -15,14 +15,14 @@ public class CricketResultEntryPage extends WelcomePage {
     public Button btnSoccer = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Soccer')]");
     public Button btnCricket = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Cricket')]");
     public Button btnShowLeagues = Button.xpath("//button[contains(text(),'Show Leagues')]");
-    public Button btnShow = Button.xpath("//button[@class='btn btn-show']");
+    public Button btnShow = Button.xpath("//button[text()='Show']");
     public DropDownBox ddpType = DropDownBox.id("type");
     public DropDownBox ddpLeague = DropDownBox.id("sport");
     public DropDownBox ddpOrderBy = DropDownBox.id("betType");
     public DropDownBox ddpStatus = DropDownBox.id("status");
     public TextBox txtDateTime = TextBox.id("date");
     public Label lblDate = Label.xpath("//label[contains(text(),'Date')]");
-    public DateTimePicker dtpDateTime = DateTimePicker.xpath(txtDateTime,"//bs-days-calendar-view");
+    public DateTimePicker dtpDateTime = DateTimePicker.xpath(txtDateTime,"//bs-datepicker-container");
     int colTime = 3;
     int colEvent = 4;
     int colStatus = 6;
@@ -43,40 +43,41 @@ public class CricketResultEntryPage extends WelcomePage {
             btnSoccer.click();
         if(sport.equals("Cricket"))
             btnCricket.click();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        waitSpinnerDisappeared();
     }
 
     public void filterResult(String type, String date, String league, String orderBy, String status, boolean isShow){
         ddpType.selectByVisibleText(type);
+        waitSpinnerDisappeared();
         if(!date.isEmpty()){
             dtpDateTime.selectDate(date,"dd/MM/yyyy");
+            waitSpinnerDisappeared();
             btnShowLeagues.click();
+            waitSpinnerDisappeared();
             waitSpinnerDisappeared();
         }
         ddpLeague.selectByVisibleText(league);
+        waitSpinnerDisappeared();
         ddpOrderBy.selectByVisibleText(orderBy);
+        waitSpinnerDisappeared();
         ddpStatus.selectByVisibleText(status);
+        waitSpinnerDisappeared();
         if (isShow){
             btnShow.click();
+            waitSpinnerDisappeared();
         }
     }
     public int getEventIndex(Event event){
         Label lblEvent, lblTime;
         String eventExpect = event.getHome() + "\n-vs-\n" + event.getAway();
-        String timeExpect = event.getOpenTime();
         int i = 2;
         while (i < 10) {
-            lblEvent = Label.xpath(tbResult.getxPathOfCell(1,colEvent,i,"div"));
-            lblTime = Label.xpath(tbResult.getxPathOfCell(1,colTime,i,null));
+            lblEvent = Label.xpath(tbResult.getxPathOfCell(1,colEvent,i,"div[contains(@class,'d-inline-flex')]"));
             if (!lblEvent.isDisplayed()){
                 System.out.println("Event is not display");
                 return -1;
             }
-            if (lblEvent.getText().equals(eventExpect) && lblTime.getText().equals(timeExpect)){
+            if (lblEvent.getText().equals(eventExpect)){
                 return i;
             }
             i++;

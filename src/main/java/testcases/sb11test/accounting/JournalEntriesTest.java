@@ -1,6 +1,7 @@
 package testcases.sb11test.accounting;
 
 import com.paltech.utils.DateUtils;
+import common.SBPConstants;
 import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -46,7 +47,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
                 .build();
         log("@Step 1: Access Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
-
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Step 2: In Debit section > From dropdown, select 'Bookie'");
         log("@Step 3: Choose a bookie from Bookie dropdown (e.g. 'QA Bookie')");
         log("@Step 4: Choose Client (e.g. QA Client (No.121 Client), and Level is 'Super'");
@@ -55,11 +56,12 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 7: Other information is selected with same condition as From section (Level is 'Super', and Account is a super account link to agent-COM)");
         log("@Step 8: Add two accounts to the below tables, then input amount");
         log("@Step 9: Choose Transaction Date and Transaction Types, input Remark if any. Click Submit");
-        journalEntriesPage.addTransaction(transaction,"Bookie","Bookie",transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
+        journalEntriesPage.addTransaction(transaction,"Bookie","Bookie",transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
         //wait for message display
         Thread.sleep(1000);
+        String transMes = journalEntriesPage.appArlertControl.getSuscessMessage();
         log("Validate Message informs 'Transaction has been created.' is displayed");
-        Assert.assertTrue(journalEntriesPage.messageSuccess.getText().contains("Transaction has been created"), "Failed! Message is displayed incorrectly!");
+        Assert.assertEquals(transMes, JournalEntries.MES_TRANS_HAS_BEEN_CREATED, "Failed! Message is displayed incorrectly!");
         log("INFO: Executed completely");
     }
     //TODO: implement case 4177
@@ -130,7 +132,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 7: Other information is selected with same condition as From section (Level is 'Super', and Account is a super account link to agent-COM)");
         log("@Step 8: Add two accounts to the below tables, then input amount");
         log("@Step 9: Choose Transaction Date and Transaction Types, input Remark if any. Click Submit");
-        journalEntriesPage.addTransaction(transaction,"Bookie","Bookie",transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
+        journalEntriesPage.addTransaction(transaction,"Bookie","Bookie",transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
         //wait for showwing message
         Thread.sleep(1000);
         log("Validate Message informs 'Transaction has been created.' is displayed");
@@ -170,7 +172,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 7: Other information is selected with same condition as From section (Level is 'Super', and Account is a super account link to agent-COM)");
         log("@Step 8: Add two accounts to the below tables, then input amount");
         log("@Step 9: Choose Transaction Date and Transaction Types, input Remark if any. Click Submit");
-        journalEntriesPage.addTransaction(transaction,"Client","Client",transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
+        journalEntriesPage.addTransaction(transaction,"Client","Client",transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
         //wait for showwing message
         Thread.sleep(1000);
         log("Validate Message informs 'Transaction has been created.' is displayed");
@@ -179,7 +181,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     }
 
     @TestRails(id="2164")
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan"})
     @Parameters({"companyName"})
     public void Journal_Entries_TC_2164(String companyName) throws IOException {
         String lgDebitCur = "HKD";
@@ -205,7 +207,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
                 .build();
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
-        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
@@ -216,24 +218,14 @@ public class JournalEntriesTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-            String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_DEBIT_ACC,true);
-            String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_DEBIT_ACC,true);
-            String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_CREDIT_ACC,true);
-            String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_CREDIT_ACC,true);
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
-                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .ledgerCredit(LEDGER_EXPENDITURE_DEBIT_NAME).ledgerCreditNumber(LEDGER_EXPENDITURE_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_EXPENDITURE_CREDIT_NAME).ledgerDebitNumber(LEDGER_EXPENDITURE_CREDIT_NUMBER)
                     .amountDebit(1).amountCredit(1)
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-
-            String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_EXPENDITURE);
-            String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_EXPENDITURE);
-            String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
-            String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
-            String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,"");
         }
         log("INFO: Executed completely");
     }
@@ -293,7 +285,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
                 .build();
         log("@Step 3: Select txn date on the last 3 months has CJE (e.g. 20/10/2023) and Transaction Type");
         log("@Step 4: Click Submit button");
-        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
         ConfirmPopup confirmPopup = new ConfirmPopup();
         String actualMes = confirmPopup.getContentMessage();
         log("@Verify 1: A reminder as 'After submitting this transaction, you will need to perform Closing Journal Entries for <Month of the transaction date>. Please click on the 'Closing Journal Entries' link and perform.' will display");
@@ -313,9 +305,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 1: Click Accounting >> Journal Entries menu");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 2: Input all valid data into Debit and Credit section");
-        String previousMonth = String.valueOf(DateUtils.getMonth(GMT_7)-4);
-        String txtMonth = Month.of(DateUtils.getMonth(GMT_7)-4).getDisplayName(TextStyle.FULL.FULL, Locale.CANADA);
-        String curYear = String.valueOf(DateUtils.getYear(GMT_7));
+        String date = journalEntriesPage.getDayOfMonth(15,-4,"MM/yyyy");
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit("AutoCreditExpenditure - 012.000.000.000")
                 .ledgerCredit(creditExpAcc)
@@ -324,16 +314,17 @@ public class JournalEntriesTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descExpenditure)
-                .transDate("15/"+previousMonth+"/"+curYear)
+                .transDate(date)
                 .transType(transType)
                 .build();
         log("@Step 3: Select txn date before the last 3 months has CJE (e.g. 20/07/2023) and Transaction Type");
         log("@Step 4: Click Submit button");
-        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true);
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
         ConfirmPopup confirmPopup = new ConfirmPopup();
         String actualMes = confirmPopup.getContentMessage();
         log("@Verify 1: A reminder as 'After submitting this transaction, you will need to perform Closing Journal Entries for <Month of the transaction date>. Please contact Support Team to perform this CJE.' will display");
-        Assert.assertEquals(actualMes,String.format(JournalEntries.MES_IF_TXN_BEFORE_3_LAST_MONTH,curYear,txtMonth),"FAILED! A reminder display incorrect");
+        String txtMonth = Month.of(Integer.parseInt(date.split("/")[1])).getDisplayName(TextStyle.FULL.FULL, Locale.CANADA);
+        Assert.assertEquals(actualMes,String.format(JournalEntries.MES_IF_TXN_BEFORE_3_LAST_MONTH,date.split("/")[2],txtMonth),"FAILED! A reminder display incorrect");
         log("INFO: Executed completely");
     }
 

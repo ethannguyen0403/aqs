@@ -101,6 +101,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         String clientName = "PSM Group Limited";
         ClientSystemPage clientSystemPage = welcomePage.navigatePage(MASTER,CLIENT_SYSTEM,ClientSystemPage.class);
         clientSystemPage.filterClient(KASTRAKI_LIMITED,"",clientName,"","");
+        clientSystemPage.waitSpinnerDisappeared();
         AccountListPopup accountListPopup = clientSystemPage.openAccountList(clientName);
         List<String> lstBookieAc = accountListPopup.getLstBookie();
         accountListPopup.closeToPopup();
@@ -263,11 +264,11 @@ public class PositionTakingReportTest extends BaseCaseAQS {
                 "View By = Client Point\n" +
                 "Client = PSM Group Limited\n"+
                 "From Date To Date ((=Todate check at step #4)");
-        clientStatementPage.filter("Client Point", KASTRAKI_LIMITED,FINANCIAL_YEAR,clientStatement,toDate,toDate);
+        clientStatementPage.filter("Client Point", KASTRAKI_LIMITED,FINANCIAL_YEAR,clientStatement,fromDate,toDate);
         log("@Step 8: Click agent-PT of account at step #4 (e.g. PSMEU02-PT)");
         ClientSummaryPopup clientSummaryPopup = clientStatementPage.openSummaryPopup(agentCode);
         log("@Step 9: Get Win/Lose value");
-        String winloseEx = clientSummaryPopup.getSummaryCellValue(accountCode,8);
+        String winloseEx = clientSummaryPopup.getSummaryCellValue(accountCode,clientSummaryPopup.tblSummary.getColumnIndexByName("Win/Lose"));
         log("@Step 10: Compare value at step #4 and step #8");
         log("@Verify 1: The correct Win/Lose displays => values at step #4 and step #8 are the same");
         Assert.assertEquals(winloseAc,winloseEx,"FAILED! Win/Lose value displays incorrect");

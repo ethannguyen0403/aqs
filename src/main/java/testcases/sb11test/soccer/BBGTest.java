@@ -285,7 +285,7 @@ public class BBGTest extends BaseCaseAQS {
         ConfirmBetsUtils.confirmBetAPI(lstOrder.get(0));
         BetSettlementUtils.waitForBetIsUpdate(7);
         BetSettlementUtils.sendBetSettleAPI(lstOrder.get(0));
-        BetSettlementUtils.waitForBetIsUpdate(7);
+        BetSettlementUtils.waitForBetIsUpdate(20);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
         BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);

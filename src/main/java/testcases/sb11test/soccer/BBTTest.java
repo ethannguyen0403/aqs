@@ -702,7 +702,7 @@ public class BBTTest extends BaseCaseAQS {
                     "Home Team: QA Tennis Team 1\n" +
                     "Away Team: QA Tennis Team 2");
 
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Tennis"), "INRUNNING");
+            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Tennis"),eventTennis.getOpenTime(), "INRUNNING");
             log("@Precondition-Step 2: Place some Tennis 1x2 match bets");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             TennisBetEntryPage tennisBetEntryPage = betEntryPage.goToTennis();
@@ -760,7 +760,7 @@ public class BBTTest extends BaseCaseAQS {
         try{
             log("@title: Validate Lay Basketball bet should display correctly on right table ");
             log("@Precondition: Place some Lay Basketball 1x2 match bets");
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), "INRUNNING");
+            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"),eventBasketball.getOpenTime(), "INRUNNING");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
             basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
@@ -801,7 +801,7 @@ public class BBTTest extends BaseCaseAQS {
         try{
             log("@title: Validate (Lay) text should display correctly after the odds for Lay bet");
             log("@Precondition: Place some Lay Basketball 1x2 match bets");
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), "INRUNNING");
+            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getOpenTime(),"INRUNNING");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
             basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
@@ -864,7 +864,7 @@ public class BBTTest extends BaseCaseAQS {
         String homeTeamID = EventScheduleUtils.getTeamID(eventCricket.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(eventCricket.getAway(), leagueID);
         try {
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), "INRUNNING");
+            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), eventCricket.getOpenTime(),"INRUNNING");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
             CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
             cricketBetEntryPage.showLeague(KASTRAKI_LIMITED, currentDay, eventCricket.getLeagueName());
@@ -938,7 +938,7 @@ public class BBTTest extends BaseCaseAQS {
         try {
             log("@title: Validate Back Tennis bet should display correctly on left table");
             log("@Precondition - Step 1: Already have some place Back bet on Home for Tennis sport");
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Tennis"), "INRUNNING");
+            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Tennis"),eventTennis.getOpenTime(), "INRUNNING");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             TennisBetEntryPage tennisBetEntryPage = betEntryPage.goToTennis();
             tennisBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventTennis.getLeagueName(), accountCode);
@@ -981,7 +981,7 @@ public class BBTTest extends BaseCaseAQS {
         String awayTeamID = EventScheduleUtils.getTeamID(eventTennis.getAway(), leagueID);
 
         try{
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Tennis"), "INRUNNING");
+            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Tennis"), eventTennis.getOpenTime(),"INRUNNING");
             log("@title: Validate LayTennis bet should display correctly on right table");
             log("@Precondition:  Already have some place Lay bet on Home for Tennis sport");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
@@ -1025,7 +1025,7 @@ public class BBTTest extends BaseCaseAQS {
         try {
             log("@title: Validate Back Basketball bet should display correctly on left table");
             log("@Precondition: Already have some place Back bet on Home for Basketball sport");
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), "INRUNNING");
+            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getOpenTime(),"INRUNNING");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
             basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);

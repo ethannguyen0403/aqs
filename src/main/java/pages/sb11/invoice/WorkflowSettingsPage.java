@@ -45,6 +45,7 @@ public class WorkflowSettingsPage extends WelcomePage {
 
     public WorkflowNewInvoicePopup viewNewInvoice(int index) {
         tblWorkflow.getControlOfCell(1, colNew, index, null).click();
+        waitSpinnerDisappeared();
         return new WorkflowNewInvoicePopup();
     }
 

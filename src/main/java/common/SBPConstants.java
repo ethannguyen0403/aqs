@@ -98,15 +98,27 @@ public class SBPConstants {
     public final static String QA_ASSET_PARENT_ACCOUNT_700 = "700.000.000.000 - QA Asset Account 700";
     public final static String CAPITAL_PARENT_ACCOUNT = "301.000.000.000 - Capital";
     public final static String LEDGER_ASSET_CREDIT_ACC = "050.000.000.000 - AutoAssetCredit";
+    public final static String LEDGER_ASSET_CREDIT_NUMBER = "050.000.000.000";
+    public final static String LEDGER_ASSET_CREDIT_NAME = "AutoAssetCredit";
     public final static String LEDGER_ASSET_DEBIT_ACC = "055.000.000.000 - AutoAssetDebit";
+    public final static String LEDGER_ASSET_DEBIT_NUMBER = "055.000.000.000";
+    public final static String LEDGER_ASSET_DEBIT_NAME = "AutoAssetDebit";
     public final static String LEDGER_LIABILITY_CREDIT_ACC = "040.000.000.000 - AutoLiabilityCredit";
+    public final static String LEDGER_LIABILITY_CREDIT_NAME = "AutoLiabilityCredit";
+    public final static String LEDGER_LIABILITY_CREDIT_NUMBER = "040.000.000.000";
     public final static String LEDGER_LIABILITY_DEBIT_ACC = "044.000.000.000 - AutoLiabilityDebit";
+    public final static String LEDGER_LIABILITY_DEBIT_NAME = "AutoLiabilityDebit";
+    public final static String LEDGER_LIABILITY_DEBIT_NUMBER = "044.000.000.000";
     public final static String LEDGER_CAPITAL_CREDIT_ACC = "030.000.000.000 - AutoCapitalCredit";
     public final static String LEDGER_CAPITAL_DEBIT_ACC = "033.000.000.000 - AutoCapitalDebit";
     public final static String LEDGER_INCOME_CREDIT_ACC = "002.000.000.000 - AutoIncomeCredit";
     public final static String LEDGER_INCOME_DEBIT_ACC = "002.200.000.000 - AutoIncomeDebit";
     public final static String LEDGER_EXPENDITURE_CREDIT_ACC = "010.000.000.000 - AutoExpenditureCredit";
+    public final static String LEDGER_EXPENDITURE_CREDIT_NAME = "AutoExpenditureCredit";
+    public final static String LEDGER_EXPENDITURE_CREDIT_NUMBER = "010.000.000.000";
     public final static String LEDGER_EXPENDITURE_DEBIT_ACC = "011.000.000.000 - AutoExpenditureDebit";
+    public final static String LEDGER_EXPENDITURE_DEBIT_NAME = "AutoExpenditureDebit";
+    public final static String LEDGER_EXPENDITURE_DEBIT_NUMBER = "011.000.000.000";
     public final static String LEDGER_PARENT_NAME_ASSET = "QA Ledger Group Asset";
     public final static String LEDGER_PARENT_NAME_EXPENDITURE = "QA Ledger Group Expenditure";
     public final static String LEDGER_PARENT_NAME_LIABILITY = "QA Ledger Group Liability";
@@ -417,6 +429,7 @@ public class SBPConstants {
         public final static List<String> CURRENCY_LIST = Arrays.asList("[All]","AED","AUD","CAD","CNY","EUR","GBP","HKD","IDR","INR","JPY","KPW","KRW","LKR","MYR","PHP","PKR","SGD","THB","TWD","USD","VND","ZAR");
         public final static List<String> TRANSACTION_TYPE_LIST = Arrays.asList("[Choose One]","Payment Bookie","Payment Client","Payment Feed","Payment Operational","Payment Other","Payment Provider",
                 "Received Bookie","Received Client","Received Comm/Rebate","Received Dividend/Share","Received Feed","Received Other","Contra Bookie","Contra Client","Contra Bookie Client","Contra CUR");
+        public final static String MES_TRANS_HAS_BEEN_CREATED = "Transaction has been created";
         public final static String MES_IF_TXN_IN_3_LAST_MONTH = "After submitting this transaction, you will need to perform Closing Journal Entries for %s - %s Please click on the 'Closing Journal Entries' link and perform.";
         public final static String MES_IF_TXN_BEFORE_3_LAST_MONTH = "After submitting this transaction, you will need to perform Closing Journal Entries for %s - %s Please contact Support Team to perform this CJE.";
     }

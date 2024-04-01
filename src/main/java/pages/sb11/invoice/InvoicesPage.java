@@ -74,6 +74,7 @@ public class InvoicesPage extends WelcomePage {
             txtInvoiceNumber.sendKeys(invoiceNumber);
         btnSearch.click();
         waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
     }
 
     public ArrayList<String> getFirstInvoice(){
@@ -133,6 +134,7 @@ public class InvoicesPage extends WelcomePage {
 
     public ActionInvoicePopup actionInvoice(String invoiceName) {
         int invoiceRowIndex = getInvoiceRowIndex(invoiceName);
+        waitSpinnerDisappeared();
         return actionInvoice(invoiceRowIndex);
     }
 

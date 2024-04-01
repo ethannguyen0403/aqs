@@ -42,6 +42,7 @@ public class PositionTakingReportPage extends WelcomePage {
     public void filter(String companyUnit, String financialYear, String bookies, String fromDate, String toDate) {
         if (!companyUnit.isEmpty()){
             ddCUnit.selectByVisibleText(companyUnit);
+            waitSpinnerDisappeared();
         }
         if (!financialYear.isEmpty()){
             ddFinancialYear.selectByVisibleText(financialYear);

@@ -14,6 +14,7 @@ import pages.sb11.trading.popup.SoccerBetSlipPopup;
 import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.BetEntrytUtils;
+import utils.sb11.EventScheduleUtils;
 import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
 
@@ -117,25 +118,32 @@ public class BetEntryTest extends BaseCaseAQS {
         log("Precondition: User has permission to access Bet Entry page");
         log("Having a valid account that can place bets (e.g. )" +accountCode);
         log("Having a Cricket event which has been created on Event Schedule > Cricket");
+        String sportName = "Cricket";
         String companyUnit = "Kastraki Limited";
+        String leagueName = "QA League";
         log("@Step 1: Login to SB11 site");
         String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         Event eventInfo = new Event.Builder()
-                .sportName("Cricket")
-                .leagueName("QA League")
+                .sportName(sportName)
+                .leagueName(leagueName)
                 .eventDate(dateAPI)
                 .home("QA Team 01")
                 .away("QA Team 02")
-                .openTime("13:00")
+                .openTime("15:00")
                 .eventStatus("Scheduled")
                 .eventDate(date)
                 .isLive(false)
                 .isN(false)
                 .build();
 
+        String leagueID = EventScheduleUtils.getLeagueID(eventInfo.getLeagueName(), SPORT_ID_MAP.get(sportName));
+        String homeTeamID = EventScheduleUtils.getTeamID(eventInfo.getHome(), leagueID);
+        String awayTeamID = EventScheduleUtils.getTeamID(eventInfo.getAway(), leagueID);
         log("@Step prepare data: Add event for QA League in today local time and can filter in today in Trading>Bet Entry");
-        eventInfo =  welcomePage.createEvent(eventInfo);
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), eventInfo.getOpenTime(),eventInfo.getEventStatus().toUpperCase());
+        String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+        eventInfo.setEventId(eventID);
 
         log("@Step 2: Navigate to Trading > Bet Entry");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
@@ -186,6 +194,8 @@ public class BetEntryTest extends BaseCaseAQS {
         confirmBetsPage.filter(companyUnit,"","Pending",eventInfo.getSportName(),"All","Specific Date",date,"",accountCode);
         confirmBetsPage.deleteOrder(order,true);
 
+        log("@Postcondition: Delete the event");
+        EventScheduleUtils.deleteEventByAPI(eventInfo.getEventId());
         log("INFO: Executed completely");
     }
 

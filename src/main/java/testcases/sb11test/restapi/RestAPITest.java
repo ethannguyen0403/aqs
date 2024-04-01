@@ -32,11 +32,11 @@ public class RestAPITest extends BaseCaseAQS {
         String date = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +8");
         String provider = "MERITO";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("18:00").eventStatus("Scheduled").eventDate(date)
-                .isLive(false).isN(false).build();
+                .isLive(false).isN(false).eventStatus("INRUNNING").build();
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(sportName));
         String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), "INRUNNING");
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), event.getOpenTime(),event.getEventStatus().toUpperCase());
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
@@ -97,7 +97,7 @@ public class RestAPITest extends BaseCaseAQS {
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(sportName));
         String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), "INRUNNING");
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName),event.getOpenTime(), "INRUNNING");
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
@@ -158,7 +158,7 @@ public class RestAPITest extends BaseCaseAQS {
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(sportName));
         String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), "INRUNNING");
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName),event.getOpenTime(), "INRUNNING");
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
@@ -209,7 +209,7 @@ public class RestAPITest extends BaseCaseAQS {
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(sportName));
         String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), "INRUNNING");
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), event.getOpenTime(),"INRUNNING");
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
@@ -270,7 +270,7 @@ public class RestAPITest extends BaseCaseAQS {
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(sportName));
         String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), "INRUNNING");
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName),event.getOpenTime(), "INRUNNING");
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
@@ -331,7 +331,7 @@ public class RestAPITest extends BaseCaseAQS {
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(sportName));
         String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), "INRUNNING");
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), event.getOpenTime(),"INRUNNING");
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
@@ -393,7 +393,7 @@ public class RestAPITest extends BaseCaseAQS {
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(sportName));
         String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
         String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), "INRUNNING");
+        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), event.getOpenTime(),"INRUNNING");
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);

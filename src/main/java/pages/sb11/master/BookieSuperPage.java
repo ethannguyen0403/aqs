@@ -38,6 +38,7 @@ public class BookieSuperPage {
         if (!superCode.isEmpty())
             txtSuperCode.sendKeys(superCode);
         btnSearch.click();
+        waitSpinnerDisappeared();
     }
 
     public MasterListPopup openMasterList(String superCode){

@@ -1,6 +1,7 @@
 package utils.sb11;
 
 import com.paltech.constant.Configs;
+import com.paltech.driver.DriverManager;
 import com.paltech.utils.WSUtils;
 import objects.Event;
 import objects.Order;
@@ -14,13 +15,6 @@ import static testcases.BaseCaseAQS.environment;
 
 public class ResultEntryUtils {
     public static void setResultCricket(Event event, String status, String result){
-        String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
-        Map<String, String> headersParam = new HashMap<String, String>() {
-            {
-                put("Authorization", autho);
-                put("Content-Type", Configs.HEADER_JSON);
-            }
-        };
         int homeScore = 0;
         int awayScore = 0;
         switch (result){
@@ -41,6 +35,8 @@ public class ResultEntryUtils {
         String jsn = String.format("[\n" +
                         "    {\n" +
                         "        \"eventId\": %s,\n" +
+                        "        \"homeTeamName\": \"%s\",\n" +
+                        "        \"awayTeamName\": \"%s\",\n" +
                         "        \"eventStatus\": \"%s\",\n" +
                         "        \"scores\": [\n" +
                         "            {\n" +
@@ -57,7 +53,18 @@ public class ResultEntryUtils {
                         "        \"checked\": true\n" +
                         "    }\n" +
                         "]"
-                , Integer.valueOf(event.getEventId()),status,homeScore,awayScore);
+                , Integer.valueOf(event.getEventId()),event.getHome(),event.getAway(),status,homeScore,awayScore);
+        String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
+        Map<String, String> headersParam = new HashMap<String, String>() {
+            {
+                put("authorization", autho);
+                put("content-type", Configs.HEADER_JSON);
+                put("accept","application/json, text/plain, */*");
+                put("Accept-Encoding","gzip, deflate, br");
+                put("x-auth-user-id","330");
+            }
+        };
+
         try {
             WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
         }catch (IOException e){

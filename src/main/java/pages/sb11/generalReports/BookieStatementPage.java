@@ -62,32 +62,36 @@ public class BookieStatementPage extends WelcomePage {
     }
 
     public void filter( String companyUnit, String financialYear, String agentType, String fromDate, String toDate, String bookieCode, String currency) throws InterruptedException {
-        if(!companyUnit.isEmpty())
+        if(!companyUnit.isEmpty()){
             ddpCompanyUnit.selectByVisibleText(companyUnit);
-        if(!financialYear.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!financialYear.isEmpty()){
             ddpFinancialYear.selectByVisibleText(financialYear);
-        if(!agentType.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!agentType.isEmpty()) {
             ddpAgentType.selectByVisibleText(agentType);
-        String currentDate = txtFromDate.getAttribute("value");
-        if(!fromDate.isEmpty())
-            if(!currentDate.equals(fromDate))
-                dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-        currentDate = txtToDate.getAttribute("value");
-        if(!toDate.isEmpty())
-            if(!currentDate.equals(toDate))
-                dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+            waitSpinnerDisappeared();
+        }
+        if(!fromDate.isEmpty()){
+            dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+            waitSpinnerDisappeared();
+        }
+        if(!toDate.isEmpty()){
+            dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+            waitSpinnerDisappeared();
+        }
         if(!bookieCode.isEmpty()) {
             txtBookieCode.sendKeys(bookieCode);
-            //sleep to waiting for table
-            Thread.sleep(2000);
-            searchIcon.click();
             waitSpinnerDisappeared();
-            btnConfirmShowBookie.click();
         }
-        if(!currency.isEmpty())
+        if(!currency.isEmpty()){
             ddpCurrency.selectByVisibleText(currency);
-        btnShow.click();
-        Thread.sleep(1000);
+            waitSpinnerDisappeared();
+        }
+        btnShow.doubleClick();
+//        btnShow.click();
         waitSpinnerDisappeared();
     }
 
@@ -219,6 +223,7 @@ public class BookieStatementPage extends WelcomePage {
 
     public String getWinLossofPlayer(String masterCode , String agentCode, String playerAccount){
         BookieMemberSummaryPopup bookieSummaryPopup = openBookieMemberSummaryDetailPopup(masterCode,agentCode);
+        waitSpinnerDisappeared();
         int winlosCol = bookieSummaryPopup.colWinLosePlayer;
         String winloss =  bookieSummaryPopup.getDataRowofPlayer(playerAccount).get(winlosCol-1);
         bookieSummaryPopup.closePopup();

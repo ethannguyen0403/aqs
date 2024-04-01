@@ -43,9 +43,10 @@ public class ARandAPReconciliationPage extends WelcomePage {
         int indexRow = tblSubAcc.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
         return Label.xpath(tblSubAcc.getxPathOfCell(1,indexColum,indexRow,"span")).getText();
     }
-    public void tickConfirmAuthorise(String desc, String colName){
-        int indexRow = tblData.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
-        CheckBox cbConfirm = CheckBox.xpath(tblData.getxPathOfCell(1,tblHeader.getColumnIndexByName(colName)-1,indexRow,"input"));
+    public void tickConfirmAuthorise(String subAccName, String desc, String colName){
+        Table tblSubAcc = Table.xpath(String.format("//span[contains(text(),'%s')]//ancestor::table",subAccName),10);
+        int indexRow = tblSubAcc.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
+        CheckBox cbConfirm = CheckBox.xpath(tblSubAcc.getxPathOfCell(1,tblHeader.getColumnIndexByName(colName)-1,indexRow,"input"));
         if (cbConfirm.isEnabled()){
             cbConfirm.click();
             try {
@@ -60,9 +61,10 @@ public class ARandAPReconciliationPage extends WelcomePage {
             System.out.println("Check box of "+desc+" is ticked");
         }
     }
-    public boolean isCheckCanTick(String desc, String colName){
-        int indexRow = tblData.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
-        CheckBox cbConfirm = CheckBox.xpath(tblData.getxPathOfCell(1,tblHeader.getColumnIndexByName(colName)-1,indexRow,"input"));
+    public boolean isCheckCanTick(String subAccName, String desc, String colName){
+        Table tblSubAcc = Table.xpath(String.format("//span[contains(text(),'%s')]//ancestor::table",subAccName),10);
+        int indexRow = tblSubAcc.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
+        CheckBox cbConfirm = CheckBox.xpath(tblSubAcc.getxPathOfCell(1,tblHeader.getColumnIndexByName(colName)-1,indexRow,"input"));
         return cbConfirm.isEnabled();
     }
     public String getSumDebitCredit(String subAccName, String debitcredit){

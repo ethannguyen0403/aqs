@@ -11,6 +11,7 @@ public class AccountListPopup {
     public DropDownBox ddType = DropDownBox.xpath("//div[@class='modal-content']//select[1]");
     public DropDownBox ddClientBookie = DropDownBox.xpath("//div[@class='modal-content']//select[2]");
     public Button btnClose = Button.xpath("//div[@class='modal-content']//span[contains(@class,'close-icon')]//em");
+    Label lblSpin = Label.xpath("//div[contains(@class,'la-ball-clip-rotate')]");
     public String getTitlePage ()
     {
         return this.lblTitle.getText().trim();
@@ -18,21 +19,16 @@ public class AccountListPopup {
 
     public List<String> getLstBookie() {
         ddType.selectByVisibleText("Bookie");
-        //wait for update option inside dropdown
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        waitSpinnerDisappeared();
         return ddClientBookie.getOptions();
     }
     public void closeToPopup(){
         btnClose.click();
-        //wait for hiding loading icon
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        waitSpinnerDisappeared();
+    }
+    public void waitSpinnerDisappeared() {
+        while(lblSpin.isDisplayed()) {
+            lblSpin.waitForControlInvisible();
         }
     }
 }

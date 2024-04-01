@@ -73,22 +73,17 @@ public class BetSettlementPage extends WelcomePage {
            if(ddbMatchDate.isDisplayed()) {
                ddbMatchDate.selectByVisibleContainsText("Specific Date");
            }
-           String currentFromDate = txtFromDate.getAttribute("value");
-           if(!fromDate.equals(currentFromDate)){
+           if(!fromDate.isEmpty()){
                dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
            }
-       }
-       if(!toDate.isEmpty())
-       {
-           String currentToDate = txtFromDate.getAttribute("value");
-           if(!toDate.equals(currentToDate)){
+           if(!toDate.isEmpty()) {
                dtpToDate.selectDate(toDate,"dd/MM/yyyy");
            }
        }
+
         if(!accStartWith.isEmpty())
         {
             txtAccStartWith.sendKeys(accStartWith);
-
         }
         txtAccountCode.sendKeys(accountCode);
 
@@ -99,7 +94,8 @@ public class BetSettlementPage extends WelcomePage {
             throw new RuntimeException(e);
         }
         btnSearch.click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
     }
 
     /**
@@ -121,7 +117,7 @@ public class BetSettlementPage extends WelcomePage {
         int i = 1;
         Label lblOrderID;
         while (true){
-            lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1,colBRBettrefId,i,null));
+            lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1,colBRBettrefId,i,"span[2]"));
             if(!lblOrderID.isDisplayed()){
                 System.out.println("The order id "+ orderId +" does not display in the table");
                 return 0;
@@ -221,7 +217,7 @@ public class BetSettlementPage extends WelcomePage {
      */
     public void verifyOrderInfo(Order order){
         int rowindex = getOrderIndex(order.getBetId());
-        String brBetrefID = tblOrder.getControlOfCell(1, colBRBettrefId,rowindex,null).getText();
+        String brBetrefID = tblOrder.getControlOfCell(1, colBRBettrefId,rowindex,"//span[2]").getText();
         String sport = tblOrder.getControlOfCell(1, colSport,rowindex,null).getText();
         String eventLeague = tblOrder.getControlOfCell(1, colEvenLeagueName,rowindex,null).getText();
         String selection = tblOrder.getControlOfCell(1, colSelection,rowindex,null).getText();
@@ -237,7 +233,7 @@ public class BetSettlementPage extends WelcomePage {
         Assert.assertEquals(selection,order.getSelection(), "Failed! Selection at row "+rowindex+" is incorrect");
 
         String expectedBetType = order.getMarketType();
-        String expectedHDP = hdp.startsWith("+") ? "+" : "";
+        String expectedHDP = hdp.startsWith("+") ? "+"+hdp : hdp;
         String hdpSign = order.isNegativeHdp() ? "-" : "";
         if(order.getEvent().getSportName().equalsIgnoreCase("Soccer")){
             if (order.getMarketType().contains(("1x2"))){
@@ -247,7 +243,9 @@ public class BetSettlementPage extends WelcomePage {
                 expectedBetType = String.format("%s-%s", EN_US.get(order.getStage()), EN_US.get(expectedBetType));
                 expectedHDP = String.format("%s%s", hdpSign, order.getHdpPoint());
             }
-            Assert.assertEquals(live,  String.format("%s - %s", order.getLiveHomeScore(),order.getLiveHomeScore()), "Failed! Live is incorrect");
+            if (order.isLive()){
+                Assert.assertEquals(live,  String.format("%s - %s", order.getLiveHomeScore(),order.getLiveHomeScore()), "Failed! Live is incorrect");
+            }
         }else if (order.getEvent().getSportName().equalsIgnoreCase("Cricket")) {
             expectedHDP =  String.format("%s%s / %s%s", hdpSign + expectedHDP, order.getHandicapWtks(), hdpSign + expectedHDP, order.getHandicapRuns());
             Assert.assertEquals(live, "", "Failed! Live is incorrect");

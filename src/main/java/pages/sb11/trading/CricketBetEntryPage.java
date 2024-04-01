@@ -62,15 +62,16 @@ public class CricketBetEntryPage extends BetEntryPage {
      */
     public void showLeague(String companyUnit, String date, String league){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
-        String dateValue = txtDate.getAttribute("value");
+        waitSpinnerDisappeared();
         if(!date.isEmpty()){
             dtpDate.selectDate(date,"dd/MM/yyyy");
-            waitPageLoad();
+            waitSpinnerDisappeared();
         }
-        waitPageLoad();
         BaseElement ddpLeagueBox = new TextBox(ddpLeague.getLocator());
         ddpLeagueBox.doubleClick();
+        waitSpinnerDisappeared();
         ddpLeague.selectByVisibleText(league);
+        waitSpinnerDisappeared();
         btnShow.click();
         waitSpinnerDisappeared();
     }
@@ -105,6 +106,7 @@ public class CricketBetEntryPage extends BetEntryPage {
     public CricketBetSlipPopup openBetSlip(Order order){
         txtAccCode.type(order.getAccountCode());
         btnShow.click();
+        waitSpinnerDisappeared();
         int rowIndex = getEventRowIndex(order.getHome());
         String selection = "DRAW";
         if(order.getSelection().equals(order.getHome()))
@@ -121,7 +123,8 @@ public class CricketBetEntryPage extends BetEntryPage {
             selection="Under";
         int colIndex = defineColumn(order.getMarketType(), selection);
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
         return new CricketBetSlipPopup();
 
     }

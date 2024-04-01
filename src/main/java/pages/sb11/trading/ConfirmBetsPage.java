@@ -26,8 +26,8 @@ public class ConfirmBetsPage extends WelcomePage {
     public DropDownBox ddbDateType = DropDownBox.id("dateType");
     public TextBox txtFromDate  = TextBox.xpath("//div[@id='fromDate']/input");
     public TextBox txtToDate  = TextBox.xpath("//div[@id='toDate']/input");
-    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
-    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
+    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
+    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
     public TextBox txtAccountCode = TextBox.id("accountCode");
     public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     int colTotal = 16;
@@ -175,8 +175,14 @@ public class ConfirmBetsPage extends WelcomePage {
      * @return
      */
     public void verifyOrder(Order order){
-        int orderIndex = getOrderIndex(order.getOrderId());
-        System.out.println(String.format("verity order %s  at row %s", order.getOrderId(), orderIndex));
+        int orderIndex = -1;
+        if (Objects.nonNull(order.getOrderId())){
+            orderIndex = getOrderIndex(order.getOrderId());
+            System.out.println(String.format("verity order %s at row %s", order.getOrderId(), orderIndex));
+        } else {
+            orderIndex = getOrderIndex(order.getBetId());
+            System.out.println(String.format("verity order %s at row %s", order.getBetId(), orderIndex));
+        }
         String dateEvent = tblOrder.getControlOfCell(1, colEventDate, orderIndex, null).getText().trim();
         String country = tblOrder.getControlOfCell(1, colCountry, orderIndex, null).getText().trim();
         String league = tblOrder.getControlOfCell(1, colLeague, orderIndex, null).getText().trim();

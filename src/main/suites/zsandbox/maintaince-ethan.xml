@@ -48,9 +48,11 @@
 
             <class name="testcases.sb11test.trading.BetEntryTest"/>
             <class name="testcases.sb11test.trading.BetSettlementTest"/>
+            <class name="testcases.sb11test.trading.CricketSportTest"/>
 
             <class name="testcases.sb11test.master.BookieSystemTest"/>
 
+            <class name="testcases.sb11test.generalReports.BookieStatementTest"/>
             <class name="testcases.sb11test.generalReports.ClientBalanceTest"/>
             <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
             <class name="testcases.sb11test.generalReports.ARandAPReconciliationTest"/>
@@ -59,6 +61,7 @@
             <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
             <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
             <class name="testcases.sb11test.generalReports.FundReconciliationTest"/>
+            <class name="testcases.sb11test.generalReports.ClosingJournalEntriesTest"/>
 
             <class name="testcases.sb11test.invoice.InvoicesTest"/>
 
@@ -66,6 +69,7 @@
             <class name="testcases.sb11test.financialReports.BalanceSheetAnalysisTest"/>
             <class name="testcases.sb11test.financialReports.IncomeStatementAnalysisTest"/>
             <class name="testcases.sb11test.financialReports.RetainedEarningsTest"/>
+            <class name="testcases.sb11test.financialReports.TrialBalanceTest"/>
         </classes>
     </test>
 </suite>
