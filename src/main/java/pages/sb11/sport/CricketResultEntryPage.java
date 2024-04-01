@@ -22,7 +22,7 @@ public class CricketResultEntryPage extends WelcomePage {
     public DropDownBox ddpStatus = DropDownBox.id("status");
     public TextBox txtDateTime = TextBox.id("date");
     public Label lblDate = Label.xpath("//label[contains(text(),'Date')]");
-    public DateTimePicker dtpDateTime = DateTimePicker.xpath(txtDateTime,"//bs-days-calendar-view");
+    public DateTimePicker dtpDateTime = DateTimePicker.xpath(txtDateTime,"//bs-datepicker-container");
     int colTime = 3;
     int colEvent = 4;
     int colStatus = 6;

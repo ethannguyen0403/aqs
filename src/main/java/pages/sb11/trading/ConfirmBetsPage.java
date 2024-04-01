@@ -26,8 +26,8 @@ public class ConfirmBetsPage extends WelcomePage {
     public DropDownBox ddbDateType = DropDownBox.id("dateType");
     public TextBox txtFromDate  = TextBox.xpath("//div[@id='fromDate']/input");
     public TextBox txtToDate  = TextBox.xpath("//div[@id='toDate']/input");
-    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
-    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
+    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
+    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
     public TextBox txtAccountCode = TextBox.id("accountCode");
     public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     int colTotal = 16;

@@ -73,22 +73,17 @@ public class BetSettlementPage extends WelcomePage {
            if(ddbMatchDate.isDisplayed()) {
                ddbMatchDate.selectByVisibleContainsText("Specific Date");
            }
-           String currentFromDate = txtFromDate.getAttribute("value");
-           if(!fromDate.equals(currentFromDate)){
+           if(!fromDate.isEmpty()){
                dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
            }
-       }
-       if(!toDate.isEmpty())
-       {
-           String currentToDate = txtFromDate.getAttribute("value");
-           if(!toDate.equals(currentToDate)){
+           if(!toDate.isEmpty()) {
                dtpToDate.selectDate(toDate,"dd/MM/yyyy");
            }
        }
+
         if(!accStartWith.isEmpty())
         {
             txtAccStartWith.sendKeys(accStartWith);
-
         }
         txtAccountCode.sendKeys(accountCode);
 
