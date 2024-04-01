@@ -74,6 +74,7 @@ public class InvoicesPage extends WelcomePage {
             txtInvoiceNumber.sendKeys(invoiceNumber);
         btnSearch.click();
         waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
     }
 
     public ArrayList<String> getFirstInvoice(){

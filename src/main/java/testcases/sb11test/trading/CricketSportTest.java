@@ -389,7 +389,7 @@ public class CricketSportTest extends BaseCaseAQS {
             log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
             BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
             Thread.sleep(5000);
-            betSettlementPage.filter("Confirmed",date,date,"",accountCode);
+            betSettlementPage.filter("Confirmed",date,"","",accountCode);
             log("Verify 1: Bet 1 : Win/Lose = 100\n" +
                     "Bet 2 : Win/Lose = -50");
             Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(0)),"200");
@@ -397,7 +397,7 @@ public class CricketSportTest extends BaseCaseAQS {
             log("@Step 3: Select the bets >> click Settle and Send Settlement Email");
             betSettlementPage.settleAndSendSettlementEmail(order);
             log("Verify 2: Bets disappear from Confirm and move to the Settled section.");
-            betSettlementPage.filter("Settled", date, date,"", accountCode);
+            betSettlementPage.filter("Settled", date, "","", accountCode);
             betSettlementPage.verifyOrderInfo(order);
 
             List<ArrayList<String>> emailInfo = betSettlementPage.getFirstActiveMailBox("https://yopmail.com/",emailAddress);
@@ -495,7 +495,7 @@ public class CricketSportTest extends BaseCaseAQS {
             log("@Step 4: Go to Bet Settlement >> search the account >> observe the win/lose amount");
             BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
             Thread.sleep(5000);
-            betSettlementPage.filter("Confirmed",date,date,"",accountCode);
+            betSettlementPage.filter("Confirmed",date,"","",accountCode);
             log("Verify 1: Bet 1 : Win/Lose = 100\n" +
                     "Bet 2 : Win/Lose = -50");
             Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(0)),"-100");
@@ -504,7 +504,7 @@ public class CricketSportTest extends BaseCaseAQS {
             betSettlementPage.settleAndSendSettlementEmail(order);
             Thread.sleep(5000);
             log("Verify 2: Bets disappear from Confirm and move to the Settled section.");
-            betSettlementPage.filter("Settled", date, date,"", accountCode);
+            betSettlementPage.filter("Settled", date, "","", accountCode);
             betSettlementPage.verifyOrderInfo(order);
             List<ArrayList<String>> emailInfo = betSettlementPage.getFirstActiveMailBox("https://yopmail.com/",emailAddress);
             List<String> expectedRow1 = Arrays.asList("Member Code: "+accountCode,"Member Name: "+accountCode);
@@ -1095,7 +1095,7 @@ public class CricketSportTest extends BaseCaseAQS {
             confirmBetsPage.confirmMultipleBets(lstOrder);
             log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
             BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
-            betSettlementPage.filter("Confirmed",date,date,"",accountCode);
+            betSettlementPage.filter("Confirmed",date,"","",accountCode);
             log("Verify 1: Bet 1 : Win/Lose = 100\n" +
                     "Bet 2 : Win/Lose = -50");
             Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(0)),"200");
@@ -1103,7 +1103,7 @@ public class CricketSportTest extends BaseCaseAQS {
             log("@Step 3: Select the bets >> click Settle and Send Settlement Email");
             betSettlementPage.settleAndSendSettlementEmail(order);
             log("Verify 2: Bets disappear from Confirm and move to the Settled section.");
-            betSettlementPage.filter("Settled", date, date,"", accountCode);
+            betSettlementPage.filter("Settled", date, "","", accountCode);
             betSettlementPage.verifyOrderInfo(order);
             List<ArrayList<String>> emailInfo = betSettlementPage.getFirstActiveMailBox("https://yopmail.com/",emailAddress);
             List<String> expectedRow1 = Arrays.asList("Member Code: "+accountCode,"Member Name: "+accountCode);
@@ -1223,7 +1223,7 @@ public class CricketSportTest extends BaseCaseAQS {
             confirmBetsPage.confirmMultipleBets(lstOrder);
             log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
             BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
-            betSettlementPage.filter("Confirmed",date,date,"",accountCode);
+            betSettlementPage.filter("Confirmed",date,"","",accountCode);
             log("Verify 1: Bet 1 : Win/Lose = 100\n" +
                     "Bet 2 : Win/Lose = -50");
             Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(0)),"200");
@@ -1231,7 +1231,7 @@ public class CricketSportTest extends BaseCaseAQS {
             log("@Step 3: Select the bets >> click Settle and Send Settlement Email");
             betSettlementPage.settleAndSendSettlementEmail(order);
             log("Verify 2: Bets disappear from Confirm and move to the Settled section.");
-            betSettlementPage.filter("Settled", date, date,"", accountCode);
+            betSettlementPage.filter("Settled", date, "","", accountCode);
             betSettlementPage.verifyOrderInfo(order);
             List<ArrayList<String>> emailInfo = betSettlementPage.getFirstActiveMailBox("https://yopmail.com/",emailAddress);
             List<String> expectedRow1 = Arrays.asList("Member Code: "+accountCode,"Member Name: "+accountCode);
@@ -1280,13 +1280,13 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@Step 1: Access Trading > Bet Settlement");
         log("@Step 2: Filter with Cricket sport and place manual bet at pre-condition > observe win/loss of manual bet");
         BetSettlementPage betSettlementPage = welcomePage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed",date,date,"",accountCode);
+        betSettlementPage.filter("Confirmed",date,"","",accountCode);
         log("Verify 1: Validated win/loss of cricket manual bet is calculated correctly");
         Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(order),"5");
         log("@Step 3:  Click Settle & Send Settlement Email button > observe");
         betSettlementPage.settleAndSendSettlementEmail(order);
         log("Verify 2: Bets disappear from Confirm and move to the Settled section.");
-        betSettlementPage.filter("Settled", date, date,"", accountCode);
+        betSettlementPage.filter("Settled", date, "","", accountCode);
         betSettlementPage.verifyOrderManual(order);
         log("INFO: Executed completely");
     }
@@ -1369,7 +1369,7 @@ public class CricketSportTest extends BaseCaseAQS {
             log("@Step 4: Go to Bet Settlement >> search the account >> observe the win/lose amount");
             BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
             Thread.sleep(5000);
-            betSettlementPage.filter("Confirmed",date,date,"",accountCode);
+            betSettlementPage.filter("Confirmed",date,"","",accountCode);
             log("Verify 1: Bet 1 : Win/Lose = 100\n" +
                     "Bet 2 : Win/Lose = -50");
             Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(0)),"200");
@@ -1377,7 +1377,7 @@ public class CricketSportTest extends BaseCaseAQS {
             log("@Step 5: Select the bets >> click Settle and Send Settlement Email");
             betSettlementPage.settleAndSendSettlementEmail(order);
             log("Verify 2: Bets disappear from Confirm and move to the Settled section.");
-            betSettlementPage.filter("Settled", date, date,"", accountCode);
+            betSettlementPage.filter("Settled", date, "","", accountCode);
             betSettlementPage.verifyOrderInfo(order);
             List<ArrayList<String>> emailInfo = betSettlementPage.getFirstActiveMailBox("https://yopmail.com/",emailAddress);
             List<String> expectedRow1 = Arrays.asList("Member Code: "+accountCode,"Member Name: "+accountCode);

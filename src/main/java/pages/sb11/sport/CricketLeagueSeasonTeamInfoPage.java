@@ -165,6 +165,7 @@ public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
         }
         txtTeamName.sendKeys(teamName);
         btnSearchTeam.click();
+        waitSpinnerDisappeared();
         int index = getRowContainsTeamName(teamName);
         if(index==0){
             System.err.println("ERROR! "+teamName+" does not display");
@@ -172,6 +173,7 @@ public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
             tbTeam.getControlOfCell(1,colDeleteTeam,index,"i").click();
             ConfirmPopup popup = new ConfirmPopup();
             popup.confirm(true);
+            waitSpinnerDisappeared();
         }
     }
 }
