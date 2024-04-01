@@ -288,11 +288,13 @@ public class ClientStatementTest extends BaseCaseAQS {
             clientPage.waitSpinnerDisappeared();
             log("@Step 2: Filter the Client with Client Point view");
             clientPage.filter(viewBy, KASTRAKI_LIMITED,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
+            clientPage.waitSpinnerDisappeared();
             log("@Step 3: Open Summary popup of agent of the player");
             ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
+            popup.waitSpinnerDisappeared();
             log("@Verify the balance is deducted from the Client account properly");
             expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
-            actualRecPayVal = popup.getSummaryCellValue(CLIENT_CREDIT_ACC,popup.colRecPay).replace(",","");
+            actualRecPayVal = popup.getSummaryCellValue(CLIENT_CREDIT_ACC,popup.tblSummary.getColumnIndexByName("Rec/Pay/CA/RB/Adj")).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Client Debit balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
         } finally {
             log("@Post-condition: Add transaction for the Client account into Credit");

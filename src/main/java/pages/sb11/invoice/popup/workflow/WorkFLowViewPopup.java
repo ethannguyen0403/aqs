@@ -33,7 +33,7 @@ public class WorkFLowViewPopup extends WorkflowSettingsPage {
 
     public void closePopup() {
         btnClose.click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
     }
 
     public int getInvoiceRowIndex(String invoiceName) {

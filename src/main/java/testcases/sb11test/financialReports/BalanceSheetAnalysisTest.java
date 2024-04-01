@@ -50,7 +50,12 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
         log("@Step 4: Click to export excel button");
         balanceAnalysisPage.btnExportExcel.click();
-        welcomePage.waitSpinnerDisappeared();
+        //wait for computer download file
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         try {
             log("@Verify 1: Validate excel file was downloaded successfully");
             Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! Excel file was not downloaded successfully");

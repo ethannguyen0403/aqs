@@ -62,11 +62,11 @@ public class CricketBetEntryPage extends BetEntryPage {
      */
     public void showLeague(String companyUnit, String date, String league){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
+        waitSpinnerDisappeared();
         if(!date.isEmpty()){
             dtpDate.selectDate(date,"dd/MM/yyyy");
             waitSpinnerDisappeared();
         }
-        waitSpinnerDisappeared();
         BaseElement ddpLeagueBox = new TextBox(ddpLeague.getLocator());
         ddpLeagueBox.doubleClick();
         waitSpinnerDisappeared();

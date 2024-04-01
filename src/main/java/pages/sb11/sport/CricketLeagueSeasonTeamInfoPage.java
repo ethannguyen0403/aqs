@@ -37,6 +37,7 @@ public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
 
     public void goToCricket(){
         ddGoTo.selectByVisibleText("Cricket");
+        waitSpinnerDisappeared();
     }
 
     public CreateCricketLeaguePopup openAddLeaguePopup(){
@@ -63,6 +64,7 @@ public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
 
     public void filterLeague(String typeLeague, String countryLeague, String leagueName){
         ddTypeLeague.selectByVisibleText(typeLeague);
+        waitSpinnerDisappeared();
         ddCountryLeague.selectByVisibleText(countryLeague);
         txtLeagueName.sendKeys(leagueName);
         btnSearchLeague.click();

@@ -133,6 +133,7 @@ public class InvoicesPage extends WelcomePage {
 
     public ActionInvoicePopup actionInvoice(String invoiceName) {
         int invoiceRowIndex = getInvoiceRowIndex(invoiceName);
+        waitSpinnerDisappeared();
         return actionInvoice(invoiceRowIndex);
     }
 
