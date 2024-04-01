@@ -124,6 +124,7 @@ public class CricketBetEntryPage extends BetEntryPage {
         int colIndex = defineColumn(order.getMarketType(), selection);
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
         waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
         return new CricketBetSlipPopup();
 
     }
