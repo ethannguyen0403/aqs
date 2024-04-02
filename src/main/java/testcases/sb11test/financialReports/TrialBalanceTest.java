@@ -114,32 +114,22 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("Pre-condition 1: Having some txn with detail type = Asset");
         String parentDebit = "500.000.000.000 - QA Ledger Group Asset";
         String ledgerAccNega = "050.000.000.001 - AutoAssetCreditNega";
+        String ledgerAccName = "AutoAssetCreditNega";
+        String ledgerAccNumber = "050.000.000.001";
         String ledgerGroupNega = "QA Ledger Auto Asset";
         String ledgerNega = "500.000.000.001 - QA Ledger Auto Asset";
         String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-        String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
-        String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
-        String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(ledgerAccNega,true);
-        String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(ledgerAccNega,true);
 
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(ledgerAccName).ledgerCreditNumber(ledgerAccNumber)
+                .ledgerDebit(LEDGER_ASSET_DEBIT_NAME).ledgerDebitNumber(LEDGER_ASSET_DEBIT_NUMBER)
                 .amountDebit(5).amountCredit(5)
                 .remark(desc)
                 .transDate(currentDate)
                 .transType(transType).build();
 
-        String ledgerDebitGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
-        String parentDebitId = ChartOfAccountUtils.getParentId(ledgerDebitGroupId, LEDGER_GROUP_NAME_ASSET);
-        String ledgerType = ChartOfAccountUtils.getLedgerType(parentDebitId,ledgerDebitAccountName);
-        String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentDebitId,ledgerDebitAccountName);
-
-        String ledgerCreditGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNega);
-        String parentCreditId = ChartOfAccountUtils.getParentId(ledgerCreditGroupId, ledgerGroupNega);
-        String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentCreditId,ledgerCreditAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_ASSET,ledgerGroupNega,LEDGER_PARENT_NAME_ASSET,ledgerGroupNega,"");
             log("Pre-condition 2: Get value of debit/credit that will display in trial balance");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             String fromDate = DateUtils.getFirstDateOfMonth(DateUtils.getYear(GMT_7),currentMonth,"dd/MM/yyyy");
@@ -161,13 +151,13 @@ public class TrialBalanceTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName).ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountNumber).ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_ASSET_DEBIT_NAME).ledgerCreditNumber(LEDGER_ASSET_DEBIT_NUMBER)
+                    .ledgerDebit(ledgerAccName).ledgerDebitNumber(ledgerAccNumber)
                     .amountDebit(5).amountCredit(5)
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",ledgerGroupNega,LEDGER_GROUP_NAME_ASSET,ledgerGroupNega,LEDGER_PARENT_NAME_ASSET,"");
             log("INFO: Executed completely");
         }
     }
@@ -178,33 +168,22 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("Pre-condition 1: Having some txn with detail type = Expenditure");
         String parentDebit = "100.000.000.000 - QA Ledger Group Expenditure";
         String ledgerAccNega = "050.000.000.011 - AutoExpenditureCreditNega";
+        String ledgerAccNegaName = "AutoExpenditureCreditNega";
+        String ledgerAccNegaNum = "050.000.000.011";
         String ledgerGroupNega = "QA Ledger Auto Expenditure";
         String ledgerNega = "100.000.000.001 - QA Ledger Auto Expenditure";
 
         String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-        String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_DEBIT_ACC,true);
-        String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_DEBIT_ACC,true);
-        String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(ledgerAccNega,true);
-        String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(ledgerAccNega,true);
-
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(ledgerAccNegaName).ledgerCreditNumber(ledgerAccNegaNum)
+                .ledgerDebit(LEDGER_EXPENDITURE_DEBIT_NAME).ledgerDebitNumber(LEDGER_EXPENDITURE_DEBIT_NUMBER)
                 .amountDebit(5).amountCredit(5)
                 .remark(desc)
                 .transDate(currentDate)
                 .transType(transType).build();
 
-        String ledgerDebitGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_EXPENDITURE);
-        String parentDebitId = ChartOfAccountUtils.getParentId(ledgerDebitGroupId, LEDGER_GROUP_NAME_EXPENDITURE);
-        String ledgerType = ChartOfAccountUtils.getLedgerType(parentDebitId,ledgerDebitAccountName);
-        String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentDebitId,ledgerDebitAccountName);
-
-        String ledgerCreditGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNega);
-        String parentCreditId = ChartOfAccountUtils.getParentId(ledgerCreditGroupId, ledgerGroupNega);
-        String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentCreditId,ledgerCreditAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,ledgerGroupNega,LEDGER_PARENT_NAME_EXPENDITURE,ledgerGroupNega,"");
             log("Pre-condition 2: Get value of debit/credit that will display in trial balance");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             String fromDate = DateUtils.getFirstDateOfMonth(DateUtils.getYear(GMT_7),currentMonth,"dd/MM/yyyy");
@@ -226,13 +205,13 @@ public class TrialBalanceTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName).ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountNumber).ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_EXPENDITURE_DEBIT_NAME).ledgerCreditNumber(LEDGER_EXPENDITURE_DEBIT_NUMBER)
+                    .ledgerDebit(ledgerAccNegaName).ledgerDebitNumber(ledgerAccNegaNum)
                     .amountDebit(5).amountCredit(5)
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",ledgerGroupNega,LEDGER_GROUP_NAME_EXPENDITURE,ledgerGroupNega,LEDGER_PARENT_NAME_EXPENDITURE,"");
             log("INFO: Executed completely");
         }
     }
@@ -243,33 +222,21 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("Pre-condition 1: Having some txn with detail type = Liability");
         String parentDebit = "400.000.000.000 - QA Ledger Group Liability";
         String ledgerAccNega = "040.000.000.011 - AutoLiabilityCreditNega";
+        String ledgerAccNegaName = "AutoLiabilityCreditNega";
+        String ledgerAccNegaNum = "040.000.000.011";
         String ledgerGroupNega = "QA Ledger Auto Liability";
         String ledgerNega = "400.000.000.001 - QA Ledger Auto Liability";
-
         String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-        String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_DEBIT_ACC,true);
-        String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_DEBIT_ACC,true);
-        String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(ledgerAccNega,true);
-        String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(ledgerAccNega,true);
 
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(ledgerAccNegaName).ledgerCreditNumber(ledgerAccNegaNum)
+                .ledgerDebit(LEDGER_LIABILITY_DEBIT_NAME).ledgerDebitNumber(LEDGER_LIABILITY_DEBIT_NUMBER)
                 .amountDebit(5).amountCredit(5)
                 .remark(desc)
                 .transDate(currentDate)
                 .transType(transType).build();
-
-        String ledgerDebitGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_LIABILITY);
-        String parentDebitId = ChartOfAccountUtils.getParentId(ledgerDebitGroupId, LEDGER_GROUP_NAME_LIABILITY);
-        String ledgerType = ChartOfAccountUtils.getLedgerType(parentDebitId,ledgerDebitAccountName);
-        String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentDebitId,ledgerDebitAccountName);
-
-        String ledgerCreditGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNega);
-        String parentCreditId = ChartOfAccountUtils.getParentId(ledgerCreditGroupId, ledgerGroupNega);
-        String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentCreditId,ledgerCreditAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_LIABILITY,ledgerGroupNega,LEDGER_PARENT_NAME_LIABILITY,ledgerGroupNega,"");
             log("Pre-condition 2: Get value of debit/credit that will display in trial balance");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             String fromDate = DateUtils.getFirstDateOfMonth(DateUtils.getYear(GMT_7),currentMonth,"dd/MM/yyyy");
@@ -291,13 +258,13 @@ public class TrialBalanceTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName).ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountNumber).ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_LIABILITY_DEBIT_NAME).ledgerCreditNumber(LEDGER_LIABILITY_DEBIT_NUMBER)
+                    .ledgerDebit(ledgerAccNegaName).ledgerDebitNumber(ledgerAccNegaNum)
                     .amountDebit(5).amountCredit(5)
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",ledgerGroupNega,LEDGER_GROUP_NAME_LIABILITY,ledgerGroupNega,LEDGER_PARENT_NAME_LIABILITY,"");
             log("INFO: Executed completely");
         }
     }
@@ -308,33 +275,23 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("Pre-condition 1: Having some txn with detail type = Capital");
         String parentDebit = "300.000.000.000 - QA Ledger Group Capital";
         String ledgerAccNega = "030.000.000.011 - AutoCapitalCreditNega";
+        String ledgerAccNegaName = "AutoCapitalCreditNega";
+        String ledgerAccNegaNum = "030.000.000.011";
         String ledgerGroupNega = "QA Ledger Auto Capital";
         String ledgerNega = "300.000.000.001 - QA Ledger Auto Capital";
 
         String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-        String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_CREDIT_ACC,true);
-        String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_CREDIT_ACC,true);
-        String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(ledgerAccNega,true);
-        String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(ledgerAccNega,true);
 
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerDebitAccountName).ledgerCreditNumber(ledgerDebitAccountNumber)
-                .ledgerDebit(ledgerCreditAccountName).ledgerDebitNumber(ledgerCreditAccountNumber)
+                .ledgerCredit(LEDGER_CAPITAL_CREDIT_NAME).ledgerCreditNumber(LEDGER_CAPITAL_CREDIT_NUMBER)
+                .ledgerDebit(ledgerAccNegaName).ledgerDebitNumber(ledgerAccNegaNum)
                 .amountDebit(5).amountCredit(5)
                 .remark(desc)
                 .transDate(currentDate)
                 .transType(transType).build();
 
-        String ledgerDebitGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_CAPITAL);
-        String parentDebitId = ChartOfAccountUtils.getParentId(ledgerDebitGroupId, LEDGER_GROUP_NAME_CAPITAL);
-        String ledgerType = ChartOfAccountUtils.getLedgerType(parentDebitId,ledgerDebitAccountName);
-        String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentDebitId,ledgerDebitAccountName);
-
-        String ledgerCreditGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNega);
-        String parentCreditId = ChartOfAccountUtils.getParentId(ledgerCreditGroupId, ledgerGroupNega);
-        String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentCreditId,ledgerCreditAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transaction,"Ledger",ledgerGroupNega,LEDGER_GROUP_NAME_CAPITAL,ledgerGroupNega,LEDGER_PARENT_NAME_CAPITAL,"");
             log("Pre-condition 2: Get value of debit/credit that will display in trial balance");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             String fromDate = DateUtils.getFirstDateOfMonth(DateUtils.getYear(GMT_7),currentMonth,"dd/MM/yyyy");
@@ -356,13 +313,13 @@ public class TrialBalanceTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
-                    .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                    .ledgerCredit(ledgerAccNegaName).ledgerCreditNumber(ledgerAccNegaNum)
+                    .ledgerDebit(LEDGER_CAPITAL_CREDIT_NAME).ledgerDebitNumber(LEDGER_CAPITAL_CREDIT_NUMBER)
                     .amountDebit(5).amountCredit(5)
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_CAPITAL,ledgerGroupNega,LEDGER_PARENT_NAME_CAPITAL,ledgerGroupNega,"");
             log("INFO: Executed completely");
         }
     }
@@ -373,33 +330,21 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("Pre-condition 1: Having some txn with detail type = Income");
         String parentDebit = "000.000.001.000 - QA Ledger Group Income";
         String ledgerAccNega = "002.000.000.011 - AutoIncomeCreditNega";
+        String ledgerAccNegaName = "AutoIncomeCreditNega";
+        String ledgerAccNegaNum = "002.000.000.011";
         String ledgerGroupNega = "QA Ledger Auto Income";
         String ledgerNega = "000.000.001.001 - QA Ledger Auto Income";
-
         String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-        String ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_DEBIT_ACC,true);
-        String ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_DEBIT_ACC,true);
-        String ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(ledgerAccNega,true);
-        String ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(ledgerAccNega,true);
 
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName).ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName).ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(ledgerAccNegaName).ledgerCreditNumber(ledgerAccNegaNum)
+                .ledgerDebit(LEDGER_INCOME_DEBIT_NAME).ledgerDebitNumber(LEDGER_INCOME_DEBIT_NUMBER)
                 .amountDebit(5).amountCredit(5)
                 .remark(desc)
                 .transDate(currentDate)
                 .transType(transType).build();
-
-        String ledgerDebitGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_INCOME);
-        String parentDebitId = ChartOfAccountUtils.getParentId(ledgerDebitGroupId, LEDGER_GROUP_NAME_INCOME);
-        String ledgerType = ChartOfAccountUtils.getLedgerType(parentDebitId,ledgerDebitAccountName);
-        String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentDebitId,ledgerDebitAccountName);
-
-        String ledgerCreditGroupId = ChartOfAccountUtils.getLedgerGroupId(ledgerGroupNega);
-        String parentCreditId = ChartOfAccountUtils.getParentId(ledgerCreditGroupId, ledgerGroupNega);
-        String ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentCreditId,ledgerCreditAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_INCOME,ledgerGroupNega,LEDGER_PARENT_NAME_INCOME,ledgerGroupNega,"");
             log("Pre-condition 2: Get value of debit/credit that will display in trial balance");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             String fromDate = DateUtils.getFirstDateOfMonth(DateUtils.getYear(GMT_7),currentMonth,"dd/MM/yyyy");
@@ -421,13 +366,13 @@ public class TrialBalanceTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName).ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountNumber).ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_INCOME_DEBIT_NAME).ledgerCreditNumber(LEDGER_INCOME_DEBIT_NUMBER)
+                    .ledgerDebit(ledgerAccNegaName).ledgerDebitNumber(ledgerAccNegaNum)
                     .amountDebit(5).amountCredit(5)
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",ledgerGroupNega,LEDGER_GROUP_NAME_INCOME,ledgerGroupNega,LEDGER_PARENT_NAME_INCOME,"");
             log("INFO: Executed completely");
         }
     }
