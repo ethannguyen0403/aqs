@@ -174,11 +174,11 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         Assert.assertTrue(retainedEarningsPage.isAmountNumberCorrectFormat(amountNetProfit), "FAILED! Amount number Net Profit is not correct format");
         Assert.assertTrue(retainedEarningsPage.isAmountNumberCorrectFormat(amountDividend), "FAILED! Amount number Dividend is not correct format");
         log("@Post-condition: delete download file");
-        try {
-            FileUtils.removeFile(downloadPath);
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
+        // try {
+        //     FileUtils.removeFile(downloadPath);
+        // } catch (IOException e) {
+        //     log(e.getMessage());
+        // }
         log("INFO: Executed completely");
     }
 
@@ -198,11 +198,11 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("@Verify 1: Validate can export Retained Earnings to PDF file successfully'");
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
         log("@Post-condition: delete download file");
-        try {
-            FileUtils.removeFile(downloadPath);
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
+        // try {
+        //     FileUtils.removeFile(downloadPath);
+        // } catch (IOException e) {
+        //     log(e.getMessage());
+        // }
         log("INFO: Executed completely");
     }
 

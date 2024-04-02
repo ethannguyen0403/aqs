@@ -243,12 +243,12 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
         log("@Verify 2: Validate value in Excel report is correct'");
         page.checkValueCompareExcel(downloadPath);
-        try {
-            FileUtils.removeFile(downloadPath);
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
-        log("INFO: Executed completely");
+        // try {
+        //     FileUtils.removeFile(downloadPath);
+        // } catch (IOException e) {
+        //     log(e.getMessage());
+        // }
+        // log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "2794")
@@ -267,12 +267,12 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Verify 1: Validate can export Retained Earnings to PDF file successfully'");
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
         log("@Post-condition: delete download file");
-        try {
-            FileUtils.removeFile(downloadPath);
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
-        log("INFO: Executed completely");
+        // try {
+        //     FileUtils.removeFile(downloadPath);
+        // } catch (IOException e) {
+        //     log(e.getMessage());
+        // }
+        // log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.2.0"})
     @TestRails(id = "16195")

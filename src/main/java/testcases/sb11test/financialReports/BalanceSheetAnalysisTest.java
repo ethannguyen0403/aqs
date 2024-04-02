@@ -62,7 +62,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         }finally {
             log("@Post-condition: delete download file");
-            FileUtils.removeFile(downloadPath);
+            // FileUtils.removeFile(downloadPath);
         }
     }
 
@@ -208,7 +208,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         }finally {
             log("@Post-condition: delete download file");
-            FileUtils.removeFile(downloadPath);
+            // FileUtils.removeFile(downloadPath);
         }
     }
     @Test(groups = {"regression", "2024.V.2.0","ethan"})

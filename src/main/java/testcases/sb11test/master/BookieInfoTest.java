@@ -81,11 +81,11 @@ public class BookieInfoTest extends BaseCaseAQS {
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
 
         log("@Post-condition: delete download file");
-        try {
-            FileUtils.removeFile(downloadPath);
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
+        // try {
+        //     FileUtils.removeFile(downloadPath);
+        // } catch (IOException e) {
+        //     log(e.getMessage());
+        // }
         log("INFO: Executed completely");
     }
 

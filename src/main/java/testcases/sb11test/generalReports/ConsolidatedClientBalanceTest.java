@@ -101,12 +101,12 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("@Step 4: Open exported file");
         log("@Verify 2: The correct data should display and should have format 'comma' for thousand number");
         page.checkExcelData(downloadPath);
-        try {
-            FileUtils.removeFile(downloadPath);
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
-        log("INFO: Executed completely");
+        // try {
+        //     FileUtils.removeFile(downloadPath);
+        // } catch (IOException e) {
+        //     log(e.getMessage());
+        // }
+        // log("INFO: Executed completely");
     }
     @TestRails(id="5285")
     @Test(groups = {"regression","2023.12.29"})
@@ -123,12 +123,12 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         page.waitSpinnerDisappeared();
         log("@Verify 1: Excel file is exported and downloaded to user's device properly");
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
-        try {
-            FileUtils.removeFile(downloadPath);
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
-        log("INFO: Executed completely");
+        // try {
+        //     FileUtils.removeFile(downloadPath);
+        // } catch (IOException e) {
+        //     log(e.getMessage());
+        // }
+        // log("INFO: Executed completely");
     }
     @TestRails(id="5286")
     @Parameters({"clientCode"})
