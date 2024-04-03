@@ -93,6 +93,7 @@ public class TrialBalancePage extends WelcomePage {
     public void verifyTotalBalance(int colIndex, boolean currentMonth, boolean debit) {
         double sumAc = getSumValueOfCol(colIndex);
         double sumEx = getTotalBalance(currentMonth,debit);
+        //BA accept difference 0.02
         Assert.assertEquals(sumAc,sumEx,0.02,"FAILED!"+sumEx+" difference from "+sumAc);
     }
     public void verifyDifferenceValue(boolean currentMonth){
@@ -103,6 +104,7 @@ public class TrialBalancePage extends WelcomePage {
         } else {
             colIndex = 1;
         }
+        //BA accept difference 0.01
         double difEx = getDifferenceValue(colIndex);
         Assert.assertEquals(difAc,difEx,0.01,"FAILED!"+difEx+" difference from "+difAc);
     }

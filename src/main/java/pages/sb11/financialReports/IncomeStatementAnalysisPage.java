@@ -290,6 +290,7 @@ public class IncomeStatementAnalysisPage extends WelcomePage {
         double amountNonIncome = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Non-Operating Income")).replace(",","")));
         double amountNetProfitAc = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getNetProfitLoss(lblYear).replace(",","")));
         double amountNetProfitEx = DoubleUtils.roundUpWithTwoPlaces(amountIncome - amountExpense + amountNonIncome);
+        //BA accept difference 0.01
         Assert.assertEquals(amountNetProfitAc,amountNetProfitEx,0.01,"FAILED!"+amountNetProfitEx+" difference from "+amountNetProfitAc);
     }
 }

@@ -239,6 +239,7 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
                 System.out.println("Input wrongly month value!");
         }
         double difAc = getDifTotalBalance("Difference",indexCol);
+        //BA accept difference 0.01
         Assert.assertEquals(difAc,difEx,0.011,"FAILED!"+difEx+" difference from "+difAc);
     }
 
@@ -280,6 +281,7 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
         }
         double sumPreDeEx = BalanceSheetAnalysisUtils.getSumCreDe(accountTypeName,totalType,year,monthEx,false);
         String valueAc = getTotalOfAccountType(accountTypeName,month,isDebit);
+        //BA accept difference 0.01
         Assert.assertEquals(Double.valueOf(valueAc),sumPreDeEx,0.01,"FAILED!"+sumPreDeEx+" difference from "+valueAc);
     }
 
@@ -294,6 +296,7 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
         Double capitalValue = Double.valueOf(getTotalOfAccountType("Capital", month,isDebit));
         double totalBalanceEx = DoubleUtils.roundUpWithTwoPlaces(assetValue + liabilityValue + capitalValue);
         double totalBalanceAc = Double.valueOf(getTotalOfAccountType("Total Balance", month,isDebit));
+        //BA accept difference 0.01
         Assert.assertEquals(totalBalanceAc,totalBalanceEx,0.01,"FAILED!"+totalBalanceEx+" difference from "+totalBalanceAc);
     }
 }
