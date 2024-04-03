@@ -3,13 +3,17 @@ package pages.sb11.financialReports;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
+import com.paltech.utils.DateUtils;
 import com.paltech.utils.DoubleUtils;
 import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import utils.sb11.BalanceSheetAnalysisUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static common.SBPConstants.GMT_7;
 
 public class BalanceSheetAnalysisPage extends WelcomePage {
     DropDownBox ddbCompany = DropDownBox.xpath("//div[contains(text(),'Company')]/following::select[1]");
@@ -256,10 +260,47 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
         return false;
     }
 
-    public boolean isSumColumnDeCreDisplay(String accountTypeName, String month, boolean isDebit, double valueEx) {
+    /**
+     *
+     * @param accountTypeName
+     * @param month input previous, current, txns
+     * @param isDebit
+     * @return
+     */
+    public boolean isSumColumnDeCreDisplay(String accountTypeName, String month, boolean isDebit) {
+        int year = DateUtils.getYear(GMT_7);
+        int monthEx = DateUtils.getMonth(GMT_7);
+        //totalDebit, totalCredit, totalDebitPrevMonth, totalCreditPrevMonth, totalDifDebit, totalDifCredit
+        String totalType = null;
+        switch (month){
+            case "previous":
+                if (isDebit){
+                    totalType = "totalDebitPrevMonth";
+                } else {
+                    totalType = "totalCreditPrevMonth";
+                }
+                break;
+            case "current":
+                if (isDebit){
+                    totalType = "totalDebit";
+                } else {
+                    totalType = "totalCredit";
+                }
+                break;
+            case "txns":
+                if (isDebit){
+                    totalType = "totalDifDebit";
+                } else {
+                    totalType = "totalDifCredit";
+                }
+                break;
+            default:
+                System.err.println("Input wrongly month");
+        }
+        double sumPreDeEx = BalanceSheetAnalysisUtils.getSumCreDe(accountTypeName,totalType,year,monthEx,false);
         String valueAc = getTotalOfAccountType(accountTypeName,month,isDebit);
-        double total1 = DoubleUtils.roundEvenWithTwoPlaces(Double.valueOf(valueAc) - valueEx);
-        double total2 = DoubleUtils.roundEvenWithTwoPlaces(valueEx - Double.valueOf(valueAc));
+        double total1 = DoubleUtils.roundEvenWithTwoPlaces(Double.valueOf(valueAc) - sumPreDeEx);
+        double total2 = DoubleUtils.roundEvenWithTwoPlaces(sumPreDeEx - Double.valueOf(valueAc));
         if (total1 <= 0.02 && total1 >= 0 || total2 <= 0.02 && total2 >= 0){
             return true;
         }
