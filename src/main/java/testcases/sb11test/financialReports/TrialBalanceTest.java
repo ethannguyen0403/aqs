@@ -385,7 +385,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("@Step 2: Filter with Month that is having data");
         page.filter(KASTRAKI_LIMITED,"","","");
         log("@Verify 1: Total amounts = sum up all the absolute values of debit amounts in each column");
-        Assert.assertTrue(page.verifyTotalBalance(page.colDeCurrentMonth,true,true),"FAILED! Current Month Sum Debit displays incorrect");
+        page.verifyTotalBalance(page.colDeCurrentMonth,true,true);
         log("INFO: Executed completely");
     }
     @TestRails(id = "21838")
@@ -397,7 +397,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("@Step 2: Filter with Month that is having data");
         page.filter(KASTRAKI_LIMITED,"","","");
         log("@Verify 1: Total amounts = sum up all the absolute values of credit amounts in each column");
-        Assert.assertTrue(page.verifyTotalBalance(page.colCreCurrentMonth,true,false),"FAILED! Current Month Sum Credit displays incorrect");
+        page.verifyTotalBalance(page.colCreCurrentMonth,true,false);
         log("INFO: Executed completely");
     }
     @TestRails(id = "21839")
@@ -409,7 +409,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("@Step 2: Filter with Month that is having data");
         page.filter(KASTRAKI_LIMITED,"","","");
         log("@Verify 1: Difference = Total Debit - Total Credit");
-        Assert.assertTrue(page.verifyDifferenceValue(true),"FAILED! Current Month Sum Credit displays incorrect");
+        page.verifyDifferenceValue(true);
         log("INFO: Executed completely");
     }
 }

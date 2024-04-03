@@ -5,6 +5,7 @@ import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.utils.DoubleUtils;
 import controls.Table;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
 
 import java.math.BigDecimal;
@@ -89,17 +90,12 @@ public class TrialBalancePage extends WelcomePage {
         return Double.valueOf(Label.xpath(String.format(differenceXpath,indexDif)).getText().trim().replace(",",""));
     }
 
-    public boolean verifyTotalBalance(int colIndex, boolean currentMonth, boolean debit) {
+    public void verifyTotalBalance(int colIndex, boolean currentMonth, boolean debit) {
         double sumAc = getSumValueOfCol(colIndex);
         double sumEx = getTotalBalance(currentMonth,debit);
-        if (sumAc==sumEx){
-            return true;
-        } else if (DoubleUtils.roundWithTwoPlaces(RoundingMode.HALF_EVEN,sumAc-sumEx) >= 0.01 || DoubleUtils.roundWithTwoPlaces(RoundingMode.HALF_EVEN,sumEx-sumAc) == 0.01){
-            return true;
-        }
-        return false;
+        Assert.assertEquals(sumAc,sumEx,0.02,"FAILED!"+sumEx+" difference from "+sumAc);
     }
-    public boolean verifyDifferenceValue(boolean currentMonth){
+    public void verifyDifferenceValue(boolean currentMonth){
         double difAc = Math.abs(DoubleUtils.roundUpWithTwoPlaces(getTotalBalance(currentMonth,true) - getTotalBalance(currentMonth,false)));
         int colIndex;
         if (currentMonth){
@@ -108,11 +104,6 @@ public class TrialBalancePage extends WelcomePage {
             colIndex = 1;
         }
         double difEx = getDifferenceValue(colIndex);
-        if (difAc==difEx){
-            return true;
-        } else if (DoubleUtils.roundWithTwoPlaces(RoundingMode.HALF_EVEN,difAc-difEx) >= 0.01 || DoubleUtils.roundWithTwoPlaces(RoundingMode.HALF_EVEN,difEx-difAc) == 0.01){
-            return true;
-        }
-        return false;
+        Assert.assertEquals(difAc,difEx,0.01,"FAILED!"+difEx+" difference from "+difAc);
     }
 }
