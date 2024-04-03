@@ -327,7 +327,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
             incomeAnaPage.verifyExcelDataInCommaFormat(excelData, lblYear);
         }finally {
             log("@Post-condition: delete download file");
-            FileUtils.removeFile(downloadPath);
+            // FileUtils.removeFile(downloadPath);
         }
         log("INFO: Executed completely");
     }
@@ -355,7 +355,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
             Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! PDF file was not downloaded successfully");
         }finally {
             log("@Post-condition: delete download file");
-            FileUtils.removeFile(downloadPath);
+            // FileUtils.removeFile(downloadPath);
         }
         log("INFO: Executed completely");
     }
