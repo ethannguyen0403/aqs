@@ -10,7 +10,6 @@ import pages.sb11.LoginPage;
 import pages.sb11.financialReports.BalanceSheetAnalysisPage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.BalanceSheetAnalysisUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
@@ -221,18 +220,12 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         page.filter(KASTRAKI_LIMITED, "", "", "Before CJE");
         log("@Step 3: Check Asset value");
         log("@Verify 1: The Asset value = sum up all absolute values of credit/debit amounts in each column");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Asset","previous",true),
-                "FAILED! Sum of Previous Debit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Asset","previous",false),
-                "FAILED! Sum of Previous Credit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Asset","current",true),
-                "FAILED! Sum of Current Debit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Asset","current",false),
-                "FAILED! Sum of Current Credit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Asset","txns",true),
-                "FAILED! Sum of Debit txns display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Asset","txns",false),
-                "FAILED! Sum of Credit txns display incorrect");
+        page.verifySumColumnDeCreDisplay("Asset","previous",true);
+        page.verifySumColumnDeCreDisplay("Asset","previous",false);
+        page.verifySumColumnDeCreDisplay("Asset","current",true);
+        page.verifySumColumnDeCreDisplay("Asset","current",false);
+        page.verifySumColumnDeCreDisplay("Asset","txns",true);
+        page.verifySumColumnDeCreDisplay("Asset","txns",false);
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression", "2024.V.2.0","ethan"})
@@ -245,21 +238,15 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         page.filter(KASTRAKI_LIMITED, "", "", "Before CJE");
         log("@Step 3: Check Liability value");
         log("@Verify 1: The Liability value = sum up all absolute values of credit/debit amounts in each column");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Liability","previous",true),
-                "FAILED! Sum of Previous Debit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Liability","previous",false),
-                "FAILED! Sum of Previous Credit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Liability","current",true),
-                "FAILED! Sum of Current Debit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Liability","current",false),
-                "FAILED! Sum of Current Credit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Liability","txns",true),
-                "FAILED! Sum of Debit txns display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Liability","txns",false),
-                "FAILED! Sum of Credit txns display incorrect");
+        page.verifySumColumnDeCreDisplay("Liability","previous",true);
+        page.verifySumColumnDeCreDisplay("Liability","previous",false);
+        page.verifySumColumnDeCreDisplay("Liability","current",true);
+        page.verifySumColumnDeCreDisplay("Liability","current",false);
+        page.verifySumColumnDeCreDisplay("Liability","txns",true);
+        page.verifySumColumnDeCreDisplay("Liability","txns",false);
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression1", "2024.V.2.0","ethan"})
+    @Test(groups = {"regression", "2024.V.2.0","ethan"})
     @TestRails(id = "21843")
     public void BalanceSheetAnalysisTC_21843(){
         log("@title: Validate the Capital value is sum up all absolute values of credit/debit amounts in each column");
@@ -269,18 +256,12 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         page.filter(KASTRAKI_LIMITED, "", "", "Before CJE");
         log("@Step 3: Check Capital value");
         log("@Verify 1: The Capital value = sum up all absolute values of credit/debit amounts in each column");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Capital","previous",true),
-                "FAILED! Sum of Previous Debit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Capital","previous",false),
-                "FAILED! Sum of Previous Credit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Capital","current",true),
-                "FAILED! Sum of Current Debit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Capital","current",false),
-                "FAILED! Sum of Current Credit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Capital","txns",true),
-                "FAILED! Sum of Debit txns display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Capital","txns",false),
-                "FAILED! Sum of Credit txns display incorrect");
+        page.verifySumColumnDeCreDisplay("Capital","previous",true);
+        page.verifySumColumnDeCreDisplay("Capital","previous",false);
+        page.verifySumColumnDeCreDisplay("Capital","current",true);
+        page.verifySumColumnDeCreDisplay("Capital","current",false);
+        page.verifySumColumnDeCreDisplay("Capital","txns",true);
+        page.verifySumColumnDeCreDisplay("Capital","txns",false);
         log("INFO: Executed completely");
     }
 }

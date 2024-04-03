@@ -267,7 +267,7 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
      * @param isDebit
      * @return
      */
-    public boolean isSumColumnDeCreDisplay(String accountTypeName, String month, boolean isDebit) {
+    public void verifySumColumnDeCreDisplay(String accountTypeName, String month, boolean isDebit) {
         int year = DateUtils.getYear(GMT_7);
         int monthEx = DateUtils.getMonth(GMT_7);
         //totalDebit, totalCredit, totalDebitPrevMonth, totalCreditPrevMonth, totalDifDebit, totalDifCredit
@@ -299,12 +299,7 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
         }
         double sumPreDeEx = BalanceSheetAnalysisUtils.getSumCreDe(accountTypeName,totalType,year,monthEx,false);
         String valueAc = getTotalOfAccountType(accountTypeName,month,isDebit);
-        double total1 = DoubleUtils.roundEvenWithTwoPlaces(Double.valueOf(valueAc) - sumPreDeEx);
-        double total2 = DoubleUtils.roundEvenWithTwoPlaces(sumPreDeEx - Double.valueOf(valueAc));
-        if (total1 <= 0.02 && total1 >= 0 || total2 <= 0.02 && total2 >= 0){
-            return true;
-        }
-        return false;
+        Assert.assertEquals(Double.valueOf(valueAc),sumPreDeEx,0.01,"FAILED!"+sumPreDeEx+" difference from "+valueAc);
     }
 
     /**
