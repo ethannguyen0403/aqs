@@ -157,12 +157,12 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Filter with month that has data > observe");
         page.filter(KASTRAKI_LIMITED, "", "", "");
         log("@Verify 1: Validate Total Balance row sums up correctly 3 amounts in 'Asset', 'Liability', 'Capital' rows of each columns");
-        Assert.assertTrue(page.isTotalBalanceDisplay("previous",true),"FAILED! Debit Value of Previous Month displays incorrect.");
-        Assert.assertTrue(page.isTotalBalanceDisplay("previous",false),"FAILED! Credit Value of Previous Month displays incorrect.");
-        Assert.assertTrue(page.isTotalBalanceDisplay("current",true),"FAILED! Debit Value of Current Month displays incorrect.");
-        Assert.assertTrue(page.isTotalBalanceDisplay("current",false),"FAILED! Credit Value of Current Month displays incorrect.");
-        Assert.assertTrue(page.isTotalBalanceDisplay("txns",true),"FAILED! Debit Value of Txn colums displays incorrect.");
-        Assert.assertTrue(page.isTotalBalanceDisplay("txns",false),"FAILED! Credit Value of Txn colums displays incorrect.");
+        page.verifyTotalBalanceDisplay("previous",true);
+        page.verifyTotalBalanceDisplay("previous",false);
+        page.verifyTotalBalanceDisplay("current",true);
+        page.verifyTotalBalanceDisplay("current",false);
+        page.verifyTotalBalanceDisplay("txns",true);
+        page.verifyTotalBalanceDisplay("txns",false);
         log("INFO: Executed completely");
     }
 
@@ -176,9 +176,9 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         page.filter(KASTRAKI_LIMITED, "", "", "");
         log("@Step 3: Check the Difference value");
         log("@Verify 1: Difference = absolute (Total Balance Debit) - absolute (Total Balance Credit)");
-        Assert.assertTrue(page.isDifferenceValueDisplay("previous"),"FAILED! Difference is not correct");
-        Assert.assertTrue(page.isDifferenceValueDisplay("current"),"FAILED! Difference is not correct");
-        Assert.assertTrue(page.isDifferenceValueDisplay("txns"),"FAILED! Difference is not correct");
+        page.verifyDifferenceValueDisplay("previous");
+        page.verifyDifferenceValueDisplay("current");
+        page.verifyDifferenceValueDisplay("txns");
         log("INFO: Executed completely");
     }
 
