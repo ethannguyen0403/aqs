@@ -257,7 +257,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="15751")
-    @Test(groups = {"regression","2023.11.30"})
+    @Test(groups = {"regression1","2023.11.30"})
     public void Journal_Entries_TC_15751() throws InterruptedException {
         String transType = "Payment Other";
         String creditExpAcc = "AutoExpenditureCredit - 010.000.000.000";
@@ -269,9 +269,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 1: Click Accounting >> Journal Entries menu");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 2: Input all valid data into Debit and Credit section");
-        String previousMonth = String.valueOf(DateUtils.getMonth(GMT_7)-1);
-        String txtMonth = Month.of(DateUtils.getMonth(GMT_7)-1).getDisplayName(TextStyle.FULL.FULL, Locale.CANADA);
-        String curYear = String.valueOf(DateUtils.getYear(GMT_7));
+        String date = journalEntriesPage.getDayOfMonth(15,-1,"MM/yyyy");
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit("AutoCreditExpenditure - 012.000.000.000")
                 .ledgerCredit(creditExpAcc)
@@ -280,7 +278,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descExpenditure)
-                .transDate("15/"+previousMonth+"/"+curYear)
+                .transDate(date)
                 .transType(transType)
                 .build();
         log("@Step 3: Select txn date on the last 3 months has CJE (e.g. 20/10/2023) and Transaction Type");
@@ -289,7 +287,8 @@ public class JournalEntriesTest extends BaseCaseAQS {
         ConfirmPopup confirmPopup = new ConfirmPopup();
         String actualMes = confirmPopup.getContentMessage();
         log("@Verify 1: A reminder as 'After submitting this transaction, you will need to perform Closing Journal Entries for <Month of the transaction date>. Please click on the 'Closing Journal Entries' link and perform.' will display");
-        Assert.assertEquals(actualMes,String.format(JournalEntries.MES_IF_TXN_IN_3_LAST_MONTH,curYear,txtMonth),"FAILED! A reminder display incorrect");
+        String txtMonth = Month.of(Integer.parseInt(date.split("/")[1])).getDisplayName(TextStyle.FULL.FULL, Locale.CANADA);
+        Assert.assertEquals(actualMes,String.format(JournalEntries.MES_IF_TXN_IN_3_LAST_MONTH,date.split("/")[2],txtMonth),"FAILED! A reminder display incorrect");
         log("INFO: Executed completely");
     }
     @TestRails(id="15752")
