@@ -80,25 +80,20 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("@pre-condition 1: 'A/R and A/P Reconciliation' permission is ON for any account");
         log("@pre-condition 2: Having some transaction of A/R and A/P Reconciliation for detail types");
         String ledgerDebit = "107.000.000.001 - Auto Other Receivables";
+        String ledgerName = "Auto Other Receivables";
+        String ledgerNumber = "107.000.000.001";
         String groupName = "Other Receivables";
         String desc = "Automation Testing Transaction " + DateUtils.getMilliSeconds();
         String currentDate = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7");
         double valueDebit= 2.00;
-        String ledgerAccountName = ChartOfAccountUtils.getAccountName(ledgerDebit,true);
-        String ledgerAccountNumber = ChartOfAccountUtils.getAccountNumber(ledgerDebit,true);
         Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerAccountName).ledgerCreditNumber(ledgerAccountNumber)
-                .ledgerDebit(ledgerAccountName).ledgerDebitNumber(ledgerAccountNumber)
+                .ledgerCredit(ledgerName).ledgerCreditNumber(ledgerNumber)
+                .ledgerDebit(ledgerName).ledgerDebitNumber(ledgerNumber)
                 .amountDebit(valueDebit).amountCredit(valueDebit)
                 .remark(desc)
                 .transDate(currentDate)
                 .transType("Payment Other").build();
-
-        String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(groupName);
-        String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, groupName);
-        String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerAccountName);
-        String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerAccountName);
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerDebitAccountId,ledgerType);
+        TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >> A/R and A/P Reconciliation");
         ARandAPReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(AR_AND_AP_RECONCILIATION, ARandAPReconciliationPage.class);
@@ -118,26 +113,21 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("@pre-condition 1: 'A/R and A/P Reconciliation' permission is ON for any account");
         log("@pre-condition 2: Having some transaction of A/R and A/P Reconciliation for detail types");
         String ledgerDebit = "107.000.000.001 - Auto Other Receivables";
+        String ledgerName = "Auto Other Receivables";
+        String ledgerNumber = "107.000.000.001";
         String groupName = "Other Receivables";
         String desc = "Automation Testing Transaction " + DateUtils.getMilliSeconds();
         String curEx = "HKD";
         String currentDate = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7");
         double valueDebit= 2.00;
-        String ledgerAccountName = ChartOfAccountUtils.getAccountName(ledgerDebit,true);
-        String ledgerAccountNumber = ChartOfAccountUtils.getAccountNumber(ledgerDebit,true);
         Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerAccountName).ledgerCreditNumber(ledgerAccountNumber)
-                .ledgerDebit(ledgerAccountName).ledgerDebitNumber(ledgerAccountNumber)
+                .ledgerCredit(ledgerName).ledgerCreditNumber(ledgerNumber)
+                .ledgerDebit(ledgerName).ledgerDebitNumber(ledgerNumber)
                 .amountDebit(valueDebit).amountCredit(valueDebit)
                 .remark(desc)
                 .transDate(currentDate)
                 .transType("Payment Other").build();
-
-        String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(groupName);
-        String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, groupName);
-        String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerAccountName);
-        String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerAccountName);
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerDebitAccountId,ledgerType);
+        TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >> A/R and A/P Reconciliation");
         ARandAPReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(AR_AND_AP_RECONCILIATION, ARandAPReconciliationPage.class);
@@ -157,25 +147,20 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("@pre-condition 1: 'A/R and A/P Reconciliation' permission is ON for any account");
         log("@pre-condition 2: Having some transaction of A/R and A/P Reconciliation for detail types");
         String ledgerDebit = "107.000.000.001 - Auto Other Receivables";
+        String ledgerName = "Auto Other Receivables";
+        String ledgerNumber = "107.000.000.001";
         String groupName = "Other Receivables";
         String desc = "Automation Testing Transaction " + DateUtils.getMilliSeconds();
         String currentDate = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7");
         double valueDebit= 2.00;
-        String ledgerAccountName = ChartOfAccountUtils.getAccountName(ledgerDebit,true);
-        String ledgerAccountNumber = ChartOfAccountUtils.getAccountNumber(ledgerDebit,true);
         Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerAccountName).ledgerCreditNumber(ledgerAccountNumber)
-                .ledgerDebit(ledgerAccountName).ledgerDebitNumber(ledgerAccountNumber)
+                .ledgerCredit(ledgerName).ledgerCreditNumber(ledgerNumber)
+                .ledgerDebit(ledgerName).ledgerDebitNumber(ledgerNumber)
                 .amountDebit(valueDebit).amountCredit(valueDebit)
                 .remark(desc)
                 .transDate(currentDate)
                 .transType("Payment Other").build();
-
-        String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(groupName);
-        String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, groupName);
-        String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerAccountName);
-        String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerAccountName);
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerDebitAccountId,ledgerType);
+        TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >> A/R and A/P Reconciliation");
         ARandAPReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(AR_AND_AP_RECONCILIATION, ARandAPReconciliationPage.class);
@@ -195,30 +180,25 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("@pre-condition 1: 'A/R and A/P Reconciliation' permission is ON for any account");
         log("@pre-condition 2: Having some transaction of A/R and A/P Reconciliation for detail types");
         String ledgerDebit = "203.000.000.001 - Auto Other Payable";
+        String ledgerName = "Auto Other Payable";
+        String ledgerNumber = "203.000.000.001";
         String groupName = "Other Payable";
         String desc = "Automation Testing Transaction " + DateUtils.getMilliSeconds();
         String currentDate = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7");
         double valueDebit= 2.00;
-        String ledgerAccountName = ChartOfAccountUtils.getAccountName(ledgerDebit,true);
-        String ledgerAccountNumber = ChartOfAccountUtils.getAccountNumber(ledgerDebit,true);
         Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerAccountName).ledgerCreditNumber(ledgerAccountNumber)
-                .ledgerDebit(ledgerAccountName).ledgerDebitNumber(ledgerAccountNumber)
+                .ledgerCredit(ledgerName).ledgerCreditNumber(ledgerNumber)
+                .ledgerDebit(ledgerName).ledgerDebitNumber(ledgerNumber)
                 .amountDebit(valueDebit).amountCredit(valueDebit)
                 .remark(desc)
                 .transDate(currentDate)
                 .transType("Payment Other").build();
-
-        String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(groupName);
-        String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, groupName);
-        String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerAccountName);
-        String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerAccountName);
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerDebitAccountId,ledgerType);
+        TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
         log("@Pre-condition 3: Get Running Bal in Ledger Statement");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         String detailType = "202.000.000.000 - Other Payable";
-        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"",ledgerType,detailType,transDate,transDate,"");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Liability",detailType,transDate,transDate,"");
         double runningBal = ledgerStatementPage.getValueAmount(ledgerDebit,ledgerStatementPage.colRunBalGBP);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >> A/R and A/P Reconciliation");
@@ -242,25 +222,20 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("@pre-condition 1: 'A/R and A/P Reconciliation' permission is ON for any account");
         log("@pre-condition 2: Having some transaction of A/R and A/P Reconciliation for detail types");
         String ledgerDebit = "107.000.000.001 - Auto Other Receivables";
+        String ledgerName = "Auto Other Receivables";
+        String ledgerNumber = "107.000.000.001";
         String groupName = "Other Receivables";
         String desc = "Automation Testing Transaction " + DateUtils.getMilliSeconds();
         String currentDate = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7");
         double valueDebit= 2.00;
-        String ledgerAccountName = ChartOfAccountUtils.getAccountName(ledgerDebit,true);
-        String ledgerAccountNumber = ChartOfAccountUtils.getAccountNumber(ledgerDebit,true);
         Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerAccountName).ledgerCreditNumber(ledgerAccountNumber)
-                .ledgerDebit(ledgerAccountName).ledgerDebitNumber(ledgerAccountNumber)
+                .ledgerCredit(ledgerName).ledgerCreditNumber(ledgerNumber)
+                .ledgerDebit(ledgerName).ledgerDebitNumber(ledgerNumber)
                 .amountDebit(valueDebit).amountCredit(valueDebit)
                 .remark(desc)
                 .transDate(currentDate)
                 .transType("Payment Other").build();
-
-        String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(groupName);
-        String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, groupName);
-        String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerAccountName);
-        String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerAccountName);
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerDebitAccountId,ledgerType);
+        TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >> A/R and A/P Reconciliation");
         ARandAPReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(AR_AND_AP_RECONCILIATION, ARandAPReconciliationPage.class);
@@ -282,25 +257,20 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("@pre-condition 1: 'A/R and A/P Reconciliation' permission is ON for any account");
         log("@pre-condition 2: Having some transaction of A/R and A/P Reconciliation for detail types");
         String ledgerDebit = "107.000.000.001 - Auto Other Receivables";
+        String ledgerName = "Auto Other Receivables";
+        String ledgerNumber = "107.000.000.001";
         String groupName = "Other Receivables";
         String desc = "Automation Testing Transaction " + DateUtils.getMilliSeconds();
         String currentDate = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7");
         double valueDebit= 2.00;
-        String ledgerAccountName = ChartOfAccountUtils.getAccountName(ledgerDebit,true);
-        String ledgerAccountNumber = ChartOfAccountUtils.getAccountNumber(ledgerDebit,true);
         Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerAccountName).ledgerCreditNumber(ledgerAccountNumber)
-                .ledgerDebit(ledgerAccountName).ledgerDebitNumber(ledgerAccountNumber)
+                .ledgerCredit(ledgerName).ledgerCreditNumber(ledgerNumber)
+                .ledgerDebit(ledgerName).ledgerDebitNumber(ledgerNumber)
                 .amountDebit(valueDebit).amountCredit(valueDebit)
                 .remark(desc)
                 .transDate(currentDate)
                 .transType("Payment Other").build();
-
-        String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(groupName);
-        String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, groupName);
-        String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerAccountName);
-        String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerAccountName);
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerDebitAccountId,ledgerType);
+        TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >> A/R and A/P Reconciliation");
         ARandAPReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(AR_AND_AP_RECONCILIATION, ARandAPReconciliationPage.class);
@@ -323,25 +293,20 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("@pre-condition 1: 'A/R and A/P Reconciliation' permission is ON for any account");
         log("@pre-condition 2: Having some transaction of A/R and A/P Reconciliation for detail types");
         String ledgerDebit = "107.000.000.001 - Auto Other Receivables";
+        String ledgerName = "Auto Other Receivables";
+        String ledgerNumber = "107.000.000.001";
         String groupName = "Other Receivables";
         String desc = "Automation Testing Transaction " + DateUtils.getMilliSeconds();
         String currentDate = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7");
         double valueDebit= 2.00;
-        String ledgerAccountName = ChartOfAccountUtils.getAccountName(ledgerDebit,true);
-        String ledgerAccountNumber = ChartOfAccountUtils.getAccountNumber(ledgerDebit,true);
         Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerAccountName).ledgerCreditNumber(ledgerAccountNumber)
-                .ledgerDebit(ledgerAccountName).ledgerDebitNumber(ledgerAccountNumber)
+                .ledgerCredit(ledgerName).ledgerCreditNumber(ledgerNumber)
+                .ledgerDebit(ledgerName).ledgerDebitNumber(ledgerNumber)
                 .amountDebit(valueDebit).amountCredit(valueDebit)
                 .remark(desc)
                 .transDate(currentDate)
                 .transType("Payment Other").build();
-
-        String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(groupName);
-        String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, groupName);
-        String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerAccountName);
-        String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerAccountName);
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerDebitAccountId,ledgerType);
+        TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >> A/R and A/P Reconciliation");
         ARandAPReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(AR_AND_AP_RECONCILIATION, ARandAPReconciliationPage.class);
@@ -364,25 +329,20 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("@pre-condition 1: 'A/R and A/P Reconciliation' permission is ON for any account");
         log("@pre-condition 2: Having some transaction of A/R and A/P Reconciliation for detail types");
         String ledgerDebit = "107.000.000.001 - Auto Other Receivables";
+        String ledgerName = "Auto Other Receivables";
+        String ledgerNumber = "107.000.000.001";
         String groupName = "Other Receivables";
         String desc = "Automation Testing Transaction " + DateUtils.getMilliSeconds();
         String currentDate = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7");
         double valueDebit= 2.00;
-        String ledgerAccountName = ChartOfAccountUtils.getAccountName(ledgerDebit,true);
-        String ledgerAccountNumber = ChartOfAccountUtils.getAccountNumber(ledgerDebit,true);
         Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerAccountName).ledgerCreditNumber(ledgerAccountNumber)
-                .ledgerDebit(ledgerAccountName).ledgerDebitNumber(ledgerAccountNumber)
+                .ledgerCredit(ledgerName).ledgerCreditNumber(ledgerNumber)
+                .ledgerDebit(ledgerName).ledgerDebitNumber(ledgerNumber)
                 .amountDebit(valueDebit).amountCredit(valueDebit)
                 .remark(desc)
                 .transDate(currentDate)
                 .transType("Payment Other").build();
-
-        String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(groupName);
-        String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, groupName);
-        String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerAccountName);
-        String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerAccountName);
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerDebitAccountId,ledgerType);
+        TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >> A/R and A/P Reconciliation");
         ARandAPReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(AR_AND_AP_RECONCILIATION, ARandAPReconciliationPage.class);
@@ -404,25 +364,20 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("@pre-condition 1: 'A/R and A/P Reconciliation' permission is ON for any account");
         log("@pre-condition 2: Having some transaction of A/R and A/P Reconciliation for detail types");
         String ledgerDebit = "107.000.000.001 - Auto Other Receivables";
+        String ledgerName = "Auto Other Receivables";
+        String ledgerNumber = "107.000.000.001";
         String groupName = "Other Receivables";
         String desc = "Automation Testing Transaction " + DateUtils.getMilliSeconds();
         String currentDate = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7");
         double valueDebit= 2.00;
-        String ledgerAccountName = ChartOfAccountUtils.getAccountName(ledgerDebit,true);
-        String ledgerAccountNumber = ChartOfAccountUtils.getAccountNumber(ledgerDebit,true);
         Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerAccountName).ledgerCreditNumber(ledgerAccountNumber)
-                .ledgerDebit(ledgerAccountName).ledgerDebitNumber(ledgerAccountNumber)
+                .ledgerCredit(ledgerName).ledgerCreditNumber(ledgerNumber)
+                .ledgerDebit(ledgerName).ledgerDebitNumber(ledgerNumber)
                 .amountDebit(valueDebit).amountCredit(valueDebit)
                 .remark(desc)
                 .transDate(currentDate)
                 .transType("Payment Other").build();
-
-        String ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(groupName);
-        String parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, groupName);
-        String ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerAccountName);
-        String ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerAccountName);
-        TransactionUtils.addLedgerTxn(transactionPost,ledgerDebitAccountId,ledgerDebitAccountId,ledgerType);
+        TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >> A/R and A/P Reconciliation");
         ARandAPReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(AR_AND_AP_RECONCILIATION, ARandAPReconciliationPage.class);
