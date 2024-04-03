@@ -1,7 +1,6 @@
 package testcases.sb11test.financialReports;
 
 import com.paltech.utils.DateUtils;
-import com.paltech.utils.DoubleUtils;
 import com.paltech.utils.FileUtils;
 import com.paltech.utils.StringUtils;
 import org.testng.Assert;
@@ -9,9 +8,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
 import pages.sb11.financialReports.IncomeStatementAnalysisPage;
-import pages.sb11.financialReports.TrialBalancePage;
 import pages.sb11.generalReports.LedgerStatementPage;
-import pages.sb11.role.RoleManagementPage;
 import testcases.BaseCaseAQS;
 import utils.ExcelUtils;
 import utils.testraildemo.TestRails;
@@ -291,7 +288,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Filter which have data");
         incomeAnaPage.filter(KASTRAKI_LIMITED, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
         log("@Verify 1: Net Profit (Loss) = Total Operating Income - Total Operating Expenses + Total Non-Operating Income");
-        Assert.assertTrue(incomeAnaPage.isValueNetProfitDisplay(month,year), "FAILED! Net Profit (Loss) is not correct");
+        incomeAnaPage.verifyValueNetProfitDisplay(month,year);
         log("@Verify 2: Validate the red amount will be treated as negative and the blue amount will be treated as Positive");
         incomeAnaPage.verifyAmountNetProfitColorIsCorrect(month,year);
         log("INFO: Executed completely");
