@@ -153,7 +153,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         } finally {
             log("@Post-condition: delete download file");
 
-            FileUtils.removeFile(dowloadPath);
+//            FileUtils.removeFile(dowloadPath);
         }
         log("INFO: Executed completely");
     }
