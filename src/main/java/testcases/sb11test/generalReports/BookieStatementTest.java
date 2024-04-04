@@ -93,7 +93,7 @@ public class BookieStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke","ethan"})
+    @Test(groups = {"smoke","ethan2.0"})
     @TestRails(id = "184")
     public void BookieStatementTC_184() throws IOException, InterruptedException {
         String bookieName = "QA Bookie";
@@ -122,10 +122,10 @@ public class BookieStatementTest extends BaseCaseAQS {
             bookieStatementPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR,"Super Master","","",bookieCode,"");
             log("@Step 4: Click on Super Master RPCRBA link");
             BookieSuperMasterDetailPopup bookiePopup = bookieStatementPage.openBookieSuperMasterDetailPopup(superMasterCode);
-            String rpcrbaVal = bookiePopup.getSuperMasterCellValue(bookiePopup.colRPCRBA, true);
+            String valueDebit = bookiePopup.getValueTransDetail(transaction.getRemark(),"Debit");
             log("Verify 1: Validate for Bookie Super account chosen in Debit section, value will show positive amount");
-            Assert.assertEquals(rpcrbaVal,String.format("%.2f",transaction.getAmountDebit()),"FAILED! Amount Debit and RPCRBA Value does not show in positive, Amount Debit:  " + transaction.getAmountDebit()
-                    + " RPCRBA: " + rpcrbaVal);
+            Assert.assertEquals(valueDebit,String.format("%.2f",transaction.getAmountDebit()),"FAILED! Amount Debit and RPCRBA Value does not show in positive, Amount Debit:  " + transaction.getAmountDebit()
+                    + " RPCRBA: " + valueDebit);
         } finally {
             log("Post-Condition: Add txn for Bookie Super in Credit");
             Transaction transactionPost = new Transaction.Builder()
