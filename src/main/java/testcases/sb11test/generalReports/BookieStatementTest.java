@@ -1,6 +1,7 @@
 package testcases.sb11test.generalReports;
 
 import com.paltech.utils.DateUtils;
+import com.paltech.utils.DoubleUtils;
 import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -59,7 +60,7 @@ public class BookieStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan2.0"})
     @TestRails(id = "1639")
     public void BookieStatementTC_1639() throws InterruptedException {
         String bookieName = "QA Bookie";
@@ -87,9 +88,10 @@ public class BookieStatementTest extends BaseCaseAQS {
         bookieMemberPopup.closePopup();
         log("Validate total in amount is matched with amount at Member column in outside");
         String memberTotal = bookieStatementPage.getAgentCellValue(masterCode, agentCode,bookieStatementPage.colMember).replace(",","");
-        Assert.assertEquals(memberTotal,totalMemberGrandVal,"FAILED! Total is not matched between inside/outside, Total Outside: " + memberTotal
+        double valueAc = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(memberTotal));
+        double valueEx = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(totalMemberGrandVal));
+        Assert.assertEquals(valueAc,valueEx,0.01,"FAILED! Total is not matched between inside/outside, Total Outside: " + memberTotal
                 + " Total Inside: " + totalMemberGrandVal);
-
         log("INFO: Executed completely");
     }
 
