@@ -1,6 +1,7 @@
 package testcases.sb11test.sport;
 
 import com.paltech.element.common.Label;
+import com.paltech.utils.DateUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.sb11.soccer.BBTPage;
@@ -79,13 +80,38 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","2024.V.3.0"})
     @TestRails(id = "2096")
     public void OpenPriceTC_2096(){
-        //TODO: implement this case
         log("@title: Validate updated Open Price is displayed correctly on BBT page");
-        log("Validate League list is displayed correctly");
-        Assert.assertTrue(false, "Need to implement this case");
+        String ft12HAHome = "1.00";
+        String ft12HAAway = "2.00";
+        String ft12Draw = "3.00";
+        String ftHDPHome = "0.25";
+        String ftHDPAway = "1.75";
+        String ftHDPPriceHome = "4.00";
+        String ftHDPPriceAway = "5.00";
+        String ftOUHDPHome = "0.75";
+        String ftOUHDPAway = "1.25";
+        String ftOUPriceHome = "6.00";
+        String ftOUPriceAway = "7.00";
+        log("@Step 1: Access Sport > Open Price");
+        OpenPricePage page = welcomePage.navigatePage(SPORT,OPEN_PRICE, OpenPricePage.class);
+        log("@Step 2: Select Date and click Show League");
+        log("@Step 3: Select a league and click Show");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        String league = page.showFirstLeague(date);
+        String homeTeamName = page.getFirstEvent().split("\n")[0];
+        String awayTeamName = page.getFirstEvent().split("\n")[1];
+        log("@Step 4: Fill result on any event and click Submit");
+        page.fillOpenPriceFirstEvent(ft12HAHome,ft12HAAway,ft12Draw,ftHDPHome,ftHDPAway,ftHDPPriceHome,ftHDPPriceAway,ftOUHDPHome,ftOUHDPAway,ftOUPriceHome,ftOUPriceAway,true);
+        log("@Step 5: Navigate to Soccer > BBT");
+        BBTPage bbtPage = welcomePage.navigatePage(SOCCER,BBT, BBTPage.class);
+        log("@Step 6: Filter with event at step 4");
+        bbtPage.filter("", "","","",date,date,"","","A-League Men");
+        log("Verify 1: Updated Open Price is displayed correctly on BBT page");
+        bbtPage.verifyOpenPriceDisplay("Newcastle Jets FC", ft12HAHome,ft12HAAway,ft12Draw,ftHDPHome,ftHDPAway,ftHDPPriceHome,ftHDPPriceAway,ftOUHDPHome,ftOUHDPAway,ftOUPriceHome,ftOUPriceAway,true);
+        bbtPage.verifyOpenPriceDisplay("Sydney FC", ft12HAHome,ft12HAAway,ft12Draw,ftHDPHome,ftHDPAway,ftHDPPriceHome,ftHDPPriceAway,ftOUHDPHome,ftOUHDPAway,ftOUPriceHome,ftOUPriceAway,false);
         log("INFO: Executed Completely!");
     }
 }
