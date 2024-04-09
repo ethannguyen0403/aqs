@@ -233,7 +233,7 @@ public class BetSettlementPage extends WelcomePage {
         Assert.assertEquals(selection,order.getSelection(), "Failed! Selection at row "+rowindex+" is incorrect");
 
         String expectedBetType = order.getMarketType();
-        String expectedHDP = hdp.startsWith("+") ? "+"+hdp : hdp;
+        String expectedHDP = hdp.startsWith("+") ? hdp : hdp;
         String hdpSign = order.isNegativeHdp() ? "-" : "";
         if(order.getEvent().getSportName().equalsIgnoreCase("Soccer")){
             if (order.getMarketType().contains(("1x2"))){

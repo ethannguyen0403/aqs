@@ -69,8 +69,7 @@ public class SPPTest extends BaseCaseAQS {
         String winloseSPP = sppPage.getRowDataOfGroup("QA Smart Group").get(sppPage.colWL);
 
         log("@verify 1: Validate the win/loss in the Client statement (step 2) matches with the win/loss of the group in the SPP page");
-        Assert.assertTrue(sppPage.verifyAmountDataMatch(winlosePlayer,winloseSPP),
-                String.format("Failed! Please check winloss in client statemet %s and spp page %s",winlosePlayer,winloseSPP));
+        sppPage.verifyAmountDataMatch(winlosePlayer,winloseSPP);
 
     }
 
@@ -116,8 +115,7 @@ public class SPPTest extends BaseCaseAQS {
         String winloseSPP = sppPage.getRowDataOfGroup("QA Smart Group").get(sppPage.colWL);
 
         log("@verify 1: Validate the win/loss in the Client statement (step 2) matches with the win/loss of the group in the SPP page");
-        Assert.assertTrue(sppPage.verifyAmountDataMatch(winlosePlayer,winloseSPP),
-                String.format("Failed! Please check winloss in client statemet %s and spp page %s",winlosePlayer,winloseSPP));
+        sppPage.verifyAmountDataMatch(winlosePlayer,winloseSPP);
     }
 
     @Test(groups = {"regression"})

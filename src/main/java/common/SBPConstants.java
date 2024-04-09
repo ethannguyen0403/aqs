@@ -393,6 +393,7 @@ public class SBPConstants {
 
     public static class BBGPhoneBetting{
         public final static List<String> TABLE_HEADER = Arrays.asList("#", "Account Code", "Bet Date", "Bet Type", "Selection", "HDP", "Live", "Price", "Stake", "Win/Lose", "CUR", "Trader");
+        public final static String MES_MORE_THAN_7_DAYS = "Date range should not be more than 7 days.";
     }
 
     public static class SPPPage{

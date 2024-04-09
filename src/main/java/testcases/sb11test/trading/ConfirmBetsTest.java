@@ -430,7 +430,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("@Verify 1: Bet info is correctly updated in confirmed bets ");
         confirmBetsPage.verifyOrder(order);
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed", "", "", "", accountCode);
+        betSettlementPage.filter("Confirmed", date, "", "", accountCode);
 
         log("@Verify 2 : Bets display correctly information in Bet Settlement page");
         betSettlementPage.verifyOrderInfo(order);
