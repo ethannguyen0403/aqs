@@ -2,19 +2,23 @@ package pages.sb11.soccer;
 
 import com.paltech.driver.DriverManager;
 import com.paltech.element.common.*;
+import com.paltech.utils.DateUtils;
+import common.SBPConstants;
 import controls.DateTimePicker;
 import controls.Row;
 import controls.Table;
+import objects.Order;
 import org.json.JSONObject;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.soccer.controls.BetByGroupTableControl;
 import pages.sb11.soccer.popup.bbg.BBGLastDaysPerformacesPopup;
 import pages.sb11.soccer.popup.bbg.BetByTeamPricePopup;
 import utils.sb11.AccountSearchUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+
+import static common.SBPConstants.*;
 
 public class BBGPage extends WelcomePage {
     public Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
@@ -38,14 +42,19 @@ public class BBGPage extends WelcomePage {
     public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
 
     public Button btnShowBetTypes = Button.xpath("//div[contains(text(),'Show Bet Types')]");
+    public Button btnHideBetTypes = Button.xpath("//div[contains(text(),'Hide Bet Types')]");
     public Button btnShowLeagues = Button.xpath("//div[contains(text(),'Show Leagues')]");
+    public Button btnHideLeagues = Button.xpath("//div[contains(text(),'Hide Leagues')]");
     public Button btnShowGroup = Button.xpath("//div[contains(text(),'Show Groups')]");
+    public Button btnHideGroup = Button.xpath("//div[contains(text(),'Hide Groups')]");
     public Button btnShowEvent = Button.xpath("//div[contains(text(),'Show Events')]");
+    public Button btnHideEvent = Button.xpath("//div[contains(text(),'Hide Events')]");
     public Button btnResetAllFilter = Button.xpath("//span[contains(text(),'Reset All Filters')]");
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
     BetByGroupTableControl  firstBetByGroupTableControl = BetByGroupTableControl.xpath(String.format("%s[%d]", xPathBetByGroupTableControl, 1));
 
     int totalColumnNumber = 13;
+    int colCur = 7;
     public Table tblBBG = Table.xpath("//app-bbg//table",totalColumnNumber);
     public Label lblFirstAccount = Label.xpath("(//app-bbg//table//tbody//tr//td[2])[1]");
     public Button btnSetSelection = Button.xpath("//button[contains(text(),'Set Selection')]");
@@ -86,20 +95,40 @@ public class BBGPage extends WelcomePage {
         btnShow.click();
         waitSpinnerDisappeared();
     }
-    public void filterGroups(String groupCode){
-        btnShowGroup.click();
-        waitSpinnerDisappeared();
-        CheckBox cbGroup = CheckBox.xpath("//div[contains(@class,'card-columns')]//span[text()='"+groupCode+"']//preceding::input[1]");
-        cbGroup.jsClick();
-        btnSetSelection.click();
-        btnShow.click();
-        waitSpinnerDisappeared();
-    }
-    public void filterBetTypes(String type){
-        btnShowBetTypes.click();
-        waitSpinnerDisappeared();
-        CheckBox cbGroup = CheckBox.xpath("//div[contains(@class,'card-columns')]//span[text()='"+type+"']//preceding::input[1]");
-        cbGroup.jsClick();
+
+    /**
+     *
+     * @param nameFilter input Bet Types, Leagues, Group, Event
+     * @param name input type, league, group, event
+     */
+    public void filterAdvance(String nameFilter, String name){
+        switch (nameFilter){
+            case "Bet Types":
+                btnShowBetTypes.click();
+                break;
+            case "Leagues":
+                btnShowLeagues.click();
+                break;
+            case "Group":
+                btnShowGroup.click();
+                break;
+            case "Events":
+                btnShowEvent.click();
+                break;
+            default:
+                System.err.println("Input wrongly filter name");
+                break;
+        }
+        Label lblFilter = Label.xpath(String.format("//div[contains(@class,'list-bet-types')]//div[contains(text(),'%s')]",nameFilter));
+        lblFilter.waitForElementToBePresent(lblFilter.getLocator());
+        CheckBox cbName;
+        if (nameFilter.equals("Events")){
+            String nameHome = name.split(" -vs- ")[0];
+            cbName = CheckBox.xpath(String.format("//span[text()='%s']/preceding::td/input",nameHome));
+        } else {
+            cbName = CheckBox.xpath(String.format("//div[contains(@class,'card-columns')]//span[text()='%s']//preceding::input[1]",name));
+        }
+        cbName.jsClick();
         btnSetSelection.click();
         btnShow.click();
         waitSpinnerDisappeared();
@@ -163,4 +192,177 @@ public class BBGPage extends WelcomePage {
         return false;
     }
 
+    /**
+     *
+     * @param stake input in stake dropdown except ALl
+     */
+    public void verifyAllBetsShowWithStake(String stake) {
+        double stakeEx = Double.valueOf(stake.replace("Above ","").replace("K","000"));
+        Table table = Table.xpath("//table[contains(@aria-label,'bbg-table')]",12);
+        int indexCol = table.getColumnIndexByName("Stake");
+        for (int i = 1;i <= table.getWebElements().size();i++){
+            String groupName = Label.xpath(String.format("(//div[contains(@class,'header')]/div/div)[%d]",i)).getText().trim();
+            Table tblData = Table.xpath(String.format("(//table[contains(@aria-label,'bbg-table')])[%d]",i),12);
+            tblData.scrollToThisControl(false);
+            Row row = Row.xpath(String.format("(//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')]",i));
+            for (int j = 1; j <= row.getWebElements().size();j++){
+                Label lblStake = Label.xpath(String.format("(//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')][%d]/td[%d]",i,j,indexCol));
+                if (Double.valueOf(lblStake.getText().trim().replace(",","")) < stakeEx){
+                    Assert.assertTrue(false,"FAILED! "+lblStake.getText()+" is in "+groupName+" displays incorrect");
+                }
+            }
+        }
+    }
+
+    /**
+     *
+     * @param nameFilter input Bet Types, Leagues, Group, Events
+     * @return
+     */
+    public List<String> getLstNameInAdvanceFilter(String nameFilter){
+        switch (nameFilter){
+            case "Bet Types":
+                btnShowBetTypes.click();
+                break;
+            case "Leagues":
+                btnShowLeagues.click();
+                break;
+            case "Group":
+                btnShowGroup.click();
+                break;
+            case "Events":
+                btnShowEvent.click();
+                break;
+            default:
+                System.err.println("Input wrongly filter name");
+                break;
+        }
+        List<String> lstEx = new ArrayList<>();
+        Label lblFilter = Label.xpath(String.format("//div[contains(@class,'list-bet-types')]//div[contains(text(),'%s')]",nameFilter));
+        lblFilter.waitForElementToBePresent(lblFilter.getLocator());
+        Label lstName;
+        if (nameFilter.equals("Events")){
+            lstName = Label.xpath(String.format("//div[contains(@class,'list-bet-types')]//table/tbody/tr",nameFilter));
+            for (int i = 1;i <= lstName.getWebElements().size();i++){
+                String home = Label.xpath(String.format("((//div[contains(@class,'list-bet-types')]//table/tbody/tr)[%d]//span)[1]",i)).getText().trim();
+                String away = Label.xpath(String.format("((//div[contains(@class,'list-bet-types')]//table/tbody/tr)[%d]//span)[3]",i)).getText().trim();
+                lstEx.add(home+" -vs- "+away);
+            }
+        } else {
+            lstName = Label.xpath(String.format("//div[contains(text(),'%s')]/following-sibling::div//table//tbody/tr",nameFilter));
+            for (int i = 1;i <= lstName.getWebElements().size();i++){
+                lstEx.add(Label.xpath(String.format("(//div[contains(text(),'%s')]/following-sibling::div//table//tbody/tr)[%d]",nameFilter,i)).getText().trim());
+            }
+        }
+
+        switch (nameFilter){
+            case "Bet Types":
+                btnHideBetTypes.click();
+                break;
+            case "Leagues":
+                btnHideLeagues.click();
+                break;
+            case "Group":
+                btnHideGroup.click();
+                break;
+            case "Events":
+                btnHideEvent.click();
+                break;
+            default:
+                System.err.println("Input wrongly filter name");
+                break;
+        }
+        return lstEx;
+    }
+
+    /**
+     *
+     * @param colName input Bet Types, Event
+     * @param lstBetsType
+     */
+    public void verifyBetsShowCorrectByColumnName(String colName, List<String> lstBetsType) {
+        Table table = Table.xpath("//table[contains(@aria-label,'bbg-table')]",12);
+        int indexCol = table.getColumnIndexByName(colName);
+        for (int i = 1;i <= table.getWebElements().size();i++){
+            String groupName = Label.xpath(String.format("(//div[contains(@class,'header')]/div/div)[%d]",i)).getText().trim();
+            Table tblData = Table.xpath(String.format("(//table[contains(@aria-label,'bbg-table')])[%d]",i),12);
+            tblData.scrollToThisControl(false);
+            Row row = Row.xpath(String.format("(//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')]",i));
+            for (int j = 1; j <= row.getWebElements().size();j++){
+                Label lblRowBetType;
+                switch (colName){
+                    case "Event":
+                        lblRowBetType = Label.xpath(String.format("(//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')][%d]/td[%d]//tbody/tr",i,j,indexCol));
+                        break;
+                    default:
+                        lblRowBetType = Label.xpath(String.format("(//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')][%d]/td[%d]",i,j,indexCol));
+                        break;
+                }
+                if (!lstBetsType.contains(lblRowBetType.getText().trim())){
+                    Assert.assertTrue(false,"FAILED! "+lblRowBetType+" is in "+groupName+" display incorrect.");
+                }
+            }
+        }
+    }
+
+    public boolean isOrderDisplayCorrect(Order order, String groupName) {
+        Table table = Table.xpath("//table[contains(@aria-label,'bbg-table')]",12);
+        for (int i = 1;i <= table.getWebElements().size();i++){
+            String groupNameAc = Label.xpath(String.format("(//div[contains(@class,'header')]/div/div)[%d]",i)).getText().trim();
+            if (groupNameAc.contains(groupName)){
+                Table tblData = Table.xpath(String.format("//div[contains(@class,'header')]/div/div[contains(text(),'%s')]//following::table[%d]",groupName,i),12);
+                tblData.scrollToThisControl(false);
+                int indexAccountCol = tblData.getColumnIndexByName("Account");
+                int indexBetTypeCol = tblData.getColumnIndexByName("Bet Type");
+                int indexHPDCol = tblData.getColumnIndexByName("HDP");
+                int indexPriceCol = tblData.getColumnIndexByName("Price");
+                int indexStakeCol = tblData.getColumnIndexByName("Stake");
+                int indexSelectionCol = tblData.getColumnIndexByName("Selection");
+                Row row = Row.xpath(String.format("(//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')]",i));
+                for (int j = 1; j <= row.getWebElements().size();j++){
+                    String lblAccountCode = Label.xpath(String.format("((//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')])[%d]/td[%d]",i,j,indexAccountCol)).getText().trim();
+                    String lblBetType = Label.xpath(String.format("((//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')])[%d]/td[%d]",i,j,indexBetTypeCol)).getText().trim();
+                    String lblHdp = Label.xpath(String.format("((//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')])[%d]/td[%d]",i,j,indexHPDCol)).getText().trim();
+                    String lblPrice = Label.xpath(String.format("((//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')])[%d]/td[%d]",i,j,indexPriceCol)).getText().trim();
+                    String lblStake = Label.xpath(String.format("((//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')])[%d]/td[%d]",i,j,indexStakeCol)).getText().trim();
+                    String lblSelection = Label.xpath(String.format("((//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')])[%d]/td[%d]",i,j,indexSelectionCol)).getText().trim();
+                    if (lblAccountCode.equals(order.getAccountCode()) && lblBetType.equals(order.getMarketType()) && lblHdp.contains(String.valueOf(order.getHandicap()))
+                    && lblPrice.contains(String.format("%.3f",order.getPrice())) && lblStake.equals(String.format("%.2f",order.getRequireStake())) && lblSelection.equals(order.getSelection())){
+                        return true;
+                    }
+                }
+            }
+        }
+        System.err.println("FAILED! Order is not displayed");
+        return false;
+    }
+    public void verifyUI(){
+        System.out.println("Company Unit, Report By, Punter Type, Sport, From Date, To Date and Show button");
+        Assert.assertEquals(ddpSport.getOptions(),SPORT_LIST,"Failed! Sport dropdown is not displayed");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST_ALL,"Failed! Company Unit dropdown is not displayed");
+        Assert.assertEquals(ddpSmartType.getOptions(), SBPConstants.BBGPage.SMART_TYPE_LIST,"Failed! Smart Type dropdown is not displayed");
+        Assert.assertEquals(ddpReportType.getOptions(), SBPConstants.BBGPage.REPORT_TYPE_LIST,"Failed! Report Type dropdown is not displayed");
+        Assert.assertEquals(ddpWinLose.getOptions(), SBPConstants.BBGPage.WIN_LOSE_TYPE_LIST,"Failed! Win/Lose dropdown is not displayed");
+        Assert.assertEquals(lblFromDate.getText(),"From Date","Failed! From Date datetime picker is not displayed");
+        Assert.assertEquals(lblToDate.getText(),"To Date","Failed! To Date datetime picker is not displayed");
+        System.out.println("Show Tax Amount, Show Bet Types, Show Leagues, Smart Group, Order By Win%, Reset All Filters and More Filters");
+        Assert.assertTrue(btnShowBetTypes.getText().contains("Show Bet Types"),"Failed! Show Bet Types button is not displayed");
+        Assert.assertTrue(btnShowLeagues.getText().contains("Show Leagues"),"Failed! Show Leagues button is not displayed");
+        Assert.assertTrue(btnShowGroup.getText().contains("Show Groups"),"Failed! Show Group button is not displayed");
+        Assert.assertEquals(btnResetAllFilter.getText(),"Reset All Filters","Failed! Reset button is not displayed");
+        Assert.assertTrue(btnShowEvent.getText().contains("Show Events"),"Failed! Show Events button is not displayed");
+        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");
+        verifyDefaultFilter();
+    }
+
+    public void verifyDefaultFilter() {
+        Assert.assertEquals(ddpCompanyUnit.getFirstSelectedOption(),"All");
+        Assert.assertEquals(ddpSmartType.getFirstSelectedOption(),"Group");
+        Assert.assertEquals(ddpReportType.getFirstSelectedOption(),"Pending Bets");
+        Assert.assertEquals(ddpStake.getFirstSelectedOption(),"All");
+        Assert.assertEquals(ddpCurrency.getFirstSelectedOption(),"All");
+        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        Assert.assertEquals(txtFromDate.getAttribute("value"),date);
+        Assert.assertEquals(txtToDate.getAttribute("value"),date);
+    }
 }

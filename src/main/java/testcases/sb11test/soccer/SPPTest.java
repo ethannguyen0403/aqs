@@ -54,7 +54,7 @@ public class SPPTest extends BaseCaseAQS {
         int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Soccer"), order);
         BetSettlementUtils.waitForBetIsUpdate(5);
         BetSettlementUtils.sendManualBetSettleJson(accountId, order, betId, wagerId, SPORT_ID_MAP.get("Soccer"));
-        BetSettlementUtils.waitForBetIsUpdate(5);
+        BetSettlementUtils.waitForBetIsUpdate(20);
         log("@Step 1: Go to Client Statement >> client point >> select the client");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.filter("Client Point","Kastraki Limited",FINANCIAL_YEAR,clientValue,date,"");
@@ -98,7 +98,7 @@ public class SPPTest extends BaseCaseAQS {
         int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Soccer"), order);
         BetSettlementUtils.waitForBetIsUpdate(5);
         BetSettlementUtils.sendManualBetSettleJson(accountId, order, betId, wagerId, SPORT_ID_MAP.get("Soccer"));
-        BetSettlementUtils.waitForBetIsUpdate(5);
+        BetSettlementUtils.waitForBetIsUpdate(20);
         log("@Step 1: Go to Bookie Statement >> filter Agent type: Super Master");
         log("@Step 2: Input bookie code as QA Bookie >> click Show");
         log("@Step 3: Find the master code: SM-QA1-QA Test >> click MS link at the master code");

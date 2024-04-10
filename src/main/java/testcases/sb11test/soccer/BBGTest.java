@@ -1,5 +1,6 @@
 package testcases.sb11test.soccer;
 
+import com.paltech.element.common.Label;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
 import common.SBPConstants;
@@ -8,7 +9,6 @@ import objects.Order;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import pages.ess.popup.ConfirmPopup;
 import pages.sb11.LoginPage;
 import pages.sb11.soccer.BBGPage;
 import pages.sb11.soccer.popup.bbg.BBGLastDaysPerformacesPopup;
@@ -18,6 +18,7 @@ import utils.sb11.*;
 import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static common.SBPConstants.*;
@@ -48,21 +49,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 3: Filter with valid data");
         bbgPage.filter("Soccer", KASTRAKI_LIMITED,"Group", "Pending Bets",fromdate,todate,"All","All");
         log(" Validate UI Info display correctly");
-        log("Company Unit, Report By, Punter Type, Sport, From Date, To Date and Show button");
-        Assert.assertEquals(bbgPage.ddpSport.getOptions(),SPORT_LIST,"Failed! Sport dropdown is not displayed");
-        Assert.assertEquals(bbgPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST_ALL,"Failed! Company Unit dropdown is not displayed");
-        Assert.assertEquals(bbgPage.ddpSmartType.getOptions(), SBPConstants.BBGPage.SMART_TYPE_LIST,"Failed! Smart Type dropdown is not displayed");
-        Assert.assertEquals(bbgPage.ddpReportType.getOptions(), SBPConstants.BBGPage.REPORT_TYPE_LIST,"Failed! Report Type dropdown is not displayed");
-        Assert.assertEquals(bbgPage.ddpWinLose.getOptions(), SBPConstants.BBGPage.WIN_LOSE_TYPE_LIST,"Failed! Win/Lose dropdown is not displayed");
-        Assert.assertEquals(bbgPage.lblFromDate.getText(),"From Date","Failed! From Date datetime picker is not displayed");
-        Assert.assertEquals(bbgPage.lblToDate.getText(),"To Date","Failed! To Date datetime picker is not displayed");
-        log("Show Tax Amount, Show Bet Types, Show Leagues, Smart Group, Order By Win%, Reset All Filters and More Filters");
-        Assert.assertTrue(bbgPage.btnShowBetTypes.getText().contains("Show Bet Types"),"Failed! Show Bet Types button is not displayed");
-        Assert.assertTrue(bbgPage.btnShowLeagues.getText().contains("Show Leagues"),"Failed! Show Leagues button is not displayed");
-        Assert.assertTrue(bbgPage.btnShowGroup.getText().contains("Show Groups"),"Failed! Show Group button is not displayed");
-        Assert.assertEquals(bbgPage.btnResetAllFilter.getText(),"Reset All Filters","Failed! Reset button is not displayed");
-        Assert.assertTrue(bbgPage.btnShowEvent.getText().contains("Show Events"),"Failed! Show Events button is not displayed");
-        Assert.assertEquals(bbgPage.btnShow.getText(),"Show","Failed! Show button is not displayed");
+        bbgPage.verifyUI();
         log("INFO: Executed completely");
     }
 
@@ -196,8 +183,8 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 3: Select filters which have data with a Sport option (e.g. Soccer)");
         log("@Step 4: Click on 'Show' button");
         page.filter("Soccer",KASTRAKI_LIMITED,"","","","","","");
-        page.filterGroups(smartGroup);
-        page.filterBetTypes("FT-HDP");
+        page.filterAdvance("Group",smartGroup);
+        page.filterAdvance("Bet Types","FT-HDP");
         //wait for table update
         page.waitSpinnerDisappeared();
         log("@Verify 1: Show all 'Soccer' bets");
@@ -242,7 +229,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 3: Select filters which have data with a Smart Type option (e.g. Group)");
         log("@Step 4: Click on 'Show' button");
         page.filter("Soccer",KASTRAKI_LIMITED,"","","","","","");
-        page.filterGroups(smartGroup);
+        page.filterAdvance("Group",smartGroup);
         log("@Verify 1: Show all bets of all smart accounts");
         List<String> rowEx = page.getFirstRowGroupData();
         Assert.assertEquals(order.getAccountCode(),rowEx.get(page.tblBBG.getColumnIndexByName("Account")-1),
@@ -292,8 +279,8 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 3: Select filters which have data with a Sport option (e.g. Soccer)");
         log("@Step 4: Click on 'Show' button");
         page.filter("Soccer",KASTRAKI_LIMITED,"","Settled Bets","","","","");
-        page.filterGroups(smartGroup);
-        page.filterBetTypes("FT-HDP");
+        page.filterAdvance("Group",smartGroup);
+        page.filterAdvance("Bet Types","FT-HDP");
         //wait for table update
         page.waitSpinnerDisappeared();
         log("@Verify 1: Show all settled bets");
@@ -320,6 +307,182 @@ public class BBGTest extends BaseCaseAQS {
         String mesAc = page.appArlertControl.getWarningMessage();
         log("@Verify 1: Error message 'Date range should not be more than 7 days.' displays");
         Assert.assertEquals(mesAc, SBPConstants.BBGPage.MES_OVER_THAN_7,"FAILED! Message displays incorrect.");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "23644")
+    @Parameters({"accountCode","accountCurrency", "smartGroup"})
+    public void BBG_TC_23644(String accountCode, String accountCurrency,String smartGroup) {
+        log("@title: Validate can filter bets that placed with the selected currency");
+        log("@pre-condition 1: Account is activated permission 'BBG'");
+        log("@pre-condition 2: Player account: AC88080003 (EUR) belonging to smart group '056-liability-fin'");
+        log("@pre-condition 3: Player account had Settle on 04/04/2024 - 04/09/2024");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        Order orderSettled = BetSettlementUtils.getOrderInDayByAccountCode(accountCode,date,"Soccer");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Soccer >> BBG page");
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        log("@Step 3: Select filters with currency 'EUR' as the preconditions");
+        log("@Step 4: Click on 'Show' button");
+        String dateFilter = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
+        page.filter("","","","Settled Bets",dateFilter,"","",accountCurrency);
+        page.filterAdvance("Group",smartGroup);
+        log("@Verify 1: Display the bet at the preconditions");
+        Assert.assertTrue(page.isOrderDisplayCorrect(orderSettled,smartGroup));
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "23645")
+    public void BBG_TC_23645() {
+        log("@title: Validate Stake includes All, Above 1K, Above 10K, Above 50K, Above 150K");
+        log("@pre-condition: Account is activated permission 'BBG'");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Soccer >> BBG page");
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        log("@Step 3: Expand Stake dropdown list");
+        log("@Verify 1: All bets that placed with the selected currency display");
+        Assert.assertEquals(page.ddpStake.getOptions(), SBPConstants.BBGPage.STAKE_LIST,"FAILED! Stake list displays incorrect.");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "23646")
+    public void BBG_TC_23646() {
+        log("@title: Validate all bets that matched selected currency and stake display");
+        log("@pre-condition: Account is activated permission 'BBG'");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Soccer >> BBG page");
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        log("@Step 3: Select any currency (e.g. CNY)");
+        String cur = "CNY";
+        log("@Step 4: Expand Stake dropdown list then select any option (e.g. >1K)");
+        log("@Step 5: Click Show button");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter("","","","Settled Bets",date,"",SBPConstants.BBGPage.STAKE_LIST.get(1),cur);
+        log("@Verify 1: All bets that place with stake > 1K CNY return");
+        page.verifyAllBetsShowWithStake(SBPConstants.BBGPage.STAKE_LIST.get(1));
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "23647")
+    public void BBG_TC_23647() {
+        log("@title: Validate all bets type that have bets in filtered date range display");
+        log("@pre-condition: Account is activated permission 'BBG'");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Soccer >> BBG page");
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        log("@Step 3: Filter From Date - To date which has data and other fields are default value");
+        log("@Step 4: Click Show button");
+        log("@Step 5: Click Show Bet Types dropdown list");
+        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        page.filter("","","","Settled Bets",date,"","","");
+        log("@Verify 1: All bets type (e.g. FT-HDP, HT-HDP, FT-Over/Under, HT-Over/Under) that have bets display");
+        List<String> lstBetTypes = page.getLstNameInAdvanceFilter("Bet Types");
+        page.verifyBetsShowCorrectByColumnName("Bet Types",lstBetTypes);
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "23648")
+    public void BBG_TC_23648() {
+        log("@title: Validate all bets in selected bet types display");
+        log("@pre-condition: Account is activated permission 'BBG'");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Soccer >> BBG page");
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        log("@Step 3: Filter From Date - To date which has data and other fields are default value");
+        log("@Step 4: Click Show button");
+        log("@Step 5: Click Show Bet Types dropdown list");
+        log("@Step 6: Select any bet type (e.g. FT-HDP) then click Set Selection button");
+        log("@Step 7: Click Show button");
+        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        page.filter("","","","Settled Bets",date,"","","");
+        page.filterAdvance("Bet Types","FT-HDP");
+        log("@Verify 1: All bets type (e.g. FT-HDP, HT-HDP, FT-Over/Under, HT-Over/Under) that have bets display");
+        List<String> lstBetType = Arrays.asList("FT-HDP");
+        page.verifyBetsShowCorrectByColumnName("Bet Types",lstBetType);
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "23649")
+    public void BBG_TC_23649() {
+        log("@title: Validate all leagues that have events in filtered date range display");
+        log("@pre-condition: Account is activated permission 'BBG'");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Soccer >> BBG page");
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        log("@Step 3: Filter From Date - To date which has data and other fields are default value");
+        log("@Step 4: Click Show button");
+        log("@Step 5: Click Show Leagues dropdown list");
+        log("@Step 6: Select any league then click Set Selection button");
+        log("@Step 7: Click Show button");
+        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        page.filter("","","","Settled Bets",date,"","","");
+        log("@Verify 1: All leagues that have events in filtered date range display");
+        String league = page.getLstNameInAdvanceFilter("Leagues").get(0);
+        page.filterAdvance("Leagues",league);
+        List<String> lstEvent = page.getLstNameInAdvanceFilter("Events");
+        page.verifyBetsShowCorrectByColumnName("Event",lstEvent);
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "23650")
+    public void BBG_TC_23650() {
+        log("@title: Validate all groups that have bets in filtered date range display");
+        log("@pre-condition: Account is activated permission 'BBG'");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Soccer >> BBG page");
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        log("@Step 3: Filter From Date - To date which has data and other fields are default value");
+        log("@Step 4: Click Show button");
+        log("@Step 5: Click Show Groups dropdown list");
+        log("@Step 6: Select any group then click Set Selection button");
+        log("@Step 7: Click Show button");
+        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        page.filter("","","","Settled Bets",date,"","","");
+        String groupEx = page.getLstNameInAdvanceFilter("Group").get(0);
+        page.filterAdvance("Group",groupEx);
+        log("@Verify 1: Selected group in filtered date range display");
+        Assert.assertTrue(Label.xpath("//div[contains(@class,'header')]/div/div").getText().trim().contains(groupEx),"FAILED! "+groupEx+" group is not displayed");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "23651")
+    public void BBG_TC_23651() {
+        log("@title: Validate all events in filtered date range display");
+        log("@pre-condition: Account is activated permission 'BBG'");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Soccer >> BBG page");
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        log("@Step 3: Filter From Date - To date which has data and other fields are default value");
+        log("@Step 4: Click Show button");
+        log("@Step 5: Click Show Events dropdown list");
+        log("@Step 6: Select any event then click Set Selection button");
+        log("@Step 7: Click Show button");
+        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        page.filter("","","","Settled Bets",date,"","","");
+        String eventEx = page.getLstNameInAdvanceFilter("Events").get(0);
+        page.filterAdvance("Events",eventEx);
+        log("@Verify 1: Selected group in filtered date range display");
+        List<String> lstEvent = Arrays.asList(eventEx);
+        page.verifyBetsShowCorrectByColumnName("Event",lstEvent);
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "23652")
+    public void BBG_TC_23652() {
+        log("@title: Validate all filters reset to default if click 'Reset All Filters' button");
+        log("@pre-condition: Account is activated permission 'BBG'");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Soccer >> BBG page");
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        log("@Step 3: Filter by any field (e.g. Smart Type, Leagues) then click Show button");
+        String date = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
+        page.filter("",KASTRAKI_LIMITED,"Master","Settled Bets",date,date,"Above 1K","HKD");
+        log("@Step 4: Click 'Reset All Filters' link");
+        page.btnResetAllFilter.click();
+        page.waitSpinnerDisappeared();
+        log("@Verify 1: Selected group in filtered date range display");
+        page.verifyDefaultFilter();
         log("INFO: Executed completely");
     }
 
