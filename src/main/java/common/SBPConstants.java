@@ -86,6 +86,7 @@ public class SBPConstants {
     public final static String PLACE_BET_SUCCESS_MSG ="The bet was placed successfully";
     public final static String FINANCIAL_YEAR = "Year 2023-2024";
     public final static String KASTRAKI_LIMITED = "Kastraki Limited";
+    public final static String FAIR = "Fair";
     public final static String CLIENT_CREDIT_ACC = "ClientCredit-AutoQC";
     public final static String CLIENT_DEBIT_ACC = "ClientDebit-AutoQC";
     public final static String LEDGER_GROUP_NAME_INCOME = "QA Ledger Group Income";
@@ -94,6 +95,8 @@ public class SBPConstants {
     public final static String LEDGER_GROUP_NAME_ASSET = "QA Ledger Group Asset";
     public final static String LEDGER_GROUP_NAME_ASSET_700 = "QA Asset Account 700";
     public final static String LEDGER_GROUP_NAME_CAPITAL = "QA Ledger Group Capital";
+    public final static String LEDGER_GROUP_RETAINED_EARNING_ACCOUNT = "302.000.000.000 - Retained Earnings";
+    public final static String LEDGER_GROUP_DIVIDEND_ACCOUNT = "303.000.000.000 - Dividend";
     public final static String QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT = "500.000.000.000 - QA Ledger Group Asset";
     public final static String QA_ASSET_PARENT_ACCOUNT_700 = "700.000.000.000 - QA Asset Account 700";
     public final static String CAPITAL_PARENT_ACCOUNT = "301.000.000.000 - Capital";

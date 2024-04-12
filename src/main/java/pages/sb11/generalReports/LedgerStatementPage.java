@@ -5,7 +5,9 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import com.paltech.utils.DateUtils;
 import com.paltech.utils.DoubleUtils;
+import common.SBPConstants;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Transaction;
@@ -20,6 +22,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 
+import static common.SBPConstants.FINANCIAL_YEAR;
 import static java.lang.Double.parseDouble;
 
 public class LedgerStatementPage extends WelcomePage {
@@ -146,7 +149,8 @@ public class LedgerStatementPage extends WelcomePage {
                     indexCol = 12;
             }
         }
-        return tbLedger.getControlBasedValueOfDifferentColumnOnRow(subAccName,1,colLedger,1,null,indexCol,null,false,false).getText().trim();
+//        return tbLedger.getControlBasedValueOfDifferentColumnOnRow(subAccName,1,colLedger,1,null,indexCol,null,false,false).getText().trim();
+        return Label.xpath(String.format("//a[contains(text(),'%s')]//ancestor::tr//td[%d]",subAccName,indexCol)).getText().trim();
     }
     public String getTotalAmountInOriginCurrency(String toTalName){
         return tbLedger.getControlBasedValueOfDifferentColumnOnRow(toTalName,1,colTotal,1,null,colAmountTotalOriginCurrency,null,false,false).getText().trim();
@@ -263,6 +267,15 @@ public class LedgerStatementPage extends WelcomePage {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatDate);
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone(gmt));
         return simpleDateFormat.format(calendar.getTime());
+    }
+    public String getLastDateAfterCJE(String format){
+        String date = DateUtils.getDate(0,format, SBPConstants.GMT_7);
+        date = isLastDayOfMonth() ? date : getLastDateOfPreviousMonth(format,SBPConstants.GMT_7);
+        return date;
+    }
+    public String getBeginDateOfFinanYear(String financialYear){
+        String yearBegin = financialYear.replace("Year ","").split("-")[0];
+        return String.format("01/08/%s",yearBegin);
     }
 
     /**

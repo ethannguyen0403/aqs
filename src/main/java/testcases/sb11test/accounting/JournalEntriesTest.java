@@ -64,7 +64,16 @@ public class JournalEntriesTest extends BaseCaseAQS {
         Assert.assertEquals(transMes, JournalEntries.MES_TRANS_HAS_BEEN_CREATED, "Failed! Message is displayed incorrectly!");
         log("INFO: Executed completely");
     }
-    //TODO: implement case 4177
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "4177")
+    public void Journal_Entries_TC_4177(){
+        log("@title: Validate Journal Entries page is displayed when navigate");
+        log("@Step 1: Access Soccer > Journal Entries");
+        JournalEntriesPage page = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("Verify 1: Validate Journal Entries page is displayed with correctly title");
+        Assert.assertTrue(page.getTitlePage().contains(JOURNAL_ENTRIES),String.format("FAILED! Page Title is incorrect displayed. Actual: %s, expected: %s",page.getTitlePage(),JOURNAL_ENTRIES));
+        log("INFO: Executed completely");
+    }
     @Test(groups = {"regression"})
     @Parameters({"clientCode"})
     @TestRails(id = "4178")
