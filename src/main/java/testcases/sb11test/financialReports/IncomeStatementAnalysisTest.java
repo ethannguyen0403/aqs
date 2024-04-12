@@ -94,17 +94,17 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3408")
-    @Test(groups = {"regression", "2024.V.1.0","ethan"})
+    @Test(groups = {"regression", "2024.V.3.0"})
     public void IncomeStatement_Analysis_TC3408() {
-        log("@title: Validate Non-Operating Income is only displayed details types with cart code starting from 460 to 599");
-        log("@Precondition: Already have a detail type with chart codes starting from 460 to 599 that contain transaction");
+        log("@title: Validate Non-Operating Income is only displayed details types with cart code starting from 460 to 499");
+        log("@Precondition: Already have a detail type with chart codes starting from 460 to 499 that contain transaction");
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
-        log("@Step 2: Filter which has data");
+        log("@Step 2: Filter with month that contain transaction at pre-condition");
         incomeAnaPage.filter(KASTRAKI_LIMITED,"","","");
-        log("@Verify 1: Validate chart code of Operating expenses are started with 5, 6");
+        log("@Verify 1: Chart code, name, amount of parent accounts that belong to the detail types should display accordingly on NON-OPERATING INCOME");
         List<String> codeList = incomeAnaPage.getCodeListOfGroup(NON_OPERATING_INCOME);
-        Assert.assertTrue(incomeAnaPage.verifyCodeStartingInRange(codeList, 460, 500), "FAILED! Chart code Operation Income NOT in range 460 to 5xx");
+        Assert.assertTrue(incomeAnaPage.verifyCodeStartingInRange(codeList, 460, 499), "FAILED! Chart code Operation Income NOT in range 460 to 499");
         log("INFO: Executed completely");
     }
 
