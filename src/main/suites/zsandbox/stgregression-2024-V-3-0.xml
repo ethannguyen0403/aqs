@@ -39,8 +39,17 @@
 
         <classes>
             <class name="testcases.sb11test.sport.OpenPriceTest"/>
+
             <class name="testcases.sb11test.soccer.BBGPhoneBettingTest"/>
             <class name="testcases.sb11test.soccer.BBGTest"/>
+
+            <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
+
+            <class name="testcases.sb11test.generalReports.WLRPCTest"/>
+
+            <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
+            <class name="testcases.sb11test.financialReports.IncomeStatementAnalysisTest"/>
+            <class name="testcases.sb11test.financialReports.RetainedEarningsTest"/>
         </classes>
     </test>
 </suite>
