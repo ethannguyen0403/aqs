@@ -96,6 +96,7 @@ public class WelcomePage extends Header{
         ChangePasswordPopup changePasswordPopup = openChangePasswordPopup();
         return changePasswordPopup.changePassword(oldPassword,newPassword,confirmPassword,isClose);
     }
-
-
+    public String getDownloadPath(){
+        return DriverManager.getDriver().getDriverSetting().getDownloadPath();
+    }
 }

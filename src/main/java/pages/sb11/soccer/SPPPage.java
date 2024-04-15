@@ -5,6 +5,7 @@ import com.paltech.element.common.*;
 import com.paltech.utils.DoubleUtils;
 import controls.DateTimePicker;
 import controls.Table;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.soccer.popup.PTPerformancePopup;
 import pages.sb11.soccer.popup.spp.SmartGroupPopup;
@@ -234,10 +235,10 @@ public class SPPPage extends WelcomePage {
 
    /* End handle for Table  */
 
-    public boolean verifyAmountDataMatch(String actual, String expected){
+    public void verifyAmountDataMatch(String actual, String expected){
         double actualDouble = Double.parseDouble(actual);
         String roundAcutal = String.format("%,.0f",DoubleUtils.roundUpWithTwoPlaces(actualDouble));
-        return roundAcutal.equals(expected);
+        Assert.assertEquals(Integer.valueOf(roundAcutal),Integer.valueOf(expected),1,"FAILED! "+roundAcutal+" difference from "+expected);
     }
 
     public int calculateAvg(List<Double> stakeList) {

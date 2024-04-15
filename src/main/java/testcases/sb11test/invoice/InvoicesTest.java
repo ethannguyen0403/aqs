@@ -201,11 +201,11 @@ public class InvoicesTest extends BaseCaseAQS {
         Assert.assertTrue(FileUtils.doesFileNameExist(filePath),
                 "Failed to download Expected document");
         log("@Post-condition: delete download file");
-        try {
-            FileUtils.removeFile(filePath);
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
+//        try {
+//            FileUtils.removeFile(filePath);
+//        } catch (IOException e) {
+//            log(e.getMessage());
+//        }
         log("INFO: Executed completely");
     }
 

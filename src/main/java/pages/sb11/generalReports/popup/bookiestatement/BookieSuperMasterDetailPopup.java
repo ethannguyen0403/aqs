@@ -14,7 +14,7 @@ public class BookieSuperMasterDetailPopup  {
     public int colComm = 6;
     public int colGrandTotal = 7;
 
-    Table tblSuperMasterDetail = Table.xpath("//app-super-master-detail//table[@aria-label='table']",summaryColTotal);
+    Table tblSuperMasterDetail = Table.xpath("//app-super-master-detail//table[@aria-label='table'][1]",summaryColTotal);
     public Table tblSMDetail = Table.xpath("//app-super-master-detail//table[@aria-label='table'][2]",10);
     public Icon closeIcon = Icon.xpath("//span[@class='cursor-pointer close-icon ml-3']");
 
@@ -29,6 +29,10 @@ public class BookieSuperMasterDetailPopup  {
             returnValue = lblCellValue.getText();
         }
         return returnValue;
+    }
+    public String getValueTransDetail(String des, String colName){
+        //index column -1 because table header have Receipt/....
+        return tblSMDetail.getControlBasedValueOfDifferentColumnOnRow(des,1,tblSMDetail.getColumnIndexByName("Description")-1,1,null,tblSMDetail.getColumnIndexByName(colName)-1,null,false,false).getText().trim();
     }
 
     public BookieStatementPage closeSuperMasterDetailPopup() {

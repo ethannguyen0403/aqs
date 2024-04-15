@@ -348,7 +348,6 @@ public class ClientStatementTest extends BaseCaseAQS {
             clientPage.openSummaryPopup(agentCode);
             actualRecPayVal = popup.getSummaryCellValue(CLIENT_DEBIT_ACC,popup.colRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Client Credit balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-            popup.closeSummaryPopup();
         } finally {
             log("@Post-condition: Add transaction for the Client account into Credit");
             Transaction transactionPost = new Transaction.Builder()
@@ -373,43 +372,23 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String ledgerCreditAccountId;
-        String ledgerCreditAccountName;
-        String ledgerCreditAccountNumber;
-        String ledgerDebitAccountId;
-        String ledgerDebitAccountName;
-        String ledgerDebitAccountNumber;
-        String ledgerType;
-        String ledgerGroupId;
-        String parentId;
-        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
-        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
-        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
-        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
 
         log("@Precondition: Add transaction for the Asset Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName)
-                .ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName)
-                .ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(LEDGER_ASSET_CREDIT_NAME)
+                .ledgerCreditNumber(LEDGER_ASSET_CREDIT_NUMBER)
+                .ledgerDebit(LEDGER_ASSET_DEBIT_NAME)
+                .ledgerDebitNumber(LEDGER_ASSET_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark("TC_871 Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
-        welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
-        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId,LEDGER_PARENT_NAME_ASSET);
-        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
-
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -419,25 +398,23 @@ public class ClientStatementTest extends BaseCaseAQS {
             ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
             log("@Validate the balance is added to the account Asset 'Debit' correctly");
             expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
-            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
+            actualRecPayVal = popup.getLedgerSummaryCellValue(LEDGER_ASSET_DEBIT_NAME,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Asset 'Debit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-            popup.closeSummaryPopup();
         } finally {
             log("@Post-condition: Add transaction for the Asset Ledger account into Credit");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName)
-                    .ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountName)
-                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_ASSET_DEBIT_NAME)
+                    .ledgerCreditNumber(LEDGER_ASSET_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_ASSET_CREDIT_NAME)
+                    .ledgerDebitNumber(LEDGER_ASSET_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
                     .remark("TC_871 Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
         }
-
         log("INFO: Executed completely");
     }
 
@@ -449,43 +426,22 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String ledgerCreditAccountId;
-        String ledgerCreditAccountName;
-        String ledgerCreditAccountNumber;
-        String ledgerDebitAccountId;
-        String ledgerDebitAccountName;
-        String ledgerDebitAccountNumber;
-        String ledgerType;
-        String ledgerGroupId;
-        String parentId;
-        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
-        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
-        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
-        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
-
         log("@Precondition: Add transaction for the Asset Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName)
-                .ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName)
-                .ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(LEDGER_ASSET_CREDIT_NAME)
+                .ledgerCreditNumber(LEDGER_ASSET_CREDIT_NUMBER)
+                .ledgerDebit(LEDGER_ASSET_DEBIT_NAME)
+                .ledgerDebitNumber(LEDGER_ASSET_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark("TC_872 Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
-        welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
-        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId,LEDGER_PARENT_NAME_ASSET);
-        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
-
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -495,25 +451,23 @@ public class ClientStatementTest extends BaseCaseAQS {
             ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
             log("@Validate the balance is deducted from the account Asset 'Credit' correctly");
             expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
-            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
+            actualRecPayVal = popup.getLedgerSummaryCellValue(LEDGER_ASSET_CREDIT_NAME,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Asset 'Credit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-            popup.closeSummaryPopup();
         } finally {
             log("@Post-condition: Add transaction for the Asset Ledger account into Debit");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName)
-                    .ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountName)
-                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_ASSET_DEBIT_NAME)
+                    .ledgerCreditNumber(LEDGER_ASSET_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_ASSET_CREDIT_NAME)
+                    .ledgerDebitNumber(LEDGER_ASSET_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
                     .remark("TC_872 Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
         }
-
         log("INFO: Executed completely");
     }
 
@@ -525,43 +479,22 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String ledgerCreditAccountId;
-        String ledgerCreditAccountName;
-        String ledgerCreditAccountNumber;
-        String ledgerDebitAccountId;
-        String ledgerDebitAccountName;
-        String ledgerDebitAccountNumber;
-        String ledgerType;
-        String ledgerGroupId;
-        String parentId;
-        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_CREDIT_ACC,true);
-        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_CREDIT_ACC,true);
-        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_DEBIT_ACC,true);
-        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
-
         log("@Precondition: Add transaction for the Liability Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName)
-                .ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName)
-                .ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(LEDGER_LIABILITY_CREDIT_NAME)
+                .ledgerCreditNumber(LEDGER_LIABILITY_CREDIT_NUMBER)
+                .ledgerDebit(LEDGER_LIABILITY_DEBIT_NAME)
+                .ledgerDebitNumber(LEDGER_LIABILITY_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark("TC_873 Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
-        welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_LIABILITY);
-        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId,LEDGER_GROUP_NAME_LIABILITY);
-        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
-
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_LIABILITY,LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -571,25 +504,23 @@ public class ClientStatementTest extends BaseCaseAQS {
             ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
             log("@Validate the balance is deducted from the account Liability 'Debit' correctly");
             expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
-            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
+            actualRecPayVal = popup.getLedgerSummaryCellValue(LEDGER_LIABILITY_DEBIT_NAME,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Liability 'Debit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-            popup.closeSummaryPopup();
         } finally {
             log("@Post-condition: Add transaction for the Liability Ledger account into Credit");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName)
-                    .ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountName)
-                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_LIABILITY_DEBIT_NAME)
+                    .ledgerCreditNumber(LEDGER_LIABILITY_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_LIABILITY_CREDIT_NAME)
+                    .ledgerDebitNumber(LEDGER_LIABILITY_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
                     .remark("TC_873 Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_LIABILITY,LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
         }
-
         log("INFO: Executed completely");
     }
 
@@ -601,43 +532,22 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String ledgerCreditAccountId;
-        String ledgerCreditAccountName;
-        String ledgerCreditAccountNumber;
-        String ledgerDebitAccountId;
-        String ledgerDebitAccountName;
-        String ledgerDebitAccountNumber;
-        String ledgerType;
-        String ledgerGroupId;
-        String parentId;
-        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_CREDIT_ACC,true);
-        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_CREDIT_ACC,true);
-        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_LIABILITY_DEBIT_ACC,true);
-        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_LIABILITY_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
-
         log("@Precondition: Add transaction for the Liability Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName)
-                .ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName)
-                .ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(LEDGER_LIABILITY_CREDIT_NAME)
+                .ledgerCreditNumber(LEDGER_LIABILITY_CREDIT_NUMBER)
+                .ledgerDebit(LEDGER_LIABILITY_DEBIT_NAME)
+                .ledgerDebitNumber(LEDGER_LIABILITY_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark("TC_874 Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
-        welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_LIABILITY);
-        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_LIABILITY);
-        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
-
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_LIABILITY,LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -647,25 +557,23 @@ public class ClientStatementTest extends BaseCaseAQS {
             ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
             log("@Validate the balance is added to the account Liability 'Credit' correctly");
             expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
-            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
+            actualRecPayVal = popup.getLedgerSummaryCellValue(LEDGER_LIABILITY_CREDIT_NAME,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Liability 'Credit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-            popup.closeSummaryPopup();
         } finally {
             log("@Post-condition: Add transaction for the Liability Ledger account into Debit");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName)
-                    .ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountName)
-                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_LIABILITY_DEBIT_NAME)
+                    .ledgerCreditNumber(LEDGER_LIABILITY_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_LIABILITY_CREDIT_NAME)
+                    .ledgerDebitNumber(LEDGER_LIABILITY_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
                     .remark("TC_874 Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_LIABILITY,LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
         }
-
         log("INFO: Executed completely");
     }
 
@@ -677,43 +585,22 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String ledgerCreditAccountId;
-        String ledgerCreditAccountName;
-        String ledgerCreditAccountNumber;
-        String ledgerDebitAccountId;
-        String ledgerDebitAccountName;
-        String ledgerDebitAccountNumber;
-        String ledgerType;
-        String ledgerGroupId;
-        String parentId;
-        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_CREDIT_ACC,true);
-        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_CREDIT_ACC,true);
-        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_DEBIT_ACC,true);
-        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
-
         log("@Precondition: Add transaction for the Capital Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName)
-                .ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName)
-                .ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(LEDGER_CAPITAL_CREDIT_NAME)
+                .ledgerCreditNumber(LEDGER_CAPITAL_CREDIT_NUMBER)
+                .ledgerDebit(LEDGER_CAPITAL_DEBIT_NAME)
+                .ledgerDebitNumber(LEDGER_CAPITAL_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark("TC_875 Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
-        welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_CAPITAL);
-        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_CAPITAL);
-        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
-
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_CAPITAL,LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -723,25 +610,23 @@ public class ClientStatementTest extends BaseCaseAQS {
             ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
             log("@Validate the balance is deducted from the account Capital 'Debit' correctly");
             expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
-            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
+            actualRecPayVal = popup.getLedgerSummaryCellValue(LEDGER_CAPITAL_DEBIT_NAME,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Capital 'Debit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-            popup.closeSummaryPopup();
         } finally {
             log("@Post-condition: Add transaction for the Capital Ledger account into Credit");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName)
-                    .ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountName)
-                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_CAPITAL_DEBIT_NAME)
+                    .ledgerCreditNumber(LEDGER_CAPITAL_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_CAPITAL_CREDIT_NAME)
+                    .ledgerDebitNumber(LEDGER_CAPITAL_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
                     .remark("TC_875 Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_CAPITAL,LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
         }
-
         log("INFO: Executed completely");
     }
 
@@ -753,43 +638,22 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String ledgerCreditAccountId;
-        String ledgerCreditAccountName;
-        String ledgerCreditAccountNumber;
-        String ledgerDebitAccountId;
-        String ledgerDebitAccountName;
-        String ledgerDebitAccountNumber;
-        String ledgerType;
-        String ledgerGroupId;
-        String parentId;
-        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_CREDIT_ACC,true);
-        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_CREDIT_ACC,true);
-        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_CAPITAL_DEBIT_ACC,true);
-        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_CAPITAL_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
-
         log("@Precondition: Add transaction for the Capital Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName)
-                .ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName)
-                .ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(LEDGER_CAPITAL_CREDIT_NAME)
+                .ledgerCreditNumber(LEDGER_CAPITAL_CREDIT_NUMBER)
+                .ledgerDebit(LEDGER_CAPITAL_DEBIT_NAME)
+                .ledgerDebitNumber(LEDGER_CAPITAL_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark("TC_876 Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
-        welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_CAPITAL);
-        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_CAPITAL);
-        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
-
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_CAPITAL,LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -799,25 +663,23 @@ public class ClientStatementTest extends BaseCaseAQS {
             ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
             log("@Validate the balance is added from the account Capital 'Credit' correctly");
             expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
-            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
+            actualRecPayVal = popup.getLedgerSummaryCellValue(LEDGER_CAPITAL_CREDIT_NAME,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Capital 'Credit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-            popup.closeSummaryPopup();
         } finally {
             log("@Post-condition: Add transaction for the Capital Ledger account into Debit");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName)
-                    .ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountName)
-                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_CAPITAL_DEBIT_NAME)
+                    .ledgerCreditNumber(LEDGER_CAPITAL_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_CAPITAL_CREDIT_NAME)
+                    .ledgerDebitNumber(LEDGER_CAPITAL_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
                     .remark("TC_876 Automation Testing Transaction Client: Post-condition for txn" + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_CAPITAL,LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
         }
-
         log("INFO: Executed completely");
     }
 
@@ -829,43 +691,22 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String ledgerCreditAccountId;
-        String ledgerCreditAccountName;
-        String ledgerCreditAccountNumber;
-        String ledgerDebitAccountId;
-        String ledgerDebitAccountName;
-        String ledgerDebitAccountNumber;
-        String ledgerType;
-        String ledgerGroupId;
-        String parentId;
-        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_CREDIT_ACC,true);
-        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_CREDIT_ACC,true);
-        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_DEBIT_ACC,true);
-        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
-
         log("@Precondition: Add transaction for the Income Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName)
-                .ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName)
-                .ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(LEDGER_INCOME_CREDIT_NAME)
+                .ledgerCreditNumber(LEDGER_INCOME_CREDIT_NUMBER)
+                .ledgerDebit(LEDGER_INCOME_DEBIT_NAME)
+                .ledgerDebitNumber(LEDGER_INCOME_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark("TC_877 Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
-        welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_INCOME);
-        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_INCOME);
-        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
-
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_INCOME,LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -875,25 +716,23 @@ public class ClientStatementTest extends BaseCaseAQS {
             ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
             log("@Validate the balance is deducted from the account Income 'Debit' correctly");
             expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
-            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
+            actualRecPayVal = popup.getLedgerSummaryCellValue(LEDGER_INCOME_DEBIT_NAME,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Income 'Debit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-            popup.closeSummaryPopup();
         } finally {
             log("@Post-condition: Add transaction for the Income Ledger account into Credit");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName)
-                    .ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountName)
-                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_INCOME_DEBIT_NAME)
+                    .ledgerCreditNumber(LEDGER_INCOME_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_INCOME_CREDIT_NAME)
+                    .ledgerDebitNumber(LEDGER_INCOME_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
                     .remark("TC_877 Automation Testing Transaction Client: Post-condition for txn" + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_INCOME,LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
         }
-
         log("INFO: Executed completely");
     }
     @Test(groups = {"smoke_qc"})
@@ -904,43 +743,22 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String ledgerCreditAccountId;
-        String ledgerCreditAccountName;
-        String ledgerCreditAccountNumber;
-        String ledgerDebitAccountId;
-        String ledgerDebitAccountName;
-        String ledgerDebitAccountNumber;
-        String ledgerType;
-        String ledgerGroupId;
-        String parentId;
-        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_CREDIT_ACC,true);
-        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_CREDIT_ACC,true);
-        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_INCOME_DEBIT_ACC,true);
-        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_INCOME_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
-
         log("@Precondition: Add transaction for the Income Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName)
-                .ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName)
-                .ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(LEDGER_INCOME_CREDIT_NAME)
+                .ledgerCreditNumber(LEDGER_INCOME_CREDIT_NUMBER)
+                .ledgerDebit(LEDGER_INCOME_DEBIT_NAME)
+                .ledgerDebitNumber(LEDGER_INCOME_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark("TC_878 Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
-        welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_INCOME);
-        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_INCOME);
-        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
-
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_INCOME,LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -950,25 +768,23 @@ public class ClientStatementTest extends BaseCaseAQS {
             ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
             log("@Validate the balance is added from the account Income 'Credit' correctly");
             expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
-            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
+            actualRecPayVal = popup.getLedgerSummaryCellValue(LEDGER_INCOME_CREDIT_NAME,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Income 'Credit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-            popup.closeSummaryPopup();
         } finally {
             log("@Post-condition: Add transaction for the Income Ledger account into Debit");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName)
-                    .ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountName)
-                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_INCOME_DEBIT_NAME)
+                    .ledgerCreditNumber(LEDGER_INCOME_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_INCOME_CREDIT_NAME)
+                    .ledgerDebitNumber(LEDGER_INCOME_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
                     .remark("TC_878 Automation Testing Transaction Client: Post-condition for txn" + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_INCOME,LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
         }
-
         log("INFO: Executed completely");
     }
 
@@ -980,43 +796,22 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String ledgerCreditAccountId;
-        String ledgerCreditAccountName;
-        String ledgerCreditAccountNumber;
-        String ledgerDebitAccountId;
-        String ledgerDebitAccountName;
-        String ledgerDebitAccountNumber;
-        String ledgerType;
-        String ledgerGroupId;
-        String parentId;
-        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_CREDIT_ACC,true);
-        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_CREDIT_ACC,true);
-        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_DEBIT_ACC,true);
-        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
-
         log("@Precondition: Add transaction for the Expenditure Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName)
-                .ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName)
-                .ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(LEDGER_EXPENDITURE_CREDIT_NAME)
+                .ledgerCreditNumber(LEDGER_EXPENDITURE_CREDIT_NUMBER)
+                .ledgerDebit(LEDGER_EXPENDITURE_DEBIT_NAME)
+                .ledgerDebitNumber(LEDGER_EXPENDITURE_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark("TC_879 Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
-        welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_EXPENDITURE);
-        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_EXPENDITURE);
-        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
-
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -1026,25 +821,23 @@ public class ClientStatementTest extends BaseCaseAQS {
             ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
             log("@Validate the balance is added from the account Expenditure 'Debit' correctly");
             expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit());
-            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerDebitAccountName,popup.colLedgerRecPay).replace(",","");
+            actualRecPayVal = popup.getLedgerSummaryCellValue(LEDGER_EXPENDITURE_DEBIT_NAME,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Expenditure 'Debit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-            popup.closeSummaryPopup();
         } finally {
             log("@Post-condition: Add transaction for the Expenditure Ledger account into Credit");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName)
-                    .ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountName)
-                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_EXPENDITURE_DEBIT_NAME)
+                    .ledgerCreditNumber(LEDGER_EXPENDITURE_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_EXPENDITURE_CREDIT_NAME)
+                    .ledgerDebitNumber(LEDGER_EXPENDITURE_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
                     .remark("TC_879 Automation Testing Transaction Client: Post-condition for txn" + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
         }
-
         log("INFO: Executed completely");
     }
 
@@ -1056,43 +849,22 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        String ledgerCreditAccountId;
-        String ledgerCreditAccountName;
-        String ledgerCreditAccountNumber;
-        String ledgerDebitAccountId;
-        String ledgerDebitAccountName;
-        String ledgerDebitAccountNumber;
-        String ledgerType;
-        String ledgerGroupId;
-        String parentId;
-        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_CREDIT_ACC,true);
-        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_CREDIT_ACC,true);
-        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_EXPENDITURE_DEBIT_ACC,true);
-        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_EXPENDITURE_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
-
         log("@Precondition: Add transaction for the Expenditure Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName)
-                .ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName)
-                .ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(LEDGER_EXPENDITURE_CREDIT_NAME)
+                .ledgerCreditNumber(LEDGER_EXPENDITURE_CREDIT_NUMBER)
+                .ledgerDebit(LEDGER_EXPENDITURE_DEBIT_NAME)
+                .ledgerDebitNumber(LEDGER_EXPENDITURE_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark("TC_880 Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
-        welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_EXPENDITURE);
-        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_GROUP_NAME_EXPENDITURE);
-        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
-
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -1102,25 +874,23 @@ public class ClientStatementTest extends BaseCaseAQS {
             ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
             log("@Validate the balance is deducted from the account Expenditure 'Credit' correctly");
             expectedRecPayVal = clientPage.reverseValue(String.format("%.2f",transaction.getAmountDebit()));
-            actualRecPayVal = popup.getLedgerSummaryCellValue(ledgerCreditAccountName,popup.colLedgerRecPay).replace(",","");
+            actualRecPayVal = popup.getLedgerSummaryCellValue(LEDGER_EXPENDITURE_CREDIT_NAME,popup.colLedgerRecPay).replace(",","");
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Expenditure 'Credit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
-            popup.closeSummaryPopup();
         } finally {
             log("@Post-condition: Add transaction for the Expenditure Ledger account into Debit");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName)
-                    .ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountName)
-                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_EXPENDITURE_DEBIT_NAME)
+                    .ledgerCreditNumber(LEDGER_EXPENDITURE_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_EXPENDITURE_CREDIT_NAME)
+                    .ledgerDebitNumber(LEDGER_EXPENDITURE_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
                     .remark("TC_880 Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
         }
-
         log("INFO: Executed completely");
     }
 
@@ -1164,7 +934,6 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("@Validate the WinLose balance show properly");
         actualRecPayVal = winlosePopup.getGrandTotal(winlosePopup.colWinLoseTotal) ;
         Assert.assertEquals(expectedRecPayVal,actualRecPayVal,"FAILED! Win/Loss balance is not shown correctly, actual: "+actualRecPayVal+ " and expected: "+expectedRecPayVal);
-
         log("INFO: Executed completely");
     }
 
@@ -1224,44 +993,22 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("@Validate Rec/Pay/CA/RB/Adj Txns dialog displays with properly value when clicked on Rec/Pay/CA/RB/Adj link");
         String agentLedCode = "QATE00-LED";
         String actualRecPayVal;
-        String ledgerCreditAccountId;
-        String ledgerCreditAccountName;
-        String ledgerCreditAccountNumber;
-        String ledgerDebitAccountId;
-        String ledgerDebitAccountName;
-        String ledgerDebitAccountNumber;
-        String ledgerType;
-        String ledgerGroupId;
-        String parentId;
-
-        ledgerCreditAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_CREDIT_ACC,true);
-        ledgerCreditAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_CREDIT_ACC,true);
-        ledgerDebitAccountName = ChartOfAccountUtils.getAccountName(LEDGER_ASSET_DEBIT_ACC,true);
-        ledgerDebitAccountNumber = ChartOfAccountUtils.getAccountNumber(LEDGER_ASSET_DEBIT_ACC,true);
         long remark = DateUtils.getMilliSeconds();
-
         log("@Precondition: Add transaction for the Asset Ledger account to show value Rec/Pay");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
-                .ledgerCredit(ledgerCreditAccountName)
-                .ledgerCreditNumber(ledgerCreditAccountNumber)
-                .ledgerDebit(ledgerDebitAccountName)
-                .ledgerDebitNumber(ledgerDebitAccountNumber)
+                .ledgerCredit(LEDGER_ASSET_CREDIT_NAME)
+                .ledgerCreditNumber(LEDGER_ASSET_CREDIT_NUMBER)
+                .ledgerDebit(LEDGER_ASSET_DEBIT_NAME)
+                .ledgerDebitNumber(LEDGER_ASSET_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark("TC_1004 Automation Testing Transaction Client: Pre-condition " + remark)
                 .transDate(transDate)
                 .transType("Tax Rebate")
                 .build();
-        welcomePage.waitSpinnerDisappeared();
-        ledgerGroupId = ChartOfAccountUtils.getLedgerGroupId(LEDGER_GROUP_NAME_ASSET);
-        parentId = ChartOfAccountUtils.getParentId(ledgerGroupId, LEDGER_PARENT_NAME_ASSET);
-        ledgerType = ChartOfAccountUtils.getLedgerType(parentId,ledgerDebitAccountName);
-        ledgerCreditAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerCreditAccountName);
-        ledgerDebitAccountId = ChartOfAccountUtils.getLedgerAccountId(parentId,ledgerDebitAccountName);
         try {
-            TransactionUtils.addLedgerTxn(transaction,ledgerDebitAccountId,ledgerCreditAccountId,ledgerType);
-
+            TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -1270,25 +1017,24 @@ public class ClientStatementTest extends BaseCaseAQS {
             log("@Step 3: Open Summary popup of agent ledger");
             ClientSummaryPopup popup = clientPage.openSummaryPopup(agentLedCode);
             log("@Step 4: Open RecPay summary popup of player by click on link");
-            ClientLedgerRecPayPopup recPayPopup = popup.openLedgerRecPaySummaryPopup(ledgerDebitAccountName,popup.colLedgerRecPay);
+            ClientLedgerRecPayPopup recPayPopup = popup.openLedgerRecPaySummaryPopup(LEDGER_ASSET_DEBIT_NAME,popup.colLedgerRecPay);
             log("@Validate Difference show correctly with Rec/Pay/CA/RB/Adj link");
             actualRecPayVal = recPayPopup.getDifferenceOriginalVal(recPayPopup.colDifferentOriginal);
             Assert.assertEquals(String.format("%.2f",transaction.getAmountDebit()),actualRecPayVal,"FAILED! Total Running is not calculated correctly, actual: "+ actualRecPayVal + " and expected: "+transaction.getAmountDebit());
-
         } finally {
             log("@Post-condition: Add transaction for the Asset Ledger account into Debit");
             Transaction transactionPost = new Transaction.Builder()
-                    .ledgerCredit(ledgerDebitAccountName)
-                    .ledgerCreditNumber(ledgerDebitAccountNumber)
-                    .ledgerDebit(ledgerCreditAccountName)
-                    .ledgerDebitNumber(ledgerCreditAccountNumber)
+                    .ledgerCredit(LEDGER_ASSET_DEBIT_NAME)
+                    .ledgerCreditNumber(LEDGER_ASSET_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_ASSET_CREDIT_NAME)
+                    .ledgerDebitNumber(LEDGER_ASSET_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
                     .remark("TC_1004 Automation Testing Transaction Client: Post-condition for txn " + remark)
                     .transDate(transDate)
                     .transType("Tax Rebate")
                     .build();
-            TransactionUtils.addLedgerTxn(transactionPost,ledgerCreditAccountId,ledgerDebitAccountId,ledgerType);
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
         }
         log("INFO: Executed completely");
     }

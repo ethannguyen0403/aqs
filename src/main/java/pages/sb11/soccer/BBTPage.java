@@ -74,35 +74,43 @@ public class BBTPage extends WelcomePage {
     public Table tblFirstBBT = Table.xpath("(//app-bbt//table)[1]",totalColumnNumber);
 
     public void filter(String companyUnit, String sport, String smartType, String reportType, String fromDate, String toDate, String stake, String currency, String league){
-        if (!companyUnit.isEmpty())
+        if (!companyUnit.isEmpty()){
             ddpCompanyUnit.selectByVisibleText(companyUnit);
-        if(!sport.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!sport.isEmpty()){
             ddpSport.selectByVisibleText(sport);
-        if(!smartType.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!smartType.isEmpty()){
             ddpSmartType.selectByVisibleText(smartType);
-        if(!reportType.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!reportType.isEmpty()){
             ddpReportType.selectByVisibleText(reportType);
-        String currentDate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
-//        String currentDate = txtFromDate.getAttribute("value");
+            waitSpinnerDisappeared();
+        }
         if (!fromDate.isEmpty()) {
-            if (!currentDate.equals(fromDate)) {
-                dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
-                waitSpinnerDisappeared();
-            }
+            dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
+            waitSpinnerDisappeared();
+            waitSpinnerDisappeared();
         }
-//        currentDate = txtToDate.getAttribute("value");
         if (!toDate.isEmpty()) {
-            if (!currentDate.equals(toDate)) {
-                dtpToDate.selectDate(toDate, "dd/MM/yyyy");
-                waitSpinnerDisappeared();
-            }
+            dtpToDate.selectDate(toDate, "dd/MM/yyyy");
+            waitSpinnerDisappeared();
+            waitSpinnerDisappeared();
         }
-        if(!stake.isEmpty())
+        if(!stake.isEmpty()){
             ddpStake.selectByVisibleText(stake);
-        if(!currency.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!currency.isEmpty()){
             ddpCurrency.selectByVisibleText(currency);
+            waitSpinnerDisappeared();
+        }
         if(!league.isEmpty()){
             btnLeagues.click();
+            waitSpinnerDisappeared();
             btnClearAll.click();
             filterLeague(league);
         }
@@ -664,6 +672,38 @@ public class BBTPage extends WelcomePage {
         } else {
             if (chkOption.isSelected())
                 chkOption.deSelect();
+        }
+    }
+
+    public void verifyOpenPriceDisplay(String teamName, String ft12HAHome, String ft12HAAway, String ft12Draw, String ftHDPHome, String ftHDPAway, String ftHDPPriceHome, String ftHDPPriceAway, String ftOUHDPHome, String ftOUHDPAway, String ftOUPriceHome, String ftOUPriceAway, boolean isHomeTeam) {
+        if (isHomeTeam){
+            Table tbHomeTeam = Table.xpath(String.format("//span[text()='%s']/ancestor::table",teamName),8);
+            List<String> lstHeader = tbHomeTeam.getColumnNamesOfTable();
+            String hdpPriceHome = lstHeader.get(4).split("\n")[0].replace("(","").replace(")","");
+            String ouPriceHome = lstHeader.get(4).split("\n")[2].replace("(","").replace(")","");
+            String hdpHDPAway = lstHeader.get(4).split("\n")[1];
+            String ouHDPHome = lstHeader.get(4).split("\n")[3];
+            Assert.assertEquals(ftHDPPriceHome,hdpPriceHome,"FAILED! FT HDP Price Home display incorrect!");
+            Assert.assertEquals(ftOUPriceHome,ouPriceHome,"FAILED! FT Over Under Price Home display incorrect!");
+            Assert.assertEquals(ftHDPAway,hdpHDPAway,"FAILED! FT HDP Away display incorrect!");
+            Assert.assertEquals(ftOUHDPHome,ouHDPHome,"FAILED! FT Over Under HDP Home display incorrect!");
+        } else {
+            Table tbAwayTeam = Table.xpath(String.format("//span[text()='%s']/ancestor::table",teamName),8);
+            List<String> lstHeader = tbAwayTeam.getColumnNamesOfTable();
+            String haHome = lstHeader.get(1).split("\n")[0];
+            String haAway = lstHeader.get(1).split("\n")[2];
+            String ft1x2Draw = lstHeader.get(1).split("\n")[1];
+            String hdpPriceAway = lstHeader.get(0).split("\n")[0].replace("(","").replace(")","");
+            String hdpHDPHome = lstHeader.get(0).split("\n")[1];
+            String ouPriceAway = lstHeader.get(0).split("\n")[2].replace("(","").replace(")","");
+            String ouHDPAway = lstHeader.get(0).split("\n")[3];
+            Assert.assertEquals(ft12HAHome,haHome,"FAILED! FT 1x2 H/A Home display incorrect!");
+            Assert.assertEquals(ft12HAAway,haAway,"FAILED! 1x2 H/A Away display incorrect!");
+            Assert.assertEquals(ft1x2Draw,ft12Draw,"FAILED! FT 1x2 Draw display incorrect!");
+            Assert.assertEquals(ftHDPPriceAway,hdpPriceAway,"FAILED! FT HDP Price Away display incorrect!");
+            Assert.assertEquals(ftHDPHome,hdpHDPHome,"FAILED! FT HDP HDP Home display incorrect!");
+            Assert.assertEquals(ftOUPriceAway,ouPriceAway,"FAILED! FT OU Price Away display incorrect!");
+            Assert.assertEquals(ftOUHDPAway,ouHDPAway,"FAILED! FT OU HDP Away display incorrect!");
         }
     }
 }

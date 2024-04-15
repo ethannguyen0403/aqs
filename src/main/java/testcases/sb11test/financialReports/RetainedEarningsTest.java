@@ -23,8 +23,6 @@ import java.util.Map;
 import static common.SBPConstants.*;
 
 public class RetainedEarningsTest extends BaseCaseAQS {
-    private String detailTypeRetained = "302.000.000.000 - Retained Earnings";
-    private String detailTypeDividend = "303.000.000.000 - Dividend";
 
     @TestRails(id = "2815")
     @Test(groups = {"regression_stg", "2023.10.31","ethan"})
@@ -78,6 +76,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         String ledgerValue = "";
         log("@title: Validate correct Retained Earnings value displays");
         log("Precondition: Get value of Sub-Account '302.000.002.000 - Accum PL' from Ledger Statement > 'CUR Translation in HKD' > 'Running Bal' section in selected Financial Year");
+        String detailTypeRetained = "302.000.000.000 - Retained Earnings";
         String ledgerName = "302.000.002.000 - Accumulated Profit (Loss) for Previous Year";
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
         int month = DateUtils.getMonth(GMT_7) - 1;
@@ -99,6 +98,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     @TestRails(id="2819")
     @Test(groups =  {"regression", "2023.10.31","ethan"})
     public void Retained_Earnings_TC2819() {
+        String detailTypeRetained = "302.000.000.000 - Retained Earnings";
         String netProfitLoss = "";
         log("@title: Validate correct Net Income/Loss from Operation value displays");
         log("@pre-condition: Get value of Sub-Account '302.000.001.000 - PL for Current Year' from Ledger Statement > 'CUR Translation in HKD' > 'Running Bal' section in selected Financial Year");
@@ -124,6 +124,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     @TestRails(id="2820")
     @Test(groups =  {"regression", "2023.10.31","ethan"})
     public void Retained_Earnings_TC2820() {
+        String detailTypeDividend = "303.000.000.000 - Dividend";
         String ledgerValue = "";
         log("@title: Validate correct Dividends value displays");
         log("@pre-condition: Get value of Parent Account '303.000.000.000 - Dividend' from Ledger Statement > 'CUR Translation in HKD' > 'Running Bal.' column in selected Financial Year");
@@ -174,11 +175,11 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         Assert.assertTrue(retainedEarningsPage.isAmountNumberCorrectFormat(amountNetProfit), "FAILED! Amount number Net Profit is not correct format");
         Assert.assertTrue(retainedEarningsPage.isAmountNumberCorrectFormat(amountDividend), "FAILED! Amount number Dividend is not correct format");
         log("@Post-condition: delete download file");
-        try {
-            FileUtils.removeFile(downloadPath);
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
+        // try {
+        //     FileUtils.removeFile(downloadPath);
+        // } catch (IOException e) {
+        //     log(e.getMessage());
+        // }
         log("INFO: Executed completely");
     }
 
@@ -198,13 +199,90 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("@Verify 1: Validate can export Retained Earnings to PDF file successfully'");
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
         log("@Post-condition: delete download file");
-        try {
-            FileUtils.removeFile(downloadPath);
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
+        // try {
+        //     FileUtils.removeFile(downloadPath);
+        // } catch (IOException e) {
+        //     log(e.getMessage());
+        // }
+        log("INFO: Executed completely");
+    }
+    @TestRails(id="23952")
+    @Test(groups =  {"regression", "2024.V.3.0"})
+    public void Retained_Earnings_TC23952() {
+        log("@title: Validate Kastraki values are calculated up to the latest month that had passed the last day for the current financial year");
+        log("@Pre-condition 1: 'Retained Earnings' permission is ON for any account");
+        log("@Pre-condition 2: Get value of these accounts from Ledger Statement > CUR Translation in HKD > Running Bal. column in current Financial Year (e.g. 2023-2024) and Company Unit = Kastraki\n" +
+                "\n" +
+                "Beginning Retained Earnings = 302.000.002.000 - Accum PL (Kastraki) (1)                            \n" +
+                "\n" +
+                "Net Income/Loss from Operation = 302.000.001.000 - PL for Current Year (2)\n" +
+                "\n" +
+                "Dividends =  303.000.000.000 - Dividend (3)\n" +
+                "Today is not the last day of Month (e.g. today is 4/3/2024)\n" +
+                "\n" +
+                "=> (1), (2), (3) = values that take from the beginning of financial year (1/8/2023) till 29/02/2024");
+        String accountType = "Capital";
+        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        String fromDate = ledgerStatementPage.getBeginDateOfFinanYear(FINANCIAL_YEAR);
+        String toDate = ledgerStatementPage.getLastDateAfterCJE("dd/MM/yyyy");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,accountType,LEDGER_GROUP_RETAINED_EARNING_ACCOUNT,fromDate,toDate,"After CJE");
+        String value1 = ledgerStatementPage.getValueOfSubAcc("302.000.001.000","CUR Translation","Running Bal.");
+        String value2 = ledgerStatementPage.getValueOfSubAcc("302.000.002.000","CUR Translation","Running Bal.");
+        ledgerStatementPage.showLedger("","","",LEDGER_GROUP_DIVIDEND_ACCOUNT,"","","");
+        String value3 = ledgerStatementPage.getTotalInHKD(LEDGER_GROUP_DIVIDEND_ACCOUNT,"CUR Translation","Running Bal.");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Expand 'Financial Reports' menu");
+        log("@Step 3: Click 'Retained Earnings'");
+        RetainedEarningsPage page =
+                ledgerStatementPage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);
+        log("@Step 4: Filter data on the same Financial Year as precondition");
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR);
+        log("@Verify 1: Beginning Retained Earnings value should be = value at precondition (1)\n" +
+                "Net Income/Loss from Operation value should be = value at precondition (2)\n" +
+                "Dividends value should be = value at precondition (3)");
+        Assert.assertEquals(value2,page.getAmount("Beginning Retained Earnings"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
+        Assert.assertEquals(value1,page.getAmount("Net Income/Loss from Operation"),"FAILED! Net Income/Loss from Operation amount displays incorrect.");
+        Assert.assertEquals(value3,page.getAmount("Dividends"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
+        log("INFO: Executed completely");
+    }
+    @TestRails(id="23953")
+//    @Test(groups =  {"regression1", "2024.V.3.0"})
+    public void Retained_Earnings_TC23953() {
+        //TODO: need to revise test case because of having new improvement
+        log("@title: Validate Fair values are calculated up to the latest month that had passed the last day for the current financial year");
+        log("@Pre-condition 1: 'Retained Earnings' permission is ON for any account");
+        log("@Pre-condition 2: Get value of these accounts from Ledger Statement > CUR Translation in HKD > Running Bal. column in current Financial Year (e.g. 2023-2024) and Company Unit = Fair\n" +
+                "\n" +
+                "Beginning Retained Earnings = sum (302.000.001.001 - Retained Earnings (USD), 302.000.002.000 - Accumulated Profit (Loss) for Previous Year (USD)) (1)\n" +
+                "Net Income/Loss from Operation = 302.000.001.000 - PL for Current Year (2)\n" +
+                "Dividends =  303.000.000.000 - Dividend (3)\n" +
+                "Today is not the last day of Month (e.g. today is 4/3/2024)\n" +
+                "\n" +
+                "=> (1), (2), (3) = values that take from the beginning of financial year (1/8/2023) till 29/02/2024");
+        String accountType = "Capital";
+        LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        String fromDate = ledgerStatementPage.getBeginDateOfFinanYear(FINANCIAL_YEAR);
+        String toDate = ledgerStatementPage.getLastDateAfterCJE("dd/MM/yyyy");
+        ledgerStatementPage.showLedger(FAIR,FINANCIAL_YEAR,accountType,LEDGER_GROUP_RETAINED_EARNING_ACCOUNT,fromDate,toDate,"After CJE");
+        String value1 = ledgerStatementPage.getValueOfSubAcc("302.000.001.000","CUR Translation","Running Bal.");
+        String value2 = ledgerStatementPage.getValueOfSubAcc("302.000.002.000","CUR Translation","Running Bal.");
+        ledgerStatementPage.showLedger("","","",LEDGER_GROUP_DIVIDEND_ACCOUNT,"","","");
+        String value3 = ledgerStatementPage.getTotalInHKD(LEDGER_GROUP_DIVIDEND_ACCOUNT,"CUR Translation","Running Bal.");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Expand 'Financial Reports' menu");
+        log("@Step 3: Click 'Retained Earnings'");
+        RetainedEarningsPage page =
+                ledgerStatementPage.navigatePage(FINANCIAL_REPORTS, RETAINED_EARNING, RetainedEarningsPage.class);
+        log("@Step 4: Filter data on the same Financial Year as precondition");
+        page.filter(FAIR,FINANCIAL_YEAR);
+        log("@Verify 1: Beginning Retained Earnings value should be = value at precondition (1)\n" +
+                "Net Income/Loss from Operation value should be = value at precondition (2)\n" +
+                "Dividends value should be = value at precondition (3)");
+        Assert.assertEquals(value2,page.getAmount("Beginning Retained Earnings"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
+        Assert.assertEquals(value1,page.getAmount("Net Income/Loss from Operation"),"FAILED! Net Income/Loss from Operation amount displays incorrect.");
+        Assert.assertEquals(value3,page.getAmount("Dividends"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
         log("INFO: Executed completely");
     }
 
-    }
+}
 

@@ -51,6 +51,8 @@ public class SBPConstants {
     public final static String CLOSING_JOURNAL_ENTRIES = "Closing Journal Entries";
     public final static String FUND_RECONCILIATION = "Fund Reconciliation";
     public final static String AR_AND_AP_RECONCILIATION = "A/R and A/P Reconciliation";
+    public final static String WL_RPC = "WL & RPC";
+    public final static String WIN_LOSS_DETAIL = "Win Loss Detail";
     public final static String CONSOLIDATED_CLIENT_BALANCE = "Consolidated Client Balance";
     public final static String IP_MONITORING = "IP Monitoring";
     public final static String JOURNAL_ENTRIES = "Journal Entries";
@@ -86,6 +88,7 @@ public class SBPConstants {
     public final static String PLACE_BET_SUCCESS_MSG ="The bet was placed successfully";
     public final static String FINANCIAL_YEAR = "Year 2023-2024";
     public final static String KASTRAKI_LIMITED = "Kastraki Limited";
+    public final static String FAIR = "Fair";
     public final static String CLIENT_CREDIT_ACC = "ClientCredit-AutoQC";
     public final static String CLIENT_DEBIT_ACC = "ClientDebit-AutoQC";
     public final static String LEDGER_GROUP_NAME_INCOME = "QA Ledger Group Income";
@@ -94,6 +97,8 @@ public class SBPConstants {
     public final static String LEDGER_GROUP_NAME_ASSET = "QA Ledger Group Asset";
     public final static String LEDGER_GROUP_NAME_ASSET_700 = "QA Asset Account 700";
     public final static String LEDGER_GROUP_NAME_CAPITAL = "QA Ledger Group Capital";
+    public final static String LEDGER_GROUP_RETAINED_EARNING_ACCOUNT = "302.000.000.000 - Retained Earnings";
+    public final static String LEDGER_GROUP_DIVIDEND_ACCOUNT = "303.000.000.000 - Dividend";
     public final static String QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT = "500.000.000.000 - QA Ledger Group Asset";
     public final static String QA_ASSET_PARENT_ACCOUNT_700 = "700.000.000.000 - QA Asset Account 700";
     public final static String CAPITAL_PARENT_ACCOUNT = "301.000.000.000 - Capital";
@@ -110,9 +115,17 @@ public class SBPConstants {
     public final static String LEDGER_LIABILITY_DEBIT_NAME = "AutoLiabilityDebit";
     public final static String LEDGER_LIABILITY_DEBIT_NUMBER = "044.000.000.000";
     public final static String LEDGER_CAPITAL_CREDIT_ACC = "030.000.000.000 - AutoCapitalCredit";
+    public final static String LEDGER_CAPITAL_CREDIT_NAME = "AutoCapitalCredit";
+    public final static String LEDGER_CAPITAL_CREDIT_NUMBER = "030.000.000.000";
     public final static String LEDGER_CAPITAL_DEBIT_ACC = "033.000.000.000 - AutoCapitalDebit";
+    public final static String LEDGER_CAPITAL_DEBIT_NAME = "AutoCapitalDebit";
+    public final static String LEDGER_CAPITAL_DEBIT_NUMBER = "033.000.000.000";
     public final static String LEDGER_INCOME_CREDIT_ACC = "002.000.000.000 - AutoIncomeCredit";
+    public final static String LEDGER_INCOME_CREDIT_NAME = "AutoIncomeCredit";
+    public final static String LEDGER_INCOME_CREDIT_NUMBER = "002.000.000.000";
     public final static String LEDGER_INCOME_DEBIT_ACC = "002.200.000.000 - AutoIncomeDebit";
+    public final static String LEDGER_INCOME_DEBIT_NAME = "AutoIncomeDebit";
+    public final static String LEDGER_INCOME_DEBIT_NUMBER = "002.200.000.000";
     public final static String LEDGER_EXPENDITURE_CREDIT_ACC = "010.000.000.000 - AutoExpenditureCredit";
     public final static String LEDGER_EXPENDITURE_CREDIT_NAME = "AutoExpenditureCredit";
     public final static String LEDGER_EXPENDITURE_CREDIT_NUMBER = "010.000.000.000";
@@ -385,6 +398,7 @@ public class SBPConstants {
 
     public static class BBGPhoneBetting{
         public final static List<String> TABLE_HEADER = Arrays.asList("#", "Account Code", "Bet Date", "Bet Type", "Selection", "HDP", "Live", "Price", "Stake", "Win/Lose", "CUR", "Trader");
+        public final static String MES_MORE_THAN_7_DAYS = "Date range should not be more than 7 days.";
     }
 
     public static class SPPPage{
@@ -406,6 +420,7 @@ public class SBPConstants {
         public final static List<String> REPORT_TYPE_LIST = Arrays.asList("Pending Bets","Settled Bets");
         public final static List<String> WIN_LOSE_TYPE_LIST = Arrays.asList("All", "Win Bets", "Lose Bets", "Draw Bets");
         public final static String MES_OVER_THAN_7 = "Date range should not be more than 7 days.";
+        public final static List<String> STAKE_LIST = Arrays.asList("All","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
     }
 
     public static class CurrencyRates{
@@ -511,6 +526,12 @@ public class SBPConstants {
         public final static List<String> COMPANY_UNIT_LIST = Arrays.asList("Kastraki Limited","Fair");
         public final static List<String> DETAIL_TYPE_LIST_KASTRAKI_LIMITED = Arrays.asList("All","105.000.000.000 - A/R Project", "107.000.000.000 - Other Receivables","202.000.000.000 - Other Payable");
         public final static List<String> DETAIL_TYPE_LIST_FAIR = Arrays.asList("All","105.000.000.000 - Other Receivables", "300.000.000.000 - Account Payable (A/P)");
+    }
+    public static class WLRPCT {
+        public final static List<String> HEADER_NAME_TYPE_ALL_CLIENT = Arrays.asList("No", "Client Name", "Currency Code", "Winlose Amount");
+        public final static List<String> HEADER_NAME_TYPE_ALL_BOOKIE = Arrays.asList("No", "Bookie Name", "Currency Code", "Winlose Amount");
+        public final static String MES_INVALID_DATE_RANGE = "Invalid date range. You can see data up to 3 months.";
+
     }
 }
 

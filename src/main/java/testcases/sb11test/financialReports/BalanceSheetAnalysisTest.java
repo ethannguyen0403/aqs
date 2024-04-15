@@ -10,7 +10,6 @@ import pages.sb11.LoginPage;
 import pages.sb11.financialReports.BalanceSheetAnalysisPage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.BalanceSheetAnalysisUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
@@ -62,7 +61,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         }finally {
             log("@Post-condition: delete download file");
-            FileUtils.removeFile(downloadPath);
+            // FileUtils.removeFile(downloadPath);
         }
     }
 
@@ -158,12 +157,12 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Filter with month that has data > observe");
         page.filter(KASTRAKI_LIMITED, "", "", "");
         log("@Verify 1: Validate Total Balance row sums up correctly 3 amounts in 'Asset', 'Liability', 'Capital' rows of each columns");
-        Assert.assertTrue(page.isTotalBalanceDisplay("previous",true),"FAILED! Debit Value of Previous Month displays incorrect.");
-        Assert.assertTrue(page.isTotalBalanceDisplay("previous",false),"FAILED! Credit Value of Previous Month displays incorrect.");
-        Assert.assertTrue(page.isTotalBalanceDisplay("current",true),"FAILED! Debit Value of Current Month displays incorrect.");
-        Assert.assertTrue(page.isTotalBalanceDisplay("current",false),"FAILED! Credit Value of Current Month displays incorrect.");
-        Assert.assertTrue(page.isTotalBalanceDisplay("txns",true),"FAILED! Debit Value of Txn colums displays incorrect.");
-        Assert.assertTrue(page.isTotalBalanceDisplay("txns",false),"FAILED! Credit Value of Txn colums displays incorrect.");
+        page.verifyTotalBalanceDisplay("previous",true);
+        page.verifyTotalBalanceDisplay("previous",false);
+        page.verifyTotalBalanceDisplay("current",true);
+        page.verifyTotalBalanceDisplay("current",false);
+        page.verifyTotalBalanceDisplay("txns",true);
+        page.verifyTotalBalanceDisplay("txns",false);
         log("INFO: Executed completely");
     }
 
@@ -177,9 +176,9 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         page.filter(KASTRAKI_LIMITED, "", "", "");
         log("@Step 3: Check the Difference value");
         log("@Verify 1: Difference = absolute (Total Balance Debit) - absolute (Total Balance Credit)");
-        Assert.assertTrue(page.isDifferenceValueDisplay("previous"),"FAILED! Difference is not correct");
-        Assert.assertTrue(page.isDifferenceValueDisplay("current"),"FAILED! Difference is not correct");
-        Assert.assertTrue(page.isDifferenceValueDisplay("txns"),"FAILED! Difference is not correct");
+        page.verifyDifferenceValueDisplay("previous");
+        page.verifyDifferenceValueDisplay("current");
+        page.verifyDifferenceValueDisplay("txns");
         log("INFO: Executed completely");
     }
 
@@ -208,7 +207,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         }finally {
             log("@Post-condition: delete download file");
-            FileUtils.removeFile(downloadPath);
+            // FileUtils.removeFile(downloadPath);
         }
     }
     @Test(groups = {"regression", "2024.V.2.0","ethan"})
@@ -220,27 +219,13 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Filter with month that has data");
         page.filter(KASTRAKI_LIMITED, "", "", "Before CJE");
         log("@Step 3: Check Asset value");
-        int year = DateUtils.getYear(GMT_7);
-        int month = DateUtils.getMonth(GMT_7);
-        double sumPreDeEx = BalanceSheetAnalysisUtils.getSumCreDe("Asset","totalDebitPrevMonth",year,month,false);
-        double sumPreCreEx = BalanceSheetAnalysisUtils.getSumCreDe("Asset","totalCreditPrevMonth",year,month,false);
-        double sumCurDeEx = BalanceSheetAnalysisUtils.getSumCreDe("Asset","totalDebit",year,month,false);
-        double sumCurCreEx = BalanceSheetAnalysisUtils.getSumCreDe("Asset","totalCredit",year,month,false);
-        double sumDeTxnEx = BalanceSheetAnalysisUtils.getSumCreDe("Asset","totalDifDebit",year,month,false);
-        double sumCreTxnEx = BalanceSheetAnalysisUtils.getSumCreDe("Asset","totalDifCredit",year,month,false);
         log("@Verify 1: The Asset value = sum up all absolute values of credit/debit amounts in each column");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Asset","previous",true,sumPreDeEx),
-                "FAILED! Sum of Previous Debit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Asset","previous",false,sumPreCreEx),
-                "FAILED! Sum of Previous Credit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Asset","current",true,sumCurDeEx),
-                "FAILED! Sum of Current Debit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Asset","current",false,sumCurCreEx),
-                "FAILED! Sum of Current Credit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Asset","txns",true,sumDeTxnEx),
-                "FAILED! Sum of Debit txns display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Asset","txns",false,sumCreTxnEx),
-                "FAILED! Sum of Credit txns display incorrect");
+        page.verifySumColumnDeCreDisplay("Asset","previous",true);
+        page.verifySumColumnDeCreDisplay("Asset","previous",false);
+        page.verifySumColumnDeCreDisplay("Asset","current",true);
+        page.verifySumColumnDeCreDisplay("Asset","current",false);
+        page.verifySumColumnDeCreDisplay("Asset","txns",true);
+        page.verifySumColumnDeCreDisplay("Asset","txns",false);
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression", "2024.V.2.0","ethan"})
@@ -252,27 +237,13 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Filter with month that has data");
         page.filter(KASTRAKI_LIMITED, "", "", "Before CJE");
         log("@Step 3: Check Liability value");
-        int year = DateUtils.getYear(GMT_7);
-        int month = DateUtils.getMonth(GMT_7);
-        double sumPreDeEx = BalanceSheetAnalysisUtils.getSumCreDe("Liability","totalDebitPrevMonth",year,month,false);
-        double sumPreCreEx = BalanceSheetAnalysisUtils.getSumCreDe("Liability","totalCreditPrevMonth",year,month,false);
-        double sumCurDeEx = BalanceSheetAnalysisUtils.getSumCreDe("Liability","totalDebit",year,month,false);
-        double sumCurCreEx = BalanceSheetAnalysisUtils.getSumCreDe("Liability","totalCredit",year,month,false);
-        double sumDeTxnEx = BalanceSheetAnalysisUtils.getSumCreDe("Liability","totalDifDebit",year,month,false);
-        double sumCreTxnEx = BalanceSheetAnalysisUtils.getSumCreDe("Liability","totalDifCredit",year,month,false);
         log("@Verify 1: The Liability value = sum up all absolute values of credit/debit amounts in each column");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Liability","previous",true,sumPreDeEx),
-                "FAILED! Sum of Previous Debit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Liability","previous",false,sumPreCreEx),
-                "FAILED! Sum of Previous Credit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Liability","current",true,sumCurDeEx),
-                "FAILED! Sum of Current Debit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Liability","current",false,sumCurCreEx),
-                "FAILED! Sum of Current Credit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Liability","txns",true,sumDeTxnEx),
-                "FAILED! Sum of Debit txns display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Liability","txns",false,sumCreTxnEx),
-                "FAILED! Sum of Credit txns display incorrect");
+        page.verifySumColumnDeCreDisplay("Liability","previous",true);
+        page.verifySumColumnDeCreDisplay("Liability","previous",false);
+        page.verifySumColumnDeCreDisplay("Liability","current",true);
+        page.verifySumColumnDeCreDisplay("Liability","current",false);
+        page.verifySumColumnDeCreDisplay("Liability","txns",true);
+        page.verifySumColumnDeCreDisplay("Liability","txns",false);
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression", "2024.V.2.0","ethan"})
@@ -284,27 +255,13 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Filter with month that has data");
         page.filter(KASTRAKI_LIMITED, "", "", "Before CJE");
         log("@Step 3: Check Capital value");
-        int year = DateUtils.getYear(GMT_7);
-        int month = DateUtils.getMonth(GMT_7);
-        double sumPreDeEx = BalanceSheetAnalysisUtils.getSumCreDe("Capital","totalDebitPrevMonth",year,month,false);
-        double sumPreCreEx = BalanceSheetAnalysisUtils.getSumCreDe("Capital","totalCreditPrevMonth",year,month,false);
-        double sumCurDeEx = BalanceSheetAnalysisUtils.getSumCreDe("Capital","totalDebit",year,month,false);
-        double sumCurCreEx = BalanceSheetAnalysisUtils.getSumCreDe("Capital","totalCredit",year,month,false);
-        double sumDeTxnEx = BalanceSheetAnalysisUtils.getSumCreDe("Capital","totalDifDebit",year,month,false);
-        double sumCreTxnEx = BalanceSheetAnalysisUtils.getSumCreDe("Capital","totalDifCredit",year,month,false);
         log("@Verify 1: The Capital value = sum up all absolute values of credit/debit amounts in each column");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Capital","previous",true,sumPreDeEx),
-                "FAILED! Sum of Previous Debit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Capital","previous",false,sumPreCreEx),
-                "FAILED! Sum of Previous Credit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Capital","current",true,sumCurDeEx),
-                "FAILED! Sum of Current Debit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Capital","current",false,sumCurCreEx),
-                "FAILED! Sum of Current Credit display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Capital","txns",true,sumDeTxnEx),
-                "FAILED! Sum of Debit txns display incorrect");
-        Assert.assertTrue(page.isSumColumnDeCreDisplay("Capital","txns",false,sumCreTxnEx),
-                "FAILED! Sum of Credit txns display incorrect");
+        page.verifySumColumnDeCreDisplay("Capital","previous",true);
+        page.verifySumColumnDeCreDisplay("Capital","previous",false);
+        page.verifySumColumnDeCreDisplay("Capital","current",true);
+        page.verifySumColumnDeCreDisplay("Capital","current",false);
+        page.verifySumColumnDeCreDisplay("Capital","txns",true);
+        page.verifySumColumnDeCreDisplay("Capital","txns",false);
         log("INFO: Executed completely");
     }
 }

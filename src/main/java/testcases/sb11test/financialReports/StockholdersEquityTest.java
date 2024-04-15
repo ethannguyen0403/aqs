@@ -194,7 +194,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         }finally {
             log("@Post-condition: delete download file");
-            FileUtils.removeFile(downloadPath);
+            // FileUtils.removeFile(downloadPath);
         }
     }
 
@@ -217,7 +217,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         }finally {
             log("@Post-condition: delete download file");
-            FileUtils.removeFile(downloadPath);
+            // FileUtils.removeFile(downloadPath);
         }
     }
 

@@ -74,11 +74,11 @@ public class CurrencyRatesTest extends BaseCaseAQS {
         log("Validate can export Currency list to Excel file successfully");
         Assert.assertTrue(FileUtils.doesFileNameExist(dowloadPath), "Failed to download Expected document");
         log("@Post-condition: delete download file");
-        try {
-            FileUtils.removeFile(dowloadPath);
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
+//        try {
+//            FileUtils.removeFile(dowloadPath);
+//        } catch (IOException e) {
+//            log(e.getMessage());
+//        }
 
 
         log("INFO: Executed completely");

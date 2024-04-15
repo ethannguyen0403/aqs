@@ -8,7 +8,7 @@ import pages.sb11.WelcomePage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientSummaryPopup {
+public class ClientSummaryPopup extends WelcomePage {
     int summaryColTotal = 11;
     public int colOpeningTotal = 3;
     public int colWinLoseTotal = 4;
@@ -27,7 +27,6 @@ public class ClientSummaryPopup {
     public Table tblSummary = Table.xpath("//app-member-summary//table[@aria-label='table']",summaryColTotal);
     Table tblLedgerSummary = Table.xpath("//app-ledger-member-summary//table[@aria-label='table']",summaryColTotal);
     Icon closeIcon = Icon.xpath("//span[contains(@class,'close-icon')]");
-    public Label lblSpin = Label.xpath("//div[contains(@class,'la-ball-clip-rotate')]");
 
     public String getGrandTotal(String currency, int colIndex) {
         String returnValue;
@@ -190,12 +189,6 @@ public class ClientSummaryPopup {
                 return new ClientLedgerRecPayPopup(true);
             }
             i = i + 1;
-        }
-    }
-
-    public void waitSpinnerDisappeared() {
-        while(lblSpin.isDisplayed()) {
-            lblSpin.waitForControlInvisible();
         }
     }
 }

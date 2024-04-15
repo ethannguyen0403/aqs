@@ -1,7 +1,9 @@
 package utils.sb11;
 
 import com.paltech.constant.Configs;
+import com.paltech.utils.DateUtils;
 import com.paltech.utils.WSUtils;
+import common.SBPConstants;
 import objects.Order;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -257,5 +259,39 @@ public class BetSettlementUtils {
             Thread.sleep(timeSecond*1000);
         }catch (Exception e){
         }
+    }
+    public static Order getOrderInDayByAccountCode(String accountCode,String date, String sport){
+        JSONArray jsonArr = null;
+        String accountId = AccountSearchUtils.getAccountId(accountCode);
+        String sportID = SBPConstants.SPORT_ID_MAP.get(sport);
+        String apiDate = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
+        String apiToDate = DateUtils.getDate(0,"yyyy-MM-dd",SBPConstants.GMT_7);
+        try {
+            jsonArr = getSettledListJson(apiDate, apiToDate, accountCode, accountId, sportID);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if (Objects.nonNull(jsonArr)) {
+            if (jsonArr.length() > 0) {
+                JSONObject orderObj = jsonArr.getJSONObject(0);
+                Order order = new Order.Builder()
+                        .accountCode(accountCode)
+                        .home(orderObj.getString("home"))
+                        .away(orderObj.getString("away"))
+                        .betType(orderObj.getString("type"))
+                        .odds(orderObj.getDouble("odds"))
+                        .selection(orderObj.getString("selection"))
+                        .requireStake(orderObj.getDouble("stake"))
+                        .winLose(orderObj.getDouble("winLose"))
+                        .handicap(orderObj.getDouble("handicap"))
+                        .orderId(String.valueOf(orderObj.getInt("id")))
+                        .oddType(orderObj.getString("originalOddsFormat"))
+                        .price(orderObj.getDouble("originalOdds"))
+                        .marketType(orderObj.getString("marketType"))
+                        .build();
+                return order;
+            }
+        }
+        return null;
     }
 }

@@ -3,13 +3,17 @@ package pages.sb11.financialReports;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
+import com.paltech.utils.DateUtils;
 import com.paltech.utils.DoubleUtils;
 import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import utils.sb11.BalanceSheetAnalysisUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static common.SBPConstants.GMT_7;
 
 public class BalanceSheetAnalysisPage extends WelcomePage {
     DropDownBox ddbCompany = DropDownBox.xpath("//div[contains(text(),'Company')]/following::select[1]");
@@ -137,23 +141,6 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
         }
         return Label.xpath(tblBalance.getxPathOfCell(1, colIndex, rowIndex, null)).getText().trim();
     }
-    public String getColumnDebitCreditOfAccountSelectedMonth(String accountName, boolean isDebit) {
-        int rowIndex = findRowIndexOfAccount(accountName);
-        int creOrDeCol = isDebit ? colDebitCurrentMonth : colCreditCurrentMonth;
-        return Label.xpath(tblBalance.getxPathOfCell(1, creOrDeCol, rowIndex, null)).getText().trim();
-    }
-
-    public String getColumnDebitCreditOfAccountPreviousMonth(String accountName, boolean isDebit) {
-        int rowIndex = findRowIndexOfAccount(accountName);
-        int creOrDeCol = isDebit ? colDebitPreviousMonth : colCreditPreviousMonth;
-        return Label.xpath(tblBalance.getxPathOfCell(1, creOrDeCol, rowIndex, null)).getText().trim();
-    }
-
-    public String getColumnDebitCreditOfAccountTxns(String accountName, boolean isDebit) {
-        int rowIndex = findRowIndexOfAccount(accountName);
-        int creOrDeCol = isDebit ? colDebitTxns : colCreditTxns;
-        return Label.xpath(tblBalance.getxPathOfCell(1, creOrDeCol, rowIndex, null)).getText().trim();
-    }
 
     /**
      *
@@ -220,7 +207,12 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
      * @return
      */
     public double getDifTotalBalance(String typeValue,int indexTotal){
-        return Double.valueOf(Label.xpath(String.format(totalBalanceDifXpath,typeValue,indexTotal)).getText().trim().replace(",",""));
+        Label lblTotal = Label.xpath(String.format(totalBalanceDifXpath,typeValue,indexTotal));
+        if (lblTotal.getColour("color").equals("rgba(252, 0, 0, 1)")){
+            return Double.valueOf("-"+lblTotal.getText().trim().replace(",",""));
+        } else {
+            return Double.valueOf(lblTotal.getText().trim().replace(",",""));
+        }
     }
 
     /**
@@ -228,10 +220,10 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
      * @param month input previous, current, txns
      * @return
      */
-    public boolean isDifferenceValueDisplay(String month) {
+    public void verifyDifferenceValueDisplay(String month) {
         double debitValueAc = Double.valueOf(getTotalOfAccountType("Total Balance", month,true));
         double creditValueAc = Double.valueOf(getTotalOfAccountType("Total Balance", month,false));
-        double difEx = DoubleUtils.roundEvenWithTwoPlaces(debitValueAc - creditValueAc);
+        double difEx = debitValueAc - creditValueAc;
         int indexCol = 0;
         switch (month){
             case "previous":
@@ -247,23 +239,50 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
                 System.out.println("Input wrongly month value!");
         }
         double difAc = getDifTotalBalance("Difference",indexCol);
-        double difference1 = difAc - difEx;
-        double difference2 = difEx - difAc;
-        if (difference1 <= 0.02 && difference1 >= 0|| difference2 <= 0.02 && difference2 >= 0)  {
-            return true;
-        }
-        System.out.println(difAc+" difference from "+ difEx);
-        return false;
+        //BA accept difference 0.01
+        Assert.assertEquals(difAc,difEx,0.011,"FAILED!"+difEx+" difference from "+difAc);
     }
 
-    public boolean isSumColumnDeCreDisplay(String accountTypeName, String month, boolean isDebit, double valueEx) {
-        String valueAc = getTotalOfAccountType(accountTypeName,month,isDebit);
-        double total1 = DoubleUtils.roundEvenWithTwoPlaces(Double.valueOf(valueAc) - valueEx);
-        double total2 = DoubleUtils.roundEvenWithTwoPlaces(valueEx - Double.valueOf(valueAc));
-        if (total1 <= 0.02 && total1 >= 0 || total2 <= 0.02 && total2 >= 0){
-            return true;
+    /**
+     *
+     * @param accountTypeName
+     * @param month input previous, current, txns
+     * @param isDebit
+     * @return
+     */
+    public void verifySumColumnDeCreDisplay(String accountTypeName, String month, boolean isDebit) {
+        int year = DateUtils.getYear(GMT_7);
+        int monthEx = DateUtils.getMonth(GMT_7);
+        String totalType = null;
+        switch (month){
+            case "previous":
+                if (isDebit){
+                    totalType = "totalDebitPrevMonth";
+                } else {
+                    totalType = "totalCreditPrevMonth";
+                }
+                break;
+            case "current":
+                if (isDebit){
+                    totalType = "totalDebit";
+                } else {
+                    totalType = "totalCredit";
+                }
+                break;
+            case "txns":
+                if (isDebit){
+                    totalType = "totalDifDebit";
+                } else {
+                    totalType = "totalDifCredit";
+                }
+                break;
+            default:
+                System.err.println("Input wrongly month");
         }
-        return false;
+        double sumPreDeEx = BalanceSheetAnalysisUtils.getSumCreDe(accountTypeName,totalType,year,monthEx,false);
+        String valueAc = getTotalOfAccountType(accountTypeName,month,isDebit);
+        //BA accept difference 0.01
+        Assert.assertEquals(Double.valueOf(valueAc),sumPreDeEx,0.01,"FAILED!"+sumPreDeEx+" difference from "+valueAc);
     }
 
     /**
@@ -271,17 +290,13 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
      * @param month input previous, current, txns
      * @param isDebit
      */
-    public boolean isTotalBalanceDisplay(String month, boolean isDebit) {
+    public void verifyTotalBalanceDisplay(String month, boolean isDebit) {
         Double assetValue = Double.valueOf(getTotalOfAccountType("Asset", month,isDebit));
         Double liabilityValue = Double.valueOf(getTotalOfAccountType("Liability", month,isDebit));
         Double capitalValue = Double.valueOf(getTotalOfAccountType("Capital", month,isDebit));
         double totalBalanceEx = DoubleUtils.roundUpWithTwoPlaces(assetValue + liabilityValue + capitalValue);
         double totalBalanceAc = Double.valueOf(getTotalOfAccountType("Total Balance", month,isDebit));
-        double totalEx1 = totalBalanceAc - totalBalanceEx;
-        double totalEx2 = totalBalanceEx - totalBalanceAc;
-        if (totalEx1 <= 0.02 && totalEx1 >= 0 || totalEx2 <= 0.02 && totalEx2 >= 0){
-            return true;
-        }
-        return false;
+        //BA accept difference 0.01
+        Assert.assertEquals(totalBalanceAc,totalBalanceEx,0.01,"FAILED!"+totalBalanceEx+" difference from "+totalBalanceAc);
     }
 }

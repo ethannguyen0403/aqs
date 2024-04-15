@@ -163,13 +163,15 @@ public class BetListPopup {
     public String getBetID(Order order, String marketType){
         int startIndex = getStartRowWithMarketType(marketType);
         int i = startIndex +1;
-        while(true){
+        while(true && i < 50){
             String accountCode = tblOrder.getControlOfCell(1,colAccount,i,null).getText().trim();
-            if(accountCode.equals(order.getAccountCode()))
+            if(accountCode.equals(order.getAccountCode())){
                 return tblOrder.getControlOfCell(1, colBetrefId, i, null).getText().trim();
+            }
             System.out.println(String.format("Skip verity %s section at row %s because the account code is different with %s", marketType,i,accountCode ));
             i = i +1;
         }
+        return null;
     }
 
     private int getStartRowWithMarketType(String marketType){

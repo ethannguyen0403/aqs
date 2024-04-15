@@ -5,7 +5,6 @@ import com.paltech.element.BaseElement;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
-import com.paltech.utils.DateUtils;
 import com.paltech.utils.DoubleUtils;
 import com.relevantcodes.extentreports.LogStatus;
 import controls.Table;
@@ -284,19 +283,14 @@ public class IncomeStatementAnalysisPage extends WelcomePage {
      * @param month input value with format MMMM
      * @param year input value with format yyyy
      */
-    public boolean isValueNetProfitDisplay(String month,String year) {
+    public void verifyValueNetProfitDisplay(String month, String year) {
         String lblYear = String.format("%s - %s", month, year);
         double amountIncome = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Operating Income")).replace(",","")));
         double amountExpense = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Operating Expenses")).replace(",","")));
         double amountNonIncome = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Non-Operating Income")).replace(",","")));
         double amountNetProfitAc = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getNetProfitLoss(lblYear).replace(",","")));
         double amountNetProfitEx = DoubleUtils.roundUpWithTwoPlaces(amountIncome - amountExpense + amountNonIncome);
-        double netProfit1 = amountNetProfitAc - amountNetProfitEx;
-        double netProfit2 = amountNetProfitEx - amountNetProfitAc;
-        if (netProfit1 < 0.02 && netProfit1 >=0 || netProfit2 < 0.02 && netProfit2 >=0){
-            return true;
-        }
-        System.out.println(amountNetProfitAc+" difference from "+amountNetProfitEx);
-        return false;
+        //BA accept difference 0.01
+        Assert.assertEquals(amountNetProfitAc,amountNetProfitEx,0.01,"FAILED!"+amountNetProfitEx+" difference from "+amountNetProfitAc);
     }
 }

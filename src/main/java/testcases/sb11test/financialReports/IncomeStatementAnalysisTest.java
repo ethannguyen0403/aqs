@@ -1,7 +1,6 @@
 package testcases.sb11test.financialReports;
 
 import com.paltech.utils.DateUtils;
-import com.paltech.utils.DoubleUtils;
 import com.paltech.utils.FileUtils;
 import com.paltech.utils.StringUtils;
 import org.testng.Assert;
@@ -9,9 +8,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
 import pages.sb11.financialReports.IncomeStatementAnalysisPage;
-import pages.sb11.financialReports.TrialBalancePage;
 import pages.sb11.generalReports.LedgerStatementPage;
-import pages.sb11.role.RoleManagementPage;
 import testcases.BaseCaseAQS;
 import utils.ExcelUtils;
 import utils.testraildemo.TestRails;
@@ -97,17 +94,17 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3408")
-    @Test(groups = {"regression", "2024.V.1.0","ethan"})
+    @Test(groups = {"regression", "2024.V.3.0"})
     public void IncomeStatement_Analysis_TC3408() {
-        log("@title: Validate Non-Operating Income is only displayed details types with cart code starting from 460 to 599");
-        log("@Precondition: Already have a detail type with chart codes starting from 460 to 599 that contain transaction");
+        log("@title: Validate Non-Operating Income is only displayed details types with cart code starting from 460 to 499");
+        log("@Precondition: Already have a detail type with chart codes starting from 460 to 499 that contain transaction");
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
-        log("@Step 2: Filter which has data");
+        log("@Step 2: Filter with month that contain transaction at pre-condition");
         incomeAnaPage.filter(KASTRAKI_LIMITED,"","","");
-        log("@Verify 1: Validate chart code of Operating expenses are started with 5, 6");
+        log("@Verify 1: Chart code, name, amount of parent accounts that belong to the detail types should display accordingly on NON-OPERATING INCOME");
         List<String> codeList = incomeAnaPage.getCodeListOfGroup(NON_OPERATING_INCOME);
-        Assert.assertTrue(incomeAnaPage.verifyCodeStartingInRange(codeList, 460, 500), "FAILED! Chart code Operation Income NOT in range 460 to 5xx");
+        Assert.assertTrue(incomeAnaPage.verifyCodeStartingInRange(codeList, 460, 499), "FAILED! Chart code Operation Income NOT in range 460 to 499");
         log("INFO: Executed completely");
     }
 
@@ -291,7 +288,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Filter which have data");
         incomeAnaPage.filter(KASTRAKI_LIMITED, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
         log("@Verify 1: Net Profit (Loss) = Total Operating Income - Total Operating Expenses + Total Non-Operating Income");
-        Assert.assertTrue(incomeAnaPage.isValueNetProfitDisplay(month,year), "FAILED! Net Profit (Loss) is not correct");
+        incomeAnaPage.verifyValueNetProfitDisplay(month,year);
         log("@Verify 2: Validate the red amount will be treated as negative and the blue amount will be treated as Positive");
         incomeAnaPage.verifyAmountNetProfitColorIsCorrect(month,year);
         log("INFO: Executed completely");
@@ -327,7 +324,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
             incomeAnaPage.verifyExcelDataInCommaFormat(excelData, lblYear);
         }finally {
             log("@Post-condition: delete download file");
-            FileUtils.removeFile(downloadPath);
+            // FileUtils.removeFile(downloadPath);
         }
         log("INFO: Executed completely");
     }
@@ -355,7 +352,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
             Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! PDF file was not downloaded successfully");
         }finally {
             log("@Post-condition: delete download file");
-            FileUtils.removeFile(downloadPath);
+            // FileUtils.removeFile(downloadPath);
         }
         log("INFO: Executed completely");
     }

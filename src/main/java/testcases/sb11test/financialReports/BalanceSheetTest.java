@@ -142,7 +142,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.isTotalAmountDisplayCorrect(),"FAILED! Total amount of each Detail Type displays Incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31"})
+    @Test(groups = {"regression","2024.V.3.0"})
     @TestRails(id = "2789")
     public void Balance_Sheet_2789() {
         log("@title: Validate the Balance Amount is taken from Ledger Statement > 'Amounts are shown in HKD' section > Running Bal.' column");
@@ -156,24 +156,22 @@ public class BalanceSheetTest extends BaseCaseAQS {
                 "Detail Type = 500.000.000 - QA Ledger Group Asset\n" +
                 "From Date 1/7/2023 To Date 31/7/2023\n" +
                 "Report = Before CJE");
-        String fromDate = "01/08/2023";
-        String toDate = "30/8/2023";
-        String detailTypeName = "QA Ledger Group Asset";
-        String financialYear = "Year 2023-2024";
+        String fromDate = ledgerStatementPage.getBeginDateOfFinanYear(FINANCIAL_YEAR);
+        String toDate = ledgerStatementPage.getLastDateAfterCJE("dd/MM/yyyy");
+        String monthInBalanceSheet = ledgerStatementPage.getLastDateAfterCJE("yyyy - MMMM");
         String report = "Before CJE";
-        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,financialYear,LedgerStatement.ACCOUNT_TYPE.get(1),detailTypeName,fromDate,toDate,report);
-        log("@Step 4: Get 'Amounts are shown in HKD' section > Running Bal.' column at Total in HKD row");
-        String totalAmountOfParentAcount = ledgerStatementPage.getGrandTotalByRunningBal();
-        log("@Step 5: Get 'Amounts are shown in HKD' section > Running Bal.' column at Total in HKD row");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,LedgerStatement.ACCOUNT_TYPE.get(1),QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT,fromDate,toDate,report);
+        log("@Step 4: Get 'CUR Translation in HKD' section > Running Bal.' column");
+        String totalAmountOfParentAcount = ledgerStatementPage.getTotalInHKD(LEDGER_GROUP_NAME_ASSET,"CUR Translation","Running Bal.");
+        log("@Step 5: Go to Financial Reports >> Balance Sheet page");
         BalanceSheetPage page = ledgerStatementPage.navigatePage(FINANCIAL_REPORTS,BALANCE_SHEET,BalanceSheetPage.class);
-        log("@Step 6: Filter data of account: 500.000.000 - QA Ledger Group Asset on selected month at step #3\n" +
+        log("@Step 6: Filter data of account: 222.222.222.000 - Auto Asset Group on selected month at step #3\n" +
                 "Financial Year = Year 2022-2023\n" +
                 "Month = 2023 - July\n" +
                 "Report = Before CJE");
-        String month = "2023 - August";
-        page.filter(KASTRAKI_LIMITED,financialYear,month,report,false);
-        log("@Verify 1: Balance Amount = value that get at step");
-        Assert.assertEquals(page.getTotalAmount(detailTypeName).getText(),totalAmountOfParentAcount,"FAILED! Balance Amount displays incorrect!");
+        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,monthInBalanceSheet,report,false);
+        log("@Verify 1: Balance Amount = value that get at step #4");
+        Assert.assertEquals(page.getTotalAmount(LEDGER_GROUP_NAME_ASSET).getText(),totalAmountOfParentAcount,"FAILED! Balance Amount displays incorrect!");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.10.31"})
@@ -243,12 +241,12 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
         log("@Verify 2: Validate value in Excel report is correct'");
         page.checkValueCompareExcel(downloadPath);
-        try {
-            FileUtils.removeFile(downloadPath);
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
-        log("INFO: Executed completely");
+        // try {
+        //     FileUtils.removeFile(downloadPath);
+        // } catch (IOException e) {
+        //     log(e.getMessage());
+        // }
+        // log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.10.31"})
     @TestRails(id = "2794")
@@ -267,12 +265,12 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Verify 1: Validate can export Retained Earnings to PDF file successfully'");
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
         log("@Post-condition: delete download file");
-        try {
-            FileUtils.removeFile(downloadPath);
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
-        log("INFO: Executed completely");
+        // try {
+        //     FileUtils.removeFile(downloadPath);
+        // } catch (IOException e) {
+        //     log(e.getMessage());
+        // }
+        // log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.2.0"})
     @TestRails(id = "16195")
