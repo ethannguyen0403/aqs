@@ -106,17 +106,26 @@ public class WLRPCPage extends WelcomePage {
     public String getDifValue(String cur){
         return Label.xpath(String.format(lblDifValueXpath,cur)).getText().trim();
     }
-    public List<String> getLstCurDisplay(){
+    public List<String> getLstCurDisplay(String type){
         List<String> lstEx = new ArrayList<>();
-        Label lblDifValue =  Label.xpath("//div[text()='Difference']/parent::td//following-sibling::td[1]/div");
-        for (int i = 1; i <= lblDifValue.getWebElements().size();i++){
-            Label lblDifValueAc = Label.xpath(String.format("(//div[text()='Difference']/parent::td//following-sibling::td[1]/div)[%d]",i));
-            lstEx.add(lblDifValueAc.getText().trim());
+        if (type.equals("All")){
+            Label lblCur =  Label.xpath("//div[text()='Difference']/parent::td//following-sibling::td[1]/div");
+            for (int i = 1; i <= lblCur.getWebElements().size();i++){
+                Label lblCurAc = Label.xpath(String.format("(//div[text()='Difference']/parent::td//following-sibling::td[1]/div)[%d]",i));
+                lstEx.add(lblCurAc.getText().trim());
+            }
+        } else {
+            Label lblCur =  Label.xpath("//div[contains(text(),'Total Balance in')]//parent::td/following-sibling::td[1]//span");
+            for (int i = 1; i <= lblCur.getWebElements().size();i++){
+                Label lblCurAc = Label.xpath(String.format("(//div[contains(text(),'Total Balance in')]//parent::td/following-sibling::td[1]//span)[%d]",i));
+                lstEx.add(lblCurAc.getText().trim());
+            }
+
         }
         return lstEx;
     }
     public void checkDifferenceValueDisplay() {
-        List<String> lstCur = getLstCurDisplay();
+        List<String> lstCur = getLstCurDisplay("All");
         for (String cur : lstCur){
             String totalClient = getTotalBalance("Client",cur).replace(",","");
             String totalBookie = getTotalBalance("Bookie",cur).replace(",","");

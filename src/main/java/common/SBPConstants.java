@@ -52,6 +52,7 @@ public class SBPConstants {
     public final static String FUND_RECONCILIATION = "Fund Reconciliation";
     public final static String AR_AND_AP_RECONCILIATION = "A/R and A/P Reconciliation";
     public final static String WL_RPC = "WL & RPC";
+    public final static String WIN_LOSS_DETAIL = "Win Loss Detail";
     public final static String CONSOLIDATED_CLIENT_BALANCE = "Consolidated Client Balance";
     public final static String IP_MONITORING = "IP Monitoring";
     public final static String JOURNAL_ENTRIES = "Journal Entries";

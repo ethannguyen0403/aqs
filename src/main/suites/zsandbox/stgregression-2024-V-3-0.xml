@@ -46,6 +46,7 @@
             <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
 
             <class name="testcases.sb11test.generalReports.WLRPCTest"/>
+            <class name="testcases.sb11test.generalReports.WinLossDetailTest"/>
 
             <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
             <class name="testcases.sb11test.financialReports.IncomeStatementAnalysisTest"/>
