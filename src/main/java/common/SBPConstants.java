@@ -526,6 +526,12 @@ public class SBPConstants {
         public final static List<String> DETAIL_TYPE_LIST_KASTRAKI_LIMITED = Arrays.asList("All","105.000.000.000 - A/R Project", "107.000.000.000 - Other Receivables","202.000.000.000 - Other Payable");
         public final static List<String> DETAIL_TYPE_LIST_FAIR = Arrays.asList("All","105.000.000.000 - Other Receivables", "300.000.000.000 - Account Payable (A/P)");
     }
+    public static class WLRPCT {
+        public final static List<String> HEADER_NAME_TYPE_ALL_CLIENT = Arrays.asList("No", "Client Name", "Currency Code", "Winlose Amount");
+        public final static List<String> HEADER_NAME_TYPE_ALL_BOOKIE = Arrays.asList("No", "Bookie Name", "Currency Code", "Winlose Amount");
+        public final static String MES_INVALID_DATE_RANGE = "Invalid date range. You can see data up to 3 months.";
+
+    }
 }
 
 

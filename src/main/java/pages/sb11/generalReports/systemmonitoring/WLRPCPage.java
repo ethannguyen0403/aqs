@@ -5,12 +5,14 @@ import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import com.paltech.utils.DoubleUtils;
+import com.paltech.utils.FileUtils;
+import common.SBPConstants;
 import controls.DateTimePicker;
 import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import utils.ExcelUtils;
 
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class WLRPCPage extends WelcomePage {
     TextBox txtToDate = TextBox.xpath("//div[contains(text(),'To Date')]//following-sibling::div/input");
     DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container/div/div");
     public DropDownBox ddCurrency = DropDownBox.xpath("//div[contains(text(),'Currency')]//following-sibling::select");
-    Button btnShow = Button.xpath("//button[text()='Show']");
+    public Button btnShow = Button.xpath("//button[text()='Show']");
     public Button btnExportToExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
     Label lblNoted = Label.xpath("//span[contains(text(),'Support from-date and to-date within 3 months')]");
     public Label lblNoRecord = Label.xpath("//div[contains(text(),'No records found.')]");
@@ -65,6 +67,10 @@ public class WLRPCPage extends WelcomePage {
             String bookie = Label.xpath("(//table)[2]/preceding-sibling::div/span").getText().trim();
             Assert.assertEquals(client,"Client","FAILED! Client Table Name display incorrect");
             Assert.assertEquals(bookie,"Bookie","FAILED! Bookie Table Name display incorrect");
+            Table tblCLient = Table.xpath("(//table)[1]",4);
+            Table tblBookie = Table.xpath("(//table)[2]",4);
+            Assert.assertEquals(tblCLient.getHeaderNameOfRows(), SBPConstants.WLRPCT.HEADER_NAME_TYPE_ALL_CLIENT,"FAILED! Client header table displays incorrect.");
+            Assert.assertEquals(tblBookie.getHeaderNameOfRows(), SBPConstants.WLRPCT.HEADER_NAME_TYPE_ALL_BOOKIE,"FAILED! Bookie header table displays incorrect.");
         } else {
             Table table = Table.xpath("//table",5);
             List<String> lstHeader = table.getHeaderNameOfRows();
@@ -125,5 +131,71 @@ public class WLRPCPage extends WelcomePage {
             double difAc = Double.valueOf(getDifValue(cur));
             Assert.assertEquals(difAc,difEx,"FAILED! Difference value of "+cur+" display incorrect");
         }
+    }
+    public void exportToExcel(){
+        btnExportToExcel.click();
+        //Wait for file Excel export
+        try {
+            Thread.sleep(5);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void verifyExcelFileDownloadCorrect(String type) {
+        String downloadPath = getDownloadPath() + "export-winloss.xlsx";
+        Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath),"FAILED! Excel file displays incorrect.");
+        if (type.equals("All")){
+            Table tblCLient = Table.xpath("(//table)[1]",4);
+            Table tblBookie = Table.xpath("(//table)[2]",4);
+            List<String> lstHeaderClient = tblCLient.getHeaderNameOfRows();
+            List<String> lstHeaderBookie = tblBookie.getHeaderNameOfRows();
+            //Verify header name in excel
+            Assert.assertEquals(lstHeaderClient.get(tblCLient.getColumnIndexByName("No")-1), ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",1,1),"FAILED! No column displays incorrect,");
+            Assert.assertEquals(lstHeaderClient.get(tblCLient.getColumnIndexByName("Client Name")-1), ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",3,1),"FAILED! Client Name column displays incorrect,");
+            Assert.assertEquals(lstHeaderClient.get(tblCLient.getColumnIndexByName("Currency Code")-1), ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",4,1),"FAILED! Currency Code column displays incorrect,");
+            Assert.assertEquals(lstHeaderClient.get(tblCLient.getColumnIndexByName("Winlose Amount")-1), ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",5,1),"FAILED! Winlose Amount column displays incorrect,");
+            Assert.assertEquals(lstHeaderBookie.get(tblBookie.getColumnIndexByName("Bookie Name")-1), ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",7,1),"FAILED! Bookie Name column displays incorrect,");
+            Assert.assertEquals(lstHeaderBookie.get(tblBookie.getColumnIndexByName("Currency Code")-1), ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",8,1),"FAILED! Currency Code column displays incorrect,");
+            Assert.assertEquals(lstHeaderBookie.get(tblBookie.getColumnIndexByName("Winlose Amount")-1), ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",9,1),"FAILED! Winlose Amount column displays incorrect,");
+            //Verify data in row 1
+            Assert.assertEquals(tblCLient.getControlOfCell(1,tblCLient.getColumnIndexByName("No"),1,"div").getText().trim(),
+                    ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",1,2));
+            Assert.assertEquals(tblCLient.getControlOfCell(1,tblCLient.getColumnIndexByName("Client Name"),1,"span").getText().trim(),
+                    ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",3,2));
+            Assert.assertEquals(tblCLient.getControlOfCell(1,tblCLient.getColumnIndexByName("Currency Code"),1,"span").getText().trim(),
+                    ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",4,2));
+            Assert.assertEquals(tblCLient.getControlOfCell(1,tblCLient.getColumnIndexByName("Winlose Amount"),1,null).getText().trim(),
+                    ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",5,2));
+            Assert.assertEquals(tblBookie.getControlOfCell(1,tblBookie.getColumnIndexByName("Bookie Name"),1,"span").getText().trim(),
+                    ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",7,2));
+            Assert.assertEquals(tblBookie.getControlOfCell(1,tblBookie.getColumnIndexByName("Currency Code"),1,"span").getText().trim(),
+                    ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",8,2));
+            Assert.assertEquals(tblBookie.getControlOfCell(1,tblBookie.getColumnIndexByName("Winlose Amount"),1,null).getText().trim(),
+                    ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",9,2));
+        } else {
+            Table table = Table.xpath("(//table)[1]",5);
+            List<String> lstHeader = table.getHeaderNameOfRows();
+            //Verify header name in excel
+            Assert.assertEquals(lstHeader.get(table.getColumnIndexByName("No")-1), ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",1,1),"FAILED! No column displays incorrect,");
+            Assert.assertEquals(lstHeader.get(table.getColumnIndexByName(type+" Name")-1), ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",3,1),"FAILED! "+type+" Name column displays incorrect,");
+            Assert.assertEquals(lstHeader.get(table.getColumnIndexByName("Currency Code")-1), ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",4,1),"FAILED! Currency Code column displays incorrect,");
+            Assert.assertEquals(lstHeader.get(table.getColumnIndexByName("Winlose Amount")-1), ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",5,1),"FAILED! Winlose Amount column displays incorrect,");
+            Assert.assertEquals(lstHeader.get(table.getColumnIndexByName("Rec Pay Ca Rb Adj")-1), ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",6,1),"FAILED! Rec Pay Ca Rb Adj Amount column displays incorrect,");
+            //Verify data in row 1
+            Assert.assertEquals(table.getControlOfCell(1,table.getColumnIndexByName("No"),1,"div").getText().trim(),
+                    ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",1,2));
+            Assert.assertEquals(table.getControlOfCell(1,table.getColumnIndexByName(type+" Name"),1,"span").getText().trim(),
+                    ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",3,2));
+            Assert.assertEquals(table.getControlOfCell(1,table.getColumnIndexByName("Currency Code"),1,"span").getText().trim(),
+                    ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",4,2));
+            Assert.assertEquals(table.getControlOfCell(1,table.getColumnIndexByName("Winlose Amount"),1,null).getText().trim(),
+                    ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",5,2));
+            Assert.assertEquals(table.getControlOfCell(1,table.getColumnIndexByName("Rec Pay Ca Rb Adj"),1,null).getText().trim(),
+                    ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",6,2));
+        }
+
+
+
     }
 }
