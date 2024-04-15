@@ -13,7 +13,7 @@ import static common.SBPConstants.*;
 public class WinLossDetailTest extends BaseCaseAQS {
     @TestRails(id="23718")
     @Parameters({"password", "userNameOneRole"})
-    @Test(groups = {"regression1","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0"})
     public void Win_Loss_Detail_TC23718(String password, String userNameOneRole) throws Exception {
         log("@title: Validate accounts without permission cannot see the menu");
         log("@pre-condition 1: Login with account without 'Win Loss Detail' permission");

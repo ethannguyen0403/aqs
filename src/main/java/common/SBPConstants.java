@@ -231,6 +231,7 @@ public class SBPConstants {
                 "Description", "Selection", "HDP", "Live", "Price","Stake", "Win/Lose","Type","Date");
         public final static List<String> STATUS_LIST = Arrays.asList("Confirmed","Settled");
         public final static List<String> MATCH_DATE = Arrays.asList("[All Dates]","Specific Date");
+        public final static String MES_DELETED_ORDER_SUC = "Bet(s) is deleted successfully.";
     }
 
     public static class AccountType {
