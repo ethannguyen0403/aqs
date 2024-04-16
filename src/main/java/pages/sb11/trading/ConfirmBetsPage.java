@@ -58,6 +58,7 @@ public class ConfirmBetsPage extends WelcomePage {
     public Label lblTotalStake = Label.xpath("//span[contains(@class,'total-stake-pending')]");
     public Label lblAccStartWith = Label.xpath("//label[text()='Acc Starts With']");
     public Label lblAccountCode = Label.xpath("//label[text()='Account Code']");
+    public Label lblServerResponded = Label.xpath("//span[contains(text(),'Server responded')]");
 
     public String getTitlePage ()
     {
@@ -422,4 +423,9 @@ public class ConfirmBetsPage extends WelcomePage {
         return true;
     }
 
+    public void verifyNumberIsMatched() {
+        int indexRow = tblOrder.getNumberOfRows(false,true);
+        String numberMatched = tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName("#"),indexRow,null).getText().trim();
+        Assert.assertTrue(lblServerResponded.getText().trim().contains(String.format("Total %s record(s)",numberMatched)),"FAILED! Number"+numberMatched+" is not matched");
+    }
 }

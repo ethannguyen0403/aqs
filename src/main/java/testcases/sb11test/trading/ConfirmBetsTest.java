@@ -1003,6 +1003,36 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         confirmBetsPage.isTotalStakeMatched(totalConfirmedStake);
         log("INFO: Executed completely");
     }
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "23713")
+    @Parameters({"accountCode"})
+    public void Confirm_Bets_23713(String accountCode) {
+        log("@title: Validate Total Record filter in Pending status is correctly");
+        log("@Step 1: Login SB11 > Trading > Confirm Bets");
+        ConfirmBetsPage page = welcomePage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
+        log("@Step 2: Filter Status: Pending and Account Code: Auto-Account01 then click Show button");
+        String fromdate = DateUtils.getDate(-10,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED, "", "Pending", SOCCER, "All", "Specific Date", fromdate, "", accountCode);
+        log("@Step 3: Get last row number (e.g. 780) in the result table and the number according to the account in Pending Account table (HKD - Auto-Account01 780)");
+        log("Verify 1: Verify the number is matched and the label record iscorrectly displayed , e.g \"Total 780 record(s) (Server responded in ... seconds)\"");
+        page.verifyNumberIsMatched();
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "23714")
+    @Parameters({"accountCode"})
+    public void Confirm_Bets_23714(String accountCode) {
+        log("@title: Validate Total Record filter in Confirm status is correctly");
+        log("@Step 1: Login SB11 > Trading > Confirm Bets");
+        ConfirmBetsPage page = welcomePage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
+        log("@Step 2: Filter Status: Confirm and Account Code: Auto-Account01 then click Show button");
+        String fromdate = DateUtils.getDate(-10,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED, "", "Confirmed", SOCCER, "All", "Specific Date", fromdate, "", accountCode);
+        log("@Step 3: Get last row number (e.g. 447) in the result table and the number according to the account in Confrimed Account table (HKD - Auto-Account01 - 447)");
+        log("Verify 1: Verify the number get from the last row and the number get in Confrimed Account is matched and the label record iscorrectly displayed , e.g \"Total 780 record(s) (Server responded in ... seconds)\"");
+        page.verifyNumberIsMatched();
+        log("INFO: Executed completely");
+    }
 
 }
 
