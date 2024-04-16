@@ -178,7 +178,7 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         page.verifyShowBetWinLoseCorrect("Draw");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression1","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0"})
     @TestRails(id = "29427")
     public void BBGPhoneBettingTC_29427(){
         log("@title: Validate pending bets show correctly when account is checked 'Is Telebet'");
@@ -209,7 +209,8 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         BBGPhoneBettingPage page = welcomePage.navigatePage(SOCCER,BBG_PHONE_BETTING, BBGPhoneBettingPage.class);
         log("@Step 3: Select filters which contains bets of player account at the precondition with Report By = Pending Bets");
         log("@Step 4: Click on 'Show' button");
-        page.filter(KASTRAKI_LIMITED,"Pending Bets","","","","","");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED,"Pending Bets",date,"","","","");
         log("Verify 1: Show correct bet of player account");
         Assert.assertTrue(page.tblOrder.getColumn(page.tblOrder.getColumnIndexByName("Account Code"),false).contains(accountCode),"FAILED! "+accountCode+" does not display");
         log("INFO: Executed completely");
