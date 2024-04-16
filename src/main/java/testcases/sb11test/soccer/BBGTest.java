@@ -318,7 +318,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition 1: Account is activated permission 'BBG'");
         log("@pre-condition 2: Player account: AC88080003 (EUR) belonging to smart group '056-liability-fin'");
         log("@pre-condition 3: Player account had Settle on 04/04/2024 - 04/09/2024");
-        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        String date = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
         Order orderSettled = BetSettlementUtils.getOrderInDayByAccountCode(accountCode,date,"Soccer");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
@@ -374,11 +374,11 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 3: Filter From Date - To date which has data and other fields are default value");
         log("@Step 4: Click Show button");
         log("@Step 5: Click Show Bet Types dropdown list");
-        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         page.filter("","","","Settled Bets",date,"","","");
         log("@Verify 1: All bets type (e.g. FT-HDP, HT-HDP, FT-Over/Under, HT-Over/Under) that have bets display");
         List<String> lstBetTypes = page.getLstNameInAdvanceFilter("Bet Types");
-        page.verifyBetsShowCorrectByColumnName("Bet Types",lstBetTypes);
+        page.verifyBetsShowCorrectByColumnName("Bet Type",lstBetTypes);
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.3.0"})
@@ -394,12 +394,12 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 5: Click Show Bet Types dropdown list");
         log("@Step 6: Select any bet type (e.g. FT-HDP) then click Set Selection button");
         log("@Step 7: Click Show button");
-        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         page.filter("","","","Settled Bets",date,"","","");
         page.filterAdvance("Bet Types","FT-HDP");
         log("@Verify 1: All bets type (e.g. FT-HDP, HT-HDP, FT-Over/Under, HT-Over/Under) that have bets display");
         List<String> lstBetType = Arrays.asList("FT-HDP");
-        page.verifyBetsShowCorrectByColumnName("Bet Types",lstBetType);
+        page.verifyBetsShowCorrectByColumnName("Bet Type",lstBetType);
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.3.0"})
@@ -415,7 +415,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 5: Click Show Leagues dropdown list");
         log("@Step 6: Select any league then click Set Selection button");
         log("@Step 7: Click Show button");
-        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         page.filter("","","","Settled Bets",date,"","","");
         log("@Verify 1: All leagues that have events in filtered date range display");
         String league = page.getLstNameInAdvanceFilter("Leagues").get(0);
@@ -437,7 +437,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 5: Click Show Groups dropdown list");
         log("@Step 6: Select any group then click Set Selection button");
         log("@Step 7: Click Show button");
-        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         page.filter("","","","Settled Bets",date,"","","");
         String groupEx = page.getLstNameInAdvanceFilter("Group").get(0);
         page.filterAdvance("Group",groupEx);
@@ -458,7 +458,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 5: Click Show Events dropdown list");
         log("@Step 6: Select any event then click Set Selection button");
         log("@Step 7: Click Show button");
-        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         page.filter("","","","Settled Bets",date,"","","");
         String eventEx = page.getLstNameInAdvanceFilter("Events").get(0);
         page.filterAdvance("Events",eventEx);
@@ -476,8 +476,8 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 2: Go to Soccer >> BBG page");
         BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
         log("@Step 3: Filter by any field (e.g. Smart Type, Leagues) then click Show button");
-        String date = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
-        page.filter("",KASTRAKI_LIMITED,"Master","Settled Bets",date,date,"Above 1K","HKD");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter("",KASTRAKI_LIMITED,"Master","Settled Bets",date,"","Above 1K","HKD");
         log("@Step 4: Click 'Reset All Filters' link");
         page.btnResetAllFilter.click();
         page.waitSpinnerDisappeared();

@@ -289,17 +289,17 @@ public class BBGPage extends WelcomePage {
             tblData.scrollToThisControl(false);
             Row row = Row.xpath(String.format("(//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')]",i));
             for (int j = 1; j <= row.getWebElements().size();j++){
-                Label lblRowBetType;
+                Label lblRow;
                 switch (colName){
                     case "Event":
-                        lblRowBetType = Label.xpath(String.format("(//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')][%d]/td[%d]//tbody/tr",i,j,indexCol));
+                        lblRow = Label.xpath(String.format("(//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')][%d]/td[%d]//tbody/tr",i,j,indexCol));
                         break;
                     default:
-                        lblRowBetType = Label.xpath(String.format("(//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')][%d]/td[%d]",i,j,indexCol));
+                        lblRow = Label.xpath(String.format("(//table[contains(@aria-label,'bbg-table')])[%d]//tbody//div//tr[contains(@class,'d-flex')][%d]/td[%d]",i,j,indexCol));
                         break;
                 }
-                if (!lstBetsType.contains(lblRowBetType.getText().trim())){
-                    Assert.assertTrue(false,"FAILED! "+lblRowBetType+" is in "+groupName+" display incorrect.");
+                if (!lstBetsType.contains(lblRow.getText().trim())){
+                    Assert.assertTrue(false,"FAILED! "+lblRow+" is in "+groupName+" display incorrect.");
                 }
             }
         }
