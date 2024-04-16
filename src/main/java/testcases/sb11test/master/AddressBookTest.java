@@ -12,8 +12,6 @@ import utils.testraildemo.TestRails;
 import static common.SBPConstants.*;
 
 public class AddressBookTest extends BaseCaseAQS {
-    String companyUnit = "Kastraki Limited";
-
     @Test(groups = {"regression"})
     @TestRails(id = "2234")
     public void Address_Book_TC_001(){
@@ -58,7 +56,7 @@ public class AddressBookTest extends BaseCaseAQS {
         AddressBookPage addressBookPage = welcomePage.navigatePage(MASTER, ADDRESS_BOOK,AddressBookPage.class);
         log("@Step 3: Enter account at pre-condition on Account Code");
         log("@Step 4: Click Search");
-        addressBookPage.filterAddress(companyUnit,clientCode,accountCode);
+        addressBookPage.filterAddress(KASTRAKI_LIMITED,clientCode,accountCode);
         log("@Step 5: Click Edit");
         log("@Step 6: Enter name and email at To column");
         log("@Step 7: Click Save");

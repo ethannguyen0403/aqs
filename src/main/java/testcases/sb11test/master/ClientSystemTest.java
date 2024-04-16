@@ -18,10 +18,6 @@ import java.io.IOException;
 import static common.SBPConstants.*;
 
 public class ClientSystemTest extends BaseCaseAQS {
-
-    String companyUnit = "Kastraki Limited";
-    String clientList = "With Super";
-
     @Test(groups = {"regression"})
     @TestRails(id = "2206")
     public void Client_System_2206(){
@@ -66,10 +62,11 @@ public class ClientSystemTest extends BaseCaseAQS {
         log("@title: Validate can search Bookie successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Click Master > Client System");
+        String clientList = "With Super";
         ClientSystemPage clientSystemPage = welcomePage.navigatePage(MASTER, CLIENT_SYSTEM,ClientSystemPage.class);
         log("@Step 3: Enter an exist Client");
         log("@Step 4: Click Search");
-        clientSystemPage.filterClient(companyUnit,clientList,clientCode,"","");
+        clientSystemPage.filterClient(KASTRAKI_LIMITED,clientList,clientCode,"","");
         log("Searched bookie should display correctly on Bookie List");
         Assert.assertTrue(clientSystemPage.isClientCodeExist(clientCode),"Failed! Client Code " + clientCode + " is not exist");
         log("INFO: Executed completely");

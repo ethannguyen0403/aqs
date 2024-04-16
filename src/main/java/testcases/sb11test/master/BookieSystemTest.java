@@ -13,9 +13,6 @@ import utils.testraildemo.TestRails;
 import static common.SBPConstants.*;
 
 public class BookieSystemTest extends BaseCaseAQS {
-
-    String companyUnit = "Kastraki Limited";
-
     @Test(groups = {"regression"})
     @TestRails(id = "2214")
     public void Bookie_System_TC_2214(){
@@ -66,7 +63,7 @@ public class BookieSystemTest extends BaseCaseAQS {
         BookieSystemPage bookieSystemPage = welcomePage.navigatePage(MASTER, BOOKIE_SYSTEM,BookieSystemPage.class);
         log("Step 3: Click Super");
         BookieSuperPage bookieSuperPage = bookieSystemPage.goToSuper();
-        bookieSuperPage.filterSuperCode(companyUnit,bookieCode,"");
+        bookieSuperPage.filterSuperCode(KASTRAKI_LIMITED,bookieCode,"");
         log("Step 4:  Click value of client at pre-condition at #Master column");
         MasterListPopup masterListPopup = bookieSuperPage.openMasterList(superCode);
         log("Validate Master List popup is displayed with correctly title");
@@ -125,7 +122,7 @@ public class BookieSystemTest extends BaseCaseAQS {
         BookieSystemPage bookieSystemPage = welcomePage.navigatePage(MASTER, BOOKIE_SYSTEM,BookieSystemPage.class);
         log("Step 3: Click Agent");
         BookieMasterPage bookieMasterPage = bookieSystemPage.goToMaster();
-        bookieMasterPage.filterMasterCode(companyUnit,bookieCode,bookieSuperMasterCode,"");
+        bookieMasterPage.filterMasterCode(KASTRAKI_LIMITED,bookieCode,bookieSuperMasterCode,"");
         log("Step 4:  Click value of client at pre-condition at #Agent column");
         AgentListPopup agentListPopup = bookieMasterPage.openAgentList(bookieMasterCode);
         log("Validate Agent List popup is displayed with correctly title");
@@ -185,7 +182,7 @@ public class BookieSystemTest extends BaseCaseAQS {
         BookieSystemPage bookieSystemPage = welcomePage.navigatePage(MASTER, BOOKIE_SYSTEM,BookieSystemPage.class);
         log("Step 3: Click Agent");
         BookieAgentPage bookieAgentPage = bookieSystemPage.goToAgent();
-        bookieAgentPage.filterAgentCode(companyUnit,bookieCode,bookieSuperMasterCode,bookieMasterCode,"");
+        bookieAgentPage.filterAgentCode(KASTRAKI_LIMITED,bookieCode,bookieSuperMasterCode,bookieMasterCode,"");
         log("Step 4:  Click value of client at pre-condition at #Agent column");
         AccountListPopup accountListPopup = bookieAgentPage.openAccountList(agentCode);
         log("Validate Account List popup is displayed with correctly title");
