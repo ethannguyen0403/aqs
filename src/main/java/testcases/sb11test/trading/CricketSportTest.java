@@ -33,11 +33,6 @@ import static common.SBPConstants.*;
 import static common.SBPConstants.BetSettlement.BET_LIST_STATEMENT_EMAIL;
 
 public class CricketSportTest extends BaseCaseAQS {
-    String leagueName = "QA Cricket Auto League";
-    String country = "Asia";
-    String sportName = "Cricket";
-    String superMasterCode = "QA2112 - ";
-    Double percent = 1.0;
     @TestRails(id = "61")
     @Test(groups = {"regression","2023.11.30"})
     public void Cricket_Sport_61() {
@@ -50,6 +45,7 @@ public class CricketSportTest extends BaseCaseAQS {
         CreateCricketLeaguePopup createCricketLeaguePopup = cricketLeagueSeasonTeamInfoPage.openAddLeaguePopup();
         log("@Step 3: Input valid values >> Click Submit");
         String leagueName = "Auto League";
+        String country = "Asia";
         try {
             createCricketLeaguePopup.addLeague(leagueName, leagueName, country, "", "", true,true,true);
             log("Verify 1: Message 'Please input valid Account Code.' displays");
@@ -69,6 +65,8 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 1: Account is activated permission");
         log("@pre-condition 2: There is an existing Cricket league");
         log("@Step 1: Login to SB11 >> Go to League/Season/Team Info");
+        String leagueName = "QA Cricket Auto League";
+        String country = "Asia";
         CricketLeagueSeasonTeamInfoPage cricketLeagueSeasonTeamInfoPage = welcomePage.navigatePage(SPORT,LEAGUE_SEASON_TEAM_INFO, CricketLeagueSeasonTeamInfoPage.class);
         cricketLeagueSeasonTeamInfoPage.goToCricket();
         log("@Step 2: Filter and select the league >> Click + icon at 'Team List' to open the create dialog");
@@ -98,6 +96,8 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 1: Account is activated permission");
         log("@pre-condition 2: There is an existing Cricket league");
         log("@Step 1: Login to SB11 >> Go to Even Schedule >> select the league");
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         EventSchedulePage eventSchedulePage = welcomePage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
         eventSchedulePage.goToSport(sportName);
         log("@Step 2: Select a Home Team and Away Team >> input Time value");
@@ -147,6 +147,8 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:10").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
@@ -181,6 +183,8 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:10").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
@@ -251,6 +255,8 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:10").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
@@ -325,9 +331,13 @@ public class CricketSportTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
+        String superMasterCode = "QA2112 - ";
         String clientCode1 = superMasterCode + clientCode;
+        Double percent = 1.0;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
 
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("16:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
@@ -430,9 +440,13 @@ public class CricketSportTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
+        String superMasterCode = "QA2112 - ";
         String clientCode1 = superMasterCode + clientCode;
+        Double percent = 1.0;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
 
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("10:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
@@ -531,6 +545,8 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("16:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
@@ -601,6 +617,8 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("16:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
@@ -671,6 +689,8 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
@@ -741,6 +761,8 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
@@ -812,6 +834,8 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
@@ -884,6 +908,8 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
@@ -954,6 +980,8 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
@@ -1027,11 +1055,15 @@ public class CricketSportTest extends BaseCaseAQS {
                 "The event settled with result as Home Win");
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
+        String superMasterCode = "QA2112 - ";
         String clientCode1 = superMasterCode + clientCode;
+        Double percent = 1.0;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
 
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
@@ -1153,11 +1185,15 @@ public class CricketSportTest extends BaseCaseAQS {
                 "The event settled with result as Home Win");
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
+        String superMasterCode = "QA2112 - ";
         String clientCode1 = superMasterCode + clientCode;
+        Double percent = 1.0;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
 
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
@@ -1260,9 +1296,12 @@ public class CricketSportTest extends BaseCaseAQS {
         String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
+        String superMasterCode = "QA2112 - ";
         String clientCode1 = superMasterCode + clientCode;
+        Double percent = 1.0;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String sportName = "Cricket";
         Order order = new Order.Builder()
                 .price(1.5).requireStake(15)
                 .oddType("HK").accountCode(accountCode)
@@ -1303,9 +1342,13 @@ public class CricketSportTest extends BaseCaseAQS {
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
+        String superMasterCode = "QA2112 - ";
         String clientCode1 = superMasterCode + clientCode;
+        Double percent = 1.0;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("16:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
 
