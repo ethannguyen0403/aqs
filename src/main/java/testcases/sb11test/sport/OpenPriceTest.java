@@ -108,10 +108,10 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("@Step 5: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER,BBT, BBTPage.class);
         log("@Step 6: Filter with event at step 4");
-        bbtPage.filter("", "","","",date,date,"","","A-League Men");
+        bbtPage.filter("", "","","",date,date,"","",league);
         log("Verify 1: Updated Open Price is displayed correctly on BBT page");
-        bbtPage.verifyOpenPriceDisplay("Newcastle Jets FC", ft12HAHome,ft12HAAway,ft12Draw,ftHDPHome,ftHDPAway,ftHDPPriceHome,ftHDPPriceAway,ftOUHDPHome,ftOUHDPAway,ftOUPriceHome,ftOUPriceAway,true);
-        bbtPage.verifyOpenPriceDisplay("Sydney FC", ft12HAHome,ft12HAAway,ft12Draw,ftHDPHome,ftHDPAway,ftHDPPriceHome,ftHDPPriceAway,ftOUHDPHome,ftOUHDPAway,ftOUPriceHome,ftOUPriceAway,false);
+        bbtPage.verifyOpenPriceDisplay(homeTeamName, ft12HAHome,ft12HAAway,ft12Draw,ftHDPHome,ftHDPAway,ftHDPPriceHome,ftHDPPriceAway,ftOUHDPHome,ftOUHDPAway,ftOUPriceHome,ftOUPriceAway,true);
+        bbtPage.verifyOpenPriceDisplay(awayTeamName, ft12HAHome,ft12HAAway,ft12Draw,ftHDPHome,ftHDPAway,ftHDPPriceHome,ftHDPPriceAway,ftOUHDPHome,ftOUHDPAway,ftOUPriceHome,ftOUPriceAway,false);
         log("INFO: Executed Completely!");
     }
 }
