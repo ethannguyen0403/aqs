@@ -26,16 +26,6 @@ import java.util.Map;
 import static common.SBPConstants.*;
 
 public class PTRiskControlTest extends BaseCaseAQS {
-    String superMasterCode = "QA2112 - ";
-    Double percent = 1.5;
-    String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-    Event eventBasketball =
-            new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(DateUtils.formatDate(currentDate, "yyyy-MM-dd", "dd/MM/yyyy"))
-                    .home("QA Basketball Team 1").away("QA Basketball Team 2")
-                    .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
-    Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
-            .selection(eventBasketball.getHome()).isLive(false).event(eventBasketball).build();
-
     @Test(groups = {"smoke","ethan"})
     @Parameters({"clientCode","accountCode"})
     @TestRails(id = "1386")
@@ -46,7 +36,9 @@ public class PTRiskControlTest extends BaseCaseAQS {
         //Configurate Account Percent
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
+        String superMasterCode = "QA2112 - ";
         clientCode = superMasterCode + clientCode;
+        Double percent = 1.5;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode,percent);
         //Place bet HDP
         String sport = "Soccer";
@@ -90,9 +82,10 @@ public class PTRiskControlTest extends BaseCaseAQS {
         welcomePage.waitSpinnerDisappeared();
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
+        String superMasterCode = "QA2112 - ";
         clientCode = superMasterCode + clientCode;
         String actualPTVal;
-
+        Double percent = 1.5;
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (EU)");
         log("Precondition: Having account with Pending HPD/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
@@ -140,9 +133,10 @@ public class PTRiskControlTest extends BaseCaseAQS {
         welcomePage.waitSpinnerDisappeared();
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
+        String superMasterCode = "QA2112 - ";
         clientCode = superMasterCode + clientCode;
         String actualPTVal;
-
+        Double percent = 1.5;
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (MY)");
         log("Precondition: Having account with Pending HPD/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
@@ -190,9 +184,10 @@ public class PTRiskControlTest extends BaseCaseAQS {
         welcomePage.waitSpinnerDisappeared();
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
+        String superMasterCode = "QA2112 - ";
         clientCode = superMasterCode + clientCode;
         String actualPTVal;
-
+        Double percent = 1.5;
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (ID)");
         log("Precondition: Having account with Pending HPD/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
@@ -375,7 +370,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         int dateNo = -1;
         String companyUnit = "Kastraki Limited";
         String smartMaster = "QA Smart Master";
-        String date = String.format(DateUtils.getDate(dateNo,"dd/MM/yyyy","GMT +7"));
+        String date = String.format(DateUtils.getDate(dateNo,"dd/MM/yyyy",GMT_7));
 
         log("@Precondition Step:  Having Half time Handicap bet which have been placed on Bet Entry");
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
@@ -435,8 +430,8 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"regression", "2023.10.31"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3416(String accountCode) {
-        String date = String.format(DateUtils.getDate(0, "dd/MM/yyyy", "GMT +7"));
-        String dateAPI = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
+        String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", GMT_7);
+        String dateAPI = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
         log("@title: Validate can filter by Basket ball 1x2 matched bets ");
         log("@Precondition: There are some matched Basket ball 1x2 matched bets from Pinnacle/BetISN/Fair or Bet Entry page");
         log("@Precondition-Step 1: Have a specific League Name, Home Team, Away Team for testing line\n" +
@@ -486,8 +481,8 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"regression", "2023.10.31"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3417(String accountCode) {
-        String date = String.format(DateUtils.getDate(0, "dd/MM/yyyy", "GMT +7"));
-        String dateAPI = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
+        String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", GMT_7);
+        String dateAPI = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
         log("@title: Validate Bet Types only shows option '1x2'");
         log("@Precondition: There are some matched Basket ball 1x2 matched bets from Pinnacle/BetISN/Fair or Bet Entry page");
         log("@Precondition-Step 1: Have a specific League Name, Home Team, Away Team for testing line\n" +
@@ -530,8 +525,8 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"regression", "2023.10.31"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3418(String accountCode) {
-        String date = String.format(DateUtils.getDate(0, "dd/MM/yyyy", "GMT +7"));
-        String dateAPI = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
+        String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", GMT_7);
+        String dateAPI = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
         log("@title: Validate forecast table displays the correct value");
         log("@Precondition: There are some matched Basket ball 1x2 matched bets from Pinnacle/BetISN/Fair or Bet Entry page");
         log("@Precondition-Step 1: Have a specific League Name, Home Team, Away Team for testing line\n" +
@@ -605,8 +600,8 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3419(String accountCode) throws IOException{
         String percent = "6";
-        String date = String.format(DateUtils.getDate(0, "dd/MM/yyyy", "GMT +7"));
-        String dateAPI = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
+        String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", GMT_7);
+        String dateAPI = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
         log("@title: Validate the Bet list displays the correct value ");
         log("@Precondition: There are some matched Basket ball 1x2 matched bets from Pinnacle/BetISN/Fair or Bet Entry page");
         log("@Precondition-Step 1: Have a specific League Name, Home Team, Away Team for testing line\n" +
