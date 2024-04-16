@@ -49,6 +49,7 @@
             <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
 
             <class name="testcases.sb11test.generalReports.BookieStatementTest"/>
+            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
             <class name="testcases.sb11test.generalReports.WLRPCTest"/>
             <class name="testcases.sb11test.generalReports.WinLossDetailTest"/>
 

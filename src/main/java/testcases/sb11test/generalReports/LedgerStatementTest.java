@@ -4,6 +4,7 @@ import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.DoubleUtils;
 import com.paltech.utils.FileUtils;
+import common.SBPConstants;
 import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -501,8 +502,113 @@ public class LedgerStatementTest extends BaseCaseAQS {
             TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_LIABILITY,LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
         }
     }
+    @TestRails(id="851")
+    @Test(groups = {"smoke_qc","2024.V.3.0"})
+    public void Ledger_Statement_TC851() throws IOException {
+        log("@title: Validate value calculated correctly for Ledger Type = Liability (Credit)");
+        log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Liability");
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Accounting > Journal Entries");
+        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        String debitLiaAcc = LEDGER_LIABILITY_DEBIT_NAME+" - "+LEDGER_LIABILITY_DEBIT_NUMBER;
+        String creditLiaAcc = LEDGER_LIABILITY_CREDIT_NAME+" - "+LEDGER_LIABILITY_CREDIT_NUMBER;
+        String cur = "HKD";
+        String descLia = "Liability Transaction "+ DateUtils.getMilliSeconds();
+        Transaction transaction = new Transaction.Builder()
+                .ledgerDebit(debitLiaAcc)
+                .ledgerCredit(creditLiaAcc)
+                .ledgerDebitCur(cur)
+                .ledgerCreditCur(cur)
+                .amountDebit(1)
+                .amountCredit(1)
+                .remark(descLia)
+                .transDate("")
+                .transType(JournalEntries.TRANSACTION_TYPE_LIST.get(5))
+                .build();
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
+        try {
+            log("@Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
+            LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Liability",LEDGER_GROUP_NAME_LIABILITY,"","","");
 
-    //TODO: implement case 851 852
+            log("@Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_GROUP_NAME_LIABILITY,LEDGER_LIABILITY_CREDIT_ACC);
+            log("@Verify 1: Original Currency: Debit show value = 0 in black, Credit show value = 10 in blue, Running Bal = Opening Balance (+Credit - Debit) value\n" +
+                    "Total column is sum of records");
+            log("@Verify 2: Amounts in GBP will get value from Original Currency then convert to GBP to show");
+            ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
+            log("INFO: Executed completely");
+        } finally {
+            log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(LEDGER_LIABILITY_DEBIT_NAME).ledgerCreditNumber(LEDGER_LIABILITY_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_LIABILITY_CREDIT_NAME).ledgerDebitNumber(LEDGER_LIABILITY_CREDIT_NUMBER)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_LIABILITY,LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
+        }
+    }
+    @TestRails(id="852")
+    @Test(groups = {"smoke_qc","2024.V.3.0"})
+    public void Ledger_Statement_TC852() throws IOException {
+        log("@title: Validate value calculated correctly for Ledger Type = Liability (Debit)");
+        log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Liability");
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Accounting > Journal Entries");
+        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        String debitLiaAcc = LEDGER_LIABILITY_DEBIT_NAME+" - "+LEDGER_LIABILITY_DEBIT_NUMBER;
+        String creditLiaAcc = LEDGER_LIABILITY_CREDIT_NAME+" - "+LEDGER_LIABILITY_CREDIT_NUMBER;
+        String cur = "HKD";
+        String descLia = "Liability Transaction "+ DateUtils.getMilliSeconds();
+        Transaction transaction = new Transaction.Builder()
+                .ledgerDebit(debitLiaAcc)
+                .ledgerCredit(creditLiaAcc)
+                .ledgerDebitCur(cur)
+                .ledgerCreditCur(cur)
+                .amountDebit(1)
+                .amountCredit(1)
+                .remark(descLia)
+                .transDate("")
+                .transType(JournalEntries.TRANSACTION_TYPE_LIST.get(5))
+                .build();
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
+        try {
+            log("@Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
+            LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Liability",LEDGER_GROUP_NAME_LIABILITY,"","","");
+
+            log("@Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_GROUP_NAME_LIABILITY,LEDGER_LIABILITY_DEBIT_ACC);
+            log("@Verify 1: Original Currency: Debit show value = 10 in red, Credit show value = 0 in black, Running Bal = Opening Balance (+ Credit - Debit) value\n" +
+                    "Total column is sum of records");
+            log("@Verify 2: Amounts in GBP will get value from Original Currency then convert to GBP to show");
+            ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
+            log("INFO: Executed completely");
+        } finally {
+            log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(LEDGER_LIABILITY_DEBIT_NAME).ledgerCreditNumber(LEDGER_LIABILITY_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_LIABILITY_CREDIT_NAME).ledgerDebitNumber(LEDGER_LIABILITY_CREDIT_NUMBER)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_LIABILITY,LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
+        }
+    }
+
     @TestRails(id="853")
     @Test(groups = {"smoke_qc"})
     public void Ledger_Statement_TC853() throws IOException {
