@@ -12,9 +12,6 @@ import utils.testraildemo.TestRails;
 import static common.SBPConstants.*;
 
 public class ChartOfAccountTest extends BaseCaseAQS {
-    String detailType = "Auto QC Detail Type";
-    String parentAccount = "Auto QC Parent Account";
-
     @Test(groups = {"regression"})
     @TestRails(id = "2155")
     public void Chart_Of_Account_TC_2155(){
@@ -61,6 +58,7 @@ public class ChartOfAccountTest extends BaseCaseAQS {
     public void Chart_Of_Account_TC_2157(){
         log("@title: Validate can add new Detail Type successfully");
         log("@Step 1: Login with valid account");
+        String detailType = "Auto QC Detail Type";
         log("@Step 2: Access Accounting > Chart Of Account");
         ChartOfAccountPage chartOfAccountPage = welcomePage.navigatePage(ACCOUNTING,CHART_OF_ACCOUNT,ChartOfAccountPage.class);
         log("@Step 3: Click Add button at Detail Type table");
@@ -83,10 +81,11 @@ public class ChartOfAccountTest extends BaseCaseAQS {
     public void Chart_Of_Account_TC_2158(){
         log("@title: Validate can add new Parent Account successfully");
         log("@Step 1: Login with valid account");
+        String detailType = "Auto QC Detail Type";
+        String parentAccount = "Auto QC Parent Account";
         log("@Step 2: Access Accounting > Chart Of Account");
         ChartOfAccountPage chartOfAccountPage = welcomePage.navigatePage(ACCOUNTING,CHART_OF_ACCOUNT,ChartOfAccountPage.class);
         log("@Step 3: Create detail type and click Add button at Parent Account table");
-
         log("@Step 4: Fill full info");
         log("@Step 5: Click Submit");
         try {
@@ -108,6 +107,8 @@ public class ChartOfAccountTest extends BaseCaseAQS {
     @TestRails(id = "2159")
     public void Chart_Of_Account_TC_2159(){
         log("@title: Validate can add new Sub Account successfully");
+        String detailType = "Auto QC Detail Type";
+        String parentAccount = "Auto QC Parent Account";
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Chart Of Account");
         String currency = "HKD";

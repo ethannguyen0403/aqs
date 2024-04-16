@@ -12,9 +12,6 @@ import utils.testraildemo.TestRails;
 import static common.SBPConstants.*;
 
 public class BalanceCurrentTest extends BaseCaseAQS {
-    String masterCode = "QATE";
-    String agentCode = "QATE01-PT";
-
     @Test(groups = {"regression"})
     @TestRails(id = "2168")
     public void Balance_Current_2168(){
@@ -51,6 +48,7 @@ public class BalanceCurrentTest extends BaseCaseAQS {
         log("@title: Validate Member Summary of Master is displayed successfully when clicking on Master");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Balance [Current]");
+        String masterCode = "QATE";
         BalanceCurrentPage balanceCurrentPage = welcomePage.navigatePage(ACCOUNTING,BALANCE_CURRENT, BalanceCurrentPage.class);
         log("@Step 3: Select an account");
         log("@Step 4: Click Show");
@@ -72,6 +70,7 @@ public class BalanceCurrentTest extends BaseCaseAQS {
         log("@title: Validate Member Summary of Agent is displayed successfully when clicking on Master");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Balance [Current]");
+        String agentCode = "QATE01-PT";
         BalanceCurrentPage balanceCurrentPage = welcomePage.navigatePage(ACCOUNTING,BALANCE_CURRENT, BalanceCurrentPage.class);
         log("@Step 3: Select an account");
         log("@Step 4: Click Show");

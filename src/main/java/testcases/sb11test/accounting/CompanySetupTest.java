@@ -40,12 +40,6 @@ import java.util.*;
 import static common.SBPConstants.*;
 
 public class CompanySetupTest extends BaseCaseAQS {
-    String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-    String previousDate = DateUtils.getPreviousDate(currentDate, "yyyy-MM-dd");
-    String viewBy = "Client Point";
-    String superMasterCode = "QA2112 - ";
-    String agentLedCode = "QATE00-LED";
-
     @TestRails(id = "4332")
     @Test(groups = {"regression", "2023.10.31","ethan"})
     @Parameters({"password","userNameOneRole"})
@@ -117,6 +111,8 @@ public class CompanySetupTest extends BaseCaseAQS {
     public void Company_Set_up_TC4341(String companyName, String companyCurrency) {
         log("@title: Validate UI on 'Create Company' dialog is shown correctly");
         log("@Step 1: Navigate to Accounting > Currency");
+        String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+        String previousDate = DateUtils.getPreviousDate(currentDate, "yyyy-MM-dd");
         CurrencyRatesPage currencyRatesPage = welcomePage.navigatePage(ACCOUNTING, CURRENCY_RATES, CurrencyRatesPage.class);
         log("@Step 2: Filter with company: " + companyName);
         currencyRatesPage.filterRate(companyName,"");
@@ -133,6 +129,8 @@ public class CompanySetupTest extends BaseCaseAQS {
     @Parameters({"companyName", "companyCurrency"})
     public void Company_Set_up_TC4343(String companyName, String companyCurrency) {
         String toDayAvoidLastDayOfMonth = "";
+        String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+        String previousDate = DateUtils.getPreviousDate(currentDate, "yyyy-MM-dd");
         log("@title: Validate that show the reporting currency of Company correctly in 'Ledger Statement' page");
         String expectedText1 = "Total in " + companyCurrency;
         String expectedText2 = "Grand Total in " + companyCurrency;
@@ -222,7 +220,10 @@ public class CompanySetupTest extends BaseCaseAQS {
         String currency = "HKD";
         String expectedText1 = "Total in " + currency;
         String expectedText2 = "Grand Total in " + currency;
-
+        String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
+        String agentLedCode = "QATE00-LED";
         log("@title: Validate that show the reporting currency of company correctly in 'Client Statement' page");
         log(String.format("@Precondition 1: Company %s has currency as %s", companyName, currency) );
         log("@Precondition 2: Add transaction for the Asset Ledger account to show value Rec/Pay and Member Transaction popup");

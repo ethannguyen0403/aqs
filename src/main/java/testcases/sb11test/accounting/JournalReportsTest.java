@@ -3,6 +3,7 @@ package testcases.sb11test.accounting;
 import com.paltech.utils.DateUtils;
 import objects.Transaction;
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.accounting.JournalEntriesPage;
 import pages.sb11.accounting.JournalReportsPage;
@@ -14,19 +15,9 @@ import java.util.List;
 import static common.SBPConstants.*;
 
 public class JournalReportsTest extends BaseCaseAQS {
-    String companyUnit = "Kastraki Limited";
-    String clientCode = "QA Client (No.121 QA Client)";
-    String dateType = "Created Date";
-    String debitExpAcc = "AutoExpenditureDebit";
-    String creditExpAcc = "AutoExpenditureCredit - 010.000.000.000";
-    String lgDebitCur = "HKD";
-    String lgCreditCur = "HKD";
-    String descExpenditure = "Expenditure Transaction " + DateUtils.getMilliSeconds();
-    String transType = "Payment Other";
-
     @Test(groups = {"regression"})
     @TestRails(id = "2165")
-    public void Journal_Report_TC_001(){
+    public void Journal_Report_TC_2165(){
         log("@title: Validate Journal Report page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Journal Report");
@@ -38,7 +29,8 @@ public class JournalReportsTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2166")
-    public void Journal_Reports_TC_2166(){
+    @Parameters({"clientCode"})
+    public void Journal_Reports_TC_2166(String clientCode){
         log("@title: Validate UI on Journal Reports is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Journal Reports");
@@ -68,12 +60,17 @@ public class JournalReportsTest extends BaseCaseAQS {
         log("@title: Validate transaction in Journal Entries should display correctly on Journal Report");
         log("@Step 1: Login with valid account");
         log("@Step 2:  Already making a transaction on Journal Entries page");
+        String dateType = "Created Date";
+        String creditExpAcc = LEDGER_EXPENDITURE_CREDIT_NAME + " - "+ LEDGER_EXPENDITURE_CREDIT_NUMBER;
+        String cur = "HKD";
+        String descExpenditure = "Expenditure Transaction " + DateUtils.getMilliSeconds();
+        String transType = "Payment Other";
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit("AutoCreditExpenditure - 012.000.000.000")
                 .ledgerCredit(creditExpAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur(cur)
+                .ledgerCreditCur(cur)
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descExpenditure)
@@ -84,7 +81,7 @@ public class JournalReportsTest extends BaseCaseAQS {
         log("@Step 3: Access Accounting > Journal Reports");
         JournalReportsPage journalReportsPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_REPORTS,JournalReportsPage.class);
         log("@Step 4: Filter with transaction at pre-condition");
-        journalReportsPage.filterReports(companyUnit,dateType,"","","All","",transType,"AutoExpenditureCredit1");
+        journalReportsPage.filterReports(KASTRAKI_LIMITED,dateType,"","","All","",transType,"AutoExpenditureCredit1");
         log("Verify 1: Validate transaction in Journal Entries should display correctly on Journal Report");
         journalReportsPage.verifyTxn(transaction,true);
         log("INFO: Executed completely");
