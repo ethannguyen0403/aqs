@@ -22,11 +22,6 @@ import java.io.IOException;
 import static common.SBPConstants.*;
 
 public class TrialBalanceTest extends BaseCaseAQS {
-    String parentAccount = "500.000.000.000 - QA Ledger Group Asset";
-    int currentMonth = DateUtils.getMonth("GMT +7");
-    String transType = "Payment Other";
-    String desc = "Automation test: Transaction " + DateUtils.getMilliSeconds();
-
     @TestRails(id = "2764")
     @Test(groups = {"Revise"})
     public void Trial_Balance_C2764() {
@@ -50,6 +45,10 @@ public class TrialBalanceTest extends BaseCaseAQS {
     public void Trial_Balance_C2773() throws IOException {
         log("@title: Validate Debit/Credit data is matched correctly with Ledger Statement page");
         String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+        String parentAccount = LEDGER_GROUP_NUMBER_ASSET+" - "+LEDGER_GROUP_NAME_ASSET;
+        int currentMonth = DateUtils.getMonth("GMT +7");
+        String transType = "Payment Other";
+        String desc = "Automation test: Transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(LEDGER_ASSET_CREDIT_NAME).ledgerCreditNumber(LEDGER_ASSET_CREDIT_NUMBER)
                 .ledgerDebit(LEDGER_ASSET_DEBIT_NAME).ledgerDebitNumber(LEDGER_ASSET_DEBIT_NUMBER)
@@ -88,21 +87,15 @@ public class TrialBalanceTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         }
     }
-
     @TestRails(id = "2779")
     @Test(groups = {"regression_stg", "2023.11.30"})
     @Parameters({"password", "userNameOneRole"})
     public void Trial_Balance_C2779(String password, String userNameOneRole) throws Exception {
         log("@title: Validate user can not access Trial Balance page when having no permission");
         log("Precondition: Deactivate Trial Balance option in one role account");
-        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRole("one role").switchPermissions(TRIAL_BALANCE, false);
-        roleManagementPage.selectRole("one role").switchPermissions(BALANCE_SHEET, true);
         log("@Step 1: Re-login with one role account account has 'Trial Balance' permission is OFF");
-        LoginPage loginPage = roleManagementPage.logout();
+        LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
-        BalanceSheetPage balanceSheetPage =
-                welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET, BalanceSheetPage.class);
         log("@Verify 1: 'Trial Balance' menu is hidden displays");
         Assert.assertTrue(!welcomePage.headerMenuControl.isSubmenuDisplay(FINANCIAL_REPORTS, TRIAL_BALANCE), "FAILED! Trial balance menu is displayed");
         log("INFO: Executed completely");
@@ -113,13 +106,14 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("@title: Validate amount shows in Credit/Debit column when detail type = Asset");
         log("Pre-condition 1: Having some txn with detail type = Asset");
         String parentDebit = "500.000.000.000 - QA Ledger Group Asset";
-        String ledgerAccNega = "050.000.000.001 - AutoAssetCreditNega";
         String ledgerAccName = "AutoAssetCreditNega";
         String ledgerAccNumber = "050.000.000.001";
         String ledgerGroupNega = "QA Ledger Auto Asset";
         String ledgerNega = "500.000.000.001 - QA Ledger Auto Asset";
+        int currentMonth = DateUtils.getMonth("GMT +7");
         String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-
+        String transType = "Payment Other";
+        String desc = "Automation test: Transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(ledgerAccName).ledgerCreditNumber(ledgerAccNumber)
                 .ledgerDebit(LEDGER_ASSET_DEBIT_NAME).ledgerDebitNumber(LEDGER_ASSET_DEBIT_NUMBER)
@@ -167,13 +161,14 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("@title: Validate amount shows in Credit/Debit column when detail type = Expenditure");
         log("Pre-condition 1: Having some txn with detail type = Expenditure");
         String parentDebit = "100.000.000.000 - QA Ledger Group Expenditure";
-        String ledgerAccNega = "050.000.000.011 - AutoExpenditureCreditNega";
         String ledgerAccNegaName = "AutoExpenditureCreditNega";
         String ledgerAccNegaNum = "050.000.000.011";
         String ledgerGroupNega = "QA Ledger Auto Expenditure";
         String ledgerNega = "100.000.000.001 - QA Ledger Auto Expenditure";
-
+        int currentMonth = DateUtils.getMonth("GMT +7");
         String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+        String transType = "Payment Other";
+        String desc = "Automation test: Transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(ledgerAccNegaName).ledgerCreditNumber(ledgerAccNegaNum)
                 .ledgerDebit(LEDGER_EXPENDITURE_DEBIT_NAME).ledgerDebitNumber(LEDGER_EXPENDITURE_DEBIT_NUMBER)
@@ -221,13 +216,14 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("@title: Validate amount shows in Credit/Debit column when detail type = Liability");
         log("Pre-condition 1: Having some txn with detail type = Liability");
         String parentDebit = "400.000.000.000 - QA Ledger Group Liability";
-        String ledgerAccNega = "040.000.000.011 - AutoLiabilityCreditNega";
         String ledgerAccNegaName = "AutoLiabilityCreditNega";
         String ledgerAccNegaNum = "040.000.000.011";
         String ledgerGroupNega = "QA Ledger Auto Liability";
         String ledgerNega = "400.000.000.001 - QA Ledger Auto Liability";
         String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-
+        int currentMonth = DateUtils.getMonth("GMT +7");
+        String transType = "Payment Other";
+        String desc = "Automation test: Transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(ledgerAccNegaName).ledgerCreditNumber(ledgerAccNegaNum)
                 .ledgerDebit(LEDGER_LIABILITY_DEBIT_NAME).ledgerDebitNumber(LEDGER_LIABILITY_DEBIT_NUMBER)
@@ -274,14 +270,14 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("@title: Validate amount shows in Credit/Debit column when detail type = Capital");
         log("Pre-condition 1: Having some txn with detail type = Capital");
         String parentDebit = "300.000.000.000 - QA Ledger Group Capital";
-        String ledgerAccNega = "030.000.000.011 - AutoCapitalCreditNega";
         String ledgerAccNegaName = "AutoCapitalCreditNega";
         String ledgerAccNegaNum = "030.000.000.011";
         String ledgerGroupNega = "QA Ledger Auto Capital";
         String ledgerNega = "300.000.000.001 - QA Ledger Auto Capital";
-
+        int currentMonth = DateUtils.getMonth("GMT +7");
         String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-
+        String transType = "Payment Other";
+        String desc = "Automation test: Transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(LEDGER_CAPITAL_CREDIT_NAME).ledgerCreditNumber(LEDGER_CAPITAL_CREDIT_NUMBER)
                 .ledgerDebit(ledgerAccNegaName).ledgerDebitNumber(ledgerAccNegaNum)
@@ -329,13 +325,14 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("@title: Validate amount shows in Credit/Debit column when detail type = Income");
         log("Pre-condition 1: Having some txn with detail type = Income");
         String parentDebit = "000.000.001.000 - QA Ledger Group Income";
-        String ledgerAccNega = "002.000.000.011 - AutoIncomeCreditNega";
         String ledgerAccNegaName = "AutoIncomeCreditNega";
         String ledgerAccNegaNum = "002.000.000.011";
         String ledgerGroupNega = "QA Ledger Auto Income";
         String ledgerNega = "000.000.001.001 - QA Ledger Auto Income";
         String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-
+        int currentMonth = DateUtils.getMonth("GMT +7");
+        String transType = "Payment Other";
+        String desc = "Automation test: Transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(ledgerAccNegaName).ledgerCreditNumber(ledgerAccNegaNum)
                 .ledgerDebit(LEDGER_INCOME_DEBIT_NAME).ledgerDebitNumber(LEDGER_INCOME_DEBIT_NUMBER)
