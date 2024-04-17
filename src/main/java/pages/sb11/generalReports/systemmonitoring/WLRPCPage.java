@@ -152,9 +152,10 @@ public class WLRPCPage extends WelcomePage {
     }
 
     public void verifyExcelFileDownloadCorrect(String type) {
-        String downloadPath = getDownloadPath() + "export-winloss.xlsx";
-        Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath),"FAILED! Excel file displays incorrect.");
+        String downloadPath;
         if (type.equals("All")){
+            downloadPath = getDownloadPath() + "export-winloss(2).xlsx";
+            Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath),"FAILED! Excel file displays incorrect.");
             Table tblCLient = Table.xpath("(//table)[1]",4);
             Table tblBookie = Table.xpath("(//table)[2]",4);
             List<String> lstHeaderClient = tblCLient.getHeaderNameOfRows();
@@ -183,6 +184,12 @@ public class WLRPCPage extends WelcomePage {
             Assert.assertEquals(tblBookie.getControlOfCell(1,tblBookie.getColumnIndexByName("Winlose Amount"),1,null).getText().trim(),
                     ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",9,2));
         } else {
+            if (type.equals("Client")){
+                downloadPath = getDownloadPath() + "export-winloss.xlsx";
+            } else {
+                downloadPath = getDownloadPath() + "export-winloss(1).xlsx";
+            }
+            Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath),"FAILED! Excel file displays incorrect.");
             Table table = Table.xpath("(//table)[1]",5);
             List<String> lstHeader = table.getHeaderNameOfRows();
             //Verify header name in excel

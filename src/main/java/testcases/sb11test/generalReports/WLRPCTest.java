@@ -121,11 +121,11 @@ public class WLRPCTest extends BaseCaseAQS {
         log("Verify 1: UI of WL & RPC should display correctly when showing with Type is Client");
         log("Verify 2: User should export the excel report with correct data successfully");
         page.verifyExcelFileDownloadCorrect("Client");
-        try {
-            FileUtils.removeFile(getDownloadPath()+"export-winloss.xlsx");
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
+//        try {
+//            FileUtils.removeFile(getDownloadPath()+"export-winloss.xlsx");
+//        } catch (IOException e) {
+//            log(e.getMessage());
+//        }
         log("INFO: Executed completely");
     }
     @TestRails(id="29503")
@@ -196,11 +196,6 @@ public class WLRPCTest extends BaseCaseAQS {
         log("Verify 1: UI of WL & RPC should display correctly when showing with Type is Bookie");
         log("Verify 2: User should export the excel report with correct data successfully");
         page.verifyExcelFileDownloadCorrect("Bookie");
-        try {
-            FileUtils.removeFile(getDownloadPath()+"export-winloss.xlsx");
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
         log("INFO: Executed completely");
     }
     @TestRails(id="23985")
@@ -220,11 +215,11 @@ public class WLRPCTest extends BaseCaseAQS {
         log("Verify 1: UI of WL & RPC should display correctly when showing with Type is Client/Bookie");
         log("Verify 2: User should export the excel report with correct data successfully");
         page.verifyExcelFileDownloadCorrect("All");
-        try {
-            FileUtils.removeFile(getDownloadPath()+"export-winloss.xlsx");
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
+//        try {
+//            FileUtils.removeFile(getDownloadPath()+"export-winloss.xlsx");
+//        } catch (IOException e) {
+//            log(e.getMessage());
+//        }
         log("INFO: Executed completely");
     }
     @TestRails(id="23986")
