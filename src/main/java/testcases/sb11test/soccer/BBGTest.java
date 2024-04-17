@@ -374,7 +374,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 3: Filter From Date - To date which has data and other fields are default value");
         log("@Step 4: Click Show button");
         log("@Step 5: Click Show Bet Types dropdown list");
-        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        String date = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
         page.filter("","","","Settled Bets",date,"","","");
         log("@Verify 1: All bets type (e.g. FT-HDP, HT-HDP, FT-Over/Under, HT-Over/Under) that have bets display");
         List<String> lstBetTypes = page.getLstNameInAdvanceFilter("Bet Types");
@@ -394,7 +394,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 5: Click Show Bet Types dropdown list");
         log("@Step 6: Select any bet type (e.g. FT-HDP) then click Set Selection button");
         log("@Step 7: Click Show button");
-        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        String date = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
         page.filter("","","","Settled Bets",date,"","","");
         page.filterAdvance("Bet Types","FT-HDP");
         log("@Verify 1: All bets type (e.g. FT-HDP, HT-HDP, FT-Over/Under, HT-Over/Under) that have bets display");
@@ -437,7 +437,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 5: Click Show Groups dropdown list");
         log("@Step 6: Select any group then click Set Selection button");
         log("@Step 7: Click Show button");
-        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        String date = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
         page.filter("","","","Settled Bets",date,"","","");
         String groupEx = page.getLstNameInAdvanceFilter("Group").get(0);
         page.filterAdvance("Group",groupEx);
