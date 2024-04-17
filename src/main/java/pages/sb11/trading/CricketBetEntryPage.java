@@ -107,7 +107,7 @@ public class CricketBetEntryPage extends BetEntryPage {
         txtAccCode.type(order.getAccountCode());
         btnShow.click();
         waitSpinnerDisappeared();
-        int rowIndex = getEventRowIndex(order.getHome());
+        int rowIndex = tblEvent.getRowIndexContainValue(order.getHome()+"\n"+order.getAway(),colEvent,null);
         String selection = "DRAW";
         if(order.getSelection().equals(order.getHome()))
             selection= "HOME";
@@ -197,7 +197,7 @@ public class CricketBetEntryPage extends BetEntryPage {
      * @return
      */
     public BetListPopup openBetList(String eventName){
-        int rowIndex = getEventRowIndex(eventName);
+        int rowIndex = tblEvent.getRowIndexContainValue(eventName,colEvent,null);
         tblEvent.getControlOfCell(1,colCPB, rowIndex,"span").click();
         BetListPopup soccerBetListPopup = new BetListPopup();
         soccerBetListPopup.icRefresh.isDisplayed();

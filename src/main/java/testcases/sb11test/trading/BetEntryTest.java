@@ -183,7 +183,7 @@ public class BetEntryTest extends BaseCaseAQS {
         Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
 
         log("@Step 7: Click 'Bets' at CPB column of event at step 5 > observe");
-        BetListPopup betListPopup = cricketBetEntryPage.openBetList(eventInfo.getHome());
+        BetListPopup betListPopup = cricketBetEntryPage.openBetList(eventInfo.getHome()+"\n"+eventInfo.getAway());
 
         log("@Verify 2: Bets information is displayed correctly in Bet List");
         order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");

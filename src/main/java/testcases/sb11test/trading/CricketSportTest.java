@@ -232,7 +232,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -303,7 +303,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -592,7 +592,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -664,7 +664,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -736,7 +736,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -809,7 +809,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -882,7 +882,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -955,7 +955,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -1027,7 +1027,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
