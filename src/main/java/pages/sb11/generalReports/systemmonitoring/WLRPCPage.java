@@ -207,4 +207,9 @@ public class WLRPCPage extends WelcomePage {
 
 
     }
+    //Get value in Table with type Client/Bookie by currency
+    public String getBookieClientValueByCur(String clientCode, String currency, String colName) {
+        Table tableCur = Table.xpath(String.format("//span[text()='%s']//ancestor::table",currency),5);
+        return Label.xpath(tableCur.getControlxPathBasedValueOfDifferentColumnOnRow(clientCode,1,2,1,"span",tableCur.getColumnIndexByName(colName),null,true,false)).getText().trim();
+    }
 }
