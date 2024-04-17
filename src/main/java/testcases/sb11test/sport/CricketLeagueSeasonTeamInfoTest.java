@@ -74,7 +74,8 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         createCricketLeaguePopup.addLeague(leagueName, leagueName, country, "", "", true,true,true);
         log("Validate that can add new Cricket List successfully");
         cricketLeagueSeasonTeamInfoPage.filterLeague("All",country,leagueName);
-        cricketLeagueSeasonTeamInfoPage.isLeagueDisplayed(leagueName);
+        Assert.assertFalse(cricketLeagueSeasonTeamInfoPage.tbLeague.getRowIndexContainValue(leagueName, cricketLeagueSeasonTeamInfoPage.tbLeague.getColumnIndexByName("League Name"),null)
+        == 0, "FAILED! Can not add new Cricket List");
         log("INFO: Executed completely");
     }
 
@@ -93,7 +94,8 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         log("@Step 4: Fill full info > click Submit");
         createSeasonPopup.addSeason(seasonName,"","",true);
         log("Validate that can add new Cricket season successfully");
-        cricketLeagueSeasonTeamInfoPage.isSeasonDisplayed(leagueName,seasonName);
+        Assert.assertFalse(cricketLeagueSeasonTeamInfoPage.tbSeason.getRowIndexContainValue(seasonName,cricketLeagueSeasonTeamInfoPage.tbSeason.getColumnIndexByName("Season Name"),null)
+        == 0,"FAILED! Can not add new Cricket season");
         log("INFO: Executed completely");
     }
 

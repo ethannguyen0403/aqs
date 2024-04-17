@@ -50,7 +50,8 @@ public class CricketSportTest extends BaseCaseAQS {
             createCricketLeaguePopup.addLeague(leagueName, leagueName, country, "", "", true,true,true);
             log("Verify 1: Message 'Please input valid Account Code.' displays");
             cricketLeagueSeasonTeamInfoPage.filterLeague("All",country,leagueName);
-            cricketLeagueSeasonTeamInfoPage.isLeagueDisplayed(leagueName);
+            Assert.assertFalse(cricketLeagueSeasonTeamInfoPage.tbLeague.getRowIndexContainValue(leagueName, cricketLeagueSeasonTeamInfoPage.tbLeague.getColumnIndexByName("League Name"),null)
+                    == 0, "FAILED! Can not add new Cricket List");
         } finally {
             ConfirmDeleteLeaguePopup delPopup = cricketLeagueSeasonTeamInfoPage.openDeleteLeaguePopup(leagueName);
             delPopup.deleteLeague(true);
@@ -331,8 +332,7 @@ public class CricketSportTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
-        String superMasterCode = "QA2112 - ";
-        String clientCode1 = superMasterCode + clientCode;
+        String clientCode1 = "QA2112 - " + clientCode;
         Double percent = 1.0;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
 
@@ -440,8 +440,7 @@ public class CricketSportTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
-        String superMasterCode = "QA2112 - ";
-        String clientCode1 = superMasterCode + clientCode;
+        String clientCode1 = "QA2112 - " + clientCode;
         Double percent = 1.0;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
 
@@ -1055,8 +1054,7 @@ public class CricketSportTest extends BaseCaseAQS {
                 "The event settled with result as Home Win");
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
-        String superMasterCode = "QA2112 - ";
-        String clientCode1 = superMasterCode + clientCode;
+        String clientCode1 = "QA2112 - " + clientCode;
         Double percent = 1.0;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
 
@@ -1185,8 +1183,7 @@ public class CricketSportTest extends BaseCaseAQS {
                 "The event settled with result as Home Win");
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
-        String superMasterCode = "QA2112 - ";
-        String clientCode1 = superMasterCode + clientCode;
+        String clientCode1 = "QA2112 - " + clientCode;
         Double percent = 1.0;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
 
@@ -1296,8 +1293,7 @@ public class CricketSportTest extends BaseCaseAQS {
         String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
-        String superMasterCode = "QA2112 - ";
-        String clientCode1 = superMasterCode + clientCode;
+        String clientCode1 = "QA2112 - " + clientCode;
         Double percent = 1.0;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -1342,8 +1338,7 @@ public class CricketSportTest extends BaseCaseAQS {
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String clientId = ClientSystemUtils.getClientId(clientCode);
-        String superMasterCode = "QA2112 - ";
-        String clientCode1 = superMasterCode + clientCode;
+        String clientCode1 = "QA2112 - " + clientCode;
         Double percent = 1.0;
         AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
