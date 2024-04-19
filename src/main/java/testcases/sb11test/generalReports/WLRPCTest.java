@@ -16,7 +16,7 @@ import java.io.IOException;
 import static common.SBPConstants.*;
 public class WLRPCTest extends BaseCaseAQS {
     @TestRails(id="23975")
-    @Test(groups = {"regression1","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0"})
     public void WLRPCT_23975(){
         log("@title: Validate that UI of WL & RPC displays correctly when no records found");
         log("@pre-condition 1: Client and Bookie have some data");
