@@ -26,7 +26,7 @@ import static common.SBPConstants.*;
 
 public class AccountPercentTest extends BaseCaseAQS {
 
-    @Test(groups = {"regression1","2024.V.1.0"})
+    @Test(groups = {"regression","2024.V.1.0"})
     @TestRails(id = "56")
     @Parameters({"bookieCode","accountCode","clientCode"})
     public void AccountPercent_56(String bookieCode, String accountCode, String clientCode) throws IOException {
