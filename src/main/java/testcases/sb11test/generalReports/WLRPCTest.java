@@ -105,7 +105,7 @@ public class WLRPCTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="23984")
-    @Test(groups = {"regression1","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0"})
     public void WLRPCT_23984(){
         log("@title: Validate user can export the excel report when showing data with Type is Client");
         log("@pre-condition 1: Client and Bookie have some data");
@@ -129,7 +129,7 @@ public class WLRPCTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="23985")
-    @Test(groups = {"regression1","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0"})
     public void WLRPCT_23985(){
         log("@title: Validate user can export the excel report when showing data with Type is All");
         log("@pre-condition 1: Client and Bookie have some data");
@@ -221,7 +221,7 @@ public class WLRPCTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="29535")
-    @Test(groups = {"regression1","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0"})
     public void WLRPCT_29535(){
         log("@title: Validate user can export the excel report when showing data with Type is Bookie");
         log("@pre-condition 1: Client and Bookie have some data");
