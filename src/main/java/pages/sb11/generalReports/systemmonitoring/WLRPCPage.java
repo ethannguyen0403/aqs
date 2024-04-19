@@ -156,7 +156,7 @@ public class WLRPCPage extends WelcomePage {
     public void verifyExcelFileDownloadCorrect(String type) {
         String downloadPath;
         if (type.equals("All")){
-            downloadPath = getDownloadPath() + "export-winloss(2).xlsx";
+            downloadPath = getDownloadPath() + "export-winloss(1).xlsx";
             Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath),"FAILED! Excel file displays incorrect.");
             Table tblCLient = Table.xpath("(//table)[1]",4);
             Table tblBookie = Table.xpath("(//table)[2]",4);
@@ -189,7 +189,7 @@ public class WLRPCPage extends WelcomePage {
             if (type.equals("Client")){
                 downloadPath = getDownloadPath() + "export-winloss.xlsx";
             } else {
-                downloadPath = getDownloadPath() + "export-winloss(1).xlsx";
+                downloadPath = getDownloadPath() + "export-winloss(2).xlsx";
             }
             Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath),"FAILED! Excel file displays incorrect.");
             Table table = Table.xpath("(//table)[1]",5);
