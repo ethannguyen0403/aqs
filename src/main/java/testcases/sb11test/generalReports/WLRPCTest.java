@@ -138,7 +138,7 @@ public class WLRPCTest extends BaseCaseAQS {
         log("@Step 2: Select valid date range");
         log("@Step 3: Select Type is All");
         log("@Step 4: Select Search button");
-        String fromDate = DateUtils.getDate(-7,"dd/MM/yyyy",GMT_7);
+        String fromDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         page.filter("","All",fromDate,"","");
         log("@Step 5: Select Export To Excel button");
         page.exportToExcel();
