@@ -12,6 +12,7 @@ import pages.sb11.LoginPage;
 import pages.sb11.soccer.BBGPhoneBettingPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.BetEntrytUtils;
+import utils.sb11.BetSettlementUtils;
 import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
 
@@ -204,6 +205,8 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
                 .betType("BACK")
                 .build();
         BetEntrytUtils.placeBetAPI(order);
+        //Wait for Order display
+        BetSettlementUtils.waitForBetIsUpdate(5);
         log("@Step 1: Navigate to the site");
         log("@Step 2: Expand menu 'Soccer' and access 'BBG - Phone Betting' page");
         BBGPhoneBettingPage page = welcomePage.navigatePage(SOCCER,BBG_PHONE_BETTING, BBGPhoneBettingPage.class);

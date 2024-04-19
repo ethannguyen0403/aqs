@@ -115,16 +115,13 @@ public class BookieStatementPage extends WelcomePage {
     }
 
     public BookieSuperMasterDetailPopup openBookieSuperMasterDetailPopup(String superMasterCode) {
-        Label lblSuperMasterCode;
         String xpath = String.format("//div[@class='content-filter pt-4 row ng-star-inserted']//div//div[contains(.,' %s ')]",superMasterCode);
-        lblSuperMasterCode = Label.xpath(xpath);
-        if (!lblSuperMasterCode.isDisplayed()) {
+        Table table = Table.xpath(xpath+"//following-sibling::div/table",10);
+        Label lblSuperMasterCode = Label.xpath(table.getxPathOfCell(1,table.getColumnIndexByName("Master Code"),1,"a"));
+        if (!lblSuperMasterCode.isDisplayed()){
             System.out.println("Cannot find out Super Master in list of result table: " + superMasterCode);
             return null;
         } else {
-            xpath = xpath + "//..//a[contains(text(),' Super Master R/P/C/RB/A ')]";
-//            xpath = xpath + "//ancestor::tr//preceding-sibling::tr//a";
-            lblSuperMasterCode = Label.xpath(xpath);
             lblSuperMasterCode.click();
             waitSpinnerDisappeared();
             return new BookieSuperMasterDetailPopup();
