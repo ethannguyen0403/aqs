@@ -38,12 +38,12 @@ public class WLRPCPage extends WelcomePage {
         if (!type.isEmpty()){
             ddType.selectByVisibleText(type);
         }
-        if (!fromDate.isEmpty()){
-            dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-            waitSpinnerDisappeared();
-        }
         if (!toDate.isEmpty()){
             dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+            waitSpinnerDisappeared();
+        }
+        if (!fromDate.isEmpty()){
+            dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
             waitSpinnerDisappeared();
         }
         if (!currency.isEmpty()){
