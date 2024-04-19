@@ -140,7 +140,7 @@ public class WLRPCPage extends WelcomePage {
                 difEx = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(totalClient) - Double.valueOf(totalBookie));
             }
             double difAc = Double.valueOf(getDifValue(cur));
-            Assert.assertEquals(difAc,difEx,"FAILED! Difference value of "+cur+" display incorrect");
+            Assert.assertEquals(difAc,Math.abs(difEx),"FAILED! Difference value of "+cur+" display incorrect");
         }
     }
     public void exportToExcel(){
