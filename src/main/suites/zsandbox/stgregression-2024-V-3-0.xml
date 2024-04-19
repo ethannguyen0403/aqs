@@ -33,30 +33,29 @@
         <parameter name='isAddTestRailResult' value='false'/>
         <groups>
             <run>
-<!--                <include name="2024.V.3.0"/>-->
-                <include name="regression1"/>
+                <include name="2024.V.3.0"/>
             </run>
         </groups>
 
         <classes>
-<!--            <class name="testcases.sb11test.sport.OpenPriceTest"/>-->
+            <class name="testcases.sb11test.sport.OpenPriceTest"/>
 
-<!--            <class name="testcases.sb11test.soccer.BBGPhoneBettingTest"/>-->
-<!--            <class name="testcases.sb11test.soccer.BBGTest"/>-->
+            <class name="testcases.sb11test.soccer.BBGPhoneBettingTest"/>
+            <class name="testcases.sb11test.soccer.BBGTest"/>
 
-<!--            <class name="testcases.sb11test.accounting.JournalEntriesTest"/>-->
+            <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
 
-<!--            <class name="testcases.sb11test.trading.BetSettlementTest"/>-->
-<!--            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>-->
+            <class name="testcases.sb11test.trading.BetSettlementTest"/>
+            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
 
-<!--            <class name="testcases.sb11test.generalReports.BookieStatementTest"/>-->
-<!--            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>-->
+            <class name="testcases.sb11test.generalReports.BookieStatementTest"/>
+            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
             <class name="testcases.sb11test.generalReports.WLRPCTest"/>
-<!--            <class name="testcases.sb11test.generalReports.WinLossDetailTest"/>-->
+            <class name="testcases.sb11test.generalReports.WinLossDetailTest"/>
 
-<!--            <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>-->
-<!--            <class name="testcases.sb11test.financialReports.IncomeStatementAnalysisTest"/>-->
-<!--            <class name="testcases.sb11test.financialReports.RetainedEarningsTest"/>-->
+            <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
+            <class name="testcases.sb11test.financialReports.IncomeStatementAnalysisTest"/>
+            <class name="testcases.sb11test.financialReports.RetainedEarningsTest"/>
         </classes>
     </test>
 </suite>
