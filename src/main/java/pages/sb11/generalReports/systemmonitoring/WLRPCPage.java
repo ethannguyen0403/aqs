@@ -147,7 +147,7 @@ public class WLRPCPage extends WelcomePage {
         btnExportToExcel.click();
         //Wait for file Excel export
         try {
-            Thread.sleep(5);
+            Thread.sleep(10);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
