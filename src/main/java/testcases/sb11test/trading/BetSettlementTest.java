@@ -36,10 +36,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("@pre-condition 2: Having an account with Confirmed bet settle Win/Lose and configuring the Account Percentage");
         log("@pre-condition 3: Active Trading > Account Percentage and Search the account then get Actual WinLoss % value of the account");
         String superMasterCode = "QA2112 - ";
-        String accountId = AccountSearchUtils.getAccountId(accountCode);
-        String clientId = ClientSystemUtils.getClientId(clientCode);
-        clientCode = superMasterCode + clientCode;
-        AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode,1.0);
+        AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,superMasterCode,1.0);
         //Having Pending Bet
         String sport = "Soccer";
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd",GMT_7));

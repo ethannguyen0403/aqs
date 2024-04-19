@@ -34,12 +34,10 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("Precondition: Having account with Pending HDP/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
         //Configurate Account Percent
-        String accountId = AccountSearchUtils.getAccountId(accountCode);
-        String clientId = ClientSystemUtils.getClientId(clientCode);
         String superMasterCode = "QA2112 - ";
-        clientCode = superMasterCode + clientCode;
         Double percent = 1.5;
-        AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode,percent);
+        AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,superMasterCode,percent);
+        clientCode = superMasterCode + clientCode;
         //Place bet HDP
         String sport = "Soccer";
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
@@ -79,19 +77,18 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Parameters({"clientCode","accountCode","accountCurrency"})
     @TestRails(id = "192")
     public void PTRiskControlTC_192(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
-        welcomePage.waitSpinnerDisappeared();
-        String accountId = AccountSearchUtils.getAccountId(accountCode);
-        String clientId = ClientSystemUtils.getClientId(clientCode);
-        String superMasterCode = "QA2112 - ";
-        clientCode = superMasterCode + clientCode;
-        String actualPTVal;
-        Double percent = 1.5;
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (EU)");
         log("Precondition: Having account with Pending HPD/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
         String sport="Soccer";
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
-        AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode,percent);
+        //Set Account Percent
+        String superMasterCode = "QA2112 - ";
+        String actualPTVal;
+        Double percent = 1.5;
+        AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,superMasterCode,percent);
+
+        clientCode = superMasterCode + clientCode;
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,"","All");
@@ -129,20 +126,18 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode","accountCode","accountCurrency"})
     @TestRails(id = "1387")
-    public void PTRiskControlTC_1387(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
-        welcomePage.waitSpinnerDisappeared();
-        String accountId = AccountSearchUtils.getAccountId(accountCode);
-        String clientId = ClientSystemUtils.getClientId(clientCode);
-        String superMasterCode = "QA2112 - ";
-        clientCode = superMasterCode + clientCode;
-        String actualPTVal;
-        Double percent = 1.5;
+    public void PTRiskControlTC_1387(String clientCode, String accountCode, String accountCurrency) throws IOException {
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (MY)");
         log("Precondition: Having account with Pending HPD/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
         String sport="Soccer";
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
-        AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode,percent);
+        //Set account percent
+        String superMasterCode = "QA2112 - ";
+        Double percent = 1.5;
+        AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,superMasterCode,percent);
+        String actualPTVal;
+        clientCode = superMasterCode + clientCode;
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,"","All");
@@ -180,20 +175,17 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode","accountCode","accountCurrency"})
     @TestRails(id = "1388")
-    public void PTRiskControlTC_1388(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
-        welcomePage.waitSpinnerDisappeared();
-        String accountId = AccountSearchUtils.getAccountId(accountCode);
-        String clientId = ClientSystemUtils.getClientId(clientCode);
-        String superMasterCode = "QA2112 - ";
-        clientCode = superMasterCode + clientCode;
-        String actualPTVal;
-        Double percent = 1.5;
+    public void PTRiskControlTC_1388(String clientCode, String accountCode, String accountCurrency) throws IOException {
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (ID)");
         log("Precondition: Having account with Pending HPD/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
         String sport="Soccer";
         String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
-        AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode,percent);
+        String superMasterCode = "QA2112 - ";
+        String actualPTVal;
+        Double percent = 1.5;
+        AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,superMasterCode,percent);
+        clientCode = superMasterCode + clientCode;
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
         soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,"","All");
@@ -444,10 +436,8 @@ public class PTRiskControlTest extends BaseCaseAQS {
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
                 .selection(eventBasketball.getHome()).isLive(false).event(eventBasketball).accountCode(accountCode).build();
+        EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get("Basketball"));
         String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventBasketball.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventBasketball.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getOpenTime(),eventBasketball.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         eventBasketball.setEventId(eventID);
         log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
@@ -470,9 +460,8 @@ public class PTRiskControlTest extends BaseCaseAQS {
             Assert.assertTrue(ptRiskBetListPopup.getBetListCellValue(accountCode, 1).contains(betID), "FAILED!Bet not shown properly.");
             log("INFO: Executed test completely");
         } finally {
-
             log("@Post-condition: Deleted the event Basketball: " + eventID);
-            EventScheduleUtils.deleteEventByAPI(eventID);
+            EventScheduleUtils.deleteEventByAPI(eventBasketball,dateAPI);
             log("INFO: Executed Pos-condition completely");
         }
     }
@@ -495,10 +484,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
                 .selection(eventBasketball.getHome()).isLive(false).event(eventBasketball).accountCode(accountCode).build();
-        String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventBasketball.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventBasketball.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getOpenTime(), eventBasketball.getEventStatus().toUpperCase());
+        EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get("Basketball"));
         log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
         try {
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
@@ -514,9 +500,8 @@ public class PTRiskControlTest extends BaseCaseAQS {
             Assert.assertTrue(ptPage.isBetTypeBasketIs1X2(), "FAILED! Bet type of Basketball is not correct");
             log("INFO: Executed test completely");
         } finally {
-            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
-            log("@Post-condition: Deleted the event Basketball: " + eventID);
-            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("@Post-condition: Deleted the event Basketball: ");
+            EventScheduleUtils.deleteEventByAPI(eventBasketball,dateAPI);
             log("INFO: Executed Pos-condition completely");
         }
     }
@@ -539,11 +524,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
                 .selection(eventBasketball.getHome()).isLive(false).event(eventBasketball).accountCode(accountCode).build();
-        String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventBasketball.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventBasketball.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getOpenTime(), eventBasketball.getEventStatus().toUpperCase());
-
+        EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get("Basketball"));
         log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
         try {
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
@@ -588,9 +569,8 @@ public class PTRiskControlTest extends BaseCaseAQS {
                     "-" + String.valueOf(ptRiskBetListPopup.getAmountForeCastHK1X2InBetSlip("2", "Normal")),
                     "FAILED! Amount forecast 2 is not correct");
         } finally {
-            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
-            log("@Post-condition: Deleted the event Basketball: " + eventID);
-            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("@Post-condition: Deleted the event Basketball: ");
+            EventScheduleUtils.deleteEventByAPI(eventBasketball,dateAPI);
             log("INFO: Executed Pos-condition completely");
         }
     }
@@ -614,10 +594,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
                 .selection(eventBasketball.getHome()).isLive(false).event(eventBasketball).accountCode(accountCode).build();
-        String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventBasketball.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventBasketball.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getOpenTime(), eventBasketball.getEventStatus().toUpperCase());
+        EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get("Basketball"));
         log("@Precondition-Step 2: Set % PT of Basketball on Account List");
         AccountListUtils.setAccountListPTAPI(accountCode, percent, true, AccountListUtils.SportName.basketball);
         log("@Precondition-Step 3: Place some Basketball 1x2 match bets");
@@ -640,9 +617,8 @@ public class PTRiskControlTest extends BaseCaseAQS {
             List<String> listPTValue = ptRiskBetListPopup.tblBetList.getColumn(ptRiskBetListPopup.tblBetList.getColumnIndexByName("PT%"), false);
             Assert.assertTrue(listPTValue.contains(percent), "FAILED! The PT value is missing on bet list");
         } finally {
-            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
-            log("@Post-condition: Deleted the event Basketball: " + eventID);
-            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("@Post-condition: Deleted the event Basketball: ");
+            EventScheduleUtils.deleteEventByAPI(eventBasketball,dateAPI);
             log("INFO: Executed Pos-condition completely");
         }
     }

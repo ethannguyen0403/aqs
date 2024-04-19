@@ -309,11 +309,8 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
-
+        EventScheduleUtils.addEventByAPI(eventInfo, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(eventInfo.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventInfo.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventInfo.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), eventInfo.getOpenTime(),eventInfo.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         eventInfo.setEventId(eventID);
         List<Order> lstOrder = new ArrayList<>();
@@ -354,7 +351,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
             log("@Pos-condition: Deleted the order");
             confirmBetsPage.deleteOrder(lstOrder.get(0), true);
             log("@Pos-condition: Deleted the event Cricket");
-            EventScheduleUtils.deleteEventByAPI(eventID);
+            EventScheduleUtils.deleteEventByAPI(eventInfo,dateAPI);
             log("INFO: Executed Pos-condition completely");
         }
         log("INFO: Executed completely");
@@ -381,10 +378,8 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
+        EventScheduleUtils.addEventByAPI(eventCricket, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(eventCricket.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventCricket.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventCricket.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), eventCricket.getOpenTime(),eventCricket.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         eventCricket.setEventId(eventID);
         List<Order> lstOrder = new ArrayList<>();
@@ -439,7 +434,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("@Pos-condition: Deleted the order");
         betSettlementPage.deleteOrder(order);
         log("@Pos-condition: Deleted the event Cricket");
-        EventScheduleUtils.deleteEventByAPI(eventID);
+        EventScheduleUtils.deleteEventByAPI(eventCricket,dateAPI);
         log("INFO: Executed Pos-condition completely");
     }
 

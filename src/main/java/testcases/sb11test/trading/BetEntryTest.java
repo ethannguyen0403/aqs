@@ -136,12 +136,9 @@ public class BetEntryTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
-
-        String leagueID = EventScheduleUtils.getLeagueID(eventInfo.getLeagueName(), SPORT_ID_MAP.get(sportName));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventInfo.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventInfo.getAway(), leagueID);
         log("@Step prepare data: Add event for QA League in today local time and can filter in today in Trading>Bet Entry");
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), eventInfo.getOpenTime(),eventInfo.getEventStatus().toUpperCase());
+        EventScheduleUtils.addEventByAPI(eventInfo, dateAPI, SPORT_ID_MAP.get(sportName));
+        String leagueID = EventScheduleUtils.getLeagueID(eventInfo.getLeagueName(), SPORT_ID_MAP.get(sportName));
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         eventInfo.setEventId(eventID);
 
@@ -195,7 +192,7 @@ public class BetEntryTest extends BaseCaseAQS {
         confirmBetsPage.deleteOrder(order,true);
 
         log("@Postcondition: Delete the event");
-        EventScheduleUtils.deleteEventByAPI(eventInfo.getEventId());
+        EventScheduleUtils.deleteEventByAPI(eventInfo,dateAPI);
         log("INFO: Executed completely");
     }
 

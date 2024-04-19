@@ -3,6 +3,7 @@ package utils.sb11;
 import com.paltech.constant.Configs;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.WSUtils;
+import objects.Event;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.AppUtils;
@@ -21,8 +22,12 @@ public class EventScheduleUtils {
      * @param dateAPI should follow format yyyy-MM-dd
      * @param openTime: -10 hour with local time
      * */
-    public static void addEventByAPI(String awayId, String homeId, String leagueId, String dateAPI, String sportID, String openTime , String status) {
+    public static void addEventByAPI(Event event, String dateAPI, String sportID) {
         try {
+            String leagueId = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(event.getSportName()));
+            String homeId = EventScheduleUtils.getTeamID(event.getHome(), leagueId);
+            String awayId = EventScheduleUtils.getTeamID(event.getAway(), leagueId);
+
             String bearerToken = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
             Map<String, String> headersParam = new HashMap<String, String>() {
                 {
@@ -31,7 +36,7 @@ public class EventScheduleUtils {
                 }
             };
             String endPoint = String.format("%saqs-agent-service/event/event/add", environment.getSbpLoginURL());
-            String jsonBody = buildJsonPayload(awayId, homeId, leagueId, dateAPI, openTime, sportID, status);
+            String jsonBody = buildJsonPayload(awayId, homeId, leagueId, dateAPI, event.getOpenTime(), sportID, event.getEventStatus().toUpperCase());
             WSUtils.sendPOSTRequestDynamicHeaders(endPoint, jsonBody, headersParam);
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -102,8 +107,10 @@ public class EventScheduleUtils {
         return leagueID;
     }
 
-    public static void deleteEventByAPI(String eventId) {
+    public static void deleteEventByAPI(Event event, String dateAPI) {
         try {
+            String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(event.getSportName()));
+            String eventId = EventScheduleUtils.getEventID(dateAPI, leagueID);
             String json = String.format("eventId=%s", eventId);
             String url = String.format("%saqs-agent-service/event/delete/event?%s", environment.getSbpLoginURL(), json);
             String bearerToken = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));

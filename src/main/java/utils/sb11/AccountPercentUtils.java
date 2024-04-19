@@ -11,7 +11,10 @@ import java.util.Map;
 import static testcases.BaseCaseAQS.environment;
 
 public class AccountPercentUtils {
-    public static void setAccountPercentAPI(String accountId, String accountCode, String clientId, String clientCode, Double percent) throws IOException {
+    public static void setAccountPercentAPI(String accountCode, String clientCode, String superMasterCode, Double percent) throws IOException {
+        String accountId = AccountSearchUtils.getAccountId(accountCode);
+        String clientId = ClientSystemUtils.getClientId(clientCode);
+        String superClientCode = superMasterCode + clientCode;
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
         Map<String, String> headersParam = new HashMap<String, String>() {
             {
@@ -33,7 +36,7 @@ public class AccountPercentUtils {
                         "    \"originalPtMarketPercent\": null,\n" +
                         "    \"isEnableEdit\": true\n" +
                         "  }\n"
-                , accountId, accountCode, clientId, clientCode, percent);
+                , accountId, accountCode, clientId, superClientCode, percent);
         WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
     }
 

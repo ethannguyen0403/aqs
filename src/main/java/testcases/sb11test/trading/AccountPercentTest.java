@@ -26,7 +26,7 @@ import static common.SBPConstants.*;
 
 public class AccountPercentTest extends BaseCaseAQS {
 
-    @Test(groups = {"regression","2024.V.1.0"})
+    @Test(groups = {"regression1","2024.V.1.0"})
     @TestRails(id = "56")
     @Parameters({"bookieCode","accountCode","clientCode"})
     public void AccountPercent_56(String bookieCode, String accountCode, String clientCode) throws IOException {
@@ -45,10 +45,8 @@ public class AccountPercentTest extends BaseCaseAQS {
             Assert.assertEquals(accountPercentPage.getAccPT(accountCode),ptSet,"Failed! Able not to set percent");
         } finally {
             log("@Post-step: set old pt value");
-            String accountId = AccountSearchUtils.getAccountId(accountCode);
-            String clientId = ClientSystemUtils.getClientId(clientCode);
             Double pt = 1.00000;
-            AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode, pt);
+            AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,"QA2112 - ",pt);
         }
         log("INFO: Executed completely");
     }
@@ -226,10 +224,8 @@ public class AccountPercentTest extends BaseCaseAQS {
             Assert.assertEquals(accountPercentPage.appArlertControl.getSuscessMessage(),AccountPercent.EDIT_SUCCESS_MES,"FAILED! Edit success message displays incorrect");
         } finally {
             log("@Post-step: set old pt value");
-            String accountId = AccountSearchUtils.getAccountId(accountCode);
-            String clientId = ClientSystemUtils.getClientId(clientCode);
             Double pt = 1.00000;
-            AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode, pt);
+            AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,"QA2112 - ", pt);
         }
 
         log("INFO: Executed completely");
@@ -264,10 +260,8 @@ public class AccountPercentTest extends BaseCaseAQS {
         log("@Pre-conditions 1: User has permission to access SPP page");
         log("@Pre-conditions 2: User is assigned to Smart Group (the smart group assigned to Smart Master + Smart Agent) already");
         log("@Pre-conditions 3: User has been set Account Percent value");
-        String accountId = AccountSearchUtils.getAccountId(accountCode);
-        String clientId = ClientSystemUtils.getClientId(clientCode);
         Double pt = 1.00000;
-        AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode, pt);
+        AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,"QA2112 - ", pt);
         log("@Pre-conditions 4: User already have settled bet for Soccer");
         String sport="Soccer";
         String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7));
