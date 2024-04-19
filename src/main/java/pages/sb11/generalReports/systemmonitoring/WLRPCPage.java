@@ -145,6 +145,7 @@ public class WLRPCPage extends WelcomePage {
     }
     public void exportToExcel(){
         btnExportToExcel.click();
+        waitSpinnerDisappeared();
         //Wait for file Excel export
         try {
             Thread.sleep(10);
