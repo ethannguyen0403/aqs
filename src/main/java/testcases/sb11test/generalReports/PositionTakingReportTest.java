@@ -236,7 +236,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         Assert.assertEquals(winloseAc,winloseEx,"FAILED! Win/Lose value displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29","ethan"})
+    @Test(groups = {"regression","2023.12.29","ethan2.0"})
     @TestRails(id = "4339")
     public void Position_Taking_Report_4339() {
         log("@title: Validate correct [selected To/From date] displays");
@@ -264,7 +264,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
                 "View By = Client Point\n" +
                 "Client = PSM Group Limited\n"+
                 "From Date To Date ((=Todate check at step #4)");
-        clientStatementPage.filter("Client Point", KASTRAKI_LIMITED,FINANCIAL_YEAR,clientStatement,fromDate,toDate);
+        clientStatementPage.filter("Client Point", KASTRAKI_LIMITED,FINANCIAL_YEAR,clientStatement,toDate,toDate);
         log("@Step 8: Click agent-PT of account at step #4 (e.g. PSMEU02-PT)");
         ClientSummaryPopup clientSummaryPopup = clientStatementPage.openSummaryPopup(agentCode);
         log("@Step 9: Get Win/Lose value");

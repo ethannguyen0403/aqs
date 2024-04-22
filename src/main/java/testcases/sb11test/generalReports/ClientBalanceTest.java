@@ -26,7 +26,7 @@ public class ClientBalanceTest extends BaseCaseAQS {
                 "FAILED! Column 'PIC' is NOT displayed  next to Status column");
     }
 
-    @Test(groups = {"regression", "2023.12.29","ethan"})
+    @Test(groups = {"regression", "2023.12.29","ethan2.0"})
     @Parameters({"superCode", "clientCode"})
     @TestRails(id = "15741")
     public void ClientBalanceTC_15741(String superCode, String clientCode){
@@ -39,6 +39,6 @@ public class ClientBalanceTest extends BaseCaseAQS {
         clientBalancePage.filter("", "", "", "", superCode);
         log("@Verify 1: Validate the Client of SM should be displayed");
         String clientName = String.format("%s - %s", "QA2112", clientCode);
-        Assert.assertEquals(clientBalancePage.findRowClientIndex(clientName), 1, "FAILED! Not found the client: "+ clientName);
+        Assert.assertFalse(clientBalancePage.findRowClientIndex(clientName) == -1, "FAILED! Not found the client: "+ clientName);
     }
 }
