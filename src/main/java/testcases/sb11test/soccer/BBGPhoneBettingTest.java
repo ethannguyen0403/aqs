@@ -143,7 +143,8 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         log("@Step 3: Select filters which have data");
         log("@Step 4: Select option 'Win' in 'Show Win/Lose'");
         log("@Step 5: Click on 'Show' button");
-        page.filter("","","","","","","WIN");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter("","",date,"","","","WIN");
         log("Verify 1: Show all bets that have positive amount in 'Win/Lose' column");
         page.verifyShowBetWinLoseCorrect("Win");
         log("INFO: Executed completely");
@@ -158,7 +159,8 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         log("@Step 3: Select filters which have data");
         log("@Step 4: Select option 'Lose' in 'Show Win/Lose'");
         log("@Step 5: Click on 'Show' button");
-        page.filter("","","","","","","LOSE");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter("","",date,"","","","LOSE");
         log("Verify 1: Show all bets that have positive amount in 'Win/Lose' column");
         page.verifyShowBetWinLoseCorrect("Lose");
         log("INFO: Executed completely");

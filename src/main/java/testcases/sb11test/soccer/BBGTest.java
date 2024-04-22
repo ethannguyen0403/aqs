@@ -357,7 +357,7 @@ public class BBGTest extends BaseCaseAQS {
         String cur = "CNY";
         log("@Step 4: Expand Stake dropdown list then select any option (e.g. >1K)");
         log("@Step 5: Click Show button");
-        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        String date = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
         page.filter("","","","Settled Bets",date,"",SBPConstants.BBGPage.STAKE_LIST.get(1),cur);
         log("@Verify 1: All bets that place with stake > 1K CNY return");
         page.verifyAllBetsShowWithStake(SBPConstants.BBGPage.STAKE_LIST.get(1));
@@ -476,7 +476,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 2: Go to Soccer >> BBG page");
         BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
         log("@Step 3: Filter by any field (e.g. Smart Type, Leagues) then click Show button");
-        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        String date = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
         page.filter("",KASTRAKI_LIMITED,"Master","Settled Bets",date,"","Above 1K","HKD");
         log("@Step 4: Click 'Reset All Filters' link");
         page.btnResetAllFilter.click();
