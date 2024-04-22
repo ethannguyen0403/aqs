@@ -87,7 +87,6 @@ public class BookieSystemTest extends BaseCaseAQS {
         BookieMasterPage bookieMasterPage = bookieSystemPage.goToMaster();
         log("Validate UI on Client System is correctly displayed");
         bookieMasterPage.verifyUI(bookieCode);
-
         log("INFO: Executed completely");
     }
 
@@ -133,20 +132,7 @@ public class BookieSystemTest extends BaseCaseAQS {
         log("Step 3: Click Agent");
         BookieAgentPage bookieAgentPage = bookieSystemPage.goToAgent();
         log("Validate UI on Client System is correctly displayed");
-        log("Dropdown: Company Unit, Bookie, Go To");
-        Assert.assertEquals(bookieAgentPage.ddpCompanyUnit.getOptions(),CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown iss not displayed!");
-        Assert.assertTrue(bookieAgentPage.ddpBookie.getOptions().contains(bookieCode),"Failed! Bookie dropdown is not displayed!");
-        Assert.assertTrue(bookieAgentPage.ddpSuper.getOptions().contains("[No Super]"),"Failed! Super dropdown is not displayed!");
-        Assert.assertTrue(bookieAgentPage.ddpMaster.isDisplayed(),"Failed! Master dropdown is not displayed!");
-        Assert.assertEquals(bookieAgentPage.ddpGoTo.getOptions(),BookieSystem.GO_TO_LIST,"Failed! Go To dropdown is not displayed!");
-        log("Textbox: Master Code");
-        Assert.assertEquals(bookieAgentPage.lblAgentCode.getText(),"Agent Code","Failed! Agent Code textbox is not displayed!");
-        log("Button: Search, Add Agent, More Filter");
-        Assert.assertEquals(bookieAgentPage.btnSearch.getText(),"Search","Failed! Search button is not displayed!");
-        Assert.assertEquals(bookieAgentPage.btnMoreFilters.getText(),"More Filters","Failed! More Filters button is not displayed!");
-        Assert.assertEquals(bookieAgentPage.btnAddAgent.getText(),"Add Agent","Failed! Add Agent button is not displayed!");
-        log("Validate Agent list table is displayed with correct header");
-        Assert.assertEquals(bookieAgentPage.tbAgent.getHeaderNameOfRows(),BookieSystem.TABLE_HEADER_AGENT,"Failed! Agent list table is displayed with incorrect header");
+        bookieAgentPage.verifyUI(bookieCode);
         log("INFO: Executed completely");
     }
 
