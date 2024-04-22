@@ -293,4 +293,19 @@ public class IncomeStatementAnalysisPage extends WelcomePage {
         //BA accept difference 0.01
         Assert.assertEquals(amountNetProfitAc,amountNetProfitEx,0.01,"FAILED!"+amountNetProfitEx+" difference from "+amountNetProfitAc);
     }
+
+    public void exportFile(String type) {
+        if (type.equals("Excel")){
+            btnExportExcel.click();
+        } else {
+            btnExportPDF.click();
+        }
+        waitSpinnerDisappeared();
+        //wait for computer download file
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
