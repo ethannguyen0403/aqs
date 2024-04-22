@@ -7,6 +7,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.master.BookieInfoPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class BookieInfoTest extends BaseCaseAQS {
         Assert.assertEquals(bookieInfoPage.getTitlePage(),"Master Bookie Info","FAILED! Page Title is incorrect display");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2203")
     public void Bookie_Info_2203(){
         log("@title: Validate UI on Bookie Info is correctly displayed");
@@ -35,7 +36,7 @@ public class BookieInfoTest extends BaseCaseAQS {
         BookieInfoPage bookieInfoPage = welcomePage.navigatePage(MASTER, BOOKIE_INFO,BookieInfoPage.class);
         log("Validate UI Info display correctly");
         log("Dropdown: Company Unit, Support By, Currency, Status");
-        Assert.assertEquals(bookieInfoPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertEquals(bookieInfoPage.ddpCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown is not displayed!");
         Assert.assertTrue(bookieInfoPage.ddpSupportBy.getOptions().contains("qa"),"Failed! Support By dropdown is not displayed!");
         Assert.assertEquals(bookieInfoPage.ddpCurrency.getOptions(),BookieInfo.CURRENCY_LIST,"Failed! Currency dropdown is not displayed!");
         Assert.assertEquals(bookieInfoPage.ddpStatus.getOptions(),BookieInfo.STATUS_LIST,"Failed! Status dropdown is not displayed!");
