@@ -183,7 +183,7 @@ public class BookieStatementPage extends WelcomePage {
             System.out.println("DEBUG!: NO table have the title contains account "+ masterCode);
             return null;
         }
-        tblBookie.getControlBasedValueOfDifferentColumnOnRow(agentCode,1,colAgentCode,1,null,colMSlink,null,true,false).click();
+        tblBookie.getControlBasedValueOfDifferentColumnOnRow(agentCode,1,tblBookie.getColumnIndexByName("Master Code"),1,"a",tblBookie.getColumnIndexByName("MS"),"a",true,false).click();
         waitSpinnerDisappeared();
         return new BookieMemberSummaryPopup();
     }
@@ -221,7 +221,7 @@ public class BookieStatementPage extends WelcomePage {
     public String getWinLossofPlayer(String masterCode , String agentCode, String playerAccount){
         BookieMemberSummaryPopup bookieSummaryPopup = openBookieMemberSummaryDetailPopup(masterCode,agentCode);
         waitSpinnerDisappeared();
-        int winlosCol = bookieSummaryPopup.colWinLosePlayer;
+        int winlosCol = bookieSummaryPopup.tblMemberDetail.getColumnIndexByName("Win/Lose[1]");
         String winloss =  bookieSummaryPopup.getDataRowofPlayer(playerAccount).get(winlosCol-1);
         bookieSummaryPopup.closePopup();
         return winloss;
