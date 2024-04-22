@@ -133,14 +133,14 @@ public class WLRPCPage extends WelcomePage {
             String totalBookie = getTotalBalance("Bookie",cur).replace(",","");
             double difEx;
             if (totalClient.isEmpty()){
-                difEx = Double.valueOf(totalBookie);
+                difEx = Math.abs(Double.valueOf(totalBookie));
             } else if (totalBookie.isEmpty()){
-                difEx = Double.valueOf(totalClient);
+                difEx = Math.abs(Double.valueOf(totalClient));
             } else {
                 difEx = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(totalClient) - Double.valueOf(totalBookie));
             }
             double difAc = Double.valueOf(getDifValue(cur));
-            Assert.assertEquals(difAc,Math.abs(difEx),"FAILED! Difference value of "+cur+" display incorrect");
+            Assert.assertEquals(difAc,difEx,"FAILED! Difference value of "+cur+" display incorrect");
         }
     }
     public void exportToExcel(){
