@@ -24,20 +24,18 @@ import java.util.Collections;
 import static common.SBPConstants.*;
 
 public class ClientStatementTest extends BaseCaseAQS {
-    String viewBy = "Client Point";
-    String superMasterCode = "QA2112 - ";
-
     @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "309")
     public void ClientStatementTC_309(String clientCode) throws ParseException {
+        String superMasterCode = "QA2112 - ";
         clientCode = superMasterCode + clientCode;
         String actualVal;
         String openingVal;
         String winLossVal;
         String commissionVal;
         String recPayVal;
-
+        String viewBy = "Client Point";
         log("@title: Validate that Closing of Super = Opening + Win/Loss + Commission + Rec/Pay/CA/RB/Adj");
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to General Reports > Client Statement");
@@ -65,10 +63,11 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Parameters("clientCode")
     @TestRails(id = "310")
     public void ClientStatementTC_310(String clientCode) {
+        String superMasterCode = "QA2112 - ";
         clientCode = superMasterCode + clientCode;
         String openingVal;
         String closingVal;
-
+        String viewBy = "Client Point";
         log("@title: Validate that Opening value today is Closing of yesterday");
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to General Reports > Client Statement");
@@ -98,10 +97,11 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Parameters("clientCode")
     @TestRails(id = "587")
     public void ClientStatementTC_587(String clientCode) {
+        String superMasterCode = "QA2112 - ";
         clientCode = superMasterCode + clientCode;
         String totalGrandMasterVal;
         String totalGrandHKDVal;
-
+        String viewBy = "Client Point";
         log("@title: Validate total in HKD of Master match with Grand Total in HKD at bottom");
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to General Reports > Client Statement");
@@ -123,6 +123,7 @@ public class ClientStatementTest extends BaseCaseAQS {
     @Parameters("clientCode")
     @TestRails(id = "588")
     public void ClientStatementTC_588(String clientCode) {
+        String superMasterCode = "QA2112 - ";
         clientCode = superMasterCode + clientCode;
         String openingVal;
         String winLossVal;
@@ -130,7 +131,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String recPayVal;
         String movementVal;
         String closingVal;
-
+        String viewBy = "Client Point";
         log("@title: Validate values are the same but opposite each other when viewing by Company Point and Client Point");
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to General Reports > Client Statement");
@@ -170,6 +171,7 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "861")
     public void ClientStatementTC_861(String clientCode) {
         String agentCode = "QASAHK00";
+        String superMasterCode = "QA2112 - ";
         clientCode = superMasterCode + clientCode;
         String openingVal;
         String winLossVal;
@@ -181,7 +183,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String actualRecPayVal;
         String actualMovementVal;
         String actualClosingVal;
-
+        String viewBy = "Client Point";
         log("@title: Validate value of agent (not COM, LED) in main page match with member summary page");
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to General Reports > Client Statement");
@@ -218,6 +220,7 @@ public class ClientStatementTest extends BaseCaseAQS {
     @TestRails(id = "865")
     public void ClientStatementTC_865(String clientCode) {
         String agentComCode = "QATE01-COM";
+        String superMasterCode = "QA2112 - ";
         clientCode = superMasterCode + clientCode;
         String openingVal;
         String commissionVal;
@@ -229,7 +232,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         String actualRecPayVal;
         String actualMovementVal;
         String actualClosingVal;
-
+        String viewBy = "Client Point";
         log("@title: Validate value of agent COM in main page match with member summary page");
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to General Reports > Client Statement");
@@ -271,7 +274,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         String actualRecPayVal;
         String expectedRecPayVal;
         long remark = DateUtils.getMilliSeconds();
-
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
         log("Precondition: Add transaction for the Client account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
@@ -321,7 +325,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         String actualRecPayVal;
         String expectedRecPayVal;
         long remark = DateUtils.getMilliSeconds();
-
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
         log("Precondition: Add transaction for the Client account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
@@ -373,7 +378,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         String expectedRecPayVal;
         String actualRecPayVal;
         long remark = DateUtils.getMilliSeconds();
-
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Asset Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
@@ -427,6 +433,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         String expectedRecPayVal;
         String actualRecPayVal;
         long remark = DateUtils.getMilliSeconds();
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Asset Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
@@ -480,6 +488,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         String expectedRecPayVal;
         String actualRecPayVal;
         long remark = DateUtils.getMilliSeconds();
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Liability Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
@@ -533,6 +543,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         String expectedRecPayVal;
         String actualRecPayVal;
         long remark = DateUtils.getMilliSeconds();
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Liability Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
@@ -586,6 +598,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         String expectedRecPayVal;
         String actualRecPayVal;
         long remark = DateUtils.getMilliSeconds();
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Capital Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
@@ -639,6 +653,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         String expectedRecPayVal;
         String actualRecPayVal;
         long remark = DateUtils.getMilliSeconds();
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Capital Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
@@ -692,6 +708,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         String expectedRecPayVal;
         String actualRecPayVal;
         long remark = DateUtils.getMilliSeconds();
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Income Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
@@ -744,6 +762,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         String expectedRecPayVal;
         String actualRecPayVal;
         long remark = DateUtils.getMilliSeconds();
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Income Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
@@ -797,6 +817,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         String expectedRecPayVal;
         String actualRecPayVal;
         long remark = DateUtils.getMilliSeconds();
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Expenditure Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
@@ -850,6 +872,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         String expectedRecPayVal;
         String actualRecPayVal;
         long remark = DateUtils.getMilliSeconds();
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Expenditure Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()
@@ -902,6 +926,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentCode = "QASAHK00";
         String expectedRecPayVal;
         String actualRecPayVal;
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
         log("Precondition: Add Manual Bet and settle with win/loss value = 5.0");
         welcomePage.waitSpinnerDisappeared();
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -947,6 +973,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         String expectClosingRunningVal;
         String actualOpeningRunningVal;
         String actualClosingRunningVal;
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
         log("Precondition: Add Manual Bet and settle with win/loss value = 5.0");
         welcomePage.waitSpinnerDisappeared();
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
@@ -994,6 +1022,8 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String actualRecPayVal;
         long remark = DateUtils.getMilliSeconds();
+        String viewBy = "Client Point";
+        String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Asset Ledger account to show value Rec/Pay");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Transaction transaction = new Transaction.Builder()

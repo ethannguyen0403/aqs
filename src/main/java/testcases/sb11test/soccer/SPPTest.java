@@ -24,8 +24,6 @@ import static common.SBPConstants.*;
 import static common.SBPConstants.FINANCIAL_YEAR;
 
 public class SPPTest extends BaseCaseAQS {
-    String currentDate = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
-    String previousDate = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
     @Test(groups = {"smoke"})
     @Parameters({"accountCode","smartGroup","superCode","clientCode","agentCode"})
     @TestRails(id = "1002")
@@ -287,6 +285,7 @@ public class SPPTest extends BaseCaseAQS {
     @TestRails(id = "2796")
     @Parameters({"smartGroup","accountCode"})
     public void SPP_TC_2796(String smartGroup, String accountCode){
+        String currentDate = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
         String apiCurrentDate = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         log("@title: Validate the total bets of Cricket Manual Bets will display at MB column");
@@ -325,6 +324,8 @@ public class SPPTest extends BaseCaseAQS {
     @TestRails(id = "2797")
     @Parameters({"accountCode", "smartGroup"})
     public void SPP_TC_2797(String accountCode, String smartGroup){
+        String currentDate = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        String previousDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         String apiCurrentDate = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
         String accountId = AccountSearchUtils.getAccountId(accountCode);
 
@@ -360,6 +361,8 @@ public class SPPTest extends BaseCaseAQS {
     @TestRails(id = "2798")
     @Parameters({"accountCode", "smartGroup"})
     public void SPP_TC_2798(String accountCode, String smartGroup){
+        String currentDate = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        String previousDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         String apiCurrentDate = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
         String apiPreviousDate = DateUtils.formatDate(previousDate, "dd/MM/yyyy", "yyyy-MM-dd");
         String accountId = AccountSearchUtils.getAccountId(accountCode);
@@ -401,6 +404,8 @@ public class SPPTest extends BaseCaseAQS {
     @TestRails(id = "2799")
     @Parameters({"accountCode", "smartGroup"})
     public void SPP_TC_2799(String accountCode, String smartGroup){
+        String currentDate = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        String previousDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         String apiCurrentDate = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
         String apiPreviousDate = DateUtils.formatDate(previousDate, "dd/MM/yyyy", "yyyy-MM-dd");
         String accountId = AccountSearchUtils.getAccountId(accountCode);
@@ -441,6 +446,8 @@ public class SPPTest extends BaseCaseAQS {
         log("@title: Validate the correct %WL displays");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
+        String currentDate = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        String previousDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
         log(String.format("@Step 3: Filter with Smart Group: %s, and Bet Types: MB", smartGroup));
         sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", previousDate, currentDate);
@@ -456,6 +463,8 @@ public class SPPTest extends BaseCaseAQS {
     @TestRails(id = "2801")
     @Parameters({"accountCode", "smartGroup"})
     public void SPP_TC_2801(String accountCode, String smartGroup){
+        String currentDate = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        String previousDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         String apiCurrentDate = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
         String apiPreviousDate = DateUtils.formatDate(previousDate, "dd/MM/yyyy", "yyyy-MM-dd");
         String accountId = AccountSearchUtils.getAccountId(accountCode);

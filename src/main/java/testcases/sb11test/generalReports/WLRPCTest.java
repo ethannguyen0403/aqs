@@ -3,7 +3,9 @@ package testcases.sb11test.generalReports;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.FileUtils;
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+import pages.sb11.generalReports.ClientStatementPage;
 import pages.sb11.generalReports.SystemMonitoringPage;
 import pages.sb11.generalReports.systemmonitoring.WLRPCPage;
 import testcases.BaseCaseAQS;
@@ -84,41 +86,7 @@ public class WLRPCTest extends BaseCaseAQS {
         page.checkColorOfDifferenceValue();
         log("INFO: Executed completely");
     }
-    @TestRails(id="29503")
-    @Test(groups = {"regression","2024.V.3.0"})
-    public void WLRPCT_29503(){
-        log("@title: Validate UI of WL & RPC displays correctly when showing data with Type is Bookie");
-        log("@pre-condition 1: Bookie has some data");
-        log("@Step 1: Go to General Reports > System Monitoring > WL & RPC");
-        WLRPCPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(WL_RPC, WLRPCPage.class);
-        log("@Step 2: Select valid date range");
-        log("@Step 3: Select Type is Bookie");
-        log("@Step 4: Select Search button");
-        String fromDate = DateUtils.getDate(-3,"dd/MM/yyyy",GMT_7);
-        page.filter("","Bookie",fromDate,"","");
-        log("Verify 1: UI of WL & RPC should display correct tables with Header is \"Bookie Name\"");
-        page.verifyHeaderNameByType("Bookie");
-        log("Verify 2: \"Export To Excel\" button should be enabled");
-        Assert.assertTrue(page.btnExportToExcel.isEnabled(),"FAILED! Export To Excel button display incorrect");
-        log("INFO: Executed completely");
-    }
-    @TestRails(id="29506")
-    @Test(groups = {"regression","2024.V.3.0"})
-    public void WLRPCT_29506(){
-        log("@title: Validate Difference value displays correctly when showing data with Type is All");
-        log("@pre-condition 1: Client and Bookie have some data");
-        log("@Step 1: Go to General Reports > System Monitoring > WL & RPC");
-        WLRPCPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(WL_RPC, WLRPCPage.class);
-        log("@Step 2: Select valid date range");
-        log("@Step 3: Select Type is All");
-        log("@Step 4: Select Search button");
-        String fromDate = DateUtils.getDate(-3,"dd/MM/yyyy",GMT_7);
-        page.filter("","",fromDate,"","");
-        log("Verify 1: The value of Difference row of each Currency should show with method:\n" +
-                "Difference = Total Balance in of Client - Total Balance in of Bookie");
-        page.checkDifferenceValueDisplay();
-        log("INFO: Executed completely");
-    }
+
     @TestRails(id="23983")
     @Test(groups = {"regression","2024.V.3.0"})
     public void WLRPCT_23983(){
@@ -153,35 +121,11 @@ public class WLRPCTest extends BaseCaseAQS {
         log("Verify 1: UI of WL & RPC should display correctly when showing with Type is Client");
         log("Verify 2: User should export the excel report with correct data successfully");
         page.verifyExcelFileDownloadCorrect("Client");
-        try {
-            FileUtils.removeFile(getDownloadPath()+"export-winloss.xlsx");
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
-        log("INFO: Executed completely");
-    }
-    @TestRails(id="29535")
-    @Test(groups = {"regression","2024.V.3.0"})
-    public void WLRPCT_29535(){
-        log("@title: Validate user can export the excel report when showing data with Type is Bookie");
-        log("@pre-condition 1: Client and Bookie have some data");
-        log("@Step 1: Go to General Reports > System Monitoring > WL & RPC");
-        WLRPCPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(WL_RPC, WLRPCPage.class);
-        log("@Step 2: Select valid date range");
-        log("@Step 3: Select Type is Bookie");
-        log("@Step 4: Select Search button");
-        String fromDate = DateUtils.getDate(-7,"dd/MM/yyyy",GMT_7);
-        page.filter("","Bookie",fromDate,"","");
-        log("@Step 5: Select Export To Excel button");
-        page.exportToExcel();
-        log("Verify 1: UI of WL & RPC should display correctly when showing with Type is Bookie");
-        log("Verify 2: User should export the excel report with correct data successfully");
-        page.verifyExcelFileDownloadCorrect("Bookie");
-        try {
-             FileUtils.removeFile(getDownloadPath()+"export-winloss.xlsx");
-        } catch (IOException e) {
-             log(e.getMessage());
-        }
+//        try {
+//            FileUtils.removeFile(getDownloadPath()+"export-winloss.xlsx");
+//        } catch (IOException e) {
+//            log(e.getMessage());
+//        }
         log("INFO: Executed completely");
     }
     @TestRails(id="23985")
@@ -194,18 +138,18 @@ public class WLRPCTest extends BaseCaseAQS {
         log("@Step 2: Select valid date range");
         log("@Step 3: Select Type is All");
         log("@Step 4: Select Search button");
-        String fromDate = DateUtils.getDate(-7,"dd/MM/yyyy",GMT_7);
+        String fromDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         page.filter("","All",fromDate,"","");
         log("@Step 5: Select Export To Excel button");
         page.exportToExcel();
         log("Verify 1: UI of WL & RPC should display correctly when showing with Type is Client/Bookie");
         log("Verify 2: User should export the excel report with correct data successfully");
         page.verifyExcelFileDownloadCorrect("All");
-        try {
-            FileUtils.removeFile(getDownloadPath()+"export-winloss.xlsx");
-        } catch (IOException e) {
-            log(e.getMessage());
-        }
+//        try {
+//            FileUtils.removeFile(getDownloadPath()+"export-winloss.xlsx");
+//        } catch (IOException e) {
+//            log(e.getMessage());
+//        }
         log("INFO: Executed completely");
     }
     @TestRails(id="23986")
@@ -225,6 +169,78 @@ public class WLRPCTest extends BaseCaseAQS {
         Assert.assertEquals(page.getLstCurDisplay("Client").get(0),"HKD","FAILED! UI display correct Currency Code incorrect");
         log("INFO: Executed completely");
     }
+    @TestRails(id="29503")
+    @Test(groups = {"regression","2024.V.3.0"})
+    public void WLRPCT_29503(){
+        log("@title: Validate UI of WL & RPC displays correctly when showing data with Type is Bookie");
+        log("@pre-condition 1: Bookie has some data");
+        log("@Step 1: Go to General Reports > System Monitoring > WL & RPC");
+        WLRPCPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(WL_RPC, WLRPCPage.class);
+        log("@Step 2: Select valid date range");
+        log("@Step 3: Select Type is Bookie");
+        log("@Step 4: Select Search button");
+        String fromDate = DateUtils.getDate(-3,"dd/MM/yyyy",GMT_7);
+        page.filter("","Bookie",fromDate,"","");
+        log("Verify 1: UI of WL & RPC should display correct tables with Header is \"Bookie Name\"");
+        page.verifyHeaderNameByType("Bookie");
+        log("Verify 2: \"Export To Excel\" button should be enabled");
+        Assert.assertTrue(page.btnExportToExcel.isEnabled(),"FAILED! Export To Excel button display incorrect");
+        log("INFO: Executed completely");
+    }
+    @TestRails(id="29505")
+    @Test(groups = {"regression","2024.V.3.0"})
+    public void WLRPCT_29505(){
+        log("@title: Validate UI of WL & RPC displays correctly when filtering with unavailable specific currency for Client");
+        log("@pre-condition 1: Client and Bookie have some data");
+        log("@Step 1: Go to General Reports > System Monitoring > WL & RPC");
+        WLRPCPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(WL_RPC, WLRPCPage.class);
+        log("@Step 2: Select valid date range");
+        log("@Step 3: Select unavailable currency (e.g. AED)");
+        log("@Step 4: Select Search button");
+        String fromDate = DateUtils.getDate(-3,"dd/MM/yyyy",GMT_7);
+        page.filter("","Client",fromDate,"","AED");
+        log("Verify 1: UI should display \"No records found\"");
+        Assert.assertTrue(page.lblNoRecord.isDisplayed(),"FAILED! UI display incorrect");
+        log("INFO: Executed completely");
+    }
+    @TestRails(id="29506")
+    @Test(groups = {"regression","2024.V.3.0"})
+    public void WLRPCT_29506(){
+        log("@title: Validate Difference value displays correctly when showing data with Type is All");
+        log("@pre-condition 1: Client and Bookie have some data");
+        log("@Step 1: Go to General Reports > System Monitoring > WL & RPC");
+        WLRPCPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(WL_RPC, WLRPCPage.class);
+        log("@Step 2: Select valid date range");
+        log("@Step 3: Select Type is All");
+        log("@Step 4: Select Search button");
+        String fromDate = DateUtils.getDate(-3,"dd/MM/yyyy",GMT_7);
+        page.filter("","",fromDate,"","");
+        log("Verify 1: The value of Difference row of each Currency should show with method:\n" +
+                "Difference = Total Balance in of Client - Total Balance in of Bookie");
+        page.checkDifferenceValueDisplay();
+        log("INFO: Executed completely");
+    }
+    @TestRails(id="29535")
+    @Test(groups = {"regression","2024.V.3.0"})
+    public void WLRPCT_29535(){
+        log("@title: Validate user can export the excel report when showing data with Type is Bookie");
+        log("@pre-condition 1: Client and Bookie have some data");
+        log("@Step 1: Go to General Reports > System Monitoring > WL & RPC");
+        WLRPCPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(WL_RPC, WLRPCPage.class);
+        log("@Step 2: Select valid date range");
+        log("@Step 3: Select Type is Bookie");
+        log("@Step 4: Select Search button");
+        String fromDate = DateUtils.getDate(-7,"dd/MM/yyyy",GMT_7);
+        page.filter("","Bookie",fromDate,"","");
+        log("@Step 5: Select Export To Excel button");
+        page.exportToExcel();
+        log("Verify 1: UI of WL & RPC should display correctly when showing with Type is Bookie");
+        log("Verify 2: User should export the excel report with correct data successfully");
+        page.verifyExcelFileDownloadCorrect("Bookie");
+        log("INFO: Executed completely");
+    }
+
+
     @TestRails(id="29536")
     @Test(groups = {"regression","2024.V.3.0"})
     public void WLRPCT_29536(){
@@ -257,22 +273,6 @@ public class WLRPCTest extends BaseCaseAQS {
         log("Verify 1: UI should display Client table on the left side and Bookie table on the right side with correct Currency Code (e.g. HKD) for both tables.");
         Assert.assertEquals(page.getLstCurDisplay("All").size(),1,"FAILED! UI display correct Currency Code incorrect");
         Assert.assertEquals(page.getLstCurDisplay("All").get(0),"HKD","FAILED! UI display correct Currency Code incorrect");
-        log("INFO: Executed completely");
-    }
-    @TestRails(id="29505")
-    @Test(groups = {"regression","2024.V.3.0"})
-    public void WLRPCT_29505(){
-        log("@title: Validate UI of WL & RPC displays correctly when filtering with unavailable specific currency for Client");
-        log("@pre-condition 1: Client and Bookie have some data");
-        log("@Step 1: Go to General Reports > System Monitoring > WL & RPC");
-        WLRPCPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(WL_RPC, WLRPCPage.class);
-        log("@Step 2: Select valid date range");
-        log("@Step 3: Select unavailable currency (e.g. AED)");
-        log("@Step 4: Select Search button");
-        String fromDate = DateUtils.getDate(-3,"dd/MM/yyyy",GMT_7);
-        page.filter("","Client",fromDate,"","AED");
-        log("Verify 1: UI should display \"No records found\"");
-        Assert.assertTrue(page.lblNoRecord.isDisplayed(),"FAILED! UI display incorrect");
         log("INFO: Executed completely");
     }
     @TestRails(id="29538")
@@ -308,21 +308,62 @@ public class WLRPCTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="24002")
-    @Test(groups = {"regression1","2024.V.3.0"})
-    public void WLRPCT_24002(){
-        //Wait a Andy for updating
-        log("@title: Validate the Winlose Amount of Bookie type displays correctly");
-        log("@pre-condition 1: Client and Bookie have some data");
+    @Test(groups = {"regression","2024.V.3.0"})
+    @Parameters({"clientCode"})
+    public void WLRPCT_24002(String clientCode){
+        log("@title: Validate the 'Winlose Amount' of Client type displays correctly");
+        log("@pre-condition 1: Go to General Reports > Client Statement");
+        ClientStatementPage clientStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT, ClientStatementPage.class);
+        log("@pre-condition 2: Select View By = Client Point");
+        log("@pre-condition 3: Select valid date range");
+        log("@pre-condition 4: Select any client (e.g. JR (No.533 JR))");
+        log("@pre-condition 5: Select Show button");
+        String fromDate = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
+        clientStatementPage.filter("Client Point",KASTRAKI_LIMITED,FINANCIAL_YEAR,"QA2112 - "+clientCode,fromDate,"");
+        log("@pre-condition 6: Take note the Currency and all Movement amounts of client (e.g. JR (No.533 JR))");
+        String cur = "HKD";
+        double valueEx = clientStatementPage.getMasterValueByCur(clientCode,cur,"Movement");
         log("@Step 1: Go to General Reports > System Monitoring > WL & RPC");
         WLRPCPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(WL_RPC, WLRPCPage.class);
-        log("@Step 2: Select valid date range");
-        log("@Step 3: Select Type is Bookie");
-        log("@Step 4: Select Search button");
-        String fromDate = DateUtils.getDate(-3,"dd/MM/yyyy",GMT_7);
-        page.filter("","Bookie",fromDate,"","");
-        log("@Step 5: Check the value in Winlose Amount column");
-        log("Verify 1: Winlose Amount = Sum Win/Lose[1] amount of all Member Summary (in Bookie Statement)");
-        Assert.assertTrue(page.lblNoRecord.isDisplayed(),"FAILED! UI display incorrect");
+        log("@Step 2: Select the same date range in Preconditions");
+        log("@Step 3: Select Type = Client");
+        log("@Step 4: Select Currency = All");
+        log("@Step 5: Select Show button");
+        page.filter("","Client",fromDate,"",cur);
+        log("@Step 5: Check the 'Winlose Amount' of same client in Preconditions (e.g. JR (No.533 JR))");
+        log("Verify 1: The data of client should show:\n" +
+                "'Winlose Amount' in WL & RPC page = 'Movement' in Client Statement page when comparing with same currency");
+        Assert.assertEquals(Double.valueOf(page.getBookieClientValueByCur(clientCode,cur,"Winlose Amount").replace(",","")),valueEx,"FAILED! Winlose Amount Value displays incorrect");
+        log("INFO: Executed completely");
+    }
+    @TestRails(id="24003")
+    @Test(groups = {"regression","2024.V.3.0"})
+    @Parameters({"clientCode"})
+    public void WLRPCT_24003(String clientCode){
+        log("@title: Validate the 'Rec Pay Ca Rb Adj' of Client type displays correctly");
+        log("@pre-condition 1: Go to General Reports > Client Statement");
+        ClientStatementPage clientStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT, ClientStatementPage.class);
+        log("@pre-condition 2: Select View By = Client Point");
+        log("@pre-condition 3: Select valid date range");
+        log("@pre-condition 4: Select any client (e.g. JR (No.533 JR))");
+        log("@pre-condition 5: Select Show button");
+        String fromDate = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
+        clientStatementPage.filter("Client Point",KASTRAKI_LIMITED,FINANCIAL_YEAR,"QA2112 - "+clientCode,fromDate,"");
+        log("@pre-condition 6: Take note the Currency and all 'Rec/Pay/CA/RB/Adj' amounts of client (e.g. JR (No.533 JR))");
+        String cur = "HKD";
+        double valueEx = clientStatementPage.getMasterValueByCur(clientCode,cur,"Rec/Pay/CA/RB/Adj");
+        log("@Step 1: Go to General Reports > System Monitoring > WL & RPC");
+        WLRPCPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(WL_RPC, WLRPCPage.class);
+        log("@Step 2: Select the same date range in Preconditions");
+        log("@Step 3: Select Type = Client");
+        log("@Step 4: Select Currency = All");
+        log("@Step 5: Select Show button");
+        page.filter("","Client",fromDate,"",cur);
+        log("@Step 5: Check the 'Rec/Pay/CA/RB/Adj' of same client in Preconditions (e.g. JR (No.533 JR))");
+        log("Verify 1: The data of client should show:\n" +
+                "\n" +
+                "'Rec/Pay/CA/RB/Adj' in WL & RPC page = Total 'Rec/Pay/CA/RB/Adj' in Client Statement page when comparing with same currency");
+        Assert.assertEquals(Double.valueOf(page.getBookieClientValueByCur(clientCode,cur,"Rec Pay Ca Rb Adj").replace(",","")),valueEx,"FAILED! Rec Pay Ca Rb Adj Value displays incorrect");
         log("INFO: Executed completely");
     }
 }

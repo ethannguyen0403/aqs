@@ -1,6 +1,7 @@
 package pages.sb11.generalReports;
 
 import com.paltech.element.common.*;
+import com.paltech.utils.DoubleUtils;
 import controls.DateTimePicker;
 import controls.Table;
 import org.testng.Assert;
@@ -33,7 +34,7 @@ public class ClientStatementPage extends WelcomePage {
     public Label lblGrandTotal = Label.xpath("//app-client-detail//table[@id='grand-total']//th[3]");
     public Label lblGrandTotalCur = Label.xpath("//app-client-detail//table[@id='grand-total']//th[3]/following-sibling::th[1]");
     Table tblSuper = Table.xpath("//app-client-detail//table[@id='table-super']", colTotal);
-//    Table tblMaster = Table.xpath("//app-client-detail//table[@id='table-master']",colTotal);
+    Table tblMaster = Table.xpath("//app-client-detail//table[@id='table-master']",colTotal);
     //Table tblAgent = Table.xpath("//app-client-detail//div[%s]//table[@id='table-agent']",colTotal);
 
     @Override
@@ -176,5 +177,21 @@ public class ClientStatementPage extends WelcomePage {
         List<String> lstData = clientSummaryPopup.getMemeberSummaryData(accountCode);
         clientSummaryPopup.closeSummaryPopup();
         return lstData;
+    }
+
+    public double getMasterValueByCur(String clientName, String currency, String colName) {
+        double valueEx = 0;
+        int indexClientCol = tblMaster.getColumnIndexByName("Client Name");
+        int indexCurCol = tblMaster.getColumnIndexByName("CUR");
+        int indexColName = tblMaster.getColumnIndexByName(colName);
+        for (int i = 1; i < tblMaster.getNumberOfRows(false,false);i++){
+            Label lblClientName = Label.xpath(tblMaster.getxPathOfCell(1,indexClientCol,i,"span"));
+            Label lblCUR = Label.xpath(tblMaster.getxPathOfCell(1,indexCurCol,i,null));
+            Label lblColName = Label.xpath(tblMaster.getxPathOfCell(1,indexColName,i,null));
+            if (lblClientName.getText().trim().equals(clientName) && lblCUR.getText().trim().equals(currency)){
+                valueEx = DoubleUtils.roundUpWithTwoPlaces(valueEx + DoubleUtils.roundEvenWithTwoPlaces(Double.valueOf(lblColName.getText().trim().replace(",",""))));
+            }
+        }
+        return valueEx;
     }
 }

@@ -33,10 +33,7 @@ public class RestAPITest extends BaseCaseAQS {
         String provider = "MERITO";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("18:00").eventStatus("Scheduled").eventDate(date)
                 .isLive(false).isN(false).eventStatus("INRUNNING").build();
-        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(sportName));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), event.getOpenTime(),event.getEventStatus().toUpperCase());
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
@@ -74,7 +71,7 @@ public class RestAPITest extends BaseCaseAQS {
             Assert.assertTrue(RestAPI.isBetSettleDisplay(jsonArray,lstOrder.get(0)),"FAILED! Result display incorrect");
         } finally {
             EventMapping.unMappingEvent(event.getEventId(),eventProvider,provider);
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
         }
         log("INFO: Executed completely");
     }
@@ -92,12 +89,9 @@ public class RestAPITest extends BaseCaseAQS {
         String date = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +8");
         String provider = "MERITO";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("18:00")
-                .eventStatus("Scheduled").eventDate(date).isLive(false).isN(false)
+                .eventStatus("Scheduled").eventDate(date).isLive(false).isN(false).eventStatus("INRUNNING")
                 .build();
-        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(sportName));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName),event.getOpenTime(), "INRUNNING");
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
@@ -135,7 +129,7 @@ public class RestAPITest extends BaseCaseAQS {
             Assert.assertTrue(RestAPI.isBetSettleDisplay(jsonArray,lstOrder.get(0)),"FAILED! Result display incorrect");
         } finally {
             EventMapping.unMappingEvent(event.getEventId(),eventProvider,provider);
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
         }
         log("INFO: Executed completely");
     }
@@ -153,12 +147,9 @@ public class RestAPITest extends BaseCaseAQS {
         String date = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +8");
         String provider = "MERITO";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("18:00")
-                .eventStatus("Scheduled").eventDate(date).isLive(false).isN(false)
+                .eventStatus("Scheduled").eventDate(date).isLive(false).isN(false).eventStatus("INRUNNING")
                 .build();
-        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(sportName));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName),event.getOpenTime(), "INRUNNING");
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
@@ -186,7 +177,7 @@ public class RestAPITest extends BaseCaseAQS {
             Assert.assertFalse(RestAPI.isBetSettleDisplay(jsonArray,lstOrder.get(0)),"FAILED! Result display incorrect");
         } finally {
             EventMapping.unMappingEvent(event.getEventId(),eventProvider,provider);
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
         }
         log("INFO: Executed completely");
     }
@@ -205,11 +196,8 @@ public class RestAPITest extends BaseCaseAQS {
         String date = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +8");
         String provider = "MERITO";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("18:00").eventStatus("Scheduled")
-                .eventDate(date).isLive(false).isN(false).build();
-        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(sportName));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), event.getOpenTime(),"INRUNNING");
+                .eventDate(date).isLive(false).isN(false).eventStatus("INRUNNING").build();
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
@@ -247,7 +235,7 @@ public class RestAPITest extends BaseCaseAQS {
             Assert.assertTrue(RestAPI.isBetSettleDisplay(jsonArray,lstOrder.get(0)),"FAILED! Result display incorrect");
         } finally {
             EventMapping.unMappingEvent(event.getEventId(),eventProvider,provider);
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
         }
         log("INFO: Executed completely");
     }
@@ -266,11 +254,8 @@ public class RestAPITest extends BaseCaseAQS {
         String date = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +8");
         String provider = "MERITO";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("18:00").eventStatus("Scheduled")
-                .eventDate(date).isLive(false).isN(false).build();
-        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(sportName));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName),event.getOpenTime(), "INRUNNING");
+                .eventDate(date).isLive(false).isN(false).eventStatus("INRUNNING").build();
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
@@ -308,7 +293,7 @@ public class RestAPITest extends BaseCaseAQS {
             Assert.assertFalse(RestAPI.isBetSettleDisplay(jsonArray,lstOrder.get(2)),"FAILED! Result display incorrect");
         } finally {
             EventMapping.unMappingEvent(event.getEventId(),eventProvider,provider);
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
         }
         log("INFO: Executed completely");
     }
@@ -327,11 +312,8 @@ public class RestAPITest extends BaseCaseAQS {
         String date = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +8");
         String provider = "MERITO";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("18:00").eventStatus("Scheduled")
-                .eventDate(date).isLive(false).isN(false).build();
-        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(sportName));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), event.getOpenTime(),"INRUNNING");
+                .eventDate(date).isLive(false).isN(false).eventStatus("INRUNNING").build();
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
@@ -369,7 +351,7 @@ public class RestAPITest extends BaseCaseAQS {
             Assert.assertTrue(RestAPI.getWinLose(jsonArray,lstOrder.get(2),"homeWinLose").equals("10.0"),"FAILED! Result display incorrect");
         } finally {
             EventMapping.unMappingEvent(event.getEventId(),eventProvider,provider);
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
         }
         log("INFO: Executed completely");
     }
@@ -388,12 +370,9 @@ public class RestAPITest extends BaseCaseAQS {
         String date = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +8");
         String provider = "MERITO";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("18:00")
-                .eventStatus("Scheduled").eventDate(date).isLive(false).isN(false)
+                .eventStatus("Scheduled").eventDate(date).isLive(false).isN(false).eventStatus("INRUNNING")
                 .build();
-        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get(sportName));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), event.getOpenTime(),"INRUNNING");
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
@@ -431,7 +410,7 @@ public class RestAPITest extends BaseCaseAQS {
             Assert.assertTrue(RestAPI.getWinLose(jsonArray,lstOrder.get(2),"awayWinLose").equals("-10.0"),"FAILED! Result display incorrect");
         } finally {
             EventMapping.unMappingEvent(event.getEventId(),eventProvider,provider);
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
         }
         log("INFO: Executed completely");
     }

@@ -33,11 +33,6 @@ import static common.SBPConstants.*;
 import static common.SBPConstants.BetSettlement.BET_LIST_STATEMENT_EMAIL;
 
 public class CricketSportTest extends BaseCaseAQS {
-    String leagueName = "QA Cricket Auto League";
-    String country = "Asia";
-    String sportName = "Cricket";
-    String superMasterCode = "QA2112 - ";
-    Double percent = 1.0;
     @TestRails(id = "61")
     @Test(groups = {"regression","2023.11.30"})
     public void Cricket_Sport_61() {
@@ -50,11 +45,13 @@ public class CricketSportTest extends BaseCaseAQS {
         CreateCricketLeaguePopup createCricketLeaguePopup = cricketLeagueSeasonTeamInfoPage.openAddLeaguePopup();
         log("@Step 3: Input valid values >> Click Submit");
         String leagueName = "Auto League";
+        String country = "Asia";
         try {
             createCricketLeaguePopup.addLeague(leagueName, leagueName, country, "", "", true,true,true);
             log("Verify 1: Message 'Please input valid Account Code.' displays");
             cricketLeagueSeasonTeamInfoPage.filterLeague("All",country,leagueName);
-            cricketLeagueSeasonTeamInfoPage.isLeagueDisplayed(leagueName);
+            Assert.assertFalse(cricketLeagueSeasonTeamInfoPage.tbLeague.getRowIndexContainValue(leagueName, cricketLeagueSeasonTeamInfoPage.tbLeague.getColumnIndexByName("League Name"),null)
+                    == 0, "FAILED! Can not add new Cricket List");
         } finally {
             ConfirmDeleteLeaguePopup delPopup = cricketLeagueSeasonTeamInfoPage.openDeleteLeaguePopup(leagueName);
             delPopup.deleteLeague(true);
@@ -69,6 +66,8 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 1: Account is activated permission");
         log("@pre-condition 2: There is an existing Cricket league");
         log("@Step 1: Login to SB11 >> Go to League/Season/Team Info");
+        String leagueName = "QA Cricket Auto League";
+        String country = "Asia";
         CricketLeagueSeasonTeamInfoPage cricketLeagueSeasonTeamInfoPage = welcomePage.navigatePage(SPORT,LEAGUE_SEASON_TEAM_INFO, CricketLeagueSeasonTeamInfoPage.class);
         cricketLeagueSeasonTeamInfoPage.goToCricket();
         log("@Step 2: Filter and select the league >> Click + icon at 'Team List' to open the create dialog");
@@ -98,6 +97,8 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 1: Account is activated permission");
         log("@pre-condition 2: There is an existing Cricket league");
         log("@Step 1: Login to SB11 >> Go to Even Schedule >> select the league");
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         EventSchedulePage eventSchedulePage = welcomePage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
         eventSchedulePage.goToSport(sportName);
         log("@Step 2: Select a Home Team and Away Team >> input Time value");
@@ -135,7 +136,7 @@ public class CricketSportTest extends BaseCaseAQS {
             Assert.assertTrue(cricketBetEntryPage.isEventExist(event), "FAILED! Event "+event.getHome() +" & "+ event.getAway()+" under league "+ leagueName+" does not display in the list");
         } finally {
             log("@Postcondition: Delete the event");
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }
@@ -147,13 +148,12 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:10").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
-
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         event.setEventId(eventID);
         try {
@@ -168,7 +168,7 @@ public class CricketSportTest extends BaseCaseAQS {
             Assert.assertEquals(cricketResultEntryPage.getSuccessMessage(),expect);
         } finally {
             log("@Postcondition: Delete the event");
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }
@@ -181,13 +181,12 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:10").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
-
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         event.setEventId(eventID);
         try {
@@ -227,7 +226,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -238,7 +237,7 @@ public class CricketSportTest extends BaseCaseAQS {
             confirmBetsPage.verifyOrder(lstOrder.get(0));
         } finally {
             log("@Postcondition: Delete the event");
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }
@@ -251,13 +250,12 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:10").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
-
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         event.setEventId(eventID);
         try {
@@ -296,7 +294,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -307,7 +305,7 @@ public class CricketSportTest extends BaseCaseAQS {
             confirmBetsPage.verifyOrder(lstOrder.get(0));
         } finally {
             log("@Postcondition: Delete the event");
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }
@@ -323,18 +321,15 @@ public class CricketSportTest extends BaseCaseAQS {
                 "The event settled with result as Home Win");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
-        String accountId = AccountSearchUtils.getAccountId(accountCode);
-        String clientId = ClientSystemUtils.getClientId(clientCode);
-        String clientCode1 = superMasterCode + clientCode;
-        AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
-
+        String clientCode1 = "QA2112 - ";
+        Double percent = 1.0;
+        AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,clientCode1,percent);
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("16:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
-
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         event.setEventId(eventID);
         try {
@@ -412,7 +407,7 @@ public class CricketSportTest extends BaseCaseAQS {
             Assert.assertEquals(emailInfo.get(3).get(0), expectedRow1.get(0), "Failed! title of email is incorrect");
             Assert.assertEquals(emailInfo.get(3).get(1), expectedRow1.get(1), "Failed! title of email is incorrect");
         } finally {
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }
@@ -428,19 +423,17 @@ public class CricketSportTest extends BaseCaseAQS {
                 "The event settled with result as Home Win");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
-        String accountId = AccountSearchUtils.getAccountId(accountCode);
-        String clientId = ClientSystemUtils.getClientId(clientCode);
-        String clientCode1 = superMasterCode + clientCode;
-        AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
+        String clientCode1 = "QA2112 - ";
+        Double percent = 1.0;
+        AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,clientCode1,percent);
 
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("10:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
-
-        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
         try {
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
+            EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get("Cricket"));
+            String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
             String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
             event.setEventId(eventID);
             welcomePage.waitSpinnerDisappeared();
@@ -518,7 +511,7 @@ public class CricketSportTest extends BaseCaseAQS {
             Assert.assertEquals(emailInfo.get(3).get(0), expectedRow1.get(0), "Failed! title of email is incorrect");
             Assert.assertEquals(emailInfo.get(3).get(1), expectedRow1.get(1), "Failed! title of email is incorrect");
         } finally {
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }
@@ -531,13 +524,12 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("16:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
-
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         event.setEventId(eventID);
         try {
@@ -577,7 +569,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -588,7 +580,7 @@ public class CricketSportTest extends BaseCaseAQS {
             confirmBetsPage.verifyOrder(lstOrder.get(0));
         } finally {
             log("@Postcondition: Delete the event");
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }
@@ -601,13 +593,12 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("16:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
-
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         event.setEventId(eventID);
         try {
@@ -647,7 +638,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -658,7 +649,7 @@ public class CricketSportTest extends BaseCaseAQS {
             confirmBetsPage.verifyOrder(lstOrder.get(0));
         } finally {
             log("@Postcondition: Delete the event");
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }
@@ -671,13 +662,12 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
-
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         event.setEventId(eventID);
         try {
@@ -717,7 +707,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -728,7 +718,7 @@ public class CricketSportTest extends BaseCaseAQS {
             confirmBetsPage.verifyOrder(lstOrder.get(0));
         } finally {
             log("@Postcondition: Delete the event");
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }
@@ -741,13 +731,12 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
-
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         event.setEventId(eventID);
         try {
@@ -788,7 +777,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -799,7 +788,7 @@ public class CricketSportTest extends BaseCaseAQS {
             confirmBetsPage.verifyOrder(lstOrder.get(0));
         } finally {
             log("@Postcondition: Delete the event");
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }
@@ -812,13 +801,12 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
-
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         event.setEventId(eventID);
         try {
@@ -859,7 +847,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -870,7 +858,7 @@ public class CricketSportTest extends BaseCaseAQS {
             confirmBetsPage.verifyOrder(lstOrder.get(0));
         } finally {
             log("@Postcondition: Delete the event");
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }
@@ -884,13 +872,12 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
-
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         event.setEventId(eventID);
         try {
@@ -930,7 +917,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -941,7 +928,7 @@ public class CricketSportTest extends BaseCaseAQS {
             confirmBetsPage.verifyOrder(lstOrder.get(0));
         } finally {
             log("@Postcondition: Delete the event");
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }
@@ -954,13 +941,12 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 2: There is an existed Cricket league and event");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
-
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         event.setEventId(eventID);
         try {
@@ -1000,7 +986,7 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketBetSlipPopup.placeBet(order,true);
             log("Verify 2: The bet is placed successfully");
             Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
-            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome());
+            BetListPopup betListPopup = cricketBetEntryPage.openBetList(event.getHome()+"\n"+event.getAway());
             order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
             betListPopup.close();
             lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
@@ -1011,7 +997,7 @@ public class CricketSportTest extends BaseCaseAQS {
             confirmBetsPage.verifyOrder(lstOrder.get(0));
         } finally {
             log("@Postcondition: Delete the event");
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }
@@ -1025,20 +1011,18 @@ public class CricketSportTest extends BaseCaseAQS {
                 "Bet 1 was placed on the Odd selection, Odd/Even, stake = 100, odds = 2\n" +
                 "Bet 2 was placed on the Even selection, Odd/Even, stake = 100, odds = 2\n" +
                 "The event settled with result as Home Win");
-        String accountId = AccountSearchUtils.getAccountId(accountCode);
-        String clientId = ClientSystemUtils.getClientId(clientCode);
-        String clientCode1 = superMasterCode + clientCode;
-        AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
+        String clientCode1 = "QA2112 - ";
+        Double percent = 1.0;
+        AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,clientCode1,percent);
 
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
-
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         event.setEventId(eventID);
         try {
@@ -1118,7 +1102,7 @@ public class CricketSportTest extends BaseCaseAQS {
             Assert.assertEquals(emailInfo.get(3).get(1), expectedRow1.get(1), "Failed! title of email is incorrect");
         } finally {
             log("@Postcondition: Delete the event");
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }
@@ -1151,20 +1135,18 @@ public class CricketSportTest extends BaseCaseAQS {
                 "Bet 1 was placed on the Over selection, Over/Under, stake = 100, odds = 2\n" +
                 "Bet 2 was placed on the Under selection, Over/Under, stake = 100, odds = 2\n" +
                 "The event settled with result as Home Win");
-        String accountId = AccountSearchUtils.getAccountId(accountCode);
-        String clientId = ClientSystemUtils.getClientId(clientCode);
-        String clientCode1 = superMasterCode + clientCode;
-        AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
+        String clientCode1 = "QA2112 - ";
+        Double percent = 1.0;
+        AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,clientCode1,percent);
 
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("15:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
-
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         event.setEventId(eventID);
         try {
@@ -1246,7 +1228,7 @@ public class CricketSportTest extends BaseCaseAQS {
             Assert.assertEquals(emailInfo.get(3).get(1), expectedRow1.get(1), "Failed! title of email is incorrect");
         } finally {
             log("@Postcondition: Delete the event");
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }
@@ -1258,11 +1240,11 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@pre-condition 1: Login the page");
         log("@pre-condition 2: Already placed a Cricket manual bet");
         String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
-        String accountId = AccountSearchUtils.getAccountId(accountCode);
-        String clientId = ClientSystemUtils.getClientId(clientCode);
-        String clientCode1 = superMasterCode + clientCode;
-        AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
+        String clientCode1 = "QA2112 - ";
+        Double percent = 1.0;
+        AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,clientCode1,percent);
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String sportName = "Cricket";
         Order order = new Order.Builder()
                 .price(1.5).requireStake(15)
                 .oddType("HK").accountCode(accountCode)
@@ -1273,6 +1255,7 @@ public class CricketSportTest extends BaseCaseAQS {
                 .marketType("MB")
                 .build();
         int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
+        String accountId = AccountSearchUtils.getAccountId(accountCode);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId,SPORT_ID_MAP.get(sportName),order);
         welcomePage.waitSpinnerDisappeared();
         int betId = BetSettlementUtils.getConfirmedBetId(accountId,SPORT_ID_MAP.get(sportName),order);
@@ -1301,19 +1284,17 @@ public class CricketSportTest extends BaseCaseAQS {
                 "Bet 2 was placed on the Away selection, DNB, stake = 100, odds = 2\n" +
                 "The event settled with result as Home Win");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7");
-        String accountId = AccountSearchUtils.getAccountId(accountCode);
-        String clientId = ClientSystemUtils.getClientId(clientCode);
-        String clientCode1 = superMasterCode + clientCode;
-        AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode1,percent);
+        String clientCode1 = "QA2112 - ";
+        Double percent = 1.0;
+        AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,clientCode1,percent);
         String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
+        String leagueName = "QA Cricket Auto League";
+        String sportName = "Cricket";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("16:00").eventStatus("Scheduled")
                 .isLive(false).isN(false).build();
-
-        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(event.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(event.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), event.getOpenTime(),event.getEventStatus().toUpperCase());
+        EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get("Cricket"));
         welcomePage.waitSpinnerDisappeared();
+        String leagueID = EventScheduleUtils.getLeagueID(event.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         event.setEventId(eventID);
         welcomePage.waitSpinnerDisappeared();
@@ -1392,7 +1373,7 @@ public class CricketSportTest extends BaseCaseAQS {
             Assert.assertEquals(emailInfo.get(3).get(1), expectedRow1.get(1), "Failed! title of email is incorrect");
         } finally {
             log("@Postcondition: Delete the event");
-            EventScheduleUtils.deleteEventByAPI(event.getEventId());
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
             log("INFO: Executed completely");
         }
     }

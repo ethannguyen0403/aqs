@@ -12,9 +12,6 @@ import utils.testraildemo.TestRails;
 import static common.SBPConstants.*;
 
 public class AccountSearchTest extends BaseCaseAQS {
-
-    String companyUnit = "Kastraki Limited";
-
     @Test(groups = {"regression"})
     @TestRails(id = "2223")
     public void Account_Search_TC_001(){
@@ -55,7 +52,7 @@ public class AccountSearchTest extends BaseCaseAQS {
         AccountSearchPage accountSearchPage = welcomePage.navigatePage(MASTER, ACCOUNT_SEARCH,AccountSearchPage.class);
         log("@Step 3: Enter account code of account at pre-condition");
         log("@Step 4: Click Show");
-        accountSearchPage.filterAccount(companyUnit,"Account Code",accountCode);
+        accountSearchPage.filterAccount(KASTRAKI_LIMITED,"Account Code",accountCode);
         log("Validate there are 13 tables displayed:");
         log("Account Info\n" +
                 "Bookie Info\n" +
@@ -96,7 +93,7 @@ public class AccountSearchTest extends BaseCaseAQS {
         AccountSearchPage accountSearchPage = welcomePage.navigatePage(MASTER, ACCOUNT_SEARCH,AccountSearchPage.class);
         log("@Step 3: Enter account id of account at pre-condition");
         log("@Step 4: Click Show");
-        accountSearchPage.filterAccount(companyUnit,"Account Id",accountId);
+        accountSearchPage.filterAccount(KASTRAKI_LIMITED,"Account Id",accountId);
         log("Validate there are 13 tables displayed:");
         log("Account Info\n" +
                 "Bookie Info\n" +

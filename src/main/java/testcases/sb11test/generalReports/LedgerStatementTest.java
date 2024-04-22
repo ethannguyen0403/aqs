@@ -2,8 +2,8 @@ package testcases.sb11test.generalReports;
 
 import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
-import com.paltech.utils.DoubleUtils;
 import com.paltech.utils.FileUtils;
+import common.SBPConstants;
 import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -13,9 +13,7 @@ import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.generalReports.SystemMonitoringPage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
-import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.ChartOfAccountUtils;
 import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
@@ -24,43 +22,23 @@ import java.io.IOException;
 import static common.SBPConstants.*;
 
 public class LedgerStatementTest extends BaseCaseAQS {
-
-    String companyUnit = "Kastraki Limited";
-    String transType = "Payment Other";
-    String debitExpAcc = "AutoExpenditureDebit - 011.000.000.000";
-    String creditExpAcc = "AutoExpenditureCredit - 010.000.000.000";
-    String debitAstAcc = "AutoAssetDebit - 055.000.000.000";
-    String creditAstAcc = "AutoAssetCredit - 050.000.000.000";
-    String debitLibAcc = "AutoLiabilityDebit - 044.000.000.000";
-    String creditLibAcc = "AutoLiabilityCredit - 040.000.000.000";
-    String debitCapitalAcc = "AutoCapitalDebit - 033.000.000.000";
-    String creditCapitalAcc = "AutoCapitalCredit - 030.000.000.000";
-    String debitIncomeAcc = "AutoIncomeDebit - 002.200.000.000";
-    String creditIncomeAcc = "AutoIncomeCredit - 002.000.000.000";
-    String lgDebitCur = "HKD";
-    String lgCreditCur = "HKD";
-    String lgExpenditureGroup = "QA Ledger Group Expenditure";
-    String lgAssetGroup = "QA Ledger Group Asset";
-    String lgLiabilityGroup = "QA Ledger Group Liability";
-    String lgIncomeGroup = "QA Ledger Group Income";
-    String lgCapitalGroup = "QA Ledger Group Capital";
-    String descExpenditure = "Expenditure Transaction " + DateUtils.getMilliSeconds();
-    String descAsset = "Asset Transaction " + DateUtils.getMilliSeconds();
-    String descLiability = "Liability Transaction " + DateUtils.getMilliSeconds();
-
     @TestRails(id="841")
     @Test(groups = {"smoke"})
     public void Ledger_Statement_TC841() throws IOException {
         log("@title: Validate transaction Debit of Ledger Type = Expenditure");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
+        String transType = "Payment Other";
+        String debitExpAcc = LEDGER_EXPENDITURE_DEBIT_NAME+ " - "+LEDGER_EXPENDITURE_DEBIT_NUMBER;
+        String creditExpAcc = LEDGER_EXPENDITURE_CREDIT_NAME+" - "+LEDGER_EXPENDITURE_CREDIT_NUMBER;
+        String descExpenditure = "Expenditure Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitExpAcc)
                 .ledgerCredit(creditExpAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descExpenditure)
@@ -73,10 +51,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Expenditure", SBPConstants.LEDGER_GROUP_NAME_EXPENDITURE,"","","");
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (convert to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
-            ledgerStatementPage.verifyLedgerTrans(transaction, true, lgExpenditureGroup);
+            ledgerStatementPage.verifyLedgerTrans(transaction, true, LEDGER_GROUP_NAME_EXPENDITURE);
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
@@ -88,7 +66,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_EXPENDITURE, SBPConstants.LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
         }
     }
 
@@ -98,13 +76,17 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@title: Validate transaction Credit of Ledger Type = Expenditure");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
+        String transType = "Payment Other";
+        String debitExpAcc = LEDGER_EXPENDITURE_DEBIT_NAME+ " - "+LEDGER_EXPENDITURE_DEBIT_NUMBER;
+        String creditExpAcc = LEDGER_EXPENDITURE_CREDIT_NAME+" - "+LEDGER_EXPENDITURE_CREDIT_NUMBER;
+        String descExpenditure = "Expenditure Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitExpAcc)
                 .ledgerCredit(creditExpAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descExpenditure)
@@ -117,10 +99,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Expenditure", LEDGER_GROUP_NAME_EXPENDITURE,"","","");
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
-            ledgerStatementPage.verifyLedgerTrans(transaction, false, lgExpenditureGroup);
+            ledgerStatementPage.verifyLedgerTrans(transaction, false, LEDGER_GROUP_NAME_EXPENDITURE);
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
@@ -132,7 +114,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_EXPENDITURE, SBPConstants.LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
         }
     }
 
@@ -143,13 +125,17 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@title: Validate value calculated correctly for Ledger Type = Expenditure (Debit)");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
+        String transType = "Payment Other";
+        String debitExpAcc = LEDGER_EXPENDITURE_DEBIT_NAME+ " - "+LEDGER_EXPENDITURE_DEBIT_NUMBER;
+        String creditExpAcc = LEDGER_EXPENDITURE_CREDIT_NAME+" - "+LEDGER_EXPENDITURE_CREDIT_NUMBER;
+        String descExpenditure = "Expenditure Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitExpAcc)
                 .ledgerCredit(creditExpAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descExpenditure)
@@ -162,10 +148,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Expenditure", LEDGER_GROUP_NAME_EXPENDITURE,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_EXPENDITURE_DEBIT_ACC);
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_EXPENDITURE_DEBIT_ACC);
 
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
@@ -182,7 +168,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_EXPENDITURE, SBPConstants.LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
         }
     }
 
@@ -192,13 +178,17 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@title: Validate value calculated correctly for Ledger Type = Expenditure (Credit)");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
+        String transType = "Payment Other";
+        String debitExpAcc = LEDGER_EXPENDITURE_DEBIT_NAME+ " - "+LEDGER_EXPENDITURE_DEBIT_NUMBER;
+        String creditExpAcc = LEDGER_EXPENDITURE_CREDIT_NAME+" - "+LEDGER_EXPENDITURE_CREDIT_NUMBER;
+        String descExpenditure = "Expenditure Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitExpAcc)
                 .ledgerCredit(creditExpAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descExpenditure)
@@ -212,10 +202,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Expenditure",lgExpenditureGroup,"","","");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Expenditure", LEDGER_GROUP_NAME_EXPENDITURE,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_EXPENDITURE_CREDIT_ACC);
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_EXPENDITURE_CREDIT_ACC);
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
@@ -230,7 +220,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_EXPENDITURE, SBPConstants.LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
         }
     }
 
@@ -240,14 +230,18 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@title: Validate transaction Debit of Ledger Type = Asset");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
+        String transType = "Payment Other";
+        String debitAstAcc = LEDGER_ASSET_DEBIT_NAME+" - "+LEDGER_ASSET_DEBIT_NUMBER;
+        String creditAstAcc = LEDGER_ASSET_CREDIT_NAME+" - "+LEDGER_ASSET_CREDIT_NUMBER;
+        String descAsset = "Asset Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitAstAcc)
                 .ledgerCredit(creditAstAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descAsset)
@@ -260,10 +254,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
-            ledgerStatementPage.showLedger(companyUnit, FINANCIAL_YEAR, "Asset", lgAssetGroup, date, date, "");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Asset", LEDGER_GROUP_NAME_ASSET, date, date, "");
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
-            ledgerStatementPage.verifyLedgerTrans(transaction, true, lgAssetGroup);
+            ledgerStatementPage.verifyLedgerTrans(transaction, true, LEDGER_GROUP_NAME_ASSET);
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
@@ -274,7 +268,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_ASSET, SBPConstants.LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
         }
         log("INFO: Executed completely");
     }
@@ -285,14 +279,18 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@title: Validate transaction Credit of Ledger Type = Asset");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
+        String transType = "Payment Other";
+        String debitAstAcc = LEDGER_ASSET_DEBIT_NAME+" - "+LEDGER_ASSET_DEBIT_NUMBER;
+        String creditAstAcc = LEDGER_ASSET_CREDIT_NAME+" - "+LEDGER_ASSET_CREDIT_NUMBER;
+        String descAsset = "Asset Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitAstAcc)
                 .ledgerCredit(creditAstAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descAsset)
@@ -305,10 +303,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
-            ledgerStatementPage.showLedger(companyUnit, FINANCIAL_YEAR, "Asset", lgAssetGroup, date, date, "");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Asset", LEDGER_GROUP_NAME_ASSET, date, date, "");
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
-            ledgerStatementPage.verifyLedgerTrans(transaction, false, lgAssetGroup);
+            ledgerStatementPage.verifyLedgerTrans(transaction, false, LEDGER_GROUP_NAME_ASSET);
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Expenditure Ledger in case throws exceptions");
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
@@ -319,7 +317,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_ASSET, SBPConstants.LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
         }
         log("INFO: Executed completely");
     }
@@ -330,13 +328,17 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@title: Validate value calculated correctly for Ledger Type = Asset (Debit)");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
+        String transType = "Payment Other";
+        String debitAstAcc = LEDGER_ASSET_DEBIT_NAME+" - "+LEDGER_ASSET_DEBIT_NUMBER;
+        String creditAstAcc = LEDGER_ASSET_CREDIT_NAME+" - "+LEDGER_ASSET_CREDIT_NUMBER;
+        String descAsset = "Asset Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitAstAcc)
                 .ledgerCredit(creditAstAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descAsset)
@@ -349,10 +351,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Asset",lgAssetGroup,"","","");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Asset", LEDGER_GROUP_NAME_ASSET,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_GROUP_NAME_ASSET,LEDGER_ASSET_DEBIT_ACC);
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_ASSET,LEDGER_ASSET_DEBIT_ACC);
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
@@ -367,7 +369,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_ASSET, SBPConstants.LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
         }
     }
 
@@ -377,14 +379,18 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@title: Validate value calculated correctly for Ledger Type = Asset (Credit)");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
+        String transType = "Payment Other";
+        String debitAstAcc = LEDGER_ASSET_DEBIT_NAME+" - "+LEDGER_ASSET_DEBIT_NUMBER;
+        String creditAstAcc = LEDGER_ASSET_CREDIT_NAME+" - "+LEDGER_ASSET_CREDIT_NUMBER;
+        String descAsset = "Asset Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
 
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitAstAcc)
                 .ledgerCredit(creditAstAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descAsset)
@@ -398,10 +404,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Asset",lgAssetGroup,"","","");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Asset", LEDGER_GROUP_NAME_ASSET,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_GROUP_NAME_ASSET,LEDGER_ASSET_CREDIT_ACC);
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_ASSET,LEDGER_ASSET_CREDIT_ACC);
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
             ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
@@ -416,7 +422,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_ASSET, SBPConstants.LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
         }
     }
 
@@ -426,21 +432,24 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@title: Validate transaction Debit of Ledger Type = Liability");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Accounting > Journal Entries");
+        String transType = "Payment Other";
+        String debitLibAcc = LEDGER_LIABILITY_DEBIT_NAME+" - "+LEDGER_LIABILITY_DEBIT_NUMBER;
+        String creditLibAcc = LEDGER_LIABILITY_CREDIT_NAME+" - "+LEDGER_LIABILITY_CREDIT_NUMBER;
+        String descLiability = "Liability Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
-        Transaction transaction = new Transaction.Builder().ledgerDebit(debitLibAcc).ledgerCredit(creditLibAcc).ledgerDebitCur(lgDebitCur).ledgerCreditCur(lgCreditCur)
+        Transaction transaction = new Transaction.Builder().ledgerDebit(debitLibAcc).ledgerCredit(creditLibAcc).ledgerDebitCur("HKD").ledgerCreditCur("HKD")
                 .amountDebit(1).amountCredit(1).remark(descLiability).transDate("").transType(transType).build();
-
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Liability",lgLiabilityGroup,"","","");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Liability", LEDGER_GROUP_NAME_LIABILITY,"","","");
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
-            ledgerStatementPage.verifyLedgerTrans(transaction, true, lgLiabilityGroup);
+            ledgerStatementPage.verifyLedgerTrans(transaction, true, LEDGER_GROUP_NAME_LIABILITY);
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
@@ -452,7 +461,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_LIABILITY,LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_LIABILITY, SBPConstants.LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
         }
     }
 
@@ -463,13 +472,17 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login to SB11 site");
         log("@Step Precondition: Get Credit/Debit amount on Ledger Statement page");
         log("@Step 2: Navigate to Accounting > Journal Entries");
+        String transType = "Payment Other";
+        String debitLibAcc = LEDGER_LIABILITY_DEBIT_NAME+" - "+LEDGER_LIABILITY_DEBIT_NUMBER;
+        String creditLibAcc = LEDGER_LIABILITY_CREDIT_NAME+" - "+LEDGER_LIABILITY_CREDIT_NUMBER;
+        String descLiability = "Liability Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitLibAcc)
                 .ledgerCredit(creditLibAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(descLiability)
@@ -483,10 +496,10 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Liability",lgLiabilityGroup,"","","");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Liability", LEDGER_GROUP_NAME_LIABILITY,"","","");
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
-            ledgerStatementPage.verifyLedgerTrans(transaction, false, lgLiabilityGroup);
+            ledgerStatementPage.verifyLedgerTrans(transaction, false, LEDGER_GROUP_NAME_LIABILITY);
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
@@ -498,21 +511,129 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_LIABILITY,LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_LIABILITY, SBPConstants.LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
+        }
+    }
+    @TestRails(id="851")
+    @Test(groups = {"smoke_qc","2024.V.3.0"})
+    public void Ledger_Statement_TC851() throws IOException {
+        log("@title: Validate value calculated correctly for Ledger Type = Liability (Credit)");
+        log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Liability");
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Accounting > Journal Entries");
+        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        String debitLiaAcc = LEDGER_LIABILITY_DEBIT_NAME+" - "+LEDGER_LIABILITY_DEBIT_NUMBER;
+        String creditLiaAcc = LEDGER_LIABILITY_CREDIT_NAME+" - "+LEDGER_LIABILITY_CREDIT_NUMBER;
+        String cur = "HKD";
+        String descLia = "Liability Transaction "+ DateUtils.getMilliSeconds();
+        Transaction transaction = new Transaction.Builder()
+                .ledgerDebit(debitLiaAcc)
+                .ledgerCredit(creditLiaAcc)
+                .ledgerDebitCur(cur)
+                .ledgerCreditCur(cur)
+                .amountDebit(1)
+                .amountCredit(1)
+                .remark(descLia)
+                .transDate("")
+                .transType(JournalEntries.TRANSACTION_TYPE_LIST.get(5))
+                .build();
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
+        try {
+            log("@Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
+            LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Liability", SBPConstants.LEDGER_GROUP_NAME_LIABILITY,"","","");
+
+            log("@Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_LIABILITY,LEDGER_LIABILITY_CREDIT_ACC);
+            log("@Verify 1: Original Currency: Debit show value = 0 in black, Credit show value = 10 in blue, Running Bal = Opening Balance (+Credit - Debit) value\n" +
+                    "Total column is sum of records");
+            log("@Verify 2: Amounts in GBP will get value from Original Currency then convert to GBP to show");
+            ledgerDetailPopup.verifyLedgerTrans(transaction,false,transaction.getRemark());
+            log("INFO: Executed completely");
+        } finally {
+            log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(LEDGER_LIABILITY_DEBIT_NAME).ledgerCreditNumber(LEDGER_LIABILITY_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_LIABILITY_CREDIT_NAME).ledgerDebitNumber(LEDGER_LIABILITY_CREDIT_NUMBER)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_LIABILITY, SBPConstants.LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
+        }
+    }
+    @TestRails(id="852")
+    @Test(groups = {"smoke_qc","2024.V.3.0"})
+    public void Ledger_Statement_TC852() throws IOException {
+        log("@title: Validate value calculated correctly for Ledger Type = Liability (Debit)");
+        log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Liability");
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Accounting > Journal Entries");
+        JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        log("@Step 3: In Credit, select From = Ledger, Ledger = ledger account at precondition then click Add");
+        log("@Step 4: In Debit, select any available destination (Client, Bookie, Ledger) then click Add");
+        log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
+        log("@Step 6: Choose Transaction Type = any and click Submit");
+        String debitLiaAcc = LEDGER_LIABILITY_DEBIT_NAME+" - "+LEDGER_LIABILITY_DEBIT_NUMBER;
+        String creditLiaAcc = LEDGER_LIABILITY_CREDIT_NAME+" - "+LEDGER_LIABILITY_CREDIT_NUMBER;
+        String cur = "HKD";
+        String descLia = "Liability Transaction "+ DateUtils.getMilliSeconds();
+        Transaction transaction = new Transaction.Builder()
+                .ledgerDebit(debitLiaAcc)
+                .ledgerCredit(creditLiaAcc)
+                .ledgerDebitCur(cur)
+                .ledgerCreditCur(cur)
+                .amountDebit(1)
+                .amountCredit(1)
+                .remark(descLia)
+                .transDate("")
+                .transType(JournalEntries.TRANSACTION_TYPE_LIST.get(5))
+                .build();
+        journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
+        try {
+            log("@Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
+            LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Liability", SBPConstants.LEDGER_GROUP_NAME_LIABILITY,"","","");
+
+            log("@Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_LIABILITY,LEDGER_LIABILITY_DEBIT_ACC);
+            log("@Verify 1: Original Currency: Debit show value = 10 in red, Credit show value = 0 in black, Running Bal = Opening Balance (+ Credit - Debit) value\n" +
+                    "Total column is sum of records");
+            log("@Verify 2: Amounts in GBP will get value from Original Currency then convert to GBP to show");
+            ledgerDetailPopup.verifyLedgerTrans(transaction,true,transaction.getRemark());
+            log("INFO: Executed completely");
+        } finally {
+            log("@Post-condition: Revert transaction amount for Credit/Debit Liability Ledger in case throws exceptions");
+            String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
+            Transaction transactionPost = new Transaction.Builder()
+                    .ledgerCredit(LEDGER_LIABILITY_DEBIT_NAME).ledgerCreditNumber(LEDGER_LIABILITY_DEBIT_NUMBER)
+                    .ledgerDebit(LEDGER_LIABILITY_CREDIT_NAME).ledgerDebitNumber(LEDGER_LIABILITY_CREDIT_NUMBER)
+                    .amountDebit(1).amountCredit(1)
+                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .transDate(currentDate)
+                    .transType("Tax Rebate").build();
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_LIABILITY, SBPConstants.LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
         }
     }
 
-    //TODO: implement case 851 852
     @TestRails(id="853")
     @Test(groups = {"smoke_qc"})
     public void Ledger_Statement_TC853() throws IOException {
         log("@title: Validate transaction Credit of Ledger Type = Capital");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
+        String transType = "Payment Other";
+        String debitCapitalAcc = LEDGER_CAPITAL_DEBIT_NAME+" - "+LEDGER_CAPITAL_DEBIT_NUMBER;
+        String creditCapitalAcc = LEDGER_CAPITAL_CREDIT_NAME+" - "+LEDGER_CAPITAL_CREDIT_NUMBER;
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitCapitalAcc)
                 .ledgerCredit(creditCapitalAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Capital transaction " + DateUtils.getMilliSeconds())
@@ -532,12 +653,12 @@ public class LedgerStatementTest extends BaseCaseAQS {
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
             log("Step 8: Observe value show on page");
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Capital",lgCapitalGroup,"","","");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Capital", LEDGER_GROUP_NAME_CAPITAL,"","","");
 
             log("@Verify 1: Result page shows with 2 parts:\n" +
                     "Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed\n" +
                     "Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
-            ledgerStatementPage.verifyLedgerTrans(transaction, false, lgCapitalGroup);
+            ledgerStatementPage.verifyLedgerTrans(transaction, false, LEDGER_GROUP_NAME_CAPITAL);
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
@@ -549,7 +670,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_CAPITAL,LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_CAPITAL, SBPConstants.LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
         }
     }
 
@@ -558,11 +679,14 @@ public class LedgerStatementTest extends BaseCaseAQS {
     public void Ledger_Statement_TC854() throws IOException {
         log("@title: Validate transaction Debit of Ledger Type = Capital");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
+        String transType = "Payment Other";
+        String debitCapitalAcc = LEDGER_CAPITAL_DEBIT_NAME+" - "+LEDGER_CAPITAL_DEBIT_NUMBER;
+        String creditCapitalAcc = LEDGER_CAPITAL_CREDIT_NAME+" - "+LEDGER_CAPITAL_CREDIT_NUMBER;
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitCapitalAcc)
                 .ledgerCredit(creditCapitalAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Capital transaction " + DateUtils.getMilliSeconds())
@@ -582,12 +706,12 @@ public class LedgerStatementTest extends BaseCaseAQS {
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
             log("Step 8: Observe value show on page");
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Capital",lgCapitalGroup,"","","");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Capital", LEDGER_GROUP_NAME_CAPITAL,"","","");
 
             log("@Verify 1: Result page shows with 2 parts:\n" +
                     "Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in red, Running Bal and Running Bal CT displayed\n" +
                     "Amounts in GBP (conver to GBP): Credit/Debit column = value inputted at step 5 in red, Running Bal get value from Original Currency");
-            ledgerStatementPage.verifyLedgerTrans(transaction, true, lgCapitalGroup);
+            ledgerStatementPage.verifyLedgerTrans(transaction, true, LEDGER_GROUP_NAME_CAPITAL);
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Capital Ledger in case throws exceptions");
@@ -599,7 +723,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_CAPITAL,LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_CAPITAL, SBPConstants.LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
         }
     }
 
@@ -608,11 +732,14 @@ public class LedgerStatementTest extends BaseCaseAQS {
     public void Ledger_Statement_TC855() throws IOException {
         log("@title:Validate value calculated correctly for Ledger Type = Capital (Credit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
+        String transType = "Payment Other";
+        String debitCapitalAcc = LEDGER_CAPITAL_DEBIT_NAME+" - "+LEDGER_CAPITAL_DEBIT_NUMBER;
+        String creditCapitalAcc = LEDGER_CAPITAL_CREDIT_NAME+" - "+LEDGER_CAPITAL_CREDIT_NUMBER;
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitCapitalAcc)
                 .ledgerCredit(creditCapitalAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Capital transaction " + DateUtils.getMilliSeconds())
@@ -632,8 +759,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Capital",lgCapitalGroup,"","","");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_GROUP_NAME_CAPITAL,LEDGER_CAPITAL_CREDIT_ACC);
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Capital", LEDGER_GROUP_NAME_CAPITAL,"","","");
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_CAPITAL,LEDGER_CAPITAL_CREDIT_ACC);
 
             log("@Verify 1: Original Currency: Debit show value = 0 in black, Credit show value = 10 in blue, Running Bal = Opening Balance (+Credit - Debit) value\n" +
                     "Total column is sum of records\n" +
@@ -650,7 +777,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_CAPITAL,LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_CAPITAL, SBPConstants.LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
         }
     }
 
@@ -659,11 +786,14 @@ public class LedgerStatementTest extends BaseCaseAQS {
     public void Ledger_Statement_TC856() throws IOException {
         log("@title:Validate value calculated correctly for Ledger Type = Capital (Debit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
+        String transType = "Payment Other";
+        String debitCapitalAcc = LEDGER_CAPITAL_DEBIT_NAME+" - "+LEDGER_CAPITAL_DEBIT_NUMBER;
+        String creditCapitalAcc = LEDGER_CAPITAL_CREDIT_NAME+" - "+LEDGER_CAPITAL_CREDIT_NUMBER;
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitCapitalAcc)
                 .ledgerCredit(creditCapitalAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Capital transaction " + DateUtils.getMilliSeconds())
@@ -683,8 +813,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Capital",lgCapitalGroup,"","","");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_GROUP_NAME_CAPITAL,LEDGER_CAPITAL_DEBIT_ACC);
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Capital", LEDGER_GROUP_NAME_CAPITAL,"","","");
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_CAPITAL,LEDGER_CAPITAL_DEBIT_ACC);
 
             log("@Verify 1: Original Currency: Debit show value = 10 in red, Credit show value = 0 in black, Running Bal = Opening Balance (+ Credit - Debit) value\n" +
                     "Total column is sum of records\n" +
@@ -701,7 +831,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_CAPITAL,LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_CAPITAL, SBPConstants.LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
         }
     }
 
@@ -710,11 +840,14 @@ public class LedgerStatementTest extends BaseCaseAQS {
     public void Ledger_Statement_TC857() throws IOException {
         log("@title: Validate transaction Credit of Ledger Type = Income");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Income");
+        String transType = "Payment Other";
+        String debitIncomeAcc = LEDGER_INCOME_DEBIT_NAME+" - "+LEDGER_INCOME_DEBIT_NUMBER;
+        String creditIncomeAcc = LEDGER_INCOME_CREDIT_NAME+" - "+LEDGER_INCOME_CREDIT_NUMBER;
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitIncomeAcc)
                 .ledgerCredit(creditIncomeAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Income transaction " + DateUtils.getMilliSeconds())
@@ -734,12 +867,12 @@ public class LedgerStatementTest extends BaseCaseAQS {
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
             log("Step 8: Observe value show on page");
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Income",lgIncomeGroup,"","","");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Income", LEDGER_GROUP_NAME_INCOME,"","","");
 
             log("@Verify 1: Result page shows with 2 parts:\n" +
                     "Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed\n" +
                     "Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
-            ledgerStatementPage.verifyLedgerTrans(transaction, false, lgIncomeGroup);
+            ledgerStatementPage.verifyLedgerTrans(transaction, false, LEDGER_GROUP_NAME_INCOME);
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
@@ -751,7 +884,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_INCOME,LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_INCOME, SBPConstants.LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
         }
     }
 
@@ -760,11 +893,14 @@ public class LedgerStatementTest extends BaseCaseAQS {
     public void Ledger_Statement_TC858() throws IOException {
         log("@title: Validate transaction Debit of Ledger Type = Income");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Income");
+        String transType = "Payment Other";
+        String debitIncomeAcc = LEDGER_INCOME_DEBIT_NAME+" - "+LEDGER_INCOME_DEBIT_NUMBER;
+        String creditIncomeAcc = LEDGER_INCOME_CREDIT_NAME+" - "+LEDGER_INCOME_CREDIT_NUMBER;
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitIncomeAcc)
                 .ledgerCredit(creditIncomeAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Income transaction " + DateUtils.getMilliSeconds())
@@ -784,8 +920,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
             log("Step 8: Observe value show on page");
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Income",lgIncomeGroup,"","","");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_GROUP_NAME_INCOME,LEDGER_INCOME_DEBIT_ACC);
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Income", LEDGER_GROUP_NAME_INCOME,"","","");
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_INCOME,LEDGER_INCOME_DEBIT_ACC);
 
             log("@Verify 1: Result page shows with 2 parts:\n" +
                     "Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in red, Running Bal and Running Bal CT displayed\n" +
@@ -802,7 +938,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_INCOME,LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_INCOME, SBPConstants.LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
         }
     }
 
@@ -811,11 +947,14 @@ public class LedgerStatementTest extends BaseCaseAQS {
     public void Ledger_Statement_TC859() throws IOException {
         log("@title:Validate value calculated correctly for Ledger Type = Income (Credit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Income");
+        String transType = "Payment Other";
+        String debitIncomeAcc = LEDGER_INCOME_DEBIT_NAME+" - "+LEDGER_INCOME_DEBIT_NUMBER;
+        String creditIncomeAcc = LEDGER_INCOME_CREDIT_NAME+" - "+LEDGER_INCOME_CREDIT_NUMBER;
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitIncomeAcc)
                 .ledgerCredit(creditIncomeAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Income transaction " + DateUtils.getMilliSeconds())
@@ -835,8 +974,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction\n");
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Income",lgIncomeGroup,"","","");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_GROUP_NAME_INCOME,LEDGER_INCOME_CREDIT_ACC);
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Income", LEDGER_GROUP_NAME_INCOME,"","","");
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_INCOME,LEDGER_INCOME_CREDIT_ACC);
 
             log("@Verify 1: Original Currency: Debit show value = 0 in black, Credit show value = 10 in blue, Running Bal = Opening Balance (+Credit - Debit) value\n" +
                     "Total column is sum of records\n" +
@@ -853,7 +992,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_INCOME,LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_INCOME, SBPConstants.LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
         }
     }
     @TestRails(id="860")
@@ -861,11 +1000,14 @@ public class LedgerStatementTest extends BaseCaseAQS {
     public void Ledger_Statement_TC860() throws IOException {
         log("@title:Validate value calculated correctly for Ledger Type = Income (Debit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Income");
+        String transType = "Payment Other";
+        String debitIncomeAcc = LEDGER_INCOME_DEBIT_NAME+" - "+LEDGER_INCOME_DEBIT_NUMBER;
+        String creditIncomeAcc = LEDGER_INCOME_CREDIT_NAME+" - "+LEDGER_INCOME_CREDIT_NUMBER;
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitIncomeAcc)
                 .ledgerCredit(creditIncomeAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark( "Auto run for Income transaction " + DateUtils.getMilliSeconds())
@@ -885,8 +1027,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
 
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
-            ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Income",lgIncomeGroup,"","","");
-            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_GROUP_NAME_INCOME,LEDGER_INCOME_DEBIT_ACC);
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Income", LEDGER_GROUP_NAME_INCOME,"","","");
+            LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_INCOME,LEDGER_INCOME_DEBIT_ACC);
 
             log("@Verify 1: Original Currency: Debit show value = 10 in red, Credit show value = 0 in black, Running Bal = Opening Balance (+ Credit - Debit) value\n" +
                     "Total column is sum of records\n" +
@@ -904,7 +1046,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
-            TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_INCOME,LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
+            TransactionUtils.addTransByAPI(transactionPost,"Ledger", SBPConstants.LEDGER_GROUP_NAME_INCOME, SBPConstants.LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
         }
     }
 
@@ -919,7 +1061,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 2: Click General Reports > Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         log("@Step 3: Filter ledger statement with data: ");
-        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Income", lgIncomeGroup, fromDate, toDate, REPORT_TYPE.get(1));
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Income", LEDGER_GROUP_NAME_INCOME, fromDate, toDate, REPORT_TYPE.get(1));
         log("@Verify 1: Validate running Bal of Total in HKD at Amounts are shown in HKD section should be 0");
         Assert.assertEquals(ledgerStatementPage.getTotalAmountInOriginCurrency("Total in HKD"), "0.00", "FAILED! Running Bal of Total in HKD is not equal to 0");
         log("INFO: Executed completely");
@@ -974,7 +1116,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("Step 2: Click General Reports > Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         log("@Step 3: Click Export To Excel");
-        ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Income",lgIncomeGroup,"","","");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Income", LEDGER_GROUP_NAME_INCOME,"","","");
         ledgerStatementPage.exportExcel();
         log("Validate can export Ledger Statement to Excel file successfully");
         Assert.assertTrue(FileUtils.doesFileNameExist(dowloadPath), "Failed to download Expected document");
@@ -996,7 +1138,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("Step 2: Click General Reports > Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         log("@Step 3: Click Export To PDF");
-        ledgerStatementPage.showLedger(companyUnit,FINANCIAL_YEAR,"Income",lgIncomeGroup,"","","");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Income", LEDGER_GROUP_NAME_INCOME,"","","");
         ledgerStatementPage.exportPDF();
         log("Validate can export Ledger Statement to Excel file successfully");
         Assert.assertTrue(FileUtils.doesFileNameExist(dowloadPath), "Failed to download Expected document");
@@ -1022,6 +1164,9 @@ public class LedgerStatementTest extends BaseCaseAQS {
         int month = DateUtils.getMonth(GMT_7);
         String fromDate = DateUtils.getFirstDateOfMonth(year,month-1,"dd/MM/yyyy");
         String toDate = DateUtils.getLastDateOfMonth(year,month-1,"dd/MM/yyyy");
+        String transType = "Payment Other";
+        String debitIncomeAcc = LEDGER_INCOME_DEBIT_NAME+" - "+LEDGER_INCOME_DEBIT_NUMBER;
+        String creditIncomeAcc = LEDGER_INCOME_CREDIT_NAME+" - "+LEDGER_INCOME_CREDIT_NUMBER;
         log("@Step 1: Go to General Reports >> Ledger Statement page");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         log("Step 2: Filter data of 302.000.000.000 - Retained Earnings in testing month\n" +
@@ -1043,8 +1188,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitIncomeAcc)
                 .ledgerCredit(creditIncomeAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(valueB)
                 .amountCredit(valueC)
                 .remark( "Auto run for Income transaction " + DateUtils.getMilliSeconds())
@@ -1082,6 +1227,9 @@ public class LedgerStatementTest extends BaseCaseAQS {
         int month = DateUtils.getMonth(GMT_7);
         String fromDate = DateUtils.getFirstDateOfMonth(year,month-1,"dd/MM/yyyy");
         String toDate = DateUtils.getLastDateOfMonth(year,month-1,"dd/MM/yyyy");
+        String transType = "Payment Other";
+        String debitExpAcc = LEDGER_EXPENDITURE_DEBIT_NAME+ " - "+LEDGER_EXPENDITURE_DEBIT_NUMBER;
+        String creditExpAcc = LEDGER_EXPENDITURE_CREDIT_NAME+" - "+LEDGER_EXPENDITURE_CREDIT_NUMBER;
         log("@Step 1: Go to General Reports >> Ledger Statement page");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         log("Step 2: Filter data of 302.000.000.000 - Retained Earnings in testing month\n" +
@@ -1103,8 +1251,8 @@ public class LedgerStatementTest extends BaseCaseAQS {
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitExpAcc)
                 .ledgerCredit(creditExpAcc)
-                .ledgerDebitCur(lgDebitCur)
-                .ledgerCreditCur(lgCreditCur)
+                .ledgerDebitCur("HKD")
+                .ledgerCreditCur("HKD")
                 .amountDebit(valueB)
                 .amountCredit(valueC)
                 .remark( "Auto run for Expenditure transaction " + DateUtils.getMilliSeconds())

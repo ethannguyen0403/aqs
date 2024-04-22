@@ -2,9 +2,12 @@ package testcases.sb11test.generalReports;
 
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.DoubleUtils;
+import common.SBPConstants;
 import objects.Transaction;
 import org.testng.Assert;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+import pages.sb11.accounting.JournalEntriesPage;
 import pages.sb11.generalReports.BookieStatementPage;
 import pages.sb11.generalReports.popup.bookiestatement.*;
 import testcases.BaseCaseAQS;
@@ -137,6 +140,44 @@ public class BookieStatementTest extends BaseCaseAQS {
                     .build();
             TransactionUtils.addTransByAPI(transactionPost,"Bookie",accountCodeCredit,accountCodeDebit,"","",bookieName);
         }
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"smoke","2024.V.3.0"})
+    @TestRails(id = "1052")
+    @Parameters({"bookieCode","bookieSuperMasterCode"})
+    public void BookieStatementTC_1052(String bookieCode, String bookieSuperMasterCode) throws IOException, InterruptedException {
+        String level = "Super";
+        String remark = "Transaction between bookie and ledger" + DateUtils.getMilliSeconds();
+        String transType = "Payment Other";
+        log("@title: Validate users can make transactions successfully between bookie and ledger");
+        log("Precondition: A super account in Bookie System that linked to agent-COM in Client System (e.g. SM-QA1-QA Test)\n" +
+                "A Ledger account");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        Transaction transaction = new Transaction.Builder()
+                .bookieDebit(bookieCode)
+                .level(level)
+                .debitAccountCode(bookieSuperMasterCode)
+                .ledgerCredit(LEDGER_ASSET_CREDIT_NAME+" - "+LEDGER_ASSET_CREDIT_NUMBER)
+                .amountDebit(1)
+                .amountCredit(1)
+                .remark(remark)
+                .transDate(date)
+                .transType(transType)
+                .build();
+        log("@Step 1: Access Accounting > Journal Entries");
+        JournalEntriesPage page = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES, JournalEntriesPage.class);
+        log("@Step 2: In Debit section > From dropdown, select 'Bookie'");
+        log("@Step 3: Choose a bookie from Bookie dropdown (e.g. 'QA Bookie')");
+        log("@Step 4: Choose Client (e.g. QA Client (No.121 Client), and Level is 'Super'");
+        log("@Step 5: Input super account in precondition (e.g. SM-QA1-QA Test)");
+        log("@Step 6: In Credit section > To dropdown, select 'Ledger'");
+        log("@Step 7: Select Ledger account (e.g. QC - HKD - Asset 000.000.000.010)");
+        log("@Step 8: Add two accounts to the below tables, then input amount");
+        log("@Step 9: Choose Transaction Date and Transaction Types, input Remark if any. Click Submit");
+        page.addTransaction(transaction,"Bookie","Ledger",transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
+        log("Verify 1: Message informs 'Transaction has been created'");
+        String mesAc = page.appArlertControl.getSuscessMessage();
+        Assert.assertEquals(mesAc, JournalEntries.MES_TRANS_HAS_BEEN_CREATED,"FAILED! Message displays incorrect");
         log("INFO: Executed completely");
     }
 }

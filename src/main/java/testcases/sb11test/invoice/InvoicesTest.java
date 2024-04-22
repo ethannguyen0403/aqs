@@ -23,19 +23,17 @@ import java.util.List;
 import static common.SBPConstants.*;
 
 public class InvoicesTest extends BaseCaseAQS {
-
-    String today = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
-    String workflowName = "QA-Workflow01Up";
-    String invoiceDescription = "Auto Testing Invoice Description " + DateUtils.getMilliSeconds();
-    String currency = "HKD";
-    String approvalStatus = "Approved";
-    String invoiceStatus = "Cancelled";
-    double amount = Double.parseDouble(StringUtils.generateNumeric(2));
-
     @Test(groups = {"regression", "2023.10.31","ethan"})
     @TestRails(id = "2238")
     public void Invoices_TC_2238() {
         String newInvoiceNumber = "";
+        String workflowName = "QA-Workflow01Up";
+        String today = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT -4"));
+        String invoiceDescription = "Auto Testing Invoice Description " + DateUtils.getMilliSeconds();
+        String currency = "HKD";
+        String approvalStatus = "Approved";
+        String invoiceStatus = "Cancelled";
+        double amount = Double.parseDouble(StringUtils.generateNumeric(2));
         try {
             log("@title: Validate invoices info in Workflow Settings are displayed correctly Invoices page");
             Invoice invoiceObject = new Invoice.Builder()
@@ -105,6 +103,11 @@ public class InvoicesTest extends BaseCaseAQS {
     public void Invoices_TC_2240(){
         log("@title: Validate information of invoices is updated accordingly after editing invoice ");
         log("@Step 1: Navigate to SB11 > Invoice > Invoices");
+        String invoiceDescription = "Auto Testing Invoice Description " + DateUtils.getMilliSeconds();
+        String currency = "HKD";
+        String approvalStatus = "Approved";
+        String invoiceStatus = "Cancelled";
+        double amount = Double.parseDouble(StringUtils.generateNumeric(2));
         InvoicesPage invoicesPage = welcomePage.navigatePage(INVOICE,INVOICES,InvoicesPage.class);
 
         log("@Step 2: Filter Invoices with project: QA-Project01");
@@ -131,6 +134,7 @@ public class InvoicesTest extends BaseCaseAQS {
         log("@title: Validate Invoice info displayed correct when viewing");
         log("=========>>  @Precondition: Get invoice data on View link of Workflow Settings page  <<=========");
         log("@Precondition-step 1: Navigate to SB11 > Invoice > Workflow Settings");
+        String workflowName = "QA-Workflow01Up";
         WorkflowSettingsPage workflowSettingsPage = welcomePage.navigatePage(INVOICE, WORKFLOW_SETTINGS, WorkflowSettingsPage.class);
         log("@Precondition-step 2: Click on Workflow info button");
         workflowSettingsPage.selectWorkflowInfo();

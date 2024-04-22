@@ -20,8 +20,8 @@ public class WLRPCPage extends WelcomePage {
     public DropDownBox ddCompany = DropDownBox.xpath("//label[contains(text(),'Company Unit')]//following-sibling::div/select");
     public DropDownBox ddType = DropDownBox.xpath("//div[contains(text(),'Type')]//following-sibling::div/select");
     TextBox txtFromDate = TextBox.xpath("//div[contains(text(),'From Date')]//following-sibling::div/input");
-    DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container/div/div");
     TextBox txtToDate = TextBox.xpath("//div[contains(text(),'To Date')]//following-sibling::div/input");
+    DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container/div/div");
     DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container/div/div");
     public DropDownBox ddCurrency = DropDownBox.xpath("//div[contains(text(),'Currency')]//following-sibling::select");
     public Button btnShow = Button.xpath("//button[text()='Show']");
@@ -38,11 +38,13 @@ public class WLRPCPage extends WelcomePage {
         if (!type.isEmpty()){
             ddType.selectByVisibleText(type);
         }
-        if (!fromDate.isEmpty()){
-            dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-        }
         if (!toDate.isEmpty()){
             dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+            waitSpinnerDisappeared();
+        }
+        if (!fromDate.isEmpty()){
+            dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+            waitSpinnerDisappeared();
         }
         if (!currency.isEmpty()){
             ddCurrency.selectByVisibleText(currency);
@@ -131,9 +133,9 @@ public class WLRPCPage extends WelcomePage {
             String totalBookie = getTotalBalance("Bookie",cur).replace(",","");
             double difEx;
             if (totalClient.isEmpty()){
-                difEx = Double.valueOf(totalBookie);
+                difEx = Math.abs(Double.valueOf(totalBookie));
             } else if (totalBookie.isEmpty()){
-                difEx = Double.valueOf(totalClient);
+                difEx = Math.abs(Double.valueOf(totalClient));
             } else {
                 difEx = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(totalClient) - Double.valueOf(totalBookie));
             }
@@ -143,18 +145,20 @@ public class WLRPCPage extends WelcomePage {
     }
     public void exportToExcel(){
         btnExportToExcel.click();
+        waitSpinnerDisappeared();
         //Wait for file Excel export
         try {
-            Thread.sleep(5);
+            Thread.sleep(10);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
 
     public void verifyExcelFileDownloadCorrect(String type) {
-        String downloadPath = getDownloadPath() + "export-winloss.xlsx";
-        Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath),"FAILED! Excel file displays incorrect.");
+        String downloadPath;
         if (type.equals("All")){
+            downloadPath = getDownloadPath() + "export-winloss (1).xlsx";
+            Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath),"FAILED! Excel file displays incorrect.");
             Table tblCLient = Table.xpath("(//table)[1]",4);
             Table tblBookie = Table.xpath("(//table)[2]",4);
             List<String> lstHeaderClient = tblCLient.getHeaderNameOfRows();
@@ -183,6 +187,12 @@ public class WLRPCPage extends WelcomePage {
             Assert.assertEquals(tblBookie.getControlOfCell(1,tblBookie.getColumnIndexByName("Winlose Amount"),1,null).getText().trim(),
                     ExcelUtils.getCellByColumnAndRowIndex(downloadPath,"export-wl-rpcamount",9,2));
         } else {
+            if (type.equals("Client")){
+                downloadPath = getDownloadPath() + "export-winloss.xlsx";
+            } else {
+                downloadPath = getDownloadPath() + "export-winloss (2).xlsx";
+            }
+            Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath),"FAILED! Excel file displays incorrect.");
             Table table = Table.xpath("(//table)[1]",5);
             List<String> lstHeader = table.getHeaderNameOfRows();
             //Verify header name in excel
@@ -206,5 +216,10 @@ public class WLRPCPage extends WelcomePage {
 
 
 
+    }
+    //Get value in Table with type Client/Bookie by currency
+    public String getBookieClientValueByCur(String clientCode, String currency, String colName) {
+        Table tableCur = Table.xpath(String.format("//span[text()='%s']//ancestor::table",currency),5);
+        return Label.xpath(tableCur.getControlxPathBasedValueOfDifferentColumnOnRow(clientCode,1,2,1,"span",tableCur.getColumnIndexByName(colName),null,true,false)).getText().trim();
     }
 }

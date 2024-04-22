@@ -309,11 +309,8 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
-
+        EventScheduleUtils.addEventByAPI(eventInfo, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(eventInfo.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventInfo.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventInfo.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), eventInfo.getOpenTime(),eventInfo.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         eventInfo.setEventId(eventID);
         List<Order> lstOrder = new ArrayList<>();
@@ -354,7 +351,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
             log("@Pos-condition: Deleted the order");
             confirmBetsPage.deleteOrder(lstOrder.get(0), true);
             log("@Pos-condition: Deleted the event Cricket");
-            EventScheduleUtils.deleteEventByAPI(eventID);
+            EventScheduleUtils.deleteEventByAPI(eventInfo,dateAPI);
             log("INFO: Executed Pos-condition completely");
         }
         log("INFO: Executed completely");
@@ -381,10 +378,8 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
+        EventScheduleUtils.addEventByAPI(eventCricket, dateAPI, SPORT_ID_MAP.get("Cricket"));
         String leagueID = EventScheduleUtils.getLeagueID(eventCricket.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventCricket.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventCricket.getAway(), leagueID);
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), eventCricket.getOpenTime(),eventCricket.getEventStatus().toUpperCase());
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         eventCricket.setEventId(eventID);
         List<Order> lstOrder = new ArrayList<>();
@@ -439,7 +434,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("@Pos-condition: Deleted the order");
         betSettlementPage.deleteOrder(order);
         log("@Pos-condition: Deleted the event Cricket");
-        EventScheduleUtils.deleteEventByAPI(eventID);
+        EventScheduleUtils.deleteEventByAPI(eventCricket,dateAPI);
         log("INFO: Executed Pos-condition completely");
     }
 
@@ -1001,6 +996,36 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("Validate Total Stake is matched correctly with all bet stake on Pending list");
         String totalConfirmedStake = confirmBetsPage.lblTotalStake.getText();
         confirmBetsPage.isTotalStakeMatched(totalConfirmedStake);
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "23713")
+    @Parameters({"accountCode"})
+    public void Confirm_Bets_23713(String accountCode) {
+        log("@title: Validate Total Record filter in Pending status is correctly");
+        log("@Step 1: Login SB11 > Trading > Confirm Bets");
+        ConfirmBetsPage page = welcomePage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
+        log("@Step 2: Filter Status: Pending and Account Code: Auto-Account01 then click Show button");
+        String fromdate = DateUtils.getDate(-10,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED, "", "Pending", SOCCER, "All", "Specific Date", fromdate, "", accountCode);
+        log("@Step 3: Get last row number (e.g. 780) in the result table and the number according to the account in Pending Account table (HKD - Auto-Account01 780)");
+        log("Verify 1: Verify the number is matched and the label record iscorrectly displayed , e.g \"Total 780 record(s) (Server responded in ... seconds)\"");
+        page.verifyNumberIsMatched();
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "23714")
+    @Parameters({"accountCode"})
+    public void Confirm_Bets_23714(String accountCode) {
+        log("@title: Validate Total Record filter in Confirm status is correctly");
+        log("@Step 1: Login SB11 > Trading > Confirm Bets");
+        ConfirmBetsPage page = welcomePage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
+        log("@Step 2: Filter Status: Confirm and Account Code: Auto-Account01 then click Show button");
+        String fromdate = DateUtils.getDate(-10,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED, "", "Confirmed", SOCCER, "All", "Specific Date", fromdate, "", accountCode);
+        log("@Step 3: Get last row number (e.g. 447) in the result table and the number according to the account in Confrimed Account table (HKD - Auto-Account01 - 447)");
+        log("Verify 1: Verify the number get from the last row and the number get in Confrimed Account is matched and the label record iscorrectly displayed , e.g \"Total 780 record(s) (Server responded in ... seconds)\"");
+        page.verifyNumberIsMatched();
         log("INFO: Executed completely");
     }
 

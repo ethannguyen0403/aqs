@@ -136,12 +136,9 @@ public class BetEntryTest extends BaseCaseAQS {
                 .isLive(false)
                 .isN(false)
                 .build();
-
-        String leagueID = EventScheduleUtils.getLeagueID(eventInfo.getLeagueName(), SPORT_ID_MAP.get(sportName));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventInfo.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventInfo.getAway(), leagueID);
         log("@Step prepare data: Add event for QA League in today local time and can filter in today in Trading>Bet Entry");
-        EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get(sportName), eventInfo.getOpenTime(),eventInfo.getEventStatus().toUpperCase());
+        EventScheduleUtils.addEventByAPI(eventInfo, dateAPI, SPORT_ID_MAP.get(sportName));
+        String leagueID = EventScheduleUtils.getLeagueID(eventInfo.getLeagueName(), SPORT_ID_MAP.get(sportName));
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         eventInfo.setEventId(eventID);
 
@@ -183,7 +180,7 @@ public class BetEntryTest extends BaseCaseAQS {
         Assert.assertTrue(cricketBetEntryPage.getSuccessMessage().contains(PLACE_BET_SUCCESS_MSG), "Failed! Success message after place bet is incorrect Actual is "+cricketBetEntryPage.getSuccessMessage());
 
         log("@Step 7: Click 'Bets' at CPB column of event at step 5 > observe");
-        BetListPopup betListPopup = cricketBetEntryPage.openBetList(eventInfo.getHome());
+        BetListPopup betListPopup = cricketBetEntryPage.openBetList(eventInfo.getHome()+"\n"+eventInfo.getAway());
 
         log("@Verify 2: Bets information is displayed correctly in Bet List");
         order = betListPopup.verifyOrderInfoDisplay(order,CRICKET_MARKET_TYPE_BET_LIST.get(order.getMarketType()),"");
@@ -195,7 +192,7 @@ public class BetEntryTest extends BaseCaseAQS {
         confirmBetsPage.deleteOrder(order,true);
 
         log("@Postcondition: Delete the event");
-        EventScheduleUtils.deleteEventByAPI(eventInfo.getEventId());
+        EventScheduleUtils.deleteEventByAPI(eventInfo,dateAPI);
         log("INFO: Executed completely");
     }
 

@@ -12,10 +12,6 @@ import utils.testraildemo.TestRails;
 import static common.SBPConstants.*;
 
 public class AccountListTest extends BaseCaseAQS {
-
-    String companyUnit = "Kastraki Limited";
-    String type = "Client";
-
     @Test(groups = {"regression"})
     @TestRails(id = "2227")
     public void Account_List_TC_2227(){
@@ -58,11 +54,12 @@ public class AccountListTest extends BaseCaseAQS {
         log("@title: Validate can update PT for an Account successfully");
         log("@Step 1: Login with valid account");
         log("Step 2: Click Master > Account List");
+        String type = "Client";
         AccountListPage accountListPage = welcomePage.navigatePage(MASTER, ACCOUNT_LIST,AccountListPage.class);
         log("@Step 3: Select Type = Client");
         log("@Step 4:  Enter account at pre-condition on Account Code");
         log("@Step 5:  Click Search");
-        accountListPage.filterAccount(companyUnit,type,clientCode,"","","",accountCode);
+        accountListPage.filterAccount(KASTRAKI_LIMITED,type,clientCode,"","","",accountCode);
         log("@Step 6:  Click Edit PT");
         UpdatePTPopup updatePTPopup = accountListPage.openUpdatePTPopup();
         log("@Step 7: Input PT for any product at Live/Non-Live");

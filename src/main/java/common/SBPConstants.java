@@ -95,6 +95,7 @@ public class SBPConstants {
     public final static String LEDGER_GROUP_NAME_EXPENDITURE = "QA Ledger Group Expenditure";
     public final static String LEDGER_GROUP_NAME_LIABILITY = "QA Ledger Group Liability";
     public final static String LEDGER_GROUP_NAME_ASSET = "QA Ledger Group Asset";
+    public final static String LEDGER_GROUP_NUMBER_ASSET = "500.000.000.000";
     public final static String LEDGER_GROUP_NAME_ASSET_700 = "QA Asset Account 700";
     public final static String LEDGER_GROUP_NAME_CAPITAL = "QA Ledger Group Capital";
     public final static String LEDGER_GROUP_RETAINED_EARNING_ACCOUNT = "302.000.000.000 - Retained Earnings";
@@ -231,6 +232,7 @@ public class SBPConstants {
                 "Description", "Selection", "HDP", "Live", "Price","Stake", "Win/Lose","Type","Date");
         public final static List<String> STATUS_LIST = Arrays.asList("Confirmed","Settled");
         public final static List<String> MATCH_DATE = Arrays.asList("[All Dates]","Specific Date");
+        public final static String MES_DELETED_ORDER_SUC = "Bet(s) is deleted successfully.";
     }
 
     public static class AccountType {

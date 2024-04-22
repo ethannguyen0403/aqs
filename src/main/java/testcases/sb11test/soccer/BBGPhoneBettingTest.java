@@ -12,6 +12,7 @@ import pages.sb11.LoginPage;
 import pages.sb11.soccer.BBGPhoneBettingPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.BetEntrytUtils;
+import utils.sb11.BetSettlementUtils;
 import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
 
@@ -142,7 +143,8 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         log("@Step 3: Select filters which have data");
         log("@Step 4: Select option 'Win' in 'Show Win/Lose'");
         log("@Step 5: Click on 'Show' button");
-        page.filter("","","","","","","WIN");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter("","",date,"","","","WIN");
         log("Verify 1: Show all bets that have positive amount in 'Win/Lose' column");
         page.verifyShowBetWinLoseCorrect("Win");
         log("INFO: Executed completely");
@@ -157,7 +159,8 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         log("@Step 3: Select filters which have data");
         log("@Step 4: Select option 'Lose' in 'Show Win/Lose'");
         log("@Step 5: Click on 'Show' button");
-        page.filter("","","","","","","LOSE");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter("","",date,"","","","LOSE");
         log("Verify 1: Show all bets that have positive amount in 'Win/Lose' column");
         page.verifyShowBetWinLoseCorrect("Lose");
         log("INFO: Executed completely");
@@ -178,7 +181,7 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         page.verifyShowBetWinLoseCorrect("Draw");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression1","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0"})
     @TestRails(id = "29427")
     public void BBGPhoneBettingTC_29427(){
         log("@title: Validate pending bets show correctly when account is checked 'Is Telebet'");
@@ -204,12 +207,15 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
                 .betType("BACK")
                 .build();
         BetEntrytUtils.placeBetAPI(order);
+        //Wait for Order display
+        BetSettlementUtils.waitForBetIsUpdate(5);
         log("@Step 1: Navigate to the site");
         log("@Step 2: Expand menu 'Soccer' and access 'BBG - Phone Betting' page");
         BBGPhoneBettingPage page = welcomePage.navigatePage(SOCCER,BBG_PHONE_BETTING, BBGPhoneBettingPage.class);
         log("@Step 3: Select filters which contains bets of player account at the precondition with Report By = Pending Bets");
         log("@Step 4: Click on 'Show' button");
-        page.filter(KASTRAKI_LIMITED,"Pending Bets","","","","","");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED,"Pending Bets",date,"","","","");
         log("Verify 1: Show correct bet of player account");
         Assert.assertTrue(page.tblOrder.getColumn(page.tblOrder.getColumnIndexByName("Account Code"),false).contains(accountCode),"FAILED! "+accountCode+" does not display");
         log("INFO: Executed completely");

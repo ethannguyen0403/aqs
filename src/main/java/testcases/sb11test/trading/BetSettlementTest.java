@@ -3,11 +3,13 @@ package testcases.sb11test.trading;
 import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.FileUtils;
+import com.paltech.utils.StringUtils;
 import objects.Event;
 import objects.Order;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+import pages.sb11.LoginPage;
 import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.BetSettlementPage;
 import pages.sb11.trading.ConfirmBetsPage;
@@ -34,10 +36,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("@pre-condition 2: Having an account with Confirmed bet settle Win/Lose and configuring the Account Percentage");
         log("@pre-condition 3: Active Trading > Account Percentage and Search the account then get Actual WinLoss % value of the account");
         String superMasterCode = "QA2112 - ";
-        String accountId = AccountSearchUtils.getAccountId(accountCode);
-        String clientId = ClientSystemUtils.getClientId(clientCode);
-        clientCode = superMasterCode + clientCode;
-        AccountPercentUtils.setAccountPercentAPI(accountId,accountCode,clientId,clientCode,1.0);
+        AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,superMasterCode,1.0);
         //Having Pending Bet
         String sport = "Soccer";
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd",GMT_7));
@@ -313,6 +312,55 @@ public class BetSettlementTest extends BaseCaseAQS {
         Assert.assertEquals(betSettlementPage.lnkShowAccount.getText(),"Show Account","Failed! Show Account button is not displayed!");
         Assert.assertEquals(betSettlementPage.lnkMoreFilter.getText(),"More Filters","Failed! More Filters button is not displayed!");
         Assert.assertEquals(betSettlementPage.lnkResetAllFilter.getText(),"Reset All Filters","Failed! Reset All Filters button is not displayed!");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "23694")
+    @Parameters({"password", "userNameOneRole"})
+    public void BetSettlement_23694(String password, String userNameOneRole) throws Exception{
+        log("Validate: Validate accounts without permission cannot see the menu");
+        log("@Pre-condition: Account is inactivated permission 'Bet Settlement'");
+        log("@Step 1: Navigate to the site");
+        LoginPage loginPage = welcomePage.logout();
+        loginPage.login(userNameOneRole, StringUtils.decrypt(password));
+        log("@Step 2: Check menu item 'Bet Settlement' under menu 'Trading'");
+        log("Verify 1: Menu 'Bet Settlement' is not shown");
+        Assert.assertTrue(!welcomePage.headerMenuControl.isSubmenuDisplay(TRADING,BET_SETTLEMENT),"FAILED! Win Loss Detail sub-menu is displayed incorrect.");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.3.0"})
+    @TestRails(id = "29437")
+    @Parameters({"accountCode"})
+    public void BetSettlement_29437(String accountCode){
+        log("Validate: Validate confirmed bets can delete successfully");
+        log("@Pre-condition 1: User has permission to access Bet Settlement page");
+        log("@Pre-condition 2: Having an account with Confirmed bet settle Win/Lose");
+        String fromDate = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
+        String sport = "Soccer";
+        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd",GMT_7));
+        Event event = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,"");
+        event.setEventDate(dateAPI);
+        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome()).stage("FullTime").price(1.75)
+                .odds(1.75).oddType("HK").hdpPoint(2.15).handicap(2.15).oddType("HK").requireStake(15.50).betType("BACK").isLive(false).build();
+        BetEntrytUtils.placeBetAPI(order);
+        List<Order> lstOrder = new ArrayList<>();
+        lstOrder.add(order);
+        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+        ConfirmBetsUtils.confirmBetAPI(lstOrder);
+        BetSettlementUtils.waitForBetIsUpdate(60);
+        log("@Step 1: Login to SB11 site");
+        log("@Step 2: Navigate to Trading > Bet Settlement > Search bet of the account at precondition in Confirmed mode");
+        BetSettlementPage page  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        page.filter("Confirmed",fromDate,"","",accountCode);
+        log("@Step 3: Tick on the bet");
+        log("@Step 4: Click on 'Delete' button");
+        log("@Step 5: Click on 'Yes' button");
+        page.deleteOrder(lstOrder.get(0));
+        String mesAc = page.appArlertControl.getSuscessMessage();
+        log("Verify 1: Show the successful message: 'Bet(s) is deleted successfully.'");
+        Assert.assertEquals(mesAc,BetSettlement.MES_DELETED_ORDER_SUC,"FAILED! Message displayed incorrect.");
+        log("Verify 2: The bet is removed from bet list");
+        page.isOrderDisplayInTheTable(lstOrder.get(0));
         log("INFO: Executed completely");
     }
 }

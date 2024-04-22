@@ -691,9 +691,7 @@ public class BBTTest extends BaseCaseAQS {
                         .openTime("16:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderTennis = new Order.Builder().sport("Basketball").price(1.17).requireStake(13.25).oddType("HK").betType("Back")
                 .home("QA Tennis Team 1").away("QA Tennis Team 2").selection("Home").isLive(false).event(eventTennis).build();
-        String leagueID = EventScheduleUtils.getLeagueID(eventTennis.getLeagueName(), SPORT_ID_MAP.get("Tennis"));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventTennis.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventTennis.getAway(), leagueID);
+
         try{
             log("@title: Validate Bet Type filter should only display 1x2 bet for Tennis sport");
             log("@Precondition: Having a bet for Tennis sport");
@@ -702,7 +700,7 @@ public class BBTTest extends BaseCaseAQS {
                     "Home Team: QA Tennis Team 1\n" +
                     "Away Team: QA Tennis Team 2");
 
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Tennis"),eventTennis.getOpenTime(), "INRUNNING");
+            EventScheduleUtils.addEventByAPI(eventTennis, dateAPI, SPORT_ID_MAP.get(eventTennis.getSportName()));
             log("@Precondition-Step 2: Place some Tennis 1x2 match bets");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             TennisBetEntryPage tennisBetEntryPage = betEntryPage.goToTennis();
@@ -718,9 +716,8 @@ public class BBTTest extends BaseCaseAQS {
             Assert.assertTrue(bbtPage.verifyFilterDisplayWithOption("1x2"), "FAILED! Bet type 1x2 is not displayed");
             log("INFO: Executed completely");
         }finally {
-            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
-            log("@Post-condition: Delete event Tennis id: " + eventID);
-            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("@Post-condition: Delete event Tennis id: ");
+            EventScheduleUtils.deleteEventByAPI(eventTennis,dateAPI);
             log("INFO: Post condition completely");
         }
 
@@ -754,13 +751,10 @@ public class BBTTest extends BaseCaseAQS {
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(randomStake).oddType("HK").betType("Lay")
                 .home("QA Basketball Team 1").away("QA Basketball Team 2").selection("Home").isLive(false).event(eventBasketball).build();
-        String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventBasketball.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventBasketball.getAway(), leagueID);
         try{
             log("@title: Validate Lay Basketball bet should display correctly on right table ");
             log("@Precondition: Place some Lay Basketball 1x2 match bets");
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"),eventBasketball.getOpenTime(), "INRUNNING");
+            EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get("Basketball"));
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
             basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
@@ -774,9 +768,8 @@ public class BBTTest extends BaseCaseAQS {
             Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(orderBasketball, false) != -1, "FAILED! The bet is not show on BBT page");
             log("INFO: Executed completely");
         }finally {
-            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
-            log("@Post-condition: Delete event Basketball id: " + eventID);
-            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("@Post-condition: Delete event Basketball id: ");
+            EventScheduleUtils.deleteEventByAPI(eventBasketball,dateAPI);
             log("INFO: Post condition completely");
         }
 
@@ -795,13 +788,10 @@ public class BBTTest extends BaseCaseAQS {
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(randomStake).oddType("HK").betType("Lay")
                 .home("QA Basketball Team 1").away("QA Basketball Team 2").selection("Home").isLive(false).event(eventBasketball).build();
-        String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventBasketball.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventBasketball.getAway(), leagueID);
         try{
             log("@title: Validate (Lay) text should display correctly after the odds for Lay bet");
             log("@Precondition: Place some Lay Basketball 1x2 match bets");
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getOpenTime(),"INRUNNING");
+            EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get("Basketball"));
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
             basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
@@ -816,9 +806,8 @@ public class BBTTest extends BaseCaseAQS {
             Assert.assertTrue(listPrice.get(0).contains("(Lay)"), "FAILED! The bet is not show on BBT page");
             log("INFO: Executed completely");
         }finally {
-            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
-            log("@Post-condition: Delete event Basketball id: " + eventID);
-            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("@Post-condition: Delete event Basketball id: ");
+            EventScheduleUtils.deleteEventByAPI(eventBasketball,dateAPI);
             log("INFO: Post condition completely");
         }
     }
@@ -860,11 +849,8 @@ public class BBTTest extends BaseCaseAQS {
                 .selection(eventCricket.getHome()).handicapRuns(9.50).handicapWtks(10)
                 .isLive(false).home(eventCricket.getHome()).away((eventCricket.getAway())).event(eventCricket).build();
         lstOrder.add(order);
-        String leagueID = EventScheduleUtils.getLeagueID(eventCricket.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventCricket.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventCricket.getAway(), leagueID);
         try {
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Cricket"), eventCricket.getOpenTime(),"INRUNNING");
+            EventScheduleUtils.addEventByAPI(eventCricket, dateAPI, SPORT_ID_MAP.get("Cricket"));
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
             CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
             cricketBetEntryPage.showLeague(KASTRAKI_LIMITED, currentDay, eventCricket.getLeagueName());
@@ -880,9 +866,8 @@ public class BBTTest extends BaseCaseAQS {
             Assert.assertEquals(reportS1Page.getCurrentURL(), reportS1Page.s1URL, "FAILED! URL of S1 Cricket report is not correct");
             log("INFO: Executed completely");
         }finally {
-            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
-            log("@Post-condition: Delete event Basketball id: " + eventID);
-            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("@Post-condition: Delete event Basketball id: ");
+            EventScheduleUtils.deleteEventByAPI(eventCricket,dateAPI);
             log("INFO: Post condition completely");
         }
 
@@ -931,14 +916,10 @@ public class BBTTest extends BaseCaseAQS {
                         .openTime("16:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderTennis = new Order.Builder().sport("Tennis").price(1.17).requireStake(13.25).oddType("HK").betType("Back")
                 .home(eventTennis.getHome()).away(eventTennis.getAway()).selection("Home").isLive(false).event(eventTennis).build();
-        String leagueID = EventScheduleUtils.getLeagueID(eventTennis.getLeagueName(), SPORT_ID_MAP.get("Tennis"));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventTennis.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventTennis.getAway(), leagueID);
-
         try {
             log("@title: Validate Back Tennis bet should display correctly on left table");
             log("@Precondition - Step 1: Already have some place Back bet on Home for Tennis sport");
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Tennis"),eventTennis.getOpenTime(), "INRUNNING");
+            EventScheduleUtils.addEventByAPI(eventTennis, dateAPI, SPORT_ID_MAP.get("Tennis"));
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             TennisBetEntryPage tennisBetEntryPage = betEntryPage.goToTennis();
             tennisBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventTennis.getLeagueName(), accountCode);
@@ -956,9 +937,8 @@ public class BBTTest extends BaseCaseAQS {
             Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(orderTennis, true) != -1, "FAILED! The bet is not show on BBT page");
             log("INFO: Executed completely");
         }finally {
-            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
-            log("@Post-condition: Delete event Tennis id: " + eventID);
-            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("@Post-condition: Delete event Tennis id: ");
+            EventScheduleUtils.deleteEventByAPI(eventTennis,dateAPI);
             log("INFO: Post condition completely");
         }
     }
@@ -976,12 +956,8 @@ public class BBTTest extends BaseCaseAQS {
                         .openTime("16:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderTennis = new Order.Builder().sport("Tennis").price(1.17).requireStake(13.25).oddType("HK").betType("Lay")
                 .home("QA Tennis Team 01").away("QA Tennis Team 02").selection("Home").isLive(false).event(eventTennis).build();
-        String leagueID = EventScheduleUtils.getLeagueID(eventTennis.getLeagueName(), SPORT_ID_MAP.get("Tennis"));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventTennis.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventTennis.getAway(), leagueID);
-
         try{
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Tennis"), eventTennis.getOpenTime(),"INRUNNING");
+            EventScheduleUtils.addEventByAPI(eventTennis, dateAPI, SPORT_ID_MAP.get(eventTennis.getSportName()));
             log("@title: Validate LayTennis bet should display correctly on right table");
             log("@Precondition:  Already have some place Lay bet on Home for Tennis sport");
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
@@ -997,9 +973,8 @@ public class BBTTest extends BaseCaseAQS {
             Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(orderTennis, false) != -1, "FAILED! The bet is not show on BBT page");
             log("INFO: Executed completely");
         }finally {
-            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
-            log("@Post-condition: Delete event Tennis id: " + eventID);
-            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("@Post-condition: Delete event Tennis id: ");
+            EventScheduleUtils.deleteEventByAPI(eventTennis,dateAPI);
             log("INFO: Post condition completely");
         }
 
@@ -1018,14 +993,10 @@ public class BBTTest extends BaseCaseAQS {
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(randomStake).oddType("HK").betType("Back")
                 .home("QA Basketball Team 1").away("QA Basketball Team 2").selection("Home").isLive(false).event(eventBasketball).build();
-        String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
-        String homeTeamID = EventScheduleUtils.getTeamID(eventBasketball.getHome(), leagueID);
-        String awayTeamID = EventScheduleUtils.getTeamID(eventBasketball.getAway(), leagueID);
-
         try {
             log("@title: Validate Back Basketball bet should display correctly on left table");
             log("@Precondition: Already have some place Back bet on Home for Basketball sport");
-            EventScheduleUtils.addEventByAPI(awayTeamID, homeTeamID, leagueID, dateAPI, SPORT_ID_MAP.get("Basketball"), eventBasketball.getOpenTime(),"INRUNNING");
+            EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get(eventBasketball.getSportName()));
             BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
             BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
             basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
@@ -1039,9 +1010,8 @@ public class BBTTest extends BaseCaseAQS {
             Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(orderBasketball, true) != -1, "FAILED! The bet is not show on BBT page");
             log("INFO: Executed completely");
         }finally {
-            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
-            log("@Post-condition: Delete event Tennis id: " + eventID);
-            EventScheduleUtils.deleteEventByAPI(eventID);
+            log("@Post-condition: Delete event Tennis id: ");
+            EventScheduleUtils.deleteEventByAPI(eventBasketball,dateAPI);
             log("INFO: Post condition completely");
         }
     }

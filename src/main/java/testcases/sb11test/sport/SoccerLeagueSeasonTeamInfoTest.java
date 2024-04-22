@@ -13,11 +13,6 @@ import utils.testraildemo.TestRails;
 import static common.SBPConstants.*;
 
 public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
-    String leagueName = "QA Soccer Auto League";
-    String country = "Asia";
-    String seasonName = "QA Soccer Auto Season";
-    String teamName = "QA Soccer Auto Team";
-
     @Test(groups = {"regression"})
     @TestRails(id = "2071")
     public void Soccer_League_Season_Team_Info_TC_2071(){
@@ -66,6 +61,8 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         log("@title: Validate that can add new Soccer League successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > League/Season/Team Info");
+        String leagueName = "QA Soccer Auto League";
+        String country = "Asia";
         SoccerLeagueSeasonTeamInfoPage soccerLeagueSeasonTeamInfoPage = welcomePage.navigatePage(SPORT,LEAGUE_SEASON_TEAM_INFO, SoccerLeagueSeasonTeamInfoPage.class);
         log("@Step 3:  Click + button on League table");
         CreateSoccerLeaguePopup createLeaguePopup = soccerLeagueSeasonTeamInfoPage.openAddLeaguePopup();
@@ -83,10 +80,12 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         log("@title: Validate that can add new Soccer season successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > League/Season/Team Info");
+        String leagueName = "QA Soccer Auto League";
         SoccerLeagueSeasonTeamInfoPage soccerLeagueSeasonTeamInfoPage = welcomePage.navigatePage(SPORT,LEAGUE_SEASON_TEAM_INFO, SoccerLeagueSeasonTeamInfoPage.class);
         log("@Step 3: Select a League > Click + button on Season table");
         CreateSoccerSeasonPopup createSeasonPopup = soccerLeagueSeasonTeamInfoPage.openAddSeasonPopup(leagueName);
         log("@Step 4: Fill full info > click Submit");
+        String seasonName = "QA Soccer Auto Season";
         createSeasonPopup.addSeason(seasonName,"","",true);
         log("Validate that can add new Soccer season successfully");
         soccerLeagueSeasonTeamInfoPage.isSeasonDisplayed(leagueName,seasonName);
@@ -99,6 +98,8 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         log("@title: Validate that can add new Soccer Team successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > League/Season/Team Info");
+        String leagueName = "QA Soccer Auto League";
+        String teamName = "QA Soccer Auto Team";
         SoccerLeagueSeasonTeamInfoPage soccerLeagueSeasonTeamInfoPage = welcomePage.navigatePage(SPORT,LEAGUE_SEASON_TEAM_INFO, SoccerLeagueSeasonTeamInfoPage.class);
         log("@Step 3: Select a League > Click + button on Team List table");
         CreateSoccerTeamPopup createTeamPopup = soccerLeagueSeasonTeamInfoPage.openAddTeamPopup(leagueName,"");

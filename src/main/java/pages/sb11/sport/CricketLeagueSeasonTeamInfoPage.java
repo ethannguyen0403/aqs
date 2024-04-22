@@ -74,26 +74,10 @@ public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
     public ConfirmDeleteLeaguePopup openDeleteLeaguePopup(String leagueName){
         filterLeague("All","All",leagueName);
         waitSpinnerDisappeared();
-        int index = getRowContainsLeagueName(leagueName);
+        int index = tbLeague.getRowIndexContainValue(leagueName,tbLeague.getColumnIndexByName("League Name"),null);
         tbLeague.getControlOfCell(1,colDeleteLeague,index,null).click();
         return new ConfirmDeleteLeaguePopup();
     }
-
-    public boolean isLeagueDisplayed(String leagueName){
-        int index = getRowContainsLeagueName(leagueName);
-        if(index==0)
-            return false;
-        return true;
-    }
-
-    public boolean isSeasonDisplayed(String leagueName, String seasonName){
-        filterLeague("All","All",leagueName);
-        int index = getRowContainsSeasonName(seasonName);
-        if(index==0)
-            return false;
-        return true;
-    }
-
     public boolean isTeamDisplayed(String leagueName, String seasonName, String teamName){
         filterLeague("All","All",leagueName);
         if (seasonName != ""){
@@ -101,61 +85,15 @@ public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
         }
         txtTeamName.sendKeys(teamName);
         btnSearchTeam.click();
-        int index = getRowContainsTeamName(teamName);
+        int index = tbTeam.getRowIndexContainValue(teamName,tbTeam.getColumnIndexByName("Team Name"),null);
         if(index==0)
             return false;
         return true;
     }
 
-
     public void selectSeason(String seasonName){
-        int index = getRowContainsSeasonName(seasonName);
+        int index = tbSeason.getRowIndexContainValue(seasonName,tbSeason.getColumnIndexByName("Season Name"),null);
         tbSeason.getControlOfCell(1,colSeasonName,index,null).click();
-    }
-
-    private int getRowContainsLeagueName(String leagueName){
-        int i = 1;
-        Label lblLeagueName;
-        while (true){
-            lblLeagueName = Label.xpath(tbLeague.getxPathOfCell(1,colLeagueName,i,null));
-            if(!lblLeagueName.isDisplayed()){
-                System.out.println("The League "+leagueName+" does not display in the list");
-                return 0;
-            }
-            if(lblLeagueName.getText().contains(leagueName))
-                return i;
-            i = i +1;
-        }
-    }
-
-    private int getRowContainsSeasonName(String seasonName){
-        int i = 1;
-        Label lblSeasonName;
-        while (true){
-            lblSeasonName = Label.xpath(tbSeason.getxPathOfCell(1,colSeasonName,i,null));
-            if(!lblSeasonName.isDisplayed()){
-                System.out.println("The Season "+seasonName+" does not display in the list");
-                return 0;
-            }
-            if(lblSeasonName.getText().contains(seasonName))
-                return i;
-            i = i +1;
-        }
-    }
-
-    private int getRowContainsTeamName(String teamName){
-        int i = 1;
-        Label lblTeamName;
-        while (true){
-            lblTeamName = Label.xpath(tbTeam.getxPathOfCell(1,colTeamName,i,null));
-            if(!lblTeamName.isDisplayed()){
-                System.out.println("The Team "+teamName+" does not display in the list");
-                return 0;
-            }
-            if(lblTeamName.getText().contains(teamName))
-                return i;
-            i = i +1;
-        }
     }
 
     public void deleteTeamName(String leagueName, String seasonName, String teamName) {
@@ -166,7 +104,7 @@ public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
         txtTeamName.sendKeys(teamName);
         btnSearchTeam.click();
         waitSpinnerDisappeared();
-        int index = getRowContainsTeamName(teamName);
+        int index = tbTeam.getRowIndexContainValue(teamName,tbTeam.getColumnIndexByName("Team Name"),null);
         if(index==0){
             System.err.println("ERROR! "+teamName+" does not display");
         } else {
