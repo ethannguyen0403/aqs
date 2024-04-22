@@ -8,6 +8,7 @@ import pages.sb11.master.bookiesystempopup.AccountListPopup;
 import pages.sb11.master.bookiesystempopup.AgentListPopup;
 import pages.sb11.master.bookiesystempopup.MasterListPopup;
 import testcases.BaseCaseAQS;
+import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
@@ -27,7 +28,7 @@ public class BookieSystemTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2215")
     @Parameters({"bookieCode"})
     public void Bookie_System_TC_2215(String bookieCode){
@@ -38,18 +39,7 @@ public class BookieSystemTest extends BaseCaseAQS {
         log("Step 3: Click Super");
         BookieSuperPage bookieSuperPage = bookieSystemPage.goToSuper();
         log("Validate UI on Client System is correctly displayed");
-        log("Dropdown: Company Unit, Bookie, Go To");
-        Assert.assertEquals(bookieSuperPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown iss not displayed!");
-        Assert.assertTrue(bookieSuperPage.ddpBookie.getOptions().contains(bookieCode),"Failed! Bookie dropdown is not displayed!");
-        Assert.assertEquals(bookieSuperPage.ddpGoTo.getOptions(),BookieSystem.GO_TO_LIST,"Failed! Go To dropdown is not displayed!");
-        log("Textbox: Super Code");
-        Assert.assertEquals(bookieSuperPage.lblSuperCode.getText(),"Super Code","Failed! Super Code textbox is not displayed!");
-        log("Button: Search, Add Super, More Filter");
-        Assert.assertEquals(bookieSuperPage.btnSearch.getText(),"Search","Failed! Search button is not displayed!");
-        Assert.assertEquals(bookieSuperPage.btnMoreFilters.getText(),"More Filters","Failed! More Filters button is not displayed!");
-        Assert.assertEquals(bookieSuperPage.btnAddSuper.getText(),"Add Super","Failed! Add Super button is not displayed!");
-        log("Validate Super list table is displayed with correct header");
-        Assert.assertEquals(bookieSuperPage.tbSuper.getHeaderNameOfRows(),BookieSystem.TABLE_HEADER_SUPER,"Failed! Super list table is displayed with incorrect header");
+        bookieSuperPage.verifyUI(bookieCode);
         log("INFO: Executed completely");
     }
 
@@ -85,7 +75,7 @@ public class BookieSystemTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2218")
     @Parameters({"bookieCode"})
     public void Bookie_System_TC_2218(String bookieCode){
@@ -96,19 +86,8 @@ public class BookieSystemTest extends BaseCaseAQS {
         log("Step 3: Click Master");
         BookieMasterPage bookieMasterPage = bookieSystemPage.goToMaster();
         log("Validate UI on Client System is correctly displayed");
-        log("Dropdown: Company Unit, Bookie, Go To");
-        Assert.assertEquals(bookieMasterPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown iss not displayed!");
-        Assert.assertTrue(bookieMasterPage.ddpBookie.getOptions().contains(bookieCode),"Failed! Bookie dropdown is not displayed!");
-        Assert.assertTrue(bookieMasterPage.ddpSuper.getOptions().contains("[No Super]"),"Failed! Super dropdown is not displayed!");
-        Assert.assertEquals(bookieMasterPage.ddpGoTo.getOptions(),BookieSystem.GO_TO_LIST,"Failed! Go To dropdown is not displayed!");
-        log("Textbox: Master Code");
-        Assert.assertEquals(bookieMasterPage.lblMasterCode.getText(),"Master Code","Failed! Master Code textbox is not displayed!");
-        log("Button: Search, Add Master, More Filter");
-        Assert.assertEquals(bookieMasterPage.btnSearch.getText(),"Search","Failed! Search button is not displayed!");
-        Assert.assertEquals(bookieMasterPage.btnMoreFilters.getText(),"More Filters","Failed! More Filters button is not displayed!");
-        Assert.assertEquals(bookieMasterPage.btnAddMaster.getText(),"Add Master","Failed! Add Master button is not displayed!");
-        log("Validate Master list table is displayed with correct header");
-        Assert.assertEquals(bookieMasterPage.tbMaster.getHeaderNameOfRows(),BookieSystem.TABLE_HEADER_MASTER,"Failed! Master list table is displayed with incorrect header");
+        bookieMasterPage.verifyUI(bookieCode);
+
         log("INFO: Executed completely");
     }
 
@@ -143,7 +122,7 @@ public class BookieSystemTest extends BaseCaseAQS {
         Assert.assertTrue(bookieAgentPage.getTitlePage().contains("Agent"),"FAILED! Page Title is incorrect display");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","ethan"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2221")
     @Parameters({"bookieCode"})
     public void Bookie_System_TC_2221(String bookieCode){
@@ -155,7 +134,7 @@ public class BookieSystemTest extends BaseCaseAQS {
         BookieAgentPage bookieAgentPage = bookieSystemPage.goToAgent();
         log("Validate UI on Client System is correctly displayed");
         log("Dropdown: Company Unit, Bookie, Go To");
-        Assert.assertEquals(bookieAgentPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown iss not displayed!");
+        Assert.assertEquals(bookieAgentPage.ddpCompanyUnit.getOptions(),CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown iss not displayed!");
         Assert.assertTrue(bookieAgentPage.ddpBookie.getOptions().contains(bookieCode),"Failed! Bookie dropdown is not displayed!");
         Assert.assertTrue(bookieAgentPage.ddpSuper.getOptions().contains("[No Super]"),"Failed! Super dropdown is not displayed!");
         Assert.assertTrue(bookieAgentPage.ddpMaster.isDisplayed(),"Failed! Master dropdown is not displayed!");

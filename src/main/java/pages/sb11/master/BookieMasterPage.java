@@ -4,9 +4,12 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import common.SBPConstants;
 import controls.Table;
+import org.testng.Assert;
 import pages.sb11.master.bookiesystempopup.AgentListPopup;
 import pages.sb11.master.bookiesystempopup.MasterListPopup;
+import utils.sb11.CompanySetUpUtils;
 
 public class BookieMasterPage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
@@ -68,5 +71,21 @@ public class BookieMasterPage {
         while(lblSpin.isDisplayed()) {
             lblSpin.waitForControlInvisible();
         }
+    }
+
+    public void verifyUI(String bookieName) {
+        System.out.println("Dropdown: Company Unit, Bookie, Go To");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown iss not displayed!");
+        Assert.assertTrue(ddpBookie.getOptions().contains(bookieName),"Failed! Bookie dropdown is not displayed!");
+        Assert.assertTrue(ddpSuper.getOptions().contains("[No Super]"),"Failed! Super dropdown is not displayed!");
+        Assert.assertEquals(ddpGoTo.getOptions(), SBPConstants.BookieSystem.GO_TO_LIST,"Failed! Go To dropdown is not displayed!");
+        System.out.println("Textbox: Master Code");
+        Assert.assertEquals(lblMasterCode.getText(),"Master Code","Failed! Master Code textbox is not displayed!");
+        System.out.println("Button: Search, Add Master, More Filter");
+        Assert.assertEquals(btnSearch.getText(),"Search","Failed! Search button is not displayed!");
+        Assert.assertEquals(btnMoreFilters.getText(),"More Filters","Failed! More Filters button is not displayed!");
+        Assert.assertEquals(btnAddMaster.getText(),"Add Master","Failed! Add Master button is not displayed!");
+        System.out.println("Validate Master list table is displayed with correct header");
+        Assert.assertEquals(tbMaster.getHeaderNameOfRows(), SBPConstants.BookieSystem.TABLE_HEADER_MASTER,"Failed! Master list table is displayed with incorrect header");
     }
 }

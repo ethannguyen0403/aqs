@@ -4,9 +4,12 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import common.SBPConstants;
 import controls.Table;
+import org.testng.Assert;
 import pages.sb11.master.bookiesystempopup.MasterListPopup;
 import pages.sb11.master.clientsystempopup.MemberListPopup;
+import utils.sb11.CompanySetUpUtils;
 
 public class BookieSuperPage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
@@ -67,5 +70,20 @@ public class BookieSuperPage {
         while(lblSpin.isDisplayed()) {
             lblSpin.waitForControlInvisible();
         }
+    }
+
+    public void verifyUI(String bookieName) {
+        System.out.println("Dropdown: Company Unit, Bookie, Go To");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown iss not displayed!");
+        Assert.assertTrue(ddpBookie.getOptions().contains(bookieName),"Failed! Bookie dropdown is not displayed!");
+        Assert.assertEquals(ddpGoTo.getOptions(), SBPConstants.BookieSystem.GO_TO_LIST,"Failed! Go To dropdown is not displayed!");
+        System.out.println("Textbox: Super Code");
+        Assert.assertEquals(lblSuperCode.getText(),"Super Code","Failed! Super Code textbox is not displayed!");
+        System.out.println("Button: Search, Add Super, More Filter");
+        Assert.assertEquals(btnSearch.getText(),"Search","Failed! Search button is not displayed!");
+        Assert.assertEquals(btnMoreFilters.getText(),"More Filters","Failed! More Filters button is not displayed!");
+        Assert.assertEquals(btnAddSuper.getText(),"Add Super","Failed! Add Super button is not displayed!");
+        System.out.println("Validate Super list table is displayed with correct header");
+        Assert.assertEquals(tbSuper.getHeaderNameOfRows(), SBPConstants.BookieSystem.TABLE_HEADER_SUPER,"Failed! Super list table is displayed with incorrect header");
     }
 }
