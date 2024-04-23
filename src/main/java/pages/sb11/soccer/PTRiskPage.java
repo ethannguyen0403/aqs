@@ -36,7 +36,7 @@ public class PTRiskPage extends WelcomePage {
     public Label lblFilterList = Label.xpath("//div[@class='modal-content']//div[@class='list-item-filter']//label[%s]");
     public Button btnShow = Button.xpath("//app-pt-risk-control//button[text()='Show']");
     public Button btnCopy = Button.xpath("//app-pt-risk-control//button[text()='Copy Report ']");
-    public Label messageSuccess = Label.xpath("//div[contains(@class, 'message-box')]");
+    public Label messageSuccess = Label.xpath("(//div[contains(@class, 'message-box')]//span)[3]");
 
     @Override
     public String getTitlePage ()

@@ -11,7 +11,7 @@ import static common.SBPConstants.*;
 
 public class SoccerResultEntryTest extends BaseCaseAQS {
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2085")
     public void Soccer_ResultEntry_2085(){
         log("@title: Validate Result Entry for Soccer is displayed when navigate");

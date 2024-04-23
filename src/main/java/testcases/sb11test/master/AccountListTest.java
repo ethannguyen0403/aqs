@@ -36,7 +36,7 @@ public class AccountListTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"revise"})
+    @Test(groups = {"regression"})
     @TestRails(id = "2229")
     @Parameters({"clientCode","accountCode"})
     public void Account_List_TC_2229(String clientCode, String accountCode){
