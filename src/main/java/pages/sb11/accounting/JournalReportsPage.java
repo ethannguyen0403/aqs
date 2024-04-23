@@ -5,11 +5,13 @@ import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import com.paltech.utils.DoubleUtils;
+import common.SBPConstants;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Transaction;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import utils.sb11.CompanySetUpUtils;
 import utils.sb11.CurrencyRateUtils;
 
 import java.util.ArrayList;
@@ -53,11 +55,11 @@ public class JournalReportsPage extends WelcomePage {
     public void filterReports(String companyUnit, String dateType, String fromDate, String toDate, String accountType, String clientBookieLedger, String transactionType, String accountName){
         if(!companyUnit.isEmpty()){
             ddpCompanyUnit.selectByVisibleText(companyUnit);
+            waitSpinnerDisappeared();
         }
         if(!dateType.isEmpty()){
             ddpDateType.selectByVisibleText(dateType);
         }
-        ddpDateType.selectByVisibleText(dateType);
         if (!toDate.isEmpty()){
             dtpToDate.selectDate(toDate, "dd/MM/yyyy");
         }
@@ -205,5 +207,23 @@ public class JournalReportsPage extends WelcomePage {
         }
         System.out.println("Can NOT found the account name "+accountName+" in the table");
         return 0;
+    }
+
+    public void verifyUI(String clientCode) {
+        System.out.println("Dropdown: Company Unit, Date Type, Account Type, Client/Bookie/Ledger, Transaction Type");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown is not displayed");
+        Assert.assertEquals(ddpDateType.getOptions(), SBPConstants.JournalReports.DATE_TYPE,"Failed! Date Type dropdown is not displayed");
+        Assert.assertEquals(ddpAccountType.getOptions(), SBPConstants.JournalReports.ACCOUNT_TYPE,"Failed! Account Type dropdown is not displayed");
+        Assert.assertTrue(ddpClientBookieLedger.getOptions().contains(clientCode),"Failed! Client dropdown is not displayed");
+        Assert.assertEquals(ddpTransactionType.getOptions(), SBPConstants.JournalReports.TRANSACTION_TYPE_LIST,"Failed! Transaction Type dropdown is not displayed");
+        System.out.println("Textbox: Account Name");
+        Assert.assertEquals(lblAccountName.getText(),"Account Name","Failed! Account Name textbox is not displayed!");
+        System.out.println("Datetimepicker: From Date, To Date");
+        Assert.assertEquals(lblFromDate.getText(),"From Date", "Failed! From Date datetimepicker is not displayed!");
+        Assert.assertEquals(lblToDate.getText(),"To Date", "Failed! To Date datetimepicker is not displayed!");
+        System.out.println("Button: Search button");
+        Assert.assertTrue(btnSearch.isDisplayed(),"Failed! Search button is not displayed!");
+        System.out.println("Journal Reports should displayed with correctly header name");
+        Assert.assertEquals(tbJournalReport.getHeaderNameOfRows(), SBPConstants.JournalReports.TABLE_HEADER,"Failed! Journal Report table is not displayed");
     }
 }
