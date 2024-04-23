@@ -37,41 +37,31 @@ public class AgentGroupPage extends WelcomePage {
     }
 
     public AgentGroupReportPopup openAgentGroupReport(String agentCode){
-        int rowIndex = getAgentRowIndex(agentCode);
-        tbAgent.getControlOfCell(1,colAgent,rowIndex,null).click();
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        int colIndex = tbAgent.getColumnIndexByName("Agent Code");
+        int rowIndex = tbAgent.getRowIndexContainValue(agentCode,colIndex,null);
+        tbAgent.getControlOfCell(1,colIndex,rowIndex,null).click();
+        waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
         return new AgentGroupReportPopup();
     }
 
     public AgentGroupListPopup openGroupListPopup(String agentCode){
-        int rowIndex = getAgentRowIndex(agentCode);
-        tbAgent.getControlOfCell(1, colGroup,rowIndex,null).click();
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        tbAgent.getControlBasedValueOfDifferentColumnOnRow(agentCode,1,tbAgent.getColumnIndexByName("Agent Code"),1,null,tbAgent.getColumnIndexByName("#Groups"),null,true,false).click();
+
+        waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
         return new AgentGroupListPopup();
     }
 
     public AgentGroupClientListPopup openAgentGroupClientList(String agentCode){
-        int rowIndex = getAgentRowIndex(agentCode);
-        tbAgent.getControlOfCell(1,colCL,rowIndex,null).click();
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        tbAgent.getControlBasedValueOfDifferentColumnOnRow(agentCode,1,tbAgent.getColumnIndexByName("Agent Code"),1,null,tbAgent.getColumnIndexByName("CL"),null,true,false).click();
+        waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
         return new AgentGroupClientListPopup();
     }
 
     public String getGroupAmount(String agentCode){
-        int rowIndex = getAgentRowIndex(agentCode);
-        return tbAgent.getControlOfCell(1, colGroup,rowIndex,null).getText();
+        return tbAgent.getControlBasedValueOfDifferentColumnOnRow(agentCode,1,tbAgent.getColumnIndexByName("Agent Code"),1,null,tbAgent.getColumnIndexByName("#Groups"),null,true,false).getText();
     }
 
     private int getAgentRowIndex(String agentCode){
