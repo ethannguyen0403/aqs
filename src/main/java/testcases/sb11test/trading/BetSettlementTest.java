@@ -216,7 +216,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("@Verify 1 .Successfully message displays with 2 popup:\n" +
                 "Bet(s) is settled successfully.\n" +
                 "Statement Email has been sent to your mail box.");
-        Assert.assertTrue(listSuccessMessage.equals(BetSettlement.LST_MESSAGE_SETTLE_SENT_MAIL),
+        Assert.assertEquals(listSuccessMessage,BetSettlement.LST_MESSAGE_SETTLE_SENT_MAIL,
                 "Failed! List Success message after Settle & Send Settlement Email bet is incorrect. Actual: " + listSuccessMessage + "\n");
 
         log("Verify 2. The bet settled displays in result list");

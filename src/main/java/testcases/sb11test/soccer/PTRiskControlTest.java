@@ -29,7 +29,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"smoke","ethan"})
     @Parameters({"clientCode","accountCode"})
     @TestRails(id = "1386")
-    public void PTRiskControlTC_1386(String clientCode, String accountCode) throws IOException {
+    public void PTRiskControlTC_1386(String clientCode, String accountCode) throws IOException, InterruptedException {
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (HK)");
         log("Precondition: Having account with Pending HDP/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
@@ -57,6 +57,8 @@ public class PTRiskControlTest extends BaseCaseAQS {
                 .betType("BACK")
                 .build();
         BetEntrytUtils.placeBetAPI(order);
+        //wait for PT Risk Control update
+        Thread.sleep(5000);
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to Soccer > PT Risk Control");
         PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
