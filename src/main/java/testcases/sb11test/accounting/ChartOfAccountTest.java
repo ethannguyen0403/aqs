@@ -7,6 +7,7 @@ import pages.sb11.soccer.popup.coa.CreateDetailTypePopup;
 import pages.sb11.soccer.popup.coa.CreateParentAccountPopup;
 import pages.sb11.soccer.popup.coa.CreateSubAccountPopup;
 import testcases.BaseCaseAQS;
+import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
@@ -24,7 +25,7 @@ public class ChartOfAccountTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2156")
     public void Chart_Of_Account_TC_2156(){
         log("@title: Validate UI on Chart Of Account is correctly displayed");
@@ -32,28 +33,12 @@ public class ChartOfAccountTest extends BaseCaseAQS {
         log("@Step 2: Access Accounting > Chart Of Account");
         ChartOfAccountPage chartOfAccountPage = welcomePage.navigatePage(ACCOUNTING,CHART_OF_ACCOUNT,ChartOfAccountPage.class);
         log("Validate UI Info display correctly");
-        log("Detail Type table: Company Unit, Detail Type Name, Search button and Add button");
-        Assert.assertEquals(chartOfAccountPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed!");
-        Assert.assertEquals(chartOfAccountPage.lblDetailTypeName.getText(),"Detail Type Name","Failed! Detail Type Name search box is not displayed!");
-        Assert.assertTrue(chartOfAccountPage.btnSearchDetail.isDisplayed(),"Failed! Button Search Detail is not displayed!");
-        Assert.assertTrue(chartOfAccountPage.btnAddDetail.isDisplayed(),"Failed! Button Add Detail is not displayed!");
-        log("Parent Account List: Parent Account Name, Search Button and Add button");
-        Assert.assertEquals(chartOfAccountPage.lblParentAccName.getText(),"Parent Account Name","Failed! Parent Account Name search box is not displayed!");
-        Assert.assertTrue(chartOfAccountPage.btnSearchParent.isDisplayed(),"Failed! Button Search Parent is not displayed!");
-        Assert.assertTrue(chartOfAccountPage.btnAddParent.isDisplayed(),"Failed! Button Add Parent is not displayed!");
-        log("Sub-Account List: Sub-Account Name, Search button and Add button");
-        Assert.assertEquals(chartOfAccountPage.lblSubAccName.getText(),"Sub-Account Name","Failed! Sub-Account Name search box is not displayed!");
-        Assert.assertTrue(chartOfAccountPage.btnSearchSubAcc.isDisplayed(),"Failed! Button Search Sub-Account is not displayed!");
-        Assert.assertTrue(chartOfAccountPage.btnAddSubAcc.isDisplayed(),"Failed! Button Add Sub-Account is not displayed!");
-        log("Detail Type, Parent Account List, Sub-Account List table header columns is correctly display");
-        Assert.assertEquals(chartOfAccountPage.tbDetail.getHeaderNameOfRows(),ChartOfAccount.TABLE_HEADER_DETAIL,"Failed! Detail Type table header is displayed incorrectly!");
-        Assert.assertEquals(chartOfAccountPage.tbParent.getHeaderNameOfRows(),ChartOfAccount.TABLE_HEADER_PARENT,"Failed! Parent Account List table header is displayed incorrectly!");
-        Assert.assertEquals(chartOfAccountPage.tbSubAcc.getHeaderNameOfRows(),ChartOfAccount.TABLE_HEADER_SUB_ACCOUNT,"Failed! Sub-Account table header is displayed incorrectly!");
+        chartOfAccountPage.verifyUI();
         log("INFO: Executed completely");
     }
 
 
-    @Test(groups = {"regression","2023.11.30"})
+    @Test(groups = {"regression","2023.11.30","ethan2.0"})
     @TestRails(id = "2157")
     public void Chart_Of_Account_TC_2157(){
         log("@title: Validate can add new Detail Type successfully");
