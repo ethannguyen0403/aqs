@@ -143,7 +143,7 @@ public class SBPConstants {
     public final static String QA_SMART_MASTER = "QA Smart Master";
     public final static List<String> TABLE_HEADER = Arrays.asList("Role", "User", "Sport", "Soccer","Accounting","Trading","Master","General Reports","Invoice","Financial Reports");
     public final static List<String> COMPANY_UNIT_LIST = Arrays.asList("Kastraki Limited", "SK1122", "IB 01", "Fair", "Aquifer");
-    public final static List<String> COMPANY_UNIT_LIST_ALL = Arrays.asList("All","Kastraki Limited", "SK1122", "IB 01", "Fair","Aquifer");
+    public final static List<String> COMPANY_UNIT_LIST_ALL = Arrays.asList("All","Kastraki Limited", "SK1122", "IB 02", "Fair","Aquifer","IB 01");
     public final static List<String> FINANCIAL_YEAR_LIST_NEW = Arrays.asList("Year 2021","Year 2022","Year 2023","Year 2024","Year 2020-2021","Year 2021-2022","Year 2022-2023","Year 2023-2024");
     public final static List<String> FINANCIAL_YEAR_LIST = Arrays.asList("Year 2020-2021","Year 2021-2022","Year 2022-2023","Year 2023-2024");
     public final static List<String> FINANCIAL_YEAR_LIST_1_YEAR = Arrays.asList("Year 2021","Year 2022","Year 2023","Year 2024");
@@ -300,11 +300,11 @@ public class SBPConstants {
     }
 
     public static class AccountList{
-        public final static List<String> TYPE_LIST = Arrays.asList("Client","Bookie");
+        public final static List<String> TYPE_LIST = Arrays.asList("[Choose one]","Client","Bookie");
         public final static List<String> CURRENCY_LIST = Arrays.asList("[All]","AUD","CAD","CNY","AED","EUR","HKD","INR","IDR","JPY","MYR","KPW","PKR","PHP","SGD","ZAR","KRW","LKR","GBP","TWD","THB","USD","VND");
         public final static List<String> STATUS_LIST = Arrays.asList("[All]", "Active","Closed","In-Active");
         public final static List<String> CREATION_TYPE_LIST = Arrays.asList("[All]", "Manual","System");
-        public final static List<String> TABLE_HEADER = Arrays.asList("#", "i", "Account Code","Bookie","Client","CUR","Edit","Credit Limit","SL","SNL","BL","BNL","FL","FNL","TL","TNL","OL","ONL","Edit PT","");
+        public final static List<String> TABLE_HEADER = Arrays.asList("#", "i", "Account Code","Bookie","Client","CUR","Edit","Credit Limit","Level","SL","SNL","BL","BNL","FL","FNL","TL","TNL","CL","CNL","OL","ONL","Edit PT","");
     }
 
     public static class BLSettings{
@@ -533,6 +533,10 @@ public class SBPConstants {
         public final static List<String> HEADER_NAME_TYPE_ALL_CLIENT = Arrays.asList("No", "Client Name", "Currency Code", "Winlose Amount");
         public final static List<String> HEADER_NAME_TYPE_ALL_BOOKIE = Arrays.asList("No", "Bookie Name", "Currency Code", "Winlose Amount");
         public final static String MES_INVALID_DATE_RANGE = "Invalid date range. You can see data up to 3 months.";
+
+    }
+    public static class BalanceCurrent {
+        public final static List<String> COMPANY_UNIT_LIST = Arrays.asList("Kastraki Limited", "SK1122", "IB 02", "Fair", "Aquifer");
 
     }
 }

@@ -4,10 +4,15 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import common.SBPConstants;
 import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.master.popup.UpdatePTPopup;
+import utils.sb11.CompanySetUpUtils;
+
+import static common.SBPConstants.COMPANY_UNIT_LIST;
+import static common.SBPConstants.KASTRAKI_LIMITED;
 
 public class AccountListPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
@@ -26,7 +31,7 @@ public class AccountListPage extends WelcomePage {
     public TextBox txtAccountCode = TextBox.xpath("//div[contains(text(),'Account Code')]//following::input[1]");
     public Label lblAccountCode = Label.xpath("//div[contains(text(),'Account Code')]");
 
-    public Table tbAccountList = Table.xpath("//table",20);
+    public Table tbAccountList = Table.xpath("//table",23);
     int colEditPT = 19;
     int colSocLive = 9;
     int colSocNonLive = 10;
@@ -122,4 +127,19 @@ public class AccountListPage extends WelcomePage {
     }
 
 
+    public void verifyUI() {
+        System.out.println("Dropdown: Company Unit, Type, Client, CUR, Status, Creation Type");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertEquals(ddpType.getOptions(), SBPConstants.AccountList.TYPE_LIST,"Failed! Type dropdown is not displayed!");
+        Assert.assertEquals(ddpCUR.getOptions(), SBPConstants.AccountList.CURRENCY_LIST,"Failed! CUR dropdown is not displayed!");
+        Assert.assertEquals(ddpStatus.getOptions(), SBPConstants.AccountList.STATUS_LIST,"Failed! Status dropdown is not displayed!");
+        Assert.assertEquals(ddpCreationType.getOptions(), SBPConstants.AccountList.CREATION_TYPE_LIST,"Failed! Creation Type dropdown is not displayed!");
+        System.out.println("Textbox: Account Code");
+        Assert.assertEquals(lblAccountCode.getText(),"Account Code","Failed! Account Code textbox is not displayed!");
+        System.out.println("Button: Search");
+        Assert.assertEquals(btnSearch.getText(),"Search","Failed! Search button is not displayed!");
+        System.out.println("Validate Account List table is displayed with correctly header column");
+        filterAccount(KASTRAKI_LIMITED,"Client","QA Client (No.121 QA Client)","","","","");
+        Assert.assertEquals(tbAccountList.getHeaderNameOfRows(), SBPConstants.AccountList.TABLE_HEADER,"Failed! Account List table is displayed incorrectly header column");
+    }
 }

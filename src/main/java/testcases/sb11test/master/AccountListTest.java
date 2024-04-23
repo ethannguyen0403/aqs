@@ -24,7 +24,7 @@ public class AccountListTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2228")
     public void Account_List_TC_2228(){
         log("@title: Validate UI on Account List is correctly displayed");
@@ -32,25 +32,15 @@ public class AccountListTest extends BaseCaseAQS {
         log("Step 2: Click Master > Account List");
         AccountListPage accountListPage = welcomePage.navigatePage(MASTER, ACCOUNT_LIST,AccountListPage.class);
         log("Validate UI Info display correctly");
-        log("Dropdown: Company Unit, Type, Client, CUR, Status, Creation Type");
-        Assert.assertEquals(accountListPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed!");
-        Assert.assertEquals(accountListPage.ddpType.getOptions(),AccountList.TYPE_LIST,"Failed! Type dropdown is not displayed!");
-        Assert.assertEquals(accountListPage.ddpCUR.getOptions(),AccountList.CURRENCY_LIST,"Failed! CUR dropdown is not displayed!");
-        Assert.assertEquals(accountListPage.ddpStatus.getOptions(),AccountList.STATUS_LIST,"Failed! Status dropdown is not displayed!");
-        Assert.assertEquals(accountListPage.ddpCreationType.getOptions(),AccountList.CREATION_TYPE_LIST,"Failed! Creation Type dropdown is not displayed!");
-        log("Textbox: Account Code");
-        Assert.assertEquals(accountListPage.lblAccountCode.getText(),"Account Code","Failed! Account Code textbox is not displayed!");
-        log("Button: Search");
-        Assert.assertEquals(accountListPage.btnSearch.getText(),"Search","Failed! Search button is not displayed!");
-        log("Validate Account List table is displayed with correctly header column");
-        Assert.assertEquals(accountListPage.tbAccountList.getHeaderNameOfRows(),AccountList.TABLE_HEADER,"Failed! Account List table is displayed incorrectly header column");
+        accountListPage.verifyUI();
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"revise"})
     @TestRails(id = "2229")
     @Parameters({"clientCode","accountCode"})
     public void Account_List_TC_2229(String clientCode, String accountCode){
+        //TODO having improvement AQS-4080
         log("@title: Validate can update PT for an Account successfully");
         log("@Step 1: Login with valid account");
         log("Step 2: Click Master > Account List");

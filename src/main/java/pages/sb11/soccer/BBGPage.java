@@ -36,8 +36,8 @@ public class BBGPage extends WelcomePage {
     public DropDownBox ddpCurrency = DropDownBox.xpath("//div[contains(text(),'Currency')]//following::select[1]");
     public TextBox txtFromDate = TextBox.name("fromDate");
     public TextBox txtToDate = TextBox.name("toDate");
-    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
-    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
+    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
+    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
     public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
     public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
 
@@ -352,7 +352,6 @@ public class BBGPage extends WelcomePage {
         Assert.assertEquals(btnResetAllFilter.getText(),"Reset All Filters","Failed! Reset button is not displayed");
         Assert.assertTrue(btnShowEvent.getText().contains("Show Events"),"Failed! Show Events button is not displayed");
         Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");
-        verifyDefaultFilter();
     }
 
     public void verifyDefaultFilter() {

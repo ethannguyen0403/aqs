@@ -4,7 +4,12 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.sb11.trading.PhoneBettingPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static common.SBPConstants.*;
 
@@ -22,7 +27,7 @@ public class PhoneBettingTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2184")
     public void Phone_Betting_2184(){
         log("@title: Validate UI on Phone Betting is correctly displayed");
@@ -30,15 +35,7 @@ public class PhoneBettingTest extends BaseCaseAQS {
         log("@Step 2: Access Trading > Phone Betting");
         PhoneBettingPage phoneBettingPage = welcomePage.navigatePage(TRADING,PHONE_BETTING, PhoneBettingPage.class);
         log("Validate UI Info display correctly");
-        log("Dropdown: Company Unit, Financial Year, Sports");
-        Assert.assertEquals(phoneBettingPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST_ALL,"Failed! Company Unit dropdown is not displayed!");
-        Assert.assertEquals(phoneBettingPage.ddpFinancialYear.getOptions(), FINANCIAL_YEAR_LIST_NEW,"Failed! Financial Year dropdown is not displayed!");
-        Assert.assertTrue(phoneBettingPage.ddpSport.getOptions().contains("Soccer"),"Failed! Sport dropdown is not displayed!");
-        log("Datetimepicker: From Date, To Date");
-        Assert.assertEquals(phoneBettingPage.lblFromDate.getText(),"From Date","Failed! From Date datetimepicker is not displayed!");
-        Assert.assertEquals(phoneBettingPage.lblToDate.getText(),"To Date","Failed! To Date datetimepicker is not displayed!");
-        log("Button: Show button");
-        Assert.assertEquals(phoneBettingPage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        phoneBettingPage.verifyUI();
         log("INFO: Executed completely");
     }
 }

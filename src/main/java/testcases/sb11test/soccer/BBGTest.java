@@ -37,17 +37,16 @@ public class BBGTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2148")
     public void BBG_TC_2148(){
         log("@title: Validate BBG page is displayed when navigate");
         String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
-        String todate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > BBG");
         BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
         log("@Step 3: Filter with valid data");
-        bbgPage.filter("Soccer", KASTRAKI_LIMITED,"Group", "Pending Bets",fromdate,todate,"All","All");
+        bbgPage.filter("Soccer", KASTRAKI_LIMITED,"Group", "Pending Bets",fromdate,"","All","All");
         log(" Validate UI Info display correctly");
         bbgPage.verifyUI();
         log("INFO: Executed completely");
