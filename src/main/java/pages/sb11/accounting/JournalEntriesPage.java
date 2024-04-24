@@ -2,12 +2,15 @@ package pages.sb11.accounting;
 
 import com.paltech.element.common.*;
 import com.paltech.utils.DateUtils;
+import common.SBPConstants;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Transaction;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 import pages.sb11.popup.ConfirmPopup;
+import utils.sb11.CompanySetUpUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -243,5 +246,29 @@ public class JournalEntriesPage extends WelcomePage {
         cal.add(Calendar.MONTH, expectedMonth);
         SimpleDateFormat s = new SimpleDateFormat(format);
         return String.format("%s/%s",expectedDay,s.format(new Date(cal.getTimeInMillis())));
+    }
+
+    public void verifyUI(String clientCode) {
+        System.out.println("Dropdown: From/To, Client, Bookie, Ledger, Currency, Level and Transaction Type");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown is not displayed");
+        Assert.assertEquals(ddDebitFrom.getOptions(), SBPConstants.JournalEntries.TYPE_LIST,"Failed! Debit type list dropdown is not displayed");
+        Assert.assertEquals(ddCreditTo.getOptions(), SBPConstants.JournalEntries.TYPE_LIST,"Failed! Credit type list dropdown is not displayed");
+        Assert.assertTrue(ddCreditBookieClient.getOptions().contains(clientCode),"Failed! Credit Client dropdown is not displayed");
+        Assert.assertTrue(ddDebitBookieClient.getOptions().contains(clientCode),"Failed! Debit Client dropdown is not displayed");
+        Assert.assertEquals(ddDebitLevel.getOptions(), SBPConstants.JournalEntries.LEVEL_LIST,"Failed! Debit Level dropdown is not displayed");
+        Assert.assertEquals(ddCreditLevel.getOptions(), SBPConstants.JournalEntries.LEVEL_LIST,"Failed! Credit Level dropdown is not displayed");
+        Assert.assertEquals(ddDebitCurrency.getOptions(), SBPConstants.JournalEntries.CURRENCY_LIST,"Failed! Credit Bookie dropdown is not displayed");
+        Assert.assertEquals(ddCreditCurrency.getOptions(), SBPConstants.JournalEntries.CURRENCY_LIST,"Failed! Debit Bookie dropdown is not displayed");
+        Assert.assertEquals(ddTransactionType.getOptions(), SBPConstants.JournalEntries.TRANSACTION_TYPE_LIST,"Failed! Debit Bookie dropdown is not displayed");
+        System.out.println("Textbox: Account, Remark");
+        Assert.assertEquals(lblAccountDebit.getText(),"Account","Failed! Account Debit textbox is not displayed");
+        Assert.assertEquals(lblAccountCredit.getText(),"Account","Failed! Account Credit textbox is not displayed");
+        Assert.assertEquals(lblRemark.getText(),"Remark","Failed! Remark textbox is not displayed");
+        System.out.println("Datetimepicker: Transaction Date");
+        Assert.assertTrue(txtDateTrans.isDisplayed(),"Failed! Transaction Date is not displayed!");
+        System.out.println("Button: Add (Debit), Add (Credit) and Submit button");
+        Assert.assertEquals(btnDebitAdd.getText(),"Add","Failed! Add Debit button is not displayed");
+        Assert.assertEquals(btnCreditAdd.getText(),"Add","Failed! Add Debit button is not displayed");
+        Assert.assertEquals(btnSubmit.getText(),"Submit","Failed! Submit button is not displayed");
     }
 }

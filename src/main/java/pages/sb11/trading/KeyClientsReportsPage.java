@@ -95,7 +95,7 @@ public class KeyClientsReportsPage extends WelcomePage {
                 totalExpect = totalExpect + Double.valueOf(lstTotal.get(i).replace(",","").trim());
             }
         }
-        Assert.assertEquals(getTotal(tblGroup.getColumnIndexByName(columnName)-1).getText(),String.format("%.2f",totalExpect),
+        Assert.assertEquals(Double.valueOf(getTotal(tblGroup.getColumnIndexByName(columnName)-1).getText().replace(",","")),totalExpect,0.01,
                 String.format("FAILED! Total at %s column display incorrect",columnName));
     }
 }

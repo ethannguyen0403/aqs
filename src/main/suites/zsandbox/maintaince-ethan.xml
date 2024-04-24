@@ -47,17 +47,21 @@
             <class name="testcases.sb11test.soccer.BBGTest"/>
             <class name="testcases.sb11test.soccer.SPPTest"/>
             <class name="testcases.sb11test.soccer.HandicapCornerLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.HandicapLiabilityTest"/>
             <class name="testcases.sb11test.soccer.MatchOddsLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.OverUnderCornerLiabilityTest"/>
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
 
             <class name="testcases.sb11test.accounting.ChartOfAccountTest"/>
             <class name="testcases.sb11test.accounting.CompanySetupTest"/>
             <class name="testcases.sb11test.accounting.BalanceCurrentTest"/>
             <class name="testcases.sb11test.accounting.JournalReportsTest"/>
+            <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
 
             <class name="testcases.sb11test.trading.BetSettlementTest"/>
             <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
             <class name="testcases.sb11test.trading.CricketSportTest"/>
+            <class name="testcases.sb11test.trading.KeyClientsReportTest"/>
             <class name="testcases.sb11test.trading.PhoneBettingTest"/>
             <class name="testcases.sb11test.trading.SmartSystemTest"/>
 
@@ -73,9 +77,9 @@
             <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
             <class name="testcases.sb11test.generalReports.ClientBalanceTest"/>
             <class name="testcases.sb11test.generalReports.FundReconciliationTest"/>
+            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
 
             <class name="testcases.sb11test.financialReports.BalanceSheetAnalysisTest"/>
-
 
 
         </classes>

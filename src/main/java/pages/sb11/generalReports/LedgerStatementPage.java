@@ -14,6 +14,7 @@ import objects.Transaction;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
+import utils.sb11.CompanySetUpUtils;
 import utils.sb11.CurrencyRateUtils;
 
 import java.text.SimpleDateFormat;
@@ -23,6 +24,7 @@ import java.util.TimeZone;
 
 
 import static common.SBPConstants.FINANCIAL_YEAR;
+import static common.SBPConstants.FINANCIAL_YEAR_LIST;
 import static java.lang.Double.parseDouble;
 
 public class LedgerStatementPage extends WelcomePage {
@@ -318,5 +320,24 @@ public class LedgerStatementPage extends WelcomePage {
         } else {
             Assert.assertEquals(valueAc,valueEx,"FAILED! Value displays incorrect.");
         }
+    }
+
+    public void verifyUI(String detailType) {
+        System.out.println("Dropdown: Company Unit, Financial Year, Account Type, Detail Type");
+        Assert.assertEquals(ddCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertEquals(ddFinancialYear.getOptions(),FINANCIAL_YEAR_LIST,"Failed! Financial year dropdown is not displayed!");
+        Assert.assertEquals(ddLedgerName.getOptions(), SBPConstants.LedgerStatement.ACCOUNT_TYPE,"Failed! Account Type dropdown is not displayed!");
+        Assert.assertTrue(ddLedgerGroup.getOptions().contains(detailType),"Failed! Detail Type dropdown is not displayed!");
+        System.out.println("Datetime picker: From Date, To Date");
+        Assert.assertEquals(lblFromDate.getText(),"From Date","Failed! From Date datetimepicker is not displayed!");
+        Assert.assertEquals(lblToDate.getText(),"To Date","Failed! To Date datetimepicker is not displayed!");
+        System.out.println("Button: Show, Export To Excel, Export to PDF");
+        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(btnExportToExcel.getText(),"Export To Excel","Failed! Export To Excel button is not displayed!");
+        Assert.assertEquals(btnExportToPDF.getText(),"Export To PDF","Failed! Export To PDF button is not displayed!");
+        System.out.println("Validate Ledger Statement table is displayed with correctly header column");
+        btnShow.click();
+        waitSpinnerDisappeared();
+        Assert.assertEquals(tbLedger.getHeaderNameOfRows(), SBPConstants.LedgerStatement.TABLE_HEADER,"Failed! Ledger Statement table is displayed with incorrectly header column");
     }
 }

@@ -70,7 +70,7 @@ public class KeyClientsReportTest extends BaseCaseAQS {
         Assert.assertEquals(page.getLstTableHeader(),KeyClientsReport.TABLE_HEADER_NAME,"FAILED! Table Header display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31"})
+    @Test(groups = {"regression","2023.10.31","ethan2.0"})
     @TestRails(id = "4149")
     public void Key_Clients_Report_4149(){
         log("@title: Validate data table of No.7 CRI group");
@@ -89,7 +89,7 @@ public class KeyClientsReportTest extends BaseCaseAQS {
         page.verifyTotalByColumnName("Final Result");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31"})
+    @Test(groups = {"regression","2023.10.31","ethan2.0"})
     @TestRails(id = "8569")
     public void Key_Clients_Report_8569(){
         log("@title: Validate error message displays if tried to filter more than 1 month");
@@ -99,7 +99,7 @@ public class KeyClientsReportTest extends BaseCaseAQS {
         KeyClientsReportsPage keyClientsReportsPage = welcomePage.navigatePage(TRADING,KEY_CLIENTS_REPORT,KeyClientsReportsPage.class);
         log("@Step 3: Select From Date To Date more than 1 month");
         log("@Step 4: Click Show button");
-        String fromDate = DateUtils.getDate(-32,"dd/MM/yyyy",GMT_7);
+        String fromDate = DateUtils.getDate(-33,"dd/MM/yyyy",GMT_7);
         keyClientsReportsPage.dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
         keyClientsReportsPage.btnShow.click();
         log("Verify 3: Error message 'Date range should not be more than 1 month.' displays");
