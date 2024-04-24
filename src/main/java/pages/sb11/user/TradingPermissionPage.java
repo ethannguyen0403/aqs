@@ -1,10 +1,12 @@
 package pages.sb11.user;
 
 import com.paltech.element.common.*;
+import common.SBPConstants;
 import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.user.popup.*;
+import utils.sb11.CompanySetUpUtils;
 
 public class TradingPermissionPage extends WelcomePage {
     int colTotal = 9;
@@ -119,5 +121,15 @@ public class TradingPermissionPage extends WelcomePage {
                 return i;
             i = i +1;
         }
+    }
+
+    public void verifyUI() {
+        System.out.println("Controls: Company Unit, User Role, Username and Show button");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"FAILED! Company Unit dropdown is not displayed!");
+        Assert.assertTrue(ddpUserRole.getOptions().contains("Administrator"), "FAILED! Company Unit dropdown is not displayed!");
+        Assert.assertEquals(lblUsername.getText(), "Username","FAILED! Username textbox is not displayed!");
+        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        System.out.println("Customer table header columns is correctly display");
+        Assert.assertEquals(tbTradPermission.getHeaderNameOfRows(), SBPConstants.TradingPermission.TABLE_HEADER,"FAILED! Pending table header is incorrect display");
     }
 }

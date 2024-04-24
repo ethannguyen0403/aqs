@@ -9,7 +9,7 @@ import utils.testraildemo.TestRails;
 
 public class AuthenticateTest extends BaseCaseAQS {
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @Parameters("username")
     @TestRails(id = "2059")
     public void Authenticate_2059(String username){

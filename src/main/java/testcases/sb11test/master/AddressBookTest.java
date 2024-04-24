@@ -7,6 +7,7 @@ import pages.sb11.master.AddressBookPage;
 import pages.sb11.master.AutoCreatedAccountsPage;
 import pages.sb11.master.popup.EmailSendingHistoryPopup;
 import testcases.BaseCaseAQS;
+import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
@@ -14,7 +15,7 @@ import static common.SBPConstants.*;
 public class AddressBookTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2234")
-    public void Address_Book_TC_001(){
+    public void Address_Book_TC_2234(){
         log("@title: Validate Address Book page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("Step 2: Click Master > Address Book");
@@ -24,25 +25,16 @@ public class AddressBookTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2235")
     @Parameters({"clientCode"})
-    public void Address_Book_TC_002(String clientCode){
+    public void Address_Book_TC_2235(String clientCode){
         log("@title: Validate UI on Address Book is correctly displayed");
         log("@Step 1: Login with valid account");
         log("Step 2: Click Master > Address Book");
         AddressBookPage addressBookPage = welcomePage.navigatePage(MASTER, ADDRESS_BOOK,AddressBookPage.class);
         log("Validate UI Info display correctly");
-        log("Dropdown: Company Unit, Client");
-        Assert.assertEquals(addressBookPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed!");
-        Assert.assertTrue(addressBookPage.ddpClient.getOptions().contains(clientCode),"Failed! Client dropdown is not displayed!");
-        log("Textbox: Account Code");
-        Assert.assertEquals(addressBookPage.lblAccountCode.getText(),"Account Code","Failed! Account Code textbox is not displayed!");
-        log("Button: Search, History");
-        Assert.assertEquals(addressBookPage.btnSearch.getText(),"Search","Failed! Search button is not displayed!");
-        Assert.assertEquals(addressBookPage.btnHistory.getText(),"History","Failed! History button is not displayed!");
-        log("Validate Address Book table is displayed with correctly header column");
-        Assert.assertEquals(addressBookPage.tbAddressBook.getHeaderNameOfRows(),AddressBook.TABLE_HEADER,"Failed! Address Book table is displayed with incorrect header column");
+        addressBookPage.verifyUI(clientCode);
         log("INFO: Executed completely");
     }
 
