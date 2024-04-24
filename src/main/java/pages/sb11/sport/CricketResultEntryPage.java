@@ -44,6 +44,7 @@ public class CricketResultEntryPage extends WelcomePage {
         if(sport.equals("Cricket"))
             btnCricket.click();
         waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
     }
 
     public void filterResult(String type, String date, String league, String orderBy, String status, boolean isShow){

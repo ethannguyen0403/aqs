@@ -18,7 +18,7 @@ import java.io.IOException;
 import static common.SBPConstants.*;
 
 public class FundReconciliationTest extends BaseCaseAQS {
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
     @TestRails(id = "17670")
     public void Fund_Reconciliation_TC_17670() throws IOException {
         log("@title: Validate Transaction Details of sub-accounts displays properly");
@@ -44,12 +44,12 @@ public class FundReconciliationTest extends BaseCaseAQS {
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter(KASTRAKI_LIMITED,"",transDate);
+        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,transDate,transDate);
         log("@Verify 1: Debit/Credit will get from the debit/credit amounts of each transaction and putting in the corresponding column");
-        Assert.assertEquals(page.getValueByDesc(ledgerName,desc,"Debit"),String.format("%.2f",valueDebit),"FAILED! Transaction displays incorrect");
+        Assert.assertEquals(page.getValueByDesc(desc,"Debit"),String.format("%.2f",valueDebit),"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
     @TestRails(id = "17671")
     public void Fund_Reconciliation_TC_17671() throws IOException {
         log("@title: Validate the Description displays correctly");
@@ -76,12 +76,12 @@ public class FundReconciliationTest extends BaseCaseAQS {
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter(KASTRAKI_LIMITED,"",transDate);
+        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,transDate,transDate);
         log("@Verify 1: Description field will displays the Memo/Description of each transaction accordingly");
-        Assert.assertEquals(page.getValueByDesc(ledgerName,desc,"Description"),desc,"FAILED! Transaction displays incorrect");
+        Assert.assertEquals(page.getValueByDesc(desc,"Description"),desc,"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
     @TestRails(id = "17672")
     @Parameters({"username"})
     public void Fund_Reconciliation_TC_17672(String username) throws IOException {
@@ -109,15 +109,15 @@ public class FundReconciliationTest extends BaseCaseAQS {
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter(KASTRAKI_LIMITED,"",transDate);
+        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,transDate,transDate);
         log("@Step 4: Tick in the Confirm checkbox");
         log("@Step 5: Click Yes button");
-        page.tickConfirmAuthorise(ledgerName,desc,"Confirm");
+        page.tickConfirmAuthorise(desc,"Confirm");
         log("@Verify 1: Processed By will display the user who ticked on the Confirm checkbox. Will display blank if the checkbox is unticked");
-        Assert.assertEquals(page.getValueByDesc(ledgerName,desc,"Processed By"),username,"FAILED! Transaction displays incorrect");
+        Assert.assertEquals(page.getValueByDesc(desc,"Processed By"),username,"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
     @TestRails(id = "17673")
     public void Fund_Reconciliation_TC_17673() throws IOException {
         log("@title: Validate the CUR displays correctly");
@@ -145,12 +145,12 @@ public class FundReconciliationTest extends BaseCaseAQS {
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter(KASTRAKI_LIMITED,"",transDate);
+        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,transDate,transDate);
         log("@Verify 1: CUR will display the currency of the sub-account");
-        Assert.assertEquals(page.getValueByDesc(ledgerName,desc,"CUR"),curEx,"FAILED! Transaction displays incorrect");
+        Assert.assertEquals(page.getValueByDesc(desc,"CUR"),curEx,"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
     @TestRails(id = "17674")
     public void Fund_Reconciliation_TC_17674() throws IOException {
         log("@title: Validate the Running Balance displays correctly");
@@ -181,17 +181,17 @@ public class FundReconciliationTest extends BaseCaseAQS {
         log("@Step 2: Go to General Reports >> System Monitoring >>Fund Reconciliation");
         FundReconciliationPage page = ledgerStatementPage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
-        page.filter(KASTRAKI_LIMITED,"",transDate);
+        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,transDate,transDate);
         log("@Verify 1: Running Balance will displays correctly:\n"+
                 ". The 'Opening Balance' row: shows the Opening Balance of the sub-account in the filtered date (same as in Ledger Statement)\n" +
                 "  . The transaction rows: is Opening balance +/- debit/credit amounts, according to the logic of Account Type");
-        double openBalance = Double.valueOf(page.getValueByDesc(ledgerName,"Opening Balance","Running Balance"));
+        double openBalance = Double.valueOf(page.getValueByDesc("Opening Balance","Running Balance"));
         Assert.assertEquals(openBalance,runningBal,"FAILED! Opening Balance displays incorrect");
-        String runningEx = String.format("%.2f",openBalance + Double.valueOf(page.getValueByDesc(ledgerName,desc,"Debit")));
-        Assert.assertEquals(page.getValueByDesc(ledgerName,desc,"Running Balance"),runningEx,"FAILED! Transaction displays incorrect");
+        String runningEx = String.format("%.2f",openBalance + Double.valueOf(page.getValueByDesc(desc,"Debit")));
+        Assert.assertEquals(page.getValueByDesc(desc,"Running Balance"),runningEx,"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
     @TestRails(id = "17680")
     @Parameters({"username"})
     public void Fund_Reconciliation_TC_17680(String username) throws IOException {
@@ -218,15 +218,15 @@ public class FundReconciliationTest extends BaseCaseAQS {
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter(KASTRAKI_LIMITED,"",transDate);
+        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,transDate,transDate);
         log("@Step 4: Tick in the Authorise checkbox");
         log("@Step 5: Click Yes button");
-        page.tickConfirmAuthorise(ledgerName,desc,"Authorise");
+        page.tickConfirmAuthorise(desc,"Authorise");
         log("@Verify 1: Authorised By will display the user who ticked on the Authorise checkbox of each transaction.");
-        Assert.assertEquals(page.getValueByDesc(ledgerName,desc,"Authorised By"),username,"FAILED! Transaction displays incorrect");
+        Assert.assertEquals(page.getValueByDesc(desc,"Authorised By"),username,"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
     @TestRails(id = "17681")
     public void Fund_Reconciliation_TC_17681() throws IOException {
         log("@title: Validate the Closing Balance row displays correct value");
@@ -252,21 +252,22 @@ public class FundReconciliationTest extends BaseCaseAQS {
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter(KASTRAKI_LIMITED,"",transDate);
+        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,transDate,transDate);
         log("@Verify 1: Closing Balance row will sums of all rows of Debit/Credit amounts\n" +
                 "For Running Balance, it's the final amount of the last record.");
-        String sumDebit = page.getSumDebitCredit(ledgerName,"Debit");
-        String sumCredit = page.getSumDebitCredit(ledgerName,"Credit");
-        Assert.assertEquals(page.getValueByDesc(ledgerName,"Closing Balance","Debit"),sumDebit,"FAILED! Sum of Debit displays incorrect");
-        Assert.assertEquals(page.getValueByDesc(ledgerName,"Closing Balance","Credit"),sumCredit,"FAILED! Sum of Credit displays incorrect");
-        Assert.assertEquals(page.tblData.getColumn(page.tblHeader.getColumnIndexByName("Running Balance")-1,50,true).get(page.tblData.getNumberOfRows(false,true)-2),
-                page.getValueByDesc(ledgerName,"Closing Balance","Running Balance"),"FAILED! Running Balance displays incorrect");
+        String sumDebit = page.getSumDebitCredit("Debit");
+        String sumCredit = page.getSumDebitCredit("Credit");
+        Assert.assertEquals(page.getValueByDesc("Closing Balance","Debit"),sumDebit,"FAILED! Sum of Debit displays incorrect");
+        Assert.assertEquals(page.getValueByDesc("Closing Balance","Credit"),sumCredit,"FAILED! Sum of Credit displays incorrect");
+        Assert.assertEquals(page.tblData.getColumn(page.tblSubAcc.getColumnIndexByName("Running Balance"),50,true).get(page.tblSubAcc.getNumberOfRows(false,true)-2),
+                page.getValueByDesc("Closing Balance","Running Balance"),"FAILED! Running Balance displays incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression_stg","2024.V.2.0","ethan"})
     @TestRails(id = "17682")
     @Parameters({"username"})
     public void Fund_Reconciliation_TC_17682(String username) throws IOException {
+        //TODO having improvement AQS-3982
         log("@title: Validate the Today's Settlement in HKD row displays correct value");
         log("@Pre-condition 1: Fund Reconciliation' permission is ON for any account");
         log("@Pre-condition 2: Having some transaction of Fund Reconciliation for detail types");
@@ -290,13 +291,13 @@ public class FundReconciliationTest extends BaseCaseAQS {
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
         log("@Step 3: Filter transaction of");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter(KASTRAKI_LIMITED,"",transDate);
+        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,transDate,transDate);
         log("@Step 4: Tick in the Authorise checkbox");
         log("@Step 5: Click Yes button");
-        page.tickConfirmAuthorise(ledgerName,desc,"Authorise");
+        page.tickConfirmAuthorise(desc,"Authorise");
         log("@Verify 1: Today's Settlement in HKD row will sums up all the amounts of the authorized transactions and then converts to HKD using rate of the filtered date.");
-        String todaySettleEx = page.getSumAuthorizedTrans(ledgerName,username);
-        Assert.assertEquals(page.tblTodaySettle.getControlOfCell(1,page.tblHeader.getColumnIndexByName("Debit")-1,1,"span").getText(),
+        String todaySettleEx = page.getSumAuthorizedTrans(username);
+        Assert.assertEquals(page.tblTodaySettle.getControlOfCell(1,page.tblSubAcc.getColumnIndexByName("Debit"),1,"span").getText(),
                 todaySettleEx,"FAILED! Today's Settlement value display incorrect");
         log("INFO: Executed completely");
     }

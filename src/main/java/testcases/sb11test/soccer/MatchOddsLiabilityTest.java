@@ -36,7 +36,7 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2107")
     public void MatchOddsLiabilityTC_2107(){
         log("@title: Validate UI on 1x2 Liability is correctly displayed");
@@ -44,22 +44,7 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
         log("@Step 2: Access Soccer > 1x2 Liability");
         MatchOddsLiabilityPage matchOddsLiabilityPage = welcomePage.navigatePage(SOCCER,MATCH_ODDS_LIABILITY, MatchOddsLiabilityPage.class);
         log(" Validate UI Info display correctly");
-        log("Company Unit, Smart Type, Show Only PT-Bets,Live/NonLive, From Date, To Date, Stake");
-        Assert.assertEquals(matchOddsLiabilityPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST_ALL,"Failed! Company Unit dropdown is not displayed");
-        Assert.assertEquals(matchOddsLiabilityPage.ddpSport.getOptions(),SPORT_LIST,"Failed! Sport dropdown is not displayed");
-        Assert.assertEquals(matchOddsLiabilityPage.ddpSmartType.getOptions(),MatchOddsLiability.SMART_TYPE_LIST,"Failed! Smart Type dropdown is not displayed");
-        Assert.assertEquals(matchOddsLiabilityPage.lblPTBets.getText(),"PT-Bets","Failed! PT Bets checkbox is not displayed");
-        Assert.assertEquals(matchOddsLiabilityPage.lblFromDate.getText(),"From Date","Failed! From Date datetime picker is not displayed");
-        Assert.assertEquals(matchOddsLiabilityPage.lblToDate.getText(),"To Date","Failed! To Date datetime picker is not displayed");
-        Assert.assertEquals(matchOddsLiabilityPage.ddpStake.getOptions(),STAKE_LIST,"Failed! Stake dropdown is not displayed");
-        log("Show Bet Types, Show Leagues, Show Groups, Show Events and Show button");
-        Assert.assertEquals(matchOddsLiabilityPage.lblShowBetType.getText(),"Show Bet Types\nAll","Failed! Show Bet Types button is not displayed");
-        Assert.assertEquals(matchOddsLiabilityPage.lblShowLeagues.getText(), "Show Leagues\nAll","Failed! Show Leagues button is not displayed");
-        Assert.assertEquals(matchOddsLiabilityPage.lblShowGroups.getText(),"Show Groups\nAll","Failed! Show Groups button is not displayed");
-        Assert.assertEquals(matchOddsLiabilityPage.lblShowEvents.getText(),"Show Events\nAll","Failed! Show Events button is not displayed");
-        Assert.assertEquals(matchOddsLiabilityPage.btnShow.getText(),"Show","Failed! Show button is not displayed");
-        log("Event table header columns is correctly display");
-        Assert.assertEquals(matchOddsLiabilityPage.tblOrder.getHeaderNameOfRows(), MatchOddsLiability.TABLE_HEADER,"FAILED! 1x2 Liability Bets table header is incorrect display");
+        matchOddsLiabilityPage.verifyUI();
         log("INFO: Executed completely");
     }
 

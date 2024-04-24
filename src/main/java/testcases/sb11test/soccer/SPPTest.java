@@ -221,7 +221,7 @@ public class SPPTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2134")
     @Parameters({"smartGroup","accountCode"})
     public void SPP_TC_2134(String smartGroup, String accountCode){
