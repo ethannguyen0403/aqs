@@ -90,14 +90,14 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         page.verifyddMonthOption();
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2023.12.29","ethan"})
+    @Test(groups = {"regression_stg","2023.12.29","ethan2.0"})
     @TestRails(id = "9845")
     public void Closing_Journal_Entries_9845() throws IOException {
         log("@title: Validate can perform CJE for the selected month for sub-accounts of the selected Company Unit by clicking 'Perform CJE' button");
         log("@Pre-condition 1: System Monitoring' permission is ON for any account");
         log("@Pre-condition 2: There are some transactions perform after CJE");
-        String numberLeder = "010.000.000.000";
-        String ledger = "AutoCreditExpenditure";
+        String numberLeder = LEDGER_EXPENDITURE_CREDIT_NUMBER;
+        String ledger = LEDGER_EXPENDITURE_CREDIT_NAME;
         Calendar cal  = Calendar.getInstance();
         cal.add(Calendar.MONTH, -1);
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM");
@@ -132,7 +132,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Step 8: Filter data of detail type of accounts at precondition from 1/10/2023 To 31/10/2023");
         String firstDay = DateUtils.getFirstDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
         String lastDay = DateUtils.getLastDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
-
+        ledgerStatementPage.waitSpinnerDisappeared();
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Expenditure",detailType,firstDay,lastDay,"After CJE");
         log("@Step 9: Click on account at precondition (e.g. 000.000.001.003 - RB Feed Delete Debit1)");
         LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_PARENT_NAME_EXPENDITURE,numberLeder +" - "+ledger);
@@ -140,16 +140,16 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         Assert.assertEquals(ledgerDetailPopup.getClosingValue(),"0.00","FAILED! Running Bal. of Closing Journal display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2023.12.29","ethan1"})
+    @Test(groups = {"regression_stg","2023.12.29","ethan2.0"})
     @TestRails(id = "9846")
     public void Closing_Journal_Entries_9846() throws IOException {
         log("@title: Validate can perform CJE for the selected month for sub-accounts of the selected Company Unit by clicking 'Perform CJE' button");
         log("@Pre-condition 1: System Monitoring' permission is ON for any account");
         log("@Pre-condition 2: There are some transactions perform after CJE");
-        String numberLeder = "010.000.000.000";
-        String ledger = "AutoCreditExpenditure";
+        String numberLeder = LEDGER_EXPENDITURE_CREDIT_NUMBER;
+        String ledger = LEDGER_EXPENDITURE_CREDIT_NAME;
         Calendar cal  = Calendar.getInstance();
-        cal.add(Calendar.MONTH, -1);
+        cal.add(Calendar.MONTH, -2);
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM");
         String month = s.format(new Date(cal.getTimeInMillis()));
 
@@ -173,7 +173,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         ClosingJournalEntriesPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING,SystemMonitoringPage.class).goToTabName(CLOSING_JOURNAL_ENTRIES,ClosingJournalEntriesPage.class);
         log("@Step 4: Select Month before perform txn at precondition in dropdown list of any company (e.g. Kastraki Limited)");
         log("@Step 5: Click Perform CJE button then Yes in confirmation dialog");
-        String ddMonth = page.ddMonth.getOptions().get(0).trim();
+        String ddMonth = page.ddMonth.getOptions().get(1).trim();
         page.performCJE(KASTRAKI_LIMITED,ddMonth,true);
         log("@Step 6: Go to General Reports >> Ledger Statement");
         LedgerStatementPage ledgerStatementPage = page.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
@@ -199,7 +199,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         Assert.assertFalse(ledgerDetailPopup.getClosingValue().contains("0.00"),"FAILED! Running Bal. of Closing Journal "+ledgerDetailPopup.getClosingValue()+"display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan2.0"})
     @TestRails(id = "15742")
     public void Closing_Journal_Entries_15742() throws InterruptedException {
         log("@title: Validate there is a reminder after user clicks Perform CJE button");
@@ -208,11 +208,9 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Step 2: Click General Reports >> System Monitoring menu");
         log("@Step 3: Click 'Closing Journal Entries' button");
         Calendar cal  = Calendar.getInstance();
-        cal.add(Calendar.MONTH, -2);
+        cal.add(Calendar.MONTH, -1);
         SimpleDateFormat s = new SimpleDateFormat("MMMM");
-        SimpleDateFormat t = new SimpleDateFormat("yyyy");
         String month = s.format(new Date(cal.getTimeInMillis()));
-        String year = t.format(new Date(cal.getTimeInMillis()));
         ClosingJournalEntriesPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING,SystemMonitoringPage.class).goToTabName(CLOSING_JOURNAL_ENTRIES,ClosingJournalEntriesPage.class);
         log("@Step 4: Select any month is not the latest month");
         page.ddMonth.selectByIndex(1);
@@ -221,10 +219,10 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         ConfirmPopup confirmPopup = new ConfirmPopup();
         String mesRemind = confirmPopup.getContentMessage();
         log("@Verify 1: The reminder message 'You will need to perform CJE for <Month(s) after the selected Month> to have the correct balances.' will display");
-        Assert.assertEquals(mesRemind, String.format(ClosingJournalEntries.MES_REMINDER_BEFORE_2_MONTH,month,year),"FAILED! Reminder message display incorrect");
+        Assert.assertEquals(mesRemind, String.format(ClosingJournalEntries.MES_REMINDER_BEFORE_1_MONTH,month),"FAILED! Reminder message display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan2.0"})
     @TestRails(id = "15743")
     public void Closing_Journal_Entries_15743() throws InterruptedException {
         log("@title: Validate only the confirmation message displays if perform CJE for the lasted month");
@@ -233,12 +231,11 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         log("@Step 2: Click General Reports >> System Monitoring menu");
         log("@Step 3: Click 'Closing Journal Entries' button");
         Calendar cal  = Calendar.getInstance();
-        cal.add(Calendar.MONTH, -3);
+        cal.add(Calendar.MONTH, -1);
         SimpleDateFormat s = new SimpleDateFormat("MMMM");
-        String month1 = s.format(new Date(cal.getTimeInMillis()));
-        Calendar cal1  = Calendar.getInstance();
-        cal1.add(Calendar.MONTH, -2);
-        String month2 = s.format(new Date(cal1.getTimeInMillis()));
+        SimpleDateFormat t = new SimpleDateFormat("yyyy");
+        String month = s.format(new Date(cal.getTimeInMillis()));
+        String year = t.format(new Date(cal.getTimeInMillis()));
         ClosingJournalEntriesPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING,SystemMonitoringPage.class).goToTabName(CLOSING_JOURNAL_ENTRIES,ClosingJournalEntriesPage.class);
         log("@Step 4: Select any month is not the latest month");
         page.ddMonth.selectByIndex(0);
@@ -247,7 +244,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         ConfirmPopup confirmPopup = new ConfirmPopup();
         String mesRemind = confirmPopup.getContentMessage();
         log("@Verify 1: The confirmation as 'Are you sure to perform Closing Journal Entry for <Month - Year>?' will display");
-        Assert.assertEquals(mesRemind, String.format(ClosingJournalEntries.MES_REMINDER_BEFORE_1_MONTH,month1,month2),"FAILED! Reminder message display incorrect");
+        Assert.assertEquals(mesRemind, String.format(ClosingJournalEntries.MES_REMINDER_BEFORE_2_MONTH,month,year),"FAILED! Reminder message display incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})

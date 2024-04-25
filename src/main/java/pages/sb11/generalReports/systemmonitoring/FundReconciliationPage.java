@@ -26,6 +26,7 @@ public class FundReconciliationPage extends WelcomePage {
         }
         if (!detailType.isEmpty()){
             ddDetailType.selectByVisibleContainsText(detailType);
+            waitSpinnerDisappeared();
         }
         if (!subAcc.isEmpty()){
             ddSubAcc.selectByVisibleContainsText(subAcc);

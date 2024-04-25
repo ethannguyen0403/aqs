@@ -86,7 +86,7 @@ public class CashFlowStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "8546")
-    @Test(groups = {"regression_stg", "2023.10.31"})
+    @Test(groups = {"regression_stg", "2023.10.31","ethan2.0"})
     @Parameters({"password", "userNameOneRole"})
     public void Cash_Flow_Statement_TC8546(String password, String userNameOneRole) throws Exception {
         log("@title: Validate can't access Cash Flow Statement page when having no permission");
@@ -94,8 +94,6 @@ public class CashFlowStatementTest extends BaseCaseAQS {
         log("@Step 1: Re-login with one role account account has 'Cash Flow Statement' permission is OFF");
         LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
-        RetainedEarningsPage retainedEarningsPage =
-                welcomePage.navigatePage(FINANCIAL_REPORTS, TRIAL_BALANCE, RetainedEarningsPage.class);
         log("@Verify 1: Cash Flow Statement menu is hidden displays");
         Assert.assertTrue(!welcomePage.headerMenuControl.isSubmenuDisplay(FINANCIAL_REPORTS, CASH_FLOW_STATEMENT),
                 "FAILED! Cash Flow Statement menu is displayed");

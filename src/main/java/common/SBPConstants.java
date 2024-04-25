@@ -508,7 +508,7 @@ public class SBPConstants {
     }
     public static class ClosingJournalEntries {
         public final static String SUCCESS_MES_LAST_MONTH = "Closing Journal Entry for %s is completed.";
-        public final static String MES_REMINDER_BEFORE_1_MONTH = "You will need to perform CJE for %s and %s to have the correct balances";
+        public final static String MES_REMINDER_BEFORE_1_MONTH = "You will need to perform CJE for %s to have the correct balances";
         public final static String MES_REMINDER_BEFORE_2_MONTH = "Are you sure to perform Closing Journal Entry for %s - %s?";
     }
     public static class ConsolidatedClientBalance {
@@ -526,8 +526,8 @@ public class SBPConstants {
     }
     public static class ARandAPReconciliation {
         public final static List<String> COMPANY_UNIT_LIST = Arrays.asList("Kastraki Limited","Fair");
-        public final static List<String> DETAIL_TYPE_LIST_KASTRAKI_LIMITED = Arrays.asList("All","105.000.000.000 - A/R Project", "107.000.000.000 - Other Receivables","202.000.000.000 - Other Payable");
-        public final static List<String> DETAIL_TYPE_LIST_FAIR = Arrays.asList("All","105.000.000.000 - Other Receivables", "300.000.000.000 - Account Payable (A/P)");
+        public final static List<String> DETAIL_TYPE_LIST_KASTRAKI_LIMITED = Arrays.asList("105.000.000.000 - A/R Project", "107.000.000.000 - Other Receivables","202.000.000.000 - Other Payable");
+        public final static List<String> DETAIL_TYPE_LIST_FAIR = Arrays.asList("105.000.000.000 - Other Receivables", "300.000.000.000 - Account Payable (A/P)");
     }
     public static class WLRPCT {
         public final static List<String> HEADER_NAME_TYPE_ALL_CLIENT = Arrays.asList("No", "Client Name", "Currency Code", "Winlose Amount");
