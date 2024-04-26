@@ -71,7 +71,7 @@ public class ClientSystemTest extends BaseCaseAQS {
         clientSystemPage.exportClientList();
         log("Validate can export Client List to Excel file successfully with exported file name: bookie_list");
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
-s
+
         log("@Post-condition: delete download file");
         // try {
         //     FileUtils.removeFile(downloadPath);
