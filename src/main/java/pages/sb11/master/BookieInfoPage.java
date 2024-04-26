@@ -5,8 +5,11 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import common.SBPConstants;
 import controls.Table;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import utils.sb11.CompanySetUpUtils;
 
 public class BookieInfoPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
@@ -86,5 +89,22 @@ public class BookieInfoPage extends WelcomePage {
 
     public String getTooltipText(BaseElement element){
         return element.getAttribute("title").trim();
+    }
+
+    public void verifyUI() {
+        System.out.println("Dropdown: Company Unit, Support By, Currency, Status");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertTrue(ddpSupportBy.getOptions().contains("qa"),"Failed! Support By dropdown is not displayed!");
+        Assert.assertEquals(ddpCurrency.getOptions(), SBPConstants.BookieInfo.CURRENCY_LIST,"Failed! Currency dropdown is not displayed!");
+        Assert.assertEquals(ddpStatus.getOptions(), SBPConstants.BookieInfo.STATUS_LIST,"Failed! Status dropdown is not displayed!");
+        System.out.println("Textbox: Bookie");
+        Assert.assertEquals(lblBookie.getText(),"Bookie","Failed! Bookie textbox is not displayed!");
+        System.out.println("Button: Search, Show, Add Bookie, Export To Excel");
+        Assert.assertEquals(btnSearch.getText(),"Search","Failed! Search button is not displayed!");
+        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(btnAddBookie.getText(),"Add Bookie","Failed! Add Bookie button is not displayed!");
+        Assert.assertEquals(btnExportToExcel.getText(),"Export To Excel","Failed! Export To Excel button is not displayed!");
+        System.out.println("Validate Bookie Info table is displayed with correct header");
+        Assert.assertEquals(tbBookie.getHeaderNameOfRows(), SBPConstants.BookieInfo.TABLE_HEADER,"Failed! Table header is displayed incorrectly~");
     }
 }

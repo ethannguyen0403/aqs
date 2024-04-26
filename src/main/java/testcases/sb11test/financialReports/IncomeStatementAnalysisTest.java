@@ -325,7 +325,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "4028")
-    @Test(groups = {"regression", "2024.V.1.0","ethan"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan2.0"})
     public void IncomeStatement_Analysis_TC4028() throws IOException {
         log("@title: Validate 'Export To PDF' button work properly ");
         String downloadPath = getDownloadPath() + "income-statement-analysis.pdf";

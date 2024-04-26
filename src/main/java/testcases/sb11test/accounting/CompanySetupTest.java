@@ -74,8 +74,7 @@ public class CompanySetupTest extends BaseCaseAQS {
 
     @TestRails(id = "4334")
     @Test(groups = {"regression_stg", "2023.10.31"})
-    @Parameters({"password", "userNameOneRole"})
-    public void Company_Set_up_TC4334(String password, String userNameOneRole) throws Exception{
+    public void Company_Set_up_TC4334(){
         log("@title: Validate accounts with permission can access page");
         log("@Precondition: Active Company Set-up option in one role account");
         log("@Step 1: Login to SB11 site with account has 'Company Set-up' permission is ON");
@@ -371,7 +370,7 @@ public class CompanySetupTest extends BaseCaseAQS {
                 clientBalanceDetailPage.lblValueGrandTotalFooter.getText(),"FAILED! Total Balance in HKD display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31"})
+    @Test(groups = {"regression","2023.10.31","ethan2.0"})
     @TestRails(id = "4355")
     public void Company_Set_up_TC4355() {
         log("@title: Validate that show currency 'HKD' in 'Bookie Balance' page when filtering Company Unit = All ");

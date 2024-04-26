@@ -62,7 +62,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="5283")
-    @Test(groups = {"regression","2023.12.29","ethan"})
+    @Test(groups = {"regression","2023.12.29","ethan2.0"})
     public void Consolidated_Client_Balance_5283() {
         log("@title: Validate UI on Consolidated Client Balance is correctly displayed");
         log("@pre-condition: Account is activated permission 'Company Set-up'");
@@ -89,13 +89,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("@Step 2: Filter which have data");
         page.filter("","","","");
         log("@Step 3: Click 'Export To Excel' button");
-        page.btnExportExcel.click();
-        //wait for computer download file
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        page.exportFile("Excel");
         log("@Verify 1: Excel file is exported and downloaded to user's device properly");
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
         log("@Step 4: Open exported file");
@@ -119,8 +113,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("@Step 2: Filter which have data");
         page.filter("","","","");
         log("@Step 3: Click 'Export To Excel' button");
-        page.btnExportPDF.click();
-        page.waitSpinnerDisappeared();
+        page.exportFile("PDF");
         log("@Verify 1: Excel file is exported and downloaded to user's device properly");
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
         // try {

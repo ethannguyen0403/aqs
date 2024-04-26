@@ -48,7 +48,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.getTitlePage().contains(SBPConstants.BALANCE_SHEET),"FAILED! Title page displayed incorrect!");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.2.0","ethan"})
+    @Test(groups = {"regression","2024.V.2.0","ethan2.0"})
     @TestRails(id = "2783")
     public void Balance_Sheet_2783() {
         log("@title: Validate Report filter enables and works properly if filtering any 'Month'");

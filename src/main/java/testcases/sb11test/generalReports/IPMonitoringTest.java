@@ -21,7 +21,7 @@ import java.net.UnknownHostException;
 
 import static common.SBPConstants.*;
 public class IPMonitoringTest extends BaseCaseAQS {
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
     @TestRails(id = "21844")
     @Parameters({"password", "userNameOneRole"})
     public void IP_Monitoring_TC_21844(String password, String userNameOneRole) throws Exception{
@@ -35,7 +35,7 @@ public class IPMonitoringTest extends BaseCaseAQS {
         Assert.assertFalse(welcomePage.headerMenuControl.isSubmenuDisplay(GENERAL_REPORTS,IP_MONITORING));
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.2.0","ethan"})
+    @Test(groups = {"regression","2024.V.2.0","ethan2.0"})
     @TestRails(id = "21845")
     @Parameters({"password", "userNameOneRole"})
     public void IP_Monitoring_TC_21845(String password, String userNameOneRole) throws Exception{

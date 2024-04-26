@@ -92,7 +92,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         Assert.assertEquals(mesWarning,PositionTakingReport.INVALID_TIME_MES,"FAILED! Error message display incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.2.0"})
+    @Test(groups = {"regression","2024.V.2.0","ethan2.0"})
     @TestRails(id = "4194")
     public void Position_Taking_Report_4194() {
         log("@title: Validate Bookie list is associated with 'PSM Group Limited' client");

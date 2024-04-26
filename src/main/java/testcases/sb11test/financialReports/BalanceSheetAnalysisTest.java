@@ -36,9 +36,9 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.12.29","ethan"})
+    @Test(groups = {"regression", "2023.12.29","ethan2.0"})
     @TestRails(id = "2811")
-    public void BalanceSheetAnalysisTC_2811() throws IOException {
+    public void BalanceSheetAnalysisTC_2811() {
         log("@title: Validate can Export To Excel successfully");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access to SB11 > Financial Reports > Balance Sheet - Analysis");

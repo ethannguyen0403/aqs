@@ -471,7 +471,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3417")
-    @Test(groups = {"regression", "2023.10.31"})
+    @Test(groups = {"regression", "2023.10.31","ethan2.0"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3417(String accountCode) {
         String currentDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
