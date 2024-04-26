@@ -138,7 +138,7 @@ public class WLRPCPage extends WelcomePage {
                     Assert.assertTrue(false,"FAILED! "+cur+" displays incorrect in table "+i+" row "+j);
                 }
             }
-            if (!lstCur.contains(Label.xpath(String.format("(//div[contains(text(),'Total Balance in')])[%d]/parent::td/following-sibling::td/span",i)).getText().trim())){
+            if (!lstCur.contains(Label.xpath(String.format("(//div[contains(text(),'Total Balance in')])[%d]/parent::td/following-sibling::td//span",i)).getText().trim())){
                 Assert.assertTrue(false,"FAILED! Currency of Total Balance displays incorrect in table "+i);
             }
         }

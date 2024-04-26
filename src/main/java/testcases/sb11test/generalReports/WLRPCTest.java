@@ -261,7 +261,7 @@ public class WLRPCTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="29537")
-    @Test(groups = {"regression1","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0"})
     public void WLRPCT_29537(){
         log("@title: Validate UI of WL & RPC displays correctly when filtering with available specific currency for All");
         log("@pre-condition 1: Client and Bookie have some data");
