@@ -167,6 +167,7 @@ public class WLRPCTest extends BaseCaseAQS {
         log("Verify 1: UI should display correct Currency Code (e.g. HKD) for Client");
         Assert.assertEquals(page.getLstCurDisplay("Client").size(),1,"FAILED! UI display correct Currency Code incorrect");
         Assert.assertEquals(page.getLstCurDisplay("Client").get(0),"HKD","FAILED! UI display correct Currency Code incorrect");
+        page.checkCurCodeDisplayInEachRow(page.getLstCurDisplay("Client"));
         log("INFO: Executed completely");
     }
     @TestRails(id="29503")
@@ -256,10 +257,11 @@ public class WLRPCTest extends BaseCaseAQS {
         log("Verify 1: UI should display correct Currency Code (e.g. HKD) for Bookie");
         Assert.assertEquals(page.getLstCurDisplay("Bookie").size(),1,"FAILED! UI display correct Currency Code incorrect");
         Assert.assertEquals(page.getLstCurDisplay("Bookie").get(0),"HKD","FAILED! UI display correct Currency Code incorrect");
+        page.checkCurCodeDisplayInEachRow(page.getLstCurDisplay("Bookie"));
         log("INFO: Executed completely");
     }
     @TestRails(id="29537")
-    @Test(groups = {"regression","2024.V.3.0"})
+    @Test(groups = {"regression1","2024.V.3.0"})
     public void WLRPCT_29537(){
         log("@title: Validate UI of WL & RPC displays correctly when filtering with available specific currency for All");
         log("@pre-condition 1: Client and Bookie have some data");
@@ -273,6 +275,7 @@ public class WLRPCTest extends BaseCaseAQS {
         log("Verify 1: UI should display Client table on the left side and Bookie table on the right side with correct Currency Code (e.g. HKD) for both tables.");
         Assert.assertEquals(page.getLstCurDisplay("All").size(),1,"FAILED! UI display correct Currency Code incorrect");
         Assert.assertEquals(page.getLstCurDisplay("All").get(0),"HKD","FAILED! UI display correct Currency Code incorrect");
+        page.checkCurCodeDisplayInEachRow(page.getLstCurDisplay("All"));
         log("INFO: Executed completely");
     }
     @TestRails(id="29538")

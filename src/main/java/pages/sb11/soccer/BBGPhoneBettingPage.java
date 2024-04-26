@@ -1,6 +1,7 @@
 package pages.sb11.soccer;
 
 import com.paltech.driver.DriverManager;
+import com.paltech.element.BaseElement;
 import com.paltech.element.common.*;
 import controls.DateTimePicker;
 import controls.Row;
@@ -36,6 +37,9 @@ public class BBGPhoneBettingPage extends WelcomePage {
     Button btnClearAll = Button.xpath("//span[contains(text(),'Clear All')]");
     Button btnSelectAll = Button.xpath("//span[contains(text(),'Select All')]");
     Button btnSetSelection = Button.xpath("//button[contains(text(),'Set Selection')]");
+    String lblFormXpath = "//div[contains(@class,'header2')]//span[text()='%s']";
+    String cbTypeXpath = "//label[contains(text(),'%s')]/input";
+    String tableNameXpath = "(//div[contains(@class,'header2')])[%d]";
 
     public void filter(String companyUnit, String reportBy, String fromdate, String toDate, String betType, String league, String winlose){
         if (!companyUnit.isEmpty()){
@@ -74,10 +78,10 @@ public class BBGPhoneBettingPage extends WelcomePage {
 
     private void showWinLose(String winlose) {
         btnShowWinLose.click();
-        Label lblWinLoseForm = Label.xpath("//div[contains(@class,'header2')]//span[text()='Win/Lose']");
+        Label lblWinLoseForm = Label.xpath(String.format(lblFormXpath,"Win/Lose"));
         lblWinLoseForm.waitForElementToBePresent(lblWinLoseForm.getLocator());
         btnClearAll.click();
-        CheckBox cbWinLose = CheckBox.xpath(String.format("//label[contains(text(),'%s')]/input",winlose));
+        CheckBox cbWinLose = CheckBox.xpath(String.format(cbTypeXpath,winlose));
         cbWinLose.click();
         btnSetSelection.click();
         waitSpinnerDisappeared();
@@ -85,10 +89,10 @@ public class BBGPhoneBettingPage extends WelcomePage {
 
     private void showLeague(String league) {
         btnShowLeagues.click();
-        Label lblLeagueForm = Label.xpath("//div[contains(@class,'header2')]//span[text()='Leagues']");
+        Label lblLeagueForm = Label.xpath(String.format(lblFormXpath,"Leagues"));
         lblLeagueForm.waitForElementToBePresent(lblLeagueForm.getLocator());
         btnClearAll.click();
-        CheckBox cbLeague = CheckBox.xpath(String.format("//label[contains(text(),'%s')]/input",league));
+        CheckBox cbLeague = CheckBox.xpath(String.format(cbTypeXpath,league));
         cbLeague.scrollToThisControl(false);
         cbLeague.click();
         btnSetSelection.scrollToThisControl(false);
@@ -98,21 +102,21 @@ public class BBGPhoneBettingPage extends WelcomePage {
 
     private void showBetType(String betType) {
         btnShowBetTypes.click();
-        Label lblBetTypeForm = Label.xpath("//div[contains(@class,'header2')]//span[text()='Bet Types']");
+        Label lblBetTypeForm = Label.xpath(String.format(lblFormXpath,"Bet Types"));
         lblBetTypeForm.waitForElementToBePresent(lblBetTypeForm.getLocator());
         btnClearAll.click();
-        CheckBox cbBetType = CheckBox.xpath(String.format("//label[contains(text(),'%s')]/input",betType));
+        CheckBox cbBetType = CheckBox.xpath(String.format(cbTypeXpath,betType));
         cbBetType.click();
         btnSetSelection.click();
         waitSpinnerDisappeared();
     }
 
     public void verifyShowBetTypeCorrect(String betType) {
-        List<WebElement> lstTable = DriverManager.getDriver().findElements(By.xpath("//table"));
-        for (int i = 1; i <= lstTable.size();i++){
+        Table lstTable = Table.xpath("//table",12);
+        for (int i = 1; i <= lstTable.getWebElements().size();i++){
             Table table = Table.xpath(String.format("(//table)[%d]",i),12);
             int numberRow = table.getNumberOfRows(false,true);
-            String tableName = Label.xpath(String.format("(//div[contains(@class,'header2')])[%d]",i)).getText();
+            String tableName = Label.xpath(String.format(tableNameXpath,i)).getText();
             for (int j = 1; j < numberRow;j++){
                 String betTypeAc = table.getControlOfCell(1,table.getColumnIndexByName("Bet Type"),j,"span").getText().trim();
                 Assert.assertEquals(betTypeAc,betType,"FAILED! Bet Type is row "+j+ " in "+tableName+" display incorrect");
@@ -121,11 +125,11 @@ public class BBGPhoneBettingPage extends WelcomePage {
     }
     public List<String> getLstLeague(){
         btnShowLeagues.click();
-        Label lblLeagueForm = Label.xpath("//div[contains(@class,'header2')]//span[text()='Leagues']");
+        Label lblLeagueForm = Label.xpath(String.format(lblFormXpath,"Leagues"));
         lblLeagueForm.waitForElementToBePresent(lblLeagueForm.getLocator());
         List<String> lstEx = new ArrayList<>();
-        List<WebElement> lstLeague = DriverManager.getDriver().findElements(By.xpath("//label"));
-        for (int i = 1; i <= lstLeague.size();i++){
+        Label lblLeague = Label.xpath("//label");
+        for (int i = 1; i <= lblLeague.getWebElements().size();i++){
             lstEx.add(Label.xpath(String.format("(//label)[%d]",i)).getText().trim());
         }
         btnHideLeagues.click();
@@ -134,9 +138,9 @@ public class BBGPhoneBettingPage extends WelcomePage {
     }
 
     public void verifyShowLeagueNameCorrect(String leagueName) {
-        List<WebElement> lstLabel = DriverManager.getDriver().findElements(By.xpath("//div[contains(@class,'header2')]"));
-        for (int i = 1; i <= lstLabel.size();i++){
-            String tableNameAc = Label.xpath(String.format("(//div[contains(@class,'header2')])[%d]",i)).getText().split("\n")[1];
+        Label lblLeague = Label.xpath("//div[contains(@class,'header2')]");
+        for (int i = 1; i <= lblLeague.getWebElements().size();i++){
+            String tableNameAc = Label.xpath(String.format(tableNameXpath,i)).getText().split("\n")[1];
             Assert.assertEquals(tableNameAc,leagueName,"FAILED! "+tableNameAc+" display incorrect");
         }
     }
@@ -146,11 +150,11 @@ public class BBGPhoneBettingPage extends WelcomePage {
      * @param winLoseDraw input param: "Win","Lose","Draw"
      */
     public void verifyShowBetWinLoseCorrect(String winLoseDraw) {
-        List<WebElement> lstTable = DriverManager.getDriver().findElements(By.xpath("//table"));
-        for (int i = 1; i <= lstTable.size();i++){
+        Table lstTable = Table.xpath("//table",12);
+        for (int i = 1; i <= lstTable.getWebElements().size();i++){
             Table table = Table.xpath(String.format("(//table)[%d]",i),12);
             int numberRow = table.getNumberOfRows(false,true);
-            String tableName = Label.xpath(String.format("(//div[contains(@class,'header2')])[%d]",i)).getText();
+            String tableName = Label.xpath(String.format(tableNameXpath,i)).getText();
             for (int j = 1; j < numberRow;j++){
                 String betTypeAc = table.getControlOfCell(1,table.getColumnIndexByName("Win/Lose"),j,"span").getText().trim().replace(",","");
                 switch (winLoseDraw){

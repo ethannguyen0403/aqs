@@ -126,6 +126,23 @@ public class WLRPCPage extends WelcomePage {
         }
         return lstEx;
     }
+    public void checkCurCodeDisplayInEachRow(List<String> lstCur){
+        Table table = Table.xpath("//table",5);
+        int indexCurCol = table.getColumnIndexByName("Currency Code");
+        for (int i = 1; i <= table.getWebElements().size();i++){
+            Table tableAc = Table.xpath(String.format("(//table)[%d]",i),5);
+            int indexCompare = tableAc.getRowIndexContainValue("Total Balance in",1,"div");
+            for (int j = 1; j < indexCompare; j++){
+                String cur = tableAc.getControlOfCell(1,indexCurCol,j,"span").getText().trim();
+                if (!lstCur.contains(cur)){
+                    Assert.assertTrue(false,"FAILED! "+cur+" displays incorrect in table "+i+" row "+j);
+                }
+            }
+            if (!lstCur.contains(Label.xpath(String.format("(//div[contains(text(),'Total Balance in')])[%d]/parent::td/following-sibling::td/span",i)).getText().trim())){
+                Assert.assertTrue(false,"FAILED! Currency of Total Balance displays incorrect in table "+i);
+            }
+        }
+    }
     public void checkDifferenceValueDisplay() {
         List<String> lstCur = getLstCurDisplay("All");
         for (String cur : lstCur){

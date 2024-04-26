@@ -8,6 +8,7 @@ import pages.sb11.WelcomePage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class OpenPricePage extends WelcomePage {
     int colEvent = 3;
@@ -137,7 +138,7 @@ public class OpenPricePage extends WelcomePage {
         return ddpLeague.getOptions();
     }
 
-    public void fillOpenPriceFirstEvent (String ft12HAHome, String ft12HAAway, String ft12Draw, String ftHDPHome, String ftHDPAway, String ftHDPPriceHome, String ftHDPPriceAway, String ftOUHDPHome, String ftOUHDPAway, String ftOUPriceHome, String ftOUPriceAway, boolean isSubmit){
+    public void fillOpenPriceFirstEvent (Map<String, String> openPrice, boolean isSubmit){
         TextBox txtHAHome = TextBox.xpath("(//table//tbody/tr[2]//td[4]//input)[1]");
         TextBox txtHAAway = TextBox.xpath("(//table//tbody/tr[2]//td[4]//input)[2]");
         TextBox txt12Draw = TextBox.xpath("(//table//tbody/tr[2]//td[4]//input)[3]");
@@ -150,17 +151,17 @@ public class OpenPricePage extends WelcomePage {
         TextBox txtOUPriceHome = TextBox.xpath("(//table//tbody/tr[2]//td[6]//input)[1]");
         TextBox txtOUPriceAway = TextBox.xpath("(//table//tbody/tr[2]//td[6]//input)[2]");
 
-        txtHAHome.sendKeys(ft12HAHome);
-        txtHAAway.sendKeys(ft12HAAway);
-        txt12Draw.sendKeys(ft12Draw);
-        ddFTHDPHome.clickMenu(ftHDPHome);
-        ddFTHDPAway.clickMenu(ftHDPAway);
-        txtHDPPriceHome.sendKeys(ftHDPPriceHome);
-        txtHDPPriceAway.sendKeys(ftHDPPriceAway);
-        ddFTOUHome.clickMenu(ftOUHDPHome);
-        ddFTOUAway.clickMenu(ftOUHDPAway);
-        txtOUPriceHome.sendKeys(ftOUPriceHome);
-        txtOUPriceAway.sendKeys(ftOUPriceAway);
+        txtHAHome.sendKeys(openPrice.get("ft12HAHome"));
+        txtHAAway.sendKeys(openPrice.get("ft12HAAway"));
+        txt12Draw.sendKeys(openPrice.get("ft12Draw"));
+        ddFTHDPHome.clickMenu(openPrice.get("ftHDPHome"));
+        ddFTHDPAway.clickMenu(openPrice.get("ftHDPAway"));
+        txtHDPPriceHome.sendKeys(openPrice.get("ftHDPPriceHome"));
+        txtHDPPriceAway.sendKeys(openPrice.get("ftHDPPriceAway"));
+        ddFTOUHome.clickMenu(openPrice.get("ftOUHDPHome"));
+        ddFTOUAway.clickMenu(openPrice.get("ftOUHDPAway"));
+        txtOUPriceHome.sendKeys(openPrice.get("ftOUPriceHome"));
+        txtOUPriceAway.sendKeys(openPrice.get("ftOUPriceAway"));
         if (isSubmit){
             btnSubmit.click();
             waitSpinnerDisappeared();
