@@ -128,7 +128,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.isDetailTypeSortCorrect("CAPITAL"),"FAILED! Detail Type sort Incorrect in Capital table");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31"})
+    @Test(groups = {"regression","2023.10.31","ethan2.0"})
     @TestRails(id = "2788")
     public void Balance_Sheet_2788() {
         log("@title: Validate there is a total amount for each Detail Type");
@@ -234,8 +234,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 3: Filter which has data");
         page.filter(SBPConstants.KASTRAKI_LIMITED, "Year 2023-2024", "2023 - December", "",false);
         log("@Step 4: Click 'Export To Excel' button");
-        page.btnExportToExcel.click();
-        page.waitSpinnerDisappeared();
+        page.exportFile("Excel");
         log("@Step 5: Open exported file");
         log("@Verify 1: Validate can export Retained Earnings to Excel file successfully'");
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
@@ -248,7 +247,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         // }
         // log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31"})
+    @Test(groups = {"regression","2023.10.31","ethan2.0"})
     @TestRails(id = "2794")
     public void Balance_Sheet_2794() {
         log("@title: Validate 'Export To PDF' button work properly");
@@ -260,8 +259,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 3: Filter which has data");
         page.filter(SBPConstants.KASTRAKI_LIMITED, SBPConstants.FINANCIAL_YEAR, "", "",false);
         log("@Step 4: Click 'Export To PDF' button");
-        page.btnExportToPDF.click();
-        page.waitSpinnerDisappeared();
+        page.exportFile("PDF");
         log("@Verify 1: Validate can export Retained Earnings to PDF file successfully'");
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
         log("@Post-condition: delete download file");

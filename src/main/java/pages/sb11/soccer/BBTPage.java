@@ -51,6 +51,7 @@ public class BBTPage extends WelcomePage {
     public Button btnShowMoreFilter = Button.xpath("//button[contains(@class,'btn-show-filter')]");
     public Button btnLeagues = Button.xpath("//app-bbt//div[text()='Show Leagues ']");
     public Button btnClearAll = Button.xpath("//app-bbt//button[text()='Clear All']");
+    public Button btnSelectAll = Button.xpath("//app-bbt//button[text()='Select All']");
     public Button btnSetSelection = Button.xpath("//app-filter-data//button[text()='Set Selection ']");
     public Label lblFirstGroupName = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//a)[1]");
     public Label lblFirstHomeName =  Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//thead)[1]");
@@ -537,7 +538,7 @@ public class BBTPage extends WelcomePage {
      * */
     public int findRowIndexOfTeamTable(Order order, boolean isLeftTable){
         int rowIndex = 1;
-        int tableHomeIndex = findTableIndexByTeam(order.getHome());
+        int tableHomeIndex = order.getHome() != null ? findTableIndexByTeam(order.getHome()) : findTableIndexByTeam(order.getEvent().getHome());
         int tableIndex = isLeftTable ? tableHomeIndex : tableHomeIndex + 1;
         Table tblTeam = tblBBT.getTableControl(tableIndex);
         while(true){
@@ -574,12 +575,16 @@ public class BBTPage extends WelcomePage {
         }
     }
 
-    public void selectLeaguesFilter(String... leaguesName){
+    public void selectLeaguesFilter(boolean filterAll,String... leaguesName){
         btnLeagues.click();
         waitSpinnerDisappeared();
-        btnClearAll.click();
-        for(String option: leaguesName){
-            selectOptionOnFilter(option, true);
+        if (filterAll){
+            btnSelectAll.click();
+        } else {
+            btnClearAll.click();
+            for(String option: leaguesName){
+                selectOptionOnFilter(option, true);
+            }
         }
         btnSetSelection.click();
         waitSpinnerDisappeared();

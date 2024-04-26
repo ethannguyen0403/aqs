@@ -29,7 +29,7 @@ import static common.SBPConstants.BBTPage.*;
 
 public class BBTTest extends BaseCaseAQS {
 
-    @Test(groups = {"regression_stg", "2023.11.30"})
+    @Test(groups = {"regression_stg", "2023.11.30","ethan2.0"})
     @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "157")
     public void BBT_TC_157(String password, String userNameOneRole) throws Exception{
@@ -38,8 +38,6 @@ public class BBTTest extends BaseCaseAQS {
         log("@Step 1: Re-login with one role account account has 'BBT' permission is OFF");
         LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
-        PTRiskPage ptRiskPage =
-                welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
         log("@Verify 1: 'BBT' menu is hidden displays");
         Assert.assertTrue(!welcomePage.headerMenuControl.isSubmenuDisplay(SOCCER, BBT), "FAILED! Retained Earnings menu is displayed");
         log("INFO: Executed completely");
@@ -88,31 +86,31 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression", "2023.11.30","ethan2.0"})
     @TestRails(id = "162")
-    @Parameters({"accountCode","accountCurrency"})
-    public void BBT_TC_162(String accountCode,String accountCurrency){
-        String groupName = "Auto QC Group";
+    @Parameters({"accountCode","smartGroup"})
+    public void BBT_TC_162(String accountCode,String smartGroup){
         String currentDay = DateUtils.getDate(0, "dd/MM/yyyy", "GMT +8");
         log("@title: Validate the bets that placed by smart players belonging to Masters/Groups/Agents displays properly");
         log("@Precondition: Place bet with smart player to show bet on BBT page");
         String dateAPI = DateUtils.formatDate(currentDay, "dd/MM/yyyy", "yyyy-MM-dd");
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,SOCCER,"");
-        Order order = new Order.Builder()
-                .sport(SOCCER).isNegativeHdp(false).hdpPoint(1.75).price(1.11).requireStake(13.58).home(eventInfo.getHome())
-                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType("HDP").stage("FT").selection(eventInfo.getHome()).event(eventInfo).build();
-
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED, currentDay, eventInfo.getLeagueName());
-        soccerBetEntryPage.placeBet(accountCode,order.getHome(),true,"Home",Arrays.asList(order),true,false,true);
-
+        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,SOCCER,"");
+        event.setEventDate(dateAPI);
+        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome())
+                .eventDate(dateAPI).stage("FullTime").odds(1.11).price(1.11).handicap(1.75).oddType("HK").requireStake(13.58).betType("BACK")
+                .build();
+        BetEntrytUtils.placeBetAPI(order);
+        //wait for bet update in BBT
+        try {
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
-        log("@Step 2: Filter with group name: " + groupName);
-        bbtPage.selectLeaguesFilter(eventInfo.getLeagueName());
-        bbtPage.selectSmartTypeFilter("Group", groupName);
+        log("@Step 2: Filter with group name: " + smartGroup);
+        bbtPage.selectLeaguesFilter(false,event.getLeagueName());
+        bbtPage.selectSmartTypeFilter("Group", smartGroup);
         log("@Verify 1: The bets that placed by smart players belonging to Groups displays properly");
         Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(order, true) != -1, "FAILED! The bet is not show on BBT page");
         log("INFO: Executed completely");
@@ -168,7 +166,7 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression", "2023.11.30","ethan2.0"})
     @TestRails(id = "168")
     @Parameters({"accountCurrency"})
     public void BBT_TC_168(String accountCurrency) {
@@ -222,7 +220,7 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression", "2023.11.30","ethan2.0"})
     @TestRails(id = "172")
     public void BBT_TC_172() {
         String betType = "HT-OU";
@@ -231,6 +229,7 @@ public class BBTTest extends BaseCaseAQS {
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter Soccer with Bet type: " + betType);
         bbtPage.selectBetTypesFilter(SOCCER, betType);
+        bbtPage.selectLeaguesFilter(true,"");
         log("@Verify 1: All bet HT-OU shows in results page");
         List<String> betTypesList =  bbtPage.getBetTypeListOfAllEvents();
         Assert.assertTrue(bbtPage.verifyAllBetsIsOverUnder(betTypesList), "FAILED! There is one or many bets is not Over/Under");
@@ -277,7 +276,7 @@ public class BBTTest extends BaseCaseAQS {
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with selected league: " + firstLeague);
-        bbtPage.selectLeaguesFilter(firstLeague);
+        bbtPage.selectLeaguesFilter(false,firstLeague);
         log("@Verify 1: All leagues: " + firstLeague + " that have events in filtered date range display");
         List<String> leaguesList = bbtPage.getListAllLeaguesName();
         Assert.assertTrue(bbtPage.verifyAllElementOfListAreTheSame(firstLeague, leaguesList), "FAILED! The Leagues filter shows incorrect results");
@@ -405,7 +404,7 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2136")
     public void BBT_TC_2136() {
         log("@title: Validate UI on BBT is correctly displayed");
@@ -511,7 +510,7 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2140")
     public void BBT_TC_2140() {
         log("@title: Validate Live Last 50 Bets page is displayed successfully when clicking on first Live column");
@@ -639,7 +638,7 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2146")
     public void BBT_TC_2146() {
         log("@title: Validate Last 12 Days Performance page is displayed succefully when clicking on Last 12 Days link");
@@ -830,7 +829,7 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.12.29"})
+    @Test(groups = {"regression", "2023.12.29","ethan2.0"})
     @Parameters({"accountCode", "accountCurrency"})
     @TestRails(id = "4184")
     public void BBT_TC_4184(String accountCode, String accountCurrency) {
