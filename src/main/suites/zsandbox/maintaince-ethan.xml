@@ -30,7 +30,7 @@
         <parameter name="companyName" value="Kastraki Limited"/>
         <parameter name="companyCurrency" value="HKD"/>
         <parameter name="userNameOneRole" value="onerole"/>
-        <parameter name='isAddTestRailResult' value='false'/>
+        <parameter name='isAddTestRailResult' value='true'/>
         <groups>
             <run>
                 <include name="ethan2.0"/>
@@ -43,13 +43,16 @@
 
             <class name="testcases.sb11test.sport.SoccerResultEntryTest"/>
             <class name="testcases.sb11test.sport.CricketResultEntryTest"/>
+            <class name="testcases.sb11test.sport.EventMappingTest"/>
 
             <class name="testcases.sb11test.soccer.BBGTest"/>
+            <class name="testcases.sb11test.soccer.BBTTest"/>
             <class name="testcases.sb11test.soccer.SPPTest"/>
             <class name="testcases.sb11test.soccer.HandicapCornerLiabilityTest"/>
             <class name="testcases.sb11test.soccer.HandicapLiabilityTest"/>
             <class name="testcases.sb11test.soccer.MatchOddsLiabilityTest"/>
             <class name="testcases.sb11test.soccer.OverUnderCornerLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.OverUnderLiabilityTest"/>
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
 
             <class name="testcases.sb11test.accounting.ChartOfAccountTest"/>
@@ -72,6 +75,7 @@
             <class name="testcases.sb11test.master.AutoCreatedAccountsTest"/>
             <class name="testcases.sb11test.master.BookieInfoTest"/>
             <class name="testcases.sb11test.master.BookieSystemTest"/>
+            <class name="testcases.sb11test.master.ClientSystemTest"/>
 
             <class name="testcases.sb11test.generalReports.ARandAPReconciliationTest"/>
             <class name="testcases.sb11test.generalReports.BookieStatementTest"/>
@@ -82,10 +86,9 @@
             <class name="testcases.sb11test.generalReports.FundReconciliationTest"/>
             <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
 
+            <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
             <class name="testcases.sb11test.financialReports.BalanceSheetAnalysisTest"/>
             <class name="testcases.sb11test.financialReports.CashFlowStatementTest"/>
-
-
         </classes>
     </test>
 </suite>
