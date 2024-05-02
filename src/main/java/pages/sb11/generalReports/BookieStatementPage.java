@@ -177,13 +177,12 @@ public class BookieStatementPage extends WelcomePage {
      * @return  General Reports>Bookie Statement>Agent Summary>Member Summary popup
      */
     public BookieMemberSummaryPopup openBookieMemberSummaryDetailPopup(String masterCode, String agentCode) {
-        ////app-bookie-statement//div[contains(@class,'content-filter')][2]
         Table tblBookie = getTableContainsBookieAccount(masterCode);
         if(Objects.isNull(tblBookie)) {
             System.out.println("DEBUG!: NO table have the title contains account "+ masterCode);
             return null;
         }
-        tblBookie.getControlBasedValueOfDifferentColumnOnRow(agentCode,1,tblBookie.getColumnIndexByName("Master Code"),1,"a",tblBookie.getColumnIndexByName("MS"),"a",true,false).click();
+        tblBookie.getControlBasedValueOfDifferentColumnOnRow(agentCode,1,colAgentCode,1,"a",tblBookie.getColumnIndexByName("MS"),"a",true,false).click();
         waitSpinnerDisappeared();
         return new BookieMemberSummaryPopup();
     }
