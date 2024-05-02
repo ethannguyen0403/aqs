@@ -5,7 +5,11 @@ import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
+
+import static common.SBPConstants.COMPANY_UNIT_LIST_ALL;
+import static common.SBPConstants.FINANCIAL_YEAR_LIST_NEW;
 
 public class PhoneBettingPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
@@ -24,4 +28,16 @@ public class PhoneBettingPage extends WelcomePage {
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
     public Button btnShow = Button.xpath("//button[text()='Show']");
+
+    public void verifyUI() {
+        System.out.println("Dropdown: Company Unit, Financial Year, Sports");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(), COMPANY_UNIT_LIST_ALL,"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertEquals(ddpFinancialYear.getOptions(), FINANCIAL_YEAR_LIST_NEW,"Failed! Financial Year dropdown is not displayed!");
+        Assert.assertTrue(ddpSport.getOptions().contains("Soccer"),"Failed! Sport dropdown is not displayed!");
+        System.out.println("Datetimepicker: From Date, To Date");
+        Assert.assertEquals(lblFromDate.getText(),"From Date","Failed! From Date datetimepicker is not displayed!");
+        Assert.assertEquals(lblToDate.getText(),"To Date","Failed! To Date datetimepicker is not displayed!");
+        System.out.println("Button: Show button");
+        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed!");
+    }
 }

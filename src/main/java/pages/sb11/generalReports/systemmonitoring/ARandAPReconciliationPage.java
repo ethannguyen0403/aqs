@@ -18,35 +18,44 @@ import java.util.List;
 public class ARandAPReconciliationPage extends WelcomePage {
     public DropDownBox ddCompany = DropDownBox.xpath("//div[text()='Company Unit']//following-sibling::select");
     public DropDownBox ddDetailType = DropDownBox.xpath("//div[text()='Detail Type']//following-sibling::select");
-    public TextBox txtTransDate = TextBox.name("fromDate");
-    public DateTimePicker dtpTransDate = DateTimePicker.xpath(txtTransDate,"//bs-datepicker-container");
+    DropDownBox ddSubAcc = DropDownBox.xpath("//div[text()='Sub-account']//following-sibling::select");
+    public TextBox txtBeginDate = TextBox.xpath("//div[text()='Beginning Date']//following-sibling::div//input");
+    public TextBox txtEndingDate = TextBox.xpath("//div[text()='Ending Date']//following-sibling::div//input");
+    public DateTimePicker dtpBeginDate = DateTimePicker.xpath(txtBeginDate,"//bs-datepicker-container");
+    public DateTimePicker dtpEndingDate = DateTimePicker.xpath(txtEndingDate,"//bs-datepicker-container");
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
     public Table tblData = Table.xpath("//table[contains(@class,'table-custom')]",10);
     public Table tblHeader = Table.xpath("(//div[@class='ng-star-inserted']//table[contains(@class,'fbody')])[1]",10);
     public Table tblTodaySettle = Table.xpath("//table[contains(@class,'total-settlement')]",10);
+    public Table tblSubAcc = Table.xpath("(//table)[2]",11);
 
-    public void filter(String companyUnit, String detailType, String transDate){
+    public void filter(String companyUnit, String detailType, String subAcc, String beginDate, String endingDate){
         if (!companyUnit.isEmpty()){
             ddCompany.selectByVisibleText(companyUnit);
         }
         if (!detailType.isEmpty()){
-            ddDetailType.selectByVisibleText(detailType);
+            ddDetailType.selectByVisibleContainsText(detailType);
+            waitSpinnerDisappeared();
         }
-        if (!transDate.isEmpty()){
-            dtpTransDate.selectDate(transDate,"dd/MM/yyyy");
+        if (!subAcc.isEmpty()){
+            ddSubAcc.selectByVisibleContainsText(subAcc);
+        }
+        if (!beginDate.isEmpty()){
+            dtpBeginDate.selectDate(beginDate,"dd/MM/yyyy");
+        }
+        if (!endingDate.isEmpty()){
+            dtpEndingDate.selectDate(endingDate,"dd/MM/yyyy");
         }
         btnShow.click();
         waitSpinnerDisappeared();
     }
-    public String getValueByDesc(String subAccName,String desc, int indexColum){
-        Table tblSubAcc = Table.xpath(String.format("//span[contains(text(),'%s')]//ancestor::table",subAccName),10);
-        int indexRow = tblSubAcc.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
-        return Label.xpath(tblSubAcc.getxPathOfCell(1,indexColum,indexRow,"span")).getText();
+    public String getValueByDesc(String desc, String colName){
+        return tblSubAcc.getControlBasedValueOfDifferentColumnOnRow(desc,1,tblSubAcc.getColumnIndexByName("Description"),1,"span",
+                tblSubAcc.getColumnIndexByName(colName),"span",true,false).getText();
     }
-    public void tickConfirmAuthorise(String subAccName, String desc, String colName){
-        Table tblSubAcc = Table.xpath(String.format("//span[contains(text(),'%s')]//ancestor::table",subAccName),10);
-        int indexRow = tblSubAcc.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
-        CheckBox cbConfirm = CheckBox.xpath(tblSubAcc.getxPathOfCell(1,tblHeader.getColumnIndexByName(colName)-1,indexRow,"input"));
+    public void tickConfirmAuthorise(String desc, String colName){
+        int indexRow = tblSubAcc.getRowIndexContainValue(desc,tblSubAcc.getColumnIndexByName("Description"),"span");
+        CheckBox cbConfirm = CheckBox.xpath(tblSubAcc.getxPathOfCell(1,tblSubAcc.getColumnIndexByName(colName),indexRow,"input"));
         if (cbConfirm.isEnabled()){
             cbConfirm.click();
             try {
@@ -61,15 +70,13 @@ public class ARandAPReconciliationPage extends WelcomePage {
             System.out.println("Check box of "+desc+" is ticked");
         }
     }
-    public boolean isCheckCanTick(String subAccName, String desc, String colName){
-        Table tblSubAcc = Table.xpath(String.format("//span[contains(text(),'%s')]//ancestor::table",subAccName),10);
-        int indexRow = tblSubAcc.getRowIndexContainValue(desc,tblHeader.getColumnIndexByName("Description")-1,"span");
-        CheckBox cbConfirm = CheckBox.xpath(tblSubAcc.getxPathOfCell(1,tblHeader.getColumnIndexByName(colName)-1,indexRow,"input"));
+    public boolean isCheckCanTick(String desc, String colName){
+        int indexRow = tblSubAcc.getRowIndexContainValue(desc,tblSubAcc.getColumnIndexByName("Description"),"span");
+        CheckBox cbConfirm = CheckBox.xpath(tblSubAcc.getxPathOfCell(1,tblSubAcc.getColumnIndexByName(colName),indexRow,"input"));
         return cbConfirm.isEnabled();
     }
-    public String getSumDebitCredit(String subAccName, String debitcredit){
-        Table tblSubAcc = Table.xpath(String.format("//span[contains(text(),'%s')]//ancestor::table",subAccName),10);
-        List<String> lstData = tblSubAcc.getColumn(tblHeader.getColumnIndexByName(debitcredit)-1,50,true);
+    public String getSumDebitCredit(String debitcredit){
+        List<String> lstData = tblSubAcc.getColumn(tblSubAcc.getColumnIndexByName(debitcredit),50,true);
         double sum = 0.00;
         for (int i = 1; i < lstData.size()-1;i++){
             if (!lstData.get(i).isEmpty()){
@@ -78,11 +85,10 @@ public class ARandAPReconciliationPage extends WelcomePage {
         }
         return String.format("%.2f",sum);
     }
-    public String getSumAuthorizedTrans(String subAccName, String authoriseName){
+    public String getSumAuthorizedTrans(String authoriseName){
         double sum = 0.00;
-        Table tblSubAcc = Table.xpath(String.format("//span[contains(text(),'%s')]//ancestor::table",subAccName),10);
-        List<String> lstAuthor = tblSubAcc.getColumn(tblHeader.getColumnIndexByName("Authorised By")-1,50,true);
-        List<String> lstDebit = tblSubAcc.getColumn(tblHeader.getColumnIndexByName("Debit")-1,50,true);
+        List<String> lstAuthor = tblSubAcc.getColumn(tblSubAcc.getColumnIndexByName("Authorised By"),50,true);
+        List<String> lstDebit = tblSubAcc.getColumn(tblSubAcc.getColumnIndexByName("Debit"),50,true);
         for (int i = 2; i < lstAuthor.size()-1;i++){
             if (lstAuthor.get(i).equals(authoriseName)){
                 sum = sum + Double.valueOf(lstDebit.get(i));

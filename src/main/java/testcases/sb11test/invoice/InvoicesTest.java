@@ -78,7 +78,7 @@ public class InvoicesTest extends BaseCaseAQS {
         }
     }
 
-    @Test(groups = {"regression", "2023.10.31","ethan"})
+    @Test(groups = {"regression", "2023.10.31","ethan2.0"})
     @TestRails(id = "2239")
     public void Invoices_TC_2239(){
         log("@title: Validate payment date is consistent in summary and details");
@@ -98,7 +98,7 @@ public class InvoicesTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.10.31","ethan"})
+    @Test(groups = {"regression", "2023.10.31","ethan2.0"})
     @TestRails(id = "2240")
     public void Invoices_TC_2240(){
         log("@title: Validate information of invoices is updated accordingly after editing invoice ");
@@ -162,7 +162,7 @@ public class InvoicesTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.10.31","ethan"})
+    @Test(groups = {"regression", "2023.10.31","ethan2.0"})
     @TestRails(id = "2767")
     public void Invoices_TC_2767(){
         log("@title: Validate Log link works");
@@ -182,7 +182,7 @@ public class InvoicesTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.10.31","ethan"})
+    @Test(groups = {"regression", "2023.10.31","ethan2.0"})
     @TestRails(id = "2771")
     public void Invoices_TC_2771() {
         String downloadPath = getDownloadPath();

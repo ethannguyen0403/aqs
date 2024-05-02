@@ -1,14 +1,17 @@
 package pages.sb11.accounting;
 
 import com.paltech.element.common.*;
+import common.SBPConstants;
 import controls.Table;
 import objects.Order;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.control.ConfirmPopupControl;
 import pages.sb11.soccer.popup.coa.CreateDetailTypePopup;
 import pages.sb11.soccer.popup.coa.CreateParentAccountPopup;
 import pages.sb11.soccer.popup.coa.CreateSubAccountPopup;
 import pages.sb11.soccer.popup.coa.DeletePopup;
+import utils.sb11.CompanySetUpUtils;
 
 public class ChartOfAccountPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'modal-header')]//span[1]");
@@ -23,9 +26,9 @@ public class ChartOfAccountPage extends WelcomePage {
     public Button btnSearchDetail = Button.xpath("//span[contains(text(),'Accounting')]//following::button[contains(@class,'btn-confirm')][1]");
     public Button btnSearchParent = Button.xpath("//span[contains(text(),'Parent')]//following::button[contains(@class,'btn-confirm')][1]");
     public Button btnSearchSubAcc = Button.xpath("//span[contains(text(),'Sub')]//following::button[contains(@class,'btn-confirm')][1]");
-    public Button btnAddDetail = Button.xpath("//span[contains(text(),'Accounting')]//following::button[contains(@class,'btn-success')][1]");
-    public Button btnAddParent = Button.xpath("//span[contains(text(),'Parent')]//following::button[contains(@class,'btn-success')][1]");
-    public Button btnAddSubAcc = Button.xpath("//span[contains(text(),'Sub')]//following::button[contains(@class,'btn-success')][1]");
+    public Button btnAddDetail = Button.xpath("//span[contains(text(),'Accounting')]//parent::div/button");
+    public Button btnAddParent = Button.xpath("//span[contains(text(),'Parent')]//following-sibling::button");
+    public Button btnAddSubAcc = Button.xpath("//span[contains(text(),'Sub')]//following-sibling::button");
 
     public TextBox txtParentAccName = TextBox.xpath("//span[contains(text(),'Parent Account Name')]//following::input[1]");
     public Label lblParentAccName = Label.xpath("//span[contains(text(),'Parent Account Name')]");
@@ -165,5 +168,25 @@ public class ChartOfAccountPage extends WelcomePage {
                 return i;
             i = i +1;
         }
+    }
+
+    public void verifyUI() {
+        System.out.println("Detail Type table: Company Unit, Detail Type Name, Search button and Add button");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertEquals(lblDetailTypeName.getText(),"Detail Type Name","Failed! Detail Type Name search box is not displayed!");
+        Assert.assertTrue(btnSearchDetail.isDisplayed(),"Failed! Button Search Detail is not displayed!");
+        Assert.assertTrue(btnAddDetail.isDisplayed(),"Failed! Button Add Detail is not displayed!");
+        System.out.println("Parent Account List: Parent Account Name, Search Button and Add button");
+        Assert.assertEquals(lblParentAccName.getText(),"Parent Account Name","Failed! Parent Account Name search box is not displayed!");
+        Assert.assertTrue(btnSearchParent.isDisplayed(),"Failed! Button Search Parent is not displayed!");
+        Assert.assertTrue(btnAddParent.isDisplayed(),"Failed! Button Add Parent is not displayed!");
+        System.out.println("Sub-Account List: Sub-Account Name, Search button and Add button");
+        Assert.assertEquals(lblSubAccName.getText(),"Sub-Account Name","Failed! Sub-Account Name search box is not displayed!");
+        Assert.assertTrue(btnSearchSubAcc.isDisplayed(),"Failed! Button Search Sub-Account is not displayed!");
+        Assert.assertTrue(btnAddSubAcc.isDisplayed(),"Failed! Button Add Sub-Account is not displayed!");
+        System.out.println("Detail Type, Parent Account List, Sub-Account List table header columns is correctly display");
+        Assert.assertEquals(tbDetail.getHeaderNameOfRows(), SBPConstants.ChartOfAccount.TABLE_HEADER_DETAIL,"Failed! Detail Type table header is displayed incorrectly!");
+        Assert.assertEquals(tbParent.getHeaderNameOfRows(), SBPConstants.ChartOfAccount.TABLE_HEADER_PARENT,"Failed! Parent Account List table header is displayed incorrectly!");
+        Assert.assertEquals(tbSubAcc.getHeaderNameOfRows(), SBPConstants.ChartOfAccount.TABLE_HEADER_SUB_ACCOUNT,"Failed! Sub-Account table header is displayed incorrectly!");
     }
 }

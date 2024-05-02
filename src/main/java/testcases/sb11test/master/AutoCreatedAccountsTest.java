@@ -10,7 +10,7 @@ import static common.SBPConstants.*;
 
 public class AutoCreatedAccountsTest extends BaseCaseAQS {
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2232")
     public void Auto_Created_Accounts_TC_2232(){
         log("@title: Validate Auto-created Accounts page is displayed when navigate");

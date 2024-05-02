@@ -12,6 +12,7 @@ import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.ChartOfAccountUtils;
+import utils.sb11.CompanySetUpUtils;
 import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
@@ -74,7 +75,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         Assert.assertTrue(page.getTitlePage().contains(JOURNAL_ENTRIES),String.format("FAILED! Page Title is incorrect displayed. Actual: %s, expected: %s",page.getTitlePage(),JOURNAL_ENTRIES));
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "4178")
     public void Journal_Entries_TC_4178(String clientCode){
@@ -82,30 +83,9 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Accounting > Journal Entries");
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_ENTRIES,JournalEntriesPage.class);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("Validate UI Info display correctly");
-        log("Dropdown: From/To, Client, Bookie, Ledger, Currency, Level and Transaction Type");
-        Assert.assertEquals(journalEntriesPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed");
-        Assert.assertEquals(journalEntriesPage.ddDebitFrom.getOptions(),JournalEntries.TYPE_LIST,"Failed! Debit type list dropdown is not displayed");
-        Assert.assertEquals(journalEntriesPage.ddCreditTo.getOptions(),JournalEntries.TYPE_LIST,"Failed! Credit type list dropdown is not displayed");
-        Assert.assertTrue(journalEntriesPage.ddCreditLedger.getOptions().contains(clientCode),"Failed! Credit Client dropdown is not displayed");
-        Assert.assertTrue(journalEntriesPage.ddDebitLedger.getOptions().contains(clientCode),"Failed! Debit Client dropdown is not displayed");
-        Assert.assertTrue(journalEntriesPage.ddCreditBookieClient.getOptions().contains("[All]"),"Failed! Credit Bookie dropdown is not displayed");
-        Assert.assertTrue(journalEntriesPage.ddDebitBookieClient.getOptions().contains("[All]"),"Failed! Debit Bookie dropdown is not displayed");
-        Assert.assertEquals(journalEntriesPage.ddDebitLevel.getOptions(),JournalEntries.LEVEL_LIST,"Failed! Debit Level dropdown is not displayed");
-        Assert.assertEquals(journalEntriesPage.ddCreditLevel.getOptions(),JournalEntries.LEVEL_LIST,"Failed! Credit Level dropdown is not displayed");
-        Assert.assertEquals(journalEntriesPage.ddDebitCurrency.getOptions(),JournalEntries.CURRENCY_LIST,"Failed! Credit Bookie dropdown is not displayed");
-        Assert.assertEquals(journalEntriesPage.ddCreditCurrency.getOptions(),JournalEntries.CURRENCY_LIST,"Failed! Debit Bookie dropdown is not displayed");
-        Assert.assertEquals(journalEntriesPage.ddTransactionType.getOptions(),JournalEntries.TRANSACTION_TYPE_LIST,"Failed! Debit Bookie dropdown is not displayed");
-        log("Textbox: Account, Remark");
-        Assert.assertEquals(journalEntriesPage.lblAccountDebit.getText(),"Account","Failed! Account Debit textbox is not displayed");
-        Assert.assertEquals(journalEntriesPage.lblAccountCredit.getText(),"Account","Failed! Account Credit textbox is not displayed");
-        Assert.assertEquals(journalEntriesPage.lblRemark.getText(),"Remark","Failed! Remark textbox is not displayed");
-        log("Datetimepicker: Transaction Date");
-        Assert.assertTrue(journalEntriesPage.txtDateTrans.isDisplayed(),"Failed! Transaction Date is not displayed!");
-        log("Button: Add (Debit), Add (Credit) and Submit button");
-        Assert.assertEquals(journalEntriesPage.btnDebitAdd.getText(),"Add","Failed! Add Debit button is not displayed");
-        Assert.assertEquals(journalEntriesPage.btnCreditAdd.getText(),"Add","Failed! Add Debit button is not displayed");
-        Assert.assertEquals(journalEntriesPage.btnSubmit.getText(),"Submit","Failed! Submit button is not displayed");
+        journalEntriesPage.verifyUI(clientCode);
         log("INFO: Executed completely");
     }
 
@@ -266,7 +246,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="15751")
-    @Test(groups = {"regression1","2023.11.30"})
+    @Test(groups = {"regression","2023.11.30"})
     public void Journal_Entries_TC_15751() throws InterruptedException {
         String transType = "Payment Other";
         String creditExpAcc = "AutoExpenditureCredit - 010.000.000.000";

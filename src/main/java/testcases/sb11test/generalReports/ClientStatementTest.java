@@ -315,7 +315,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke","ethan"})
+    @Test(groups = {"smoke","ethan2.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "867")
     public void ClientStatementTC_867(String clientCode) throws IOException {
@@ -963,7 +963,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke","ethan"})
+    @Test(groups = {"smoke","ethan2.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "999")
     public void ClientStatementTC_999(String clientCode) {

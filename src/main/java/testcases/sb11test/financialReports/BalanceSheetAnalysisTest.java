@@ -36,11 +36,10 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.12.29","ethan"})
+    @Test(groups = {"regression", "2023.12.29","ethan2.0"})
     @TestRails(id = "2811")
-    public void BalanceSheetAnalysisTC_2811() throws IOException {
+    public void BalanceSheetAnalysisTC_2811() {
         log("@title: Validate can Export To Excel successfully");
-        String downloadPath = getDownloadPath() + "balance-sheet-analysis.xlsx";
         log("@Step 1: Login with valid account");
         log("@Step 2: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
         BalanceSheetAnalysisPage balanceAnalysisPage =
@@ -48,21 +47,12 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 3: Filter with month that has data");
         balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
         log("@Step 4: Click to export excel button");
-        balanceAnalysisPage.btnExportExcel.click();
-        //wait for computer download file
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            log("@Verify 1: Validate excel file was downloaded successfully");
-            Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! Excel file was not downloaded successfully");
-            log("INFO: Executed completely");
-        }finally {
-            log("@Post-condition: delete download file");
-            // FileUtils.removeFile(downloadPath);
-        }
+        balanceAnalysisPage.exportFile("Excel");
+        log("@Verify 1: Validate excel file was downloaded successfully");
+        String downloadPath = getDownloadPath() + "balance-sheet-analysis.xlsx";
+        Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! Excel file was not downloaded successfully");
+        log("INFO: Executed completely");
+        log("@Post-condition: delete download file");
     }
 
     @Test(groups = {"regression", "2023.12.29","ethan"})
@@ -148,7 +138,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         Assert.assertEquals(creditTxns, String.format("%.2f", creditSelectedMonth-creditPreviousMonth), "FAILED! Txns data is not correct");
     }
 
-    @Test(groups = {"regression", "2024.V.2.0","ethan"})
+    @Test(groups = {"regression", "2024.V.2.0","ethan2.0"})
     @TestRails(id = "9146")
     public void BalanceSheetAnalysisTC_9146(){
         log("@title: Validate Total Balance row sums up correctly 3 amounts in 'Asset', 'Liability', 'Capital' rows of each columns");
@@ -194,21 +184,12 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 3: Filter with month that has data");
         balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
         log("@Step 4: Click to export PDF button");
-        balanceAnalysisPage.btnExportPDF.click();
-        //wait for computer download file
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            log("@Verify 1: Validate PDF file was downloaded successfully");
-            Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! PDF file was not downloaded successfully");
-            log("INFO: Executed completely");
-        }finally {
-            log("@Post-condition: delete download file");
-            // FileUtils.removeFile(downloadPath);
-        }
+        balanceAnalysisPage.exportFile("PDF");
+        log("@Verify 1: Validate PDF file was downloaded successfully");
+        Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! PDF file was not downloaded successfully");
+        log("INFO: Executed completely");
+        log("@Post-condition: delete download file");
+        // FileUtils.removeFile(downloadPath);
     }
     @Test(groups = {"regression", "2024.V.2.0","ethan"})
     @TestRails(id = "21840")

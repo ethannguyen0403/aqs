@@ -56,7 +56,7 @@ public class SmartSystemTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2175")
     @Parameters({"masterCode"})
     public void Smart_System_TC_2175(String masterCode){
@@ -70,8 +70,7 @@ public class SmartSystemTest extends BaseCaseAQS {
         masterGroupPage.filterMaster("","Default",masterCode);
         MasterGroupReportPopup masterGroupReportPopup = masterGroupPage.openMasterGroupReport(masterCode);
         log("Validate Master Group Report page is displayed with correctly title");
-        Assert.assertTrue(masterGroupReportPopup.getTitlePage().contains("Master Group Report"),"Failed! Master Group Report popup is not displayed!");
-        Assert.assertTrue(masterGroupReportPopup.lblMasterCode.getText().contains(masterCode),"Failed! Master Code is displayed incorrectly!");
+        masterGroupReportPopup.isMasterGroupReportPopupDisplay(masterCode);
         log("INFO: Executed completely");
     }
 
@@ -97,7 +96,7 @@ public class SmartSystemTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2177")
     @Parameters({"masterCode"})
     public void Smart_System_TC_2177(String masterCode){
@@ -111,8 +110,7 @@ public class SmartSystemTest extends BaseCaseAQS {
         masterGroupPage.filterMaster("","Default",masterCode);
         MasterGroupClientListPopup masterGroupClientListPopup = masterGroupPage.openMasterGroupClientList(masterCode);
         log("Validate Client List page is displayed with correctly title page and Master code below");
-        Assert.assertTrue(masterGroupClientListPopup.getTitlePage().contains("Client List"),"Failed! Client List page is not displayed!");
-        Assert.assertEquals(masterGroupClientListPopup.lblMaster.getText(),masterCode,"Failed! Master Code is displayed incorrectly!");
+        masterGroupClientListPopup.isMasterGroupClientListPopupDisplay(masterCode);
         log("INFO: Executed completely");
     }
 
@@ -157,7 +155,7 @@ public class SmartSystemTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2180")
     @Parameters({"agentCode"})
     public void Smart_System_TC_2180(String agentCode){
@@ -171,8 +169,7 @@ public class SmartSystemTest extends BaseCaseAQS {
         agentGroupPage.filterAgent("","Default",agentCode);
         AgentGroupClientListPopup agentGroupClientListPopup = agentGroupPage.openAgentGroupClientList(agentCode);
         log("Validate Client List page is displayed with correctly title page and Agent code below");
-        Assert.assertTrue(agentGroupClientListPopup.getTitlePage().contains("Client List"),"Failed! Client List page is not displayed!");
-        Assert.assertEquals(agentGroupClientListPopup.lblAgent.getText(),agentCode,"Failed! Agent Code is displayed incorrectly!");
+        agentGroupClientListPopup.isAgentGroupClientListPopup(agentCode);
         log("INFO: Executed completely");
     }
 

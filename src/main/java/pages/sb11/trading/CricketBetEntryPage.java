@@ -9,9 +9,11 @@ import controls.DateTimePicker;
 import controls.Table;
 import objects.Event;
 import objects.Order;
+import org.testng.Assert;
 import pages.sb11.trading.popup.CricketBetSlipPopup;
 import pages.sb11.trading.popup.BetListPopup;
 import utils.sb11.BetEntrytUtils;
+import utils.sb11.CompanySetUpUtils;
 
 import java.util.List;
 
@@ -264,4 +266,16 @@ public class CricketBetEntryPage extends BetEntryPage {
 
     }
 
+    public void verifyUI() {
+        System.out.println("Dropdown: Company Unit, Choose League, Search By");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertTrue(ddpLeague.isEnabled(),"Failed! League dropdown is not displayed!");
+        Assert.assertTrue(ddpSearchBy.getOptions().contains("Code"),"Failed! Search By dropdown is not displayed!");
+        System.out.println("Textbox: Account Code");
+        Assert.assertTrue(lblAccountCode.getText().contains("Account Code"),"Failed! Account Code textbox is not displayed!");
+        System.out.println("Datetimepicker: Date");
+        Assert.assertEquals(lblDate.getText(),"Date","Failed! Date datetimepicker is not displayed!");
+        System.out.println("Button: Show button");
+        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed!");
+    }
 }

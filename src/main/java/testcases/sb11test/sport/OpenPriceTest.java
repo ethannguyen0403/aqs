@@ -12,6 +12,8 @@ import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static common.SBPConstants.*;
 
@@ -84,17 +86,18 @@ public class OpenPriceTest extends BaseCaseAQS {
     @TestRails(id = "2096")
     public void OpenPriceTC_2096(){
         log("@title: Validate updated Open Price is displayed correctly on BBT page");
-        String ft12HAHome = "1.00";
-        String ft12HAAway = "2.00";
-        String ft12Draw = "3.00";
-        String ftHDPHome = "0.25";
-        String ftHDPAway = "1.75";
-        String ftHDPPriceHome = "4.00";
-        String ftHDPPriceAway = "5.00";
-        String ftOUHDPHome = "0.75";
-        String ftOUHDPAway = "1.25";
-        String ftOUPriceHome = "6.00";
-        String ftOUPriceAway = "7.00";
+        Map<String, String> myOpenPrice = new HashMap<>();
+        myOpenPrice.put("ft12HAHome","1.00");
+        myOpenPrice.put("ft12HAAway","2.00");
+        myOpenPrice.put("ft12Draw","3.00");
+        myOpenPrice.put("ftHDPHome","0.25");
+        myOpenPrice.put("ftHDPAway","1.75");
+        myOpenPrice.put("ftHDPPriceHome","4.00");
+        myOpenPrice.put("ftHDPPriceAway","5.00");
+        myOpenPrice.put("ftOUHDPHome","0.75");
+        myOpenPrice.put("ftOUHDPAway","1.25");
+        myOpenPrice.put("ftOUPriceHome","6.00");
+        myOpenPrice.put("ftOUPriceAway","7.00");
         log("@Step 1: Access Sport > Open Price");
         OpenPricePage page = welcomePage.navigatePage(SPORT,OPEN_PRICE, OpenPricePage.class);
         log("@Step 2: Select Date and click Show League");
@@ -104,14 +107,14 @@ public class OpenPriceTest extends BaseCaseAQS {
         String homeTeamName = page.getFirstEvent().split("\n")[0];
         String awayTeamName = page.getFirstEvent().split("\n")[1];
         log("@Step 4: Fill result on any event and click Submit");
-        page.fillOpenPriceFirstEvent(ft12HAHome,ft12HAAway,ft12Draw,ftHDPHome,ftHDPAway,ftHDPPriceHome,ftHDPPriceAway,ftOUHDPHome,ftOUHDPAway,ftOUPriceHome,ftOUPriceAway,true);
+        page.fillOpenPriceFirstEvent(myOpenPrice,true);
         log("@Step 5: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER,BBT, BBTPage.class);
         log("@Step 6: Filter with event at step 4");
         bbtPage.filter("", "","","",date,date,"","",league);
         log("Verify 1: Updated Open Price is displayed correctly on BBT page");
-        bbtPage.verifyOpenPriceDisplay(homeTeamName, ft12HAHome,ft12HAAway,ft12Draw,ftHDPHome,ftHDPAway,ftHDPPriceHome,ftHDPPriceAway,ftOUHDPHome,ftOUHDPAway,ftOUPriceHome,ftOUPriceAway,true);
-        bbtPage.verifyOpenPriceDisplay(awayTeamName, ft12HAHome,ft12HAAway,ft12Draw,ftHDPHome,ftHDPAway,ftHDPPriceHome,ftHDPPriceAway,ftOUHDPHome,ftOUHDPAway,ftOUPriceHome,ftOUPriceAway,false);
+        bbtPage.verifyOpenPriceDisplay(homeTeamName, myOpenPrice,true);
+        bbtPage.verifyOpenPriceDisplay(awayTeamName, myOpenPrice,false);
         log("INFO: Executed Completely!");
     }
 }

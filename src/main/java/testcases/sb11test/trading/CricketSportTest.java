@@ -34,7 +34,7 @@ import static common.SBPConstants.BetSettlement.BET_LIST_STATEMENT_EMAIL;
 
 public class CricketSportTest extends BaseCaseAQS {
     @TestRails(id = "61")
-    @Test(groups = {"regression","2023.11.30"})
+    @Test(groups = {"regression","2023.11.30","ethan2.0"})
     public void Cricket_Sport_61() {
         log("Validate users can add cricket leagues");
         log("@pre-condition: Account is activated permission");

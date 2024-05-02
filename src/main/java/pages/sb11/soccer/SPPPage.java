@@ -75,18 +75,18 @@ public class SPPPage extends WelcomePage {
             ddpReportBy.selectByVisibleText(reportBy);
         if(!punterType.isEmpty())
             ddpPunterType.selectByVisibleText(punterType);
-        if(!smartMaster.isEmpty())
+        if(!smartMaster.isEmpty()){
             ddpSmartMaster.selectByVisibleText(smartMaster);
+            waitSpinnerDisappeared();
+        }
         if(!smartAgent.isEmpty())
             ddpSmartAgent.selectByVisibleText(smartAgent);
-        String currentDate = txtFromDate.getAttribute("value");
-        if(!fromDate.isEmpty())
-            if(!currentDate.equals(fromDate))
-                dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-        currentDate = txtToDate.getAttribute("value");
-        if(!toDate.isEmpty())
-            if(!currentDate.equals(toDate))
-                dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+        if(!fromDate.isEmpty()) {
+            dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
+        }
+        if(!toDate.isEmpty()){
+            dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+        }
         btnShow.click();
         waitSpinnerDisappeared();
     }
@@ -151,8 +151,9 @@ public class SPPPage extends WelcomePage {
     public PTPerformancePopup openAccountPTPerf (String groupName){
         String tableXpath = String.format("//th[contains(text(),'%s')]//ancestor::table",groupName);
         Table tblSPP1 = Table.xpath(tableXpath,15);
-        int rowIndex = getRowContainsGroupName(tableXpath,colGroupCode,groupName);
-        tblSPP1.getControlOfCellSPP(1,colPT, rowIndex,null).click();
+        int rowIndex = getRowContainsGroupName(tableXpath,tblSPP1.getColumnIndexByName("Group Code"),groupName);
+        tblSPP1.getControlOfCellSPP(1,tblSPP1.getColumnIndexByName("PT%"), rowIndex,null).click();
+        waitSpinnerDisappeared();
         waitSpinnerDisappeared();
         return new PTPerformancePopup();
     }

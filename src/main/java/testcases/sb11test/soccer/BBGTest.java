@@ -37,17 +37,16 @@ public class BBGTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2148")
     public void BBG_TC_2148(){
         log("@title: Validate BBG page is displayed when navigate");
         String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
-        String todate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > BBG");
         BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
         log("@Step 3: Filter with valid data");
-        bbgPage.filter("Soccer", KASTRAKI_LIMITED,"Group", "Pending Bets",fromdate,todate,"All","All");
+        bbgPage.filter("Soccer", KASTRAKI_LIMITED,"Group", "Pending Bets",fromdate,"","All","All");
         log(" Validate UI Info display correctly");
         bbgPage.verifyUI();
         log("INFO: Executed completely");
@@ -325,8 +324,7 @@ public class BBGTest extends BaseCaseAQS {
         BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
         log("@Step 3: Select filters with currency 'EUR' as the preconditions");
         log("@Step 4: Click on 'Show' button");
-        String dateFilter = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
-        page.filter("","","","Settled Bets",dateFilter,"","",accountCurrency);
+        page.filter("","","","Settled Bets",date,"","",accountCurrency);
         page.filterAdvance("Group",smartGroup);
         log("@Verify 1: Display the bet at the preconditions");
         Assert.assertTrue(page.isOrderDisplayCorrect(orderSettled,smartGroup));
@@ -442,7 +440,7 @@ public class BBGTest extends BaseCaseAQS {
         String groupEx = page.getLstNameInAdvanceFilter("Group").get(0);
         page.filterAdvance("Group",groupEx);
         log("@Verify 1: Selected group in filtered date range display");
-        Assert.assertTrue(Label.xpath("//div[contains(@class,'header')]/div/div").getText().trim().contains(groupEx),"FAILED! "+groupEx+" group is not displayed");
+        page.verifySelectedGroupDisplay(groupEx);
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.3.0"})
@@ -459,11 +457,9 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 6: Select any event then click Set Selection button");
         log("@Step 7: Click Show button");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
-        page.filter("","","","Settled Bets",date,"","","");
-        String eventEx = page.getLstNameInAdvanceFilter("Events").get(0);
-        page.filterAdvance("Events",eventEx);
+        page.filter("","","","Settled Bets",date,date,"","");
+        List<String> lstEvent = page.getLstNameInAdvanceFilter("Events");
         log("@Verify 1: Selected group in filtered date range display");
-        List<String> lstEvent = Arrays.asList(eventEx);
         page.verifyBetsShowCorrectByColumnName("Event",lstEvent);
         log("INFO: Executed completely");
     }

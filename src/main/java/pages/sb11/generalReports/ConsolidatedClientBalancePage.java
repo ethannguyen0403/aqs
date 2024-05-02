@@ -183,4 +183,19 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
         int columnIndex = tblInfo.getColumnIndexByName(columnName);
         return Label.xpath(String.format("(//table//span[contains(text(),'%s')]//ancestor::tr//following-sibling::tr[contains(@class,'bg-white')])[%s]//th[%s]",groupName,rowIndex,columnIndex));
     }
+
+    public void exportFile(String type) {
+        if (type.equals("Excel")){
+            btnExportExcel.click();
+        } else {
+            btnExportPDF.click();
+        }
+        waitSpinnerDisappeared();
+        //wait for computer download file
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

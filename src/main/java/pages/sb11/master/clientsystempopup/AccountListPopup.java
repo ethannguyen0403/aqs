@@ -26,5 +26,6 @@ public class AccountListPopup extends WelcomePage {
     public void closeToPopup(){
         btnClose.click();
         waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
     }
 }

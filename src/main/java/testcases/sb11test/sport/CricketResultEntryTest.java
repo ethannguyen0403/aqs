@@ -13,7 +13,7 @@ import static common.SBPConstants.*;
 
 public class CricketResultEntryTest extends BaseCaseAQS {
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2087")
     public void Cricket_ResultEntry_2087() {
         log("@title: Validate Result Entry for Cricket is displayed when navigate");

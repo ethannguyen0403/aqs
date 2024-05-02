@@ -14,6 +14,7 @@ import pages.sb11.generalReports.SystemMonitoringPage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.CompanySetUpUtils;
 import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
@@ -1079,7 +1080,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2770")
     public void Ledger_Statement_2770(){
         String detailType = "000.000.001.000 - QA Ledger Group Income";
@@ -1088,22 +1089,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("Step 2: Click General Reports > Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         log("Validate UI Info display correctly");
-        log("Dropdown: Company Unit, Financial Year, Account Type, Detail Type");
-        Assert.assertEquals(ledgerStatementPage.ddCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed!");
-        Assert.assertEquals(ledgerStatementPage.ddFinancialYear.getOptions(),FINANCIAL_YEAR_LIST,"Failed! Financial year dropdown is not displayed!");
-        Assert.assertEquals(ledgerStatementPage.ddLedgerName.getOptions(),LedgerStatement.ACCOUNT_TYPE,"Failed! Account Type dropdown is not displayed!");
-        Assert.assertTrue(ledgerStatementPage.ddLedgerGroup.getOptions().contains(detailType),"Failed! Detail Type dropdown is not displayed!");
-        log("Datetime picker: From Date, To Date");
-        Assert.assertEquals(ledgerStatementPage.lblFromDate.getText(),"From Date","Failed! From Date datetimepicker is not displayed!");
-        Assert.assertEquals(ledgerStatementPage.lblToDate.getText(),"To Date","Failed! To Date datetimepicker is not displayed!");
-        log("Button: Show, Export To Excel, Export to PDF");
-        Assert.assertEquals(ledgerStatementPage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
-        Assert.assertEquals(ledgerStatementPage.btnExportToExcel.getText(),"Export To Excel","Failed! Export To Excel button is not displayed!");
-        Assert.assertEquals(ledgerStatementPage.btnExportToPDF.getText(),"Export To PDF","Failed! Export To PDF button is not displayed!");
-        log("Validate Ledger Statement table is displayed with correctly header column");
-        ledgerStatementPage.btnShow.click();
-        ledgerStatementPage.waitSpinnerDisappeared();
-        Assert.assertEquals(ledgerStatementPage.tbLedger.getHeaderNameOfRows(),LedgerStatement.TABLE_HEADER,"Failed! Ledger Statement table is displayed with incorrectly header column");
+        ledgerStatementPage.verifyUI(detailType);
         log("INFO: Executed completely");
     }
 

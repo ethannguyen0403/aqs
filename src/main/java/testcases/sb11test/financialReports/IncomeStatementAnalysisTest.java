@@ -308,13 +308,8 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Filter which have data");
         incomeAnaPage.filter(KASTRAKI_LIMITED, "","","");
         log("@Step 4: Click to export excel button");
-        incomeAnaPage.btnExportExcel.click();
-        //wait for computer download file
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        incomeAnaPage.exportFile("Excel");
+
         try {
             log("@Verify 1: Validate excel file was downloaded successfully");
             Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! Excel file was not downloaded successfully");
@@ -330,7 +325,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "4028")
-    @Test(groups = {"regression", "2024.V.1.0","ethan"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan2.0"})
     public void IncomeStatement_Analysis_TC4028() throws IOException {
         log("@title: Validate 'Export To PDF' button work properly ");
         String downloadPath = getDownloadPath() + "income-statement-analysis.pdf";
@@ -340,13 +335,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Filter which have data");
         incomeAnaPage.filter(KASTRAKI_LIMITED, "","","");
         log("@Step 4: Click to export PDF button");
-        incomeAnaPage.btnExportPDF.click();
-        //wait for computer download file
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        incomeAnaPage.exportFile("PDF");
         try {
             log("@Verify 1: Validate excel file was downloaded successfully");
             Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! PDF file was not downloaded successfully");

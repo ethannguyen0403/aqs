@@ -51,6 +51,7 @@ public class BBTPage extends WelcomePage {
     public Button btnShowMoreFilter = Button.xpath("//button[contains(@class,'btn-show-filter')]");
     public Button btnLeagues = Button.xpath("//app-bbt//div[text()='Show Leagues ']");
     public Button btnClearAll = Button.xpath("//app-bbt//button[text()='Clear All']");
+    public Button btnSelectAll = Button.xpath("//app-bbt//button[text()='Select All']");
     public Button btnSetSelection = Button.xpath("//app-filter-data//button[text()='Set Selection ']");
     public Label lblFirstGroupName = Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//a)[1]");
     public Label lblFirstHomeName =  Label.xpath("(//app-league-table//table[@aria-describedby='home-table']//thead)[1]");
@@ -537,7 +538,7 @@ public class BBTPage extends WelcomePage {
      * */
     public int findRowIndexOfTeamTable(Order order, boolean isLeftTable){
         int rowIndex = 1;
-        int tableHomeIndex = findTableIndexByTeam(order.getHome());
+        int tableHomeIndex = order.getHome() != null ? findTableIndexByTeam(order.getHome()) : findTableIndexByTeam(order.getEvent().getHome());
         int tableIndex = isLeftTable ? tableHomeIndex : tableHomeIndex + 1;
         Table tblTeam = tblBBT.getTableControl(tableIndex);
         while(true){
@@ -574,12 +575,16 @@ public class BBTPage extends WelcomePage {
         }
     }
 
-    public void selectLeaguesFilter(String... leaguesName){
+    public void selectLeaguesFilter(boolean filterAll,String... leaguesName){
         btnLeagues.click();
         waitSpinnerDisappeared();
-        btnClearAll.click();
-        for(String option: leaguesName){
-            selectOptionOnFilter(option, true);
+        if (filterAll){
+            btnSelectAll.click();
+        } else {
+            btnClearAll.click();
+            for(String option: leaguesName){
+                selectOptionOnFilter(option, true);
+            }
         }
         btnSetSelection.click();
         waitSpinnerDisappeared();
@@ -675,7 +680,7 @@ public class BBTPage extends WelcomePage {
         }
     }
 
-    public void verifyOpenPriceDisplay(String teamName, String ft12HAHome, String ft12HAAway, String ft12Draw, String ftHDPHome, String ftHDPAway, String ftHDPPriceHome, String ftHDPPriceAway, String ftOUHDPHome, String ftOUHDPAway, String ftOUPriceHome, String ftOUPriceAway, boolean isHomeTeam) {
+    public void verifyOpenPriceDisplay(String teamName, Map<String,String> openPrice, boolean isHomeTeam) {
         if (isHomeTeam){
             Table tbHomeTeam = Table.xpath(String.format("//span[text()='%s']/ancestor::table",teamName),8);
             List<String> lstHeader = tbHomeTeam.getColumnNamesOfTable();
@@ -683,10 +688,10 @@ public class BBTPage extends WelcomePage {
             String ouPriceHome = lstHeader.get(4).split("\n")[2].replace("(","").replace(")","");
             String hdpHDPAway = lstHeader.get(4).split("\n")[1];
             String ouHDPHome = lstHeader.get(4).split("\n")[3];
-            Assert.assertEquals(ftHDPPriceHome,hdpPriceHome,"FAILED! FT HDP Price Home display incorrect!");
-            Assert.assertEquals(ftOUPriceHome,ouPriceHome,"FAILED! FT Over Under Price Home display incorrect!");
-            Assert.assertEquals(ftHDPAway,hdpHDPAway,"FAILED! FT HDP Away display incorrect!");
-            Assert.assertEquals(ftOUHDPHome,ouHDPHome,"FAILED! FT Over Under HDP Home display incorrect!");
+            Assert.assertEquals(openPrice.get("ftHDPPriceHome"),hdpPriceHome,"FAILED! FT HDP Price Home display incorrect!");
+            Assert.assertEquals(openPrice.get("ftOUPriceHome"),ouPriceHome,"FAILED! FT Over Under Price Home display incorrect!");
+            Assert.assertEquals(openPrice.get("ftHDPAway"),hdpHDPAway,"FAILED! FT HDP Away display incorrect!");
+            Assert.assertEquals(openPrice.get("ftOUHDPHome"),ouHDPHome,"FAILED! FT Over Under HDP Home display incorrect!");
         } else {
             Table tbAwayTeam = Table.xpath(String.format("//span[text()='%s']/ancestor::table",teamName),8);
             List<String> lstHeader = tbAwayTeam.getColumnNamesOfTable();
@@ -697,13 +702,13 @@ public class BBTPage extends WelcomePage {
             String hdpHDPHome = lstHeader.get(0).split("\n")[1];
             String ouPriceAway = lstHeader.get(0).split("\n")[2].replace("(","").replace(")","");
             String ouHDPAway = lstHeader.get(0).split("\n")[3];
-            Assert.assertEquals(ft12HAHome,haHome,"FAILED! FT 1x2 H/A Home display incorrect!");
-            Assert.assertEquals(ft12HAAway,haAway,"FAILED! 1x2 H/A Away display incorrect!");
-            Assert.assertEquals(ft1x2Draw,ft12Draw,"FAILED! FT 1x2 Draw display incorrect!");
-            Assert.assertEquals(ftHDPPriceAway,hdpPriceAway,"FAILED! FT HDP Price Away display incorrect!");
-            Assert.assertEquals(ftHDPHome,hdpHDPHome,"FAILED! FT HDP HDP Home display incorrect!");
-            Assert.assertEquals(ftOUPriceAway,ouPriceAway,"FAILED! FT OU Price Away display incorrect!");
-            Assert.assertEquals(ftOUHDPAway,ouHDPAway,"FAILED! FT OU HDP Away display incorrect!");
+            Assert.assertEquals(openPrice.get("ft12HAHome"),haHome,"FAILED! FT 1x2 H/A Home display incorrect!");
+            Assert.assertEquals(openPrice.get("ft12HAAway"),haAway,"FAILED! 1x2 H/A Away display incorrect!");
+            Assert.assertEquals(openPrice.get("ft12Draw"),ft1x2Draw,"FAILED! FT 1x2 Draw display incorrect!");
+            Assert.assertEquals(openPrice.get("ftHDPPriceAway"),hdpPriceAway,"FAILED! FT HDP Price Away display incorrect!");
+            Assert.assertEquals(openPrice.get("ftHDPHome"),hdpHDPHome,"FAILED! FT HDP HDP Home display incorrect!");
+            Assert.assertEquals(openPrice.get("ftOUPriceAway"),ouPriceAway,"FAILED! FT OU Price Away display incorrect!");
+            Assert.assertEquals(openPrice.get("ftOUHDPAway"),ouHDPAway,"FAILED! FT OU HDP Away display incorrect!");
         }
     }
 }

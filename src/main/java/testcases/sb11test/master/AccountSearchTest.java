@@ -7,6 +7,7 @@ import pages.sb11.master.AccountSearchPage;
 import pages.sb11.master.BookieSuperPage;
 import pages.sb11.master.BookieSystemPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
@@ -14,7 +15,7 @@ import static common.SBPConstants.*;
 public class AccountSearchTest extends BaseCaseAQS {
     @Test(groups = {"regression"})
     @TestRails(id = "2223")
-    public void Account_Search_TC_001(){
+    public void Account_Search_TC_2223(){
         log("@title: Validate Account Search page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("Step 2: Click Master > Account Search");
@@ -24,16 +25,16 @@ public class AccountSearchTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2224")
-    public void Account_Search_TC_002(){
+    public void Account_Search_TC_2224(){
         log("@title: Validate UI on Account Search is correctly displayed");
         log("@Step 1: Login with valid account");
         log("Step 2: Click Master > Account Search");
         AccountSearchPage accountSearchPage = welcomePage.navigatePage(MASTER, ACCOUNT_SEARCH,AccountSearchPage.class);
         log("Validate UI Info display correctly");
         log("Dropdown: Company Unit, Type");
-        Assert.assertEquals(accountSearchPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertEquals(accountSearchPage.ddpCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown is not displayed!");
         Assert.assertEquals(accountSearchPage.ddpType.getOptions(),AccountSearch.TYPE_LIST,"Failed! Type dropdown is not displayed!");
         log("Textbox: Search");
         Assert.assertTrue(accountSearchPage.txtAccountSearch.isDisplayed(),"Failed! Show button is not displayed!");

@@ -1,10 +1,12 @@
 package pages.sb11.master;
 
 import com.paltech.element.common.*;
+import common.SBPConstants;
 import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.master.popup.EmailSendingHistoryPopup;
+import utils.sb11.CompanySetUpUtils;
 
 public class AddressBookPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
@@ -90,5 +92,18 @@ public class AddressBookPage extends WelcomePage {
             throw new RuntimeException(e);
         }
         return new EmailSendingHistoryPopup();
+    }
+
+    public void verifyUI(String clientCode) {
+        System.out.println("Dropdown: Company Unit, Client");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertTrue(ddpClient.getOptions().contains(clientCode),"Failed! Client dropdown is not displayed!");
+        System.out.println("Textbox: Account Code");
+        Assert.assertEquals(lblAccountCode.getText(),"Account Code","Failed! Account Code textbox is not displayed!");
+        System.out.println("Button: Search, History");
+        Assert.assertEquals(btnSearch.getText(),"Search","Failed! Search button is not displayed!");
+        Assert.assertEquals(btnHistory.getText(),"History","Failed! History button is not displayed!");
+        System.out.println("Validate Address Book table is displayed with correctly header column");
+        Assert.assertEquals(tbAddressBook.getHeaderNameOfRows(), SBPConstants.AddressBook.TABLE_HEADER,"Failed! Address Book table is displayed with incorrect header column");
     }
 }

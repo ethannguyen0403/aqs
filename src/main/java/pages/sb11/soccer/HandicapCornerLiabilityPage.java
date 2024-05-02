@@ -1,12 +1,17 @@
 package pages.sb11.soccer;
 
 import com.paltech.element.common.*;
+import common.SBPConstants;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Order;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
 
 import java.util.List;
+
+import static common.SBPConstants.COMPANY_UNIT_LIST_ALL;
+import static common.SBPConstants.STAKE_LIST;
 
 public class HandicapCornerLiabilityPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
@@ -101,5 +106,23 @@ public class HandicapCornerLiabilityPage extends WelcomePage {
                 return i;
             i = i +1;
         }
+    }
+
+    public void verifyUI() {
+        System.out.println("Company Unit, Smart Type, Show Only PT-Bets,Live/NonLive, From Date, To Date, Stake");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST_ALL,"Failed! Company Unit dropdown is not displayed");
+        Assert.assertEquals(ddpSmartType.getOptions(), SBPConstants.MatchOddsLiability.SMART_TYPE_LIST,"Failed! Smart Type dropdown is not displayed");
+        Assert.assertEquals(lblPTBets.getText(),"PT-Bets","Failed! PT Bets checkbox is not displayed");
+        Assert.assertEquals(lblFromDate.getText(),"From Date","Failed! From Date datetime picker is not displayed");
+        Assert.assertEquals(lblToDate.getText(),"To Date","Failed! To Date datetime picker is not displayed");
+        Assert.assertEquals(ddpStake.getOptions(),STAKE_LIST,"Failed! Stake dropdown is not displayed");
+        System.out.println("Show Bet Types, Show Leagues, Show Groups, Show Events and Show button");
+        Assert.assertEquals(lblShowBetType.getText(),"Show Bet Types\nAll","Failed! Show Bet Types button is not displayed");
+        Assert.assertEquals(lblShowLeagues.getText(), "Show Leagues\nAll","Failed! Show Leagues button is not displayed");
+        Assert.assertEquals(lblShowGroups.getText(),"Show Groups\nAll","Failed! Show Groups button is not displayed");
+        Assert.assertEquals(lblShowEvents.getText(),"Show Events\nAll","Failed! Show Events button is not displayed");
+        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");
+        System.out.println("Event table header columns is correctly display");
+        Assert.assertEquals(tblOrder.getHeaderNameOfRows(), SBPConstants.HandicapCornerLiability.TABLE_HEADER,"FAILED! Handicap Corner Liability Bets table header is incorrect display");
     }
 }

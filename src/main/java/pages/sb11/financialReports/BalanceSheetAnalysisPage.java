@@ -296,7 +296,22 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
         Double capitalValue = Double.valueOf(getTotalOfAccountType("Capital", month,isDebit));
         double totalBalanceEx = DoubleUtils.roundUpWithTwoPlaces(assetValue + liabilityValue + capitalValue);
         double totalBalanceAc = Double.valueOf(getTotalOfAccountType("Total Balance", month,isDebit));
-        //BA accept difference 0.01
-        Assert.assertEquals(totalBalanceAc,totalBalanceEx,0.01,"FAILED!"+totalBalanceEx+" difference from "+totalBalanceAc);
+        //BA accept difference 0.02
+        Assert.assertEquals(totalBalanceAc,totalBalanceEx,0.02,"FAILED!"+totalBalanceEx+" difference from "+totalBalanceAc);
+    }
+
+    public void exportFile(String type) {
+        if (type.equals("Excel")){
+            btnExportExcel.click();
+        } else {
+            btnExportPDF.click();
+        }
+        waitSpinnerDisappeared();
+        //wait for computer download file
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

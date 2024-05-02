@@ -11,6 +11,8 @@ import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.control.ConfirmPopupControl;
+import utils.sb11.CompanySetUpUtils;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -127,14 +129,15 @@ public class ConfirmBetsPage extends WelcomePage {
         double total = 0;
 
         while (i<=totalRows) {
-            double stake = Double.parseDouble(TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, i, "input")).getAttribute("value").trim());
+            double stake = Double.parseDouble(TextBox.xpath(tblOrder.getxPathOfCell(1, colStake, i, "input")).getAttribute("value").trim().replace(",",""));
             total = total + stake;
             i = i + 1;
         }
         return total;
     }
 
-    public boolean isTotalStakeMatched(String totalStake){
+    public boolean isTotalStakeMatched(){
+        String totalStake = lblTotalStake.getText().replace(",","");
         String totalStakeOrder = String.valueOf(calTotalStake());
         if (totalStake.contains(totalStakeOrder))
             return true;
@@ -427,5 +430,23 @@ public class ConfirmBetsPage extends WelcomePage {
         int indexRow = tblOrder.getNumberOfRows(false,true);
         String numberMatched = tblOrder.getControlOfCell(1,tblOrder.getColumnIndexByName("#"),indexRow,null).getText().trim();
         Assert.assertTrue(lblServerResponded.getText().trim().contains(String.format("Total %s record(s)",numberMatched)),"FAILED! Number"+numberMatched+" is not matched");
+    }
+
+    public void verifyUI() {
+        System.out.println("Dropdown: Company Unit, Status, Sports, Bet Types, Date Type");
+        Assert.assertEquals(ddbCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(), "Failed! Company Unit dropdown is not displayed!");
+        Assert.assertEquals(ddbStatus.getOptions(), SBPConstants.ConfirmBets.STATUS_LIST, "Failed! Status dropdown is not displayed!");
+        Assert.assertEquals(ddbSport.getOptions(), SBPConstants.ConfirmBets.SPORT_LIST, "Failed! Sport dropdown is not displayed!");
+        Assert.assertEquals(ddbBetType.getOptions(), SBPConstants.ConfirmBets.BET_TYPE_LIST, "Failed! Bet Types dropdown is not displayed!");
+        Assert.assertEquals(ddbDateType.getOptions(), SBPConstants.ConfirmBets.DATE_TYPE_LIST, "Failed! Date Type dropdown is not displayed!");
+        System.out.println("Textbox: Acc Starts With, Account Code");
+        Assert.assertEquals(lblAccStartWith.getText(), "Acc Starts With", "Failed! Acc Start With textbox is not displayed!");
+        Assert.assertEquals(lblAccountCode.getText(), "Account Code", "Failed! Account Code textbox is not displayed!");
+        System.out.println("Button: Show button");
+        Assert.assertEquals(btnShow.getText(), "Show", "Failed! Show button is not displayed!");
+        System.out.println("Validate there are 3 tables displayed");
+        Assert.assertEquals(tblOrder.getHeaderNameOfRows(), SBPConstants.ConfirmBets.TABLE_HEADER_ORDER, "Failed! Order table is not displayed!");
+        Assert.assertEquals(tblPending.getHeaderNameOfRows(), SBPConstants.ConfirmBets.TABLE_HEADER_PENDING, "Failed! Pending Accounts table is not displayed!");
+        Assert.assertEquals(tblConfirm.getHeaderNameOfRows(), SBPConstants.ConfirmBets.TABLE_HEADER_CONFIRMED, "Failed! Confirmed Accounts table is not displayed!");
     }
 }

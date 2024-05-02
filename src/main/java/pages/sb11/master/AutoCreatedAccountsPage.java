@@ -8,7 +8,7 @@ import controls.Table;
 import pages.sb11.WelcomePage;
 
 public class AutoCreatedAccountsPage extends WelcomePage {
-    Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
+    Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
     public String getTitlePage ()
     {
         return this.lblTitle.getText().trim();

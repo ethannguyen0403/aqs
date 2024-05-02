@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import pages.sb11.accounting.JournalEntriesPage;
 import pages.sb11.accounting.JournalReportsPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class JournalReportsTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2166")
     @Parameters({"clientCode"})
     public void Journal_Reports_TC_2166(String clientCode){
@@ -36,25 +37,11 @@ public class JournalReportsTest extends BaseCaseAQS {
         log("@Step 2: Access Accounting > Journal Reports");
         JournalReportsPage journalReportsPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_REPORTS,JournalReportsPage.class);
         log("Validate UI Info display correctly");
-        log("Dropdown: Company Unit, Date Type, Account Type, Client/Bookie/Ledger, Transaction Type");
-        Assert.assertEquals(journalReportsPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed");
-        Assert.assertEquals(journalReportsPage.ddpDateType.getOptions(),JournalReports.DATE_TYPE,"Failed! Date Type dropdown is not displayed");
-        Assert.assertEquals(journalReportsPage.ddpAccountType.getOptions(),JournalReports.ACCOUNT_TYPE,"Failed! Account Type dropdown is not displayed");
-        Assert.assertTrue(journalReportsPage.ddpClientBookieLedger.getOptions().contains(clientCode),"Failed! Client dropdown is not displayed");
-        Assert.assertEquals(journalReportsPage.ddpTransactionType.getOptions(),JournalReports.TRANSACTION_TYPE_LIST,"Failed! Transaction Type dropdown is not displayed");
-        log("Textbox: Account Name");
-        Assert.assertEquals(journalReportsPage.lblAccountName.getText(),"Account Name","Failed! Account Name textbox is not displayed!");
-        log("Datetimepicker: From Date, To Date");
-        Assert.assertEquals(journalReportsPage.lblFromDate.getText(),"From Date", "Failed! From Date datetimepicker is not displayed!");
-        Assert.assertEquals(journalReportsPage.lblToDate.getText(),"To Date", "Failed! To Date datetimepicker is not displayed!");
-        log("Button: Search button");
-        Assert.assertTrue(journalReportsPage.btnSearch.isDisplayed(),"Failed! Search button is not displayed!");
-        log("Journal Reports should displayed with correctly header name");
-        Assert.assertEquals(journalReportsPage.tbJournalReport.getHeaderNameOfRows(),JournalReports.TABLE_HEADER,"Failed! Journal Report table is not displayed");
+        journalReportsPage.verifyUI(clientCode);
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2167")
     public void Journal_Reports_TC_2167(){
         log("@title: Validate transaction in Journal Entries should display correctly on Journal Report");
@@ -81,7 +68,7 @@ public class JournalReportsTest extends BaseCaseAQS {
         log("@Step 3: Access Accounting > Journal Reports");
         JournalReportsPage journalReportsPage = welcomePage.navigatePage(ACCOUNTING,JOURNAL_REPORTS,JournalReportsPage.class);
         log("@Step 4: Filter with transaction at pre-condition");
-        journalReportsPage.filterReports(KASTRAKI_LIMITED,dateType,"","","All","",transType,"AutoExpenditureCredit1");
+        journalReportsPage.filterReports(KASTRAKI_LIMITED,dateType,"","","All","",transType,"AutoCreditExpenditure");
         log("Verify 1: Validate transaction in Journal Entries should display correctly on Journal Report");
         journalReportsPage.verifyTxn(transaction,true);
         log("INFO: Executed completely");

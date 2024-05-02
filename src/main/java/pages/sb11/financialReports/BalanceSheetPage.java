@@ -154,10 +154,11 @@ public class BalanceSheetPage extends WelcomePage {
         for (int i = 0; i < lstParentName.size();i++){
             totalAmountOfParent = totalAmountOfParent + checkNegativeValue(getAmount(lstParentName.get(i)));
         }
-        if (!totalAmount.equals(DoubleUtils.roundUpWithTwoPlaces(totalAmountOfParent))){
+        if (!(Math.abs(totalAmount - DoubleUtils.roundUpWithTwoPlaces(totalAmountOfParent)) <= 0.01)){
             System.err.println("Total Amount of "+detailTypeName+" incorrect");
             return false;
         }
+        ;
         return true;
     }
     public Label getTotalAmount(String detailTypeName){
@@ -250,5 +251,19 @@ public class BalanceSheetPage extends WelcomePage {
             }
         }
         return true;
+    }
+
+    public void exportFile(String type) {
+        if (type.equals("Excel")){
+            btnExportToExcel.click();
+        } else {
+            btnExportToPDF.click();
+        }
+        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

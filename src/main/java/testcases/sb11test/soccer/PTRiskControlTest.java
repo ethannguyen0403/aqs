@@ -29,7 +29,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"smoke","ethan"})
     @Parameters({"clientCode","accountCode"})
     @TestRails(id = "1386")
-    public void PTRiskControlTC_1386(String clientCode, String accountCode) throws IOException {
+    public void PTRiskControlTC_1386(String clientCode, String accountCode) throws IOException, InterruptedException {
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (HK)");
         log("Precondition: Having account with Pending HDP/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
@@ -57,6 +57,8 @@ public class PTRiskControlTest extends BaseCaseAQS {
                 .betType("BACK")
                 .build();
         BetEntrytUtils.placeBetAPI(order);
+        //wait for PT Risk Control update
+        Thread.sleep(5000);
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to Soccer > PT Risk Control");
         PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
@@ -307,16 +309,18 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2128")
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     public void PTRiskControlTC_2128(){
         log("@title: Validate that can copy report successfully");
-        String date = String.format(DateUtils.getDate(-3,"dd/MM/yyyy","GMT +7"));
+        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > PT Risk Control");
         PTRiskPage ptRiskPage = welcomePage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
         log("@Step 3: Click Copy Report");
         ptRiskPage.dtpFromDate.selectDate(date,"dd/MM/yyyy");
+        ptRiskPage.waitSpinnerDisappeared();
         ptRiskPage.btnShow.click();
+        ptRiskPage.waitSpinnerDisappeared();
         ptRiskPage.btnCopy.click();
         log("Message success should display correctly as \"Copied!\"");
         Assert.assertEquals(ptRiskPage.messageSuccess.getText(),"Copied","Failed! Copy button is not worked");
@@ -419,10 +423,10 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3416")
-    @Test(groups = {"regression", "2023.10.31"})
+    @Test(groups = {"regression", "2023.10.31","ethan2.0"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3416(String accountCode) {
-        String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", GMT_7);
+        String currentDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         String dateAPI = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
         log("@title: Validate can filter by Basket ball 1x2 matched bets ");
         log("@Precondition: There are some matched Basket ball 1x2 matched bets from Pinnacle/BetISN/Fair or Bet Entry page");
@@ -431,7 +435,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
                 "Home Team: QA Basketball Team 1\n" +
                 "Away Team: QA Basketball Team 2");
         Event eventBasketball =
-                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(DateUtils.formatDate(currentDate, "yyyy-MM-dd", "dd/MM/yyyy"))
+                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(currentDate)
                         .home("QA Basketball Team 1").away("QA Basketball Team 2")
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
@@ -467,10 +471,10 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3417")
-    @Test(groups = {"regression", "2023.10.31"})
+    @Test(groups = {"regression", "2023.10.31","ethan2.0"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3417(String accountCode) {
-        String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", GMT_7);
+        String currentDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         String dateAPI = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
         log("@title: Validate Bet Types only shows option '1x2'");
         log("@Precondition: There are some matched Basket ball 1x2 matched bets from Pinnacle/BetISN/Fair or Bet Entry page");
@@ -479,7 +483,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
                 "Home Team: QA Basketball Team 1\n" +
                 "Away Team: QA Basketball Team 2");
         Event eventBasketball =
-                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(DateUtils.formatDate(currentDate, "yyyy-MM-dd", "dd/MM/yyyy"))
+                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(currentDate)
                         .home("QA Basketball Team 1").away("QA Basketball Team 2")
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
@@ -510,7 +514,8 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"regression", "2023.10.31"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3418(String accountCode) {
-        String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", GMT_7);
+        //TODO having improvement AQS-4080
+        String currentDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         String dateAPI = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
         log("@title: Validate forecast table displays the correct value");
         log("@Precondition: There are some matched Basket ball 1x2 matched bets from Pinnacle/BetISN/Fair or Bet Entry page");
@@ -519,7 +524,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
                 "Home Team: QA Basketball Team 1\n" +
                 "Away Team: QA Basketball Team 2");
         Event eventBasketball =
-                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(DateUtils.formatDate(currentDate, "yyyy-MM-dd", "dd/MM/yyyy"))
+                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(currentDate)
                         .home("QA Basketball Team 1").away("QA Basketball Team 2")
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
@@ -576,11 +581,11 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3419")
-    @Test(groups = {"regression_stg", "2023.10.31"})
+    @Test(groups = {"regression_stg", "2023.10.31","ethan2.0"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3419(String accountCode) throws IOException{
         String percent = "6";
-        String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", GMT_7);
+        String currentDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         String dateAPI = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
         log("@title: Validate the Bet list displays the correct value ");
         log("@Precondition: There are some matched Basket ball 1x2 matched bets from Pinnacle/BetISN/Fair or Bet Entry page");
@@ -589,7 +594,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
                 "Home Team: QA Basketball Team 1\n" +
                 "Away Team: QA Basketball Team 2");
         Event eventBasketball =
-                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(DateUtils.formatDate(currentDate, "yyyy-MM-dd", "dd/MM/yyyy"))
+                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(currentDate)
                         .home("QA Basketball Team 1").away("QA Basketball Team 2")
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
         Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
@@ -615,7 +620,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
                     Label.xpath(String.format(ptRiskBetListPopup.lblTabxPath, "1x2")).isDisplayed(), "FAILED! The tab 1x2 is not correct");
             log("Verify 2: PT% column shows PT% setting if an account that placed bets, has a PT% setting on account list");
             List<String> listPTValue = ptRiskBetListPopup.tblBetList.getColumn(ptRiskBetListPopup.tblBetList.getColumnIndexByName("PT%"), false);
-            Assert.assertTrue(listPTValue.contains(percent), "FAILED! The PT value is missing on bet list");
+            Assert.assertTrue(listPTValue.contains(String.format("CO: %s%%",percent)), "FAILED! The PT value is missing on bet list");
         } finally {
             log("@Post-condition: Deleted the event Basketball: ");
             EventScheduleUtils.deleteEventByAPI(eventBasketball,dateAPI);

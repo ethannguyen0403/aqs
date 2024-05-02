@@ -184,7 +184,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="205")
-    @Test(groups = {"smoke","ethan"})
+    @Test(groups = {"smoke","ethan2.0"})
     @Parameters({"accountCode"})
     public void BetSettlement_TC205(String accountCode){
         log("@title: Validate that user can Settled and Send Settlement email successfully");
@@ -216,7 +216,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("@Verify 1 .Successfully message displays with 2 popup:\n" +
                 "Bet(s) is settled successfully.\n" +
                 "Statement Email has been sent to your mail box.");
-        Assert.assertTrue(listSuccessMessage.equals(BetSettlement.LST_MESSAGE_SETTLE_SENT_MAIL),
+        Assert.assertEquals(listSuccessMessage,BetSettlement.LST_MESSAGE_SETTLE_SENT_MAIL,
                 "Failed! List Success message after Settle & Send Settlement Email bet is incorrect. Actual: " + listSuccessMessage + "\n");
 
         log("Verify 2. The bet settled displays in result list");
@@ -276,8 +276,6 @@ public class BetSettlementTest extends BaseCaseAQS {
         Assert.assertEquals(emailInfo.get(1), BET_LIST_STATEMENT_EMAIL, "Failed! title of email is incorrect");
         Assert.assertEquals(emailInfo.get(3).get(0), expectedRow1.get(0), "Failed! title of email is incorrect");
         Assert.assertEquals(emailInfo.get(3).get(1), expectedRow1.get(1), "Failed! title of email is incorrect");
-
-
         log("INFO: Executed completely");
     }
 

@@ -40,7 +40,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
 
 
     @TestRails(id = "2816")
-    @Test(groups = {"regression", "2023.10.31","ethan"})
+    @Test(groups = {"regression", "2023.10.31","ethan2.0"})
     public void Retained_Earnings_TC2816() {
         log("@title: Validate 'Retained Earnings' menu displays if active Retained Earnings permission");
         log("@Step 1: Login to SB11 site with account has 'Retained Earnings' permission is ON");
@@ -56,7 +56,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="2817")
-    @Test(groups =  {"regression", "2023.10.31","ethan"})
+    @Test(groups =  {"regression", "2023.10.31","ethan2.0"})
     public void Retained_Earnings_TC2817() {
         log("@title: Validate Description displays 3 rows 'Retained Earnings', 'Net Income/Loss from Operation' and 'Dividends'");
         log("@Step 1: Login to SB11 site with account has 'Retained Earnings' permission is ON");
@@ -184,7 +184,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="2822")
-    @Test(groups =  {"regression", "2023.10.31","ethan"})
+    @Test(groups =  {"regression", "2023.10.31","ethan2.0"})
     public void Retained_Earnings_TC2822() {
         String downloadPath = getDownloadPath() + "retained-earnings.pdf";
         log("@title: Validate 'Export To PDF' button work properly");
@@ -226,10 +226,10 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         String fromDate = ledgerStatementPage.getBeginDateOfFinanYear(FINANCIAL_YEAR);
         String toDate = ledgerStatementPage.getLastDateAfterCJE("dd/MM/yyyy");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,accountType,LEDGER_GROUP_RETAINED_EARNING_ACCOUNT,fromDate,toDate,"After CJE");
-        String value1 = ledgerStatementPage.getValueOfSubAcc("302.000.001.000","CUR Translation","Running Bal.");
-        String value2 = ledgerStatementPage.getValueOfSubAcc("302.000.002.000","CUR Translation","Running Bal.");
+        String beginningRetainedEarningsAc = ledgerStatementPage.getValueOfSubAcc("302.000.001.000","CUR Translation","Running Bal.");
+        String netIncomeAc = ledgerStatementPage.getValueOfSubAcc("302.000.002.000","CUR Translation","Running Bal.");
         ledgerStatementPage.showLedger("","","",LEDGER_GROUP_DIVIDEND_ACCOUNT,"","","");
-        String value3 = ledgerStatementPage.getTotalInHKD(LEDGER_GROUP_DIVIDEND_ACCOUNT,"CUR Translation","Running Bal.");
+        String dividendsAc = ledgerStatementPage.getTotalInHKD(LEDGER_GROUP_DIVIDEND_ACCOUNT,"CUR Translation","Running Bal.");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Expand 'Financial Reports' menu");
         log("@Step 3: Click 'Retained Earnings'");
@@ -240,9 +240,9 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("@Verify 1: Beginning Retained Earnings value should be = value at precondition (1)\n" +
                 "Net Income/Loss from Operation value should be = value at precondition (2)\n" +
                 "Dividends value should be = value at precondition (3)");
-        Assert.assertEquals(value2,page.getAmount("Beginning Retained Earnings"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
-        Assert.assertEquals(value1,page.getAmount("Net Income/Loss from Operation"),"FAILED! Net Income/Loss from Operation amount displays incorrect.");
-        Assert.assertEquals(value3,page.getAmount("Dividends"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
+        Assert.assertEquals(netIncomeAc,page.getAmount("Beginning Retained Earnings"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
+        Assert.assertEquals(beginningRetainedEarningsAc,page.getAmount("Net Income/Loss from Operation"),"FAILED! Net Income/Loss from Operation amount displays incorrect.");
+        Assert.assertEquals(dividendsAc,page.getAmount("Dividends"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
         log("INFO: Executed completely");
     }
     @TestRails(id="23953")
@@ -264,10 +264,10 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         String fromDate = ledgerStatementPage.getBeginDateOfFinanYear(FINANCIAL_YEAR);
         String toDate = ledgerStatementPage.getLastDateAfterCJE("dd/MM/yyyy");
         ledgerStatementPage.showLedger(FAIR,FINANCIAL_YEAR,accountType,LEDGER_GROUP_RETAINED_EARNING_ACCOUNT,fromDate,toDate,"After CJE");
-        String value1 = ledgerStatementPage.getValueOfSubAcc("302.000.001.000","CUR Translation","Running Bal.");
-        String value2 = ledgerStatementPage.getValueOfSubAcc("302.000.002.000","CUR Translation","Running Bal.");
+        String beginningRetainedEarningsAc = ledgerStatementPage.getValueOfSubAcc("302.000.001.000","CUR Translation","Running Bal.");
+        String netIncomeAc = ledgerStatementPage.getValueOfSubAcc("302.000.002.000","CUR Translation","Running Bal.");
         ledgerStatementPage.showLedger("","","",LEDGER_GROUP_DIVIDEND_ACCOUNT,"","","");
-        String value3 = ledgerStatementPage.getTotalInHKD(LEDGER_GROUP_DIVIDEND_ACCOUNT,"CUR Translation","Running Bal.");
+        String dividendsAc = ledgerStatementPage.getTotalInHKD(LEDGER_GROUP_DIVIDEND_ACCOUNT,"CUR Translation","Running Bal.");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Expand 'Financial Reports' menu");
         log("@Step 3: Click 'Retained Earnings'");
@@ -278,9 +278,9 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("@Verify 1: Beginning Retained Earnings value should be = value at precondition (1)\n" +
                 "Net Income/Loss from Operation value should be = value at precondition (2)\n" +
                 "Dividends value should be = value at precondition (3)");
-        Assert.assertEquals(value2,page.getAmount("Beginning Retained Earnings"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
-        Assert.assertEquals(value1,page.getAmount("Net Income/Loss from Operation"),"FAILED! Net Income/Loss from Operation amount displays incorrect.");
-        Assert.assertEquals(value3,page.getAmount("Dividends"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
+        Assert.assertEquals(netIncomeAc,page.getAmount("Beginning Retained Earnings"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
+        Assert.assertEquals(beginningRetainedEarningsAc,page.getAmount("Net Income/Loss from Operation"),"FAILED! Net Income/Loss from Operation amount displays incorrect.");
+        Assert.assertEquals(dividendsAc,page.getAmount("Dividends"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
         log("INFO: Executed completely");
     }
 

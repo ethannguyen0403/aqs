@@ -52,8 +52,9 @@ public class ClientBalancePage extends WelcomePage {
     public int findRowClientIndex(String clientName){
         int i = 1;
         Label lblClientName;
+        int colClient = tblClientBalance.getColumnIndexByName("Client");
         while (true) {
-            lblClientName = Label.xpath(tblClient.getxPathOfCellSPP(1, tblClientBalance.getColumnIndexByName("Client"), i, null));
+            lblClientName = Label.xpath(tblClient.getxPathOfCellSPP(1, colClient, i, null));
             if (!lblClientName.isDisplayed()) {
                 System.out.println("Can NOT found the client name " + clientName + " in the table");
                 return -1;
@@ -62,6 +63,7 @@ public class ClientBalancePage extends WelcomePage {
                 System.out.println("Found the client name " + clientName + " in the table");
                 return i;
             }
+            lblClientName.scrollToThisControl(false);
             i++;
         }
     }

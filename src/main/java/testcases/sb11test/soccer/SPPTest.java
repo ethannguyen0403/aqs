@@ -71,7 +71,7 @@ public class SPPTest extends BaseCaseAQS {
 
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan2.0"})
     @Parameters({"bookieCode","accountCode","bookieMasterCode","smartGroup","bookieSuperMasterCode"})
     @TestRails(id = "311")
     public void SPP_TC_311(String bookieCode,String accountCode, String bookieMasterCode,String smartGroup,String bookieSuperMasterCode) throws InterruptedException {
@@ -91,12 +91,12 @@ public class SPPTest extends BaseCaseAQS {
         int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
         String accountId = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
         BetEntrytUtils.placeManualBetAPI(companyId, accountId, SPORT_ID_MAP.get("Soccer"), order);
-        BetSettlementUtils.waitForBetIsUpdate(15);
+        BetSettlementUtils.waitForBetIsUpdate(10);
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Soccer"), order);
         int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Soccer"), order);
         BetSettlementUtils.waitForBetIsUpdate(5);
         BetSettlementUtils.sendManualBetSettleJson(accountId, order, betId, wagerId, SPORT_ID_MAP.get("Soccer"));
-        BetSettlementUtils.waitForBetIsUpdate(20);
+        BetSettlementUtils.waitForBetIsUpdate(10);
         log("@Step 1: Go to Bookie Statement >> filter Agent type: Super Master");
         log("@Step 2: Input bookie code as QA Bookie >> click Show");
         log("@Step 3: Find the master code: SM-QA1-QA Test >> click MS link at the master code");
@@ -221,7 +221,7 @@ public class SPPTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2134")
     @Parameters({"smartGroup","accountCode"})
     public void SPP_TC_2134(String smartGroup, String accountCode){

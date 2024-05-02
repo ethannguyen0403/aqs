@@ -5,6 +5,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.user.TradingPermissionPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
@@ -23,7 +24,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @TestRails(id = "2067")
     public void Trading_Permission_TC_2067(){
         log("@title: Validate UI on Trading Permission is correctly displayed");
@@ -31,13 +32,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         log("@Step 2: Click on User > Trading Permission page");
         TradingPermissionPage tradingPermissionPage = welcomePage.navigatePage(USER,TRADING_PERMISSION,TradingPermissionPage.class);
         log("Validate UI Info display correctly");
-        log("Controls: Company Unit, User Role, Username and Show button");
-        Assert.assertEquals(tradingPermissionPage.ddpCompanyUnit.getOptions(), COMPANY_UNIT_LIST,"FAILED! Company Unit dropdown is not displayed!");
-        Assert.assertTrue(tradingPermissionPage.ddpUserRole.getOptions().contains("Administrator"), "FAILED! Company Unit dropdown is not displayed!");
-        Assert.assertEquals(tradingPermissionPage.lblUsername.getText(), "Username","FAILED! Username textbox is not displayed!");
-        Assert.assertEquals(tradingPermissionPage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
-        log("Customer table header columns is correctly display");
-        Assert.assertEquals(tradingPermissionPage.tbTradPermission.getHeaderNameOfRows(), TradingPermission.TABLE_HEADER,"FAILED! Pending table header is incorrect display");
+        tradingPermissionPage.verifyUI();
         log("INFO: Executed completely");
     }
 

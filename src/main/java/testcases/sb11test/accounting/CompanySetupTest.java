@@ -74,8 +74,7 @@ public class CompanySetupTest extends BaseCaseAQS {
 
     @TestRails(id = "4334")
     @Test(groups = {"regression_stg", "2023.10.31"})
-    @Parameters({"password", "userNameOneRole"})
-    public void Company_Set_up_TC4334(String password, String userNameOneRole) throws Exception{
+    public void Company_Set_up_TC4334(){
         log("@title: Validate accounts with permission can access page");
         log("@Precondition: Active Company Set-up option in one role account");
         log("@Step 1: Login to SB11 site with account has 'Company Set-up' permission is ON");
@@ -125,7 +124,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "4343")
-    @Test(groups = {"regression", "2023.10.31"})
+    @Test(groups = {"regression", "2023.10.31","ethan2.0"})
     @Parameters({"companyName", "companyCurrency"})
     public void Company_Set_up_TC4343(String companyName, String companyCurrency) {
         String toDayAvoidLastDayOfMonth = "";
@@ -147,7 +146,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         log(String.format("@Verify 1: Validate  the table has \"CUR transaction in %s\" is NOT displayed.", companyCurrency));
         Assert.assertFalse(ledgerStatementPage.lblAmountShowCurrency.isDisplayed(),  "FAILED! The table CUR transaction is shown");
         log("@Verify 2: Validate shows text correct with currency: " + companyCurrency);
-        Assert.assertEquals(ledgerStatementPage.getDescriptionTotalAmountInOriginCurrency("Total in"), expectedText1, "FAILED! Text is not correct");
+        Assert.assertEquals(ledgerStatementPage.getDescriptionTotalAmountInOriginCurrency("Total in "+companyCurrency), expectedText1, "FAILED! Text is not correct");
         Assert.assertEquals(ledgerStatementPage.lblGrandTotalInOrigin.getText().trim(),expectedText2,  "FAILED! Text is not correct");
         Assert.assertEquals(ledgerStatementPage.tbLedger.getHeaderNameOfRows().get(3), expectedText3, "FAILED! Text is not correct");
 
@@ -371,7 +370,7 @@ public class CompanySetupTest extends BaseCaseAQS {
                 clientBalanceDetailPage.lblValueGrandTotalFooter.getText(),"FAILED! Total Balance in HKD display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31"})
+    @Test(groups = {"regression","2023.10.31","ethan2.0"})
     @TestRails(id = "4355")
     public void Company_Set_up_TC4355() {
         log("@title: Validate that show currency 'HKD' in 'Bookie Balance' page when filtering Company Unit = All ");
@@ -466,23 +465,25 @@ public class CompanySetupTest extends BaseCaseAQS {
         Assert.assertTrue(lstHeader3.contains("Running [HKD]"),"FAILED! Running [HKD] display incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31"})
+    @Test(groups = {"regression","2023.10.31","ethan2.0"})
     @TestRails(id = "4360")
-    public void Company_Set_up_TC4360() {
+    public void Company_Set_up_TC4360() throws InterruptedException {
         log("@title: Validate that display financial year correctly by company's accounting period in 'Ledger Statement' page");
         log("@pre-condition: Login with valid account");
         log("@Step 1: Go to General Report >> Ledger Statement");
         LedgerStatementPage page = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         log("@Step 2: Select company unit 'Aquifer' and observe financial year");
         page.ddCompanyUnit.selectByVisibleText("Aquifer");
-        welcomePage.waitSpinnerDisappeared();
+        //wait for dropdown update
+        Thread.sleep(5000);
         log("@Verify 1: financial Year filter will list options as a single year");
-        Assert.assertTrue(page.ddFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_1_YEAR),"FAILED! Financial 1 year display incorrect.");
+        Assert.assertEquals(page.ddFinancialYear.getOptions(),FINANCIAL_YEAR_LIST_1_YEAR,"FAILED! Financial 1 year display incorrect.");
         log("@Step 3: Select company unit 'Kastraki' and observe financial year");
         page.ddCompanyUnit.selectByVisibleText(KASTRAKI_LIMITED);
-        welcomePage.waitSpinnerDisappeared();
+        //wait for dropdown update
+        Thread.sleep(5000);
         log("@Verify 2: financial Year filter will list options as period of 2 year");
-        Assert.assertTrue(page.ddFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST),"FAILED! Financial period of 2 year display incorrect.");
+        Assert.assertEquals(page.ddFinancialYear.getOptions(),FINANCIAL_YEAR_LIST,"FAILED! Financial period of 2 year display incorrect.");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.10.31"})
@@ -662,7 +663,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "9148")
-    @Test(groups = {"regression", "2023.10.31"})
+    @Test(groups = {"regression", "2023.10.31","ethan2.0"})
     @Parameters({"companyName", "companyCurrency"})
     public void Company_Set_up_TC9148(String companyName, String companyCurrency) {
         String lastDateOfPreviousMonth = "";
@@ -681,7 +682,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         log(String.format("@Verify 1: Validate  the table has \"CUR transaction in %s\" is displayed.", companyCurrency));
         Assert.assertTrue(ledgerStatementPage.lblAmountShowCurrency.isDisplayed(),  "FAILED! The table CUR transaction is not shown");
         log("@Verify 2: Validate shows text correct with currency: " + companyCurrency);
-        Assert.assertEquals(ledgerStatementPage.getDescriptionTotalAmountInOriginCurrency("Total in"), expectedText1, "FAILED! Text is not correct");
+        Assert.assertEquals(ledgerStatementPage.getDescriptionTotalAmountInOriginCurrency("Total in "+companyCurrency), expectedText1, "FAILED! Text is not correct");
         Assert.assertEquals(ledgerStatementPage.lblGrandTotalInOrigin.getText().trim(),expectedText2,  "FAILED! Text is not correct");
         Assert.assertEquals(ledgerStatementPage.tbLedger.getHeaderNameOfRows().get(3), expectedText3, "FAILED! Text is not correct");
 

@@ -203,7 +203,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     }
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "135")
-    @Parameters({"accountCode","accountCurrency"})
+    @Parameters({"accountCode"})
     public void MonitorBetsTC_135(String accountCode) throws InterruptedException {
         log("@title: Validate only Live bets are shown when filter Live");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");

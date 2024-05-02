@@ -39,13 +39,10 @@ public class MasterGroupPage extends WelcomePage {
     }
 
     public MasterGroupReportPopup openMasterGroupReport(String masterCode){
-        int rowIndex = getMasterRowIndex(masterCode);
-        tbMaster.getControlOfCell(1,colMaster,rowIndex,null).click();
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        int colIndex = tbMaster.getColumnIndexByName("Master Code");
+        int rowIndex = tbMaster.getRowIndexContainValue(masterCode,colIndex,null);
+        tbMaster.getControlOfCell(1,colIndex,rowIndex,null).click();
+        waitSpinnerDisappeared();
         return new MasterGroupReportPopup();
     }
 
@@ -61,13 +58,9 @@ public class MasterGroupPage extends WelcomePage {
     }
 
     public MasterGroupClientListPopup openMasterGroupClientList(String masterCode){
-        int rowIndex = getMasterRowIndex(masterCode);
-        tbMaster.getControlOfCell(1,tbMaster.getColumnIndexByName("CL"),rowIndex,null).click();
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        tbMaster.getControlBasedValueOfDifferentColumnOnRow(masterCode,1,tbMaster.getColumnIndexByName("Master Code"),1,null,tbMaster.getColumnIndexByName("CL"),null,true,false).click();
+        waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
         return new MasterGroupClientListPopup();
     }
 

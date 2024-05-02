@@ -35,6 +35,7 @@ public class SoccerResultEntryPage extends WelcomePage {
             btnCricket.click();
         }
         waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
     }
 
     public void filterResult(String type, String date, String league, String orderBy, String status, boolean isShow){

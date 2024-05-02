@@ -3,8 +3,11 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import common.SBPConstants;
 import controls.DateTimePicker;
+import org.testng.Assert;
 import pages.sb11.popup.ConfirmPopup;
+import utils.sb11.CompanySetUpUtils;
 
 public class ManualBetBetEntryPage extends BetEntryPage {
     Label lblTitle = Label.xpath("//app-bet-entry-mixed-sport//div[contains(@class,'main-box-header')]/div[1]/span");
@@ -81,5 +84,28 @@ public class ManualBetBetEntryPage extends BetEntryPage {
         confirmPopup.confirm(isConfirm);
         messageSuccess.isDisplayedShort(5);
         return messageSuccess.getText();
+    }
+
+    public void verifyUI() {
+        System.out.println("Dropdown: Company Unit, Sport, Selection, OddsType");
+        Assert.assertEquals(ddCompany.getOptions(), CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown is not displayed!");
+        Assert.assertEquals(ddSport.getOptions(), SBPConstants.BetEntryPage.SPORT_LIST,"Failed! Sport dropdown is not displayed!");
+        Assert.assertEquals(ddBetType.getOptions(), SBPConstants.BetEntryPage.BET_TYPE,"Failed! Bet type dropdown is not displayed!");
+        Assert.assertEquals(ddOddType.getOptions(), SBPConstants.BetEntryPage.ODD_TYPE,"Failed! Odd type dropdown is not displayed!");
+        System.out.println("Textbox: Account Code, Bet Description, Selection, Bet type, Odds, Stake, WinLoss");
+        Assert.assertTrue(lblAccountCode.getText().contains("Account Code"),"Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(lblClient.getText(),"Client","Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(lblBalance.getText(),"Balance","Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(lblBetDescription.getText(),"Bet Description","Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(lblSelection.getText(),"Selection","Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(lblBetType.getText(),"Bet type","Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(lblOdds.getText(),"Odds","Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(lblStake.getText(),"Stake","Failed! Account Code textbox is not displayed!");
+        Assert.assertEquals(lblWinLoss.getText(),"Win/Loss or Comm Amount","Failed! Account Code textbox is not displayed!");
+        System.out.println("Datetimepicker: Date");
+        Assert.assertEquals(lblDate.getText(),"Date","Failed! Date datetimepicker is not displayed!");
+        System.out.println("Button: Show button, Place Bet button");
+        Assert.assertTrue(btnSearch.isDisplayed(),"Failed! Search button is not displayed!");
+        Assert.assertTrue(btnPlaceBet.isEnabled(),"Failed! Place bet button is not displayed!");
     }
 }

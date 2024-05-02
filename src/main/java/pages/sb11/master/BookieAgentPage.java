@@ -4,9 +4,12 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import common.SBPConstants;
 import controls.Table;
+import org.testng.Assert;
 import pages.sb11.master.bookiesystempopup.AccountListPopup;
 import pages.sb11.master.bookiesystempopup.AgentListPopup;
+import utils.sb11.CompanySetUpUtils;
 
 public class BookieAgentPage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
@@ -69,5 +72,22 @@ public class BookieAgentPage {
         while(lblSpin.isDisplayed()) {
             lblSpin.waitForControlInvisible();
         }
+    }
+
+    public void verifyUI(String bookieName) {
+        System.out.println("Dropdown: Company Unit, Bookie, Go To");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown iss not displayed!");
+        Assert.assertTrue(ddpBookie.getOptions().contains(bookieName),"Failed! Bookie dropdown is not displayed!");
+        Assert.assertTrue(ddpSuper.getOptions().contains("[No Super]"),"Failed! Super dropdown is not displayed!");
+        Assert.assertTrue(ddpMaster.isDisplayed(),"Failed! Master dropdown is not displayed!");
+        Assert.assertEquals(ddpGoTo.getOptions(), SBPConstants.BookieSystem.GO_TO_LIST,"Failed! Go To dropdown is not displayed!");
+        System.out.println("Textbox: Master Code");
+        Assert.assertEquals(lblAgentCode.getText(),"Agent Code","Failed! Agent Code textbox is not displayed!");
+        System.out.println("Button: Search, Add Agent, More Filter");
+        Assert.assertEquals(btnSearch.getText(),"Search","Failed! Search button is not displayed!");
+        Assert.assertEquals(btnMoreFilters.getText(),"More Filters","Failed! More Filters button is not displayed!");
+        Assert.assertEquals(btnAddAgent.getText(),"Add Agent","Failed! Add Agent button is not displayed!");
+        System.out.println("Validate Agent list table is displayed with correct header");
+        Assert.assertEquals(tbAgent.getHeaderNameOfRows(), SBPConstants.BookieSystem.TABLE_HEADER_AGENT,"Failed! Agent list table is displayed with incorrect header");
     }
 }

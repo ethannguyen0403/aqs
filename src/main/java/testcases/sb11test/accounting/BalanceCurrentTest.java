@@ -24,7 +24,7 @@ public class BalanceCurrentTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan2.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "2169")
     public void Balance_Current_2169(String clientCode){
@@ -34,7 +34,7 @@ public class BalanceCurrentTest extends BaseCaseAQS {
         BalanceCurrentPage balanceCurrentPage = welcomePage.navigatePage(ACCOUNTING,BALANCE_CURRENT, BalanceCurrentPage.class);
         log("Validate UI Info display correctly");
         log("Dropdown: Company Unit, Account");
-        Assert.assertEquals(balanceCurrentPage.ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed");
+        Assert.assertEquals(balanceCurrentPage.ddpCompanyUnit.getOptions(),BalanceCurrent.COMPANY_UNIT_LIST,"Failed! Company Unit dropdown is not displayed");
         Assert.assertTrue(balanceCurrentPage.ddpAccount.getOptions().contains("QA2112 - "+clientCode),"Failed! Account dropdown is not displayed!");
         log("Button: Show button");
         Assert.assertEquals(balanceCurrentPage.btnShow.getText(),"Show","Show button is not displayed!");
