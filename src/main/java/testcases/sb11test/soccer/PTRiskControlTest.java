@@ -39,34 +39,17 @@ public class PTRiskControlTest extends BaseCaseAQS {
         AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,superMasterCode,percent);
         clientCode = superMasterCode + clientCode;
         //Place bet HDP
-        String sport = "Soccer";
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
-        Event event = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,"");
-        event.setEventDate(dateAPI);
-        Order order = new Order.Builder()
-                .event(event)
-                .accountCode(accountCode)
-                .marketName("Goals")
-                .marketType("HDP")
-                .selection(event.getHome())
-                .stage("FullTime")
-                .odds(1.6)
-                .handicap(1.75)
-                .oddType("HK")
-                .requireStake(12)
-                .betType("BACK")
-                .build();
-        BetEntrytUtils.placeBetAPI(order);
-        //wait for PT Risk Control update
-        Thread.sleep(5000);
+        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,true,accountCode,"Goals","HDP","Home","FullTime",1.6,1.75,"HK",
+                12,"BACK",false,"");
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to Soccer > PT Risk Control");
         PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
         ptPage.waitSpinnerDisappeared();
         log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
-        ptPage.filter(clientCode, KASTRAKI_LIMITED,"Normal","All","","", event.getLeagueName());
+        ptPage.filter(clientCode, KASTRAKI_LIMITED,"Normal","All","","", lstOrder.get(0).getEvent().getLeagueName());
         log("Step 4: Open bet list of league");
-        PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(event.getHome());
+        PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(lstOrder.get(0).getEvent().getHome());
         String actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
         log("@Validate data of account setting Account Percent show on PT% column");
         Assert.assertEquals(String.valueOf(percent),actualPTVal);
@@ -82,8 +65,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (EU)");
         log("Precondition: Having account with Pending HPD/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
-        String sport="Soccer";
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
         //Set Account Percent
         String superMasterCode = "QA2112 - ";
         String actualPTVal;
@@ -91,32 +73,17 @@ public class PTRiskControlTest extends BaseCaseAQS {
         AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,superMasterCode,percent);
 
         clientCode = superMasterCode + clientCode;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,"","All");
-        String league = soccerBetEntryPage.getRandomLeague();
-        Event eventInfo = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,league);
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.0).requireStake(12)
-                .oddType("EU").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType("HDP")
-                .stage("FT")
-                .selection(eventInfo.getHome())
-                .event(eventInfo)
-                .build();
-        lstOrder.add(order);
-        soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
-        soccerBetEntryPage.waitSpinnerDisappeared();
 
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,true,accountCode,"Goals","HDP","Home","FullTime",2.0,1.75,"EU",
+                12,"BACK",false,"");
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to Soccer > PT Risk Control");
         PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
         ptPage.waitSpinnerDisappeared();
         log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
-        ptPage.filter(clientCode, KASTRAKI_LIMITED,"Normal","All","","", eventInfo.getLeagueName());
+        ptPage.filter(clientCode, KASTRAKI_LIMITED,"Normal","All","","", lstOrder.get(0).getEvent().getLeagueName());
         log("Step 4: Open bet list of league");
-        PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(eventInfo.getHome());
+        PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(lstOrder.get(0).getEvent().getHome());
         actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
         log("@Validate data of account setting Account Percent show on PT% column");
         Assert.assertEquals(String.valueOf(percent),actualPTVal);
@@ -132,40 +99,24 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (MY)");
         log("Precondition: Having account with Pending HPD/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
-        String sport="Soccer";
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
         //Set account percent
         String superMasterCode = "QA2112 - ";
         Double percent = 1.5;
         AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,superMasterCode,percent);
         String actualPTVal;
         clientCode = superMasterCode + clientCode;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,"","All");
-        String league = soccerBetEntryPage.getRandomLeague();
-        Event eventInfo = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,league);
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(0.5).requireStake(12)
-                .oddType("MY").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType("HDP")
-                .stage("FT")
-                .selection(eventInfo.getHome())
-                .event(eventInfo)
-                .build();
-        lstOrder.add(order);
-        soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
-        soccerBetEntryPage.waitSpinnerDisappeared();
 
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,true,accountCode,"Goals","HDP","Home","FullTime",0.5,1.75,"MY",
+                12,"BACK",false,"");
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to Soccer > PT Risk Control");
         PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
         ptPage.waitSpinnerDisappeared();
         log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
-        ptPage.filter(clientCode, KASTRAKI_LIMITED,"Normal","All","","", eventInfo.getLeagueName());
+        ptPage.filter(clientCode, KASTRAKI_LIMITED,"Normal","All","","", lstOrder.get(0).getEvent().getLeagueName());
         log("Step 4: Open bet list of league");
-        PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(eventInfo.getHome());
+        PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(lstOrder.get(0).getEvent().getHome());
         actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
         log("@Validate data of account setting Account Percent show on PT% column");
         Assert.assertEquals(String.valueOf(percent),actualPTVal);
@@ -181,39 +132,23 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (ID)");
         log("Precondition: Having account with Pending HPD/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
-        String sport="Soccer";
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
         String superMasterCode = "QA2112 - ";
         String actualPTVal;
         Double percent = 1.5;
         AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,superMasterCode,percent);
         clientCode = superMasterCode + clientCode;
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,"","All");
-        String league = soccerBetEntryPage.getRandomLeague();
-        Event eventInfo = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,league);
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(1.5).requireStake(12)
-                .oddType("ID").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType("HDP")
-                .stage("FT")
-                .selection(eventInfo.getHome())
-                .event(eventInfo)
-                .build();
-        lstOrder.add(order);
-        soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
-        soccerBetEntryPage.waitSpinnerDisappeared();
 
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,true,accountCode,"Goals","HDP","Home","FullTime",1.5,1.75,"ID",
+                12,"BACK",false,"");
         log("@Step 1: Login with valid account");
         log("@Step 2: Navigate to Soccer > PT Risk Control");
         PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
         ptPage.waitSpinnerDisappeared();
         log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
-        ptPage.filter(clientCode, KASTRAKI_LIMITED,"Normal","All","","", eventInfo.getLeagueName());
+        ptPage.filter(clientCode, KASTRAKI_LIMITED,"Normal","All","","", lstOrder.get(0).getEvent().getLeagueName());
         log("Step 4: Open bet list of league");
-        PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(eventInfo.getHome());
+        PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(lstOrder.get(0).getEvent().getHome());
         actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
         log("@Validate data of account setting Account Percent show on PT% column");
         Assert.assertEquals(String.valueOf(percent),actualPTVal);

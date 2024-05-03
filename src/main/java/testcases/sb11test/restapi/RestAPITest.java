@@ -30,6 +30,7 @@ public class RestAPITest extends BaseCaseAQS {
         String leagueName = "QA Cricket Auto League";
         String dateAPI = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +8");
         String date = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +8");
+        String datePlace = DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +8");
         String provider = "MERITO";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("18:00").eventStatus("Scheduled").eventDate(date)
                 .isLive(false).isN(false).eventStatus("INRUNNING").build();
@@ -41,13 +42,8 @@ public class RestAPITest extends BaseCaseAQS {
         Event eventProvider = EventMapping.getFirstProviderEvent(provider,dateMAP);
         EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Place log");
-        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection(event.getHome()).sport(sportName)
-                .stage("FullTime").createDate(date).eventDate(dateAPI + " 23:59:00").odds(1).handicap(0.00).oddType("HK").requireStake(1.00).betType("BACK")
-                .winLose(1.00).isWinLose(true).build();
-        BetEntrytUtils.placeBetAPI(order);
-        List<Order> lstOrder = new ArrayList<>();
-        lstOrder.add(order);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+        List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
+                "HK",1.00,"BACK",false,"1.00");
         ConfirmBetsUtils.confirmBetAPI(lstOrder);
         BetSettlementUtils.waitForBetIsUpdate(7);
         BetSettlementUtils.sendBetSettleAPI(lstOrder);
@@ -87,6 +83,7 @@ public class RestAPITest extends BaseCaseAQS {
         String leagueName = "QA Cricket Auto League";
         String dateAPI = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +8");
         String date = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +8");
+        String datePlace = DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +8");
         String provider = "MERITO";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("18:00")
                 .eventStatus("Scheduled").eventDate(date).isLive(false).isN(false).eventStatus("INRUNNING")
@@ -99,16 +96,11 @@ public class RestAPITest extends BaseCaseAQS {
         Event eventProvider = EventMapping.getFirstProviderEvent(provider,dateMAP);
         EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Place betlog");
-        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection(event.getHome()).sport(sportName)
-                .stage("FullTime").createDate(date).eventDate(dateAPI + " 23:59:00").odds(1).handicap(0.00).oddType("HK").requireStake(1.00).betType("BACK").winLose(2.00)
-                .isWinLose(true).build();
-        BetEntrytUtils.placeBetAPI(order);
-        List<Order> lstOrder = new ArrayList<>();
-        lstOrder.add(order);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+        List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
+                "HK",1.00,"BACK",false,"2.00");
         ConfirmBetsUtils.confirmBetAPI(lstOrder.get(0));
         BetSettlementUtils.waitForBetIsUpdate(7);
-        BetSettlementUtils.sendBetSettleAPI(order);
+        BetSettlementUtils.sendBetSettleAPI(lstOrder);
         BetSettlementUtils.waitForBetIsUpdate(7);
         log("@Step 2: Select a Home Team and Away Team >> input Time value");
         log("@Step 1: Send request e.g https://aqsapi.beatus88.com/aqs-api/v1/cricket-pnl?eventDate=2023-06-07&accountCode=Cricket15A");
@@ -194,6 +186,7 @@ public class RestAPITest extends BaseCaseAQS {
         String leagueName = "QA Cricket Auto League";
         String dateAPI = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +8");
         String date = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +8");
+        String datePlace = DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +8");
         String provider = "MERITO";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("18:00").eventStatus("Scheduled")
                 .eventDate(date).isLive(false).isN(false).eventStatus("INRUNNING").build();
@@ -205,13 +198,8 @@ public class RestAPITest extends BaseCaseAQS {
         Event eventProvider = EventMapping.getFirstProviderEvent(provider,dateMAP);
         EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Place bet");
-        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection(event.getHome()).sport(sportName).stage("FullTime")
-                .createDate(date).eventDate(dateAPI + " 23:59:00").odds(1).handicap(0.00).oddType("HK").requireStake(1.00).betType("BACK").winLose(1.00)
-                .isWinLose(true).build();
-        BetEntrytUtils.placeBetAPI(order);
-        List<Order> lstOrder = new ArrayList<>();
-        lstOrder.add(order);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+        List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
+                "HK",1.00,"BACK",false,"1.00");
         ConfirmBetsUtils.confirmBetAPI(lstOrder);
         BetSettlementUtils.waitForBetIsUpdate(7);
         BetSettlementUtils.sendBetSettleAPI(lstOrder);
@@ -252,6 +240,7 @@ public class RestAPITest extends BaseCaseAQS {
         String leagueName = "QA Cricket Auto League";
         String dateAPI = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +8");
         String date = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +8");
+        String datePlace = DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +8");
         String provider = "MERITO";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("18:00").eventStatus("Scheduled")
                 .eventDate(date).isLive(false).isN(false).eventStatus("INRUNNING").build();
@@ -265,21 +254,12 @@ public class RestAPITest extends BaseCaseAQS {
         log("@pre-condition 1.3: Set Result of Event");
         ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
         log("@pre-condition 1.4: Place bet");
-        Order orderHome = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection(event.getHome())
-                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
-                .betType("BACK").winLose(10.00).isWinLose(true).build();
-        Order orderDraw = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection("Draw")
-                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
-                .betType("LAY").winLose(10.00).isWinLose(true).build();
-        Order orderAway = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection(event.getAway())
-                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(20)
-                .betType("BACK").winLose(-20.00).isWinLose(true).build();
-        List<Order> lstOrder = new ArrayList<>();
-        lstOrder.add(orderHome);
-        lstOrder.add(orderDraw);
-        lstOrder.add(orderAway);
-        BetEntrytUtils.placeBetAPI(lstOrder);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+        List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
+                "HK",10,"BACK",false,"10.00");
+        lstOrder.add(welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting","Draw","FullTime",1,0.00,
+                "HK",10,"LAY",false,"10.00").get(0));
+        lstOrder.add(welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getAway(),"FullTime",1,0.00,
+                "HK",20,"BACK",false,"-20.00").get(0));
         ConfirmBetsUtils.confirmBetAPI(lstOrder);
         BetSettlementUtils.waitForBetIsUpdate(7);
         BetSettlementUtils.sendBetSettleAPI(lstOrder);
@@ -310,6 +290,7 @@ public class RestAPITest extends BaseCaseAQS {
         String leagueName = "QA Cricket Auto League";
         String dateAPI = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +8");
         String date = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +8");
+        String datePlace = DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +8");
         String provider = "MERITO";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("18:00").eventStatus("Scheduled")
                 .eventDate(date).isLive(false).isN(false).eventStatus("INRUNNING").build();
@@ -323,20 +304,12 @@ public class RestAPITest extends BaseCaseAQS {
         log("@pre-condition 1.3: Set Result of Event");
         ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
         log("@pre-condition 1.4: Place bet");
-        Order orderHome = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection(event.getHome())
-                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
-                .betType("BACK").winLose(10.00).isWinLose(true).build();
-        Order orderDraw = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection("Draw")
-                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
-                .betType("LAY").winLose(10.00).isWinLose(true).build();
-        Order orderAway = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection(event.getAway())
-                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
-                .betType("BACK").winLose(-10.00).isWinLose(true).build();
-        List<Order> lstOrder = new ArrayList<>();
-        lstOrder.add(orderHome);
-        lstOrder.add(orderDraw);
-        lstOrder.add(orderAway);
-        BetEntrytUtils.placeBetAPI(lstOrder);
+        List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
+                "HK",10,"BACK",false,"10.00");
+        lstOrder.add(welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting","Draw","FullTime",1,0.00,
+                "HK",10,"LAY",false,"10.00").get(0));
+        lstOrder.add(welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getAway(),"FullTime",1,0.00,
+                "HK",10,"BACK",false,"-10.00").get(0));
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         ConfirmBetsUtils.confirmBetAPI(lstOrder);
         BetSettlementUtils.waitForBetIsUpdate(7);
@@ -368,6 +341,7 @@ public class RestAPITest extends BaseCaseAQS {
         String leagueName = "QA Cricket Auto League";
         String dateAPI = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +8");
         String date = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +8");
+        String datePlace = DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +8");
         String provider = "MERITO";
         Event event = new Event.Builder().sportName(sportName).leagueName(leagueName).eventDate(dateAPI).home("Auto Team 1").away("Auto Team 2").openTime("18:00")
                 .eventStatus("Scheduled").eventDate(date).isLive(false).isN(false).eventStatus("INRUNNING")
@@ -382,20 +356,12 @@ public class RestAPITest extends BaseCaseAQS {
         log("@pre-condition 1.3: Set Result of Event");
         ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
         log("@pre-condition 1.4: Place bet");
-        Order orderHome = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection(event.getHome())
-                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
-                .betType("BACK").winLose(10.00).isWinLose(true).build();
-        Order orderDraw = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection("Draw")
-                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(10)
-                .betType("LAY").winLose(10.00).isWinLose(true).build();
-        Order orderAway = new Order.Builder().event(event).accountCode(accountCode).marketName("MatchBetting").marketType("MatchBetting").selection(event.getAway())
-                .sport(sportName).stage("FullTime").createDate(date).handicap(0.00).eventDate(dateAPI + " 23:59:00").odds(1).oddType("HK").requireStake(30)
-                .betType("BACK").winLose(-30.00).isWinLose(true).build();
-        List<Order> lstOrder = new ArrayList<>();
-        lstOrder.add(orderHome);
-        lstOrder.add(orderDraw);
-        lstOrder.add(orderAway);
-        BetEntrytUtils.placeBetAPI(lstOrder);
+        List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
+                "HK",10,"BACK",false,"10.00");
+        lstOrder.add(welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting","Draw","FullTime",1,0.00,
+                "HK",10,"LAY",false,"10.00").get(0));
+        lstOrder.add(welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getAway(),"FullTime",1,0.00,
+                "HK",30,"BACK",false,"-30.00").get(0));
         lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
         ConfirmBetsUtils.confirmBetAPI(lstOrder);
         BetSettlementUtils.waitForBetIsUpdate(7);

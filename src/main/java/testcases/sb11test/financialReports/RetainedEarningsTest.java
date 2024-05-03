@@ -17,6 +17,7 @@ import utils.testraildemo.TestRails;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -222,14 +223,18 @@ public class RetainedEarningsTest extends BaseCaseAQS {
                 "\n" +
                 "=> (1), (2), (3) = values that take from the beginning of financial year (1/8/2023) till 29/02/2024");
         String accountType = "Capital";
+        Map<String, String> retainDes = new HashMap<>();
+        retainDes.put("Beginning Retained Earnings","302.000.002.000");
+        retainDes.put("Net Income/Loss from Operation","302.000.001.000");
+        retainDes.put("Dividends",LEDGER_GROUP_DIVIDEND_ACCOUNT);
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         String fromDate = ledgerStatementPage.getBeginDateOfFinanYear(FINANCIAL_YEAR);
         String toDate = ledgerStatementPage.getLastDateAfterCJE("dd/MM/yyyy");
-        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,accountType,LEDGER_GROUP_RETAINED_EARNING_ACCOUNT,fromDate,toDate,"After CJE");
-        String beginningRetainedEarningsAc = ledgerStatementPage.getValueOfSubAcc("302.000.001.000","CUR Translation","Running Bal.");
-        String netIncomeAc = ledgerStatementPage.getValueOfSubAcc("302.000.002.000","CUR Translation","Running Bal.");
-        ledgerStatementPage.showLedger("","","",LEDGER_GROUP_DIVIDEND_ACCOUNT,"","","");
-        String dividendsAc = ledgerStatementPage.getTotalInHKD(LEDGER_GROUP_DIVIDEND_ACCOUNT,"CUR Translation","Running Bal.");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,accountType,LEDGER_GROUP_RETAINED_EARNING_ACCOUNT,fromDate,toDate,AFTER_CJE);
+        Map<String, String> retainValue = new HashMap<>();
+        retainValue.put("Beginning Retained Earnings",ledgerStatementPage.getValueOfSubAcc(retainDes.get("Beginning Retained Earnings"),CUR_TRANSLATION,RUNNING_BAL));
+        retainValue.put("Net Income/Loss from Operation",ledgerStatementPage.getValueOfSubAcc(retainDes.get("Net Income/Loss from Operation"),CUR_TRANSLATION,RUNNING_BAL));
+        retainValue.put("Dividends",ledgerStatementPage.getTotalInHKD(KASTRAKI_LIMITED,FINANCIAL_YEAR,accountType,LEDGER_GROUP_DIVIDEND_ACCOUNT,"","","",retainDes.get("Dividends"),CUR_TRANSLATION,RUNNING_BAL));
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Expand 'Financial Reports' menu");
         log("@Step 3: Click 'Retained Earnings'");
@@ -240,9 +245,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("@Verify 1: Beginning Retained Earnings value should be = value at precondition (1)\n" +
                 "Net Income/Loss from Operation value should be = value at precondition (2)\n" +
                 "Dividends value should be = value at precondition (3)");
-        Assert.assertEquals(netIncomeAc,page.getAmount("Beginning Retained Earnings"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
-        Assert.assertEquals(beginningRetainedEarningsAc,page.getAmount("Net Income/Loss from Operation"),"FAILED! Net Income/Loss from Operation amount displays incorrect.");
-        Assert.assertEquals(dividendsAc,page.getAmount("Dividends"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
+        page.verifyValueOfDes(retainValue);
         log("INFO: Executed completely");
     }
     @TestRails(id="23953")

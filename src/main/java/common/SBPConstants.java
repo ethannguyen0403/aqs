@@ -168,6 +168,10 @@ public class SBPConstants {
     public final static String OPERATING_INCOME = "OPERATING INCOME";
     public final static String OPERATING_EXPENSES = "OPERATING EXPENSES";
     public final static String NON_OPERATING_INCOME = "NON-OPERATING INCOME";
+    public final static String CUR_TRANSLATION = "CUR Translation";
+    public final static String RUNNING_BAL = "Running Bal.";
+    public final static String BEFORE_CJE = "Before CJE";
+    public final static String AFTER_CJE = "After CJE";
     public final static List<String> CRICKET_MARKET_TYPE_NO_LIVE =  Arrays.asList("1x2","DNB","OE","OU");
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {

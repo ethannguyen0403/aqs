@@ -6,10 +6,12 @@ import com.paltech.element.common.Label;
 import com.paltech.utils.DateUtils;
 import controls.sb11.AppArlertControl;
 import objects.Event;
+import objects.Order;
 import pages.sb11.popup.ChangePasswordPopup;
 import pages.sb11.sport.EventSchedulePage;
 import pages.sb11.yopmail.YopmailMailBoxPage;
 import pages.sb11.yopmail.YopmailPage;
+import utils.sb11.BetEntrytUtils;
 import utils.sb11.GetSoccerEventUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -98,5 +100,57 @@ public class WelcomePage extends Header{
     }
     public String getDownloadPath(){
         return DriverManager.getDriver().getDriverSetting().getDownloadPath();
+    }
+
+    public List<Order> placeBetAPI(String sport, String date, Event event, String accountCode, String marketName, String marketType, String selection, String stage, double price, double handicap,
+                                   String oddType, double requireStake, String betType, boolean isLive,String winlose){
+        String dateAPI = DateUtils.formatDate(date,"dd/MM/yyyy","yyyy-MM-dd");
+        event.setEventDate(dateAPI);
+        boolean isWinLose = winlose.isEmpty() ? false : true;
+        return placeBetAPI(sport, event, accountCode, marketName, marketType, selection, stage, price, handicap, oddType, requireStake, betType, isLive, isWinLose, winlose);
+    }
+    public List<Order> placeBetAPI(String sport, String date, boolean randomEvent, String accountCode, String marketName, String marketType, String selection, String stage, double price, double handicap,
+                                   String oddType, double requireStake, String betType, boolean isLive,String winlose){
+        String dateAPI = DateUtils.formatDate(date,"dd/MM/yyyy","yyyy-MM-dd");
+        Event event;
+        if (randomEvent) {
+            event = GetSoccerEventUtils.getRandomEvent(dateAPI, dateAPI, sport, "");
+        } else {
+            event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        }
+        event.setEventDate(dateAPI);
+        if (selection.equals("Home")){
+            selection = event.getHome();
+        } else if (selection.equals("Away")){
+            selection = event.getAway();
+        }
+        boolean isWinLose = winlose.isEmpty() ? false : true;
+        return placeBetAPI(sport, event, accountCode, marketName, marketType, selection, stage, price, handicap, oddType, requireStake, betType, isLive, isWinLose, winlose);
+    }
+    private List<Order> placeBetAPI(String sport, Event event, String accountCode, String marketName, String marketType, String selection, String stage, double price, double handicap,
+                                    String oddType, double requireStake, String betType, boolean isLive,boolean isWinLose,String winlose){
+        Order order = null;
+        if (sport.equals("Soccer")){
+            order = new Order.Builder().event(event).accountCode(accountCode).marketName(marketName).marketType(marketType).selection(selection).sport(sport).stage(stage).price(price)
+                    .odds(price).hdpPoint(handicap).handicap(handicap).oddType(oddType).requireStake(requireStake).betType(betType).isLive(isLive).build();
+        } else if (sport.equals("Cricket")){
+            order = new Order.Builder().event(event).accountCode(accountCode).marketName(marketName).marketType(marketType).selection(selection).sport(sport)
+                    .stage(stage).createDate(DateUtils.getDate(0, "yyyy-MM-dd", "GMT +8")).eventDate(event.getEventDate() + " 23:59:00").odds(price).handicap(handicap).oddType(oddType).requireStake(requireStake).betType(betType)
+                    .isWinLose(isWinLose).build();
+            if (!winlose.isEmpty()){
+                order.setWinLose(Double.valueOf(winlose));
+            }
+        }
+        BetEntrytUtils.placeBetAPI(order);
+        List<Order> lstOrder = new ArrayList<>();
+        lstOrder.add(order);
+        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+        //wait for order update
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return lstOrder;
     }
 }

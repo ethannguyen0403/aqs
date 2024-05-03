@@ -263,35 +263,16 @@ public class AccountPercentTest extends BaseCaseAQS {
         Double pt = 1.00000;
         AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,"QA2112 - ", pt);
         log("@Pre-conditions 4: User already have settled bet for Soccer");
-        String sport="Soccer";
         String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7));
-        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd",GMT_7));
-        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
-        event.setEventDate(dateAPI);
-        Order order = new Order.Builder()
-                .event(event)
-                .accountCode(accountCode)
-                .marketName("Goals")
-                .marketType("HDP")
-                .selection(event.getHome())
-                .stage("FullTime")
-                .odds(1)
-                .handicap(-0.25)
-                .oddType("HK")
-                .requireStake(1.00)
-                .betType("BACK")
-                .build();
-        BetEntrytUtils.placeBetAPI(order);
-        List<Order> lstOrder = new ArrayList<>();
-        lstOrder.add(order);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.25,"HK",
+                1.00,"BACK",false,"");
         ConfirmBetsUtils.confirmBetAPI(lstOrder.get(0));
         BetSettlementUtils.waitForBetIsUpdate(10);
         BetSettlementPage betSettlementPage = welcomePage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
         betSettlementPage.filter("Confirmed",date,date,"",accountCode);
         BetSettlementUtils.waitForBetIsUpdate(20);
-        String winLossEx = betSettlementPage.getWinlossSettledofOrder(order);
-        betSettlementPage.settleAndSendSettlementEmail(order);
+        String winLossEx = betSettlementPage.getWinlossSettledofOrder(lstOrder.get(0));
+        betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
         //wait for update in SPP page
         BetSettlementUtils.waitForBetIsUpdate(60);
         log("@Step 1: Login to site");

@@ -38,27 +38,9 @@ public class BetSettlementTest extends BaseCaseAQS {
         String superMasterCode = "QA2112 - ";
         AccountPercentUtils.setAccountPercentAPI(accountCode,clientCode,superMasterCode,1.0);
         //Having Pending Bet
-        String sport = "Soccer";
-        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd",GMT_7));
-        Event event = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,"");
-        event.setEventDate(dateAPI);
-        Order order = new Order.Builder()
-                .event(event)
-                .accountCode(accountCode)
-                .marketName("Goals")
-                .marketType("HDP")
-                .selection(event.getHome())
-                .stage("FullTime")
-                .odds(1.75)
-                .handicap(2.15)
-                .oddType("HK")
-                .requireStake(15.50)
-                .betType("BACK")
-                .build();
-        BetEntrytUtils.placeBetAPI(order);
-        List<Order> lstOrder = new ArrayList<>();
-        lstOrder.add(order);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,true,accountCode,"Goals","HDP","Home","FullTime",1.75,2.15,
+                "HK",15.50,"BACK",false,"");
         //Confirm Bet
         ConfirmBetsUtils.confirmBetAPI(lstOrder);
         BetSettlementUtils.waitForBetIsUpdate(60);
@@ -66,7 +48,6 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("@Step 2:Navigate to Trading > Bet Settlement ");
         BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
         log("@Step 3.Search account at precondition in Confirmed mode > observe any bet that is having Win/Lose data\n");
-        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7));
         betSettlementPage.filter("Confirmed",date,date,"",accountCode);
         log("@Verify 1 : Win/loss amounts should calculate correctly with Account Percentage following \n"+
        " Confirmed status, Win/Lose = actual win/loss % * win/lose amount \n"+ " Settled Status, Win/Lose = actual win/loss % * win/lose amount \n"+
@@ -82,51 +63,34 @@ public class BetSettlementTest extends BaseCaseAQS {
     @TestRails(id="188")
     @Test(groups = {"smoke"})
     @Parameters({"accountCode","accountCurrency"})
-    public void BetSettlement_TC188(String accountCode,String accountCurrency) throws InterruptedException {
+    public void BetSettlement_TC188(String accountCode) {
         log("@title: Validate bet in Bet settlement is re-settled with correct winloss after update bet info in Confirm Bets page");
         log("Precondition: Have a soccer bet in confirmed status and have win/lose amount\n" +
                 "For example bet is place back, HDP -0.25 odds 1.050 HKD, stake 12 and winlose value 12.6\n" +
                 "\n");
-        String companyUnit = "Kastraki Limited";
-        String date = String.format(DateUtils.getDate(-1,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,SOCCER,"");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(SOCCER).isNegativeHdp(false).hdpPoint(0.25).price(1.110).requireStake(11)
-                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType("HDP")
-                .stage("FT")
-                .selection(eventInfo.getHome())
-                .event(eventInfo)
-                .build();
-        lstOrder.add(order);
-        soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
-        order = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder).get(0);
-
+        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,false,accountCode,"Goals","HDP","Home","FullTime",1.110,0.25,
+                "HK",11,"BACK",false,"");
         log("@Step 2:Navigate to Trading > Bet Settlement > Search bet of the account at precondition in Confirmed mode");
-        ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending",SOCCER,"All","Specific Date",date,date,accountCode);
-        confirmBetsPage.confirmBet(order);
+        ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",SOCCER,"All","Specific Date",date,date,accountCode);
+        confirmBetsPage.confirmBet(lstOrder.get(0));
 
         log("@Step 3: Update info of precondition bet, change bet type to Lay");
-        confirmBetsPage.filter(companyUnit,"","Confirmed",SOCCER,"All","Specific Date",date,date,accountCode);
-        order.setBetType("Lay");
-        confirmBetsPage.updateOrder(order,false);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Confirmed",SOCCER,"All","Specific Date",date,date,accountCode);
+        lstOrder.get(0).setBetType("Lay");
+        confirmBetsPage.updateOrder(lstOrder.get(0),false);
 
         log("@Step 4. Active Bet Settlement page and filter the bet in confirmed status in precondition");
         BetSettlementPage betSettlementPage  = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
         betSettlementPage.filter("Confirmed",date,date,"",accountCode);
-        String winLossAmount = betSettlementPage.getWinlossAmountofOrder(order);
+        String winLossAmount = betSettlementPage.getWinlossAmountofOrder(lstOrder.get(0));
 
         System.out.println("Winloss amount is "+winLossAmount);
         log("@Verify: Bet is re-settled correctly win/loss value");
 
         log("@Post-condition: delete confirm bet");
-        betSettlementPage.deleteOrder(order);
+        betSettlementPage.deleteOrder(lstOrder.get(0));
 
         log("INFO: Executed completely");
     }
@@ -191,16 +155,8 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("Precondition: Already has account with Confirmed bet settle Win/Lose\n" +
                 "The account is configured with email in Address Book");
         String fromDate = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
-        String sport = "Soccer";
-        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd",GMT_7));
-        Event event = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,"");
-        event.setEventDate(dateAPI);
-        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome()).stage("FullTime").price(1.75)
-                .odds(1.75).oddType("HK").hdpPoint(2.15).handicap(2.15).oddType("HK").requireStake(15.50).betType("BACK").isLive(false).build();
-        BetEntrytUtils.placeBetAPI(order);
-        List<Order> lstOrder = new ArrayList<>();
-        lstOrder.add(order);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,fromDate,true,accountCode,"Goals","HDP","Home","FullTime",1.75,2.15,
+                "HK",15.50,"BACK",false,"");
         ConfirmBetsUtils.confirmBetAPI(lstOrder);
         BetSettlementUtils.waitForBetIsUpdate(60);
         log("@Step 1: Navigate to Trading > Bet Settlement and search bet of the account at precondition in Confirmed mode");
@@ -232,37 +188,18 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("@title: Validate all information display correctly in statement email (AQS-2020)");
         log("Precondition:Already has account with some Confirmed bet settle Win/Lose (includes MB, Soccer, Cricket)\n" +
                 "The account is configured with email in Address Book");
-        String sport="Soccer";
-        String companyUnit = "Kastraki Limited";
         String date = String.format(DateUtils.getDate(-2,"dd/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-2,"yyyy-MM-dd","GMT +7"));
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(sport).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
-                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType("HDP")
-                .stage("FT")
-                .selection(eventInfo.getHome())
-                .event(eventInfo)
-                .build();
-        lstOrder.add(order);
-        soccerBetEntryPage.placeBet(accountCode,eventInfo.getHome(),true,"Home",lstOrder,false,false,true);
-        order = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder).get(0);
-
-        ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,date,accountCode);
-        confirmBetsPage.confirmBet(order);
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,false,accountCode,"Goals","HDP","Home","FullTime",2.15,1.75,
+                "HK",15.50,"BACK",false,"");
+        ConfirmBetsUtils.confirmBetAPI(lstOrder);
+        BetSettlementUtils.waitForBetIsUpdate(60);
 
         log("@Step 2: Navigate to Trading > Bet Settlement and search bet of the account at precondition in Confirmed mode");
-        BetSettlementPage betSettlementPage  = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
         betSettlementPage.filter("Confirmed",date,"","",accountCode);
 
         log("@Step 3. Select the bet and click Settle & Send Settement Email button > Yes");
-        betSettlementPage.settleAndSendSettlementEmail(order);
+        betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
 
         log("@Step 4: Login to mailbox and verify infor displays in statement");
         List<ArrayList<String>> emailInfo = betSettlementPage.getFirstActiveMailBox("https://yopmail.com/",emailAddress);
@@ -334,16 +271,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("@Pre-condition 1: User has permission to access Bet Settlement page");
         log("@Pre-condition 2: Having an account with Confirmed bet settle Win/Lose");
         String fromDate = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
-        String sport = "Soccer";
-        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd",GMT_7));
-        Event event = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,"");
-        event.setEventDate(dateAPI);
-        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome()).stage("FullTime").price(1.75)
-                .odds(1.75).oddType("HK").hdpPoint(2.15).handicap(2.15).oddType("HK").requireStake(15.50).betType("BACK").isLive(false).build();
-        BetEntrytUtils.placeBetAPI(order);
-        List<Order> lstOrder = new ArrayList<>();
-        lstOrder.add(order);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,fromDate,true,accountCode,"Goals","HDP","Home","FullTime",1.75,2.15,"HK",15.5,"Back",false,"");
         ConfirmBetsUtils.confirmBetAPI(lstOrder);
         BetSettlementUtils.waitForBetIsUpdate(60);
         log("@Step 1: Login to SB11 site");

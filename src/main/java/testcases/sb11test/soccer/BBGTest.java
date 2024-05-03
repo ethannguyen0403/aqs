@@ -169,13 +169,9 @@ public class BBGTest extends BaseCaseAQS {
         String accountCode = "ClientCredit-AutoQC";
         String smartGroup = "QA Smart Group";
         String sportName = "Soccer";
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
-        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sportName,"");
-        event.setEventDate(dateAPI);
-        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome())
-                .stage("FullTime").odds(1).handicap(-0.5).oddType("HK").requireStake(5.5).betType("BACK")
-                .build();
-        BetEntrytUtils.placeBetAPI(order);
+        String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        List<Order> lstOrder =  welcomePage.placeBetAPI(sportName,dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
+                5.5,"BACK",false,"");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
         BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
@@ -188,9 +184,9 @@ public class BBGTest extends BaseCaseAQS {
         page.waitSpinnerDisappeared();
         log("@Verify 1: Show all 'Soccer' bets");
         List<String> rowEx = page.getFirstRowGroupData();
-        Assert.assertEquals(order.getAccountCode(),rowEx.get(page.tblBBG.getColumnIndexByName("Account")-1),
+        Assert.assertEquals(lstOrder.get(0).getAccountCode(),rowEx.get(page.tblBBG.getColumnIndexByName("Account")-1),
                 "FAILED! Account code displays incorrect.");
-        Assert.assertEquals(order.getSelection(),rowEx.get(page.tblBBG.getColumnIndexByName("Selection")-1),
+        Assert.assertEquals(lstOrder.get(0).getSelection(),rowEx.get(page.tblBBG.getColumnIndexByName("Selection")-1),
                 "FAILED! Selection displays incorrect.");
         log("INFO: Executed completely");
     }
@@ -215,13 +211,9 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition 1: Account is activated permission 'BBG'");
         log("@pre-condition 2: Placed a Soccer bet");
         String sportName = "Soccer";
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
-        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sportName,"");
-        event.setEventDate(dateAPI);
-        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome())
-                .stage("FullTime").odds(1).handicap(-0.5).oddType("HK").requireStake(5.5).betType("BACK")
-                .build();
-        BetEntrytUtils.placeBetAPI(order);
+        String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        List<Order> lstOrder = welcomePage.placeBetAPI(sportName,dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
+                5.5,"BACK",false,"");
         log("@Step 1: Navigate to the site");
         log("@Step 2: Expand menu 'Soccer' and access 'BBG' page");
         BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
@@ -231,7 +223,7 @@ public class BBGTest extends BaseCaseAQS {
         page.filterAdvance("Group",smartGroup);
         log("@Verify 1: Show all bets of all smart accounts");
         List<String> rowEx = page.getFirstRowGroupData();
-        Assert.assertEquals(order.getAccountCode(),rowEx.get(page.tblBBG.getColumnIndexByName("Account")-1),
+        Assert.assertEquals(lstOrder.get(0).getAccountCode(),rowEx.get(page.tblBBG.getColumnIndexByName("Account")-1),
                 "FAILED! Account code displays incorrect.");
         log("INFO: Executed completely");
     }
@@ -258,16 +250,9 @@ public class BBGTest extends BaseCaseAQS {
         String accountCode = "ClientCredit-AutoQC";
         String smartGroup = "QA Smart Group";
         String sportName = "Soccer";
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
-        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sportName,"");
-        event.setEventDate(dateAPI);
-        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome())
-                .eventDate(dateAPI).stage("FullTime").odds(1).handicap(-0.5).oddType("HK").requireStake(5.5).betType("BACK")
-                .build();
-        BetEntrytUtils.placeBetAPI(order);
-        List<Order> lstOrder = new ArrayList<>();
-        lstOrder.add(order);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+        String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        List<Order> lstOrder = welcomePage.placeBetAPI(sportName,dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
+                5.5,"BACK",false,"");
         ConfirmBetsUtils.confirmBetAPI(lstOrder.get(0));
         BetSettlementUtils.waitForBetIsUpdate(7);
         BetSettlementUtils.sendBetSettleAPI(lstOrder.get(0));
@@ -284,9 +269,9 @@ public class BBGTest extends BaseCaseAQS {
         page.waitSpinnerDisappeared();
         log("@Verify 1: Show all settled bets");
         List<String> rowEx = page.getFirstRowGroupData();
-        Assert.assertEquals(order.getAccountCode(),rowEx.get(page.tblBBG.getColumnIndexByName("Account")-1),
+        Assert.assertEquals(lstOrder.get(0).getAccountCode(),rowEx.get(page.tblBBG.getColumnIndexByName("Account")-1),
                 "FAILED! Account code displays incorrect.");
-        Assert.assertEquals(order.getSelection(),rowEx.get(page.tblBBG.getColumnIndexByName("Selection")-1),
+        Assert.assertEquals(lstOrder.get(0).getSelection(),rowEx.get(page.tblBBG.getColumnIndexByName("Selection")-1),
                 "FAILED! Selection displays incorrect.");
         log("INFO: Executed completely");
     }
