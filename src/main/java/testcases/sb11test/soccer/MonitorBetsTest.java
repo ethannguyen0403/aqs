@@ -124,7 +124,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         welcomePage.placeBetAPI(SOCCER,dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
                 5.5,"BACK",false,"");
         log("@Step 1: Login to the site");
-        log("@Step 2: Access 'Monitor Bets' page");,
+        log("@Step 2: Access 'Monitor Bets' page");
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 3: Observe the data by the default filters, Punter Type = Smart Punter");
         monitorBetsPage.filterResult("","","Smart Punter","","",false,"","","","",true);
