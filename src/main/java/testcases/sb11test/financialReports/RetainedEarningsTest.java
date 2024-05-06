@@ -80,6 +80,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         String detailTypeRetained = "302.000.000.000 - Retained Earnings";
         String ledgerName = "302.000.002.000 - Accumulated Profit (Loss) for Previous Year";
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         int month = DateUtils.getMonth(GMT_7) - 1;
         int year = DateUtils.getYear("GMT +7");
         String fromDate = String.format("01/08/%s",year-1);
@@ -105,6 +106,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("@pre-condition: Get value of Sub-Account '302.000.001.000 - PL for Current Year' from Ledger Statement > 'CUR Translation in HKD' > 'Running Bal' section in selected Financial Year");
         String ledgerName = "302.000.001.000 - PL for Current Year - HKD";
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         int month = DateUtils.getMonth(GMT_7) - 1;
         int year = DateUtils.getYear("GMT +7");
         String fromDate = String.format("01/08/%s",year-1);
@@ -131,6 +133,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("@pre-condition: Get value of Parent Account '303.000.000.000 - Dividend' from Ledger Statement > 'CUR Translation in HKD' > 'Running Bal.' column in selected Financial Year");
         String ledgerName = "303.000.000.000 - Dividend";
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         int month = DateUtils.getMonth(GMT_7) - 1;
         int year = DateUtils.getYear("GMT +7");
         String fromDate = String.format("01/08/%s",year-1);
@@ -228,6 +231,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         retainDes.put("Net Income/Loss from Operation","302.000.001.000");
         retainDes.put("Dividends",LEDGER_GROUP_DIVIDEND_ACCOUNT);
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         String fromDate = ledgerStatementPage.getBeginDateOfFinanYear(FINANCIAL_YEAR);
         String toDate = ledgerStatementPage.getLastDateAfterCJE("dd/MM/yyyy");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,accountType,LEDGER_GROUP_RETAINED_EARNING_ACCOUNT,fromDate,toDate,AFTER_CJE);
@@ -264,6 +268,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
                 "=> (1), (2), (3) = values that take from the beginning of financial year (1/8/2023) till 29/02/2024");
         String accountType = "Capital";
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         String fromDate = ledgerStatementPage.getBeginDateOfFinanYear(FINANCIAL_YEAR);
         String toDate = ledgerStatementPage.getLastDateAfterCJE("dd/MM/yyyy");
         ledgerStatementPage.showLedger(FAIR,FINANCIAL_YEAR,accountType,LEDGER_GROUP_RETAINED_EARNING_ACCOUNT,fromDate,toDate,"After CJE");

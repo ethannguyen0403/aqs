@@ -42,6 +42,7 @@ public class HeaderMenuControl extends BaseElement {
             System.out.println("DEBUG! The sub menu "+subMenu+" under menu "+menu+" does not display");
             return null;
         }
+        lblSubMenu.waitForElementToBePresent(lblSubMenu.getLocator());
         return lblSubMenu;
         /*
         int index = getMenuIndex(menu);

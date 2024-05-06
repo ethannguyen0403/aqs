@@ -194,6 +194,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("@Pre-condition 3: Get Running Bal in Ledger Statement");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         String detailType = "202.000.000.000 - Other Payable";
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Liability",detailType,transDate,transDate,"");
         double runningBal = ledgerStatementPage.getValueAmount(ledgerDebit,ledgerStatementPage.colRunBalGBP);

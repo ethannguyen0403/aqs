@@ -103,7 +103,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         // log("INFO: Executed completely");
     }
     @TestRails(id="5285")
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan3.0"})
     public void Consolidated_Client_Balance_5285() {
         log("@title: Validate 'Export To PDF' button work properly");
         String downloadPath = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "consolidated-client-balance-pdf.pdf";

@@ -61,6 +61,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
         try {
             log("@Step 1: Navigate to General Reports > Ledger Statement and get Total Credit/Debit amount");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             String fromDate = DateUtils.getFirstDateOfMonth(DateUtils.getYear(GMT_7),currentMonth,"dd/MM/yyyy");
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Asset", parentAccount, fromDate, "", "");
             String totalRun = ledgerStatementPage.getTotalInHKD(LEDGER_GROUP_NAME_ASSET,"Shown in HKD","Running Bal.");
@@ -126,6 +127,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_ASSET,ledgerGroupNega,LEDGER_PARENT_NAME_ASSET,ledgerGroupNega,"");
             log("Pre-condition 2: Get value of debit/credit that will display in trial balance");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             String fromDate = DateUtils.getFirstDateOfMonth(DateUtils.getYear(GMT_7),currentMonth,"dd/MM/yyyy");
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Asset", parentDebit, fromDate, "", "");
             String valueDeEx = ledgerStatementPage.getGrandTotalByRunningBal();
@@ -181,6 +183,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,ledgerGroupNega,LEDGER_PARENT_NAME_EXPENDITURE,ledgerGroupNega,"");
             log("Pre-condition 2: Get value of debit/credit that will display in trial balance");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             String fromDate = DateUtils.getFirstDateOfMonth(DateUtils.getYear(GMT_7),currentMonth,"dd/MM/yyyy");
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Expenditure", parentDebit, fromDate, "", "");
             String valueDeEx = ledgerStatementPage.getGrandTotalByRunningBal();
@@ -235,6 +238,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_LIABILITY,ledgerGroupNega,LEDGER_PARENT_NAME_LIABILITY,ledgerGroupNega,"");
             log("Pre-condition 2: Get value of debit/credit that will display in trial balance");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             String fromDate = DateUtils.getFirstDateOfMonth(DateUtils.getYear(GMT_7),currentMonth,"dd/MM/yyyy");
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Liability", LEDGER_GROUP_NAME_LIABILITY, fromDate, "", "");
             String valueDeEx = ledgerStatementPage.getGrandTotalByRunningBal();
@@ -290,6 +294,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
             TransactionUtils.addTransByAPI(transaction,"Ledger",ledgerGroupNega,LEDGER_GROUP_NAME_CAPITAL,ledgerGroupNega,LEDGER_PARENT_NAME_CAPITAL,"");
             log("Pre-condition 2: Get value of debit/credit that will display in trial balance");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             String fromDate = DateUtils.getFirstDateOfMonth(DateUtils.getYear(GMT_7),currentMonth,"dd/MM/yyyy");
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Capital", parentDebit, fromDate, "", "");
             String valueDeEx = ledgerStatementPage.getGrandTotalByRunningBal();
@@ -344,6 +349,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_INCOME,ledgerGroupNega,LEDGER_PARENT_NAME_INCOME,ledgerGroupNega,"");
             log("Pre-condition 2: Get value of debit/credit that will display in trial balance");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             String fromDate = DateUtils.getFirstDateOfMonth(DateUtils.getYear(GMT_7),currentMonth,"dd/MM/yyyy");
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Income", LEDGER_GROUP_NAME_INCOME, fromDate, "", "");
             String valueDeEx = ledgerStatementPage.getGrandTotalByRunningBal();

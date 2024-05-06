@@ -52,6 +52,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Expenditure", SBPConstants.LEDGER_GROUP_NAME_EXPENDITURE,"","","");
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (convert to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
@@ -100,6 +101,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Expenditure", LEDGER_GROUP_NAME_EXPENDITURE,"","","");
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
@@ -149,6 +151,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Expenditure", LEDGER_GROUP_NAME_EXPENDITURE,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
@@ -174,7 +177,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="844")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan3.0"})
     public void Ledger_Statement_TC844() throws IOException {
         log("@title: Validate value calculated correctly for Ledger Type = Expenditure (Credit)");
         log("@Step 1: Login to SB11 site");
@@ -203,6 +206,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Expenditure", LEDGER_GROUP_NAME_EXPENDITURE,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
@@ -255,6 +259,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Asset", LEDGER_GROUP_NAME_ASSET, date, date, "");
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
@@ -304,6 +309,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Asset", LEDGER_GROUP_NAME_ASSET, date, date, "");
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
@@ -352,6 +358,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Asset", LEDGER_GROUP_NAME_ASSET,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
@@ -405,6 +412,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Asset", LEDGER_GROUP_NAME_ASSET,"","","");
 
             log("@Step 7: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
@@ -447,6 +455,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Liability", LEDGER_GROUP_NAME_LIABILITY,"","","");
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
@@ -497,6 +506,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Liability", LEDGER_GROUP_NAME_LIABILITY,"","","");
             log("@Verify 1: Original Currency: Ledger column with Ledger Group and Ledger Name, CUR column with ledger currency, Credit/Debit column = value inputted at step 5 in blue, Running Bal and Running Bal CT displayed");
             log("@Verify 2: Amounts in GBP (conver to GBP): Credit/Debit column =  value inputted at step 5 in blue , Running Bal get value from Original Currency");
@@ -546,6 +556,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Liability", SBPConstants.LEDGER_GROUP_NAME_LIABILITY,"","","");
 
             log("@Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
@@ -599,6 +610,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("@Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+            ledgerStatementPage.waitSpinnerDisappeared();
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Liability", SBPConstants.LEDGER_GROUP_NAME_LIABILITY,"","","");
 
             log("@Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
@@ -652,7 +664,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-
+            ledgerStatementPage.waitSpinnerDisappeared();
             log("Step 8: Observe value show on page");
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Capital", LEDGER_GROUP_NAME_CAPITAL,"","","");
 
@@ -676,7 +688,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="854")
-    @Test(groups = {"smoke_qc"})
+    @Test(groups = {"smoke_qc","ethan3.0"})
     public void Ledger_Statement_TC854() throws IOException {
         log("@title: Validate transaction Debit of Ledger Type = Capital");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
@@ -705,7 +717,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-
+            ledgerStatementPage.waitSpinnerDisappeared();
             log("Step 8: Observe value show on page");
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Capital", LEDGER_GROUP_NAME_CAPITAL,"","","");
 
@@ -729,7 +741,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="855")
-    @Test(groups = {"smoke_qc"})
+    @Test(groups = {"smoke_qc","ethan3.0"})
     public void Ledger_Statement_TC855() throws IOException {
         log("@title:Validate value calculated correctly for Ledger Type = Capital (Credit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
@@ -758,7 +770,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-
+            ledgerStatementPage.waitSpinnerDisappeared();
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Capital", LEDGER_GROUP_NAME_CAPITAL,"","","");
             LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_CAPITAL,LEDGER_CAPITAL_CREDIT_ACC);
@@ -812,7 +824,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-
+            ledgerStatementPage.waitSpinnerDisappeared();
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Capital", LEDGER_GROUP_NAME_CAPITAL,"","","");
             LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_CAPITAL,LEDGER_CAPITAL_DEBIT_ACC);
@@ -866,7 +878,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-
+            ledgerStatementPage.waitSpinnerDisappeared();
             log("Step 8: Observe value show on page");
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Income", LEDGER_GROUP_NAME_INCOME,"","","");
 
@@ -919,7 +931,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-
+            ledgerStatementPage.waitSpinnerDisappeared();
             log("Step 8: Observe value show on page");
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Income", LEDGER_GROUP_NAME_INCOME,"","","");
             LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_INCOME,LEDGER_INCOME_DEBIT_ACC);
@@ -973,7 +985,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-
+            ledgerStatementPage.waitSpinnerDisappeared();
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction\n");
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Income", LEDGER_GROUP_NAME_INCOME,"","","");
             LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_INCOME,LEDGER_INCOME_CREDIT_ACC);
@@ -1026,7 +1038,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         try {
             log("Step 7: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
-
+            ledgerStatementPage.waitSpinnerDisappeared();
             log("Step 8: Click on Ledger Name and observe value show in popup with Tnx Date = the date make transaction");
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Income", LEDGER_GROUP_NAME_INCOME,"","","");
             LedgerDetailPopup ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(SBPConstants.LEDGER_GROUP_NAME_INCOME,LEDGER_INCOME_DEBIT_ACC);
@@ -1101,6 +1113,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login with valid account");
         log("Step 2: Click General Reports > Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         log("@Step 3: Click Export To Excel");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Income", LEDGER_GROUP_NAME_INCOME,"","","");
         ledgerStatementPage.exportExcel();
@@ -1123,6 +1136,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login with valid account");
         log("Step 2: Click General Reports > Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         log("@Step 3: Click Export To PDF");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,"Income", LEDGER_GROUP_NAME_INCOME,"","","");
         ledgerStatementPage.exportPDF();
@@ -1155,6 +1169,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String creditIncomeAcc = LEDGER_INCOME_CREDIT_NAME+" - "+LEDGER_INCOME_CREDIT_NUMBER;
         log("@Step 1: Go to General Reports >> Ledger Statement page");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         log("Step 2: Filter data of 302.000.000.000 - Retained Earnings in testing month\n" +
                 "e.g. Company Unit = Kastraki Limited\n" +
                 "Financial Year = 2023-2024\n" +
@@ -1218,6 +1233,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String creditExpAcc = LEDGER_EXPENDITURE_CREDIT_NAME+" - "+LEDGER_EXPENDITURE_CREDIT_NUMBER;
         log("@Step 1: Go to General Reports >> Ledger Statement page");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         log("Step 2: Filter data of 302.000.000.000 - Retained Earnings in testing month\n" +
                 "e.g. Company Unit = Kastraki Limited\n" +
                 "Financial Year = 2023-2024\n" +

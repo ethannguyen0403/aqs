@@ -25,31 +25,15 @@ public class ConfirmBetsTest extends BaseCaseAQS {
 
     @TestRails(id = "176")
     @Test(groups = {"smoke"})
-    @Parameters({"accountCode", "accountCurrency"})
-    public void Confirm_Bets_TC176(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void Confirm_Bets_TC176(String accountCode) {
         log("@title: Validate Pending Soccer Bets display correct information as Bet Entry page");
         log("Precondition: Init data and Place a new bet on Bet Entry for Soccer to have a pending bet");
-        String date = String.format(DateUtils.getDate(-1, "d/MM/yyyy", "GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED, date, eventInfo.getLeagueName());
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(SOCCER).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
-                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType("HDP")
-                .stage("FT")
-                .selection(eventInfo.getHome())
-                .event(eventInfo)
-                .build();
-        lstOrder.add(order);
-        soccerBetEntryPage.placeBet(accountCode, eventInfo.getHome(), true, "Home", lstOrder, false, false, true);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-
+        String date = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +7"));
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,true,accountCode,"Goals","HDP","Home","FullTime",2.15,1.75,"HK",15.50,"BACK",false,"");
+        lstOrder.get(0).setBetType("Back");
         log("@Step 2: Navigate to Trading > Confirm Bet");
-        ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
+        ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
         try {
             log("@Step 3. Filter 'Sports' = Soccer and input account at the precondition to 'Account Code' field and status = Pending");
             log("@Step 4. Click 'Show' and observe the bet at precondition");
@@ -66,43 +50,26 @@ public class ConfirmBetsTest extends BaseCaseAQS {
 
     @TestRails(id = "179")
     @Test(groups = {"smoke"})
-    @Parameters({"accountCode", "accountCurrency"})
-    public void Confirm_Bets_TC179(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void Confirm_Bets_TC179(String accountCode) {
         log("@title:Validate deleted bets does not show in Bet Entry page");
         log("Precondition: Place a new bet on Bet Entry for Soccer and delete pending bet in confirm bet page");
-        String date = String.format(DateUtils.getDate(-1, "d/MM/yyyy", "GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(SOCCER).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
-                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType("HDP")
-                .stage("FT")
-                .selection(eventInfo.getHome())
-                .event(eventInfo)
-                .build();
-        lstOrder.add(order);
-        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED, date, order.getEvent().getLeagueName());
-        soccerBetEntryPage.placeBet(accountCode, eventInfo.getHome(), true, "Home", lstOrder, false, false, true);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-        ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
+        String date = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +7"));
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,false,accountCode,"Goals","HDP","Home","FullTime",2.15,1.75,"HK",15.50,"BACK",false,"");
+        ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Pending", SOCCER, "All", "Specific Date", date, "", accountCode);
         confirmBetsPage.deleteOrder(lstOrder.get(0), true);
-
         log("@Step 2: Navigate to Trading > Bet Entry");
         log("@Step 3. Filter Date and Choose League as the bet at the precondition");
         log("@Step 3. Input the account at the precondition to Account Code field");
         log("@Step 4. Click on the 'Bets' link at 'SPB' column of the event at the precondition and observe");
-        betEntryPage = confirmBetsPage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-        soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED, date, order.getEvent().getLeagueName());
-        BetListPopup betListPopup = soccerBetEntryPage.openBetList(eventInfo.getHome());
+        BetEntryPage betEntryPage = confirmBetsPage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
+        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
+        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED, date, lstOrder.get(0).getEvent().getLeagueName());
+        BetListPopup betListPopup = soccerBetEntryPage.openBetList(lstOrder.get(0).getEvent().getHome());
 
         log("@Verify: Bet has been deleted does not show in Bet List - Bet Entry page");
-        Assert.assertFalse(betListPopup.isOrderDisplay(order.getBetId()), "Failed! The order is exist in the list after deleting");
+        Assert.assertFalse(betListPopup.isOrderDisplay(lstOrder.get(0).getBetId()), "Failed! The order is exist in the list after deleting");
 
         log("INFO: Executed completely");
     }
@@ -241,42 +208,17 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "881")
-    @Test(groups = {"smoke"})
-    @Parameters({"accountCode", "accountCurrency"})
-    public void Confirm_Bets_TC881(String accountCode, String accountCurrency) {
+    @Test(groups = {"smoke","ethan3.0"})
+    @Parameters({"accountCode"})
+    public void Confirm_Bets_TC881(String accountCode) {
         log("@title: Validate can delete multiple Pending Bets");
         log("Precondition: Account has place above 2 bets on an event in Bet Entry");
-        String date = String.format(DateUtils.getDate(-1, "d/MM/yyyy", "GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
-        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED, date, eventInfo.getLeagueName());
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(SOCCER).isNegativeHdp(false).hdpPoint(1.75).price(2.15).requireStake(15.50)
-                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType("HDP")
-                .stage("FT")
-                .selection(eventInfo.getHome())
-                .event(eventInfo)
-                .build();
-        Order order1 = new Order.Builder()
-                .sport(SOCCER).isNegativeHdp(true).hdpPoint(1.75).price(2.15).requireStake(10.00)
-                .oddType("HK").betType("Lay").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType("HDP")
-                .stage("FT")
-                .selection(eventInfo.getHome())
-                .event(eventInfo)
-                .build();
-        lstOrder.add(order);
-        lstOrder.add(order1);
-        soccerBetEntryPage.placeBet(accountCode, eventInfo.getHome(), true, "Home", lstOrder, false, false, true);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-        ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
+        String date = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +7"));
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,false,accountCode,"Goals","HDP","Home","FullTime",2.15,1.75,"HK",15.50,"BACK",false,"");
+        lstOrder.add(welcomePage.placeBetAPI(SOCCER,date,false,accountCode,"Goals","HDP","Home","FullTime",2.15,1.75,"HK",15.50,"BACK",false,"").get(0));
 
         log("@Step 2:Navigate to Trading > Confirm Bets");
+        ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
         log("@Step 3: Filter Pending status and valid account code");
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Pending", SOCCER, "All", "Specific Date", date, "", accountCode);
 
@@ -446,41 +388,24 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "1001")
-    @Test(groups = {"smoke"})
-    @Parameters({"accountCode", "accountCurrency"})
-    public void Confirm_Bets_TC1001(String accountCode, String accountCurrency) {
+    @Test(groups = {"smoke","ethan3.0"})
+    @Parameters({"accountCode"})
+    public void Confirm_Bets_TC1001(String accountCode) {
         log("@title: Validate can update Pending Bets");
         log("Precondition:There is a Pending");
         String date = String.format(DateUtils.getDate(-1, "d/MM/yyyy", "GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
-        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED, date, eventInfo.getLeagueName());
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(SOCCER).isNegativeHdp(false).hdpPoint(1.75).price(2.05).requireStake(9.50)
-                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType("HDP")
-                .stage("FT")
-                .selection(eventInfo.getAway())
-                .event(eventInfo)
-                .build();
-        lstOrder.add(order);
-        soccerBetEntryPage.placeBet(accountCode, eventInfo.getHome(), true, "Home", lstOrder, false, false, true);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-
+        List<Order> lstOrder =  welcomePage.placeBetAPI(SOCCER,date,true,accountCode,"Goals","HDP","Away","FullTime",2.05,1.75,"HK",9.50,"BACK",false,"");
         log("@Step 1: Login to SB11 >> Confirm Bets");
-        ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
+        ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
 
         log("@Step 2: Filter status Pending and the according account code then click Show");
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Pending", SOCCER, "All", "Specific Date", date, "", accountCode);
 
         log("@Step 3: Find the bet at the precondition > edit any information of the bet (Selection/HDP/Odds/Stake)");
         log("@Step 4: Click on 'Update Bet')");
-        order.setSelection(eventInfo.getHome());
-        order.setHdpPoint(0.50);
-        order.setBetType("Lay");
+        lstOrder.get(0).setSelection(lstOrder.get(0).getEvent().getHome());
+        lstOrder.get(0).setHdpPoint(0.50);
+        lstOrder.get(0).setBetType("Lay");
         confirmBetsPage.updateOrder(lstOrder.get(0), true);
 
         log("@Step 5: Re-filter the bet has been updated and observe");

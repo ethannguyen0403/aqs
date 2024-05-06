@@ -81,6 +81,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         String lastDayOfMonth = DateUtils.getLastDateOfMonth(year, month, "dd/MM/yyyy");
 
         LedgerStatementPage ledgerPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+        ledgerPage.waitSpinnerDisappeared();
         ledgerPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Asset", QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT, firstDayOfMonth, lastDayOfMonth, REPORT_TYPE.get(0));
         String totalLedger = ledgerPage.getTotalAmountInOriginCurrency("Total in HKD");
         boolean isPositiveNumber = ledgerPage.isTotalAmountInOriginCurrencyPositiveNumber("Total in HKD");
@@ -107,6 +108,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         String lastDayOfMonth = DateUtils.getLastDateOfMonth(year, month, "dd/MM/yyyy");
 
         LedgerStatementPage ledgerPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+        ledgerPage.waitSpinnerDisappeared();
         ledgerPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Asset", QA_ASSET_PARENT_ACCOUNT_700, firstDayOfMonth, lastDayOfMonth, REPORT_TYPE.get(0));
         String totalLedger = ledgerPage.getTotalAmountInOriginCurrency("Total in HKD");
         boolean isPositiveNumber = ledgerPage.isTotalAmountInOriginCurrencyPositiveNumber("Total in HKD");
