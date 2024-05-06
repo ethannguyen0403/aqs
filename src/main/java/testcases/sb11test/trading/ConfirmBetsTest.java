@@ -360,11 +360,10 @@ public class ConfirmBetsTest extends BaseCaseAQS {
 
     @TestRails(id = "181")
     @Test(groups = {"smoke"})
-    @Parameters({"accountCode", "accountCurrency"})
-    public void Confirm_Bets_TC181(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void Confirm_Bets_TC181(String accountCode) {
         log("@title:Validate bet info is correctly in Confirm Bet and Bet Setlement after update a bets in Confirm status");
         log("Precondition: Test case C863 to place a Cricket bet");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
         String date = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +7"));
         String dateAPI = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
         // define event info
@@ -383,35 +382,15 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String leagueID = EventScheduleUtils.getLeagueID(eventCricket.getLeagueName(), SPORT_ID_MAP.get("Cricket"));
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         eventCricket.setEventId(eventID);
-        List<Order> lstOrder = new ArrayList<>();
-        // define order info
-        Order order = new Order.Builder()
-                .sport(eventCricket.getSportName())
-                .isNegativeHdp(false)
-                .price(2.15)
-                .requireStake(15.50)
-                .oddType("HK")
-                .betType("Back")
-                .accountCode(accountCode)
-                .accountCurrency(accountCurrency)
-                .marketType("Match-HDP")
-                .selection(eventCricket.getHome())
-                .handicapRuns(9.50)
-                .handicapWtks(10)
-                .isLive(false)
-                .home(eventCricket.getHome())
-                .away((eventCricket.getAway()))
-                .event(eventCricket)
-                .build();
-        lstOrder.add(order);
 
-        CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-        cricketBetEntryPage.showLeague(KASTRAKI_LIMITED, date, eventCricket.getLeagueName());
-        cricketBetEntryPage.placeBet(order, true);
-        order = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder).get(0);
-        ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
+        List<Order> lstOrder = welcomePage.placeBetAPI(CRICKET,date,eventCricket,accountCode,"Goals","HDP",eventCricket.getHome(),"FullTime",2.15,15.50,"HK",15.50,
+                "BACK",false,"");
+        lstOrder.get(0).setBetType("Back");
+        lstOrder.get(0).setMarketType("Handicap");
+        lstOrder.get(0).setStage(null);
+        ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Pending", eventCricket.getSportName(), "All", "Specific Date", date, "", accountCode);
-        confirmBetsPage.confirmBet(order);
+        confirmBetsPage.confirmBet(lstOrder.get(0));
 
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Login to SB11 >> Confirm Bets > Filter Status = Confirmed");
@@ -420,20 +399,20 @@ public class ConfirmBetsTest extends BaseCaseAQS {
 
         log("@Step 4: Find the bet at the precondition > edit any information of the bet (Selection/HDP/Odds/Stake)");
         log("@Step 5: Click on 'Update Bet'");
-        order.setSelection(eventCricket.getAway());
-        confirmBetsPage.updateOrder(order, false);
+        lstOrder.get(0).setSelection(eventCricket.getAway());
+        confirmBetsPage.updateOrder(lstOrder.get(0), false);
 
         log("@Verify 1: Bet info is correctly updated in confirmed bets ");
-        confirmBetsPage.verifyOrder(order);
+        confirmBetsPage.verifyOrder(lstOrder.get(0));
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
         betSettlementPage.filter("Confirmed", date, "", "", accountCode);
 
         log("@Verify 2 : Bets display correctly information in Bet Settlement page");
-        betSettlementPage.verifyOrderInfo(order);
+        betSettlementPage.verifyOrderInfo(lstOrder.get(0));
         log("INFO: Executed completely");
 
         log("@Pos-condition: Deleted the order");
-        betSettlementPage.deleteOrder(order);
+        betSettlementPage.deleteOrder(lstOrder.get(0));
         log("@Pos-condition: Deleted the event Cricket");
         EventScheduleUtils.deleteEventByAPI(eventCricket,dateAPI);
         log("INFO: Executed Pos-condition completely");
@@ -441,42 +420,27 @@ public class ConfirmBetsTest extends BaseCaseAQS {
 
     @TestRails(id = "1000")
     @Test(groups = {"smoke"})
-    @Parameters({"accountCode", "accountCurrency"})
-    public void Confirm_Bets_TC1000(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void Confirm_Bets_TC1000(String accountCode) {
         log("@title: Validate deleted bets does not show in Bet Settlement page");
         log("Precondition:There is a Confirmed bet and be deleted in Confirm bet page");
-        String date = String.format(DateUtils.getDate(-1, "d/MM/yyyy", "GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
-        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED, date, eventInfo.getLeagueName());
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(SOCCER).isNegativeHdp(false).hdpPoint(0.25).price(2.05).requireStake(9.00)
-                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType("HDP")
-                .stage("FT")
-                .selection(eventInfo.getHome())
-                .event(eventInfo)
-                .build();
-        lstOrder.add(order);
-        soccerBetEntryPage.placeBet(accountCode, eventInfo.getHome(), true, "Home", lstOrder, false, false, true);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-        ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
+        String date = DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +7");
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,false,accountCode,"Goals","HDP","Home","FullTime",2.05,0.25,"HK",9.00,
+                "BACK",false,"");
+        ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Pending", SOCCER, "All", "Specific Date", date, "", accountCode);
-        confirmBetsPage.confirmBet(order);
+        confirmBetsPage.confirmBet(lstOrder.get(0));
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Confirmed", SOCCER, "All", "Specific Date", date, "", accountCode);
-        confirmBetsPage.deleteOrder(order, false);
+        confirmBetsPage.deleteOrder(lstOrder.get(0), false);
 
         log("@Step 1: Login to SB11 >> Bet Settlement page");
         log("@Step 2: Filter Confirm status with the according account code");
         log("@Step 3: Click 'Search' and observe");
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed", "", "", "", order.getAccountCode());
+        betSettlementPage.filter("Confirmed", "", "", "", lstOrder.get(0).getAccountCode());
 
         log("@Veirfy 1 : Confirmed bet has been deleted does not show in Bet Settlement page");
-        Assert.assertFalse(betSettlementPage.isOrderDisplayInTheTable(order), "FAILED! The order is displayed when it is deleted in Confirm Bets page");
+        Assert.assertFalse(betSettlementPage.isOrderDisplayInTheTable(lstOrder.get(0)), "FAILED! The order is displayed when it is deleted in Confirm Bets page");
 
         log("INFO: Executed completely");
     }
@@ -576,57 +540,37 @@ public class ConfirmBetsTest extends BaseCaseAQS {
 
     @TestRails(id = "185")
     @Test(groups = {"smoke"})
-    @Parameters({"accountCode", "accountCurrency"})
-    public void Confirm_Bets_TC185(String accountCode, String accountCurrency) {
+    @Parameters({"accountCode"})
+    public void Confirm_Bets_TC185(String accountCode) {
         log("@title: Validate can confirm bets and the confirmed bets will show in Bet Settlement page");
         log("Precondition: User has permission to access Confirm Bets page" +
                 "Having at least an account that is having bet which is not confirmed yet\n");
-        String date = String.format(DateUtils.getDate(-1, "d/MM/yyyy", "GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7"));
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI, dateAPI, SOCCER, "");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED, date, eventInfo.getLeagueName());
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder()
-                .sport(SOCCER).isNegativeHdp(false).hdpPoint(0.25).price(2.05).requireStake(9.00)
-                .oddType("HK").betType("Back").liveHomeScore(0).liveAwayScore(0).accountCode(accountCode).accountCurrency(accountCurrency)
-                .marketType("HDP")
-                .stage("FT")
-                .selection(eventInfo.getHome())
-                .event(eventInfo)
-                .build();
-        lstOrder.add(order);
-        soccerBetEntryPage.placeBet(accountCode, eventInfo.getHome(), true, "Home", lstOrder, false, false, true);
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-
+        String date = DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +7");
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,false,accountCode,"Goals","HDP","Home","FullTime",2.05,0.25,"HK",9.00,
+                "BACK",false,"");
+        lstOrder.get(0).setBetType("Back");
+        lstOrder.get(0).setMarketType("Handicap");
         log("@Step 1: Login to SB11 site");
         log("@Step 2: Navigate to Trading > Confirm Bets");
         log("@Step 3: Filter with account at pre-condition and Status is Pending > Show");
         log("@Step 4: Select any bet > click Confirm Bet > Observe");
         log("@Step 5: Filter with account at pre-condition and Status is Confirmed > Show");
         log("@step 6: Observe confirmed bet at step 4");
-        ConfirmBetsPage confirmBetsPage = soccerBetEntryPage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
+        ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Pending", SOCCER, "All", "Specific Date", date, "", accountCode);
         confirmBetsPage.confirmBet(lstOrder.get(0));
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Confirmed", SOCCER, "All", "Specific Date", date, "", accountCode);
-
         log("@Veirfy 1 : User can confirm bet successfully");
         confirmBetsPage.verifyOrder(lstOrder.get(0));
-
         log("@step 7: Navigate to Trading > Bet Settlement");
         log("Step 8: Filter with account at pre-condition and Status is Confirmed");
         log("Step 9: Observe confirmed bet at step 4");
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
         betSettlementPage.filter("Confirmed", date, "", "", lstOrder.get(0).getAccountCode());
-
         log("@Veirfy 2 : Confirmed bets is shown in Bet Settlement page correctly");
         betSettlementPage.verifyOrderInfo(lstOrder.get(0));
-
         log("@Pos-condition: Deleted the order");
-
         betSettlementPage.deleteOrder(lstOrder.get(0));
-
         log("INFO: Executed completely");
     }
 

@@ -42,8 +42,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         log("Verify 1: Menu 'Monitor Bets' is not shown");
-        List<String> lstSubMenu = welcomePage.headerMenuControl.getListSubMenu();
-        Assert.assertFalse(lstSubMenu.contains(MONITOR_BETS),"FAILED! Monitor Bets page displayed incorrect!");
+        Assert.assertFalse(welcomePage.headerMenuControl.isSubmenuDisplay(SOCCER,MONITOR_BETS),"FAILED! Monitor Bets page displayed incorrect!");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression_stg","2023.11.29"})
@@ -71,7 +70,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Step 2: Expand menu 'Soccer' and access 'Monitor Bets' page");
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("Verify 1: User cannot access 'Monitor Bets' page");
-        Assert.assertTrue(new MonitorBetsPage().lblTitle.isDisplayed(), "FAILED! Monitor Bets page can access by external link");
+        Assert.assertTrue(monitorBetsPage.lblTitle.isDisplayed(), "FAILED! Monitor Bets page can access by external link");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.11.29"})
@@ -165,7 +164,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "135")
     @Parameters({"accountCode"})
-    public void MonitorBetsTC_135(String accountCode) throws InterruptedException {
+    public void MonitorBetsTC_135(String accountCode) {
         log("@title: Validate only Live bets are shown when filter Live");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: The account is added to any smart group in Trading Smart System Smart Group");
@@ -191,7 +190,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     @Test(groups = {"regression","2023.12.29"})
     @TestRails(id = "136")
     @Parameters({"accountCode"})
-    public void MonitorBetsTC_136(String accountCode) throws InterruptedException {
+    public void MonitorBetsTC_136(String accountCode) {
         log("@title: Validate only non live bets are shown when filter Non Live");
         log("@Pre-condition 1: Login account is activated permission 'Monitor Bets");
         log("@Pre-condition 2: The account is added to any smart group in Trading Smart System Smart Group");

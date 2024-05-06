@@ -29,7 +29,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"smoke","ethan"})
     @Parameters({"clientCode","accountCode"})
     @TestRails(id = "1386")
-    public void PTRiskControlTC_1386(String clientCode, String accountCode) throws IOException, InterruptedException {
+    public void PTRiskControlTC_1386(String clientCode, String accountCode) throws IOException {
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (HK)");
         log("Precondition: Having account with Pending HDP/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
@@ -59,9 +59,9 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"smoke"})
-    @Parameters({"clientCode","accountCode","accountCurrency"})
+    @Parameters({"clientCode","accountCode"})
     @TestRails(id = "192")
-    public void PTRiskControlTC_192(String clientCode, String accountCode, String accountCurrency) throws InterruptedException, IOException {
+    public void PTRiskControlTC_192(String clientCode, String accountCode) IOException {
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (EU)");
         log("Precondition: Having account with Pending HPD/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
@@ -93,9 +93,9 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"smoke"})
-    @Parameters({"clientCode","accountCode","accountCurrency"})
+    @Parameters({"clientCode","accountCode"})
     @TestRails(id = "1387")
-    public void PTRiskControlTC_1387(String clientCode, String accountCode, String accountCurrency) throws IOException {
+    public void PTRiskControlTC_1387(String clientCode, String accountCode) throws IOException {
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (MY)");
         log("Precondition: Having account with Pending HPD/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
@@ -126,9 +126,9 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"smoke"})
-    @Parameters({"clientCode","accountCode","accountCurrency"})
+    @Parameters({"clientCode","accountCode"})
     @TestRails(id = "1388")
-    public void PTRiskControlTC_1388(String clientCode, String accountCode, String accountCurrency) throws IOException {
+    public void PTRiskControlTC_1388(String clientCode, String accountCode) throws IOException {
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (ID)");
         log("Precondition: Having account with Pending HPD/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
@@ -450,69 +450,70 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3418(String accountCode) {
         //TODO having improvement AQS-4080
-        String currentDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
-        String dateAPI = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
-        log("@title: Validate forecast table displays the correct value");
-        log("@Precondition: There are some matched Basket ball 1x2 matched bets from Pinnacle/BetISN/Fair or Bet Entry page");
-        log("@Precondition-Step 1: Have a specific League Name, Home Team, Away Team for testing line\n" +
-                "League: QA Basketball League\n" +
-                "Home Team: QA Basketball Team 1\n" +
-                "Away Team: QA Basketball Team 2");
-        Event eventBasketball =
-                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(currentDate)
-                        .home("QA Basketball Team 1").away("QA Basketball Team 2")
-                        .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
-        Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
-                .selection(eventBasketball.getHome()).isLive(false).event(eventBasketball).accountCode(accountCode).build();
-        EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get("Basketball"));
-        log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
-        try {
-            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-            BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
-            basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
-            basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
-            log("@Step 1: Navigate to Soccer > PT Risk Control");
-            PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
-            ptPage.waitSpinnerDisappeared();
-
-            log("@Step 2: Filter with Report Type = PT + Throw Bets, League and Client placed bet");
-            ptPage.filter("Basketball", "", KASTRAKI_LIMITED, "PT + Throw Bets", "All", "", "", eventBasketball.getLeagueName());
-            log("Verify 1: Forecast win/loss amount at 'X' selection always shows as 0");
-            Map<String, String> entryValuePTRiskThrows =
-                    ptPage.getEntriesValueOfTableSport(eventBasketball.getLeagueName(), eventBasketball.getHome(), "1", "2");
-            Assert.assertEquals(entryValuePTRiskThrows.get("x"), "0",
-                    "FAILED! Forecast win/loss amount at 'X' selection NOT shows as 0");
-            log("Verify 2: Validate Forecast PT + Throw Bets is correct");
-            PTRiskBetListPopup ptRiskBetListPopup = ptPage.openBetList(eventBasketball.getHome());
-            Assert.assertEquals(entryValuePTRiskThrows.get("1"),
-                    "-" + String.valueOf(ptRiskBetListPopup.getAmountForeCastHK1X2InBetSlip("1", "PT + Throw Bets")),
-                    "FAILED! Amount forecast 1 is not correct");
-            Assert.assertEquals(entryValuePTRiskThrows.get("2"),
-                    String.valueOf(ptRiskBetListPopup.getAmountForeCastHK1X2InBetSlip("2", "PT + Throw Bets")),
-                    "FAILED! Amount forecast 2 is not correct");
-            ptRiskBetListPopup.closeBetListPopup();
-
-            log("@Step 3: Filter with Report Type = Normal, League and Client placed bet");
-            ptPage.filter("Basketball", "", KASTRAKI_LIMITED, "Normal", "All", "", "", eventBasketball.getLeagueName());
-            String headerRowIndex = "1";
-            String valueRowIndex = "2";
-            Map<String, String> entryValuePTRiskNormal =
-                    ptPage.getEntriesValueOfTableSport(eventBasketball.getLeagueName(), eventBasketball.getHome(), headerRowIndex, valueRowIndex);
-            ptRiskBetListPopup = ptPage.openBetList(eventBasketball.getHome());
-            log("Verify 3: Validate Forecast Normal is correct");
-            Assert.assertEquals(entryValuePTRiskNormal.get("x"), "0",
-                    "FAILED! Forecast win/loss amount at 'X' selection NOT shows as 0");
-            Assert.assertEquals(entryValuePTRiskNormal.get("1"),
-                    String.valueOf(ptRiskBetListPopup.getAmountForeCastHK1X2InBetSlip("1", "Normal")),
-                    "FAILED! Amount forecast 1 is not correct");
-            Assert.assertEquals(entryValuePTRiskNormal.get("2"),
-                    "-" + String.valueOf(ptRiskBetListPopup.getAmountForeCastHK1X2InBetSlip("2", "Normal")),
-                    "FAILED! Amount forecast 2 is not correct");
-        } finally {
-            log("@Post-condition: Deleted the event Basketball: ");
-            EventScheduleUtils.deleteEventByAPI(eventBasketball,dateAPI);
-            log("INFO: Executed Pos-condition completely");
-        }
+        Assert.assertTrue(false,"FAILED! Need to revise because improvement AQS-4080");
+//        String currentDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+//        String dateAPI = DateUtils.formatDate(currentDate, "dd/MM/yyyy", "yyyy-MM-dd");
+//        log("@title: Validate forecast table displays the correct value");
+//        log("@Precondition: There are some matched Basket ball 1x2 matched bets from Pinnacle/BetISN/Fair or Bet Entry page");
+//        log("@Precondition-Step 1: Have a specific League Name, Home Team, Away Team for testing line\n" +
+//                "League: QA Basketball League\n" +
+//                "Home Team: QA Basketball Team 1\n" +
+//                "Away Team: QA Basketball Team 2");
+//        Event eventBasketball =
+//                new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(currentDate)
+//                        .home("QA Basketball Team 1").away("QA Basketball Team 2")
+//                        .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
+//        Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
+//                .selection(eventBasketball.getHome()).isLive(false).event(eventBasketball).accountCode(accountCode).build();
+//        EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get("Basketball"));
+//        log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
+//        try {
+//            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
+//            BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
+//            basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
+//            basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
+//            log("@Step 1: Navigate to Soccer > PT Risk Control");
+//            PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
+//            ptPage.waitSpinnerDisappeared();
+//
+//            log("@Step 2: Filter with Report Type = PT + Throw Bets, League and Client placed bet");
+//            ptPage.filter("Basketball", "", KASTRAKI_LIMITED, "PT + Throw Bets", "All", "", "", eventBasketball.getLeagueName());
+//            log("Verify 1: Forecast win/loss amount at 'X' selection always shows as 0");
+//            Map<String, String> entryValuePTRiskThrows =
+//                    ptPage.getEntriesValueOfTableSport(eventBasketball.getLeagueName(), eventBasketball.getHome(), "1", "2");
+//            Assert.assertEquals(entryValuePTRiskThrows.get("x"), "0",
+//                    "FAILED! Forecast win/loss amount at 'X' selection NOT shows as 0");
+//            log("Verify 2: Validate Forecast PT + Throw Bets is correct");
+//            PTRiskBetListPopup ptRiskBetListPopup = ptPage.openBetList(eventBasketball.getHome());
+//            Assert.assertEquals(entryValuePTRiskThrows.get("1"),
+//                    "-" + String.valueOf(ptRiskBetListPopup.getAmountForeCastHK1X2InBetSlip("1", "PT + Throw Bets")),
+//                    "FAILED! Amount forecast 1 is not correct");
+//            Assert.assertEquals(entryValuePTRiskThrows.get("2"),
+//                    String.valueOf(ptRiskBetListPopup.getAmountForeCastHK1X2InBetSlip("2", "PT + Throw Bets")),
+//                    "FAILED! Amount forecast 2 is not correct");
+//            ptRiskBetListPopup.closeBetListPopup();
+//
+//            log("@Step 3: Filter with Report Type = Normal, League and Client placed bet");
+//            ptPage.filter("Basketball", "", KASTRAKI_LIMITED, "Normal", "All", "", "", eventBasketball.getLeagueName());
+//            String headerRowIndex = "1";
+//            String valueRowIndex = "2";
+//            Map<String, String> entryValuePTRiskNormal =
+//                    ptPage.getEntriesValueOfTableSport(eventBasketball.getLeagueName(), eventBasketball.getHome(), headerRowIndex, valueRowIndex);
+//            ptRiskBetListPopup = ptPage.openBetList(eventBasketball.getHome());
+//            log("Verify 3: Validate Forecast Normal is correct");
+//            Assert.assertEquals(entryValuePTRiskNormal.get("x"), "0",
+//                    "FAILED! Forecast win/loss amount at 'X' selection NOT shows as 0");
+//            Assert.assertEquals(entryValuePTRiskNormal.get("1"),
+//                    String.valueOf(ptRiskBetListPopup.getAmountForeCastHK1X2InBetSlip("1", "Normal")),
+//                    "FAILED! Amount forecast 1 is not correct");
+//            Assert.assertEquals(entryValuePTRiskNormal.get("2"),
+//                    "-" + String.valueOf(ptRiskBetListPopup.getAmountForeCastHK1X2InBetSlip("2", "Normal")),
+//                    "FAILED! Amount forecast 2 is not correct");
+//        } finally {
+//            log("@Post-condition: Deleted the event Basketball: ");
+//            EventScheduleUtils.deleteEventByAPI(eventBasketball,dateAPI);
+//            log("INFO: Executed Pos-condition completely");
+//        }
     }
 
     @TestRails(id = "3419")

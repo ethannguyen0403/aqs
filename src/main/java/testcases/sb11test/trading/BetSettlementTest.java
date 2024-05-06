@@ -62,7 +62,7 @@ public class BetSettlementTest extends BaseCaseAQS {
 
     @TestRails(id="188")
     @Test(groups = {"smoke"})
-    @Parameters({"accountCode","accountCurrency"})
+    @Parameters({"accountCode"})
     public void BetSettlement_TC188(String accountCode) {
         log("@title: Validate bet in Bet settlement is re-settled with correct winloss after update bet info in Confirm Bets page");
         log("Precondition: Have a soccer bet in confirmed status and have win/lose amount\n" +

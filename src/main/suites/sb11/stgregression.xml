@@ -93,6 +93,7 @@
             <class name="testcases.sb11test.master.MissedAccountsTest"/>
             <class name="testcases.sb11test.master.AutoCreatedAccountsTest"/>
             <class name="testcases.sb11test.master.AddressBookTest"/>
+            <class name="testcases.sb11test.master.TermsAndConditionsTest"/>
 
             <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
             <class name="testcases.sb11test.generalReports.ClosingJournalEntriesTest"/>
@@ -103,8 +104,8 @@
             <class name="testcases.sb11test.generalReports.FundReconciliationTest"/>
             <class name="testcases.sb11test.generalReports.ARandAPReconciliationTest"/>
             <class name="testcases.sb11test.generalReports.IPMonitoringTest"/>
-
-
+            <class name="testcases.sb11test.generalReports.WLRPCTest"/>
+            <class name="testcases.sb11test.generalReports.WinLossDetailTest"/>
 
             <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
             <class name="testcases.sb11test.financialReports.CashFlowStatementTest"/>

@@ -26,6 +26,7 @@ public class SBPConstants {
     public final static String CHART_OF_ACCOUNT = "Chart Of Account";
     public final static String GENERAL_REPORTS = "General Reports";
     public final static String SOCCER = "Soccer";
+    public final static String CRICKET = "Cricket";
     public final static String INVOICE = "Invoice";
     public final static String INVOICES = "Invoices";
     public final static String WORKFLOW_SETTINGS = "Workflow Settings";
