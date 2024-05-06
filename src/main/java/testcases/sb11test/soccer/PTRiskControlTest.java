@@ -61,7 +61,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     @Test(groups = {"smoke"})
     @Parameters({"clientCode","accountCode"})
     @TestRails(id = "192")
-    public void PTRiskControlTC_192(String clientCode, String accountCode) IOException {
+    public void PTRiskControlTC_192(String clientCode, String accountCode) throws IOException {
         log("@title: Validate that Win/Loss amounts are calculated correctly if having Account Percentage setting (EU)");
         log("Precondition: Having account with Pending HPD/OU bet and \n" +
                 "The account is configured with percentage in Account Percent");
