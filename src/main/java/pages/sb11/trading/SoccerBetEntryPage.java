@@ -157,6 +157,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
         int rowIndex = getEventRowIndex(eventName);
         int colIndex = defineColumn(isFullTime,type);
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"span").click();
+        waitSpinnerDisappeared();
         //Some element on Bet slip return true with isDisplay() method in spite of invisibility of Bet slip pop up
         try {
             Thread.sleep(2000);

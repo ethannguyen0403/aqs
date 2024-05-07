@@ -142,6 +142,11 @@ public class ChartOfAccountUtils {
         }
         return ledgerType;
     }
+
+    /**
+     *
+     * @return list detail type
+     */
     public static List<String> getLstLedgerGroup(){
         List<String> lstLedgerGroupName = new ArrayList<>();
         JSONArray jsonArr = null;

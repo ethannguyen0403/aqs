@@ -272,7 +272,7 @@ public class ConfirmBetsPage extends WelcomePage {
     public void confirmBet(Order order){
         selectBet(order,true);
         btnConfirmBet.click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
     }
 
     /**
@@ -292,7 +292,7 @@ public class ConfirmBetsPage extends WelcomePage {
     public void updateOrder(Order order,boolean isPending){
         fillInfo(order,isPending);
         btnUpdateBet.click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
     }
 
     /**
