@@ -1,7 +1,9 @@
 package testcases.sb11test.generalReports;
 
 import com.paltech.utils.DateUtils;
+import common.SBPConstants;
 import objects.Transaction;
+import org.openqa.selenium.support.Color;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -13,9 +15,11 @@ import utils.sb11.ChartOfAccountUtils;
 import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
+import java.awt.*;
 import java.io.IOException;
 
 import static common.SBPConstants.*;
+
 
 public class FundReconciliationTest extends BaseCaseAQS {
     @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
@@ -260,7 +264,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         String sumCredit = page.getSumDebitCredit("Credit");
         Assert.assertEquals(page.getValueByDesc("Closing Balance","Debit"),sumDebit,"FAILED! Sum of Debit displays incorrect");
         Assert.assertEquals(page.getValueByDesc("Closing Balance","Credit"),sumCredit,"FAILED! Sum of Credit displays incorrect");
-        Assert.assertEquals(page.tblData.getColumn(page.tblSubAcc.getColumnIndexByName("Running Balance"),50,true).get(page.tblSubAcc.getNumberOfRows(false,true)-2),
+        Assert.assertEquals(page.tblSubAcc.getColumn(page.tblSubAcc.getColumnIndexByName("Running Balance"),50,true).get(page.tblSubAcc.getNumberOfRows(false,true)-2),
                 page.getValueByDesc("Closing Balance","Running Balance"),"FAILED! Running Balance displays incorrect");
         log("INFO: Executed completely");
     }
@@ -300,6 +304,208 @@ public class FundReconciliationTest extends BaseCaseAQS {
         String todaySettleEx = page.getSumAuthorizedTrans(username);
         Assert.assertEquals(page.tblTodaySettle.getControlOfCell(1,page.tblSubAcc.getColumnIndexByName("Debit"),1,"span").getText(),
                 todaySettleEx,"FAILED! Today's Settlement value display incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @TestRails(id = "29463")
+    public void Fund_Reconciliation_TC_29463() {
+        log("@title: Validate Sub-account lists displays properly");
+        log("@Pre-condition 1: 'System Monitoring' permission is ON for any account");
+        log("@Pre-condition 2: 'Fund Reconciliation' permission is ON for any account");
+        log("@Pre-condition 3: 'Having a Detail Type which have some sub-accounts");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Expand General Reports ' menu");
+        log("@Step 3: Click on 'System Monitoring'");
+        log("@Step 4: Click on 'Fund Reconciliation'");
+        FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
+        log("@Step 5: Select Detail Type at precondition");
+        log("@Step 6: Expand Sub-account dropdown list, observe");
+        log("@Verify 1: Lists all sub-accounts at precondition properly");
+        page.verifySubaccListDisplay();
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @TestRails(id = "29464")
+    public void Fund_Reconciliation_TC_29464() {
+        log("@title: Validate Sub-account is ordering by Sub-account Number ascendingly");
+        log("@Pre-condition 1: 'System Monitoring' permission is ON for any account");
+        log("@Pre-condition 2: 'Fund Reconciliation' permission is ON for any account");
+        log("@Pre-condition 3: 'Having a Detail Type which have some sub-accounts");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Expand General Reports ' menu");
+        log("@Step 3: Click on 'System Monitoring'");
+        log("@Step 4: Click on 'Fund Reconciliation'");
+        FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
+        log("@Step 5: Select Detail Type at precondition");
+        log("@Step 6: Expand Sub-account dropdown list");
+        log("@Verify 1: Sub-account Number is ordering ascendingly");
+        page.verifySubaccListSorted();
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @TestRails(id = "29465")
+    public void Fund_Reconciliation_TC_29465() {
+        log("@title: Validate there is a filtering by Beginning Date/Ending Date");
+        log("@Pre-condition 1: 'System Monitoring' permission is ON for any account");
+        log("@Pre-condition 2: 'Fund Reconciliation' permission is ON for any account");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Expand General Reports ' menu");
+        log("@Step 3: Click on 'System Monitoring'");
+        log("@Step 4: Click on 'Fund Reconciliation'");
+        FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
+        log("@Verify 1: There is a filtering by Beginning Date/Ending Date");
+        Assert.assertTrue(page.txtBeginDate.isEnabled(),"FAILED! Beginning Date text box display incorrect");
+        Assert.assertTrue(page.txtEndingDate.isEnabled(),"FAILED! Ending Date text box display incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @TestRails(id = "29466")
+    public void Fund_Reconciliation_TC_29466() {
+        log("@title: Validate is able to filter transaction within 1 month");
+        log("@Pre-condition 1: 'System Monitoring' permission is ON for any account");
+        log("@Pre-condition 2: 'Fund Reconciliation' permission is ON for any account");
+        log("@Pre-condition 3: Having a Details type which has some sub-accounts");
+        String ledgerNumber = "101.000.001.000";
+        String groupName = "Cash";
+        log("@Pre-condition 4: Sub-accounts have transaction within 1 month");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Expand General Reports ' menu");
+        log("@Step 3: Click on 'System Monitoring'");
+        log("@Step 4: Click on 'Fund Reconciliation'");
+        FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
+        log("@Step 5: Select Details type and Sub-account at precondition");
+        log("@Step 6: Filter Beginning Date/Ending Date within 1 month");
+        log("@Step 7: Click Show button");
+        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,DateUtils.getDate(-30,"dd/MM/yyyy",GMT_7),"");
+        log("@Verify 1: All transactions of Sub-accounts display correctly");
+        page.verifyTransWithinRangeDate(-30,0);
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @TestRails(id = "29467")
+    public void Fund_Reconciliation_TC_29467() {
+        log("@title: Validate error message displays when tried to filter >1 month");
+        log("@Pre-condition 1: 'System Monitoring' permission is ON for any account");
+        log("@Pre-condition 2: 'Fund Reconciliation' permission is ON for any account");
+        log("@Pre-condition 3: Having a Details type which has some sub-accounts");
+        String ledgerNumber = "101.000.001.000";
+        String groupName = "Cash";
+        log("@Pre-condition 4: Sub-accounts have transaction within 1 month");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Expand General Reports ' menu");
+        log("@Step 3: Click on 'System Monitoring'");
+        log("@Step 4: Click on 'Fund Reconciliation'");
+        FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
+        log("@Step 5: Select Details type and Sub-account at precondition");
+        log("@Step 6: Filter Beginning Date/Ending Date >1 month");
+        log("@Step 7: Click Show button");
+        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,DateUtils.getDate(-32,"dd/MM/yyyy",GMT_7),"");
+        log("@Verify 1: Error message 'Date range should not be more than 1 month' will display");
+        String mesAc = page.appArlertControl.getWarningMessage();
+        Assert.assertEquals(mesAc, FundReconciliation.ERROR_MES_MORE_THAN_1_MONTH,"FAILED! Error message display incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @TestRails(id = "29477")
+    public void Fund_Reconciliation_TC_29477() {
+        log("@title: Validate there is a Show Amount in 5 Decimals checkbox with unticked as default");
+        log("@Pre-condition 1: 'System Monitoring' permission is ON for any account");
+        log("@Pre-condition 2: 'Fund Reconciliation' permission is ON for any account");
+        log("@Pre-condition 3: Having a Details type which has some sub-accounts including transaction within 1 month");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Expand General Reports ' menu");
+        log("@Step 3: Click on 'System Monitoring'");
+        log("@Step 4: Click on 'Fund Reconciliation'");
+        FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
+        log("@Verify 1: There is 'Show Amount in 5 Decimals' checkbox with unticked as default");
+        page.verifyShowAmountIn5DecimalsDisplay();
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @TestRails(id = "29478")
+    public void Fund_Reconciliation_TC_29478() {
+        log("@title: Validate the report shows amounts with 2 decimals number if unticked checkbox");
+        log("@Pre-condition 1: 'System Monitoring' permission is ON for any account");
+        log("@Pre-condition 2: 'Fund Reconciliation' permission is ON for any account");
+        log("@Pre-condition 3: Having a Details type which has some sub-accounts including transaction within 1 month");
+        String ledgerNumber = "101.000.001.000";
+        String groupName = "Cash";
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Expand General Reports ' menu");
+        log("@Step 3: Click on 'System Monitoring'");
+        log("@Step 4: Click on 'Fund Reconciliation'");
+        FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
+        log("@Step 5: Filter data of details type and sub-account at precondition within 1 month");
+        log("@Step 6: Click Show button");
+        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,DateUtils.getDate(-30,"dd/MM/yyyy",GMT_7),"");
+        log("@Verify 1: The report shows amounts with 2 decimals");
+        page.verifyDecimalsPlaces(2);
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @TestRails(id = "29479")
+    public void Fund_Reconciliation_TC_29479() {
+        log("@title: Validate the report shows amounts with 5 decimals number if ticked checkbox");
+        log("@Pre-condition 1: 'System Monitoring' permission is ON for any account");
+        log("@Pre-condition 2: 'Fund Reconciliation' permission is ON for any account");
+        log("@Pre-condition 3: Having a Details type which has some sub-accounts including transaction within 1 month");
+        String ledgerNumber = "101.000.001.000";
+        String groupName = "Cash";
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Expand General Reports ' menu");
+        log("@Step 3: Click on 'System Monitoring'");
+        log("@Step 4: Click on 'Fund Reconciliation'");
+        FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
+        log("@Step 5: Filter data of details type and sub-account at precondition within 1 month");
+        log("@Step 6: Check in 'Show Amount in 5 Decimals' checkbox");
+        log("@Step 7: Click Show button");
+        page.cbShowAmount5Decimals.click();
+        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,DateUtils.getDate(-30,"dd/MM/yyyy",GMT_7),"");
+        log("@Verify 1: The report shows amounts with 2 decimals");
+        page.verifyDecimalsPlaces(5);
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @TestRails(id = "29480")
+    public void Fund_Reconciliation_TC_29480() {
+        log("@title: Validate there is a header row that displays info of the sub-account with correct format");
+        log("@Pre-condition 1: 'System Monitoring' permission is ON for any account");
+        log("@Pre-condition 2: 'Fund Reconciliation' permission is ON for any account");
+        log("@Pre-condition 3: Having a Details type which has some sub-accounts including transaction within 1 month");
+        String ledgerNumber = "101.000.001.000";
+        String ledgerName = "PC Kam HKD";
+        String groupName = "Cash";
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Expand General Reports ' menu");
+        log("@Step 3: Click on 'System Monitoring'");
+        log("@Step 4: Click on 'Fund Reconciliation'");
+        FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
+        log("@Step 5: Filter data of details type and sub-account at precondition within 1 month");
+        log("@Step 6: Click Show button");
+        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,DateUtils.getDate(-30,"dd/MM/yyyy",GMT_7),"");
+        log("@Verify 1: There is a header row that displays info of the sub-account with the format '<Sub-account number> - <Sub-account name>'");
+        Assert.assertEquals(page.lblSubAccountName.getText(),String.format("%s - %s",ledgerNumber,ledgerName),"FAILED! Sub account display incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @TestRails(id = "29481")
+    public void Fund_Reconciliation_TC_29481() {
+        log("@title: Validate background color of header row is #d9e4f7");
+        log("@Pre-condition 1: 'System Monitoring' permission is ON for any account");
+        log("@Pre-condition 2: 'Fund Reconciliation' permission is ON for any account");
+        log("@Pre-condition 3: Having a Details type which has some sub-accounts including transaction within 1 month");
+        String ledgerNumber = "101.000.001.000";
+        String groupName = "Cash";
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Expand General Reports ' menu");
+        log("@Step 3: Click on 'System Monitoring'");
+        log("@Step 4: Click on 'Fund Reconciliation'");
+        FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
+        log("@Step 5: Filter data of details type and sub-account at precondition within 1 month");
+        log("@Step 6: Click Show button");
+        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,DateUtils.getDate(-30,"dd/MM/yyyy",GMT_7),"");
+        log("@Verify 1: The background color is #d9e4f7");
+        Assert.assertEquals(Color.fromString(page.lblSubAccountName.getColour()).asHex(),"#d9e4f7","FAILED! Sub account display incorrect");
         log("INFO: Executed completely");
     }
 }

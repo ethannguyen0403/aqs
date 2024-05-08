@@ -544,6 +544,10 @@ public class SBPConstants {
         public final static List<String> COMPANY_UNIT_LIST = Arrays.asList("Kastraki Limited", "SK1122", "IB 02", "Fair", "Aquifer");
 
     }
+    public static class FundReconciliation {
+        public final static String ERROR_MES_MORE_THAN_1_MONTH = "Date range should not be more than 1 month";
+
+    }
 }
 
 
