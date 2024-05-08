@@ -129,6 +129,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         Assert.assertEquals(sucMes, String.format(ClosingJournalEntries.SUCCESS_MES_LAST_MONTH,nextMonth),"FAILED! Success message display incorrect");
         log("@Step 7: Go to General Reports >> Ledger Statement");
         LedgerStatementPage ledgerStatementPage = page.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         log("@Step 8: Filter data of detail type of accounts at precondition from 1/10/2023 To 31/10/2023");
         String firstDay = DateUtils.getFirstDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
         String lastDay = DateUtils.getLastDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
@@ -177,6 +178,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         page.performCJE(KASTRAKI_LIMITED,ddMonth,true);
         log("@Step 6: Go to General Reports >> Ledger Statement");
         LedgerStatementPage ledgerStatementPage = page.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         log("@Step 7: Filter data of detail type of accounts at precondition from 1/9/2023 To 30/09/2023");
         String firstDay = DateUtils.getFirstDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
         String lastDay = DateUtils.getLastDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
@@ -192,7 +194,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         month = s.format(new Date(cal.getTimeInMillis()));
         firstDay = DateUtils.getFirstDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
         lastDay = DateUtils.getLastDateOfMonth(Integer.valueOf(month.split("-")[0]),Integer.valueOf(month.split("-")[1]),"dd/MM/yyyy");
-        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Expenditure",detailType,firstDay,lastDay,"After CJE");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Expenditure",detailType,firstDay,lastDay,"Before CJE");
         log("@Step 10: Click on account at precondition");
         ledgerDetailPopup = ledgerStatementPage.openLedgerDetail(LEDGER_PARENT_NAME_EXPENDITURE,numberLeder +" - "+ledger);
         log("@Verify 2: Running Bal. of Closing Journal 2023-OCTOBER is <> 0.00");

@@ -18,6 +18,7 @@ import utils.testraildemo.TestRails;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 
 import static common.SBPConstants.*;
 public class IPMonitoringTest extends BaseCaseAQS {
@@ -72,23 +73,12 @@ public class IPMonitoringTest extends BaseCaseAQS {
         log("@Pre-condition 2: Having at least 2 account code with same IP are placed bets");
         String accountCode2 = "ClientCredit-AutoQC";
         String sport="Soccer";
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
-        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
-        event.setEventDate(dateAPI);
-        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome())
-                .stage("FullTime").odds(1).handicap(-0.5).oddType("HK").requireStake(5.5).betType("BACK")
-                .build();
-        Order order1 = new Order.Builder().event(event).accountCode(accountCode2).marketName("Goals").marketType("HDP").selection(event.getHome())
-                .stage("FullTime").odds(1).handicap(-0.5).oddType("HK").requireStake(5).betType("BACK")
-                .build();
-        BetEntrytUtils.placeBetAPI(order);
-        BetEntrytUtils.placeBetAPI(order1);
+        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        welcomePage.placeBetAPI(sport,date,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
+                5.5,"BACK",false, "");
+        welcomePage.placeBetAPI(sport,date,false,accountCode2,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
+                5,"BACK",false, "");
         log("@Step 1: Access General Reports > IP Monitoring");
-        try {
-            Thread.sleep(20000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         IPMonitoringPage page = welcomePage.navigatePage(GENERAL_REPORTS,IP_MONITORING, IPMonitoringPage.class);
         log("@Step 2: Filter with account at pre-condition > observe");
         page.filter(bookieCode,"","","","","");
@@ -106,23 +96,12 @@ public class IPMonitoringTest extends BaseCaseAQS {
         String accountCode2 = "ClientCredit-AutoQC";
         String smartGroup2 = "QA Smart Group";
         String sport="Soccer";
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
-        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
-        event.setEventDate(dateAPI);
-        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome())
-                .stage("FullTime").odds(1).handicap(-0.5).oddType("HK").requireStake(5.5).betType("BACK")
-                .build();
-        Order order1 = new Order.Builder().event(event).accountCode(accountCode2).marketName("Goals").marketType("HDP").selection(event.getHome())
-                .stage("FullTime").odds(1).handicap(-0.5).oddType("HK").requireStake(5).betType("BACK")
-                .build();
-        BetEntrytUtils.placeBetAPI(order);
-        BetEntrytUtils.placeBetAPI(order1);
+        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        welcomePage.placeBetAPI(sport,date,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
+                5.5,"BACK",false, "");
+        welcomePage.placeBetAPI(sport,date,false,accountCode2,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
+                5,"BACK",false, "");
         log("@Step 1: Access General Reports > IP Monitoring");
-        try {
-            Thread.sleep(60000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         IPMonitoringPage page = welcomePage.navigatePage(GENERAL_REPORTS,IP_MONITORING, IPMonitoringPage.class);
         log("@Step 2: Filter with account at pre-condition > observe");
         page.filter(bookieCode,"","","","","");

@@ -4,8 +4,10 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import controls.Table;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,6 +67,11 @@ public class RetainedEarningsPage extends WelcomePage {
         btnExportToExcel.scrollToTop();
         btnExportToExcel.click();
         waitSpinnerDisappeared();
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void exportPDF(){
@@ -105,4 +112,9 @@ public class RetainedEarningsPage extends WelcomePage {
         }
     }
 
+    public void verifyValueOfDes(Map<String, String> retainValueEx) {
+        Assert.assertEquals(retainValueEx.get("Beginning Retained Earnings"),getAmount("Beginning Retained Earnings"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
+        Assert.assertEquals(retainValueEx.get("Net Income/Loss from Operation"),getAmount("Net Income/Loss from Operation"),"FAILED! Net Income/Loss from Operation amount displays incorrect.");
+        Assert.assertEquals(retainValueEx.get("Dividends"),getAmount("Dividends"),"FAILED! Beginning Retained Earnings amount displays incorrect.");
+    }
 }

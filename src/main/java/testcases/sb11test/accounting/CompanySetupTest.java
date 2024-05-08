@@ -137,7 +137,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         log(String.format("@Precondition: Company %s has currency as %s", companyName, companyCurrency) );
         log("@Step 1: Navigate to  General Reports > Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
-
+        ledgerStatementPage.waitSpinnerDisappeared();
         toDayAvoidLastDayOfMonth = ledgerStatementPage.isLastDayOfMonth() ? previousDate : "";
         toDayAvoidLastDayOfMonth = DateUtils.formatDate(toDayAvoidLastDayOfMonth, "yyyy-MM-dd", "dd/MM/yyyy");
         log("@Step 2: Filter with Company: "+ companyName);
@@ -678,7 +678,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         lastDateOfPreviousMonth = ledgerStatementPage.getLastDateOfPreviousMonth("dd/MM/yyyy", "GMT +7");
         log(String.format("@Step 2: Filter with Company: %s on the last date of previous month", companyName));
         ledgerStatementPage.showLedger(companyName, "", "", "", lastDateOfPreviousMonth, lastDateOfPreviousMonth, "");
-
+        ledgerStatementPage.waitSpinnerDisappeared();
         log(String.format("@Verify 1: Validate  the table has \"CUR transaction in %s\" is displayed.", companyCurrency));
         Assert.assertTrue(ledgerStatementPage.lblAmountShowCurrency.isDisplayed(),  "FAILED! The table CUR transaction is not shown");
         log("@Verify 2: Validate shows text correct with currency: " + companyCurrency);

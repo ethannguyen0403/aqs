@@ -189,6 +189,7 @@ public class PTRiskPage extends WelcomePage {
 
     public boolean isBetTypeBasketIs1X2(){
         btnBetTypes.click();
+        waitSpinnerDisappeared();
         Label lblValueList = Label.xpath("//div[@class='modal-content']//div[@class='list-item-filter']//div//label");
         boolean is1Item = lblValueList.getWebElements().size()==1 ? true: false;
         int index = 1;

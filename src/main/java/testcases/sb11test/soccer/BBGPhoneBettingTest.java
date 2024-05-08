@@ -190,23 +190,9 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         String accountCode = "QALKR";
         log("@Pre-condition 3: The player account placed an bet");
         String sport="Soccer";
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
-        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
-        event.setEventDate(dateAPI);
-        Order order = new Order.Builder()
-                .event(event)
-                .accountCode(accountCode)
-                .marketName("Goals")
-                .marketType("HDP")
-                .selection(event.getHome())
-                .stage("FullTime")
-                .odds(1)
-                .handicap(-0.5)
-                .oddType("HK")
-                .requireStake(5.5)
-                .betType("BACK")
-                .build();
-        BetEntrytUtils.placeBetAPI(order);
+        String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        welcomePage.placeBetAPI(sport, dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",5.5,
+                "BACK",false,"");
         //Wait for Order display
         BetSettlementUtils.waitForBetIsUpdate(5);
         log("@Step 1: Navigate to the site");

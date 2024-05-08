@@ -117,6 +117,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
         log("Precondition: Get Running Bal value of Parent Account 301.000.000.000 - Capital Stock from Ledger Statement > " +
                 "'Amounts are shown in HKD' section > 'Running Bal.' column in any financial year (1)");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         ledgerStatementPage.showLedger(COMPANY_UNIT_LIST.get(3), FINANCIAL_YEAR_LIST.get(2), "", CAPITAL_PARENT_ACCOUNT, fromDate, toDate, "");
         String capitalAccountValue = ledgerStatementPage.getTotalAmountInOriginCurrency("Total in HKD");
         log("@Step 1: Navigate Financial Report > Stockholders Equity");

@@ -710,13 +710,13 @@ public class BetOrderTest extends BaseCaseAQS {
 
         log(String.format("@Step 2: Filter Soccer data from %s to %s and get an order in pending section",fromDate,toDate));
         betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
-        List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer",PENDING);
+        List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer",CONFIRM);
         if(betOrderPage.isNodata(orderLst)){
             log("SKIP: No data to click on Market name to open order log popup in Pending order");
             return;}
 
         log("@Step 2  In #  column of any section if having order(Pending, Confrim, Cancelled), Click on icon i");
-        betOrderPage.getControlOnTableBasedOnOrderID("PENDING", orderLst.get(0).getOrderId(),"TOOLTIP").click();
+        betOrderPage.getControlOnTableBasedOnOrderID("CONFIRM", orderLst.get(0).getOrderId(),"TOOLTIP").click();
         //Wait for content of tooltip display
         Thread.sleep(1000);
         log("verify 1 tooltip display with value: Create By, Create date, Confirm By, Confrim Date, Revert By, Revert Date ");

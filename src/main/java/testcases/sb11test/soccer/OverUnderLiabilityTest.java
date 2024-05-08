@@ -54,21 +54,10 @@ public class OverUnderLiabilityTest extends BaseCaseAQS {
     public void OverUnderLiabilityTC_2117(String accountCode, String smartGroup){
         log("@title: Validate Over/Under bet from Bet Entry is displayed correctly on Over/Under Liability report");
         log("Precondition: Having an Over/Under bet which have been placed on Bet Entry");
-        String sport="Soccer";
         String smartType = "Group";
-
         String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
-        Event event = GetSoccerEventUtils.getRandomEvent(dateAPI,dateAPI,sport,"");
-        event.setEventDate(dateAPI);
-        List<Order> lstOrder = new ArrayList<>();
-        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("OU").selection("Over").stage("FullTime")
-                .odds(1).handicap(0.5).oddType("HK").requireStake(5.5).betType("BACK").build();
-        BetEntrytUtils.placeBetAPI(order);
-        lstOrder.add(order);
-        log("Get Bet ID of placed bet");
-        lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,true,accountCode,"Goals","OU","Over","FullTime",1,0.5,"HK",
+                5.5,"BACK",false,"");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > Over/Under Liability");
         OverUnderLiabilityPage overUnderLiabilityPage = welcomePage.navigatePage(SOCCER,OVER_UNDER_LIABILITY, OverUnderLiabilityPage.class);
@@ -81,7 +70,7 @@ public class OverUnderLiabilityTest extends BaseCaseAQS {
 
         log("@Post-Condition: Cancel Pending bet "+ lstOrder.get(0).getBetId() +" in Confirm Bet page");
         ConfirmBetsPage confirmBetsPage = overUnderLiabilityPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",sport,"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",SOCCER,"All","Specific Date",date,"",accountCode);
         confirmBetsPage.deleteOrder(lstOrder.get(0),true);
         log("INFO: Executed completely");
     }

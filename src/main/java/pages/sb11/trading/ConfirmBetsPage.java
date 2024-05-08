@@ -220,7 +220,7 @@ public class ConfirmBetsPage extends WelcomePage {
             if(order.getBetId()=="Manual Bet"){
                 Assert.assertEquals(liveHomeScore,"", "Failed! Home live score is incorrect");
                 Assert.assertEquals(liveAwayScore,"", "Failed! Away live score is incorrect");
-            }else {
+            }else if (order.isLive()){
             Assert.assertEquals(liveHomeScore, String.format("%d",order.getLiveHomeScore()), "Failed! Home live score is incorrect");
             Assert.assertEquals(liveAwayScore,String.format("%d", order.getLiveAwayScore()), "Failed! Away live score is incorrect");}
         }
@@ -272,7 +272,7 @@ public class ConfirmBetsPage extends WelcomePage {
     public void confirmBet(Order order){
         selectBet(order,true);
         btnConfirmBet.click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
     }
 
     /**
@@ -292,7 +292,7 @@ public class ConfirmBetsPage extends WelcomePage {
     public void updateOrder(Order order,boolean isPending){
         fillInfo(order,isPending);
         btnUpdateBet.click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
     }
 
     /**

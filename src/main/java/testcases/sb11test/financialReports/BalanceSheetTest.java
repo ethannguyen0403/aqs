@@ -14,8 +14,6 @@ import pages.sb11.generalReports.LedgerStatementPage;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 
-import java.io.IOException;
-
 import static common.SBPConstants.*;
 
 public class BalanceSheetTest extends BaseCaseAQS {
@@ -160,9 +158,8 @@ public class BalanceSheetTest extends BaseCaseAQS {
         String toDate = ledgerStatementPage.getLastDateAfterCJE("dd/MM/yyyy");
         String monthInBalanceSheet = ledgerStatementPage.getLastDateAfterCJE("yyyy - MMMM");
         String report = "Before CJE";
-        ledgerStatementPage.showLedger(KASTRAKI_LIMITED,FINANCIAL_YEAR,LedgerStatement.ACCOUNT_TYPE.get(1),QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT,fromDate,toDate,report);
         log("@Step 4: Get 'CUR Translation in HKD' section > Running Bal.' column");
-        String totalAmountOfParentAcount = ledgerStatementPage.getTotalInHKD(LEDGER_GROUP_NAME_ASSET,"CUR Translation","Running Bal.");
+        String totalAmountOfParentAcount = ledgerStatementPage.getTotalInHKD(KASTRAKI_LIMITED,FINANCIAL_YEAR,LedgerStatement.ACCOUNT_TYPE.get(1),QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT,fromDate,toDate,report,LEDGER_GROUP_NAME_ASSET,"CUR Translation","Running Bal.");
         log("@Step 5: Go to Financial Reports >> Balance Sheet page");
         BalanceSheetPage page = ledgerStatementPage.navigatePage(FINANCIAL_REPORTS,BALANCE_SHEET,BalanceSheetPage.class);
         log("@Step 6: Filter data of account: 222.222.222.000 - Auto Asset Group on selected month at step #3\n" +

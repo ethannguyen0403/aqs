@@ -19,12 +19,10 @@ import utils.sb11.CurrencyRateUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
 
 
-import static common.SBPConstants.FINANCIAL_YEAR;
-import static common.SBPConstants.FINANCIAL_YEAR_LIST;
+import static common.SBPConstants.*;
 import static java.lang.Double.parseDouble;
 
 public class LedgerStatementPage extends WelcomePage {
@@ -339,5 +337,10 @@ public class LedgerStatementPage extends WelcomePage {
         btnShow.click();
         waitSpinnerDisappeared();
         Assert.assertEquals(tbLedger.getHeaderNameOfRows(), SBPConstants.LedgerStatement.TABLE_HEADER,"Failed! Ledger Statement table is displayed with incorrectly header column");
+    }
+
+    public String getTotalInHKD(String companyUnit, String financialYear, String accountType, String ledgerGroup, String fromDate, String toDate, String report, String parentName, String section, String colName) {
+        showLedger(companyUnit,financialYear,accountType,ledgerGroup,fromDate,toDate,report);
+        return getTotalInHKD(parentName,section,colName);
     }
 }

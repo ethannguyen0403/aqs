@@ -145,6 +145,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
 
         log("@Step 3: Go to General Reports >> Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         log(String.format("@Step 4: Get value of Account: %s on Ledger Statement page", numberCodeAccount));
         log("@Step info: For example, when filtering Year 2021-2022 and Month '2022-July':\n" +
                 "Data shows in JUNE-2022 gets from 01-08-2021 to 30-06-2022 in the ledger statement");
@@ -174,11 +175,13 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
 
         log("@Step 3: Go to General Reports >> Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         log(String.format("@Step 4: Get value of Account: %s on Ledger Statement page", numberCodeAccount));
         log("@Step info: For example, when filtering Year 2021-2022 and Month '2022-July':\n" +
                 "Data shows in JUNE-2022 gets from 01-08-2021 to 30-06-2022 in the ledger statement");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED, "", "All", numberCodeAccount, String.format("01/08/%s", previousYear),
                 DateUtils.getLastDateOfMonth(DateUtils.getYear("GMT +7"), DateUtils.getMonth("GMT +7"), "dd/MM/yyyy"),REPORT_TYPE.get(1));
+        ledgerStatementPage.waitSpinnerDisappeared();
         String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal();
         log("@Verify 1: The amounts of parent accounts and detail types in the filtered month displays accordingly");
         Assert.assertEquals(amountIncome, amountLedger, "FAILED!  The amounts of parent accounts and detail types in the filtered month displays incorrect");
@@ -234,6 +237,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
 
         log("@Step 3: Go to General Reports >> Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         log(String.format("@Step 4: Get value of Account: %s and filter time: 01/08/%s - 31/07/%s on Ledger Statement page",
                 chartCodeAccount, previousYear - 1, previousYear));
         log("@Step info: If filter financial year =2022-2023, then amounts of previous financial year is the YEAR 2021-2022 can get from ledger statement from 01-08-2021 to 31-07-2022");
@@ -266,6 +270,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
 
         log("@Step 3: Go to General Reports >> Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         log(String.format("@Step 4: Get value of Account: %s and filter time: 01/08/%s - 31/07/%s on Ledger Statement page",
                 chartCodeAccount, previousYear, year));
         log("@Step info: If filter financial year =2022-2023, then amounts of previous financial year is the YEAR 2021-2022 can get from ledger statement from 01-08-2021 to 31-07-2022");

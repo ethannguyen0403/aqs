@@ -93,26 +93,15 @@ public class BBTTest extends BaseCaseAQS {
         String currentDay = DateUtils.getDate(0, "dd/MM/yyyy", "GMT +8");
         log("@title: Validate the bets that placed by smart players belonging to Masters/Groups/Agents displays properly");
         log("@Precondition: Place bet with smart player to show bet on BBT page");
-        String dateAPI = DateUtils.formatDate(currentDay, "dd/MM/yyyy", "yyyy-MM-dd");
-        Event event = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,SOCCER,"");
-        event.setEventDate(dateAPI);
-        Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("Goals").marketType("HDP").selection(event.getHome())
-                .eventDate(dateAPI).stage("FullTime").odds(1.11).price(1.11).handicap(1.75).oddType("HK").requireStake(13.58).betType("BACK")
-                .build();
-        BetEntrytUtils.placeBetAPI(order);
-        //wait for bet update in BBT
-        try {
-            Thread.sleep(30000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,currentDay,false,accountCode,"Goals","HDP","Home","FullTime",1.11,1.75,"HK",13.58,
+                "BACK",false,"");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         log("@Step 2: Filter with group name: " + smartGroup);
-        bbtPage.selectLeaguesFilter(false,event.getLeagueName());
+        bbtPage.selectLeaguesFilter(false,lstOrder.get(0).getEvent().getLeagueName());
         bbtPage.selectSmartTypeFilter("Group", smartGroup);
         log("@Verify 1: The bets that placed by smart players belonging to Groups displays properly");
-        Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(order, true) != -1, "FAILED! The bet is not show on BBT page");
+        Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(lstOrder.get(0), true) != -1, "FAILED! The bet is not show on BBT page");
         log("INFO: Executed completely");
     }
 

@@ -174,6 +174,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         log("@Pre-condition 3: Get Running Bal in Ledger Statement");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         String detailType = "101.000.000.000 - Cash";
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Asset",detailType,transDate,transDate,"");
         double runningBal = ledgerStatementPage.getValueAmount(ledgerNumber+" - "+ledgerName,ledgerStatementPage.colRunBalGBP);
