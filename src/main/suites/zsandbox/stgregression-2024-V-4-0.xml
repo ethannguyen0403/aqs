@@ -39,6 +39,7 @@
 
         <classes>
             <class name="testcases.sb11test.generalReports.FundReconciliationTest"/>
+            <class name="testcases.sb11test.generalReports.WinLossDetailTest"/>
         </classes>
     </test>
 </suite>

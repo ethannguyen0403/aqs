@@ -174,6 +174,7 @@ public class SBPConstants {
     public final static String BEFORE_CJE = "Before CJE";
     public final static String AFTER_CJE = "After CJE";
     public final static List<String> CRICKET_MARKET_TYPE_NO_LIVE =  Arrays.asList("1x2","DNB","OE","OU");
+    public final static String MEMBER_TRANSACTIONS = "Member Transactions";
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
         {
