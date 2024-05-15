@@ -18,7 +18,7 @@ import java.util.List;
 import static common.SBPConstants.*;
 
 public class StakeSizeGroupTest extends BaseCaseAQS {
-    @Test(groups = {"regression","2024.V.4.0"})
+    @Test(groups = {"regression_stg","2024.V.4.0"})
     @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "29566")
     public void Stake_Size_Group_29566(String password, String userNameOneRole) throws Exception {
