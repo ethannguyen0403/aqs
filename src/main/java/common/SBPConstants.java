@@ -65,6 +65,7 @@ public class SBPConstants {
     public final static String RESULT_ENTRY = "Result Entry";
     public final static String ACCOUNT_PERCENT = "Account Percent";
     public final static String KEY_CLIENTS_REPORT = "Key Clients Report";
+    public final static String STAKE_SIZE_GROUP = "Stake Size Group";
     public final static String BALANCE_CURRENT = "Balance [Current]";
     public final static String SPORT= "Sport";
     public final static String CLIENT_STATEMENT = "Client Statement";
@@ -354,6 +355,7 @@ public class SBPConstants {
         public final static List<String> SPORT_LIST = Arrays.asList("All","Soccer","Cricket","Basketball","Tennis","American Football","Ice Hockey");
         public final static List<String> SMART_TYPE_LIST = Arrays.asList("Master","Group");
         public final static List<String> PUNTER_TYPE_LIST = Arrays.asList("Smart Punter","Normal Punter");
+        public final static List<String> GROUP_TYPE = Arrays.asList("Smart Group","Stake Size Group");
         public final static List<String> BET_PLACED_IN = Arrays.asList("Last 5 Min","Last 10 Min","Last 15 Min","Last 1 Hour","Last 3 Hour", "Last 6 Hour", "Last 9 Hour", "Last 12 Hour","All Hours");
         public final static List<String> BET_COUNT = Arrays.asList("Last 10 Bets","Last 50 Bets","Last 100 Bets","Last 200 Bets","Last 300 Bets");
         public final static List<String> COLOR_CODE_L_COLUMN = Arrays.asList("#CCFFCC","#66FF99","#00FF99","#CCFFFF","#99FFFF","#66FFFF","#00FFFF","#0066FF","#0066CC","#000000","#FFEFDB","#FFDAB9",
@@ -547,6 +549,15 @@ public class SBPConstants {
     }
     public static class FundReconciliation {
         public final static String ERROR_MES_MORE_THAN_1_MONTH = "Date range should not be more than 1 month";
+
+    }
+    public static class StakeSizeGroupNewPopup {
+        public final static String ERROR_MES_CLIENT_EMPTY = "Please select Client!";
+        public final static String ERROR_MES_GROUP_NAME_EMPTY = "Group Name cannot be empty!";
+        public final static String PLEASE_SELECT = "Please select";
+        public final static String ERROR_MES_GROUP_NAME_DUPLICATE = "Group name '%s' is duplicated.";
+        public final static String ERROR_MES_GROUP_STAKE_RANGE_DUPLICATE = "Stake range %s - %s already set in the group %s, please double check!";
+        public final static String ERROR_MES_COMPANY_EMPTY = "Please select Company Unit!";
 
     }
 }

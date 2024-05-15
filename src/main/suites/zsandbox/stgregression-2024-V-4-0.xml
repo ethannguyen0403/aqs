@@ -38,6 +38,8 @@
         </groups>
 
         <classes>
+            <class name="testcases.sb11test.trading.StakeSizeGroupTest"/>
+
             <class name="testcases.sb11test.generalReports.FundReconciliationTest"/>
             <class name="testcases.sb11test.generalReports.WinLossDetailTest"/>
         </classes>

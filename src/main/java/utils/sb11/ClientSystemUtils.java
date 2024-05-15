@@ -6,14 +6,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.AppUtils;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static testcases.BaseCaseAQS.environment;
 
 public class ClientSystemUtils {
-    private static JSONArray getClientListJson(String clientCode){
+    private static JSONArray getClientListJson(String clientCode, boolean withSuper, String companyName){
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
         Map<String, String> headersParam = new HashMap<String, String>() {
             {
@@ -22,23 +20,24 @@ public class ClientSystemUtils {
             }
         };
         String api = environment.getSbpLoginURL() +"aqs-agent-service/master/client-list";
+        int companyId = BetEntrytUtils.getCompanyID(companyName);
         String jsn = String.format("{\n" +
-                        "    \"withSuper\": true,\n" +
-                        "    \"companyId\": 1,\n" +
+                        "    \"withSuper\": %s,\n" +
+                        "    \"companyId\": %s,\n" +
                         "    \"sortBy\": \"clientName\",\n" +
                         "    \"status\": \"\",\n" +
                         "    \"name\": \"%s\",\n" +
                         "    \"currencyCode\": null\n" +
                         "  }\n"
-                , clientCode);
+                , withSuper, companyId, clientCode);
         return WSUtils.getPOSTJSONArrayWithDynamicHeaders(api, jsn, headersParam);
     }
 
-    public static String getClientId(String clientCode) {
+    public static String getClientId(String clientCode,boolean withSuper, String companyName) {
         JSONArray jsonArr = null;
         String clientId = null;
         try {
-            jsonArr = getClientListJson(clientCode);
+            jsonArr = getClientListJson(clientCode,withSuper,companyName);
         } catch (Exception e) {
             e.getMessage();
         }
@@ -55,5 +54,22 @@ public class ClientSystemUtils {
         }
         return clientId;
     }
-
+    public static List<String> getLstClientName(boolean withSuper, String companyName){
+        JSONArray jsonArr = null;
+        List<String> lstClientName = new ArrayList<>();
+        try {
+            jsonArr = getClientListJson("",withSuper,companyName);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        if (Objects.nonNull(jsonArr)) {
+            if (jsonArr.length() > 0) {
+                for (int i = 0; i < jsonArr.length(); i++) {
+                    JSONObject orderObj = jsonArr.getJSONObject(i);
+                    lstClientName.add(orderObj.getString("name"));
+                }
+            }
+        }
+        return lstClientName;
+    }
 }
