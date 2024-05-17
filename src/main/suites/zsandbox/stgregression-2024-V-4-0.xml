@@ -38,7 +38,11 @@
         </groups>
 
         <classes>
+            <class name="testcases.sb11test.soccer.BBGPhoneBettingTest"/>
+
             <class name="testcases.sb11test.trading.StakeSizeGroupTest"/>
+
+            <class name="testcases.sb11test.master.TermsAndConditionsTest"/>
 
             <class name="testcases.sb11test.generalReports.FundReconciliationTest"/>
             <class name="testcases.sb11test.generalReports.WinLossDetailTest"/>
