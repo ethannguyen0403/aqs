@@ -156,7 +156,8 @@ public class LedgerStatementPage extends WelcomePage {
         return tbLedger.getControlBasedValueOfDifferentColumnOnRow(toTalName,1,colTotal,1,null,colAmountTotalOriginCurrency,null,false,false).getText().trim();
     }
 
-    public boolean isTotalAmountInOriginCurrencyPositiveNumber(String toTalName) {
+    public boolean isTotalAmountPositiveNumber(String toTalName, String section, String colName) {
+        int indexCol = getIndexTotalColumn(section, colName);
         BaseElement lblTotal = tbLedger.getControlBasedValueOfDifferentColumnOnRow(toTalName,1,colTotal,1,null,colAmountTotalOriginCurrency,null,false,false);
         return lblTotal.getColour("color").contains(RED_COLOR) ? false : true;
     }
@@ -286,24 +287,7 @@ public class LedgerStatementPage extends WelcomePage {
      * @return total value
      */
     public String getTotalInHKD(String parentName, String section, String colName) {
-        int indexCol = 0;
-        if (section.equals("Shown in HKD")){
-            switch (colName){
-                case "Credit/Debit":
-                    indexCol = 3;
-                    break;
-                default:
-                    indexCol = 4;
-            }
-        } else if (section.equals("CUR Translation")){
-            switch (colName){
-                case "CT-Credit/Debit":
-                    indexCol = 6;
-                    break;
-                default:
-                    indexCol = 7;
-            }
-        }
+        int indexCol = getIndexTotalColumn(section,colName);
         return Label.xpath(String.format("(//span[contains(text(),'%s')]/ancestor::tr//following-sibling::tr[@class='total-row']//td)[%s]",parentName,indexCol)).getText().trim();
     }
 
@@ -342,5 +326,26 @@ public class LedgerStatementPage extends WelcomePage {
     public String getTotalInHKD(String companyUnit, String financialYear, String accountType, String ledgerGroup, String fromDate, String toDate, String report, String parentName, String section, String colName) {
         showLedger(companyUnit,financialYear,accountType,ledgerGroup,fromDate,toDate,report);
         return getTotalInHKD(parentName,section,colName);
+    }
+    private int getIndexTotalColumn(String section, String colName){
+        int indexCol = 0;
+        if (section.equals("Shown in HKD")){
+            switch (colName){
+                case "Credit/Debit":
+                    indexCol = 3;
+                    break;
+                default:
+                    indexCol = 4;
+            }
+        } else if (section.equals("CUR Translation")){
+            switch (colName){
+                case "CT-Credit/Debit":
+                    indexCol = 6;
+                    break;
+                default:
+                    indexCol = 7;
+            }
+        }
+        return indexCol;
     }
 }

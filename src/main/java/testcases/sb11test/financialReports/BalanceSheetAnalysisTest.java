@@ -83,9 +83,8 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         LedgerStatementPage ledgerPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
         ledgerPage.waitSpinnerDisappeared();
         ledgerPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Asset", QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT, firstDayOfMonth, lastDayOfMonth, REPORT_TYPE.get(0));
-        String totalLedger = ledgerPage.getTotalAmountInOriginCurrency("Total in HKD");
-        boolean isPositiveNumber = ledgerPage.isTotalAmountInOriginCurrencyPositiveNumber("Total in HKD");
-
+        String totalLedger = ledgerPage.getTotalInHKD(QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT,"CUR Translation","Running Bal.");
+        boolean isPositiveNumber = ledgerPage.isTotalAmountPositiveNumber("Total in HKD", "CUR Translation", "Running Bal.");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
         BalanceSheetAnalysisPage balanceAnalysisPage = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
@@ -97,7 +96,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         Assert.assertEquals(creditValue, totalLedger, "FAILED! Data of Balance sheet table is not correct");
     }
 
-    @Test(groups = {"regression", "2023.12.29","ethan"})
+    @Test(groups = {"regression", "2023.12.29","ethan3.0"})
     @TestRails(id = "9144")
     public void BalanceSheetAnalysisTC_9144(){
         log("@title: Validate Credit column data is displayed correctly negative amount from Ledger Statement - 'Amounts are shown in HKD' section");
@@ -110,8 +109,8 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         LedgerStatementPage ledgerPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
         ledgerPage.waitSpinnerDisappeared();
         ledgerPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Asset", QA_ASSET_PARENT_ACCOUNT_700, firstDayOfMonth, lastDayOfMonth, REPORT_TYPE.get(0));
-        String totalLedger = ledgerPage.getTotalAmountInOriginCurrency("Total in HKD");
-        boolean isPositiveNumber = ledgerPage.isTotalAmountInOriginCurrencyPositiveNumber("Total in HKD");
+        String totalLedger = ledgerPage.getTotalInHKD(QA_ASSET_PARENT_ACCOUNT_700,"CUR Translation","Running Bal.");
+        boolean isPositiveNumber = ledgerPage.isTotalAmountPositiveNumber("Total in HKD", "CUR Translation", "Running Bal.");
 
         log("@Step 1: Login with valid account");
         log("@Step 2: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
@@ -174,7 +173,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.12.29","ethan"})
+    @Test(groups = {"regression", "2023.12.29","ethan3.0"})
     @TestRails(id = "17623")
     public void BalanceSheetAnalysisTC_17623() throws IOException {
         log("@title: Validate can Export To PDF successfully");
@@ -184,7 +183,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         BalanceSheetAnalysisPage balanceAnalysisPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 3: Filter with month that has data");
-        balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
+        balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "", REPORT_TYPE.get(0));
         log("@Step 4: Click to export PDF button");
         balanceAnalysisPage.exportFile("PDF");
         log("@Verify 1: Validate PDF file was downloaded successfully");

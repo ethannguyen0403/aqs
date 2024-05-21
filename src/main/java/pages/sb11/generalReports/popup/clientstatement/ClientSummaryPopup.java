@@ -146,6 +146,7 @@ public class ClientSummaryPopup extends WelcomePage {
             if(lblAccountCode.getText().equalsIgnoreCase(accountCode)){
                 lblAccountCode.click();
                 DriverManager.getDriver().switchToWindow();
+                waitSpinnerDisappeared();
                 return new ClientMemberTransactionPopup();
             }
             i = i+1;

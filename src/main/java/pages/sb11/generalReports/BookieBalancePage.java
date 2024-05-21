@@ -22,7 +22,7 @@ public class BookieBalancePage extends WelcomePage {
     Button btnShow = Button.xpath("//button[text()='Show']");
     public int colBookie = 2;
     public int colTotalInHKD = 3;
-    public Table tblBookie = Table.xpath("(//table)[1]",3);
+    public Table tblBookie = Table.xpath("(//table)[1]",7);
     public Table tblCurrency = Table.xpath("(//table)[2]",4);
     public int colBookieName = 2;
     public Table tblBookieBalance = Table.xpath("//div[@id='bookie-balance-summary']//table[not(contains(@style,' '))]", 7);
@@ -45,7 +45,8 @@ public class BookieBalancePage extends WelcomePage {
     }
     public BalanceDetailPage openBalanceDetailByBookie(String bookieName){
         filter("","","",bookieName.split("-")[0].trim(),"");
-        tblBookie.getControlOfCell(1,colBookie,1,null).click();
+        tblBookie.getControlOfCell(1,tblBookie.getColumnIndexByName("Bookie"),1,null).click();
+        waitSpinnerDisappeared();
         DriverManager.getDriver().switchToWindow();
         return new BalanceDetailPage();
     }
