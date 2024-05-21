@@ -1,15 +1,15 @@
 package pages.sb11.soccer;
 
-import com.paltech.driver.DriverManager;
-import com.paltech.element.BaseElement;
 import com.paltech.element.common.*;
+import com.paltech.utils.DoubleUtils;
+import common.SBPConstants;
 import controls.DateTimePicker;
-import controls.Row;
 import controls.Table;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import objects.Order;
+import org.openqa.selenium.support.Color;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import utils.sb11.CurrencyRateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +40,9 @@ public class BBGPhoneBettingPage extends WelcomePage {
     String lblFormXpath = "//div[contains(@class,'header2')]//span[text()='%s']";
     String cbTypeXpath = "//label[contains(text(),'%s')]/input";
     String tableNameXpath = "(//div[contains(@class,'header2')])[%d]";
+    String tableXpathByEvent = "//app-phone-betting//div[contains(@class,'header')]//span[contains(text(),'%s -vs- %s')]//following::table[1]";
+    Table tblResult = Table.xpath("//table[@id='resultTable']",12);
+    String lblResultXpath = "//table//tr[contains(@class,'total')]//td[%d]";
 
     public void filter(String companyUnit, String reportBy, String fromdate, String toDate, String betType, String league, String winlose){
         if (!companyUnit.isEmpty()){
@@ -178,5 +181,71 @@ public class BBGPhoneBettingPage extends WelcomePage {
                 }
             }
         }
+    }
+
+    public boolean isBetDisplay(Order order) {
+        Table tblLeague = Table.xpath(String.format(tableXpathByEvent,order.getEvent().getHome(),order.getEvent().getAway()),13);
+        int numberRow = tblLeague.getNumberOfRows(false,true);
+        for (int i = 1; i <= numberRow; i++){
+            if (tblLeague.getControlOfCell(1,tblLeague.getColumnIndexByName("Account Code"),i,"span").getText().trim().equals(order.getAccountCode())
+            && tblLeague.getControlOfCell(1,tblLeague.getColumnIndexByName("Selection"),i,"span").getText().trim().equals(order.getSelection())
+            && tblLeague.getControlOfCell(1,tblLeague.getColumnIndexByName("Stake"),i,"span").getText().trim().equals(String.format("%.2f",order.getRequireStake()))
+            && tblLeague.getControlOfCell(1,tblLeague.getColumnIndexByName("HDP"),i,"span").getText().trim().equals(String.format("%.2f",order.getHandicap()))
+            && tblLeague.getControlOfCell(1,tblLeague.getColumnIndexByName("Price"),i,"span").getText().trim().contains(String.format("%.3f",order.getPrice()))
+            ){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isPriceBackgroundDisplay(Order order, String colorCode) {
+        Table tblLeague = Table.xpath(String.format(tableXpathByEvent,order.getEvent().getHome(),order.getEvent().getAway()),13);
+        int numberRow = tblLeague.getNumberOfRows(false,true);
+        for (int i = 1; i <= numberRow; i++){
+            if (tblLeague.getControlOfCell(1,tblLeague.getColumnIndexByName("Account Code"),i,"span").getText().trim().equals(order.getAccountCode())
+                    && tblLeague.getControlOfCell(1,tblLeague.getColumnIndexByName("Price"),i,"span").getText().trim().contains(String.format("%.3f",order.getPrice()))
+                    && Color.fromString(tblLeague.getControlOfCell(1,tblLeague.getColumnIndexByName("Price"),i,null).getColour()).asHex().equals(colorCode)
+            ){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void verifyResultDisplay(String colName) {
+        int indexCol = SBPConstants.BBGPhoneBetting.COLUMN_RESULT.get(colName);
+        double resultEx = Double.valueOf(Label.xpath(tblResult.getxPathOfCell(1,indexCol,1,null)).getText().trim().replace(",",""));
+        double resultAc = 0.00;
+        Label lblResult = Label.xpath(String.format(lblResultXpath,indexCol));
+        for (int i = 1; i <= lblResult.getWebElements().size() - 1; i++){
+            resultAc = DoubleUtils.roundUpWithTwoPlaces(resultAc+ Double.valueOf(Label.xpath(String.format("("+lblResultXpath+")[%d]",indexCol,i)).getText().trim().replace(",","")));
+        }
+        //BA accept delta = 0.02
+        Assert.assertEquals(resultAc,resultEx,0.02,"FAILED! Total of "+colName+" column display incorrect");
+    }
+
+    public void verifyWinLoseIsCalculatedCorrect(Order orderRunner, Order orderTelebet) {
+        Table tblLeague = Table.xpath(String.format(tableXpathByEvent,orderRunner.getEvent().getHome(),orderRunner.getEvent().getAway()),13);
+        double winloseRunner = changeStakeToHKD(orderRunner,Double.valueOf(tblLeague.getControlBasedValueOfDifferentColumnOnRow(orderRunner.getAccountCode(),1,tblLeague.getColumnIndexByName("Account Code"),1,"span",
+                tblLeague.getColumnIndexByName("Win/Lose"),"span",true,false).getText().trim().replace(",","")));
+        double winloseTelebet = changeStakeToHKD(orderTelebet,Double.valueOf(tblLeague.getControlBasedValueOfDifferentColumnOnRow(orderTelebet.getAccountCode(),1,tblLeague.getColumnIndexByName("Account Code"),1,"span",
+                tblLeague.getColumnIndexByName("Win/Lose"),"span",true,false).getText().trim().replace(",","")));
+        double resultEx = winloseRunner - winloseTelebet;
+        double resultAc = Double.valueOf(tblLeague.getControlBasedValueOfDifferentColumnOnRow("Commission by Match in CUR",1,1,1,null,
+                SBPConstants.BBGPhoneBetting.COLUMN_RESULT.get("Win/Lose"),null,true,false).getText().trim().replace(",",""));
+        Assert.assertEquals(resultAc,resultEx,0.01,"FAILED! Win/Lose is calculated incorrect");
+    }
+    public double changeStakeToHKD(Order order, double stake){
+        double curDebitRate = Double.parseDouble(CurrencyRateUtils.getOpRate("1",order.getAccountCurrency()));
+        return DoubleUtils.roundUpWithTwoPlaces(stake * curDebitRate);
+    }
+
+    public void verifyWinLosePercentOfLeague() {
+        double totalWinloseValue = Double.valueOf(Label.xpath(tblResult.getxPathOfCell(1,SBPConstants.BBGPhoneBetting.COLUMN_RESULT.get("Win/Lose"),1,null)).getText().trim().replace(",",""));
+        double totalStakeValue = Double.valueOf(Label.xpath(tblResult.getxPathOfCell(1,SBPConstants.BBGPhoneBetting.COLUMN_RESULT.get("Stake"),1,null)).getText().trim().replace(",",""));
+        String totalWinlosePerEx = String.format("%.3f",(totalWinloseValue / totalStakeValue) * 100);
+        String totalWinlosePerAc = tblResult.getControlOfCell(1,SBPConstants.BBGPhoneBetting.COLUMN_RESULT.get("Win/Lose%"),1,null).getText().trim().replace(",","");
+        Assert.assertEquals(totalWinlosePerAc,totalWinlosePerEx+"%","FAILED! Win/loss % display incorrect");
     }
 }

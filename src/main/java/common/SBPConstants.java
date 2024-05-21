@@ -65,6 +65,7 @@ public class SBPConstants {
     public final static String RESULT_ENTRY = "Result Entry";
     public final static String ACCOUNT_PERCENT = "Account Percent";
     public final static String KEY_CLIENTS_REPORT = "Key Clients Report";
+    public final static String STAKE_SIZE_GROUP = "Stake Size Group";
     public final static String BALANCE_CURRENT = "Balance [Current]";
     public final static String SPORT= "Sport";
     public final static String CLIENT_STATEMENT = "Client Statement";
@@ -162,6 +163,7 @@ public class SBPConstants {
     public final static List<String> STAKE_LIST = Arrays.asList("All","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
     public final static List<String> MONTH_NAME_LIST = Arrays.asList("January","February","March","April","May","June","July","August","September","October", "November", "December");
     public final static String GMT_7 = "GMT+7";
+    public final static String GMT_8 = "GMT+8";
     public final static String BALANCE_SHEET = "Balance Sheet";
     public final static String POSITION_TAKING_REPORT = "Position Taking Report";
     public final static String USER_ACTIVITY_MONITORING = "User Activity Monitoring";
@@ -174,6 +176,7 @@ public class SBPConstants {
     public final static String BEFORE_CJE = "Before CJE";
     public final static String AFTER_CJE = "After CJE";
     public final static List<String> CRICKET_MARKET_TYPE_NO_LIVE =  Arrays.asList("1x2","DNB","OE","OU");
+    public final static String MEMBER_TRANSACTIONS = "Member Transactions";
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST= new HashMap<String, String>()
     {
         {
@@ -353,6 +356,7 @@ public class SBPConstants {
         public final static List<String> SPORT_LIST = Arrays.asList("All","Soccer","Cricket","Basketball","Tennis","American Football","Ice Hockey");
         public final static List<String> SMART_TYPE_LIST = Arrays.asList("Master","Group");
         public final static List<String> PUNTER_TYPE_LIST = Arrays.asList("Smart Punter","Normal Punter");
+        public final static List<String> GROUP_TYPE = Arrays.asList("Smart Group","Stake Size Group");
         public final static List<String> BET_PLACED_IN = Arrays.asList("Last 5 Min","Last 10 Min","Last 15 Min","Last 1 Hour","Last 3 Hour", "Last 6 Hour", "Last 9 Hour", "Last 12 Hour","All Hours");
         public final static List<String> BET_COUNT = Arrays.asList("Last 10 Bets","Last 50 Bets","Last 100 Bets","Last 200 Bets","Last 300 Bets");
         public final static List<String> COLOR_CODE_L_COLUMN = Arrays.asList("#CCFFCC","#66FF99","#00FF99","#CCFFFF","#99FFFF","#66FFFF","#00FFFF","#0066FF","#0066CC","#000000","#FFEFDB","#FFDAB9",
@@ -406,6 +410,14 @@ public class SBPConstants {
     public static class BBGPhoneBetting{
         public final static List<String> TABLE_HEADER = Arrays.asList("#", "Account Code", "Bet Date", "Bet Type", "Selection", "HDP", "Live", "Price", "Stake", "Win/Lose", "CUR", "Trader");
         public final static String MES_MORE_THAN_7_DAYS = "Date range should not be more than 7 days.";
+        public final static Map<String,Integer> COLUMN_RESULT = new HashMap<String, Integer>()
+        {
+            {
+                put("Stake", 5);
+                put("Win/Lose", 6);
+                put("Win/Lose%", 7);
+            }
+        };
     }
 
     public static class SPPPage{
@@ -542,6 +554,19 @@ public class SBPConstants {
     }
     public static class BalanceCurrent {
         public final static List<String> COMPANY_UNIT_LIST = Arrays.asList("Kastraki Limited", "SK1122", "IB 02", "Fair", "Aquifer");
+
+    }
+    public static class FundReconciliation {
+        public final static String ERROR_MES_MORE_THAN_1_MONTH = "Date range should not be more than 1 month";
+
+    }
+    public static class StakeSizeGroupNewPopup {
+        public final static String ERROR_MES_CLIENT_EMPTY = "Please select Client!";
+        public final static String ERROR_MES_GROUP_NAME_EMPTY = "Group Name cannot be empty!";
+        public final static String PLEASE_SELECT = "Please select";
+        public final static String ERROR_MES_GROUP_NAME_DUPLICATE = "Group name '%s' is duplicated.";
+        public final static String ERROR_MES_GROUP_STAKE_RANGE_DUPLICATE = "Stake range %s - %s already set in the group %s, please double check!";
+        public final static String ERROR_MES_COMPANY_EMPTY = "Please select Company Unit!";
 
     }
 }

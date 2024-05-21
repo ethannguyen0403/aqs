@@ -103,9 +103,9 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_C468() {
         log("@title: Verify Bet Slip in Pending section display with correct info");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-9,"d/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-5,"d/MM/yyyy","GMT -4"));
         String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
-        String fromDateAPI = String.format(DateUtils.getDate(-9,"yyyy-MM-dd","GMT -4"));
+        String fromDateAPI = String.format(DateUtils.getDate(-5,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
         log("@Step 2: Click on AQS menu");
@@ -532,9 +532,9 @@ public class BetOrderTest extends BaseCaseAQS {
     public void BetOrder_C481(){
         log("@title: Verify there is no Cancel link in Action column Cancelled section");
         log("@Step 1: Login with valid account");
-        String fromDate = String.format(DateUtils.getDate(-9,"d/MM/yyyy","GMT -4"));
+        String fromDate = String.format(DateUtils.getDate(-5,"d/MM/yyyy","GMT -4"));
         String toDate = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT -4"));
-        String fromDateAPI = String.format(DateUtils.getDate(-9,"yyyy-MM-dd","GMT -4"));
+        String fromDateAPI = String.format(DateUtils.getDate(-5,"yyyy-MM-dd","GMT -4"));
         String toDateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT -4"));
 
         log(String.format("@Step 2: Filter Soccer data from %s to %s ",fromDate,toDate));

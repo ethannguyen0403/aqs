@@ -2,21 +2,19 @@ package testcases.sb11test.soccer;
 
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
-import common.SBPConstants;
-import objects.Event;
 import objects.Order;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
 import pages.sb11.soccer.BBGPhoneBettingPage;
+import pages.sb11.trading.BetSettlementPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.BetEntrytUtils;
 import utils.sb11.BetSettlementUtils;
-import utils.sb11.GetSoccerEventUtils;
+import utils.sb11.ConfirmBetsUtils;
 import utils.testraildemo.TestRails;
 
-import java.util.Date;
+import java.util.List;
 
 import static common.SBPConstants.*;
 
@@ -189,9 +187,8 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         log("@Pre-condition 2: The player account is checked 'Is Telebet Account' in Master >> Client System >> Account");
         String accountCode = "QALKR";
         log("@Pre-condition 3: The player account placed an bet");
-        String sport="Soccer";
         String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
-        welcomePage.placeBetAPI(sport, dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",5.5,
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",5.5,
                 "BACK",false,"");
         //Wait for Order display
         BetSettlementUtils.waitForBetIsUpdate(5);
@@ -204,6 +201,220 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         page.filter(KASTRAKI_LIMITED,"Pending Bets",date,"","","","");
         log("Verify 1: Show correct bet of player account");
         Assert.assertTrue(page.tblOrder.getColumn(page.tblOrder.getColumnIndexByName("Account Code"),false).contains(accountCode),"FAILED! "+accountCode+" does not display");
+        Assert.assertTrue(page.isBetDisplay(lstOrder.get(0)),"FAILED! "+accountCode+" does not display");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @Parameters({"accountCode"})
+    @TestRails(id = "29428")
+    public void BBGPhoneBettingTC_29428(String accountCode){
+        log("@title: Validate pending bets show correctly when account is checked 'Is Telebet' and 'Is Runner Account'");
+        log("@Pre-condition 1: Account is activated permission 'BBG - Phone Betting'");
+        log("@Pre-condition 2: The player account is checked 'Is Telebet Account' in Master >> Client System >> Account");
+        log("@Pre-condition 3: The player account placed an bet");
+        String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",5.5,
+                "BACK",false,"");
+        //Wait for Order display
+        BetSettlementUtils.waitForBetIsUpdate(5);
+        log("@Step 1: Navigate to the site");
+        log("@Step 2: Expand menu 'Soccer' and access 'BBG - Phone Betting' page");
+        BBGPhoneBettingPage page = welcomePage.navigatePage(SOCCER,BBG_PHONE_BETTING, BBGPhoneBettingPage.class);
+        log("@Step 3: Select filters which contains bets of player account at the precondition with Report By = Pending Bets");
+        log("@Step 4: Click on 'Show' button");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED,"Pending Bets",date,"","","","");
+        log("Verify 1: Show correct bet of player account");
+        Assert.assertTrue(page.isBetDisplay(lstOrder.get(0)),"FAILED! "+accountCode+" does not display");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @TestRails(id = "29429")
+    public void BBGPhoneBettingTC_29429(){
+        log("@title: Validate settled bets show correctly when account is checked 'Is Telebet'");
+        log("@Pre-condition 1: Account is activated permission 'BBG - Phone Betting'");
+        log("@Pre-condition 2: The player account is checked 'Is Telebet Account' in Master >> Client System >> Account");
+        String accountCode = "QALKR";
+        log("@Pre-condition 3: Settled bets of the player account");
+        String dateAPI = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",5.55,
+                "BACK",false,"");
+        BetSettlementUtils.waitForBetIsUpdate(7);
+        ConfirmBetsUtils.confirmBetAPI(lstOrder);
+        BetSettlementUtils.waitForBetIsUpdate(7);
+        lstOrder.get(0).setEventDate(DateUtils.formatDate(dateAPI,"dd/MM/yyyy","yyyy-MM-dd"));
+        BetSettlementUtils.sendBetSettleAPI(lstOrder);
+        log("@Step 1: Navigate to the site");
+        log("@Step 2: Expand menu 'Soccer' and access 'BBG - Phone Betting' page");
+        BBGPhoneBettingPage page = welcomePage.navigatePage(SOCCER,BBG_PHONE_BETTING, BBGPhoneBettingPage.class);
+        log("@Step 3: Select filters which contains bets of player account at the precondition with Report By = Settled Bets");
+        log("@Step 4: Click on 'Show' button");
+        page.filter(KASTRAKI_LIMITED,"Settled Bets",dateAPI,"","","","");
+        log("Verify 1: Show correct bet of player account");
+        Assert.assertTrue(page.isBetDisplay(lstOrder.get(0)),"FAILED! "+accountCode+" does not display");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @Parameters({"accountCode"})
+    @TestRails(id = "29430")
+    public void BBGPhoneBettingTC_29430(String accountCode){
+        log("@title: Validate settled bets show correctly when account is checked 'Is Telebet' and 'Is Runner Account'");
+        log("@Pre-condition 1: Account is activated permission 'BBG - Phone Betting'");
+        log("@Pre-condition 2: The player account is checked 'Is Telebet Account' and 'Is Runner Account' in Master >> Client System >> Account");
+        log("@Pre-condition 3: Settled bets of the player account");
+        String dateAPI = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",5.55,
+                "BACK",false,"");
+        BetSettlementUtils.waitForBetIsUpdate(7);
+        ConfirmBetsUtils.confirmBetAPI(lstOrder);
+        BetSettlementUtils.waitForBetIsUpdate(7);
+        lstOrder.get(0).setEventDate(DateUtils.formatDate(dateAPI,"dd/MM/yyyy","yyyy-MM-dd"));
+        BetSettlementUtils.sendBetSettleAPI(lstOrder);
+        log("@Step 1: Navigate to the site");
+        log("@Step 2: Expand menu 'Soccer' and access 'BBG - Phone Betting' page");
+        BBGPhoneBettingPage page = welcomePage.navigatePage(SOCCER,BBG_PHONE_BETTING, BBGPhoneBettingPage.class);
+        log("@Step 3: Select filters which contains bets of player account at the precondition with Report By = Settled Bets");
+        log("@Step 4: Click on 'Show' button");
+        page.filter(KASTRAKI_LIMITED,"Settled Bets",dateAPI,"","","","");
+        log("Verify 1: Show correct bet of player account");
+        Assert.assertTrue(page.isBetDisplay(lstOrder.get(0)),"FAILED! "+accountCode+" does not display");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @Parameters({"accountCode"})
+    @TestRails(id = "29431")
+    public void BBGPhoneBettingTC_29431(String accountCode){
+        log("@title: Validate the price background is pink for price < 1");
+        log("@Pre-condition 1: Account is activated permission 'BBG - Phone Betting'");
+        log("@Pre-condition 2: The player account is checked 'Is Telebet Account' and 'Is Runner Account' in Master >> Client System >> Account");
+        log("@Pre-condition 3: The player account placed an bet with odds = 0.5");
+        String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",0.5,-0.5,"HK",5.55,
+                "BACK",false,"");
+        BetSettlementUtils.waitForBetIsUpdate(7);
+        log("@Step 1: Navigate to the site");
+        log("@Step 2: Expand menu 'Soccer' and access 'BBG - Phone Betting' page");
+        BBGPhoneBettingPage page = welcomePage.navigatePage(SOCCER,BBG_PHONE_BETTING, BBGPhoneBettingPage.class);
+        log("@Step 3: Select filters which contains bets of player account at the precondition with Report By = Pending Bets");
+        log("@Step 4: Click on 'Show' button");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED,"Pending Bets",date,"","","","");
+        log("Verify 1: the price background is pink");
+        page.isPriceBackgroundDisplay(lstOrder.get(0),"#f9c");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @Parameters("accountCode")
+    @TestRails(id = "29432")
+    public void BBGPhoneBettingTC_29432(String accountCode){
+        log("@title: Validate the price background is blue for price > 1");
+        log("@Pre-condition 1: Account is activated permission 'BBG - Phone Betting'");
+        log("@Pre-condition 2: The player account is checked 'Is Telebet Account' and 'Is Runner Account' in Master >> Client System >> Account");
+        log("@Pre-condition 3: The player account placed an bet with odds = 0.5");
+        String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1.5,-0.5,"HK",5.55,
+                "BACK",false,"");
+        BetSettlementUtils.waitForBetIsUpdate(7);
+        log("@Step 1: Navigate to the site");
+        log("@Step 2: Expand menu 'Soccer' and access 'BBG - Phone Betting' page");
+        BBGPhoneBettingPage page = welcomePage.navigatePage(SOCCER,BBG_PHONE_BETTING, BBGPhoneBettingPage.class);
+        log("@Step 3: Select filters which contains bets of player account at the precondition with Report By = Pending Bets");
+        log("@Step 4: Click on 'Show' button");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED,"Pending Bets",date,"","","","");
+        log("Verify 1: the price background is blue");
+        page.isPriceBackgroundDisplay(lstOrder.get(0),"#00bfff");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @Parameters({"accountCode"})
+    @TestRails(id = "29433")
+    public void BBGPhoneBettingTC_29433(String accountCode){
+        log("@title: Validate no background for price = 1");
+        log("@Pre-condition 1: Account is activated permission 'BBG - Phone Betting'");
+        log("@Pre-condition 2: The player account is checked 'Is Telebet Account' and 'Is Runner Account' in Master >> Client System >> Account");
+        log("@Pre-condition 3: The player account placed an bet with odds = 0.5");
+        String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1.0,-0.5,"HK",5.55,
+                "BACK",false,"");
+        BetSettlementUtils.waitForBetIsUpdate(7);
+        log("@Step 1: Navigate to the site");
+        log("@Step 2: Expand menu 'Soccer' and access 'BBG - Phone Betting' page");
+        BBGPhoneBettingPage page = welcomePage.navigatePage(SOCCER,BBG_PHONE_BETTING, BBGPhoneBettingPage.class);
+        log("@Step 3: Select filters which contains bets of player account at the precondition with Report By = Pending Bets");
+        log("@Step 4: Click on 'Show' button");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED,"Pending Bets",date,"","","","");
+        log("Verify 1: the price background is blue");
+        page.isPriceBackgroundDisplay(lstOrder.get(0),"#fff");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @TestRails(id = "29434")
+    public void BBGPhoneBettingTC_29434(){
+        log("@title: Validate total stake displays correctly in HKD");
+        log("@Pre-condition 1: Account is activated permission 'BBG - Phone Betting");
+        log("@Step 1: Navigate to the site");
+        log("@Step 2: Expand menu 'Soccer' and access 'BBG - Phone Betting' page");
+        BBGPhoneBettingPage page = welcomePage.navigatePage(SOCCER,BBG_PHONE_BETTING, BBGPhoneBettingPage.class);
+        log("@Step 3: Select filters which have data (Report By = Settled Bets)");
+        log("@Step 4: Click on 'Show' button");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED,"Settled Bets",date,date,"","","");
+        log("Verify 1: Total stake is calculated correctly in HKD at the last row of 'Stake' column");
+        page.verifyResultDisplay("Stake");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @Parameters({"accountCode","accountCurrency"})
+    @TestRails(id = "29435")
+    public void BBGPhoneBettingTC_29435(String accountCode, String accountCurrency){
+        log("@title: Validate total win/lose displays correctly in HKD");
+        log("@Pre-condition 1: Account is activated permission 'BBG - Phone Betting");
+        log("@Pre-condition 2: The player account is checked 'Is Telebet Account' and 'Is Runner Account' in Master >> Client System >> Account (settled win bet = 15 HKD)");
+        String dateAPI = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
+        List<Order> lstOrderRunner = welcomePage.placeBetAPI(SOCCER, dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1.0,0.5,"HK",15.0,
+                "BACK",false,"15.0");
+        ConfirmBetsUtils.confirmBetAPI(lstOrderRunner);
+        lstOrderRunner.get(0).setAccountCurrency(accountCurrency);
+        BetSettlementPage betSettlementPage = welcomePage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed",dateAPI,"","",accountCode);
+        betSettlementPage.settleAndSendSettlementEmail(lstOrderRunner.get(0));
+        log("@Pre-condition 2: The player account is checked 'Is Telebet Account' in Master >> Client System >> Account (settled win bet = 10 HKD)");
+        String accountTelebet = "QALKR";
+        String curTelebet = "LKR";
+        List<Order> lstOrderTelebet = betSettlementPage.placeBetAPI(SOCCER, dateAPI,false,accountTelebet,"Goals","HDP","Home","FullTime",1.0,0.5,"HK",10.0,
+                "BACK",false,"10.0");
+        BetSettlementUtils.waitForBetIsUpdate(7);
+        lstOrderTelebet.get(0).setAccountCurrency(curTelebet);
+        ConfirmBetsUtils.confirmBetAPI(lstOrderTelebet);
+        betSettlementPage.filter("Confirmed",dateAPI,"","",accountTelebet);
+        betSettlementPage.settleAndSendSettlementEmail(lstOrderTelebet.get(0));
+        log("@Step 1: Navigate to the site");
+        log("@Step 2: Expand menu 'Soccer' and access 'BBG - Phone Betting' page");
+        BBGPhoneBettingPage page = welcomePage.navigatePage(SOCCER,BBG_PHONE_BETTING, BBGPhoneBettingPage.class);
+        log("@Step 3: Select filters which contains bets at the precondition");
+        log("@Step 4: Click on 'Show' button");
+        page.filter(KASTRAKI_LIMITED,"Settled Bets","","","","","");
+        log("Verify 1: Total win/lose is calculated correctly in HKD at the last row of 'Win/Lose' column (Win/Lose = Runner win/loss - Customer win/loss = 15 - 10 = 5)");
+        page.verifyWinLoseIsCalculatedCorrect(lstOrderRunner.get(0),lstOrderTelebet.get(0));
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @TestRails(id = "29436")
+    public void BBGPhoneBettingTC_29436(){
+        log("@title: Validate win/lose% displays correctly");
+        log("@Pre-condition 1: Account is activated permission 'BBG - Phone Betting");
+        log("@Pre-condition 2: The player account is checked 'Is Telebet Account' and 'Is Runner Account' in Master >> Client System >> Account (settled win bet = 15 HKD)");
+        log("@Step 1: Navigate to the site");
+        log("@Step 2: Expand menu 'Soccer' and access 'BBG - Phone Betting' page");
+        BBGPhoneBettingPage page = welcomePage.navigatePage(SOCCER,BBG_PHONE_BETTING, BBGPhoneBettingPage.class);
+        log("@Step 3: Select filters which have data (Report By = Settled bets)");
+        log("@Step 4: Click on 'Show' button");
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED,"Settled Bets",date,"","","","");
+        log("Verify 1: Win/loss % = (total win/lose / total stake) * 100 at 'Total Commission in CUR' row");
+        page.verifyWinLosePercentOfLeague();
         log("INFO: Executed completely");
     }
 

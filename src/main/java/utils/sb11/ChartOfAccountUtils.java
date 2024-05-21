@@ -235,4 +235,21 @@ public class ChartOfAccountUtils {
         }
         return chartCode;
     }
+    public static List<String> getLstLedgerAccount(String detailtypeName, String parentName){
+        List<String> lstLedgerAcc = new ArrayList<>();
+        String ledgerGroupId = getLedgerGroupId(detailtypeName);
+        String parentId = getParentId(ledgerGroupId,parentName);
+        JSONObject jsonObject = getLedgerAccountListJson(parentId);
+        if (Objects.nonNull(jsonObject)) {
+            JSONArray resultArr  = jsonObject.getJSONArray("listLedger");
+            if (resultArr.length() > 0) {
+                for (int i = 0; i < resultArr.length(); i++) {
+                    JSONObject orderObj = resultArr.getJSONObject(i);
+                    String ledgerNumber = orderObj.getJSONArray("ledgerNumber").join(".").replace("\"","");
+                    lstLedgerAcc.add(String.format("%s - %s",ledgerNumber,orderObj.getString("ledgerName")));
+                }
+            }
+        }
+        return lstLedgerAcc;
+    }
 }

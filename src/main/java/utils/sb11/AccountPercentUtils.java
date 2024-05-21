@@ -2,6 +2,7 @@ package utils.sb11;
 
 import com.paltech.constant.Configs;
 import com.paltech.utils.WSUtils;
+import common.SBPConstants;
 import utils.AppUtils;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import static testcases.BaseCaseAQS.environment;
 public class AccountPercentUtils {
     public static void setAccountPercentAPI(String accountCode, String clientCode, String superMasterCode, Double percent) throws IOException {
         String accountId = AccountSearchUtils.getAccountId(accountCode);
-        String clientId = ClientSystemUtils.getClientId(clientCode);
+        String clientId = ClientSystemUtils.getClientId(clientCode,true, SBPConstants.KASTRAKI_LIMITED);
         String superClientCode = superMasterCode + clientCode;
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
         Map<String, String> headersParam = new HashMap<String, String>() {

@@ -2,6 +2,7 @@ package utils.sb11;
 
 import com.paltech.constant.Configs;
 import com.paltech.utils.WSUtils;
+import common.SBPConstants;
 import objects.Transaction;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -210,7 +211,7 @@ public class TransactionUtils {
             String accountIdCredit = AccountSearchUtils.getAccountId(creditGroupName);
             addClientBookieTxn(trans,accountIdDebit,accountIdCredit,fromType,typeId);
         } else if (fromType.equals("Client")) {
-            String typeId = ClientSystemUtils.getClientId(clientBookieName);
+            String typeId = ClientSystemUtils.getClientId(clientBookieName,true, SBPConstants.KASTRAKI_LIMITED);
             String accountIdCredit = AccountSearchUtils.getAccountId(debitGroupName);
             String accountIdDebit = AccountSearchUtils.getAccountId(creditGroupName);
             addClientBookieTxn(trans,accountIdDebit,accountIdCredit,fromType,typeId);

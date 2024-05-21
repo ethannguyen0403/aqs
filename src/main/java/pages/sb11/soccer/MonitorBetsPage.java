@@ -10,9 +10,14 @@ import controls.Table;
 import objects.Event;
 import objects.Order;
 import org.openqa.selenium.support.Color;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import utils.sb11.StakeSizeGroupUtils;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MonitorBetsPage extends WelcomePage {
     public int colAC = 2;
@@ -45,6 +50,8 @@ public class MonitorBetsPage extends WelcomePage {
     public Table tblOrder = Table.xpath("//app-monitor-bets//table",11);
     public Button btnClearAll = Button.xpath("//button[text()='Clear All']");
     public Button btnSetSelection = Button.xpath("//button[text()='Set Selection']");
+    public DropDownBox ddGroupType = DropDownBox.xpath("//div[text()='Group Type']//following-sibling::select");
+    public DropDownBox ddStakeSizeGroup = DropDownBox.xpath("//select[@formcontrolname='stakeSizeGroup']");
 
     public void filterResult(String sport, String smartType, String punterType, String betPlacedIn, String betCount, boolean isTodayEvent, String lrbRule, String liveNonLive, String currency, String stake, boolean isShow){
         if (!sport.isEmpty()){
@@ -76,6 +83,27 @@ public class MonitorBetsPage extends WelcomePage {
         }
         if (!stake.isEmpty()){
             ddpStake.selectByVisibleText(stake);
+        }
+        if (isShow){
+            btnShow.click();
+            waitSpinnerDisappeared();
+        }
+    }
+    public void filterResult(String sport, String stakeSizeGroup, String betPlaceIn, String betCount, String liveNonLive, boolean isShow){
+        if (!sport.isEmpty()){
+            ddpSport.selectByVisibleText(sport);
+        }
+        if (!stakeSizeGroup.isEmpty()){
+            ddStakeSizeGroup.selectByVisibleText(stakeSizeGroup);
+        }
+        if (!betPlaceIn.isEmpty()){
+            ddpBetPlacedIN.selectByVisibleText(betPlaceIn);
+        }
+        if (!betCount.isEmpty()){
+            ddpBetCount.selectByVisibleText(betCount);
+        }
+        if (!liveNonLive.isEmpty()){
+            ddpLiveNonLive.selectByVisibleText(liveNonLive);
         }
         if (isShow){
             btnShow.click();
@@ -295,5 +323,35 @@ public class MonitorBetsPage extends WelcomePage {
             }
         }
         return true;
+    }
+    public void goToGroupType(String groupType){
+        ddGroupType.selectByVisibleText(groupType);
+        waitSpinnerDisappeared();
+    }
+
+    public void verifyBetsShowInStakeSizeGroup() {
+        List<String> lstGroupAc = ddStakeSizeGroup.getOptions();
+        List<String> lstACColumn = tblOrder.getColumn(tblOrder.getColumnIndexByName("AC"),true);
+        Set<String> lstGroupEx = new HashSet<>();
+        Set<String> lstMemberAc = new HashSet<>();
+        for (String groupName : lstACColumn){
+            lstGroupEx.add(groupName.split("\n")[0]);
+            lstMemberAc.add(groupName.split("\n")[1]);
+        }
+        //Verify Group Name display correct
+        for (String groupName : lstGroupEx){
+            if (!lstGroupAc.contains(groupName)){
+                Assert.assertTrue(false,"FAILED! "+groupName+" is not exist");
+            }
+        }
+        //Verify Member Name belongs to Group Name
+        for (int i = 0; i < lstACColumn.size();i++){
+            String groupName = lstACColumn.get(i).split("\n")[0];
+            String memberAc = lstACColumn.get(i).split("\n")[1];
+            List<String> lstMemberOfGroup = StakeSizeGroupUtils.getLstAccCode(groupName);
+            if (!lstMemberOfGroup.contains(memberAc)){
+                Assert.assertTrue(false,"FAILED! "+memberAc+" display incorrect in group: "+groupName);
+            }
+        }
     }
 }

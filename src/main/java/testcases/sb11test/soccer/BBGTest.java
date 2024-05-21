@@ -168,9 +168,8 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition 2: Placed a Soccer bet");
         String accountCode = "ClientCredit-AutoQC";
         String smartGroup = "QA Smart Group";
-        String sportName = "Soccer";
         String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
-        List<Order> lstOrder =  welcomePage.placeBetAPI(sportName,dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
+        List<Order> lstOrder =  welcomePage.placeBetAPI(SOCCER,dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
                 5.5,"BACK",false,"");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
@@ -210,9 +209,8 @@ public class BBGTest extends BaseCaseAQS {
         log("@title: Validate bets display accordingly when selecting each value in Smart Type list");
         log("@pre-condition 1: Account is activated permission 'BBG'");
         log("@pre-condition 2: Placed a Soccer bet");
-        String sportName = "Soccer";
         String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
-        List<Order> lstOrder = welcomePage.placeBetAPI(sportName,dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
                 5.5,"BACK",false,"");
         log("@Step 1: Navigate to the site");
         log("@Step 2: Expand menu 'Soccer' and access 'BBG' page");
@@ -249,9 +247,8 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition 2: Placed a Soccer bet");
         String accountCode = "ClientCredit-AutoQC";
         String smartGroup = "QA Smart Group";
-        String sportName = "Soccer";
         String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
-        List<Order> lstOrder = welcomePage.placeBetAPI(sportName,dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
                 5.5,"BACK",false,"");
         ConfirmBetsUtils.confirmBetAPI(lstOrder.get(0));
         BetSettlementUtils.waitForBetIsUpdate(7);
