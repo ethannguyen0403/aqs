@@ -4,6 +4,7 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import com.paltech.utils.DateUtils;
+import common.SBPConstants;
 
 public class LoginPage {
     public TextBox txtUsername = TextBox.xpath("//input[@formcontrolname='username']");
@@ -25,7 +26,7 @@ public class LoginPage {
         txtUsername.sendKeys(username);
         txtPassword.sendKeys(password);
         if(txtCode.isDisplayed()){
-            String today= DateUtils.getDate(0,"yyyyMd","GMT+7");
+            String today= DateUtils.getDate(0,"yyyyMd", SBPConstants.GMT_8);
             String code = String.format("%s%s@))*",today,username);
             txtCode.sendKeys(code);
         }

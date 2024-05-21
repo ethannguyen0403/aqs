@@ -163,6 +163,7 @@ public class SBPConstants {
     public final static List<String> STAKE_LIST = Arrays.asList("All","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
     public final static List<String> MONTH_NAME_LIST = Arrays.asList("January","February","March","April","May","June","July","August","September","October", "November", "December");
     public final static String GMT_7 = "GMT+7";
+    public final static String GMT_8 = "GMT+8";
     public final static String BALANCE_SHEET = "Balance Sheet";
     public final static String POSITION_TAKING_REPORT = "Position Taking Report";
     public final static String USER_ACTIVITY_MONITORING = "User Activity Monitoring";
