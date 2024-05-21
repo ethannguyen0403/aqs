@@ -373,7 +373,7 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         log("@Pre-condition 1: Account is activated permission 'BBG - Phone Betting");
         log("@Pre-condition 2: The player account is checked 'Is Telebet Account' and 'Is Runner Account' in Master >> Client System >> Account (settled win bet = 15 HKD)");
         String dateAPI = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
-        List<Order> lstOrderRunner = welcomePage.placeBetAPI(SOCCER, dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1.0,0.5,"HK",15.0,
+        List<Order> lstOrderRunner = welcomePage.placeBetAPI(SOCCER, dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1.0,0.5,"HK",15.0,
                 "BACK",false,"15.0");
         ConfirmBetsUtils.confirmBetAPI(lstOrderRunner);
         lstOrderRunner.get(0).setAccountCurrency(accountCurrency);
@@ -382,11 +382,10 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         betSettlementPage.settleAndSendSettlementEmail(lstOrderRunner.get(0));
         log("@Pre-condition 2: The player account is checked 'Is Telebet Account' in Master >> Client System >> Account (settled win bet = 10 HKD)");
         String accountTelebet = "QALKR";
-        String curTelebet = "LKR";
-        List<Order> lstOrderTelebet = betSettlementPage.placeBetAPI(SOCCER, dateAPI,false,accountTelebet,"Goals","HDP","Home","FullTime",1.0,0.5,"HK",10.0,
+        List<Order> lstOrderTelebet = betSettlementPage.placeBetAPI(SOCCER,dateAPI,lstOrderRunner.get(0).getEvent(),accountTelebet,"Goals","HDP",lstOrderRunner.get(0).getEvent().getHome(),"Fulltime",1.0,0.5,"HK",10.0,
                 "BACK",false,"10.0");
         BetSettlementUtils.waitForBetIsUpdate(7);
-        lstOrderTelebet.get(0).setAccountCurrency(curTelebet);
+        lstOrderTelebet.get(0).setAccountCurrency(accountCurrency);
         ConfirmBetsUtils.confirmBetAPI(lstOrderTelebet);
         betSettlementPage.filter("Confirmed",dateAPI,"","",accountTelebet);
         betSettlementPage.settleAndSendSettlementEmail(lstOrderTelebet.get(0));

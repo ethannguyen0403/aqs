@@ -221,8 +221,8 @@ public class BBGPhoneBettingPage extends WelcomePage {
         for (int i = 1; i <= lblResult.getWebElements().size() - 1; i++){
             resultAc = DoubleUtils.roundUpWithTwoPlaces(resultAc+ Double.valueOf(Label.xpath(String.format("("+lblResultXpath+")[%d]",indexCol,i)).getText().trim().replace(",","")));
         }
-        //BA accept delta = 0.02
-        Assert.assertEquals(resultAc,resultEx,0.02,"FAILED! Total of "+colName+" column display incorrect");
+        //BA accept delta = 0.1
+        Assert.assertEquals(resultAc,resultEx,0.1,"FAILED! Total of "+colName+" column display incorrect");
     }
 
     public void verifyWinLoseIsCalculatedCorrect(Order orderRunner, Order orderTelebet) {

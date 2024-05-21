@@ -79,7 +79,7 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         page.verifyAllClientDisplay();
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression1","2024.V.4.0"})
+    @Test(groups = {"regression","2024.V.4.0"})
     @TestRails(id = "17973")
     public void Term_And_Conditions_17973(){
         log("@title: Validate is able to filter Clients by company");
