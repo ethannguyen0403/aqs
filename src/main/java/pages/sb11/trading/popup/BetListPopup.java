@@ -147,7 +147,9 @@ public class BetListPopup {
         Assert.assertEquals(betType, expectedBetType, "Failed! Bet Type is incorrect");
         Assert.assertEquals(selection, expectedSelection, "Failed! Selection is incorrect");
         Assert.assertEquals(hdp, expectedHDP, "Failed! HDP is incorrect");
-        Assert.assertEquals(live, expectedLive, "Failed! Live Score is incorrect is in correct");
+        if (expectedOrder.isLive()){
+            Assert.assertEquals(live, expectedLive, "Failed! Live Score is incorrect is in correct");
+        }
         Assert.assertEquals(price, String.format("%.3f (%s)", expectedOrder.getPrice(), expectedOrder.getOddType()), "Failed! Price is incorrect is in correct");
         Assert.assertEquals(stake, String.format("%,.2f", expectedOrder.getRequireStake()), "Failed! Stake is incorrect is in correct");
         Assert.assertEquals(cur, expectedOrder.getAccountCurrency(), "Failed! Cur is incorrect is in correct");

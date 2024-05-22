@@ -11,7 +11,6 @@ import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
-import pages.sb11.role.RoleManagementPage;
 import pages.sb11.soccer.*;
 import pages.sb11.soccer.BBTPage;
 import pages.sb11.trading.*;
@@ -358,27 +357,35 @@ public class BBTTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression_stg", "2023.11.30"})
-    @Parameters({"password", "userNameOneRole"})
+    @Parameters({"password", "userNameOneRole","username"})
     @TestRails(id = "314")
-    public void BBT_TC_314(String password, String userNameOneRole) throws Exception{
+    public void BBT_TC_314(String password, String userNameOneRole, String username) throws Exception{
         log("@title: Validate can open 'Last 12 Days Performance' with correct values although SPP permission is OFF");
         log("Precondition: Account is activated permission 'BBT' and is deactivated 'SPP' permission");
-        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRole("one role").switchPermissions("BBT", true);
-        roleManagementPage.selectRole("one role").switchPermissions("SPP", false);
-        log("@Step 1: Re-login with one role account account has 'BBT' permission is OFF");
-        LoginPage loginPage = roleManagementPage.logout();
-        loginPage.login(userNameOneRole, StringUtils.decrypt(password));
-        log("@Step 2: Navigate to Soccer > BBT");
-        BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
-        log("@Step 3: Filter with default option");
-        bbtPage.filter("", "", "", "", "", "", "", "", "");
-        log("@Step 3: Click on 'T' column of any smart group");
-        Last12DaysPerformancePage last12DaysPage = bbtPage.openLast12DayPerformanceFirstGroup();
-        Assert.assertTrue(!welcomePage.headerMenuControl.isSubmenuDisplay(SOCCER, BBT), "FAILED! Retained Earnings menu is displayed");
-        log("3. Validate Last 12 Days Performance is displayed correctly");
-        Assert.assertTrue(last12DaysPage.getTitlePage().contains("Last 12 Days Performance"), "FAILED! Header of Last 12 Days Performance is not displayed correct");
-        log("INFO: Executed completely");
+        try {
+            log("Precondition: Account is activated permission 'BBT' and is deactivated 'SPP' permission");
+            RoleManagementUtils.updateRolePermission("one role","BBT","ACTIVE");
+            RoleManagementUtils.updateRolePermission("one role",SPP,"INACTIVE");
+            log("@Step 1: Re-login with one role account account has 'BBT' permission is OFF");
+            LoginPage loginPage = welcomePage.logout();
+            loginPage.login(userNameOneRole, StringUtils.decrypt(password));
+            log("@Step 2: Navigate to Soccer > BBT");
+            BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
+            log("@Step 3: Filter with default option");
+            bbtPage.filter("", "", "", "", "", "", "", "", "");
+            log("@Step 3: Click on 'T' column of any smart group");
+            Last12DaysPerformancePage last12DaysPage = bbtPage.openLast12DayPerformanceFirstGroup();
+            Assert.assertTrue(!welcomePage.headerMenuControl.isSubmenuDisplay(SOCCER, BBT), "FAILED! Retained Earnings menu is displayed");
+            log("Verify 1: Validate Last 12 Days Performance is displayed correctly");
+            Assert.assertTrue(last12DaysPage.getTitlePage().contains("Last 12 Days Performance"), "FAILED! Header of Last 12 Days Performance is not displayed correct");
+            last12DaysPage.closePopup();
+
+        } finally {
+            LoginPage loginPage = welcomePage.logout();
+            loginPage.login(username, StringUtils.decrypt(password));
+            RoleManagementUtils.updateRolePermission("one role","BBT","INACTIVE");
+            log("INFO: Executed completely");
+        }
     }
 
     @Test(groups = {"regression"})

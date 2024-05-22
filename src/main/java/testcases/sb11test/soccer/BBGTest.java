@@ -103,18 +103,19 @@ public class BBGTest extends BaseCaseAQS {
         Assert.assertEquals(bbtPopup.lblLast1Month.getText(),String.format("%s - %s",smartGroupCurrency,smartGroup),"Failed! League Performance for Last 1 Month title is incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan3.0"})
     @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "23622")
     public void BBG_TC_23622(String password, String userNameOneRole) throws Exception {
         log("@title: Validate accounts without permission cannot see the menu");
         log("@pre-condition: Analyse permission is OFF for any account");
+        RoleManagementUtils.updateRolePermission("one role","BBG","INACTIVE");
         log("@Step 1: Login by account at precondition");
         LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         log("@Step 2: Expand Trading menu");
         log("@Verify 1: 'Analyse' menu is hidden");
-        Assert.assertFalse(welcomePage.headerMenuControl.isSubmenuDisplay(SOCCER,BBT),"FAILED! BBT page displays incorrect.");
+        Assert.assertFalse(welcomePage.headerMenuControl.isSubmenuDisplay(SOCCER,BBG),"FAILED! BBT page displays incorrect.");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.2.0"})
@@ -239,7 +240,7 @@ public class BBGTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","2024.V.2.0"})
+    @Test(groups = {"regression","2024.V.2.0","ethan3.0"})
     @TestRails(id = "23642")
     public void BBG_TC_23642() {
         log("@title: Validate bets display accordingly when selecting each value in Report Type list");
@@ -247,11 +248,12 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition 2: Placed a Soccer bet");
         String accountCode = "ClientCredit-AutoQC";
         String smartGroup = "QA Smart Group";
-        String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        String dateAPI = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
                 5.5,"BACK",false,"");
         ConfirmBetsUtils.confirmBetAPI(lstOrder.get(0));
         BetSettlementUtils.waitForBetIsUpdate(7);
+        lstOrder.get(0).setEventDate(DateUtils.formatDate(dateAPI,"dd/MM/yyyy","yyyy-MM-dd"));
         BetSettlementUtils.sendBetSettleAPI(lstOrder.get(0));
         BetSettlementUtils.waitForBetIsUpdate(20);
         log("@Step 1: Login by account at precondition");
