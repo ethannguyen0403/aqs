@@ -1,5 +1,6 @@
 package testcases.sb11test.master;
 
+import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -8,6 +9,9 @@ import pages.sb11.LoginPage;
 import pages.sb11.master.TermsAndConditionsPage;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static common.SBPConstants.*;
 
@@ -65,8 +69,9 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.4.0"})
+    @Parameters({"clientCode"})
     @TestRails(id = "17971")
-    public void Term_And_Conditions_17971(){
+    public void Term_And_Conditions_17971(String clientCode){
         log("@title: Validate is able to search Clients by name");
         log("@pre-condition: 'Terms and Conditions' permission actives in any account");
         log("@Step 1: Login by account at precondition");
@@ -74,9 +79,11 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
         log("@Step 3: Input valid Client name");
         log("@Step 4: Click Show button");
-        page.filter("","Client","");
+        page.filter("","Client",clientCode);
         log("Verify 1: All existing Clients according to the search key should display");
-        page.verifyAllClientDisplay();
+        List<String> lstClient = new ArrayList<>();
+        lstClient.add(clientCode);
+        page.verifyClientNameDisplay(lstClient);
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.4.0"})
@@ -91,7 +98,120 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         log("@Step 4: Click Show button");
         page.filter(KASTRAKI_LIMITED,"","");
         log("Verify 1: All existing Clients according to the filtering should display");
-        page.verifyAllClientDisplay();
+        page.verifyClientListDropdownDisplay(KASTRAKI_LIMITED);
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @TestRails(id = "17974")
+    public void Term_And_Conditions_17974(){
+        log("@title: Validate the proper client name displays at Client Name column");
+        log("@pre-condition: 'Terms and Conditions' permission actives in any account");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Master >> Terms and Conditions page");
+        TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
+        log("@Step 3: Select any company unit (e.g. Fair)");
+        log("@Step 4: Click Show button");
+        page.filter(KASTRAKI_LIMITED,"","");
+        log("Verify 1: Correct Client Name of filtering company displays at Client Name column");
+        List<String> lstClientName = page.ddClientBookieList.getOptions();
+        lstClientName.remove("All");
+        page.verifyClientNameDisplay(lstClientName);
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @Parameters({"clientCode"})
+    @TestRails(id = "17977")
+    public void Term_And_Conditions_17977(String clientCode){
+        log("@title: Validate the current Terms and Conditions value will prepopulate to edit/input in Edit mode");
+        log("@pre-condition: 'Terms and Conditions' permission actives in any account");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Master >> Terms and Conditions page");
+        TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
+        log("@Step 3: Search by any client name that has inputted Terms and Conditions (e.g. Adriano Pfuhl (No.162 Adriano) (F))");
+        page.filter(KASTRAKI_LIMITED,"Client",clientCode);
+        log("@Step 4: Click Edit link");
+        log("Verify 1: The current Terms and Conditions value will prepopulate in textarea");
+        page.verifyDataAfterClickingEdit(clientCode);
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @Parameters({"clientCode"})
+    @TestRails(id = "17978")
+    public void Term_And_Conditions_17978(String clientCode){
+        log("@title: Validate Edit column will display Save & Cancel button in Edit mode");
+        log("@pre-condition: 'Terms and Conditions' permission actives in any account");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Master >> Terms and Conditions page");
+        TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
+        log("@Step 3: Search by any client name that has inputted Terms and Conditions (e.g. Adriano Pfuhl (No.162 Adriano) (F))");
+        page.filter(KASTRAKI_LIMITED,"Client",clientCode);
+        log("@Step 4: Click Edit link");
+        page.clickEdit(clientCode);
+        log("Verify 1: Edit' column will display Save & Cancel buttons");
+        page.verifyEditButtonDisplay(clientCode);
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @Parameters({"clientCode"})
+    @TestRails(id = "17979")
+    public void Term_And_Conditions_17979(String clientCode){
+        log("@title: Validate can save the new values by clicked on Save button");
+        log("@pre-condition: 'Terms and Conditions' permission actives in any account");
+        String newProviderTerm = "Automation Testing " + DateUtils.getMilliSeconds();
+        String newDownlineTerm = "Automation Testing " + DateUtils.getMilliSeconds();
+        String newDownlinePayment = "Automation Testing " + DateUtils.getMilliSeconds();
+        String newSalesIncharge = "Automation Testing " + DateUtils.getMilliSeconds();
+        String newComment = "Automation Testing " + DateUtils.getMilliSeconds();
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Master >> Terms and Conditions page");
+        TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
+        log("@Step 3: Search by any client name that has inputted Terms and Conditions (e.g. Adriano Pfuhl (No.162 Adriano) (F))");
+        page.filter(KASTRAKI_LIMITED,"Client",clientCode);
+        log("@Step 4: Click Edit link");
+        log("@Step 5: Add new Terms and Conditions");
+        log("@Step 6: Click Save button");
+        log("Verify 1: New values will save correctly");
+        Assert.assertFalse(page.isClientBookieEdited(clientCode,newProviderTerm,newDownlineTerm,newDownlinePayment,newSalesIncharge,newComment,true),"FAILED! It can not edit");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @Parameters({"clientCode"})
+    @TestRails(id = "20218")
+    public void Term_And_Conditions_20218(String clientCode){
+        log("@title: Validate new changes will not save if clicked on X button");
+        log("@pre-condition: 'Terms and Conditions' permission actives in any account");
+        String newProviderTerm = "Automation Testing " + DateUtils.getMilliSeconds();
+        String newDownlineTerm = "Automation Testing " + DateUtils.getMilliSeconds();
+        String newDownlinePayment = "Automation Testing " + DateUtils.getMilliSeconds();
+        String newSalesIncharge = "Automation Testing " + DateUtils.getMilliSeconds();
+        String newComment = "Automation Testing " + DateUtils.getMilliSeconds();
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Master >> Terms and Conditions page");
+        TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
+        log("@Step 3: Search by any client name that has inputted Terms and Conditions (e.g. Adriano Pfuhl (No.162 Adriano) (F))");
+        page.filter(KASTRAKI_LIMITED,"Client",clientCode);
+        log("@Step 4: Click Edit link");
+        log("@Step 5: Input/clear Terms and Conditions");
+        log("@Step 6: Click X button");
+        log("Verify 1: Edit' column will display Save & Cancel buttons");
+        Assert.assertTrue(page.isClientBookieEdited(clientCode,newProviderTerm,newDownlineTerm,newDownlinePayment,newSalesIncharge,newComment,false),"FAILED! It is edited");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @Parameters({"clientCode"})
+    @TestRails(id = "20219")
+    public void Term_And_Conditions_20219(String clientCode){
+        log("@title: Validate the textarea will be size-adjustable and have no space restraints");
+        log("@pre-condition: 'Terms and Conditions' permission actives in any account");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Master >> Terms and Conditions page");
+        TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
+        log("@Step 3: Search by any client name that has inputted Terms and Conditions (e.g. Adriano Pfuhl (No.162 Adriano) (F))");
+        page.filter(KASTRAKI_LIMITED,"Client",clientCode);
+        log("@Step 4: Click Edit link");
+        log("@Step 5: Input about 8 rows 'Terms and Conditions' text");
+        log("Verify 1: The textarea will be size-adjustable and have no space restraints (the scrollbar will display)");
+        page.verifyTheScrollbarDisplay(clientCode);
         log("INFO: Executed completely");
     }
 }
