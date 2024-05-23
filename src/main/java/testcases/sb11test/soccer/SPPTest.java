@@ -77,25 +77,23 @@ public class SPPTest extends BaseCaseAQS {
     @TestRails(id = "311")
     public void SPP_TC_311(String bookieCode,String accountCode, String bookieMasterCode,String smartGroup,String bookieSuperMasterCode) throws InterruptedException {
         log("@title:Validate WL in Bookie Statement matched with SPP page (#AQS-2073)");
-//        String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
-//        String dateAPI = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
         log("@Precondition: Having at least a settled bet. Use a filter date with data Bookie: QA Bookie, Super Master: SM-QA1-QA Test, Account code: Auto-Account01");
         log("Precondition 1: Place and settled manual bet");
         String fromDate = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
-        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,fromDate,true,accountCode,"Goals","HDP","Home","FullTime",1.75,2.15,
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,fromDate,true,CLIENT_CREDIT_ACC,"Goals","HDP","Home","FullTime",1.75,2.15,
                 "HK",15,"BACK",false,"");
         ConfirmBetsUtils.confirmBetAPI(lstOrder);
         BetSettlementUtils.waitForBetIsUpdate(10);
         log("@Pre-condition 2: Navigate to Trading > Bet Settlement and search bet of the account at precondition in Confirmed mode");
         BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed",fromDate,"","",accountCode);
+        betSettlementPage.filter("Confirmed",fromDate,"","",CLIENT_CREDIT_ACC);
         betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
         BetSettlementUtils.waitForBetIsUpdate(15);
         log("@Step 1: Go to Bookie Statement >> filter Agent type: Super Master");
         log("@Step 2: Input bookie code as QA Bookie >> click Show");
         log("@Step 3: Find the master code: SM-QA1-QA Test >> click MS link at the master code");
         BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,BOOKIE_STATEMENT,BookieStatementPage.class);
-        bookieStatementPage.filter("","","Super Master",fromDate, fromDate,bookieCode,"");
+        bookieStatementPage.filter("","","Super Master","", "",bookieCode,"");
         log("@Step 4: Find the player >> observe win/loss");
         String winlosePlayer = bookieStatementPage.getWinLossofPlayer(bookieSuperMasterCode, bookieMasterCode,CLIENT_CREDIT_ACC);
 
@@ -103,7 +101,7 @@ public class SPPTest extends BaseCaseAQS {
         log(String.format("Step 6: Select the date %s >> click Show", fromDate));
         log("@Step 7: Observe the win/loss of the group");
         SPPPage sppPage = bookieStatementPage.navigatePage(SOCCER,SPP,SPPPage.class);
-        sppPage.filter("All", "Group","Smart Group","QA Smart Master","QA Smart Agent",fromDate,"");
+        sppPage.filter("All", "Group","Smart Group","QA Smart Master","QA Smart Agent","","");
         String winloseSPP = sppPage.getRowDataOfGroup("QA Smart Group").get(sppPage.colWL);
 
         log("@verify 1: Validate the win/loss in the Client statement (step 2) matches with the win/loss of the group in the SPP page");
