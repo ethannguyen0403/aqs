@@ -7,6 +7,7 @@ import com.paltech.element.common.TextBox;
 import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import pages.sb11.master.termsAndConditionsPopup.LogPopup;
 import utils.sb11.ClientSystemUtils;
 
 import java.util.ArrayList;
@@ -152,5 +153,17 @@ public class TermsAndConditionsPage extends WelcomePage {
         TextBox txtComment = TextBox.xpath(tblData.getxPathOfCell(1,tblData.getColumnIndexByName("Comment"),indexRow,"textarea"));
         txtComment.sendKeys(newText);
         Assert.assertTrue(Double.valueOf(txtComment.getAttribute("scrollTop")) > 0, "FAILED! Comment textbox does not have the scrollbar");
+    }
+
+    public String getValueOfClientBookie(String clientBookieName, String colName) {
+        return tblData.getControlBasedValueOfDifferentColumnOnRow(clientBookieName,1,clientBookieNamecol,1,null,
+                tblData.getColumnIndexByName(colName),"div",true,false).getText().trim();
+    }
+
+    public LogPopup openLog(String clientBookieName) {
+        tblData.getControlBasedValueOfDifferentColumnOnRow(clientBookieName,1,clientBookieNamecol,1,null,
+                tblData.getColumnIndexByName("Log"),null,true,false).click();
+        waitSpinnerDisappeared();
+        return new LogPopup();
     }
 }

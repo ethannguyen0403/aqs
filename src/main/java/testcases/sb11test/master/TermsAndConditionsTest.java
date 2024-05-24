@@ -7,6 +7,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
 import pages.sb11.master.TermsAndConditionsPage;
+import pages.sb11.master.termsAndConditionsPopup.LogPopup;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 
@@ -127,7 +128,7 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Master >> Terms and Conditions page");
         TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
-        log("@Step 3: Search by any client name that has inputted Terms and Conditions (e.g. Adriano Pfuhl (No.162 Adriano) (F))");
+        log("@Step 3: Search by any client name that has inputted Terms and Conditions");
         page.filter(KASTRAKI_LIMITED,"Client",clientCode);
         log("@Step 4: Click Edit link");
         log("Verify 1: The current Terms and Conditions value will prepopulate in textarea");
@@ -143,7 +144,7 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Master >> Terms and Conditions page");
         TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
-        log("@Step 3: Search by any client name that has inputted Terms and Conditions (e.g. Adriano Pfuhl (No.162 Adriano) (F))");
+        log("@Step 3: Search by any client name that has inputted Terms and Conditions");
         page.filter(KASTRAKI_LIMITED,"Client",clientCode);
         log("@Step 4: Click Edit link");
         page.clickEdit(clientCode);
@@ -165,7 +166,7 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Master >> Terms and Conditions page");
         TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
-        log("@Step 3: Search by any client name that has inputted Terms and Conditions (e.g. Adriano Pfuhl (No.162 Adriano) (F))");
+        log("@Step 3: Search by any client name that has inputted Terms and Conditions");
         page.filter(KASTRAKI_LIMITED,"Client",clientCode);
         log("@Step 4: Click Edit link");
         log("@Step 5: Add new Terms and Conditions");
@@ -188,7 +189,7 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Master >> Terms and Conditions page");
         TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
-        log("@Step 3: Search by any client name that has inputted Terms and Conditions (e.g. Adriano Pfuhl (No.162 Adriano) (F))");
+        log("@Step 3: Search by any client name that has inputted Terms and Conditions");
         page.filter(KASTRAKI_LIMITED,"Client",clientCode);
         log("@Step 4: Click Edit link");
         log("@Step 5: Input/clear Terms and Conditions");
@@ -206,12 +207,61 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Master >> Terms and Conditions page");
         TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
-        log("@Step 3: Search by any client name that has inputted Terms and Conditions (e.g. Adriano Pfuhl (No.162 Adriano) (F))");
+        log("@Step 3: Search by any client name that has inputted Terms and Conditions");
         page.filter(KASTRAKI_LIMITED,"Client",clientCode);
         log("@Step 4: Click Edit link");
         log("@Step 5: Input about 8 rows 'Terms and Conditions' text");
         log("Verify 1: The textarea will be size-adjustable and have no space restraints (the scrollbar will display)");
         page.verifyTheScrollbarDisplay(clientCode);
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @Parameters({"clientCode","username"})
+    @TestRails(id = "20220")
+    public void Term_And_Conditions_20220(String clientCode, String username){
+        log("@title: Validate the Terms and Conditions >> Log dialog displays when clicked on the Log link");
+        log("@pre-condition: 'Terms and Conditions' permission actives in any account");
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Master >> Terms and Conditions page");
+        TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
+        log("@Step 3: Search by any client name that has inputted Terms and Conditions");
+        page.filter(KASTRAKI_LIMITED,"Client",clientCode);
+        log("@Step 4: Click Log link");
+        LogPopup logPopup = page.openLog(clientCode);
+        logPopup.waitSpinnerDisappeared();
+        log("Verify 1: Terms and Conditions >> Log dialog will display");
+        Assert.assertTrue(logPopup.lblTitle.getText().contains("Log"),"FAILED! Log is not displayed");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.4.0"})
+    @Parameters({"clientCode","username"})
+    @TestRails(id = "20221")
+    public void Term_And_Conditions_20221(String clientCode, String username){
+        log("@title: Validate the Terms and Conditions >> Log dialog displays when clicked on the Log link");
+        log("@pre-condition: 'Terms and Conditions' permission actives in any account");
+        String modifiedTime = DateUtils.getDate(0,"dd/MM/yyyy",GMT_8);
+        String newProviderTerm = "Automation Testing " + DateUtils.getMilliSeconds();
+        log("@Step 1: Login by account at precondition");
+        log("@Step 2: Go to Master >> Terms and Conditions page");
+        TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
+        log("@Step 3: Search by any client name that has inputted Terms and Conditions");
+        page.filter(KASTRAKI_LIMITED,"Client",clientCode);
+        log("@Step 4: Click Edit link");
+        log("@Step 5: Input Terms and Conditions text");
+        log("@Post-condtion: Get value before editing");
+        String oldProviderTerm = page.getValueOfClientBookie(clientCode,"Provider term and Payment term");
+        log("@Step 6: Click Save button");
+        page.editBookieClient(clientCode,newProviderTerm,"","","","",true);
+        log("@Step 7: Click Log link");
+        LogPopup logPopup = page.openLog(clientCode);
+        log("Verify 1: All the log of changes on the terms and conditions of each Client will display the correct values as below:\n" +
+                "\n" +
+                "Client Name of edited Terms and conditions\n" +
+                "From: old value before changing\n" +
+                "To: new value after changing\n" +
+                "Modified By\n" +
+                "Modified Time (GMT+8)");
+        logPopup.isLogDisplay(clientCode,"Provider term and Payment term",oldProviderTerm,newProviderTerm,username,modifiedTime);
         log("INFO: Executed completely");
     }
 }
