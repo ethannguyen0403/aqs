@@ -13,6 +13,7 @@ import pages.sb11.LoginPage;
 import pages.sb11.soccer.BBGPage;
 import pages.sb11.soccer.popup.bbg.BBGLastDaysPerformacesPopup;
 import pages.sb11.soccer.popup.bbg.BetByTeamPricePopup;
+import pages.sb11.trading.BetSettlementPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.*;
 import utils.testraildemo.TestRails;
@@ -254,8 +255,9 @@ public class BBGTest extends BaseCaseAQS {
         ConfirmBetsUtils.confirmBetAPI(lstOrder.get(0));
         BetSettlementUtils.waitForBetIsUpdate(7);
         lstOrder.get(0).setEventDate(DateUtils.formatDate(dateAPI,"dd/MM/yyyy","yyyy-MM-dd"));
-        BetSettlementUtils.sendBetSettleAPI(lstOrder.get(0));
-        BetSettlementUtils.waitForBetIsUpdate(20);
+        BetSettlementPage betSettlementPage = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed", dateAPI, "", "", accountCode);
+        betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
         BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
@@ -293,7 +295,7 @@ public class BBGTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan3.0"})
     @TestRails(id = "23644")
     @Parameters({"accountCode","accountCurrency", "smartGroup"})
     public void BBG_TC_23644(String accountCode, String accountCurrency,String smartGroup) {
@@ -308,7 +310,8 @@ public class BBGTest extends BaseCaseAQS {
         BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
         log("@Step 3: Select filters with currency 'EUR' as the preconditions");
         log("@Step 4: Click on 'Show' button");
-        page.filter("","","","Settled Bets",date,"","",accountCurrency);
+        String dateFilter = DateUtils.getDate(-3,"dd/MM/yyyy",GMT_7);
+        page.filter("","","","Settled Bets",dateFilter,"","",accountCurrency);
         page.filterAdvance("Group",smartGroup);
         log("@Verify 1: Display the bet at the preconditions");
         Assert.assertTrue(page.isOrderDisplayCorrect(orderSettled,smartGroup));
@@ -406,7 +409,7 @@ public class BBGTest extends BaseCaseAQS {
         page.verifyBetsShowCorrectByColumnName("Event",lstEvent);
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan3.0"})
     @TestRails(id = "23650")
     public void BBG_TC_23650() {
         log("@title: Validate all groups that have bets in filtered date range display");
@@ -423,6 +426,7 @@ public class BBGTest extends BaseCaseAQS {
         page.filter("","","","Settled Bets",date,"","","");
         String groupEx = page.getLstNameInAdvanceFilter("Group").get(0);
         page.filterAdvance("Group",groupEx);
+        page.waitSpinnerDisappeared();
         log("@Verify 1: Selected group in filtered date range display");
         page.verifySelectedGroupDisplay(groupEx);
         log("INFO: Executed completely");

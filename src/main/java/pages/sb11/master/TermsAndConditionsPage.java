@@ -83,23 +83,23 @@ public class TermsAndConditionsPage extends WelcomePage {
     public void editBookieClient(String clientBookieName, String providerTerm, String downlineTerm, String downlinePayment, String saleIncharge, String comment, boolean save) {
         clickEdit(clientBookieName);
         int indexRow = tblData.getRowIndexContainValue(clientBookieName,clientBookieNamecol,null);
-        if (providerTerm.isEmpty()){
+        if (!providerTerm.isEmpty()){
             TextBox txtProviderTerm = TextBox.xpath(tblData.getxPathOfCell(1,tblData.getColumnIndexByName("Provider term and Payment term"),indexRow,"textarea"));
             txtProviderTerm.sendKeys(providerTerm);
         }
-        if (downlineTerm.isEmpty()){
+        if (!downlineTerm.isEmpty()){
             TextBox txtDownlineTerm = TextBox.xpath(tblData.getxPathOfCell(1,tblData.getColumnIndexByName("Downline term in PT"),indexRow,"textarea"));
             txtDownlineTerm.sendKeys(downlineTerm);
         }
-        if (downlinePayment.isEmpty()){
+        if (!downlinePayment.isEmpty()){
             TextBox txtDownlinePayment = TextBox.xpath(tblData.getxPathOfCell(1,tblData.getColumnIndexByName("Downline payment term"),indexRow,"textarea"));
             txtDownlinePayment.sendKeys(downlinePayment);
         }
-        if (saleIncharge.isEmpty()){
+        if (!saleIncharge.isEmpty()){
             TextBox txtSaleIncharge = TextBox.xpath(tblData.getxPathOfCell(1,tblData.getColumnIndexByName("Sales Incharge"),indexRow,"textarea"));
             txtSaleIncharge.sendKeys(saleIncharge);
         }
-        if (comment.isEmpty()){
+        if (!comment.isEmpty()){
             TextBox txtComment = TextBox.xpath(tblData.getxPathOfCell(1,tblData.getColumnIndexByName("Comment"),indexRow,"textarea"));
             txtComment.sendKeys(comment);
         }
@@ -116,6 +116,7 @@ public class TermsAndConditionsPage extends WelcomePage {
     public boolean isClientBookieEdited(String clientBookieName, String providerTerm, String downlineTerm, String downlinePayment, String saleIncharge, String comment, boolean save) {
         List<ArrayList<String>> lstBefore = tblData.getRowsWithoutHeader(1,true);
         editBookieClient(clientBookieName,providerTerm,downlineTerm,downlinePayment,saleIncharge,comment,save);
+        waitSpinnerDisappeared();
         List<ArrayList<String>> lstAfter = tblData.getRowsWithoutHeader(1,true);
         return lstBefore.equals(lstAfter);
     }
