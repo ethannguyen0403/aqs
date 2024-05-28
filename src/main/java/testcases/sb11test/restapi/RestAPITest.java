@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.restapi.RestAPI;
+import pages.sb11.trading.BetSettlementPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.*;
 import utils.sb11.EventMapping;
@@ -45,9 +46,9 @@ public class RestAPITest extends BaseCaseAQS {
         List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
                 "HK",1.00,"BACK",false,"1.00");
         ConfirmBetsUtils.confirmBetAPI(lstOrder);
-        BetSettlementUtils.waitForBetIsUpdate(7);
-        BetSettlementUtils.sendBetSettleAPI(lstOrder);
-        BetSettlementUtils.waitForBetIsUpdate(7);
+        BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed",date,"","",accountCode);
+        betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
         log("@Step 2: Select a Home Team and Away Team >> input Time value");
         log("@Step 1: Send request e.g https://aqsapi.beatus88.com/aqs-api/v1/cricket-pnl?eventDate=2023-06-07&accountCode=Cricket15A");
         JSONArray jsonArray = RestAPI.sendRequestByEventDate(dateAPI);
@@ -99,9 +100,9 @@ public class RestAPITest extends BaseCaseAQS {
         List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
                 "HK",1.00,"BACK",false,"2.00");
         ConfirmBetsUtils.confirmBetAPI(lstOrder.get(0));
-        BetSettlementUtils.waitForBetIsUpdate(7);
-        BetSettlementUtils.sendBetSettleAPI(lstOrder);
-        BetSettlementUtils.waitForBetIsUpdate(7);
+        BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed",date,"","",accountCode);
+        betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
         log("@Step 2: Select a Home Team and Away Team >> input Time value");
         log("@Step 1: Send request e.g https://aqsapi.beatus88.com/aqs-api/v1/cricket-pnl?eventDate=2023-06-07&accountCode=Cricket15A");
         JSONArray jsonArray = RestAPI.sendRequestByAccountCode(dateAPI,accountCode);

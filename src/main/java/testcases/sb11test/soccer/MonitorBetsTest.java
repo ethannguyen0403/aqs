@@ -18,6 +18,7 @@ import pages.sb11.trading.SmartGroupPage;
 import pages.sb11.trading.SmartSystemPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.BetEntrytUtils;
+import utils.sb11.BetSettlementUtils;
 import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
 
@@ -177,14 +178,15 @@ public class MonitorBetsTest extends BaseCaseAQS {
         //Place bet yesterday
         lstOrder.add(welcomePage.placeBetAPI(SOCCER,dateYes,true,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
                 5.5,"BACK",false,"").get(0));
+        BetSettlementUtils.waitForBetIsUpdate(15);
         log("@Step 1: Login to the site");
         log("@Step 2: Access 'Monitor Bets' page");
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 3: Select Live option at Live/Non Live dropdown list");
         monitorBetsPage.filterResult("","","","","",false,"","Live","","",true);
         log("Verify 1: Only Live bets are shown");
-        Assert.assertTrue(monitorBetsPage.isEventDisplayCorrect(lstOrder.get(0)),"FAILED! Bet(s) that placed live will not show");
-        Assert.assertFalse(monitorBetsPage.isEventDisplayCorrect(lstOrder.get(1)),"FAILED! Bet(s) that placed non-live shows");
+        Assert.assertFalse(monitorBetsPage.isEventDisplayCorrect(lstOrder.get(0)),"FAILED! Bet(s) that placed non-live shows");
+        Assert.assertTrue(monitorBetsPage.isEventDisplayCorrect(lstOrder.get(1)),"FAILED! Bet(s) that placed live will not show");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29"})

@@ -1215,7 +1215,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Verify 1: Running Bal. in 'Amounts are shown in HKD' column = (A) + [(B) -(C)]");
         ledgerStatementPage.verifyRunningBalAfterTriggering(valueA,valueB,valueC);
     }
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan3.0"})
     @TestRails(id = "23700")
     public void Ledger_Statement_23700() {
         log("@title: Validate there is only 1 CJE Expenditure transaction with the updated/latest amounts after users trigger a CJE manually");
@@ -1233,6 +1233,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String creditExpAcc = LEDGER_EXPENDITURE_CREDIT_NAME+" - "+LEDGER_EXPENDITURE_CREDIT_NUMBER;
         log("@Step 1: Go to General Reports >> Ledger Statement page");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         ledgerStatementPage.waitSpinnerDisappeared();
         log("Step 2: Filter data of 302.000.000.000 - Retained Earnings in testing month\n" +
                 "e.g. Company Unit = Kastraki Limited\n" +

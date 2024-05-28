@@ -22,6 +22,7 @@ public class AnalysePage extends WelcomePage {
     public CreateNewLinePopup openCreateNewLinePopup(){
         btnCreateManage.click();
         waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
         return new CreateNewLinePopup();
     }
     public void filter(String level, String line, String sport, String fromDate, String toDate){

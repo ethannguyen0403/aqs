@@ -13,6 +13,7 @@ import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.role.RoleManagementPage;
 import testcases.BaseCaseAQS;
 import utils.ExcelUtils;
+import utils.sb11.RoleManagementUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
@@ -31,11 +32,9 @@ public class StockholdersEquityTest extends BaseCaseAQS {
     public void Stockholder_Equity_TC2802(String password, String userNameOneRole) throws Exception {
         log("@title: Validate Stockholders Equity menu is hidden if not active Stockholders Equity permission");
         log("Precondition: Stockholders Equity permission is OFF for any account");
-        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRole("one role").switchPermissions(STOCKHOLDERS_EQUITY, false);
-        roleManagementPage.selectRole("one role").switchPermissions(TRIAL_BALANCE, true);
+        RoleManagementUtils.updateRolePermission("one role","Stockholders Equity","INACTIVE");
         log("@Step 1: Re-login with one role account account has 'Stockholders Equity' permission is OFF");
-        LoginPage loginPage = roleManagementPage.logout();
+        LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         TrialBalancePage trialBalancePage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, TRIAL_BALANCE, TrialBalancePage.class);
@@ -108,7 +107,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2807")
-    @Test(groups = {"regression", "2023.12.29"})
+    @Test(groups = {"regression", "2023.12.29","ethan3.0"})
     public void Stockholder_Equity_TC2807()  {
         //Financial year of Fair: From August - To July
         String fromDate = String.format("01/08/%s", FINANCIAL_YEAR_LIST.get(2).replace("Year ", "").split("-")[0]);
@@ -119,7 +118,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
         ledgerStatementPage.waitSpinnerDisappeared();
         ledgerStatementPage.showLedger(COMPANY_UNIT_LIST.get(3), FINANCIAL_YEAR_LIST.get(2), "", CAPITAL_PARENT_ACCOUNT, fromDate, toDate, "");
-        String capitalAccountValue = ledgerStatementPage.getTotalAmountInOriginCurrency("Total in HKD");
+        String capitalAccountValue = ledgerStatementPage.getTotalInHKD(CAPITAL_PARENT_ACCOUNT,"CUR Translation","Running Bal.");
         log("@Step 1: Navigate Financial Report > Stockholders Equity");
         StockHoldersEquityPage stockPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
@@ -181,8 +180,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
         String retainEarning = stockPage.getAmount(StockHoldersEquityPage.RETAINED_EARNING);
 
         log("@Step 3: Click 'Export To Excel' button");
-        stockPage.btnExportExcel.click();
-        welcomePage.waitSpinnerDisappeared();
+        stockPage.exportFile("Excel");
         try {
             log("@Verify 1: Validate excel file was downloaded successfully");
             Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! Excel file was not downloaded successfully");
@@ -200,7 +198,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2814")
-    @Test(groups = {"regression", "2023.12.29"})
+    @Test(groups = {"regression", "2023.12.29","ethan3.0"})
     public void Stockholder_Equity_TC2814() throws IOException {
         String downloadPath = String.format("%s%s", getDownloadPath(), "stockholders-equity.pdf");
         log("@title: Validate 'Export To Excel' button work properly ");
@@ -210,8 +208,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
         log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", KASTRAKI_LIMITED, FINANCIAL_YEAR));
         stockPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR);
         log("@Step 3: Click 'Export To PDF' button");
-        stockPage.btnExportPDF.click();
-        welcomePage.waitSpinnerDisappeared();
+        stockPage.exportFile("PDF");
         try {
             log("@Verify 1: PDF file is exported and downloaded to user's device properly");
             Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "FAILED! PDF file was not downloaded successfully");

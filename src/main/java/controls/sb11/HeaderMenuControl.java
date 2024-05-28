@@ -32,7 +32,7 @@ public class HeaderMenuControl extends BaseElement {
         }
         lblMainMenu.click();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
