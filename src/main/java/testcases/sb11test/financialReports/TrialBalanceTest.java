@@ -41,7 +41,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2773")
-    @Test(groups = {"regression", "2023.11.30","ethan"})
+    @Test(groups = {"regression", "2023.11.30","ethan3.0"})
     public void Trial_Balance_C2773() throws IOException {
         log("@title: Validate Debit/Credit data is matched correctly with Ledger Statement page");
         String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
@@ -332,7 +332,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
         }
     }
     @TestRails(id = "21836")
-    @Test(groups = {"regression", "2024.V.2.0"})
+    @Test(groups = {"regression", "2024.V.2.0","ethan3.0"})
     public void Trial_Balance_C21836() throws IOException {
         log("@title: Validate amount shows in Credit/Debit column when detail type = Income");
         log("Pre-condition 1: Having some txn with detail type = Income");
@@ -341,8 +341,10 @@ public class TrialBalanceTest extends BaseCaseAQS {
         String ledgerAccNegaNum = "002.000.000.011";
         String ledgerGroupNega = "QA Ledger Auto Income";
         String ledgerNega = "000.000.001.001 - QA Ledger Auto Income";
-        String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
-        int currentMonth = DateUtils.getMonth("GMT +7");
+        int month = DateUtils.getMonth(GMT_7) - 1;
+        int year = DateUtils.getYear("GMT +7");
+        String firstDayOfMonth = DateUtils.getFirstDateOfMonth(year, month, "dd/MM/yyyy");
+        String lastDayOfMonth = DateUtils.getLastDateOfMonth(year, month, "dd/MM/yyyy");
         String transType = "Payment Other";
         String desc = "Automation test: Transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
@@ -350,23 +352,23 @@ public class TrialBalanceTest extends BaseCaseAQS {
                 .ledgerDebit(LEDGER_INCOME_DEBIT_NAME).ledgerDebitNumber(LEDGER_INCOME_DEBIT_NUMBER)
                 .amountDebit(5).amountCredit(5)
                 .remark(desc)
-                .transDate(currentDate)
+                .transDate(String.format("%s-%s-15",year,month))
                 .transType(transType).build();
         try {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_INCOME,ledgerGroupNega,LEDGER_PARENT_NAME_INCOME,ledgerGroupNega,"");
             log("Pre-condition 2: Get value of debit/credit that will display in trial balance");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.waitSpinnerDisappeared();
-            String fromDate = DateUtils.getFirstDateOfMonth(DateUtils.getYear(GMT_7),currentMonth,"dd/MM/yyyy");
-            ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Income", LEDGER_GROUP_NAME_INCOME, fromDate, "", "");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Income", LEDGER_GROUP_NAME_INCOME, firstDayOfMonth, lastDayOfMonth, "");
             String valueDeEx = ledgerStatementPage.getGrandTotalByRunningBal("CUR Translation");
 
-            ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Income", ledgerNega, fromDate, "", "");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Income", ledgerNega, firstDayOfMonth, lastDayOfMonth, "");
             String valueCreEx = ledgerStatementPage.getGrandTotalByRunningBal("CUR Translation");
             log("@Step 1: Access SB11 > Financial Reports > Trial Balance");
             TrialBalancePage page = welcomePage.navigatePage(FINANCIAL_REPORTS, TRIAL_BALANCE, TrialBalancePage.class);
             log("@Step 2: Filter with Month that is having data");
-            page.filter(KASTRAKI_LIMITED,"","","");
+            String monthFilter = DateUtils.getMonthYear(GMT_7,-1,"yyyy - MMMM");
+            page.filter(KASTRAKI_LIMITED,"",monthFilter,"");
             String valueDeAc = page.getAmountValue(ChartOfAccountUtils.getChartCode(ChartOfAccountUtils.getAccountName(parentDebit,true)),page.colDeCurrentMonth);
             String valueCreAc = page.getAmountValue(ChartOfAccountUtils.getChartCode(ChartOfAccountUtils.getAccountName(ledgerNega,true)),page.colCreCurrentMonth);
             log("@Verify 1: The amount is positive, display it in Debit");
@@ -380,7 +382,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
                     .ledgerDebit(ledgerAccNegaName).ledgerDebitNumber(ledgerAccNegaNum)
                     .amountDebit(5).amountCredit(5)
                     .remark("Automation Testing Transaction Ledger: Post-condition for txn")
-                    .transDate(currentDate)
+                    .transDate(String.format("%s-%s-15",year,month))
                     .transType("Tax Rebate").build();
             TransactionUtils.addTransByAPI(transactionPost,"Ledger",ledgerGroupNega,LEDGER_GROUP_NAME_INCOME,ledgerGroupNega,LEDGER_PARENT_NAME_INCOME,"");
             log("INFO: Executed completely");

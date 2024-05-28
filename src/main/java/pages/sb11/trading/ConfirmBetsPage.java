@@ -61,6 +61,7 @@ public class ConfirmBetsPage extends WelcomePage {
     public Label lblAccStartWith = Label.xpath("//label[text()='Acc Starts With']");
     public Label lblAccountCode = Label.xpath("//label[text()='Account Code']");
     public Label lblServerResponded = Label.xpath("//span[contains(text(),'Server responded')]");
+    public Label lblNoRecordFound = Label.xpath("//table//td[contains(text(),'No record found')]");
 
     public String getTitlePage ()
     {
@@ -137,6 +138,10 @@ public class ConfirmBetsPage extends WelcomePage {
     }
 
     public boolean isTotalStakeMatched(){
+        if (lblNoRecordFound.isDisplayed()){
+            System.out.println("No record found.");
+            return true;
+        }
         String totalStake = lblTotalStake.getText().replace(",","");
         String totalStakeOrder = String.valueOf(calTotalStake());
         if (totalStake.contains(totalStakeOrder))

@@ -72,7 +72,7 @@ public class EventScheduleTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2081")
-    public void EventSchedule_TC001(){
+    public void EventSchedule_TC2081(){
         log("@title: Validate Event Schedule for Soccer is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Event Schedule");
@@ -85,7 +85,7 @@ public class EventScheduleTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2082")
-    public void EventSchedule_TC002(){
+    public void EventSchedule_TC2082(){
         log("@title: Validate UI on Soccer Event Schedule is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Event Schedule");
@@ -109,7 +109,7 @@ public class EventScheduleTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2083")
-    public void EventSchedule_TC003(){
+    public void EventSchedule_TC2083(){
         log("@title: Validate Event Schedule for Cricket is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Event Schedule");
@@ -124,7 +124,7 @@ public class EventScheduleTest extends BaseCaseAQS {
 
     @Test(groups = {"regression"})
     @TestRails(id = "2084")
-    public void EventSchedule_TC004(){
+    public void EventSchedule_TC2084(){
         log("@title: Validate UI on Cricket Event Schedule is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Event Schedule");

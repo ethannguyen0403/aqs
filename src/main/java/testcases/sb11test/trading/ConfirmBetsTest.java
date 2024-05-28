@@ -688,7 +688,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2188")
     @Parameters({"accountCode"})
     public void Confirm_Bets_2188(String accountCode) {
@@ -699,7 +699,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("@Step 3: Select Status is Confirmed");
         log("@Step 4: Enter account at pre-condition");
         log("@Step 5: Click Show");
-        String date = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
+        String date = DateUtils.getDate(-3,"dd/MM/yyyy",GMT_7);
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Confirmed", SOCCER, "All", "Specific Date", date, "", accountCode);
         log("Validate Total Stake is matched correctly with all bet stake on Pending list");
         confirmBetsPage.isTotalStakeMatched();

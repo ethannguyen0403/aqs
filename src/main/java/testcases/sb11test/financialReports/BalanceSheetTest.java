@@ -219,7 +219,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.ddReport.isEnabled(),"FAILED! Report Dropdown display incorrect!");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan3.0"})
     @TestRails(id = "2793")
     public void Balance_Sheet_2793() {
         log("@title: Validate 'Export To Excel' button work properly");
@@ -244,7 +244,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         // }
         // log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31","ethan2.0"})
+    @Test(groups = {"regression","2023.10.31","ethan3.0"})
     @TestRails(id = "2794")
     public void Balance_Sheet_2794() {
         log("@title: Validate 'Export To PDF' button work properly");

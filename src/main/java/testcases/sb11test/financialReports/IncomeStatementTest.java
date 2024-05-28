@@ -66,7 +66,7 @@ public class IncomeStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2777")
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression", "2023.11.30","ethan3.0"})
     public void Income_Statement_TC2777() {
         String downloadPathExcel = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "income-statement.xlsx";
         String downloadPathPDF = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "income-statement.pdf";
@@ -77,10 +77,8 @@ public class IncomeStatementTest extends BaseCaseAQS {
         log("@Step 2: Filter with current Month");
         incomeStatementPage.filterIncomeReport(KASTRAKI_LIMITED, "", "", "");
         log("@Step 2: Click on Export to excel and Export to pdf button");
-        incomeStatementPage.btnExportToExcel.click();
-        welcomePage.waitSpinnerDisappeared();
-        incomeStatementPage.btnExportToPDF.click();
-        welcomePage.waitSpinnerDisappeared();
+        incomeStatementPage.exportFile("Excel");
+        incomeStatementPage.exportFile("PDF");
         log("@Verify 1: Validate can export Income statement to PDF file successfully'");
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPathPDF), "Failed to download pdf Expected document");
         log("@Verify 1: Validate can export Income statement to excel file successfully'");

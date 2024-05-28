@@ -130,7 +130,7 @@ public class WelcomePage extends Header{
     private List<Order> placeBetAPI(String sport, Event event, String accountCode, String marketName, String marketType, String selection, String stage, double price, double handicap,
                                     String oddType, double requireStake, String betType, boolean isLive,boolean isWinLose,String winlose){
         Order order = null;
-        if (sport.equals("Soccer")){
+        if (!sport.equals("Cricket")){
             order = new Order.Builder().event(event).accountCode(accountCode).marketName(marketName).marketType(marketType).selection(selection).sport(sport).stage(stage).price(price)
                     .odds(price).hdpPoint(handicap).handicap(handicap).oddType(oddType).requireStake(requireStake).betType(betType).isLive(isLive).build();
         } else if (sport.equals("Cricket")){
