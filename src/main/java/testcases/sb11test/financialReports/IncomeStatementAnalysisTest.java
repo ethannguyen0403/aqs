@@ -152,7 +152,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         int yearLedger = DateUtils.getYear(GMT_7);
         int monthLedger = DateUtils.getMonth(GMT_7);
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED, "", "All", numberCodeAccount, String.format("01/08/%s", previousYear), DateUtils.getLastDateOfMonth(yearLedger,monthLedger,"dd/MM/yyyy"),REPORT_TYPE.get(0));
-        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal();
+        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal("CUR Translation");
         log("@Verify 1: The amounts of parent accounts and detail types in the filtered month displays accordingly");
         Assert.assertEquals(amountIncome, amountLedger, "FAILED!  The amounts of parent accounts and detail types in the filtered month displays incorrect");
         log("INFO: Executed completely");
@@ -182,7 +182,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED, "", "All", numberCodeAccount, String.format("01/08/%s", previousYear),
                 DateUtils.getLastDateOfMonth(DateUtils.getYear("GMT +7"), DateUtils.getMonth("GMT +7"), "dd/MM/yyyy"),REPORT_TYPE.get(1));
         ledgerStatementPage.waitSpinnerDisappeared();
-        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal();
+        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal("CUR Translation");
         log("@Verify 1: The amounts of parent accounts and detail types in the filtered month displays accordingly");
         Assert.assertEquals(amountIncome, amountLedger, "FAILED!  The amounts of parent accounts and detail types in the filtered month displays incorrect");
         log("INFO: Executed completely");
@@ -244,7 +244,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED, lblFilterPreviousYear, "All", chartCodeAccount,
                 String.format("01/08/%s", previousYear - 1),
                 String.format("31/07/%s", previousYear), REPORT_TYPE.get(0));
-        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal();
+        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal("CUR Translation");
         log("@Verify 1: Validate [previous financial year] display amounts of details type, parent accounts in the previous financial year accordingly");
         Assert.assertEquals(amountIncome, amountLedger, "FAILED! The amounts of [previous financial year] displays incorrect");
         log("INFO: Executed completely");
@@ -276,7 +276,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step info: If filter financial year =2022-2023, then amounts of previous financial year is the YEAR 2021-2022 can get from ledger statement from 01-08-2021 to 31-07-2022");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED, lblFilterYear, "All", chartCodeAccount, String.format("01/08/%s", previousYear),
                 String.format("31/07/%s", year), REPORT_TYPE.get(0));
-        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal();
+        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal("CUR Translation");
         log("@Verify 1: Validate display amounts of details type, parent accounts in the filtered financial year accordingly");
         Assert.assertEquals(amountIncome, amountLedger, "FAILED! The amounts of [Filtered financial year] displays incorrect");
         log("INFO: Executed completely");

@@ -113,4 +113,17 @@ public class IncomeStatementPage extends WelcomePage {
         return lblNetProfit.getText();
     }
 
+    public void exportFile(String type) {
+        if (type.equals("Excel")){
+            btnExportToExcel.click();
+        } else {
+            btnExportToPDF.click();
+        }
+        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

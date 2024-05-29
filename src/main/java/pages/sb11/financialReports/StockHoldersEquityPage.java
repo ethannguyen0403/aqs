@@ -36,6 +36,7 @@ public class StockHoldersEquityPage extends WelcomePage {
         }
         btnShow.click();
         waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
     }
 
     public boolean verifyLabelIsBold(BaseElement element){
@@ -46,7 +47,7 @@ public class StockHoldersEquityPage extends WelcomePage {
     public String getAmount(String amountDes) {
         int rowIndex = getDesRowIndex(amountDes);
         String amountDesValue = Label.xpath(
-                tblStakeholder.getControlxPathBasedValueOfDifferentColumnOnRow(amountDes, 1, colDes, rowIndex, null, colAmount, null, false,
+                tblStakeholder.getControlxPathBasedValueOfDifferentColumnOnRow(amountDes, 1, colDes, rowIndex, null, colAmount, "span", false,
                         false)).getText().trim();
         if (amountDesValue.isEmpty() || amountDesValue.equals("")) {
             System.out.println("Can NOT found amount of Description name:  " + amountDes + " in the table");
@@ -68,6 +69,20 @@ public class StockHoldersEquityPage extends WelcomePage {
                 return i;
             }
             i = i + 1;
+        }
+    }
+
+    public void exportFile(String type) {
+        if (type.equals("Excel")){
+            btnExportExcel.click();
+        } else {
+            btnExportPDF.click();
+        }
+        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

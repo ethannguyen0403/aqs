@@ -73,16 +73,12 @@ public class HandicapLiabilityPage extends WelcomePage {
     }
 
     public boolean isOrderExist (List<Order> lstOrder, String groupCode){
-        int rowIndex = getRowWithEventName(groupCode,lstOrder.get(0).getHome(),lstOrder.get(0).getAway());
-        while(true){
-            if(!tblOrder.getControlOfCell(1,colEvent,rowIndex,null).isDisplayed()) {
-                System.out.println("Not found order in the table");
+        int rowIndex = getRowWithEventName(groupCode,lstOrder.get(0).getEvent().getHome(),lstOrder.get(0).getEvent().getAway());
+        switch (rowIndex){
+            case 0:
                 return false;
-            }
-            String eventName = tblOrder.getControlOfCell(1,colEvent,rowIndex,null).getText();
-            if(eventName.contains(lstOrder.get(0).getHome()) && (eventName.contains(lstOrder.get(0).getAway())))
+            default:
                 return true;
-            rowIndex = rowIndex + 1;
         }
     }
 

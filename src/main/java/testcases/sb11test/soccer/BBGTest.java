@@ -13,6 +13,7 @@ import pages.sb11.LoginPage;
 import pages.sb11.soccer.BBGPage;
 import pages.sb11.soccer.popup.bbg.BBGLastDaysPerformacesPopup;
 import pages.sb11.soccer.popup.bbg.BetByTeamPricePopup;
+import pages.sb11.trading.BetSettlementPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.*;
 import utils.testraildemo.TestRails;
@@ -103,18 +104,19 @@ public class BBGTest extends BaseCaseAQS {
         Assert.assertEquals(bbtPopup.lblLast1Month.getText(),String.format("%s - %s",smartGroupCurrency,smartGroup),"Failed! League Performance for Last 1 Month title is incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan3.0"})
     @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "23622")
     public void BBG_TC_23622(String password, String userNameOneRole) throws Exception {
         log("@title: Validate accounts without permission cannot see the menu");
         log("@pre-condition: Analyse permission is OFF for any account");
+        RoleManagementUtils.updateRolePermission("one role","BBG","INACTIVE");
         log("@Step 1: Login by account at precondition");
         LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         log("@Step 2: Expand Trading menu");
         log("@Verify 1: 'Analyse' menu is hidden");
-        Assert.assertFalse(welcomePage.headerMenuControl.isSubmenuDisplay(SOCCER,BBT),"FAILED! BBT page displays incorrect.");
+        Assert.assertFalse(welcomePage.headerMenuControl.isSubmenuDisplay(SOCCER,BBG),"FAILED! BBT page displays incorrect.");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.2.0"})
@@ -239,7 +241,7 @@ public class BBGTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","2024.V.2.0"})
+    @Test(groups = {"regression","2024.V.2.0","ethan3.0"})
     @TestRails(id = "23642")
     public void BBG_TC_23642() {
         log("@title: Validate bets display accordingly when selecting each value in Report Type list");
@@ -247,13 +249,15 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition 2: Placed a Soccer bet");
         String accountCode = "ClientCredit-AutoQC";
         String smartGroup = "QA Smart Group";
-        String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        String dateAPI = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
                 5.5,"BACK",false,"");
         ConfirmBetsUtils.confirmBetAPI(lstOrder.get(0));
         BetSettlementUtils.waitForBetIsUpdate(7);
-        BetSettlementUtils.sendBetSettleAPI(lstOrder.get(0));
-        BetSettlementUtils.waitForBetIsUpdate(20);
+        lstOrder.get(0).setEventDate(DateUtils.formatDate(dateAPI,"dd/MM/yyyy","yyyy-MM-dd"));
+        BetSettlementPage betSettlementPage = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed", dateAPI, "", "", accountCode);
+        betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
         BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
@@ -291,7 +295,7 @@ public class BBGTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan3.0"})
     @TestRails(id = "23644")
     @Parameters({"accountCode","accountCurrency", "smartGroup"})
     public void BBG_TC_23644(String accountCode, String accountCurrency,String smartGroup) {
@@ -306,7 +310,8 @@ public class BBGTest extends BaseCaseAQS {
         BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
         log("@Step 3: Select filters with currency 'EUR' as the preconditions");
         log("@Step 4: Click on 'Show' button");
-        page.filter("","","","Settled Bets",date,"","",accountCurrency);
+        String dateFilter = DateUtils.getDate(-3,"dd/MM/yyyy",GMT_7);
+        page.filter("","","","Settled Bets",dateFilter,"","",accountCurrency);
         page.filterAdvance("Group",smartGroup);
         log("@Verify 1: Display the bet at the preconditions");
         Assert.assertTrue(page.isOrderDisplayCorrect(orderSettled,smartGroup));
@@ -404,7 +409,7 @@ public class BBGTest extends BaseCaseAQS {
         page.verifyBetsShowCorrectByColumnName("Event",lstEvent);
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan3.0"})
     @TestRails(id = "23650")
     public void BBG_TC_23650() {
         log("@title: Validate all groups that have bets in filtered date range display");
@@ -421,6 +426,7 @@ public class BBGTest extends BaseCaseAQS {
         page.filter("","","","Settled Bets",date,"","","");
         String groupEx = page.getLstNameInAdvanceFilter("Group").get(0);
         page.filterAdvance("Group",groupEx);
+        page.waitSpinnerDisappeared();
         log("@Verify 1: Selected group in filtered date range display");
         page.verifySelectedGroupDisplay(groupEx);
         log("INFO: Executed completely");

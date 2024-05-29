@@ -239,17 +239,18 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         String dateAPI = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",5.55,
                 "BACK",false,"");
-        BetSettlementUtils.waitForBetIsUpdate(7);
+        BetSettlementUtils.waitForBetIsUpdate(5);
         ConfirmBetsUtils.confirmBetAPI(lstOrder);
-        BetSettlementUtils.waitForBetIsUpdate(7);
-        lstOrder.get(0).setEventDate(DateUtils.formatDate(dateAPI,"dd/MM/yyyy","yyyy-MM-dd"));
-        BetSettlementUtils.sendBetSettleAPI(lstOrder);
+        BetSettlementUtils.waitForBetIsUpdate(5);
+        BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed",dateAPI,"","",accountCode);
+        betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
         log("@Step 1: Navigate to the site");
         log("@Step 2: Expand menu 'Soccer' and access 'BBG - Phone Betting' page");
         BBGPhoneBettingPage page = welcomePage.navigatePage(SOCCER,BBG_PHONE_BETTING, BBGPhoneBettingPage.class);
         log("@Step 3: Select filters which contains bets of player account at the precondition with Report By = Settled Bets");
         log("@Step 4: Click on 'Show' button");
-        page.filter(KASTRAKI_LIMITED,"Settled Bets",dateAPI,"","","","");
+        page.filter(KASTRAKI_LIMITED,"Settled Bets","","","","","");
         log("Verify 1: Show correct bet of player account");
         Assert.assertTrue(page.isBetDisplay(lstOrder.get(0)),"FAILED! "+accountCode+" does not display");
         log("INFO: Executed completely");
@@ -265,17 +266,18 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         String dateAPI = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",5.55,
                 "BACK",false,"");
-        BetSettlementUtils.waitForBetIsUpdate(7);
+        BetSettlementUtils.waitForBetIsUpdate(5);
         ConfirmBetsUtils.confirmBetAPI(lstOrder);
-        BetSettlementUtils.waitForBetIsUpdate(7);
-        lstOrder.get(0).setEventDate(DateUtils.formatDate(dateAPI,"dd/MM/yyyy","yyyy-MM-dd"));
-        BetSettlementUtils.sendBetSettleAPI(lstOrder);
+        BetSettlementUtils.waitForBetIsUpdate(5);
+        BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed",dateAPI,"","",accountCode);
+        betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
         log("@Step 1: Navigate to the site");
         log("@Step 2: Expand menu 'Soccer' and access 'BBG - Phone Betting' page");
         BBGPhoneBettingPage page = welcomePage.navigatePage(SOCCER,BBG_PHONE_BETTING, BBGPhoneBettingPage.class);
         log("@Step 3: Select filters which contains bets of player account at the precondition with Report By = Settled Bets");
         log("@Step 4: Click on 'Show' button");
-        page.filter(KASTRAKI_LIMITED,"Settled Bets",dateAPI,"","","","");
+        page.filter(KASTRAKI_LIMITED,"Settled Bets","","","","","");
         log("Verify 1: Show correct bet of player account");
         Assert.assertTrue(page.isBetDisplay(lstOrder.get(0)),"FAILED! "+accountCode+" does not display");
         log("INFO: Executed completely");
@@ -373,7 +375,7 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         log("@Pre-condition 1: Account is activated permission 'BBG - Phone Betting");
         log("@Pre-condition 2: The player account is checked 'Is Telebet Account' and 'Is Runner Account' in Master >> Client System >> Account (settled win bet = 15 HKD)");
         String dateAPI = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
-        List<Order> lstOrderRunner = welcomePage.placeBetAPI(SOCCER, dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1.0,0.5,"HK",15.0,
+        List<Order> lstOrderRunner = welcomePage.placeBetAPI(SOCCER, dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1.0,0.5,"HK",15.0,
                 "BACK",false,"15.0");
         ConfirmBetsUtils.confirmBetAPI(lstOrderRunner);
         lstOrderRunner.get(0).setAccountCurrency(accountCurrency);
@@ -382,11 +384,10 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         betSettlementPage.settleAndSendSettlementEmail(lstOrderRunner.get(0));
         log("@Pre-condition 2: The player account is checked 'Is Telebet Account' in Master >> Client System >> Account (settled win bet = 10 HKD)");
         String accountTelebet = "QALKR";
-        String curTelebet = "LKR";
-        List<Order> lstOrderTelebet = betSettlementPage.placeBetAPI(SOCCER, dateAPI,false,accountTelebet,"Goals","HDP","Home","FullTime",1.0,0.5,"HK",10.0,
+        List<Order> lstOrderTelebet = betSettlementPage.placeBetAPI(SOCCER,dateAPI,lstOrderRunner.get(0).getEvent(),accountTelebet,"Goals","HDP",lstOrderRunner.get(0).getEvent().getHome(),"Fulltime",1.0,0.5,"HK",10.0,
                 "BACK",false,"10.0");
         BetSettlementUtils.waitForBetIsUpdate(7);
-        lstOrderTelebet.get(0).setAccountCurrency(curTelebet);
+        lstOrderTelebet.get(0).setAccountCurrency(accountCurrency);
         ConfirmBetsUtils.confirmBetAPI(lstOrderTelebet);
         betSettlementPage.filter("Confirmed",dateAPI,"","",accountTelebet);
         betSettlementPage.settleAndSendSettlementEmail(lstOrderTelebet.get(0));

@@ -5,7 +5,7 @@
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
-    <test name="Maintenance and Stabilize SB11 in STG 2024.V.2.0">
+    <test name="Maintenance and Stabilize SB11 in STG 2024.V.3.0">
         <parameter name='browser' value='window10.local.chrome'/>
         <parameter name='env' value='stg'/>
         <parameter name='language' value='en'/>
@@ -33,67 +33,31 @@
         <parameter name='isAddTestRailResult' value='true'/>
         <groups>
             <run>
-                <include name="ethan2.0"/>
+                <include name="ethan3.0"/>
             </run>
         </groups>
 
         <classes>
-            <class name="testcases.sb11test.AuthenticateTest"/>
-            <class name="testcases.sb11test.user.TradingPermissionTest"/>
-
-            <class name="testcases.sb11test.sport.SoccerResultEntryTest"/>
-            <class name="testcases.sb11test.sport.CricketResultEntryTest"/>
-            <class name="testcases.sb11test.sport.EventMappingTest"/>
-
+            <class name="testcases.sb11test.soccer.HandicapLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.MonitorBetsTest"/>
             <class name="testcases.sb11test.soccer.BBGTest"/>
             <class name="testcases.sb11test.soccer.BBTTest"/>
-            <class name="testcases.sb11test.soccer.SPPTest"/>
-            <class name="testcases.sb11test.soccer.HandicapCornerLiabilityTest"/>
-            <class name="testcases.sb11test.soccer.HandicapLiabilityTest"/>
-            <class name="testcases.sb11test.soccer.MatchOddsLiabilityTest"/>
-            <class name="testcases.sb11test.soccer.OverUnderCornerLiabilityTest"/>
             <class name="testcases.sb11test.soccer.OverUnderLiabilityTest"/>
-            <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
 
-            <class name="testcases.sb11test.accounting.ChartOfAccountTest"/>
             <class name="testcases.sb11test.accounting.CompanySetupTest"/>
-            <class name="testcases.sb11test.accounting.BalanceCurrentTest"/>
-            <class name="testcases.sb11test.accounting.JournalReportsTest"/>
             <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
 
-            <class name="testcases.sb11test.trading.BetEntryTest"/>
-            <class name="testcases.sb11test.trading.BetSettlementTest"/>
             <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
-            <class name="testcases.sb11test.trading.CricketSportTest"/>
-            <class name="testcases.sb11test.trading.KeyClientsReportTest"/>
-            <class name="testcases.sb11test.trading.PhoneBettingTest"/>
-            <class name="testcases.sb11test.trading.SmartSystemTest"/>
 
-            <class name="testcases.sb11test.master.AccountSearchTest"/>
-            <class name="testcases.sb11test.master.AccountListTest"/>
-            <class name="testcases.sb11test.master.AddressBookTest"/>
-            <class name="testcases.sb11test.master.AutoCreatedAccountsTest"/>
-            <class name="testcases.sb11test.master.BookieInfoTest"/>
-            <class name="testcases.sb11test.master.BookieSystemTest"/>
-            <class name="testcases.sb11test.master.ClientSystemTest"/>
-
-            <class name="testcases.sb11test.generalReports.ARandAPReconciliationTest"/>
-            <class name="testcases.sb11test.generalReports.BookieStatementTest"/>
-            <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
-            <class name="testcases.sb11test.generalReports.ClosingJournalEntriesTest"/>
-            <class name="testcases.sb11test.generalReports.ConsolidatedClientBalanceTest"/>
-            <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
-            <class name="testcases.sb11test.generalReports.ClientBalanceTest"/>
-            <class name="testcases.sb11test.generalReports.FundReconciliationTest"/>
             <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
-
-            <class name="testcases.sb11test.invoice.InvoicesTest"/>
+            <class name="testcases.sb11test.generalReports.ConsolidatedClientBalanceTest"/>
 
             <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
             <class name="testcases.sb11test.financialReports.BalanceSheetAnalysisTest"/>
-            <class name="testcases.sb11test.financialReports.CashFlowStatementTest"/>
-            <class name="testcases.sb11test.financialReports.RetainedEarningsTest"/>
-            <class name="testcases.sb11test.financialReports.IncomeStatementAnalysisTest"/>
+            <class name="testcases.sb11test.financialReports.TrialBalanceTest"/>
+            <class name="testcases.sb11test.financialReports.StockholdersEquityTest"/>
+            <class name="testcases.sb11test.financialReports.IncomeStatementTest"/>
+
         </classes>
     </test>
 </suite>

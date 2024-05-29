@@ -31,8 +31,9 @@ public class HeaderMenuControl extends BaseElement {
             return null;
         }
         lblMainMenu.click();
+        lblMainMenu.moveAndHoverOnControl();
         try {
-            Thread.sleep(1000);
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

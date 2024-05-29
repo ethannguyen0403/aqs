@@ -176,7 +176,7 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         log("Precondition: Account is activated permission 'Stake Size Group'");
         log("Precondition: The account 'admin' created a group");
         String groupName = "QA Client - Stake Group";
-        String dateUpdate = "13/05/2024";
+        String dateUpdate = "15/05/2024";
         double stakeRange = 100.0;
         log("@Step 1: Go to Trading >> Stake Size Group");
         StakeSizeGroupPage page = welcomePage.navigatePage(TRADING,STAKE_SIZE_GROUP, StakeSizeGroupPage.class);

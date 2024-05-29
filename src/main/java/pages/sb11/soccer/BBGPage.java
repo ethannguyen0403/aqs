@@ -130,8 +130,7 @@ public class BBGPage extends WelcomePage {
      */
     public void filterAdvance(String nameFilter, String name){
         openFilterAdvance(nameFilter);
-        Label lblFilter = Label.xpath(String.format("//div[contains(@class,'list-bet-types')]//div[contains(text(),'%s')]",nameFilter));
-        lblFilter.waitForElementToBePresent(lblFilter.getLocator());
+        waitSpinnerDisappeared();
         CheckBox cbName;
         if (nameFilter.equals("Events")){
             String nameHome = name.split(" -vs- ")[0];
@@ -283,30 +282,26 @@ public class BBGPage extends WelcomePage {
     }
 
     public boolean isOrderDisplayCorrect(Order order, String groupName) {
-        Table table = Table.xpath(tableXpath,12);
-        for (int i = 1;i <= table.getWebElements().size();i++){
-            String groupNameAc = Label.xpath(String.format("(//div[contains(@class,'header')]/div/div)[%d]",i)).getText().trim();
-            if (groupNameAc.contains(groupName)){
-                Table tblData = Table.xpath(String.format("//div[contains(@class,'header')]/div/div[contains(text(),'%s')]//following::table[%d]",groupName,i),12);
-                tblData.scrollToThisControl(false);
-                int indexAccountCol = tblData.getColumnIndexByName("Account");
-                int indexBetTypeCol = tblData.getColumnIndexByName("Bet Type");
-                int indexHPDCol = tblData.getColumnIndexByName("HDP");
-                int indexPriceCol = tblData.getColumnIndexByName("Price");
-                int indexStakeCol = tblData.getColumnIndexByName("Stake");
-                int indexSelectionCol = tblData.getColumnIndexByName("Selection");
-                Row row = Row.xpath(String.format("(%s)[%d]//tbody//div//tr[contains(@class,'d-flex')]",tableXpath,i));
-                for (int j = 1; j <= row.getWebElements().size();j++){
-                    String lblAccountCode = Label.xpath(String.format("((%s)[%d]//tbody//div//tr[contains(@class,'d-flex')])[%d]/td[%d]",tableXpath,i,j,indexAccountCol)).getText().trim();
-                    String lblBetType = Label.xpath(String.format("((%s)[%d]//tbody//div//tr[contains(@class,'d-flex')])[%d]/td[%d]",tableXpath,i,j,indexBetTypeCol)).getText().trim();
-                    String lblHdp = Label.xpath(String.format("((%s)[%d]//tbody//div//tr[contains(@class,'d-flex')])[%d]/td[%d]",tableXpath,i,j,indexHPDCol)).getText().trim();
-                    String lblPrice = Label.xpath(String.format("((%s)[%d]//tbody//div//tr[contains(@class,'d-flex')])[%d]/td[%d]",tableXpath,i,j,indexPriceCol)).getText().trim();
-                    String lblStake = Label.xpath(String.format("((%s)[%d]//tbody//div//tr[contains(@class,'d-flex')])[%d]/td[%d]",tableXpath,i,j,indexStakeCol)).getText().trim();
-                    String lblSelection = Label.xpath(String.format("((%s)[%d]//tbody//div//tr[contains(@class,'d-flex')])[%d]/td[%d]",tableXpath,i,j,indexSelectionCol)).getText().trim();
-                    if (lblAccountCode.equals(order.getAccountCode()) && lblBetType.equals(order.getMarketType()) && lblHdp.contains(String.valueOf(order.getHandicap()))
-                    && lblPrice.contains(String.format("%.3f",order.getPrice())) && lblStake.equals(String.format("%.2f",order.getRequireStake())) && lblSelection.equals(order.getSelection())){
-                        return true;
-                    }
+        String tblXpath = "//div[contains(@class,'header')]/div/div[contains(text(),'%s')]//following::table[%d]";
+        Table tblData = Table.xpath(String.format(tblXpath,groupName,1),12);
+        int indexAccountCol = tblData.getColumnIndexByName("Account");
+        int indexBetTypeCol = tblData.getColumnIndexByName("Bet Type");
+        int indexHPDCol = tblData.getColumnIndexByName("HDP");
+        int indexPriceCol = tblData.getColumnIndexByName("Price");
+        int indexStakeCol = tblData.getColumnIndexByName("Stake");
+        int indexSelectionCol = tblData.getColumnIndexByName("Selection");
+        Row row = Row.xpath(String.format("%s//tbody//div//tr[contains(@class,'d-flex')]",String.format(tblXpath,groupName,1)));
+        int numberRow = row.getWebElements().size();
+        for (int i = 1; i <= numberRow;i++){
+            String lblAccountCode = Label.xpath(String.format("%s//tbody//div//tr[contains(@class,'d-flex')][%d]//td[%d]",String.format(tblXpath,groupName,1),i,indexAccountCol)).getText().trim();
+            String lblSelection = Label.xpath(String.format("%s//tbody//div//tr[contains(@class,'d-flex')][%d]//td[%d]",String.format(tblXpath,groupName,1),i,indexSelectionCol)).getText().trim();
+            if (lblAccountCode.equals(order.getAccountCode()) && lblSelection.equals(order.getSelection())){
+                String lblBetType = Label.xpath(String.format("%s//tbody//div//tr[contains(@class,'d-flex')][%d]//td[%d]",String.format(tblXpath,groupName,1),i,indexBetTypeCol)).getText().trim();
+                String lblHdp = Label.xpath(String.format("%s//tbody//div//tr[contains(@class,'d-flex')][%d]//td[%d]",String.format(tblXpath,groupName,1),i,indexHPDCol)).getText().trim();
+                String lblPrice = Label.xpath(String.format("%s//tbody//div//tr[contains(@class,'d-flex')][%d]//td[%d]",String.format(tblXpath,groupName,1),i,indexPriceCol)).getText().trim();
+                String lblStake = Label.xpath(String.format("%s//tbody//div//tr[contains(@class,'d-flex')][%d]//td[%d]",String.format(tblXpath,groupName,1),i,indexStakeCol)).getText().trim();
+                if (lblBetType.equals(order.getMarketType()) && lblHdp.contains(String.valueOf(order.getHandicap())) && lblPrice.contains(String.format("%.3f",order.getPrice())) && lblStake.equals(String.format("%.2f",order.getRequireStake()))){
+                    return true;
                 }
             }
         }
@@ -347,6 +342,6 @@ public class BBGPage extends WelcomePage {
     }
 
     public void verifySelectedGroupDisplay(String groupEx) {
-        Assert.assertTrue(Label.xpath("//div[contains(@class,'header')]/div/div").getText().trim().contains(groupEx),"FAILED! "+groupEx+" group is not displayed");
+        Assert.assertTrue(Label.xpath("//app-bets-by-group-table//div[contains(@class,'header')]/div/div").getText().trim().contains(groupEx),"FAILED! "+groupEx+" group is not displayed");
     }
 }

@@ -26,10 +26,10 @@ import static common.SBPConstants.*;
 import static java.lang.Double.parseDouble;
 
 public class LedgerStatementPage extends WelcomePage {
-    public DropDownBox ddCompanyUnit = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Company Unit')]//following::select[1]");
-    public DropDownBox ddFinancialYear = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Financial Year')]//following::select[1]");
-    public DropDownBox ddLedgerGroup = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Detail Type')]//following::select[1]");
-    public DropDownBox ddLedgerName = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Account Type')]//following::select[1]");
+    public DropDownBox ddCompanyUnit = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Company Unit')]//following-sibling::select[1]");
+    public DropDownBox ddFinancialYear = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Financial Year')]//following-sibling::select[1]");
+    public DropDownBox ddLedgerGroup = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Detail Type')]//following-sibling::select[1]");
+    public DropDownBox ddLedgerName = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Account Type')]//following-sibling::select[1]");
     public DropDownBox ddReport = DropDownBox.xpath("//app-ledger-statement//div[contains(text(),'Report')]//following::select[1]");
     public TextBox txtFromDate = TextBox.name("fromDate");
     public TextBox txtToDate = TextBox.name("toDate");
@@ -41,6 +41,7 @@ public class LedgerStatementPage extends WelcomePage {
     public Button btnExportToExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
     public Button btnExportToPDF = Button.xpath("//button[contains(text(),'Export To PDF')]");
     public Label lblGrandTotalbyRunningBal = Label.xpath("//td[text()='Grand Total in HKD']/following-sibling::td[3]");
+    String lblGrandTotalbyRunningBalXpath = "//td[text()='Grand Total in HKD']/following-sibling::td[%d]";
     public Label lblAmountShowCurrency = Label.xpath("//app-ledger-statement//table//thead//tr//th[contains(., 'CUR Translation in')]");
     public Label lblGrandTotalInOrigin = Label.xpath("//table//td[contains(., 'Grand Total in')]");
     int totalCol = 12;
@@ -65,22 +66,26 @@ public class LedgerStatementPage extends WelcomePage {
         if (!companyUnit.isEmpty()){
             ddCompanyUnit.selectByVisibleText(companyUnit);
             waitSpinnerDisappeared();
+            waitSpinnerDisappeared();
         }
-        if (!financialYear.isEmpty())
+        if (!financialYear.isEmpty()){
             ddFinancialYear.selectByVisibleText(financialYear);
+            waitSpinnerDisappeared();
+        }
         if (!accountType.isEmpty()){
             ddLedgerName.selectByVisibleContainsText(accountType);
             waitSpinnerDisappeared();
         }
-        if (!ledgerGroup.isEmpty())
+        if (!ledgerGroup.isEmpty()){
             ddLedgerGroup.selectByVisibleContainsText(ledgerGroup);
+        }
         if (!fromDate.isEmpty()){
             dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
         }
         if (!toDate.isEmpty()){
             dtpToDate.selectDate(toDate, "dd/MM/yyyy");
         }
-        if(!report.isEmpty()){
+        if (!report.isEmpty()){
             ddReport.selectByVisibleText(report);
         }
         btnShow.click();
@@ -156,7 +161,8 @@ public class LedgerStatementPage extends WelcomePage {
         return tbLedger.getControlBasedValueOfDifferentColumnOnRow(toTalName,1,colTotal,1,null,colAmountTotalOriginCurrency,null,false,false).getText().trim();
     }
 
-    public boolean isTotalAmountInOriginCurrencyPositiveNumber(String toTalName) {
+    public boolean isTotalAmountPositiveNumber(String toTalName, String section, String colName) {
+        int indexCol = getIndexTotalColumn(section, colName);
         BaseElement lblTotal = tbLedger.getControlBasedValueOfDifferentColumnOnRow(toTalName,1,colTotal,1,null,colAmountTotalOriginCurrency,null,false,false);
         return lblTotal.getColour("color").contains(RED_COLOR) ? false : true;
     }
@@ -169,8 +175,9 @@ public class LedgerStatementPage extends WelcomePage {
         return tbLedger.getControlBasedValueOfDifferentColumnOnRow(toTalName,1,colTotal,1,null,colToTalOriginCurrency,null,false,false).getText().trim();
     }
 
-    public String getGrandTotalByRunningBal(){
-        return lblGrandTotalbyRunningBal.getText();
+    public String getGrandTotalByRunningBal(String section){
+        int index = section.equals("CUR Translation") ? 6 : 3;
+        return Label.xpath(String.format(lblGrandTotalbyRunningBalXpath,index)).getText();
     }
 
     private Transaction verifyTransactionDisplayCorrectInRow(Transaction transaction, boolean isDebit, int rowIndex, String parentAcc){
@@ -286,24 +293,7 @@ public class LedgerStatementPage extends WelcomePage {
      * @return total value
      */
     public String getTotalInHKD(String parentName, String section, String colName) {
-        int indexCol = 0;
-        if (section.equals("Shown in HKD")){
-            switch (colName){
-                case "Credit/Debit":
-                    indexCol = 3;
-                    break;
-                default:
-                    indexCol = 4;
-            }
-        } else if (section.equals("CUR Translation")){
-            switch (colName){
-                case "CT-Credit/Debit":
-                    indexCol = 6;
-                    break;
-                default:
-                    indexCol = 7;
-            }
-        }
+        int indexCol = getIndexTotalColumn(section,colName);
         return Label.xpath(String.format("(//span[contains(text(),'%s')]/ancestor::tr//following-sibling::tr[@class='total-row']//td)[%s]",parentName,indexCol)).getText().trim();
     }
 
@@ -342,5 +332,26 @@ public class LedgerStatementPage extends WelcomePage {
     public String getTotalInHKD(String companyUnit, String financialYear, String accountType, String ledgerGroup, String fromDate, String toDate, String report, String parentName, String section, String colName) {
         showLedger(companyUnit,financialYear,accountType,ledgerGroup,fromDate,toDate,report);
         return getTotalInHKD(parentName,section,colName);
+    }
+    private int getIndexTotalColumn(String section, String colName){
+        int indexCol = 0;
+        if (section.equals("Shown in HKD")){
+            switch (colName){
+                case "Credit/Debit":
+                    indexCol = 3;
+                    break;
+                default:
+                    indexCol = 4;
+            }
+        } else if (section.equals("CUR Translation")){
+            switch (colName){
+                case "CT-Credit/Debit":
+                    indexCol = 6;
+                    break;
+                default:
+                    indexCol = 7;
+            }
+        }
+        return indexCol;
     }
 }

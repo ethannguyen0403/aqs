@@ -11,13 +11,13 @@ import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
-import pages.sb11.role.RoleManagementPage;
 import pages.sb11.soccer.*;
 import pages.sb11.soccer.BBTPage;
 import pages.sb11.trading.*;
 import pages.sb11.trading.BetEntryPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.*;
+import utils.sb11.EventMapping;
 import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;
@@ -29,12 +29,13 @@ import static common.SBPConstants.BBTPage.*;
 
 public class BBTTest extends BaseCaseAQS {
 
-    @Test(groups = {"regression_stg", "2023.11.30","ethan2.0"})
+    @Test(groups = {"regression_stg", "2023.11.30","ethan3.0"})
     @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "157")
     public void BBT_TC_157(String password, String userNameOneRole) throws Exception{
         log("@title: Validate accounts without permission cannot see the menu");
         log("Precondition: Deactivate BBT option in one role account");
+        RoleManagementUtils.updateRolePermission("one role","BBT","INACTIVE");
         log("@Step 1: Re-login with one role account account has 'BBT' permission is OFF");
         LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
@@ -43,12 +44,13 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression_stg", "2023.11.30"})
+    @Test(groups = {"regression_stg", "2023.11.30","ethan3.0"})
     @Parameters({"password", "userNameOneRole"})
     @TestRails(id = "158")
     public void BBT_TC_158(String password, String userNameOneRole) throws Exception{
         String bbtURL = environment.getSbpLoginURL() + "#/aqs-report/bbt";
         log("@title: Validate accounts without permission cannot access page ");
+        RoleManagementUtils.updateRolePermission("one role","BBT","INACTIVE");
         log("Precondition: Deactivate BBT option in one role account");
         log("@Step 1: Re-login with one role account account has 'BBT' permission is OFF");
         LoginPage loginPage = welcomePage.logout();
@@ -358,27 +360,35 @@ public class BBTTest extends BaseCaseAQS {
     }
 
     @Test(groups = {"regression_stg", "2023.11.30"})
-    @Parameters({"password", "userNameOneRole"})
+    @Parameters({"password", "userNameOneRole","username"})
     @TestRails(id = "314")
-    public void BBT_TC_314(String password, String userNameOneRole) throws Exception{
+    public void BBT_TC_314(String password, String userNameOneRole, String username) throws Exception{
         log("@title: Validate can open 'Last 12 Days Performance' with correct values although SPP permission is OFF");
         log("Precondition: Account is activated permission 'BBT' and is deactivated 'SPP' permission");
-        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRole("one role").switchPermissions("BBT", true);
-        roleManagementPage.selectRole("one role").switchPermissions("SPP", false);
-        log("@Step 1: Re-login with one role account account has 'BBT' permission is OFF");
-        LoginPage loginPage = roleManagementPage.logout();
-        loginPage.login(userNameOneRole, StringUtils.decrypt(password));
-        log("@Step 2: Navigate to Soccer > BBT");
-        BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
-        log("@Step 3: Filter with default option");
-        bbtPage.filter("", "", "", "", "", "", "", "", "");
-        log("@Step 3: Click on 'T' column of any smart group");
-        Last12DaysPerformancePage last12DaysPage = bbtPage.openLast12DayPerformanceFirstGroup();
-        Assert.assertTrue(!welcomePage.headerMenuControl.isSubmenuDisplay(SOCCER, BBT), "FAILED! Retained Earnings menu is displayed");
-        log("3. Validate Last 12 Days Performance is displayed correctly");
-        Assert.assertTrue(last12DaysPage.getTitlePage().contains("Last 12 Days Performance"), "FAILED! Header of Last 12 Days Performance is not displayed correct");
-        log("INFO: Executed completely");
+        try {
+            log("Precondition: Account is activated permission 'BBT' and is deactivated 'SPP' permission");
+            RoleManagementUtils.updateRolePermission("one role","BBT","ACTIVE");
+            RoleManagementUtils.updateRolePermission("one role",SPP,"INACTIVE");
+            log("@Step 1: Re-login with one role account account has 'BBT' permission is OFF");
+            LoginPage loginPage = welcomePage.logout();
+            loginPage.login(userNameOneRole, StringUtils.decrypt(password));
+            log("@Step 2: Navigate to Soccer > BBT");
+            BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
+            log("@Step 3: Filter with default option");
+            bbtPage.filter("", "", "", "", "", "", "", "", "");
+            log("@Step 3: Click on 'T' column of any smart group");
+            Last12DaysPerformancePage last12DaysPage = bbtPage.openLast12DayPerformanceFirstGroup();
+            Assert.assertTrue(!welcomePage.headerMenuControl.isSubmenuDisplay(SOCCER, BBT), "FAILED! Retained Earnings menu is displayed");
+            log("Verify 1: Validate Last 12 Days Performance is displayed correctly");
+            Assert.assertTrue(last12DaysPage.getTitlePage().contains("Last 12 Days Performance"), "FAILED! Header of Last 12 Days Performance is not displayed correct");
+            last12DaysPage.closePopup();
+
+        } finally {
+            LoginPage loginPage = welcomePage.logout();
+            loginPage.login(username, StringUtils.decrypt(password));
+            RoleManagementUtils.updateRolePermission("one role","BBT","INACTIVE");
+            log("INFO: Executed completely");
+        }
     }
 
     @Test(groups = {"regression"})
@@ -902,27 +912,24 @@ public class BBTTest extends BaseCaseAQS {
                 new Event.Builder().sportName("Tennis").leagueName("QA Tennis League").eventDate(currentDay)
                         .home("QA Tennis Team 01").away("QA Tennis Team 02")
                         .openTime("16:00").eventStatus("InRunning").isLive(true).isN(false).build();
-        Order orderTennis = new Order.Builder().sport("Tennis").price(1.17).requireStake(13.25).oddType("HK").betType("Back")
-                .home(eventTennis.getHome()).away(eventTennis.getAway()).selection("Home").isLive(false).event(eventTennis).build();
         try {
             log("@title: Validate Back Tennis bet should display correctly on left table");
             log("@Precondition - Step 1: Already have some place Back bet on Home for Tennis sport");
             EventScheduleUtils.addEventByAPI(eventTennis, dateAPI, SPORT_ID_MAP.get("Tennis"));
-            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-            TennisBetEntryPage tennisBetEntryPage = betEntryPage.goToTennis();
-            tennisBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventTennis.getLeagueName(), accountCode);
-            tennisBetEntryPage.placeBet(orderTennis, orderTennis.getSelection());
-
-            BetSettlementUtils.waitForBetIsUpdate(4);
+            String leagueID = EventScheduleUtils.getLeagueID(eventTennis.getLeagueName(), SPORT_ID_MAP.get("Tennis"));
+            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+            eventTennis.setEventId(eventID);
+            List<Order> lstOrder = welcomePage.placeBetAPI("Tennis",currentDay,eventTennis,accountCode,"MatchOdds","MatchOdds",eventTennis.getHome(),"FullTime",1.17,0,"HK",
+                    13.25,"BACK",false,"");
             log("@Step 1: Navigate to Soccer > BBT");
             BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
             log("@Step 2: Filter with Tennis sport with valid data at pre-condition > observe");
             bbtPage.filter("", "Tennis", "", "", "", "", "", "", "");
 
-            log(String.format("@Verify 1: Validate Home: %s and away: %s team should display correctly", orderTennis.getHome(), orderTennis.getAway()));
-            bbtPage.verifyHomeAwayTeamNameCorrect(orderTennis.getHome(), orderTennis.getAway());
+            log(String.format("@Verify 1: Validate Home: %s and away: %s team should display correctly", eventTennis.getHome(), eventTennis.getAway()));
+            bbtPage.verifyHomeAwayTeamNameCorrect(eventTennis.getHome(), eventTennis.getAway());
             log("@Verify 2: Validate Back Tennis bet should display correctly");
-            Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(orderTennis, true) != -1, "FAILED! The bet is not show on BBT page");
+            Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(lstOrder.get(0), true) != -1, "FAILED! The bet is not show on BBT page");
             log("INFO: Executed completely");
         }finally {
             log("@Post-condition: Delete event Tennis id: ");
@@ -932,7 +939,7 @@ public class BBTTest extends BaseCaseAQS {
     }
 
 
-    @Test(groups = {"regression", "2023.12.29"})
+    @Test(groups = {"regression", "2023.12.29","ethan3.0"})
     @Parameters({"accountCode"})
     @TestRails(id = "16180")
     public void BBT_TC_16180(String accountCode) {
@@ -942,23 +949,21 @@ public class BBTTest extends BaseCaseAQS {
                 new Event.Builder().sportName("Tennis").leagueName("QA Tennis League").eventDate(currentDay)
                         .home("QA Tennis Team 01").away("QA Tennis Team 02")
                         .openTime("16:00").eventStatus("InRunning").isLive(true).isN(false).build();
-        Order orderTennis = new Order.Builder().sport("Tennis").price(1.17).requireStake(13.25).oddType("HK").betType("Lay")
-                .home("QA Tennis Team 01").away("QA Tennis Team 02").selection("Home").isLive(false).event(eventTennis).build();
         try{
             EventScheduleUtils.addEventByAPI(eventTennis, dateAPI, SPORT_ID_MAP.get(eventTennis.getSportName()));
+            String leagueID = EventScheduleUtils.getLeagueID(eventTennis.getLeagueName(), SPORT_ID_MAP.get("Tennis"));
+            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+            eventTennis.setEventId(eventID);
             log("@title: Validate LayTennis bet should display correctly on right table");
             log("@Precondition:  Already have some place Lay bet on Home for Tennis sport");
-            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-            TennisBetEntryPage tennisBetEntryPage = betEntryPage.goToTennis();
-            tennisBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventTennis.getLeagueName(), accountCode);
-            tennisBetEntryPage.placeBet(orderTennis, orderTennis.getSelection());
-
+            List<Order> lstOrder = welcomePage.placeBetAPI("Tennis",currentDay,eventTennis,accountCode,"MatchOdds","MatchOdds",eventTennis.getHome(),"FullTime",1.17,0,"HK",
+                    13.25,"LAY",false,"");
             log("@Step 1: Navigate to Soccer > BBT");
             BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
             log("@Step 2: Filter with Tennis sport with valid data at pre-condition > observe");
             bbtPage.filter("", "Tennis", "", "", "", "", "", "", "");
             log("@Verify 1: Validate Back Tennis bet should display correctly");
-            Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(orderTennis, false) != -1, "FAILED! The bet is not show on BBT page");
+            Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(lstOrder.get(0), false) != -1, "FAILED! The bet is not show on BBT page");
             log("INFO: Executed completely");
         }finally {
             log("@Post-condition: Delete event Tennis id: ");
@@ -979,23 +984,21 @@ public class BBTTest extends BaseCaseAQS {
                 new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(currentDay)
                         .home("QA Basketball Team 1").away("QA Basketball Team 2")
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
-        Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(randomStake).oddType("HK").betType("Back")
-                .home("QA Basketball Team 1").away("QA Basketball Team 2").selection("Home").isLive(false).event(eventBasketball).build();
         try {
             log("@title: Validate Back Basketball bet should display correctly on left table");
             log("@Precondition: Already have some place Back bet on Home for Basketball sport");
             EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get(eventBasketball.getSportName()));
-            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-            BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
-            basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
-            basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
-
+            String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
+            String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
+            eventBasketball.setEventId(eventID);
+            List<Order> lstOrder = welcomePage.placeBetAPI("Basketball",currentDay,eventBasketball,accountCode,"MatchOdds","MatchOdds",eventBasketball.getHome(),"FullTime",2.15,0,"HK",
+                    randomStake,"BACK",true,"");
             log("@Step 1: Navigate to Soccer > BBT");
             BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
             log("@Step 2: Filter with Basketball sport with valid data at pre-condition > observe");
             bbtPage.filter("", "Basketball", "", "", "", "", "", "", "");
             log("@Verify 1: Validate Back Basketball bet should display correctly");
-            Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(orderBasketball, true) != -1, "FAILED! The bet is not show on BBT page");
+            Assert.assertTrue(bbtPage.findRowIndexOfTeamTable(lstOrder.get(0), true) != -1, "FAILED! The bet is not show on BBT page");
             log("INFO: Executed completely");
         }finally {
             log("@Post-condition: Delete event Tennis id: ");
