@@ -23,7 +23,7 @@ public class CricketBetEntryPage extends BetEntryPage {
     public Label lblDate = Label.xpath("//label[text()='Date']");
     public Label lblAccountCode = Label.xpath("//label[contains(text(),'Account Code')]");
     private TextBox txtAccCode = TextBox.id("account-code");
-    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bet-entry-header//label[contains(text(),'Company Unit')]/following::select[1]");
+    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bet-entry-header//label[contains(text(),'Company Unit')]/following-sibling::select[1]");
     public DropDownBox ddpLeague = DropDownBox.id("league");
     public DropDownBox ddpSearchBy = DropDownBox.xpath("//select[@class='form-control']");
     public TextBox txtAccountCode = TextBox.id("account-code");

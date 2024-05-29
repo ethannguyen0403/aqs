@@ -47,6 +47,7 @@
             <class name="testcases.sb11test.accounting.CompanySetupTest"/>
             <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
 
+            <class name="testcases.sb11test.trading.CricketSportTest"/>
             <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
 
             <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
