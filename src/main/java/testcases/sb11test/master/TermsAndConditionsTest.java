@@ -11,6 +11,7 @@ import pages.sb11.master.termsAndConditionsPopup.LogPopup;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static common.SBPConstants.*;
@@ -85,7 +86,7 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         Assert.assertTrue(page.isClientNameDisplay(clientCode));
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression1","2024.V.4.0"})
+    @Test(groups = {"regression","2024.V.4.0"})
     @TestRails(id = "17973")
     public void Term_And_Conditions_17973(){
         log("@title: Validate is able to filter Clients by company");
@@ -127,8 +128,19 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         log("@Step 3: Search by any client name that has inputted Terms and Conditions");
         page.filter(KASTRAKI_LIMITED,"Client",clientCode);
         log("@Step 4: Click Edit link");
+        List<ArrayList<String>> lstBefore = page.tblData.getRowsWithoutHeader(1,true);
+        page.clickEdit(clientCode);
         log("Verify 1: The current Terms and Conditions value will prepopulate in textarea");
-        page.verifyDataAfterClickingEdit(clientCode);
+        //Verify Provider term and Payment term column
+        page.verifyDataAfterClickingEdit(lstBefore,clientCode,"Provider term and Payment term");
+        //Verify Downline term in PT column
+        page.verifyDataAfterClickingEdit(lstBefore,clientCode,"Downline term in PT");
+        //Verify Downline payment term column
+        page.verifyDataAfterClickingEdit(lstBefore,clientCode,"Downline payment term");
+        //Verify Sales Incharge column
+        page.verifyDataAfterClickingEdit(lstBefore,clientCode,"Sales Incharge");
+        //Verify Comment column
+        page.verifyDataAfterClickingEdit(lstBefore,clientCode,"Comment");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.4.0"})

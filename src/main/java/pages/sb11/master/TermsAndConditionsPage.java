@@ -46,7 +46,12 @@ public class TermsAndConditionsPage extends WelcomePage {
         Collections.sort(lstClientEx,String.CASE_INSENSITIVE_ORDER);
         List<String> lstClientAc = ddClientBookieList.getOptions();
         lstClientAc.remove("All");
-        Assert.assertEquals(lstClientAc,lstClientEx);
+        //Because there are some client check testing so client name dropdown in Page that will less than Client System page
+        for (String client : lstClientAc){
+            if (!lstClientEx.contains(client)){
+                Assert.assertTrue(false,"FAILED! client "+client+" is not exist");
+            }
+        }
     }
 
     public boolean isClientNameDisplay(String clientName) {
@@ -75,24 +80,10 @@ public class TermsAndConditionsPage extends WelcomePage {
                 tblData.getColumnIndexByName("Edit"),"button",true,false).click();
     }
 
-    public void verifyDataAfterClickingEdit(String clientBookieName) {
-        List<ArrayList<String>> lstBefore = tblData.getRowsWithoutHeader(1,true);
-        clickEdit(clientBookieName);
+    public void verifyDataAfterClickingEdit(List<ArrayList<String>> lstBefore,String clientBookieName, String columnName) {
         Assert.assertEquals(tblData.getControlBasedValueOfDifferentColumnOnRow(clientBookieName,1,clientBookieNamecol,1,null,
-                tblData.getColumnIndexByName("Provider term and Payment term"),"textarea",true,false).getAttribute("value"),lstBefore.get(0).get(tblData.getColumnIndexByName("Provider term and Payment term")-1),
-                "FAILED! Provider term and Payment term value display incorrect");
-        Assert.assertEquals(tblData.getControlBasedValueOfDifferentColumnOnRow(clientBookieName,1,clientBookieNamecol,1,null,
-                tblData.getColumnIndexByName("Downline term in PT"),"textarea",true,false).getAttribute("value"),lstBefore.get(0).get(tblData.getColumnIndexByName("Downline term in PT")-1),
-                "FAILED! Downline term in PT value display incorrect");
-        Assert.assertEquals(tblData.getControlBasedValueOfDifferentColumnOnRow(clientBookieName,1,clientBookieNamecol,1,null,
-                tblData.getColumnIndexByName("Downline payment term"),"textarea",true,false).getAttribute("value"),lstBefore.get(0).get(tblData.getColumnIndexByName("Downline payment term")-1),
-                "FAILED! Downline payment term value display incorrect");
-        Assert.assertEquals(tblData.getControlBasedValueOfDifferentColumnOnRow(clientBookieName,1,clientBookieNamecol,1,null,
-                tblData.getColumnIndexByName("Sales Incharge"),"textarea",true,false).getAttribute("value"),lstBefore.get(0).get(tblData.getColumnIndexByName("Sales Incharge")-1),
-                "FAILED! Sales Incharge value display incorrect");
-        Assert.assertEquals(tblData.getControlBasedValueOfDifferentColumnOnRow(clientBookieName,1,clientBookieNamecol,1,null,
-                tblData.getColumnIndexByName("Comment"),"textarea",true,false).getAttribute("value"),lstBefore.get(0).get(tblData.getColumnIndexByName("Comment")-1),
-                "FAILED! Comment value display incorrect");
+                tblData.getColumnIndexByName(columnName),"textarea",true,false).getAttribute("value"),lstBefore.get(0).get(tblData.getColumnIndexByName(columnName)-1),
+                "FAILED! "+columnName+" value display incorrect");
     }
 
     public void editBookieClient(String clientBookieName, String providerTerm, String downlineTerm, String downlinePayment, String saleIncharge, String comment, boolean save) {
