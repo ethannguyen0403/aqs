@@ -207,7 +207,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("@title: Validate Full Time Handicap bet is displayed correctly on PT Risk Control > Handicap tab");
         log("@Pre-condition: Having an Full Time Handicap bet which have been placed on Bet Entry");
         String date = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
-        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,true,accountCode,"Goals","HDP","Home","FullTime",2.15,0.00,"HK",15.5,"BACK",false,"");
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,true,accountCode,"Goals","HDP","Home","FullTime",2.15,1,"HK",15.5,"BACK",false,"");
         lstOrder.get(0).setAccountCurrency(accountCurrency);
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > PT Risk Control");
