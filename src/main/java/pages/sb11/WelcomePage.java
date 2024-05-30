@@ -137,9 +137,9 @@ public class WelcomePage extends Header{
             order = new Order.Builder().event(event).accountCode(accountCode).marketName(marketName).marketType(marketType).selection(selection).sport(sport)
                     .stage(stage).createDate(DateUtils.getDate(0, "yyyy-MM-dd", "GMT +8")).eventDate(event.getEventDate() + " 23:59:00").odds(price).price(price).handicap(handicap).oddType(oddType).requireStake(requireStake).betType(betType)
                     .isWinLose(isWinLose).build();
-            if (!winlose.isEmpty()){
-                order.setWinLose(Double.valueOf(winlose));
-            }
+        }
+        if (!winlose.isEmpty()){
+            order.setWinLose(Double.valueOf(winlose));
         }
         BetEntrytUtils.placeBetAPI(order);
         List<Order> lstOrder = new ArrayList<>();

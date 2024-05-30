@@ -16,6 +16,7 @@ import pages.sb11.trading.SoccerBetEntryPage;
 import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.*;
+import utils.sb11.EventMapping;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
@@ -199,53 +200,26 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @Parameters({"accountCode","accountCurrency"})
     @TestRails(id = "2125")
     public void PTRiskControlTC_2125(String accountCode,String accountCurrency){
         log("@title: Validate Full Time Handicap bet is displayed correctly on PT Risk Control > Handicap tab");
         log("@Pre-condition: Having an Full Time Handicap bet which have been placed on Bet Entry");
-        String sport="Soccer";
-        String companyUnit = "Kastraki Limited";
-        String marketType = "1x2";
-        String date = String.format(DateUtils.getDate(0,"d/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
-        String league = soccerBetEntryPage.getFirstLeague();
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,league);
-
-        log("@Step Precondition: Define order to place bet");
-        Order order = new Order.Builder()
-                .sport(sport)
-                .hdpPoint(0.00)
-                .price(2.15)
-                .requireStake(15.50)
-                .oddType("HK")
-                .betType("Back")
-                .accountCode(accountCode)
-                .accountCurrency(accountCurrency)
-                .marketType(marketType)
-                .stage("Full Time")
-                .selection("Home")
-                .liveHomeScore(0)
-                .liveAwayScore(0)
-                .home(eventInfo.getHome())
-                .away((eventInfo.getAway()))
-                .event(eventInfo)
-                .build();
-
-        SoccerSPBBetSlipPopup soccerSPBBetSlipPopup = soccerBetEntryPage.openSPBBetSlip(accountCode,eventInfo.getHome());
-        soccerSPBBetSlipPopup.placeMoreBet(order,false,false,true);
-
+        String date = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,true,accountCode,"Goal","HDP","Home","FullTime",2.15,0.00,"HK",15.5,"BACK",false,"");
+        lstOrder.get(0).setAccountCurrency(accountCurrency);
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > PT Risk Control");
         PTRiskPage ptRiskPage = welcomePage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
         log("@Step 3: Filter with event that having bet at Pre-condition > Click Show");
+        String dateFilter = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        ptRiskPage.filter(SOCCER,"", KASTRAKI_LIMITED, "Normal", "All", dateFilter, "", lstOrder.get(0).getEvent().getLeagueName());
         log("@Step 4: Click on event name > Click Handicap tab");
+        PTRiskBetListPopup ptRiskBetListPopup = ptRiskPage.openBetList(lstOrder.get(0).getEvent().getHome());
+        ptRiskBetListPopup.activeTab("Handicap");
         log("Validate Full Time Handicap bet is displayed correctly on PT Risk Control > Handicap tab");
-
+        Assert.assertTrue(ptRiskBetListPopup.verifyOrder(lstOrder.get(0)));
         log("INFO: Executed completely");
     }
 
@@ -269,53 +243,45 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2126")
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @Parameters({"accountCode","accountCurrency"})
     public void PTRiskControlTC_2126(String accountCode,String accountCurrency){
         log("@title: Validate Full Time Over Under bet is displayed correctly on PT Risk Control > Over Under tab");
         log("@Precondition Step:  Having an Full Time Over Under bet which have been placed on Bet Entry");
-        int dateNo = -1;
-        String companyUnit = "Kastraki Limited";
-        String date = String.format(DateUtils.getDate(dateNo,"dd/MM/yyyy","GMT +7"));
-
+        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
         log("@Precondition Step:  Having Half time Handicap bet which have been placed on Bet Entry");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        List<Order> lstOrder = betEntryPage.placeSoccerBet(companyUnit,"Soccer","",dateNo,"Over",true,false,
-                1,2.12,"HK","Back",0,0,5.5,accountCode,accountCurrency,"GOAL",false,false );
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, date,true,accountCode,"Goals","OU","Over","FullTime",2.12,1,"HK",5.5,
+                "BACK",false,"");
+        lstOrder.get(0).setAccountCurrency(accountCurrency);
         log("@Step 1: Access Soccer > PT Risk Control");
         PTRiskPage ptRiskPage = welcomePage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
         log("@Step 2: Filter with event that having bet at Pre-condition");
-        ptRiskPage.filter("", KASTRAKI_LIMITED,"Normal","All",date,date, lstOrder.get(0).getEvent().getLeagueName());
-
+        ptRiskPage.filter("", KASTRAKI_LIMITED,"Normal","All",date,"", lstOrder.get(0).getEvent().getLeagueName());
         log("@Step 3: Click on event name");
         PTRiskBetListPopup ptRiskBetListPopup = ptRiskPage.openBetList(lstOrder.get(0).getEvent().getHome());
-
         log("@Step 4: Click Over Under tab");
         ptRiskBetListPopup.activeTab("Over Under");
-
         log("@Verify 1: Validate Full Time Over Under bet is displayed correctly on PT Risk Control > Over Under tab");
         Assert.assertTrue(ptRiskBetListPopup.verifyOrder(lstOrder.get(0)));
-
         log("INFO: Executed completely");
     }
 
     @TestRails(id = "2127")
-    @Test(groups = {"regression","2023.12.31"})
+    @Test(groups = {"regression","2023.12.31","ethan3.0"})
     @Parameters({"accountCode","accountCurrency"})
     public void PTRiskControlTC_2127(String accountCode,String accountCurrency){
         log("@title: Validate Half time Handicap bet is displayed and disappear when place bet in Bet Entry then removed" );
         int dateNo = -1;
-        String companyUnit = "Kastraki Limited";
         String smartMaster = "QA Smart Master";
         String date = String.format(DateUtils.getDate(dateNo,"dd/MM/yyyy",GMT_7));
 
         log("@Precondition Step:  Having Half time Handicap bet which have been placed on Bet Entry");
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        List<Order> lstOrder = betEntryPage.placeSoccerBet(companyUnit,"Soccer","",dateNo,"Home",false,true,
-                0.5,2.12,"HK","Back",0,0,5.5,accountCode,accountCurrency,"HDP",false,false );
-
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, date,true,accountCode,"Goals","HDP","Home","HalfTime",2.12,0.5,"HK",5.5,
+                "BACK",false,"");
+        lstOrder.get(0).setAccountCurrency(accountCurrency);
+        BetSettlementUtils.waitForBetIsUpdate(10);
         log("@Step 1: Access Soccer > PT Risk Control");
-        PTRiskPage ptRiskPage = betEntryPage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
+        PTRiskPage ptRiskPage = welcomePage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
 
         log("@Step 2: Filter with the event that has bet at Pre-condition");
         ptRiskPage.filter("", KASTRAKI_LIMITED,"Normal","All",date,date, lstOrder.get(0).getEvent().getLeagueName());
@@ -332,7 +298,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
 
         log("@Step 5: Access Trading > Confirm Bet");
         ConfirmBetsPage confirmBetsPage = ptRiskPage.navigatePage(TRADING,CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending","Soccer","","Specific Date",date,date,accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending","Soccer","","Specific Date",date,date,accountCode);
         log("@Step 6: Filter the account place bet and remove this bet");
         confirmBetsPage.deleteOrder(lstOrder.get(0),true);
 
@@ -364,7 +330,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3416")
-    @Test(groups = {"regression", "2023.10.31","ethan2.0"})
+    @Test(groups = {"regression", "2023.10.31","ethan3.0"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3416(String accountCode) {
         String currentDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
@@ -379,30 +345,23 @@ public class PTRiskControlTest extends BaseCaseAQS {
                 new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(currentDate)
                         .home("QA Basketball Team 1").away("QA Basketball Team 2")
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
-        Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
-                .selection(eventBasketball.getHome()).isLive(false).event(eventBasketball).accountCode(accountCode).build();
         EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get("Basketball"));
         String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         eventBasketball.setEventId(eventID);
         log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
         try {
-            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-            BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
-            basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
-            basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
-            log("@Step 2: Navigate to Soccer > PT Risk Control");
+            List<Order> lstOrder = welcomePage.placeBetAPI("Basketball",currentDate,eventBasketball,accountCode,"MatchOdds","MatchOdds",eventBasketball.getHome(),"FullTime",2.15,0,"HK",
+                    15.50,"BACK",false,"");
+            log("@Step 1: Navigate to Soccer > PT Risk Control");
             PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
             ptPage.waitSpinnerDisappeared();
-            log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
+            log("@Step 2: Filter with Report Type = Normal with League and Client placed bet");
             ptPage.filter("Basketball","", KASTRAKI_LIMITED, "PT + Throw Bets", "All", "", "", eventBasketball.getLeagueName());
 
             log("Verify 1: Validate Basket ball bets return properly");
-            List<Order> lstOrder = new ArrayList<>();
-            lstOrder.add(orderBasketball);
-            String betID = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder).get(0).getBetId();
             PTRiskBetListPopup ptRiskBetListPopup = ptPage.openBetList(eventBasketball.getHome());
-            Assert.assertTrue(ptRiskBetListPopup.getBetListCellValue(accountCode, 1).contains(betID), "FAILED!Bet not shown properly.");
+            Assert.assertTrue(ptRiskBetListPopup.getBetListCellValue(accountCode, 1).contains(lstOrder.get(0).getBetId()), "FAILED!Bet not shown properly.");
             log("INFO: Executed test completely");
         } finally {
             log("@Post-condition: Deleted the event Basketball: " + eventID);
@@ -412,7 +371,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3417")
-    @Test(groups = {"regression", "2023.10.31","ethan2.0"})
+    @Test(groups = {"regression", "2023.10.31","ethan3.0"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3417(String accountCode) {
         String currentDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
@@ -423,24 +382,25 @@ public class PTRiskControlTest extends BaseCaseAQS {
                 "League: QA Basketball League\n" +
                 "Home Team: QA Basketball Team 1\n" +
                 "Away Team: QA Basketball Team 2");
+        String provider = "MERITO";
         Event eventBasketball =
                 new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(currentDate)
                         .home("QA Basketball Team 1").away("QA Basketball Team 2")
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
-        Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
-                .selection(eventBasketball.getHome()).isLive(false).event(eventBasketball).accountCode(accountCode).build();
         EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get("Basketball"));
+        String dateMAP = DateUtils.getDate(0, "yyyy-MM-dd HH:mm:ss", GMT_7);
+        String eventID = EventMapping.getEventID(eventBasketball,provider,dateMAP);
+        eventBasketball.setEventId(eventID);
         log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
         try {
-            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-            BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
-            basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
-            basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
+            welcomePage.placeBetAPI("Basketball",currentDate,eventBasketball,accountCode,"MatchOdds","MatchOdds",eventBasketball.getHome(),"FullTime",2.15,0,"HK",
+                    15.50,"BACK",false,"");
             log("@Step 2: Navigate to Soccer > PT Risk Control");
             PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
             ptPage.waitSpinnerDisappeared();
             log("@Step 3: Filter with League and Client placed bet");
-            ptPage.filter("Basketball","", KASTRAKI_LIMITED, "PT + Throw Bets", "All", "", "", eventBasketball.getLeagueName());
+            String dateFilter = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+            ptPage.filter("Basketball","", KASTRAKI_LIMITED, "PT + Throw Bets", "All", dateFilter, "", eventBasketball.getLeagueName());
             log("Verify 1: Validate Bet Types only shows option '1x2'");
             Assert.assertTrue(ptPage.isBetTypeBasketIs1X2(), "FAILED! Bet type of Basketball is not correct");
             log("INFO: Executed test completely");
@@ -523,7 +483,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3419")
-    @Test(groups = {"regression_stg", "2023.10.31","ethan2.0"})
+    @Test(groups = {"regression_stg", "2023.10.31","ethan3.0"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3419(String accountCode) throws IOException{
         String percent = "6";
@@ -535,26 +495,27 @@ public class PTRiskControlTest extends BaseCaseAQS {
                 "League: QA Basketball League\n" +
                 "Home Team: QA Basketball Team 1\n" +
                 "Away Team: QA Basketball Team 2");
+        String provider = "MERITO";
         Event eventBasketball =
                 new Event.Builder().sportName("Basketball").leagueName("QA Basketball League").eventDate(currentDate)
                         .home("QA Basketball Team 1").away("QA Basketball Team 2")
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
-        Order orderBasketball = new Order.Builder().sport("Basketball").price(2.15).requireStake(15.50).oddType("HK").betType("Back")
-                .selection(eventBasketball.getHome()).isLive(false).event(eventBasketball).accountCode(accountCode).build();
         EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get("Basketball"));
+        String dateMAP = DateUtils.getDate(0, "yyyy-MM-dd HH:mm:ss", GMT_7);
+        String eventID = EventMapping.getEventID(eventBasketball,provider,dateMAP);
+        eventBasketball.setEventId(eventID);
         log("@Precondition-Step 2: Set % PT of Basketball on Account List");
         AccountListUtils.setAccountListPTAPI(accountCode, percent, true, AccountListUtils.SportName.basketball);
         log("@Precondition-Step 3: Place some Basketball 1x2 match bets");
         try {
-            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY, BetEntryPage.class);
-            BasketballBetEntryPage basketballBetEntryPage = betEntryPage.goToBasketball();
-            basketballBetEntryPage.showLeague(KASTRAKI_LIMITED, "", eventBasketball.getLeagueName(), accountCode);
-            basketballBetEntryPage.placeBet(orderBasketball, "1x2", orderBasketball.getSelection());
+            welcomePage.placeBetAPI("Basketball",currentDate,eventBasketball,accountCode,"MatchOdds","MatchOdds",eventBasketball.getHome(),"FullTime",2.15,0,"HK",
+                    15.50,"BACK",false,"");
             log("@Step 1: Navigate to Soccer > PT Risk Control");
             PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
             ptPage.waitSpinnerDisappeared();
             log("@Step 2: Filter with League and Client placed bet");
-            ptPage.filter("Basketball","", KASTRAKI_LIMITED, "PT + Throw Bets", "All", "", "", eventBasketball.getLeagueName());
+            String dateFilter = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+            ptPage.filter("Basketball","", KASTRAKI_LIMITED, "PT + Throw Bets", "All", dateFilter, "", eventBasketball.getLeagueName());
             log("@Step 3: Open Bet List");
             PTRiskBetListPopup ptRiskBetListPopup = ptPage.openBetList(eventBasketball.getHome());
             log("Verify 1: There will be only 1 tab '1x2'");
