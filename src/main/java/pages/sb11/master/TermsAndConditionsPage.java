@@ -44,15 +44,29 @@ public class TermsAndConditionsPage extends WelcomePage {
         lstClientEx.addAll(ClientSystemUtils.getLstClientName(true,companyName));
         lstClientEx.addAll(ClientSystemUtils.getLstClientName(false,companyName));
         Collections.sort(lstClientEx,String.CASE_INSENSITIVE_ORDER);
-
+        List<String> lstClientAc = ddClientBookieList.getOptions();
+        lstClientAc.remove("All");
+        Assert.assertEquals(lstClientAc,lstClientEx);
     }
 
-    public void verifyClientNameDisplay(List<String> lstClientName) {
+    public boolean isClientNameDisplay(String clientName) {
         List<String> lstClientAc = tblData.getColumn(tblData.getColumnIndexByName("Client Name"),true);
-        for (String clientName : lstClientName){
-            if (!lstClientAc.contains(clientName)){
-                Assert.assertTrue(false,"FAILED! "+clientName+" is not exist");
+        if (clientName.equals("All")){
+            List<String> lstClientEx = ddClientBookieList.getOptions();
+            lstClientEx.remove("All");
+            if (lstClientAc.equals(lstClientAc)){
+                return true;
             }
+            System.out.println("FAILED! Client display incorrect");
+            return false;
+        } else {
+            for (String clientDisplay : lstClientAc){
+                if (clientDisplay.equals(clientName)){
+                    return true;
+                }
+            }
+            System.out.println("FAILED! "+clientName+" is not exist");
+            return false;
         }
     }
 

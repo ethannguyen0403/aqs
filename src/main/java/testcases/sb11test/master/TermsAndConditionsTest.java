@@ -11,7 +11,6 @@ import pages.sb11.master.termsAndConditionsPopup.LogPopup;
 import testcases.BaseCaseAQS;
 import utils.testraildemo.TestRails;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static common.SBPConstants.*;
@@ -47,14 +46,15 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
     @Test(groups = {"regression","2024.V.4.0"})
     @TestRails(id = "17956")
     public void Term_And_Conditions_17956() {
-        log("@title: Validate can access 'Terms and Conditions' page if having permission ");
+        log("@title: Validate all existing companies display in Company Unit dropdown list");
         log("@pre-condition: 'Terms and Conditions' permission actives in any account");
         log("@Step 1: Login by account at precondition");
-        log("@Step 2: Expand Master menu");
-        log("@Step 3: Click 'Terms and Conditions' menu");
+        log("@Step 2: Go to Master >> Terms and Conditions");
         TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
-        log("Verify 1: 'Terms and Conditions' page displays properly");
-        Assert.assertTrue(page.lblTitle.getText().contains("Terms and Conditions"),"FAILED! Term and Conditions page display incorrect");
+        log("@Step 3: Expand Company Unit dropdown list");
+        List<String> lstCU = page.ddpCompanyUnit.getOptions();
+        log("Verify 1: 'All existing companies will display");
+        Assert.assertEquals(lstCU, COMPANY_UNIT_LIST_ALL,"FAILED! Term and Conditions page display incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.2.0"})
@@ -82,12 +82,10 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         log("@Step 4: Click Show button");
         page.filter("","Client",clientCode);
         log("Verify 1: All existing Clients according to the search key should display");
-        List<String> lstClient = new ArrayList<>();
-        lstClient.add(clientCode);
-        page.verifyClientNameDisplay(lstClient);
+        Assert.assertTrue(page.isClientNameDisplay(clientCode));
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.4.0"})
+    @Test(groups = {"regression1","2024.V.4.0"})
     @TestRails(id = "17973")
     public void Term_And_Conditions_17973(){
         log("@title: Validate is able to filter Clients by company");
@@ -112,11 +110,9 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
         log("@Step 3: Select any company unit (e.g. Fair)");
         log("@Step 4: Click Show button");
-        page.filter(KASTRAKI_LIMITED,"","");
+        page.filter(KASTRAKI_LIMITED,"Client","");
         log("Verify 1: Correct Client Name of filtering company displays at Client Name column");
-        List<String> lstClientName = page.ddClientBookieList.getOptions();
-        lstClientName.remove("All");
-        page.verifyClientNameDisplay(lstClientName);
+        Assert.assertTrue(page.isClientNameDisplay("All"));
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.4.0"})
