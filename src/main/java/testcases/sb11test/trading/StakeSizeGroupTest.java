@@ -53,7 +53,7 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         StakeSizeGroupPage page = welcomePage.navigatePage(TRADING,STAKE_SIZE_GROUP, StakeSizeGroupPage.class);
         log("@Step 2: Expand Company Unit dropdown");
         log("@Verify 1: Show all companies as in Accounting >> Company Set-up");
-        Assert.assertEquals(page.ddCompanyUnit.getOptions(), COMPANY_UNIT_LIST_ALL,"FAILED! Stake Size Group page display incorrect");
+        page.verifyCompanyUnitDropdown();
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.4.0"})
@@ -101,10 +101,7 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         log("@Step 2: Click on 'Add Group' button");
         log("@Step 3: Fill in all mandatory fields with leaving empty Client");
         log("@Step 4: Click on 'Submit' button");
-        page.addNewGroup(KASTRAKI_LIMITED,"",groupName,1.0 ,1.0,false);
-        StakeSizeGroupPopup stakeSizeGroupPopup = new StakeSizeGroupPopup();
-        stakeSizeGroupPopup.btnSubmit.click();
-        String alertMes = stakeSizeGroupPopup.appArlertControl.getWarningMessage();
+        String alertMes = page.addNewGroup(KASTRAKI_LIMITED,"",groupName,1.0 ,1.0,true);
         log("@Verify 1: Show the error message: 'Please select Client!'");
         Assert.assertEquals(alertMes, SBPConstants.StakeSizeGroupNewPopup.ERROR_MES_CLIENT_EMPTY,"FAILED! Error message display incorrect");
         log("INFO: Executed completely");
@@ -120,10 +117,7 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         log("@Step 2: Click on 'Add Group' button");
         log("@Step 3: Fill in all mandatory fields with leaving empty Group Name");
         log("@Step 4: Click on 'Submit' button");
-        page.addNewGroup(KASTRAKI_LIMITED,clientCode,"",1.0 ,1.0,false);
-        StakeSizeGroupPopup stakeSizeGroupPopup = new StakeSizeGroupPopup();
-        stakeSizeGroupPopup.btnSubmit.click();
-        String alertMes = stakeSizeGroupPopup.appArlertControl.getWarningMessage();
+        String alertMes = page.addNewGroup(KASTRAKI_LIMITED,clientCode,"",1.0 ,1.0,true);
         log("@Verify 1: Show the error message: 'Group name cannot be empty!'");
         Assert.assertEquals(alertMes, SBPConstants.StakeSizeGroupNewPopup.ERROR_MES_GROUP_NAME_EMPTY,"FAILED! Error message display incorrect");
         log("INFO: Executed completely");
@@ -138,10 +132,10 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         log("@Step 1: Go to Trading >> Stake Size Group");
         StakeSizeGroupPage page = welcomePage.navigatePage(TRADING,STAKE_SIZE_GROUP, StakeSizeGroupPage.class);
         log("@Step 2: Click on 'Add Group' button");
+        StakeSizeGroupPopup stakeSizeGroupPopup = page.openStakeSizeGroupNewPopup();
         log("@Step 3: Fill in all mandatory fields");
+        stakeSizeGroupPopup.addNewGroup(KASTRAKI_LIMITED,clientCode,groupName,1.0 ,1.0,false);
         log("@Step 4: Click on 'Clear'");
-        page.addNewGroup(KASTRAKI_LIMITED,clientCode,groupName,1.0 ,1.0,false);
-        StakeSizeGroupPopup stakeSizeGroupPopup = new StakeSizeGroupPopup();
         stakeSizeGroupPopup.btnClear.click();
         log("@Verify 1: The entered values are cleared");
         stakeSizeGroupPopup.verifyUIDefault();
@@ -172,7 +166,7 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
     @Parameters({"clientCode","accountCurrency","username"})
     @TestRails(id = "29575")
     public void Stake_Size_Group_29575(String clientCode, String accountCurrency, String username) {
-        log("@title: Validate the group is updated successfully with valid values");
+        log("@title: Validate the group information in data table");
         log("Precondition: Account is activated permission 'Stake Size Group'");
         log("Precondition: The account 'admin' created a group");
         String groupName = "QA Client - Stake Group";
@@ -199,10 +193,7 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         log("@Step 2: Click on 'Add Group' button");
         log("@Step 3: Fill in all mandatory fields with group name 'QA Test Group'");
         log("@Step 4: Click on 'Submit' button");
-        page.addNewGroup(KASTRAKI_LIMITED,clientCode,groupName,1.0,1.0,false);
-        StakeSizeGroupPopup stakeSizeGroupPopup = new StakeSizeGroupPopup();
-        stakeSizeGroupPopup.btnSubmit.click();
-        String alertMes = stakeSizeGroupPopup.appArlertControl.getWarningMessage();
+        String alertMes = page.addNewGroup(KASTRAKI_LIMITED,clientCode,groupName,1.0,1.0,true);
         log("@Verify 1: Show msg: 'Group name 'QA Test Group' is duplicated.'");
         Assert.assertEquals(alertMes,String.format(StakeSizeGroupNewPopup.ERROR_MES_GROUP_NAME_DUPLICATE,groupName),"FAILED! Error message display incorrect");
         log("INFO: Executed completely");
@@ -221,10 +212,7 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         log("@Step 2: Click on 'Add Group' button");
         log("@Step 3: Fill in all mandatory fields with stake range");
         log("@Step 4: Click on 'Submit' button");
-        page.addNewGroup(KASTRAKI_LIMITED,clientCode,"group-name",stakeRange,stakeRange,false);
-        StakeSizeGroupPopup stakeSizeGroupPopup = new StakeSizeGroupPopup();
-        stakeSizeGroupPopup.btnSubmit.click();
-        String alertMes = stakeSizeGroupPopup.appArlertControl.getWarningMessage();
+        String alertMes = page.addNewGroup(KASTRAKI_LIMITED,clientCode,"group-name",stakeRange,stakeRange,true);
         log("@Verify 1: Show msg: 'Stake range 10 - 100 already set in the group QA Test Group, please double check!'");
         Assert.assertEquals(alertMes,String.format(StakeSizeGroupNewPopup.ERROR_MES_GROUP_STAKE_RANGE_DUPLICATE,stakeRange,stakeRange,groupName).replace(".0",""),"FAILED! Error message display incorrect");
         log("INFO: Executed completely");

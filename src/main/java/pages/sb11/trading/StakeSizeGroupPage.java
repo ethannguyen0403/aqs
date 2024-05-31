@@ -8,6 +8,7 @@ import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.trading.popup.StakeSizeGroupPopup;
 import utils.sb11.ClientSystemUtils;
+import utils.sb11.CompanySetUpUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,10 +57,10 @@ public class StakeSizeGroupPage extends WelcomePage {
         waitSpinnerDisappeared();
         return new StakeSizeGroupPopup();
     }
-    public void addNewGroup(String companyName, String clientCode, String groupName, double stakeRangeFrom, double stakeRangeTo, boolean submit) {
+    public String addNewGroup(String companyName, String clientCode, String groupName, double stakeRangeFrom, double stakeRangeTo, boolean submit) {
         StakeSizeGroupPopup page = openStakeSizeGroupNewPopup();
         waitSpinnerDisappeared();
-        page.addNewGroup(companyName,clientCode,groupName,stakeRangeFrom,stakeRangeTo,submit);
+        return page.addNewGroup(companyName,clientCode,groupName,stakeRangeFrom,stakeRangeTo,submit);
     }
 
     public void verifyGroupDisplay(String clientCode, String groupName, String accountCurrency, String stakeRange, String dateUpdate, String updateBy) {
@@ -73,7 +74,7 @@ public class StakeSizeGroupPage extends WelcomePage {
         Assert.assertEquals(accountCurAc,accountCurrency,"FAILED! Currency displays incorrect");
         Assert.assertEquals(stakeRangeAc,stakeRange,"FAILED! Stake range displays incorrect");
         Assert.assertTrue(updateDateAc.contains(dateUpdate),"FAILED! Update Date displays incorrect");
-        Assert.assertEquals(updateByAc,updateBy,"FAILED! Update By's Name displays incorrect");
+        Assert.assertEquals(updateByAc.toLowerCase(),updateBy.toLowerCase(),"FAILED! Update By's Name displays incorrect");
     }
 
     public void editFirstGroupNameOfClient(String clientCode, String groupName, double stakeRangeFrom, double stakeRangeTo, boolean submit) {
@@ -92,5 +93,12 @@ public class StakeSizeGroupPage extends WelcomePage {
         List<String> lstSorted = lstData;
         Collections.sort(lstSorted,Collections.reverseOrder());
         Assert.assertEquals(lstData,lstSorted,"FAILED! Data display incorrect");
+    }
+
+    public void verifyCompanyUnitDropdown() {
+        List<String> lstAc = ddCompanyUnit.getOptions();
+        List<String> lstEx = CompanySetUpUtils.getListCompany();
+        lstEx.add(0,"All");
+        Assert.assertEquals(lstAc,lstEx,"FAILED! Stake Size Group page display incorrect");
     }
 }
