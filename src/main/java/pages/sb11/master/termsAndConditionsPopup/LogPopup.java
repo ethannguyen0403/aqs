@@ -11,17 +11,13 @@ public class LogPopup extends WelcomePage {
 
     public boolean isLogDisplay(String colName, String oldValue, String newValue, String modifiedBy, String modifiedTime) {
         int numberRow = tblData.getNumberOfRows(false,true);
-        for (int i = 1; i <= numberRow;i++){
-            String timeModified = tblData.getControlOfCell(1,tblData.getColumnIndexByName("Modified Time"),i,null).getText().trim();
-            if (timeModified.contains(modifiedTime)){
-                String attribute = tblData.getControlOfCell(1,tblData.getColumnIndexByName("Attribute"),i,null).getText().trim();
-                String from = tblData.getControlOfCell(1,tblData.getColumnIndexByName("From"),i,null).getText().trim();
-                String to = tblData.getControlOfCell(1,tblData.getColumnIndexByName("To"),i,null).getText().trim();
-                String modifyBy = tblData.getControlOfCell(1,tblData.getColumnIndexByName("Modified By"),i,null).getText().trim();
-                if (colName.equals(attribute) && from.equals(oldValue) && to.equals(newValue) && modifyBy.equals(modifiedBy)){
-                    return true;
-                }
-            }
+        String timeModified = tblData.getControlOfCell(1,tblData.getColumnIndexByName("Modified Time"),numberRow,null).getText().trim();
+        String attribute = tblData.getControlOfCell(1,tblData.getColumnIndexByName("Attribute"),numberRow,null).getText().trim();
+        String from = tblData.getControlOfCell(1,tblData.getColumnIndexByName("From"),numberRow,null).getText().trim();
+        String to = tblData.getControlOfCell(1,tblData.getColumnIndexByName("To"),numberRow,null).getText().trim();
+        String modifyBy = tblData.getControlOfCell(1,tblData.getColumnIndexByName("Modified By"),numberRow,null).getText().trim();
+        if (timeModified.contains(modifiedTime) && colName.equals(attribute) && from.equals(oldValue) && to.equals(newValue) && modifyBy.equals(modifiedBy)){
+            return true;
         }
         System.out.println("FAILED! Log is not displayed");
         return false;
