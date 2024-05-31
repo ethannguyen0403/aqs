@@ -179,8 +179,10 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         log("@Step 4: Click Edit link");
         log("@Step 5: Add new Terms and Conditions");
         log("@Step 6: Click Save button");
+        List<ArrayList<String>> lstBefore = page.tblData.getRowsWithoutHeader(1,true);
+        page.editBookieClient(clientCode,newProviderTerm,newDownlineTerm,newDownlinePayment,newSalesIncharge,newComment,true);
         log("Verify 1: New values will save correctly");
-        Assert.assertFalse(page.isClientBookieEdited(clientCode,newProviderTerm,newDownlineTerm,newDownlinePayment,newSalesIncharge,newComment,true),"FAILED! It can not edit");
+        Assert.assertTrue(page.isClientBookieEdited(lstBefore),"FAILED! It can not edit");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.4.0"})
@@ -202,8 +204,11 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         log("@Step 4: Click Edit link");
         log("@Step 5: Input/clear Terms and Conditions");
         log("@Step 6: Click X button");
+        List<ArrayList<String>> lstBefore = page.tblData.getRowsWithoutHeader(1,true);
+        page.editBookieClient(clientCode,newProviderTerm,newDownlineTerm,newDownlinePayment,newSalesIncharge,newComment,false);
+        page.waitSpinnerDisappeared();
         log("Verify 1: Edit' column will display Save & Cancel buttons");
-        Assert.assertTrue(page.isClientBookieEdited(clientCode,newProviderTerm,newDownlineTerm,newDownlinePayment,newSalesIncharge,newComment,false),"FAILED! It is edited");
+        Assert.assertFalse(page.isClientBookieEdited(lstBefore),"FAILED! It is edited");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.4.0"})
@@ -218,15 +223,25 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         log("@Step 3: Search by any client name that has inputted Terms and Conditions");
         page.filter(KASTRAKI_LIMITED,"Client",clientCode);
         log("@Step 4: Click Edit link");
+        page.clickEdit(clientCode);
         log("@Step 5: Input about 8 rows 'Terms and Conditions' text");
         log("Verify 1: The textarea will be size-adjustable and have no space restraints (the scrollbar will display)");
-        page.verifyTheScrollbarDisplay(clientCode);
+        //Provider term and Payment term column
+        page.verifyTheScrollbarDisplay(clientCode,"Provider term and Payment term");
+        //Downline term in PT column
+        page.verifyTheScrollbarDisplay(clientCode,"Downline term in PT");
+        //Downline payment term column
+        page.verifyTheScrollbarDisplay(clientCode,"Downline payment term");
+        //Sales Incharge column
+        page.verifyTheScrollbarDisplay(clientCode,"Sales Incharge");
+        //Comment column
+        page.verifyTheScrollbarDisplay(clientCode,"Comment");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.4.0"})
-    @Parameters({"clientCode","username"})
+    @Parameters({"clientCode"})
     @TestRails(id = "20220")
-    public void Term_And_Conditions_20220(String clientCode, String username){
+    public void Term_And_Conditions_20220(String clientCode){
         log("@title: Validate the Terms and Conditions >> Log dialog displays when clicked on the Log link");
         log("@pre-condition: 'Terms and Conditions' permission actives in any account");
         log("@Step 1: Login by account at precondition");
@@ -236,9 +251,8 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         page.filter(KASTRAKI_LIMITED,"Client",clientCode);
         log("@Step 4: Click Log link");
         LogPopup logPopup = page.openLog(clientCode);
-        logPopup.waitSpinnerDisappeared();
         log("Verify 1: Terms and Conditions >> Log dialog will display");
-        Assert.assertTrue(logPopup.lblTitle.getText().contains("Log"),"FAILED! Log is not displayed");
+        Assert.assertEquals(logPopup.lblTitle.getText(),"Master Terms And Conditions Log","FAILED! Log is not displayed");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.4.0"})
@@ -269,7 +283,7 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
                 "To: new value after changing\n" +
                 "Modified By\n" +
                 "Modified Time (GMT+8)");
-        logPopup.isLogDisplay(clientCode,"Provider term and Payment term",oldProviderTerm,newProviderTerm,username,modifiedTime);
+        Assert.assertTrue(logPopup.isLogDisplay("Provider term and Payment term",oldProviderTerm,newProviderTerm,username,modifiedTime));
         log("INFO: Executed completely");
     }
 }

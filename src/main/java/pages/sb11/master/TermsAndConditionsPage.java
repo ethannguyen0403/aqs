@@ -119,12 +119,12 @@ public class TermsAndConditionsPage extends WelcomePage {
         waitSpinnerDisappeared();
     }
 
-    public boolean isClientBookieEdited(String clientBookieName, String providerTerm, String downlineTerm, String downlinePayment, String saleIncharge, String comment, boolean save) {
-        List<ArrayList<String>> lstBefore = tblData.getRowsWithoutHeader(1,true);
-        editBookieClient(clientBookieName,providerTerm,downlineTerm,downlinePayment,saleIncharge,comment,save);
-        waitSpinnerDisappeared();
+    public boolean isClientBookieEdited(List<ArrayList<String>> lstBefore) {
         List<ArrayList<String>> lstAfter = tblData.getRowsWithoutHeader(1,true);
-        return lstBefore.equals(lstAfter);
+        if (lstBefore.equals(lstAfter)){
+            return false;
+        }
+        return true;
     }
 
     public void verifyEditButtonDisplay(String clientBookieName) {
@@ -134,30 +134,12 @@ public class TermsAndConditionsPage extends WelcomePage {
                 tblData.getColumnIndexByName("Edit"),"span/em[contains(@class,'text-danger')]",true,false).isDisplayed(),"FAILED! Close button is not displayed");
     }
 
-    public void verifyTheScrollbarDisplay(String clientBookieName) {
+    public void verifyTheScrollbarDisplay(String clientBookieName, String colName) {
         String newText = "Automation Testing\nAutomation Testing\nAutomation Testing\nAutomation Testing";
         int indexRow = tblData.getRowIndexContainValue(clientBookieName,clientBookieNamecol,null);
-        clickEdit(clientBookieName);
-        //Provider term and Payment term column
-        TextBox txtProviderTerm = TextBox.xpath(tblData.getxPathOfCell(1,tblData.getColumnIndexByName("Provider term and Payment term"),indexRow,"textarea"));
-        txtProviderTerm.sendKeys(newText);
-        Assert.assertTrue(Double.valueOf(txtProviderTerm.getAttribute("scrollTop")) > 0, "FAILED! Provider term and Payment term textbox does not have the scrollbar");
-        //Downline term in PT column
-        TextBox txtDownlineTerm = TextBox.xpath(tblData.getxPathOfCell(1,tblData.getColumnIndexByName("Downline term in PT"),indexRow,"textarea"));
-        txtDownlineTerm.sendKeys(newText);
-        Assert.assertTrue(Double.valueOf(txtDownlineTerm.getAttribute("scrollTop")) > 0, "FAILED! Downline term in PT textbox does not have the scrollbar");
-        //Downline payment term column
-        TextBox txtDownlinePayment = TextBox.xpath(tblData.getxPathOfCell(1,tblData.getColumnIndexByName("Downline payment term"),indexRow,"textarea"));
-        txtDownlinePayment.sendKeys(newText);
-        Assert.assertTrue(Double.valueOf(txtDownlinePayment.getAttribute("scrollTop")) > 0, "FAILED! Downline payment term textbox does not have the scrollbar");
-        //Sales Incharge column
-        TextBox txtSaleIncharge = TextBox.xpath(tblData.getxPathOfCell(1,tblData.getColumnIndexByName("Sales Incharge"),indexRow,"textarea"));
-        txtSaleIncharge.sendKeys(newText);
-        Assert.assertTrue(Double.valueOf(txtSaleIncharge.getAttribute("scrollTop")) > 0, "FAILED! Sales Incharge textbox does not have the scrollbar");
-        //Comment column
-        TextBox txtComment = TextBox.xpath(tblData.getxPathOfCell(1,tblData.getColumnIndexByName("Comment"),indexRow,"textarea"));
-        txtComment.sendKeys(newText);
-        Assert.assertTrue(Double.valueOf(txtComment.getAttribute("scrollTop")) > 0, "FAILED! Comment textbox does not have the scrollbar");
+        TextBox txtOfClient = TextBox.xpath(tblData.getxPathOfCell(1,tblData.getColumnIndexByName(colName),indexRow,"textarea"));
+        txtOfClient.sendKeys(newText);
+        Assert.assertTrue(Double.valueOf(txtOfClient.getAttribute("scrollTop")) > 0, "FAILED! "+colName+" textbox does not have the scrollbar");
     }
 
     public String getValueOfClientBookie(String clientBookieName, String colName) {
@@ -168,6 +150,7 @@ public class TermsAndConditionsPage extends WelcomePage {
     public LogPopup openLog(String clientBookieName) {
         tblData.getControlBasedValueOfDifferentColumnOnRow(clientBookieName,1,clientBookieNamecol,1,null,
                 tblData.getColumnIndexByName("Log"),null,true,false).click();
+        waitSpinnerDisappeared();
         waitSpinnerDisappeared();
         return new LogPopup();
     }
