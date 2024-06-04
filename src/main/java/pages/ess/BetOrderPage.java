@@ -32,8 +32,8 @@ public class BetOrderPage extends HomePage {
     public Table tbPending = Table.xpath("//div[contains(@class, 'PENDING')]//following::table[1]", 9);
     public Table tbConfirm = Table.xpath("//div[contains(@class, 'CONFIRM')]//following::table[1]", 9);
     public Table tbCancelled = Table.xpath("//div[contains(@class, 'CANCELLED')]//following::table[1]", 9);
-    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
-    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
+    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
+    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
     public CheckBox cbAutoRefresh = CheckBox.id("defaultCheck1");
     private int colNo =1;
     private int colSelection =2;
