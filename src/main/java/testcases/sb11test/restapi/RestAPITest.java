@@ -40,7 +40,7 @@ public class RestAPITest extends BaseCaseAQS {
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(provider,dateMAP);
+        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET,provider,dateMAP);
         EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Place log");
         List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
@@ -94,7 +94,7 @@ public class RestAPITest extends BaseCaseAQS {
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(provider,dateMAP);
+        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET,provider,dateMAP);
         EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Place betlog");
         List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
@@ -147,7 +147,7 @@ public class RestAPITest extends BaseCaseAQS {
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(provider,dateMAP);
+        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET,provider,dateMAP);
         EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Place bet");
         Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("OverUnder").marketType("OverUnder").runs(1.00).selection("Over").sport(sportName)
@@ -196,7 +196,7 @@ public class RestAPITest extends BaseCaseAQS {
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(provider,dateMAP);
+        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET,provider,dateMAP);
         EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Place bet");
         List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
@@ -250,7 +250,7 @@ public class RestAPITest extends BaseCaseAQS {
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(provider,dateMAP);
+        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET,provider,dateMAP);
         EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Set Result of Event");
         ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
@@ -300,7 +300,7 @@ public class RestAPITest extends BaseCaseAQS {
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(provider,dateMAP);
+        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET,provider,dateMAP);
         EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Set Result of Event");
         ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
@@ -352,7 +352,7 @@ public class RestAPITest extends BaseCaseAQS {
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(provider,dateMAP);
+        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET,provider,dateMAP);
         EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Set Result of Event");
         ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");

@@ -15,8 +15,8 @@ import java.util.Objects;
 import static testcases.BaseCaseAQS.environment;
 
 public class EventMapping {
-    private static JSONObject filterInfor(String date, String provider){
-        String json = String.format("{\"date\":\"%s\",\"leagueName\":\"\",\"eventName\":\"\",\"providerLeagueName\":\"\",\"providerEventName\":\"\",\"filter\":true,\"unmap\":true,\"mapped\":true,\"sport\":\"Cricket\",\"provider\":\"%s\",\"providerEventDate\":\"%s\",\"timeZone\":\"Asia/Bangkok\"}", date, provider, date);
+    private static JSONObject filterInfor(String date,String sportName, String provider){
+        String json = String.format("{\"date\":\"%s\",\"leagueName\":\"\",\"eventName\":\"\",\"providerLeagueName\":\"\",\"providerEventName\":\"\",\"filter\":true,\"unmap\":true,\"mapped\":true,\"sport\":\"%s\",\"provider\":\"%s\",\"providerEventDate\":\"%s\",\"timeZone\":\"Asia/Bangkok\"}", date, sportName, provider, date);
         String api = String.format("%saqs-agent-service/event-mapping/list",environment.getSbpLoginURL());
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
         Map<String, String> headers = new HashMap<String, String>()
@@ -34,7 +34,7 @@ public class EventMapping {
         JSONObject jsonObject = null;
         String eventID = null;
         try {
-            jsonObject = filterInfor(date, provider);
+            jsonObject = filterInfor(date, event.getSportName(), provider);
         } catch (Exception e) {
             e.getMessage();
         }
@@ -54,11 +54,11 @@ public class EventMapping {
         }
         return eventID;
     }
-    public static Event getFirstProviderEvent(String provider, String date){
+    public static Event getFirstProviderEvent(String sportName, String provider, String date){
         JSONObject jsonObject = null;
         Event event = null;
         try {
-            jsonObject = filterInfor(date, provider);
+            jsonObject = filterInfor(date, sportName,provider);
         } catch (Exception e) {
             e.getMessage();
         }

@@ -310,7 +310,7 @@ public class CricketSportTest extends BaseCaseAQS {
         }
     }
     @TestRails(id = "66")
-    @Test(groups = {"regression","2023.11.30","ethan"})
+    @Test(groups = {"regression","2023.11.30","ethan3.0"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void Cricket_Sport_66 (String accountCode, String accountCurrency, String emailAddress, String clientCode) throws InterruptedException, IOException {
         log("Validate 1x2 back bets settled correctly");
@@ -334,51 +334,11 @@ public class CricketSportTest extends BaseCaseAQS {
         event.setEventId(eventID);
         try {
             ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
-            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
-            CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-            log("@Step 3: Select the league >> input an account code >> click Show");
-            cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
-            log("@Step 4: Click …. at selection Draw");
-            List<Order> lstOrder = new ArrayList<>();
-            Order order = new Order.Builder()
-                    .sport(event.getSportName())
-                    .isNegativeHdp(false)
-                    .price(2.00)
-                    .requireStake(100)
-                    .oddType("HK")
-                    .betType("Back")
-                    .accountCode(accountCode)
-                    .accountCurrency(accountCurrency)
-                    .marketType("1x2")
-                    .selection(event.getHome())
-                    .isLive(false)
-                    .home(event.getHome())
-                    .away((event.getAway()))
-                    .event(event)
-                    .build();
-            Order order1 = new Order.Builder()
-                    .sport(event.getSportName())
-                    .isNegativeHdp(false)
-                    .price(2.00)
-                    .requireStake(100)
-                    .oddType("HK")
-                    .betType("Back")
-                    .accountCode(accountCode)
-                    .accountCurrency(accountCurrency)
-                    .marketType("1x2")
-                    .selection(event.getAway())
-                    .isLive(false)
-                    .home(event.getHome())
-                    .away(event.getAway())
-                    .event(event)
-                    .build();
-            lstOrder.add(order);
-            lstOrder.add(order1);
-            cricketBetEntryPage.placeBet(order,true);
-            cricketBetEntryPage.placeBet(order1,true);
-            lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+            List<Order> lstOrder = welcomePage.placeBetAPI(CRICKET,date,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",2.00,0,"HK",100,"BACK",false,"");
+            lstOrder.get(0).setMarketType("1x2");
+            lstOrder.add(welcomePage.placeBetAPI(CRICKET,date,event,accountCode,"MatchBetting","MatchBetting",event.getAway(),"FullTime",2.00,0,"HK",100,"BACK",false,"").get(0));
             log("@Step 1: Go to Confirm Bets");
-            ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+            ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
             confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
             confirmBetsPage.confirmMultipleBets(lstOrder);
             log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
@@ -390,10 +350,10 @@ public class CricketSportTest extends BaseCaseAQS {
             Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(0)),"200");
             Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(1)),"-100");
             log("@Step 3: Select the bets >> click Settle and Send Settlement Email");
-            betSettlementPage.settleAndSendSettlementEmail(order);
+            betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
             log("Verify 2: Bets disappear from Confirm and move to the Settled section.");
             betSettlementPage.filter("Settled", date, "","", accountCode);
-            betSettlementPage.verifyOrderInfo(order);
+            betSettlementPage.verifyOrderInfo(lstOrder.get(0));
 
             List<ArrayList<String>> emailInfo = betSettlementPage.getFirstActiveMailBox("https://yopmail.com/",emailAddress);
             List<String> expectedRow1 = Arrays.asList("Member Code: "+accountCode,"Member Name: "+accountCode);
@@ -412,7 +372,7 @@ public class CricketSportTest extends BaseCaseAQS {
         }
     }
     @TestRails(id = "67")
-    @Test(groups = {"regression","2023.11.30","ethan"})
+    @Test(groups = {"regression","2023.11.30","ethan3.0"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void Cricket_Sport_67 (String accountCode, String accountCurrency, String emailAddress, String clientCode) throws InterruptedException, IOException {
         log("Validate 1x2 lay bets settled correctly");
@@ -438,54 +398,14 @@ public class CricketSportTest extends BaseCaseAQS {
             event.setEventId(eventID);
             welcomePage.waitSpinnerDisappeared();
             ResultEntryUtils.setResultCricket(event,"SETTLED","Away Win");
-            log("@Step 1: Select the league >> input an account code >> click Show");
-            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
-            CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-            cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
-            log("@Step 2: Click …. at selection Draw");
-            List<Order> lstOrder = new ArrayList<>();
-            Order order = new Order.Builder()
-                    .sport(event.getSportName())
-                    .isNegativeHdp(false)
-                    .price(2.00)
-                    .requireStake(100)
-                    .oddType("HK")
-                    .betType("Back")
-                    .accountCode(accountCode)
-                    .accountCurrency(accountCurrency)
-                    .marketType("1x2")
-                    .selection(event.getHome())
-                    .isLive(false)
-                    .home(event.getHome())
-                    .away((event.getAway()))
-                    .event(event)
-                    .build();
-            Order order1 = new Order.Builder()
-                    .sport(event.getSportName())
-                    .isNegativeHdp(false)
-                    .price(2.00)
-                    .requireStake(100)
-                    .oddType("HK")
-                    .betType("Back")
-                    .accountCode(accountCode)
-                    .accountCurrency(accountCurrency)
-                    .marketType("1x2")
-                    .selection(event.getAway())
-                    .isLive(false)
-                    .home(event.getHome())
-                    .away(event.getAway())
-                    .event(event)
-                    .build();
-            lstOrder.add(order);
-            lstOrder.add(order1);
-            cricketBetEntryPage.placeBet(order,true);
-            cricketBetEntryPage.placeBet(order1,true);
-            lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-            log("@Step 3: Go to Confirm Bets");
-            ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+            List<Order> lstOrder = welcomePage.placeBetAPI(CRICKET,date,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",2.00,0,"HK",100,"BACK",false,"");
+            lstOrder.get(0).setMarketType("1x2");
+            lstOrder.add(welcomePage.placeBetAPI(CRICKET,date,event,accountCode,"MatchBetting","MatchBetting",event.getAway(),"FullTime",2.00,0,"HK",100,"BACK",false,"").get(0));
+            log("@Step 1: Go to Confirm Bets");
+            ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
             confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
             confirmBetsPage.confirmMultipleBets(lstOrder);
-            log("@Step 4: Go to Bet Settlement >> search the account >> observe the win/lose amount");
+            log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
             BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
             Thread.sleep(5000);
             betSettlementPage.filter("Confirmed",date,"","",accountCode);
@@ -494,11 +414,11 @@ public class CricketSportTest extends BaseCaseAQS {
             Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(0)),"-100");
             Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(1)),"200");
             log("@Step 3: Select the bets >> click Settle and Send Settlement Email");
-            betSettlementPage.settleAndSendSettlementEmail(order);
+            betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
             Thread.sleep(5000);
             log("Verify 2: Bets disappear from Confirm and move to the Settled section.");
             betSettlementPage.filter("Settled", date, "","", accountCode);
-            betSettlementPage.verifyOrderInfo(order);
+            betSettlementPage.verifyOrderInfo(lstOrder.get(0));
             List<ArrayList<String>> emailInfo = betSettlementPage.getFirstActiveMailBox("https://yopmail.com/",emailAddress);
             List<String> expectedRow1 = Arrays.asList("Member Code: "+accountCode,"Member Name: "+accountCode);
             log("@Verify 3 .Information of Description, Selection, HDP, Live, Price, Stake, Win/Lose, Type, Date, Total Win, C/F (displayed), Balance show correctly");
@@ -1002,7 +922,7 @@ public class CricketSportTest extends BaseCaseAQS {
         }
     }
     @TestRails(id = "249")
-    @Test(groups = {"regression","2023.11.30","ethan"})
+    @Test(groups = {"regression","2023.11.30","ethan3.0"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void Cricket_Sport_249 (String accountCode, String accountCurrency, String emailAddress, String clientCode) throws InterruptedException, IOException {
         log("Validate bet that placed on market Odd/Even settled correctly");
@@ -1030,51 +950,11 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketResultEntryPage.goToSport(sportName);
             cricketResultEntryPage.filterResult("Normal",date,leagueName,"KOT","All",true);
             cricketResultEntryPage.submitEvent(event,"","","205","5","6","5",ResultEntry.RESULT_TYPE.get(1));
-            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
-            CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-            log("@Step 3: Select the league >> input an account code >> click Show");
-            cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
-            log("@Step 4: Click …. at selection Draw");
-            List<Order> lstOrder = new ArrayList<>();
-            Order order = new Order.Builder()
-                    .sport(event.getSportName())
-                    .isNegativeHdp(false)
-                    .price(2.00)
-                    .requireStake(100)
-                    .oddType("HK")
-                    .betType("Back")
-                    .accountCode(accountCode)
-                    .accountCurrency(accountCurrency)
-                    .marketType("OE")
-                    .selection("Odd")
-                    .isLive(false)
-                    .home(event.getHome())
-                    .away((event.getAway()))
-                    .event(event)
-                    .build();
-            Order order1 = new Order.Builder()
-                    .sport(event.getSportName())
-                    .isNegativeHdp(false)
-                    .price(2.00)
-                    .requireStake(100)
-                    .oddType("HK")
-                    .betType("Back")
-                    .accountCode(accountCode)
-                    .accountCurrency(accountCurrency)
-                    .marketType("OE")
-                    .selection("Even")
-                    .isLive(false)
-                    .home(event.getHome())
-                    .away(event.getAway())
-                    .event(event)
-                    .build();
-            lstOrder.add(order);
-            lstOrder.add(order1);
-            cricketBetEntryPage.placeBet(order,true);
-            cricketBetEntryPage.placeBet(order1,true);
-            lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+            List<Order> lstOrder = cricketResultEntryPage.placeBetAPI(CRICKET,date,event,accountCode,"OddEven","OddEven","Odd","FullTime",2.00,0,"HK",100,"BACK",false,"");
+            lstOrder.get(0).setMarketType("OE");
+            lstOrder.add(cricketResultEntryPage.placeBetAPI(CRICKET,date,event,accountCode,"OddEven","OddEven","Even","FullTime",2.00,0,"HK",100,"BACK",false,"").get(0));
             log("@Step 1: Go to Confirm Bets");
-            ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+            ConfirmBetsPage confirmBetsPage = cricketResultEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
             confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
             confirmBetsPage.confirmMultipleBets(lstOrder);
             log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
@@ -1126,7 +1006,7 @@ public class CricketSportTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id = "251")
-    @Test(groups = {"regression","2023.11.30","ethan"})
+    @Test(groups = {"regression","2023.11.30","ethan3.0"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void Cricket_Sport_251 (String accountCode, String accountCurrency, String emailAddress, String clientCode) throws InterruptedException, IOException {
         log("Validate bet that placed on market Over/Under settled correctly");
@@ -1154,53 +1034,11 @@ public class CricketSportTest extends BaseCaseAQS {
             cricketResultEntryPage.goToSport(sportName);
             cricketResultEntryPage.filterResult("Normal",date,leagueName,"KOT","All",true);
             cricketResultEntryPage.submitEvent(event,"","","205","5","5","5",ResultEntry.RESULT_TYPE.get(1));
-            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
-            CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-            log("@Step 3: Select the league >> input an account code >> click Show");
-            cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
-            log("@Step 4: Click …. at selection");
-            List<Order> lstOrder = new ArrayList<>();
-            Order order = new Order.Builder()
-                    .sport(event.getSportName())
-                    .isNegativeHdp(false)
-                    .price(2.00)
-                    .requireStake(100)
-                    .runs(100)
-                    .oddType("HK")
-                    .betType("Back")
-                    .accountCode(accountCode)
-                    .accountCurrency(accountCurrency)
-                    .marketType("OU")
-                    .selection("Over")
-                    .isLive(false)
-                    .home(event.getHome())
-                    .away((event.getAway()))
-                    .event(event)
-                    .build();
-            Order order1 = new Order.Builder()
-                    .sport(event.getSportName())
-                    .isNegativeHdp(false)
-                    .price(2.00)
-                    .requireStake(100)
-                    .runs(100)
-                    .oddType("HK")
-                    .betType("Back")
-                    .accountCode(accountCode)
-                    .accountCurrency(accountCurrency)
-                    .marketType("OU")
-                    .selection("Under")
-                    .isLive(false)
-                    .home(event.getHome())
-                    .away(event.getAway())
-                    .event(event)
-                    .build();
-            lstOrder.add(order);
-            lstOrder.add(order1);
-            cricketBetEntryPage.placeBet(order,true);
-            cricketBetEntryPage.placeBet(order1,true);
-            lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
+            List<Order> lstOrder = welcomePage.placeBetAPI(CRICKET,date,event,accountCode,"OverUnder","OverUnder","Over","FullTime",2.00,100,"HK",100,"BACK",false,"");
+            lstOrder.get(0).setMarketType("OU");
+            lstOrder.add(welcomePage.placeBetAPI(CRICKET,date,event,accountCode,"OverUnder","OverUnder","Under","FullTime",2.00,100,"HK",100,"BACK",false,"").get(0));
             log("@Step 1: Go to Confirm Bets");
-            ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+            ConfirmBetsPage confirmBetsPage = cricketResultEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
             confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
             confirmBetsPage.confirmMultipleBets(lstOrder);
             log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
@@ -1274,7 +1112,7 @@ public class CricketSportTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id = "175")
-    @Test(groups = {"regression","2023.11.30","ethan"})
+    @Test(groups = {"regression","2023.11.30","ethan3.0"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void Cricket_Sport_175 (String accountCode, String accountCurrency, String emailAddress, String clientCode) throws InterruptedException, IOException {
         log("Validate bet that placed on market DNB settled correctly");
@@ -1300,54 +1138,14 @@ public class CricketSportTest extends BaseCaseAQS {
         welcomePage.waitSpinnerDisappeared();
         try {
             ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
-            BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
-            CricketBetEntryPage cricketBetEntryPage = betEntryPage.goToCricket();
-            log("@Step 1: Select the league >> input an account code >> click Show");
-            cricketBetEntryPage.showLeague(KASTRAKI_LIMITED,date,event.getLeagueName());
-            log("@Step 2: Click …. at selection Draw");
-            List<Order> lstOrder = new ArrayList<>();
-            Order order = new Order.Builder()
-                    .sport(event.getSportName())
-                    .isNegativeHdp(false)
-                    .price(2.00)
-                    .requireStake(100)
-                    .oddType("HK")
-                    .betType("Back")
-                    .accountCode(accountCode)
-                    .accountCurrency(accountCurrency)
-                    .marketType("DNB")
-                    .selection(event.getHome())
-                    .isLive(false)
-                    .home(event.getHome())
-                    .away((event.getAway()))
-                    .event(event)
-                    .build();
-            Order order1 = new Order.Builder()
-                    .sport(event.getSportName())
-                    .isNegativeHdp(false)
-                    .price(2.00)
-                    .requireStake(100)
-                    .oddType("HK")
-                    .betType("Back")
-                    .accountCode(accountCode)
-                    .accountCurrency(accountCurrency)
-                    .marketType("DNB")
-                    .selection(event.getAway())
-                    .isLive(false)
-                    .home(event.getHome())
-                    .away(event.getAway())
-                    .event(event)
-                    .build();
-            lstOrder.add(order);
-            lstOrder.add(order1);
-            cricketBetEntryPage.placeBet(order,true);
-            cricketBetEntryPage.placeBet(order1,true);
-            lstOrder = BetEntrytUtils.setOrderIdBasedBetrefIDForListOrder(lstOrder);
-            log("@Step 3: Go to Confirm Bets");
-            ConfirmBetsPage confirmBetsPage = cricketBetEntryPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
+            List<Order> lstOrder = welcomePage.placeBetAPI(CRICKET,date,event,accountCode,"DrawNoBet","DrawNoBet",event.getHome(),"FullTime",2.00,0,"HK",100,"BACK",false,"");
+            lstOrder.get(0).setMarketType("DNB");
+            lstOrder.add(welcomePage.placeBetAPI(CRICKET,date,event,accountCode,"DrawNoBet","DrawNoBet",event.getAway(),"FullTime",2.00,0,"HK",100,"BACK",false,"").get(0));
+            log("@Step 1: Go to Confirm Bets");
+            ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
             confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",event.getSportName(),"All","Specific Date",date,"",accountCode);
             confirmBetsPage.confirmMultipleBets(lstOrder);
-            log("@Step 4: Go to Bet Settlement >> search the account >> observe the win/lose amount");
+            log("@Step 2: Go to Bet Settlement >> search the account >> observe the win/lose amount");
             BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING,BET_SETTLEMENT,BetSettlementPage.class);
             Thread.sleep(5000);
             betSettlementPage.filter("Confirmed",date,"","",accountCode);
@@ -1355,7 +1153,7 @@ public class CricketSportTest extends BaseCaseAQS {
                     "Bet 2 : Win/Lose = -50");
             Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(0)),"200");
             Assert.assertEquals(betSettlementPage.getWinlossAmountofOrder(lstOrder.get(1)),"-100");
-            log("@Step 5: Select the bets >> click Settle and Send Settlement Email");
+            log("@Step 3: Select the bets >> click Settle and Send Settlement Email");
             betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
             log("Verify 2: Bets disappear from Confirm and move to the Settled section.");
             betSettlementPage.filter("Settled", date, "","", accountCode);

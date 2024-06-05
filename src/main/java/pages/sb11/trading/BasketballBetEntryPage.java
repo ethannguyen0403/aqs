@@ -19,7 +19,7 @@ public class BasketballBetEntryPage extends WelcomePage {
 
     public Label lblAccountCode = Label.xpath("//label[contains(text(),'Account Code')]");
     private TextBox txtAccCode = TextBox.id("account-code");
-    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bet-entry-header//label[contains(text(),'Company Unit')]/following::select[1]");
+    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//app-bet-entry-header//label[contains(text(),'Company Unit')]/following-sibling::select[1]");
     public DropDownBox ddpLeague = DropDownBox.id("league");
     public DropDownBox ddpSearchBy = DropDownBox.xpath("//select[@class='form-control']");
     private TextBox txtDate = TextBox.xpath("//app-bet-entry-header//input[@name='fromDate']");

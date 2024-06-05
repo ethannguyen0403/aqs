@@ -252,7 +252,7 @@ public class BetSettlementPage extends WelcomePage {
         }else {
             expectedBetType = "MB";
         }
-        if (!SBPConstants.CRICKET_MARKET_TYPE_NO_LIVE.contains(order.getMarketType())){
+        if (order.isLive()){
             Assert.assertEquals(hdp,expectedHDP, "Failed! HDP at row "+rowindex+" is incorrect");
         }
         Assert.assertEquals(odds,String.format("%.3f (%s)", order.getPrice(),order.getOddType()), "Failed! Odds at row "+rowindex+" is incorrect");

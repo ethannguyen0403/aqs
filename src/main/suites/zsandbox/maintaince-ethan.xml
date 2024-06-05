@@ -43,10 +43,12 @@
             <class name="testcases.sb11test.soccer.BBGTest"/>
             <class name="testcases.sb11test.soccer.BBTTest"/>
             <class name="testcases.sb11test.soccer.OverUnderLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
 
             <class name="testcases.sb11test.accounting.CompanySetupTest"/>
             <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
 
+            <class name="testcases.sb11test.trading.CricketSportTest"/>
             <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
 
             <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
