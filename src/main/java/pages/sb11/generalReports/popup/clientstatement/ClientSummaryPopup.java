@@ -131,6 +131,7 @@ public class ClientSummaryPopup extends WelcomePage {
             lblWinlose = Label.xpath(tblSummary.getxPathOfCell(1,colWinLose,i,null) + "//a");
             if(lblAccountCode.getText().equalsIgnoreCase(accountCode)){
                 lblWinlose.click();
+                waitSpinnerDisappeared();
                 DriverManager.getDriver().switchToWindow();
                 return new ClientSummaryWinlosePopup();
             }

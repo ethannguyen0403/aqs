@@ -3,6 +3,7 @@ package pages.sb11.soccer;
 import com.paltech.driver.DriverManager;
 import com.paltech.element.common.*;
 import com.paltech.utils.DoubleUtils;
+import common.SBPConstants;
 import controls.DateTimePicker;
 import controls.Table;
 import org.testng.Assert;
@@ -12,6 +13,8 @@ import pages.sb11.soccer.popup.spp.SmartGroupPopup;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static common.SBPConstants.SPORT_LIST_ALL;
 
 public class SPPPage extends WelcomePage {
     public Label lblTitle = Label.xpath("//div[contains(@class,'main-box-header')]//span[1]");
@@ -258,5 +261,26 @@ public class SPPPage extends WelcomePage {
             totalStake += stake;
         }
         return Math.round(totalStake);
+    }
+
+    public void verifyUI() {
+        System.out.println("Company Unit, Report By, Punter Type, Smart Master, Smart Agent, From Date, To Date and Show button");
+        Assert.assertEquals(ddSport.getOptions(),SPORT_LIST_ALL,"Failed! Sport dropdown is not displayed");
+        Assert.assertTrue(ddpReportBy.getOptions().contains("Group"),"Failed! Report By dropdown is not displayed");
+        Assert.assertTrue(ddpPunterType.getOptions().contains("Smart Group"),"Failed! Punter Type dropdown is not displayed");
+        Assert.assertTrue(ddpSmartMaster.getOptions().contains("QA Smart Master"),"Failed! Smart Master dropdown is not displayed");
+        Assert.assertTrue(ddpSmartAgent.getOptions().contains("QA Smart Agent"),"Failed! Smart Agent dropdown is not displayed");
+        Assert.assertEquals(lblFromDate.getText(),"From Date","Failed! From Date datetime picker is not displayed");
+        Assert.assertEquals(lblToDate.getText(),"To Date","Failed! To Date datetime picker is not displayed");
+        System.out.println("Show Tax Amount, Show Bet Types, Show Leagues, Smart Group, Order By Win%, Reset All Filters and More Filters");
+        Assert.assertEquals(lblShowTaxAmount.getText(),"Show Tax Amount","Failed! Show Tax Amount checkbox is not displayed");
+        Assert.assertTrue(btnShowBetTypes.getText().contains("Show Bet Types"),"Failed! Show Bet Types button is not displayed");
+        Assert.assertTrue(btnShowLeagues.getText().contains("Show Leagues"),"Failed! Show Leagues button is not displayed");
+        Assert.assertTrue(btnSmartGroup.getText().contains("Smart Group"),"Failed! Smart Group button is not displayed");
+        Assert.assertEquals(btnReset.getText(),"Reset All Filters","Failed! Reset button is not displayed");
+        Assert.assertEquals(btnMoreFilters.getText(),"More Filters","Failed! More Filters button is not displayed");
+        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");
+        System.out.println("SPP table header columns is correctly display");
+        Assert.assertEquals(tblSPP.getHeaderNameOfRows(), SBPConstants.SPPPage.TABLE_HEADER,"FAILED! SPP Bets table header is incorrect display");
     }
 }

@@ -261,6 +261,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
         Link lblBetListIcon =(Link)tblEvent.getControlOfCell(1,colSPB, rowIndex,"span");
         lblBetListIcon.waitForElementToBePresent(lblBetListIcon.getLocator(),1);
         lblBetListIcon.click();
+        waitSpinnerDisappeared();
         BetListPopup soccerBetListPopup = new BetListPopup();
         soccerBetListPopup.icRefresh.isDisplayed();
         return soccerBetListPopup;

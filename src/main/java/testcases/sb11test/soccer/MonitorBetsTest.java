@@ -20,6 +20,7 @@ import testcases.BaseCaseAQS;
 import utils.sb11.BetEntrytUtils;
 import utils.sb11.BetSettlementUtils;
 import utils.sb11.GetSoccerEventUtils;
+import utils.sb11.RoleManagementUtils;
 import utils.testraildemo.TestRails;
 
 import java.awt.*;
@@ -38,6 +39,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     public void MonitorBetsTC_50(String password, String userNameOneRole) throws Exception {
         log("@title: Validate accounts without permission cannot see the 'Monitor Bets' menu");
         log("@Pre-condition: Account is inactivated permission 'Monitor Bets'");
+        RoleManagementUtils.updateRolePermission("one role","Monitor Bets","INACTIVE");
         log("@Step 1: Navigate to the site");
         log("@Step 2: Check menu item 'Monitor Bets' under menu 'Soccer'");
         LoginPage loginPage = welcomePage.logout();
@@ -53,6 +55,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@title: Validate accounts without permission cannot access 'Monitor Bets' page");
         String monitorBetsPageUrl = environment.getSbpLoginURL() + "#/aqs-report/monitor-bets";
         log("@Pre-condition: Account is inactivated permission 'Monitor Bets'");
+        RoleManagementUtils.updateRolePermission("one role","Monitor Bets","INACTIVE");
         log("@Step 1: Navigate to the site");
         log("@Step 2: Trying to access page by using url:");
         LoginPage loginPage = welcomePage.logout();
@@ -574,27 +577,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Step 2: Access Sport > Monitor Bets");
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("Validate UI on BL Settings is correctly displayed");
-        log("Smart Type, Punter Type, Bet Placed In, Bet Count, Live/NonLive, Currency, Stake");
-        Assert.assertEquals(monitorBetsPage.ddpSport.getOptions(),MonitorBets.SPORT_LIST,"Failed! Dropdown Sport is not displayed");
-        Assert.assertEquals(monitorBetsPage.ddpSmartType.getOptions(), MonitorBets.SMART_TYPE_LIST,"Failed! Dropdown Smart Type is not displayed");
-        Assert.assertEquals(monitorBetsPage.ddpPunterType.getOptions(),MonitorBets.PUNTER_TYPE_LIST,"Failed! Dropdown Punter Type is not displayed");
-        Assert.assertEquals(monitorBetsPage.ddpBetPlacedIN.getOptions(),MonitorBets.BET_PLACED_IN,"Failed! Dropdown Bet Placed In is not displayed");
-        Assert.assertEquals(monitorBetsPage.ddpBetCount.getOptions(),MonitorBets.BET_COUNT,"Failed! Dropdown Bet Count is not displayed");
-        Assert.assertEquals(monitorBetsPage.ddpLRBRule.getOptions().get(0),"[LRB-Rule]","Failed! Dropdown LRB-Rule is not displayed");
-        Assert.assertEquals(monitorBetsPage.lblTodayEvent.getText(),"Today Event(s)","Failed! Today Events(s) checkbox is not displayed");
-        Assert.assertEquals(monitorBetsPage.ddpLiveNonLive.getOptions(),LIVE_NONLIVE_LIST,"Failed! Dropdown Live/NonLive is not displayed");
-        Assert.assertEquals(monitorBetsPage.ddpCurrency.getOptions(),CURRENCY_LIST,"Failed! Dropdown Currency is not displayed");
-        Assert.assertEquals(monitorBetsPage.ddpStake.getOptions(),STAKE_LIST_ALL,"Failed! Dropdown Stake is not displayed");
-        log("Show Bet Types, Show Masters, Show Traders, Show Leagues, Show Events, Reset All Filters and Show button");
-        Assert.assertTrue(monitorBetsPage.lblShowBetType.isDisplayed(),"Failed! Show Bet Types label is not displayed");
-        Assert.assertTrue(monitorBetsPage.lblShowLeagues.isDisplayed(),"Failed! Show Leagues label is not displayed");
-        Assert.assertTrue(monitorBetsPage.lblShowMaster.isDisplayed(),"Failed! Show Masters label is not displayed");
-        Assert.assertTrue(monitorBetsPage.lblShowEvents.isDisplayed(),"Failed! Show Events label is not displayed");
-        Assert.assertTrue(monitorBetsPage.lblShowTraders.isDisplayed(),"Failed! Show Traders label is not displayed");
-        Assert.assertTrue(monitorBetsPage.lblResetAllFilters.isDisplayed(),"Failed! Reset All Filters label is not displayed");
-        Assert.assertEquals(monitorBetsPage.btnShow.getText(),"Show","Failed! Show button is not displayed");
-        log("Validate Monitor Bets table header columns is correctly display");
-        Assert.assertEquals(monitorBetsPage.tblOrder.getHeaderNameOfRows(), MonitorBets.TABLE_HEADER,"FAILED! Monitor Bets table header is incorrect display");
+        monitorBetsPage.verifyUI();
         log("INFO: Executed completely");
     }
 

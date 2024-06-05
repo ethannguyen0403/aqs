@@ -44,6 +44,7 @@
             <class name="testcases.sb11test.soccer.BBTTest"/>
             <class name="testcases.sb11test.soccer.OverUnderLiabilityTest"/>
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
+            <class name="testcases.sb11test.soccer.SPPTest"/>
 
             <class name="testcases.sb11test.accounting.CompanySetupTest"/>
             <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
@@ -59,7 +60,6 @@
             <class name="testcases.sb11test.financialReports.TrialBalanceTest"/>
             <class name="testcases.sb11test.financialReports.StockholdersEquityTest"/>
             <class name="testcases.sb11test.financialReports.IncomeStatementTest"/>
-
         </classes>
     </test>
 </suite>

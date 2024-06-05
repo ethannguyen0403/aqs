@@ -1073,6 +1073,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 1: Login with valid account");
         log("@Step 2: Click General Reports > Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         log("@Step 3: Filter ledger statement with data: ");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Income", LEDGER_GROUP_NAME_INCOME, fromDate, toDate, REPORT_TYPE.get(1));
         log("@Verify 1: Validate running Bal of Total in HKD at Amounts are shown in HKD section should be 0");
@@ -1210,6 +1211,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         closingJournalEntriesPage.performCJE(KASTRAKI_LIMITED,"",true);
         log("@Step 12: Back to General Reports >> Ledger Statement page");
         ledgerStatementPage = closingJournalEntriesPage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         log("@Step 13: Filter data as step #2");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Capital",ledgerGroup,fromDate,toDate,"After CJE");
         log("@Verify 1: Running Bal. in 'Amounts are shown in HKD' column = (A) + [(B) -(C)]");
@@ -1275,6 +1277,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         closingJournalEntriesPage.performCJE(KASTRAKI_LIMITED,"",true);
         log("@Step 12: Back to General Reports >> Ledger Statement page");
         ledgerStatementPage = closingJournalEntriesPage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
+        ledgerStatementPage.waitSpinnerDisappeared();
         log("@Step 13: Filter data as step #2");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED,"","Capital",ledgerGroup,fromDate,toDate,"After CJE");
         log("@Verify 1: Running Bal. in 'Amounts are shown in HKD' column = (A) + [(B) -(C)]");
