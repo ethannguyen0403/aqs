@@ -13,7 +13,7 @@
         <parameter name='isProxy' value='false'/>
         <parameter name='username' value='AutoQC'/>
         <parameter name='password' value='p8PEjV0gJOnWf9U0aEgGEA=='/>
-        <parameter name='isAddTestRailResult' value='true'/>
+        <parameter name='isAddTestRailResult' value='false'/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
         <parameter name="accountCode" value="Auto-Account01"/>
