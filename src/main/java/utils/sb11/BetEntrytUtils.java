@@ -37,7 +37,8 @@ public class BetEntrytUtils {
      * @return the list api order
      */
     private static JSONArray getOrderofEventJson(String eventid){
-        String api = String.format("%saqs-bet-entry/entry-bet/bet-log?eventId=%s",environment.getSbpLoginURL(),eventid);
+//        String api = String.format("%saqs-bet-entry/entry-bet/bet-log?eventId=%s",environment.getSbpLoginURL(),eventid);
+        String api = String.format("%saqs-bet-entry/entry-bet/v2/bet-log?eventId=%s",environment.getSbpLoginURL(),eventid);
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
         Map<String, String> headers = new HashMap<String, String>()
         {
