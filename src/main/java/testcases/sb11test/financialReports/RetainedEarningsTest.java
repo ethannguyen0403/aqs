@@ -98,7 +98,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     }
 
     @TestRails(id="2819")
-    @Test(groups =  {"regression", "2023.10.31","ethan"})
+    @Test(groups =  {"regression", "2023.10.31","ethan3.0"})
     public void Retained_Earnings_TC2819() {
         String detailTypeRetained = "302.000.000.000 - Retained Earnings";
         String netProfitLoss = "";

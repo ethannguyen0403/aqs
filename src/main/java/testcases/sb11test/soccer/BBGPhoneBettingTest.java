@@ -95,7 +95,7 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         Assert.assertEquals(message, BBGPhoneBetting.MES_MORE_THAN_7_DAYS, "Failed! Show the error message incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan3.0"})
     @TestRails(id = "29422")
     public void BBGPhoneBettingTC_29422(){
         log("@title: Validate the bet type shows correctly when filtering");
@@ -105,9 +105,8 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         log("@Step 3: Select filters which have data");
         log("@Step 4: Select one option in 'Show Bet Types' (e.g.FT-1x2)");
         log("@Step 5: Click on 'Show' button");
-        String fromDate = DateUtils.getDate(-3,"dd/MM/yyyy",GMT_7);
-        String toDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
-        page.filter("","",fromDate,toDate,"FT-1x2","","");
+        String fromDate = DateUtils.getDate(-6,"dd/MM/yyyy",GMT_7);
+        page.filter("","",fromDate,"","FT-1x2","","");
         log("Verify 1: Show all records that have selected bet type");
         page.verifyShowBetTypeCorrect("FT-1x2");
         log("INFO: Executed completely");

@@ -59,8 +59,10 @@ public class IncomeStatementAnalysisPage extends WelcomePage {
         if (accountCodeList == null || accountCodeList.isEmpty()) return false;
         for (String accountCode : accountCodeList) {
             int firstChartCode = Integer.valueOf(accountCode.split("\\.")[0].trim());
-            if (firstChartCode < startRange || firstChartCode > endRange)
+            if (firstChartCode < startRange || firstChartCode > endRange){
+                System.out.println("FAILED! "+firstChartCode+" is not between "+startRange+" and "+endRange);
                 return false;
+            }
         }
         return true;
     }

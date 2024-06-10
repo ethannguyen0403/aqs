@@ -4,10 +4,14 @@ import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
+import common.SBPConstants;
 import controls.Table;
+import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.popup.ConfirmPopup;
 import pages.sb11.sport.popup.*;
+
+import static common.SBPConstants.COUNTRY_LIST;
 
 public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
     int colLeagueName = 4;
@@ -113,5 +117,25 @@ public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
             popup.confirm(true);
             waitSpinnerDisappeared();
         }
+    }
+
+    public void verifyUI() {
+        System.out.println("League list table: Type, Country, League Name and Add button");
+        Assert.assertEquals(ddTypeLeague.getOptions(), SBPConstants.LeagueSeasonTeamInfo.SOCCER_TYPE,"Failed! League Type dropdown is not displayed!");
+        Assert.assertEquals(ddCountryLeague.getOptions(), COUNTRY_LIST,"Failed! League Country dropdown is not displayed!");
+        Assert.assertEquals(lblLeagueName.getText(),"League Name","Failed! League Name textbox is not displayed!");
+        Assert.assertTrue(btnAddLeague.isDisplayed(),"Failed! Add League button is not displayed!");
+        Assert.assertTrue(btnSearchLeague.isDisplayed(),"Failed! Search League button is not displayed!");
+        System.out.println("Season table: Add button");
+        Assert.assertTrue(btnAddSeason.isDisplayed(),"Failed! Add Season button is not displayed!");
+        System.out.println("Team List table: Country, Team Name, Add button");
+        Assert.assertEquals(ddCountryTeam.getOptions(), COUNTRY_LIST,"Failed! Team Country dropdown is not displayed!");
+        Assert.assertEquals(lblTeamName.getText(),"Team Name","Failed! Team Name textbox is not displayed!");
+        Assert.assertTrue(btnAddTeam.isDisplayed(),"Failed! Add Team button is not displayed!");
+        Assert.assertTrue(btnSearchTeam.isDisplayed(),"Failed! Search Team button is not displayed!");
+        System.out.println("League list, Season and Team List table header columns are correctly displayed");
+        Assert.assertEquals(tbLeague.getHeaderNameOfRows(), SBPConstants.LeagueSeasonTeamInfo.LEAGUE_TABLE_HEADER,"FAILED! League table header is incorrect display");
+        Assert.assertEquals(tbSeason.getHeaderNameOfRows(), SBPConstants.LeagueSeasonTeamInfo.SEASON_TABLE_HEADER,"FAILED! Season table header is incorrect display");
+        Assert.assertEquals(tbTeam.getHeaderNameOfRows(), SBPConstants.LeagueSeasonTeamInfo.TEAM_TABLE_HEADER,"FAILED! Team table header is incorrect display");
     }
 }

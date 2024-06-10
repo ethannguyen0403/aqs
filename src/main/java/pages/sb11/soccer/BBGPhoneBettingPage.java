@@ -105,6 +105,7 @@ public class BBGPhoneBettingPage extends WelcomePage {
 
     private void showBetType(String betType) {
         btnShowBetTypes.click();
+        waitSpinnerDisappeared();
         Label lblBetTypeForm = Label.xpath(String.format(lblFormXpath,"Bet Types"));
         lblBetTypeForm.waitForElementToBePresent(lblBetTypeForm.getLocator());
         btnClearAll.click();

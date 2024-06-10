@@ -7,6 +7,9 @@ import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import utils.sb11.CompanySetUpUtils;
+
+import java.util.List;
 
 import static common.SBPConstants.COMPANY_UNIT_LIST_ALL;
 import static common.SBPConstants.FINANCIAL_YEAR_LIST_NEW;
@@ -31,7 +34,9 @@ public class PhoneBettingPage extends WelcomePage {
 
     public void verifyUI() {
         System.out.println("Dropdown: Company Unit, Financial Year, Sports");
-        Assert.assertEquals(ddpCompanyUnit.getOptions(), COMPANY_UNIT_LIST_ALL,"Failed! Company Unit dropdown is not displayed!");
+        List<String> lstCompany = CompanySetUpUtils.getListCompany();
+        lstCompany.add(0,"All");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(), lstCompany,"Failed! Company Unit dropdown is not displayed!");
         Assert.assertEquals(ddpFinancialYear.getOptions(), FINANCIAL_YEAR_LIST_NEW,"Failed! Financial Year dropdown is not displayed!");
         Assert.assertTrue(ddpSport.getOptions().contains("Soccer"),"Failed! Sport dropdown is not displayed!");
         System.out.println("Datetimepicker: From Date, To Date");

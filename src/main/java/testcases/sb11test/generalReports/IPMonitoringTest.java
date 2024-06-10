@@ -64,7 +64,7 @@ public class IPMonitoringTest extends BaseCaseAQS {
         Assert.assertTrue(new IPMonitoringPage().lblTitle.isDisplayed(), "FAILED! IP Monitoring page can not access by external link");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.2.0","ethan"})
+    @Test(groups = {"regression","2024.V.2.0","ethan3.0"})
     @TestRails(id = "21847")
     @Parameters({"accountCode","bookieCode"})
     public void IP_Monitoring_TC_21847(String accountCode,String bookieCode) throws UnknownHostException {
@@ -86,7 +86,7 @@ public class IPMonitoringTest extends BaseCaseAQS {
         Assert.assertTrue(page.isAccountDisplay("Account Code",accountCode,accountCode2));
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.2.0","ethan"})
+    @Test(groups = {"regression","2024.V.2.0","ethan3.0"})
     @TestRails(id = "21848")
     @Parameters({"accountCode","bookieCode","smartGroup"})
     public void IP_Monitoring_TC_21848(String accountCode,String bookieCode, String smartGroup) throws UnknownHostException {

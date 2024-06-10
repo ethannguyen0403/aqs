@@ -52,6 +52,7 @@ public class SmartGroupPage extends WelcomePage {
     public MemberGroupPopup openMemberGroupPopup(String groupCode){
         int rowIndex = getGroupRowIndex(groupCode);
         tbSmart.getControlOfCell(1,colMember,rowIndex,null).click();
+        waitSpinnerDisappeared();
         try {
             Thread.sleep(1500);
         } catch (InterruptedException e) {

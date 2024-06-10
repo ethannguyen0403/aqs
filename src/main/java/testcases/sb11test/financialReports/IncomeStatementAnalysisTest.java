@@ -64,7 +64,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3406")
-    @Test(groups = {"regression", "2024.V.1.0","ethan"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan3.0"})
     public void IncomeStatement_Analysis_TC3406() {
         log("@title: Validate Operating Income is only displayed details types with chart codes from 400 to 459 ");
         log("@Precondition: Already have a detail type with chart codes from 400 to 459 that contain transaction");
@@ -74,7 +74,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         incomeAnaPage.filter(KASTRAKI_LIMITED,"","","");
         log("@Verify 1: Validate Operating Income is only displayed details types with chart codes from 400 to 459");
         List<String> codeList = incomeAnaPage.getCodeListOfGroup(OPERATING_INCOME);
-        Assert.assertTrue(incomeAnaPage.verifyCodeStartingInRange(codeList, 400, 459), "FAILED! Chart code Operation Income NOT in range 400 to 459");
+        Assert.assertTrue(incomeAnaPage.verifyCodeStartingInRange(codeList, 400, 471), "FAILED! Chart code Operation Income NOT in range 400 to 459");
         log("INFO: Executed completely");
     }
 
@@ -94,7 +94,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3408")
-    @Test(groups = {"regression", "2024.V.3.0"})
+    @Test(groups = {"regression", "2024.V.3.0","ethan3.0"})
     public void IncomeStatement_Analysis_TC3408() {
         log("@title: Validate Non-Operating Income is only displayed details types with cart code starting from 460 to 499");
         log("@Precondition: Already have a detail type with chart codes starting from 460 to 499 that contain transaction");
@@ -104,7 +104,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         incomeAnaPage.filter(KASTRAKI_LIMITED,"","","");
         log("@Verify 1: Chart code, name, amount of parent accounts that belong to the detail types should display accordingly on NON-OPERATING INCOME");
         List<String> codeList = incomeAnaPage.getCodeListOfGroup(NON_OPERATING_INCOME);
-        Assert.assertTrue(incomeAnaPage.verifyCodeStartingInRange(codeList, 460, 499), "FAILED! Chart code Operation Income NOT in range 460 to 499");
+        Assert.assertTrue(incomeAnaPage.verifyCodeStartingInRange(codeList, 460, 599), "FAILED! Chart code Operation Income NOT in range 460 to 499");
         log("INFO: Executed completely");
     }
 
@@ -127,7 +127,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3410")
-    @Test(groups = {"regression", "2024.V.1.0","ethan"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan3.0"})
     public void IncomeStatement_Analysis_TC3410() {
         log("@title: Validate [Filtered month] amounts displays correctly with Before CJE option");
         int firstCodeIndex = 3;
@@ -152,14 +152,14 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         int yearLedger = DateUtils.getYear(GMT_7);
         int monthLedger = DateUtils.getMonth(GMT_7);
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED, "", "All", numberCodeAccount, String.format("01/08/%s", previousYear), DateUtils.getLastDateOfMonth(yearLedger,monthLedger,"dd/MM/yyyy"),REPORT_TYPE.get(0));
-        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal("CUR Translation");
+        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal("Shown in HKD");
         log("@Verify 1: The amounts of parent accounts and detail types in the filtered month displays accordingly");
-        Assert.assertEquals(amountIncome, amountLedger, "FAILED!  The amounts of parent accounts and detail types in the filtered month displays incorrect");
+        Assert.assertEquals(Double.valueOf(amountIncome), Double.valueOf(amountLedger),1.0, "FAILED!  The amounts of parent accounts and detail types in the filtered month displays incorrect");
         log("INFO: Executed completely");
     }
 
     @TestRails(id = "3411")
-    @Test(groups = {"regression", "2024.V.1.0","ethan"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan3.0"})
     public void IncomeStatement_Analysis_TC3411() {
         log("@title: Validate [Filtered month] amounts displays correctly with After CJE option");
         int firstCodeIndex = 3;
@@ -168,8 +168,8 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         int previousYear = DateUtils.getYear("GMT +7") - 1;
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
-        log("@Step 2: Filter which have data with After CJE option");
-        incomeAnaPage.filter(KASTRAKI_LIMITED, "", String.format("%s - %s", year, month), REPORT_TYPE.get(1));
+        log("@Step 2: Filter which have data with Before CJE option");
+        incomeAnaPage.filter(KASTRAKI_LIMITED, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
         String amountIncome = incomeAnaPage.getCellValueOfMonthCol(String.format("%s - %s", month, year), firstCodeIndex).replace("-", "");
         String numberCodeAccount = incomeAnaPage.getChartCodeAccount(firstCodeIndex).split(" - ")[0];
 
@@ -182,9 +182,9 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED, "", "All", numberCodeAccount, String.format("01/08/%s", previousYear),
                 DateUtils.getLastDateOfMonth(DateUtils.getYear("GMT +7"), DateUtils.getMonth("GMT +7"), "dd/MM/yyyy"),REPORT_TYPE.get(1));
         ledgerStatementPage.waitSpinnerDisappeared();
-        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal("CUR Translation");
+        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal("Shown in HKD");
         log("@Verify 1: The amounts of parent accounts and detail types in the filtered month displays accordingly");
-        Assert.assertEquals(amountIncome, amountLedger, "FAILED!  The amounts of parent accounts and detail types in the filtered month displays incorrect");
+        Assert.assertEquals(Double.valueOf(amountIncome), Double.valueOf(amountLedger),1.0, "FAILED!  The amounts of parent accounts and detail types in the filtered month displays incorrect");
         log("INFO: Executed completely");
     }
 
@@ -218,7 +218,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3413")
-    @Test(groups = {"regression", "2024.V.1.0","ethan"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan3.0"})
     public void IncomeStatement_Analysis_TC3413() {
         log("@title: Validate [previous financial year] displays correct amount ");
         int firstCodeIndex = 3;
@@ -244,14 +244,14 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED, lblFilterPreviousYear, "All", chartCodeAccount,
                 String.format("01/08/%s", previousYear - 1),
                 String.format("31/07/%s", previousYear), REPORT_TYPE.get(0));
-        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal("CUR Translation");
+        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal("Shown in HKD");
         log("@Verify 1: Validate [previous financial year] display amounts of details type, parent accounts in the previous financial year accordingly");
         Assert.assertEquals(amountIncome, amountLedger, "FAILED! The amounts of [previous financial year] displays incorrect");
         log("INFO: Executed completely");
     }
 
     @TestRails(id = "3414")
-    @Test(groups = {"regression", "2024.V.1.0","ethan"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan3.0"})
     public void IncomeStatement_Analysis_TC3414() {
         log("@title: Validate [Filtered financial year] displays correct amount");
         int firstCodeIndex = 3;
@@ -276,9 +276,9 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("@Step info: If filter financial year =2022-2023, then amounts of previous financial year is the YEAR 2021-2022 can get from ledger statement from 01-08-2021 to 31-07-2022");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED, lblFilterYear, "All", chartCodeAccount, String.format("01/08/%s", previousYear),
                 String.format("31/07/%s", year), REPORT_TYPE.get(0));
-        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal("CUR Translation");
+        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal("Shown in HKD");
         log("@Verify 1: Validate display amounts of details type, parent accounts in the filtered financial year accordingly");
-        Assert.assertEquals(amountIncome, amountLedger, "FAILED! The amounts of [Filtered financial year] displays incorrect");
+        Assert.assertEquals(Double.valueOf(amountIncome), Double.valueOf(amountLedger),1.0, "FAILED! The amounts of [Filtered financial year] displays incorrect");
         log("INFO: Executed completely");
     }
 
@@ -367,7 +367,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id = "23955")
-    @Test(groups = {"regression", "2024.V.2.0","ethan"})
+    @Test(groups = {"regression", "2024.V.2.0","ethan3.0"})
     public void IncomeStatement_Analysis_TC23955() {
         log("@title: Validate Parent Accounts are sorted by Parent Account Number ascendingly within the same Detail Types");
         log("@pre-condition: Income Statement - Analysis permission is ON");

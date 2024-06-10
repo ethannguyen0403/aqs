@@ -92,7 +92,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         Assert.assertEquals(mesWarning,PositionTakingReport.INVALID_TIME_MES,"FAILED! Error message display incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.2.0","ethan2.0"})
+    @Test(groups = {"regression","2024.V.2.0","ethan3.0"})
     @TestRails(id = "4194")
     public void Position_Taking_Report_4194() {
         log("@title: Validate Bookie list is associated with 'PSM Group Limited' client");
@@ -332,7 +332,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         Assert.assertEquals(page.tblClient.getControlOfCell(1,page.clientNameCol,1,"a").getText(),"PSM Group Limited","FAILED! Client Name display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29","ethan"})
+    @Test(groups = {"regression","2023.12.29","ethan3.0"})
     @TestRails(id = "4346")
     public void Position_Taking_Report_4346() {
         log("@title: Validate there is a pagination if filtering more than 4 days");
@@ -351,6 +351,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         page.verifyDateColumnDisplay(selectToDate,5);
         log("@Step 4: Click Next/Previous button");
         page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All",fromDate,toDate);
+        page.waitSpinnerDisappeared();
         page.btnNext.click();
         page.waitSpinnerDisappeared();
         log("@Verify 2: Columns Bookie Name/Client Name, Till [selected To date], DR-Win/Loss still keep when clicking Next/Previous button");

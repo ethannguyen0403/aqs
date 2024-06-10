@@ -27,7 +27,7 @@ public class PhoneBettingTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan2.0"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2184")
     public void Phone_Betting_2184(){
         log("@title: Validate UI on Phone Betting is correctly displayed");
