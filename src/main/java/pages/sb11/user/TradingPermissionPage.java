@@ -22,7 +22,7 @@ public class TradingPermissionPage extends WelcomePage {
     {
         return lblTitle.getText().trim();
     }
-    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
+    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following-sibling::select");
     public DropDownBox ddpUserRole = DropDownBox.xpath("//div[contains(text(),'User Role')]//following::select[1]");
     public Label lblUsername = Label.xpath("//div[contains(text(),'Username')]");
     public TextBox txtUsername = TextBox.name("user-name");

@@ -279,7 +279,7 @@ public class AccountPercentTest extends BaseCaseAQS {
         log("@Step 2: Navigate to Soccer > SPP");
         SPPPage sppPage = betSettlementPage.navigatePage(SOCCER,SPP,SPPPage.class);
         log("@Step 3: Search with Smart Group and Smart Master + Smart Agent at precondition");
-        sppPage.filter("Soccer", "Group","Smart Group",masterCode,agentCode,date,date);
+        sppPage.filter(SOCCER, "Group","Smart Group",masterCode,agentCode,date,date);
         log("@Step 4: Observe Win/Lose of the bet");
         String winLossAc = sppPage.getRowDataOfGroup(smartGroup).get(sppPage.tblSPP.getColumnIndexByName("W/L"));
         log("Verify 1: Win/Lose of the bet is shown with value applied the Account Percent setting");

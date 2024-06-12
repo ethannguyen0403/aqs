@@ -7,6 +7,7 @@ import pages.sb11.soccer.popup.coa.CreateDetailTypePopup;
 import pages.sb11.soccer.popup.coa.CreateParentAccountPopup;
 import pages.sb11.soccer.popup.coa.CreateSubAccountPopup;
 import testcases.BaseCaseAQS;
+import utils.sb11.ChartOfAccountUtils;
 import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
@@ -38,7 +39,7 @@ public class ChartOfAccountTest extends BaseCaseAQS {
     }
 
 
-    @Test(groups = {"regression","2023.11.30","ethan2.0"})
+    @Test(groups = {"regression","2023.11.30","ethan3.0"})
     @TestRails(id = "2157")
     public void Chart_Of_Account_TC_2157(){
         log("@title: Validate can add new Detail Type successfully");
@@ -58,7 +59,7 @@ public class ChartOfAccountTest extends BaseCaseAQS {
         } finally {
             log("INFO: Executed completely");
             log("Post-condition: Deleted Create Detail type");
-            chartOfAccountPage.deleteDetail(KASTRAKI_LIMITED,detailType);
+            ChartOfAccountUtils.deleteLedgerGroup(detailType);
         }
     }
     @Test(groups = {"regression","2023.11.30"})
