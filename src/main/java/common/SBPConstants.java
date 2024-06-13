@@ -441,6 +441,7 @@ public class SBPConstants {
         public final static List<String> WIN_LOSE_TYPE_LIST = Arrays.asList("All", "Win Bets", "Lose Bets", "Draw Bets");
         public final static String MES_OVER_THAN_7 = "Date range should not be more than 7 days.";
         public final static List<String> STAKE_LIST = Arrays.asList("All","Above 1K","Above 10K","Above 50K","Above 100K","Above 150K");
+        public final static List<String> GROUP_TYPE_LIST = Arrays.asList("Smart Group","Stake Size Group");
     }
 
     public static class CurrencyRates{

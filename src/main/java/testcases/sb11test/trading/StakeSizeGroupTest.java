@@ -3,14 +3,18 @@ package testcases.sb11test.trading;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
 import common.SBPConstants;
+import objects.Order;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
+import pages.sb11.soccer.BBGPage;
+import pages.sb11.soccer.BBTPage;
 import pages.sb11.soccer.MonitorBetsPage;
 import pages.sb11.trading.StakeSizeGroupPage;
 import pages.sb11.trading.popup.StakeSizeGroupPopup;
 import testcases.BaseCaseAQS;
+import utils.sb11.BetSettlementUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.List;
@@ -170,14 +174,15 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         log("Precondition: Account is activated permission 'Stake Size Group'");
         log("Precondition: The account 'admin' created a group");
         String groupName = "QA Client - Stake Group";
-        String dateUpdate = "15/05/2024";
-        double stakeRange = 100.0;
+        String dateUpdate = "13/06/2024";
+        double stakeTo = 90.00;
+        double stakeFrom = 100.00;
         log("@Step 1: Go to Trading >> Stake Size Group");
         StakeSizeGroupPage page = welcomePage.navigatePage(TRADING,STAKE_SIZE_GROUP, StakeSizeGroupPage.class);
         log("@Step 2: Observe group info");
         page.filter(KASTRAKI_LIMITED,clientCode);
         log("@Verify 1: The group info is correct as at precondition");
-        page.verifyGroupDisplay(clientCode,groupName,accountCurrency,String.format("From %s to %s",stakeRange,stakeRange).replace(".0",""),dateUpdate, username);
+        page.verifyGroupDisplay(clientCode,groupName,accountCurrency,String.format("From %s to %s",stakeTo,stakeFrom).replace(".0",""),dateUpdate, username);
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.4.0"})
@@ -206,15 +211,16 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         log("Precondition: Account is activated permission 'Stake Size Group'");
         log("Precondition: Created a group with stake range");
         String groupName = "QA Client - Stake Group";
-        double stakeRange = 100.00;
+        double stakeTo = 90.00;
+        double stakeFrom = 100.00;
         log("@Step 1: Go to Trading >> Stake Size Group");
         StakeSizeGroupPage page = welcomePage.navigatePage(TRADING,STAKE_SIZE_GROUP, StakeSizeGroupPage.class);
         log("@Step 2: Click on 'Add Group' button");
         log("@Step 3: Fill in all mandatory fields with stake range");
         log("@Step 4: Click on 'Submit' button");
-        String alertMes = page.addNewGroup(KASTRAKI_LIMITED,clientCode,"group-name",stakeRange,stakeRange,true);
+        String alertMes = page.addNewGroup(KASTRAKI_LIMITED,clientCode,"group-name",stakeTo,stakeFrom,true);
         log("@Verify 1: Show msg: 'Stake range 10 - 100 already set in the group QA Test Group, please double check!'");
-        Assert.assertEquals(alertMes,String.format(StakeSizeGroupNewPopup.ERROR_MES_GROUP_STAKE_RANGE_DUPLICATE,stakeRange,stakeRange,groupName).replace(".0",""),"FAILED! Error message display incorrect");
+        Assert.assertEquals(alertMes,String.format(StakeSizeGroupNewPopup.ERROR_MES_GROUP_STAKE_RANGE_DUPLICATE,stakeTo,stakeFrom,groupName).replace(".0",""),"FAILED! Error message display incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.4.0"})
@@ -272,6 +278,76 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         page.filterResult("All","All","All Hours","Last 10 Bets","ALL",true);
         log("@Verify 1: Show correct bets by selected option in 'Stake Size Group' dropdown");
         page.verifyBetsShowInStakeSizeGroup();
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.5.0"})
+    @TestRails(id = "29618")
+    public void Stake_Size_Group_29618() {
+        log("@title: BBT - Validate 'Stake Size Group' is added in 'Group Type'");
+        log("@Step 1: Go to Soccer >> BBT");
+        BBTPage page = welcomePage.navigatePage(SOCCER,BBT, BBTPage.class);
+        log("@Step 2: Expand 'Group Type' dropdown");
+        log("@Verify 1: 'Group Type' dropdown contains 'Smart Group' (default value) and 'Stake Size Group'.");
+        Assert.assertEquals(page.ddpGroupType.getOptions(),SBPConstants.BBTPage.GROUP_TYPE_LIST,"FAILED! Group Type dropdown displays incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.5.0"})
+    @Parameters({"stakeSizeGroup","accountCurrency"})
+    @TestRails(id = "29619")
+    public void Stake_Size_Group_29619(String stakeSizeGroup, String accountCurrency) {
+        log("@title: BBT - Validate the user can filter by Stake Size Group");
+        log("Precondition: place bet by account in stake size group");
+        String accountCode = "Auto-StakeSizeGroup";
+        String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1.5,0.5,"HK",95,
+                "BACK",false,"");
+        lstOrder.get(0).setAccountCurrency(accountCurrency);
+        //Wait for Order display
+        BetSettlementUtils.waitForBetIsUpdate(30);
+        log("@Step 1: Go to Soccer >> BBT");
+        BBTPage page = welcomePage.navigatePage(SOCCER,BBT, BBTPage.class);
+        log("@Step 2: Select Group Type = 'Stake Size Group'");
+        page.goToGroupType("Stake Size Group");
+        log("@Step 3: Select filters that have data with any option in 'Stake Size Group' dropdown");
+        log("@Step 4: Click on 'Show' button");
+        page.filter(KASTRAKI_LIMITED,SOCCER,stakeSizeGroup,"","","",lstOrder.get(0).getEvent().getLeagueName());
+        log("@Verify 1: Show correct bets by selected option in 'Stake Size Group' dropdown");
+        Assert.assertTrue(page.isBetDisplay(lstOrder.get(0),stakeSizeGroup,true,false));
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.5.0"})
+    @TestRails(id = "29620")
+    public void Stake_Size_Group_29620() {
+        log("@title: BBG - Validate 'Stake Size Group' is added in 'Group Type'");
+        log("@Step 1: Go to Soccer >> BBG");
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG, BBGPage.class);
+        log("@Step 2: Expand 'Group Type' dropdown");
+        log("@Verify 1: 'Group Type' dropdown contains 'Smart Group' (default value) and 'Stake Size Group'.");
+        Assert.assertEquals(page.ddpGroupType.getOptions(),SBPConstants.BBGPage.GROUP_TYPE_LIST,"FAILED! Group Type dropdown displays incorrect");
+        log("INFO: Executed completely");
+    }
+    @Test(groups = {"regression","2024.V.5.0"})
+    @Parameters({"stakeSizeGroup"})
+    @TestRails(id = "29621")
+    public void Stake_Size_Group_29621(String stakeSizeGroup) {
+        log("@title: BBT - Validate the user can filter by Stake Size Group");
+        log("Precondition: place bet by account in stake size group");
+        String accountCode = "Auto-StakeSizeGroup";
+        String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1.5,-0.5,"HK",95,
+                "BACK",false,"");
+        lstOrder.get(0).setBetType("FT-HDP");
+        //Wait for Order display
+        BetSettlementUtils.waitForBetIsUpdate(30);
+        log("@Step 1: Go to Soccer >> BBT");
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG, BBGPage.class);
+        log("@Step 2: Select Group Type = 'Stake Size Group'");
+        page.goToGroupType("Stake Size Group");
+        log("@Step 3: Select filters that have data with any option in 'Stake Size Group' dropdown");
+        log("@Step 4: Click on 'Show' button");
+        page.filter(SOCCER,KASTRAKI_LIMITED,stakeSizeGroup,"","","");
+        log("@Verify 1: Show correct bets by selected option in 'Stake Size Group' dropdown");
+        Assert.assertTrue(page.isBetDisplay(lstOrder.get(0),stakeSizeGroup,false));
         log("INFO: Executed completely");
     }
 }

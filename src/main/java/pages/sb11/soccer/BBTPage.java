@@ -24,12 +24,13 @@ public class BBTPage extends WelcomePage {
         return this.lblTitle.getText().trim();
     }
 
-    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
-    public DropDownBox ddpReportType = DropDownBox.xpath("//div[contains(text(),'Report Type')]//following::select[1]");
-    public DropDownBox ddpSmartType = DropDownBox.xpath("//div[contains(text(),'Smart Type')]//following::select[1]");
-    public DropDownBox ddpSport = DropDownBox.xpath("//div[contains(text(),'Sport')]//following::select[1]");
-    public DropDownBox ddpStake = DropDownBox.xpath("//div[contains(text(),'Stake')]//following::select[1]");
-    public DropDownBox ddpCurrency = DropDownBox.xpath("//div[contains(text(),'Currency')]//following::select[1]");
+    public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following-sibling::select[1]");
+    public DropDownBox ddpReportType = DropDownBox.xpath("//div[contains(text(),'Report Type')]//following-sibling::select[1]");
+    public DropDownBox ddpSmartType = DropDownBox.xpath("//div[contains(text(),'Smart Type')]//following-sibling::select[1]");
+    public DropDownBox ddpStakeSizeGroup = DropDownBox.xpath("//div[contains(text(),'Stake Size Group')]//following-sibling::select[1]");
+    public DropDownBox ddpSport = DropDownBox.xpath("//div[contains(text(),'Sport')]//following-sibling::select[1]");
+    public DropDownBox ddpStake = DropDownBox.xpath("//div[contains(text(),'Stake')]//following-sibling::select[1]");
+    public DropDownBox ddpCurrency = DropDownBox.xpath("//div[contains(text(),'Currency')]//following-sibling::select[1]");
     public DropDownBox ddpLiveStatus = DropDownBox.xpath("//div[contains(@class, 'filter-more')]//following::select[1]");
     public TextBox txtFromDate = TextBox.name("fromDate");
     public TextBox txtToDate = TextBox.name("toDate");
@@ -73,6 +74,9 @@ public class BBTPage extends WelcomePage {
     public int colBetType = 2;
     public BBTTable tblBBT = new BBTTable("//table[contains(@class, 'table')]", totalColumnNumber);
     public Table tblFirstBBT = Table.xpath("(//app-bbt//table)[1]",totalColumnNumber);
+    public DropDownBox ddpGroupType = DropDownBox.xpath("//label[contains(text(),'Group Type')]/parent::div//following-sibling::div/select");
+    String tblDataXpath = "//div[contains(text(),'%s')]//ancestor::div[contains(@class,'header')]/following-sibling::div/div[%d]//table";
+
 
     public void filter(String companyUnit, String sport, String smartType, String reportType, String fromDate, String toDate, String stake, String currency, String league){
         if (!companyUnit.isEmpty()){
@@ -119,9 +123,50 @@ public class BBTPage extends WelcomePage {
         waitSpinnerDisappeared();
         scrollToShowFullResults();
     }
+    public void filter(String companyUnit, String sport, String stakeSizeGroup, String reportType, String fromDate, String toDate, String league){
+        if (!companyUnit.isEmpty()){
+            ddpCompanyUnit.selectByVisibleText(companyUnit);
+            waitSpinnerDisappeared();
+        }
+        if(!sport.isEmpty()){
+            ddpSport.selectByVisibleText(sport);
+            waitSpinnerDisappeared();
+        }
+        if(!stakeSizeGroup.isEmpty()){
+            ddpStakeSizeGroup.selectByVisibleText(stakeSizeGroup);
+            waitSpinnerDisappeared();
+        }
+        if(!reportType.isEmpty()){
+            ddpReportType.selectByVisibleText(reportType);
+            waitSpinnerDisappeared();
+        }
+        if (!fromDate.isEmpty()) {
+            dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
+            waitSpinnerDisappeared();
+            waitSpinnerDisappeared();
+        }
+        if (!toDate.isEmpty()) {
+            dtpToDate.selectDate(toDate, "dd/MM/yyyy");
+            waitSpinnerDisappeared();
+            waitSpinnerDisappeared();
+        }
+        if(!league.isEmpty()){
+            btnLeagues.click();
+            waitSpinnerDisappeared();
+            btnClearAll.click();
+            filterLeague(league);
+        }
+        btnShow.click();
+        waitSpinnerDisappeared();
+        scrollToShowFullResults();
+    }
 
     private void filterLeague(String leagueName) {
         Label lblSelectValue = Label.xpath(String.format("//table[@aria-label='group table']//span[text()=\"%s\"]//..//..//input",leagueName));
+        if (!lblSelectValue.isDisplayed()){
+            System.err.println(leagueName+" League is not displayed");
+            return;
+        }
         lblSelectValue.click();
         btnSetSelection.click();
     }
@@ -710,5 +755,34 @@ public class BBTPage extends WelcomePage {
             Assert.assertEquals(openPrice.get("ftOUPriceAway"),ouPriceAway,"FAILED! FT OU Price Away display incorrect!");
             Assert.assertEquals(openPrice.get("ftOUHDPAway"),ouHDPAway,"FAILED! FT OU HDP Away display incorrect!");
         }
+    }
+    public void goToGroupType(String groupTypeName){
+        ddpGroupType.selectByVisibleText(groupTypeName);
+        waitSpinnerDisappeared();
+    }
+    public boolean isBetDisplay(Order order, String groupName, boolean isHome, boolean isSmartGroup){
+        int indexTable = isHome ? 1 : 2;
+        int colNumber = isSmartGroup ? 8 : 5;
+        int colCur = isSmartGroup ? 7 : 5;
+        String tableXpath = String.format(tblDataXpath,order.getEvent().getLeagueName(),indexTable);
+        Table tblData = Table.xpath(tableXpath,colNumber);
+        int rowNum = tblData.getNumberOfRows(false,true);
+        for (int i = 1; i <= rowNum; i++){
+            String groupNameAc = tblData.getControlOfCell(1,1,i,null).getText().trim();
+            if (groupNameAc.equals(groupName)){
+                String handicapAc = tblData.getControlOfCell(1,2,i,null).getText().trim();
+                String priceAc = tblData.getControlOfCell(1,3,i,"span").getText().trim();
+                String stakeAc = tblData.getControlOfCell(1,4,i,null).getText().trim();
+                String curAc = tblData.getControlOfCell(1,colCur,i,null).getText().trim();
+                if (handicapAc.equals(String.format("%.2f",order.getHandicap()))
+                && priceAc.equals(String.format("%.3f (%s)",order.getPrice(),order.getOddType()))
+                && stakeAc.equals(String.format("%.2f",order.getRequireStake()))
+                && curAc.equals(order.getAccountCurrency())){
+                    return true;
+                }
+            }
+        }
+        System.out.println("FAILED! Bet is not displayed");
+        return false;
     }
 }
