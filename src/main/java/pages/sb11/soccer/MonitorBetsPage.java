@@ -19,6 +19,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static common.SBPConstants.*;
+
 public class MonitorBetsPage extends WelcomePage {
     public int colAC = 2;
     public int colStake = 6;
@@ -353,5 +355,29 @@ public class MonitorBetsPage extends WelcomePage {
                 Assert.assertTrue(false,"FAILED! "+memberAc+" display incorrect in group: "+groupName);
             }
         }
+    }
+
+    public void verifyUI() {
+        System.out.println("Smart Type, Punter Type, Bet Placed In, Bet Count, Live/NonLive, Currency, Stake");
+        Assert.assertEquals(ddpSport.getOptions(), MonitorBets.SPORT_LIST,"Failed! Dropdown Sport is not displayed");
+        Assert.assertEquals(ddpSmartType.getOptions(), MonitorBets.SMART_TYPE_LIST,"Failed! Dropdown Smart Type is not displayed");
+        Assert.assertEquals(ddpPunterType.getOptions(), MonitorBets.PUNTER_TYPE_LIST,"Failed! Dropdown Punter Type is not displayed");
+        Assert.assertEquals(ddpBetPlacedIN.getOptions(), MonitorBets.BET_PLACED_IN,"Failed! Dropdown Bet Placed In is not displayed");
+        Assert.assertEquals(ddpBetCount.getOptions(), MonitorBets.BET_COUNT,"Failed! Dropdown Bet Count is not displayed");
+        Assert.assertEquals(ddpLRBRule.getOptions().get(0),"[LRB-Rule]","Failed! Dropdown LRB-Rule is not displayed");
+        Assert.assertEquals(lblTodayEvent.getText(),"Today Event(s)","Failed! Today Events(s) checkbox is not displayed");
+        Assert.assertEquals(ddpLiveNonLive.getOptions(),LIVE_NONLIVE_LIST,"Failed! Dropdown Live/NonLive is not displayed");
+        Assert.assertEquals(ddpCurrency.getOptions(),CURRENCY_LIST,"Failed! Dropdown Currency is not displayed");
+        Assert.assertEquals(ddpStake.getOptions(),STAKE_LIST_ALL,"Failed! Dropdown Stake is not displayed");
+        System.out.println("Show Bet Types, Show Masters, Show Traders, Show Leagues, Show Events, Reset All Filters and Show button");
+        Assert.assertTrue(lblShowBetType.isDisplayed(),"Failed! Show Bet Types label is not displayed");
+        Assert.assertTrue(lblShowLeagues.isDisplayed(),"Failed! Show Leagues label is not displayed");
+        Assert.assertTrue(lblShowMaster.isDisplayed(),"Failed! Show Masters label is not displayed");
+        Assert.assertTrue(lblShowEvents.isDisplayed(),"Failed! Show Events label is not displayed");
+        Assert.assertTrue(lblShowTraders.isDisplayed(),"Failed! Show Traders label is not displayed");
+        Assert.assertTrue(lblResetAllFilters.isDisplayed(),"Failed! Reset All Filters label is not displayed");
+        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");
+        System.out.println("Validate Monitor Bets table header columns is correctly display");
+        Assert.assertEquals(tblOrder.getHeaderNameOfRows(), MonitorBets.TABLE_HEADER,"FAILED! Monitor Bets table header is incorrect display");
     }
 }

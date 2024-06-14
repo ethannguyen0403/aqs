@@ -192,7 +192,7 @@ public class SmartSystemTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2182")
     @Parameters({"masterCode","smartGroup"})
     public void Smart_System_TC_2182(String masterCode, String smartGroup){

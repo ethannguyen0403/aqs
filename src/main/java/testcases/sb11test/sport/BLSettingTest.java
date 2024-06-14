@@ -12,7 +12,7 @@ import static common.SBPConstants.*;
 
 public class BLSettingTest extends BaseCaseAQS {
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2097")
     public void BLSettingsTC_2097(){
         log("@title: Validate UI on Open Price is correctly displayed");
@@ -31,7 +31,7 @@ public class BLSettingTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2098")
     public void BLSettingsTC_2098(){
         log("@title: Validate League list is displayed correctly when clicking Show Leagues");
@@ -45,7 +45,7 @@ public class BLSettingTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2099")
     public void BLSettingsTC_2099(){
         log("@title: Validate selected League is displayed correctly when clicking Show");
@@ -61,7 +61,7 @@ public class BLSettingTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2100")
     public void BLSettingsTC_2100(){
         log("@title: Validate that BL Settings is displayed correctly after editing");

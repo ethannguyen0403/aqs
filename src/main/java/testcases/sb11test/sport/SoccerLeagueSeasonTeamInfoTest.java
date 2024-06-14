@@ -55,7 +55,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2075")
     public void Soccer_League_Season_Team_Info_TC_2075(){
         log("@title: Validate that can add new Soccer League successfully");
@@ -74,7 +74,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2076")
     public void Soccer_League_Season_Team_Info_TC_2076(){
         log("@title: Validate that can add new Soccer season successfully");
@@ -92,7 +92,7 @@ public class SoccerLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2077")
     public void Soccer_League_Season_Team_Info_TC_2077(){
         log("@title: Validate that can add new Soccer Team successfully");

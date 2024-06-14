@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="SB11_PROD_Regression" verbose="1">
+<suite name="SB11_STG_Regression" verbose="1">
     <listeners>
         <listener class-name="com.paltech.utils.ExtentReporterNG"/>
     </listeners>
 
-    <test name="SB11 Prod Regression">
+    <test name="SB11 Pre Regression">
         <parameter name='browser' value='window10.local.chrome'/>
-        <parameter name='env' value='pro'/>
+        <parameter name='env' value='stg'/>
         <parameter name='language' value='en'/>
         <parameter name='isLogin' value='true'/>
         <parameter name='isProxy' value='false'/>
         <parameter name='username' value='AutoQC'/>
-        <parameter name='password' value='p8PEjV0gJOnWf9U0aEgGEA=='/>
+        <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
         <parameter name='isAddTestRailResult' value='false'/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="sp11"/>
@@ -34,6 +34,7 @@
         <groups>
             <run>
                 <include name="regression" />
+                <include name="regression_stg" />
             </run>
         </groups>
 
@@ -73,50 +74,6 @@
             <class name="testcases.sb11test.accounting.BalanceCurrentTest"/>
             <class name="testcases.sb11test.accounting.CompanySetupTest"/>
 
-            <class name="testcases.sb11test.trading.SmartSystemTest"/>
-            <class name="testcases.sb11test.trading.PhoneBettingTest"/>
-            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
-            <class name="testcases.sb11test.trading.BetEntryTest"/>
-            <class name="testcases.sb11test.trading.BetSettlementTest"/>
-            <class name="testcases.sb11test.trading.TransactionVerificationTest"/>
-            <class name="testcases.sb11test.trading.AccountPercentTest"/>
-            <class name="testcases.sb11test.trading.KeyClientsReportTest"/>
-            <class name="testcases.sb11test.trading.CricketSportTest"/>
-            <class name="testcases.sb11test.trading.AnalyseTest"/>
-
-            <class name="testcases.sb11test.master.BookieInfoTest"/>
-            <class name="testcases.sb11test.master.ClientSystemTest"/>
-            <class name="testcases.sb11test.master.BookieSystemTest"/>
-            <class name="testcases.sb11test.master.AccountSearchTest"/>
-            <class name="testcases.sb11test.master.AccountListTest"/>
-            <class name="testcases.sb11test.master.MissedAccountsTest"/>
-            <class name="testcases.sb11test.master.AutoCreatedAccountsTest"/>
-            <class name="testcases.sb11test.master.AddressBookTest"/>
-
-            <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
-            <class name="testcases.sb11test.generalReports.ClosingJournalEntriesTest"/>
-            <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
-            <class name="testcases.sb11test.generalReports.ConsolidatedClientBalanceTest"/>
-            <class name="testcases.sb11test.generalReports.ClientBalanceTest"/>
-            <class name="testcases.sb11test.generalReports.FeedReportTest"/>
-            <class name="testcases.sb11test.generalReports.FundReconciliationTest"/>
-            <class name="testcases.sb11test.generalReports.ARandAPReconciliationTest"/>
-            <class name="testcases.sb11test.generalReports.IPMonitoringTest"/>
-
-
-
-            <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
-            <class name="testcases.sb11test.financialReports.CashFlowStatementTest"/>
-            <class name="testcases.sb11test.financialReports.TrialBalanceTest"/>
-            <class name="testcases.sb11test.financialReports.IncomeStatementTest"/>
-            <class name="testcases.sb11test.financialReports.IncomeStatementAnalysisTest"/>
-            <class name="testcases.sb11test.financialReports.BalanceSheetAnalysisTest"/>
-            <class name="testcases.sb11test.financialReports.StockholdersEquityTest"/>
-            <class name="testcases.sb11test.financialReports.RetainedEarningsTest"/>
-
-            <class name="testcases.sb11test.invoice.InvoicesTest"/>
-
-            <class name="testcases.sb11test.restapi.RestAPITest"/>
         </classes>
     </test>
 </suite>

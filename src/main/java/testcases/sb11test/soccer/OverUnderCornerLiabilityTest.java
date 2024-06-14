@@ -21,7 +21,7 @@ import utils.testraildemo.TestRails;
 import static common.SBPConstants.*;
 
 public class OverUnderCornerLiabilityTest extends BaseCaseAQS {
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2118")
     public void OverUnderCornerLiabilityTC_2118(){
         log("@title: Validate Over/Under Corner Liability page is displayed when navigate");
@@ -33,7 +33,7 @@ public class OverUnderCornerLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan2.0"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2119")
     public void OverUnderCornerLiabilityTC_2119(){
         log("@title: Validate UI on Over/Under Corner Liability is correctly displayed");
@@ -45,14 +45,12 @@ public class OverUnderCornerLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2120")
     @Parameters({"accountCode","accountCurrency","smartGroup"})
-    public void OverUnderCornerLiabilityTC_003(String accountCode, String accountCurrency, String smartGroup){
+    public void OverUnderCornerLiabilityTC_2120(String accountCode, String accountCurrency, String smartGroup){
         log("@title: Validate Over/Under Corner bet from Bet Entry is displayed correctly on Over/Under Corner Liability report");
         log("Precondition: Having an 1x2 bet which have been placed on Bet Entry");
-        String sport="Soccer";
-        String companyUnit = "Kastraki Limited";
         String marketType = "Over Under - Corners";
         String smartType = "Group";
 
@@ -60,10 +58,10 @@ public class OverUnderCornerLiabilityTest extends BaseCaseAQS {
         String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
         BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
         SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(companyUnit,date,"All");
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,sport,"");
+        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,date,"All");
+        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,SOCCER,"");
         Order order = new Order.Builder()
-                .sport(sport)
+                .sport(SOCCER)
                 .hdpPoint(0.00)
                 .price(2.15)
                 .requireStake(15.50)
@@ -81,7 +79,7 @@ public class OverUnderCornerLiabilityTest extends BaseCaseAQS {
                 .away((eventInfo.getAway()))
                 .event(eventInfo)
                 .build();
-        soccerBetEntryPage.showLeague(companyUnit,date,eventInfo.getLeagueName());
+        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,date,eventInfo.getLeagueName());
         SoccerSPBBetSlipPopup soccerSPBBetSlipPopup = soccerBetEntryPage.openSPBBetSlip(accountCode,eventInfo.getHome());
         soccerSPBBetSlipPopup.placeOverUnderCorners(order,false,false,true);
 
@@ -95,14 +93,14 @@ public class OverUnderCornerLiabilityTest extends BaseCaseAQS {
         OverUnderCornerLiabilityPage overUnderCornerLiabilityPage = soccerBetEntryPage.navigatePage(SOCCER,OVER_UNDER_CORNER_LIABILITY, OverUnderCornerLiabilityPage.class);
         log("@Step 3: Filter with event that having bet at Pre-condition ");
         log("@Step 4: Click Show");
-        overUnderCornerLiabilityPage.filterResult(companyUnit, smartType,false,"All",date,date,"All",true);
+        overUnderCornerLiabilityPage.filterResult(KASTRAKI_LIMITED, smartType,false,"All",date,date,"All",true);
         overUnderCornerLiabilityPage.filterGroups(smartGroup);
         log("Validate 1x2 bet from Bet Entry is displayed correctly on 1x2 Liability report");
         overUnderCornerLiabilityPage.isOrderExist(order,smartGroup);
 
         log("@Post-Condition: Cancel Pending bet "+ order.getBetId() +" in Confirm Bet page");
         ConfirmBetsPage confirmBetsPage = overUnderCornerLiabilityPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
-        confirmBetsPage.filter(companyUnit,"","Pending",sport,"All","Specific Date",date,"",accountCode);
+        confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",SOCCER,"All","Specific Date",date,"",accountCode);
         confirmBetsPage.deleteOrder(order,true);
         log("INFO: Executed completely");
     }

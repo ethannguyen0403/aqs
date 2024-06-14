@@ -98,7 +98,7 @@ public class InvoicesTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.10.31","ethan2.0"})
+    @Test(groups = {"regression", "2023.10.31","ethan3.0"})
     @TestRails(id = "2240")
     public void Invoices_TC_2240(){
         log("@title: Validate information of invoices is updated accordingly after editing invoice ");

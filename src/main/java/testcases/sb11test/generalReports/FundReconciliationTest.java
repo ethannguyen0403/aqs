@@ -274,36 +274,37 @@ public class FundReconciliationTest extends BaseCaseAQS {
     public void Fund_Reconciliation_TC_17682(String username) throws IOException {
         //TODO having improvement AQS-3982
         log("@title: Validate the Today's Settlement in HKD row displays correct value");
-        log("@Pre-condition 1: Fund Reconciliation' permission is ON for any account");
-        log("@Pre-condition 2: Having some transaction of Fund Reconciliation for detail types");
-        String ledgerName = "PC Kam HKD";
-        String ledgerNumber = "101.000.001.000";
-        String groupName = "Cash";
-        String parentName = "Pretty Cash";
-        String desc = "Automation Testing Transaction " + DateUtils.getMilliSeconds();
-        String currentDate = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7");
-        double valueDebit= 2.00;
-        Transaction transactionPost = new Transaction.Builder()
-                .ledgerCredit(ledgerName).ledgerCreditNumber(ledgerNumber)
-                .ledgerDebit(ledgerName).ledgerDebitNumber(ledgerNumber)
-                .amountDebit(valueDebit).amountCredit(valueDebit)
-                .remark(desc)
-                .transDate(currentDate)
-                .transType("Payment Other").build();
-        TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,parentName,parentName,"");
-        log("@Step 1: Login by account at precondition");
-        log("@Step 2: Go to General Reports >> System Monitoring >>Fund Reconciliation");
-        FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
-        log("@Step 3: Filter transaction of");
-        String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,transDate,transDate);
-        log("@Step 4: Tick in the Authorise checkbox");
-        log("@Step 5: Click Yes button");
-        page.tickConfirmAuthorise(desc,"Authorise");
-        log("@Verify 1: Today's Settlement in HKD row will sums up all the amounts of the authorized transactions and then converts to HKD using rate of the filtered date.");
-        String todaySettleEx = page.getSumAuthorizedTrans(username);
-        Assert.assertEquals(page.tblTodaySettle.getControlOfCell(1,page.tblSubAcc.getColumnIndexByName("Debit"),1,"span").getText(),
-                todaySettleEx,"FAILED! Today's Settlement value display incorrect");
+        Assert.assertTrue(false,"FAILED! There is an improvement AQS-3982");
+//        log("@Pre-condition 1: Fund Reconciliation' permission is ON for any account");
+//        log("@Pre-condition 2: Having some transaction of Fund Reconciliation for detail types");
+//        String ledgerName = "PC Kam HKD";
+//        String ledgerNumber = "101.000.001.000";
+//        String groupName = "Cash";
+//        String parentName = "Pretty Cash";
+//        String desc = "Automation Testing Transaction " + DateUtils.getMilliSeconds();
+//        String currentDate = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7");
+//        double valueDebit= 2.00;
+//        Transaction transactionPost = new Transaction.Builder()
+//                .ledgerCredit(ledgerName).ledgerCreditNumber(ledgerNumber)
+//                .ledgerDebit(ledgerName).ledgerDebitNumber(ledgerNumber)
+//                .amountDebit(valueDebit).amountCredit(valueDebit)
+//                .remark(desc)
+//                .transDate(currentDate)
+//                .transType("Payment Other").build();
+//        TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,parentName,parentName,"");
+//        log("@Step 1: Login by account at precondition");
+//        log("@Step 2: Go to General Reports >> System Monitoring >>Fund Reconciliation");
+//        FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
+//        log("@Step 3: Filter transaction of");
+//        String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
+//        page.filter(KASTRAKI_LIMITED,groupName,ledgerNumber,transDate,transDate);
+//        log("@Step 4: Tick in the Authorise checkbox");
+//        log("@Step 5: Click Yes button");
+//        page.tickConfirmAuthorise(desc,"Authorise");
+//        log("@Verify 1: Today's Settlement in HKD row will sums up all the amounts of the authorized transactions and then converts to HKD using rate of the filtered date.");
+//        String todaySettleEx = page.getSumAuthorizedTrans(username);
+//        Assert.assertEquals(page.tblTodaySettle.getControlOfCell(1,page.tblSubAcc.getColumnIndexByName("Debit"),1,"span").getText(),
+//                todaySettleEx,"FAILED! Today's Settlement value display incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.4.0"})
@@ -381,7 +382,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         page.verifyTransWithinRangeDate(-30,0);
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.4.0"})
+    @Test(groups = {"regression_stg","2024.V.4.0"})
     @TestRails(id = "29467")
     public void Fund_Reconciliation_TC_29467() {
         log("@title: Validate error message displays when tried to filter >1 month");
@@ -421,7 +422,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         page.verifyShowAmountIn5DecimalsDisplay();
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.4.0"})
+    @Test(groups = {"regression_stg","2024.V.4.0"})
     @TestRails(id = "29478")
     public void Fund_Reconciliation_TC_29478() {
         log("@title: Validate the report shows amounts with 2 decimals number if unticked checkbox");
@@ -442,7 +443,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         page.verifyDecimalsPlaces(2);
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.4.0"})
+    @Test(groups = {"regression_stg","2024.V.4.0"})
     @TestRails(id = "29479")
     public void Fund_Reconciliation_TC_29479() {
         log("@title: Validate the report shows amounts with 5 decimals number if ticked checkbox");
@@ -465,7 +466,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         page.verifyDecimalsPlaces(5);
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.4.0"})
+    @Test(groups = {"regression_stg","2024.V.4.0"})
     @TestRails(id = "29480")
     public void Fund_Reconciliation_TC_29480() {
         log("@title: Validate there is a header row that displays info of the sub-account with correct format");
@@ -487,7 +488,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         Assert.assertEquals(page.lblSubAccountName.getText(),String.format("%s - %s",ledgerNumber,ledgerName),"FAILED! Sub account display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.4.0"})
+    @Test(groups = {"regression_stg","2024.V.4.0"})
     @TestRails(id = "29481")
     public void Fund_Reconciliation_TC_29481() {
         log("@title: Validate background color of header row is #d9e4f7");

@@ -4,8 +4,13 @@ import com.paltech.constant.Configs;
 import com.paltech.utils.WSUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.client.RestTemplate;
 import utils.AppUtils;
 
+import java.io.IOException;
 import java.util.*;
 
 import static testcases.BaseCaseAQS.environment;
@@ -251,5 +256,20 @@ public class ChartOfAccountUtils {
             }
         }
         return lstLedgerAcc;
+    }
+    public static void deleteLedgerGroup(String ledgerGroupName){
+        String ledgerGroupId = null;
+        try {
+            ledgerGroupId = getLedgerGroupId(ledgerGroupName);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        String api = String.format("%saqs-agent-service/ledger-info/ledger-group/%s",environment.getSbpLoginURL(),ledgerGroupId);
+        RestTemplate restTemplate = new RestTemplate();
+        String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization",autho);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        restTemplate.exchange(api, HttpMethod.DELETE, entity,String.class);
     }
 }

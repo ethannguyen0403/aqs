@@ -32,12 +32,15 @@ public class StakeSizeGroupPopup extends WelcomePage {
         txtStageRangeFrom.sendKeys(String.valueOf(stakeRangeFrom));
         txtStageRangeTo.sendKeys(String.valueOf(stakeRangeTo));
     }
-    public void addNewGroup(String companyName, String clientCode, String groupName, double stakeRangeFrom, double stakeRangeTo, boolean submit){
+    public String addNewGroup(String companyName, String clientCode, String groupName, double stakeRangeFrom, double stakeRangeTo, boolean submit){
         fillFields(companyName,clientCode,groupName,stakeRangeFrom,stakeRangeTo);
+        String alertMes = null;
         if (submit){
             btnSubmit.click();
+            alertMes = appArlertControl.getWarningMessage();
             waitSpinnerDisappeared();
         }
+        return alertMes;
     }
 
     public void verifyUIDefault() {

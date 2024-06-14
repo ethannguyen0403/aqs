@@ -432,6 +432,7 @@ public class SBPConstants {
         public final static List<String> SOCCER_BET_TYPES_LIST = Arrays.asList("FT-1x2", "HT-OU", "FT-OU", "FT-HDP", "HT-HDP");
         public final static String DATE_RANGE_ALERT_MESSAGE = "Date range should not be more than 7 days";
         public final static List<String> LIVE_STATUS_LIST = Arrays.asList("[All]","Live","Non-Live");
+        public final static List<String> GROUP_TYPE_LIST = Arrays.asList("Smart Group","Stake Size Group");
     }
 
     public static class BBGPage{

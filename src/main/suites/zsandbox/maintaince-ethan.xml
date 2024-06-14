@@ -38,28 +38,50 @@
         </groups>
 
         <classes>
+            <class name="testcases.sb11test.user.TradingPermissionTest"/>
+
+            <class name="testcases.sb11test.sport.SoccerResultEntryTest"/>
+            <class name="testcases.sb11test.sport.CricketResultEntryTest"/>
+            <class name="testcases.sb11test.sport.SoccerLeagueSeasonTeamInfoTest"/>
+            <class name="testcases.sb11test.sport.CricketLeagueSeasonTeamInfoTest"/>
+            <class name="testcases.sb11test.sport.BLSettingTest"/>
+            <class name="testcases.sb11test.sport.OpenPriceTest"/>
+            <class name="testcases.sb11test.sport.EventScheduleTest"/>
+
             <class name="testcases.sb11test.soccer.HandicapLiabilityTest"/>
             <class name="testcases.sb11test.soccer.MonitorBetsTest"/>
             <class name="testcases.sb11test.soccer.BBGTest"/>
+            <class name="testcases.sb11test.soccer.BBGPhoneBettingTest"/>
             <class name="testcases.sb11test.soccer.BBTTest"/>
             <class name="testcases.sb11test.soccer.OverUnderLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.OverUnderCornerLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.MatchOddsLiabilityTest"/>
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
+            <class name="testcases.sb11test.soccer.SPPTest"/>
 
             <class name="testcases.sb11test.accounting.CompanySetupTest"/>
+            <class name="testcases.sb11test.accounting.ChartOfAccountTest"/>
             <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
 
             <class name="testcases.sb11test.trading.CricketSportTest"/>
             <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
+            <class name="testcases.sb11test.trading.PhoneBettingTest"/>
+            <class name="testcases.sb11test.trading.SmartSystemTest"/>
 
             <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
             <class name="testcases.sb11test.generalReports.ConsolidatedClientBalanceTest"/>
+            <class name="testcases.sb11test.generalReports.IPMonitoringTest"/>
+            <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
 
             <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
             <class name="testcases.sb11test.financialReports.BalanceSheetAnalysisTest"/>
             <class name="testcases.sb11test.financialReports.TrialBalanceTest"/>
             <class name="testcases.sb11test.financialReports.StockholdersEquityTest"/>
             <class name="testcases.sb11test.financialReports.IncomeStatementTest"/>
+            <class name="testcases.sb11test.financialReports.IncomeStatementAnalysisTest"/>
+            <class name="testcases.sb11test.financialReports.RetainedEarningsTest"/>
 
+            <class name="testcases.sb11test.invoice.InvoicesTest"/>
         </classes>
     </test>
 </suite>

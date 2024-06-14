@@ -96,7 +96,8 @@ public class SPPTest extends BaseCaseAQS {
         bookieStatementPage.filter("","","Super Master","", "",bookieCode,"");
         log("@Step 4: Find the player >> observe win/loss");
         String winlosePlayer = bookieStatementPage.getWinLossofPlayer(bookieSuperMasterCode, bookieMasterCode,CLIENT_CREDIT_ACC);
-
+        //Wait for SPP update
+        Thread.sleep(120000);
         log("@Step 5: Go to SPP >> select all leagues >> select the group");
         log(String.format("Step 6: Select the date %s >> click Show", fromDate));
         log("@Step 7: Observe the win/loss of the group");
@@ -120,32 +121,15 @@ public class SPPTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2130")
     public void SPP_TC_2130(){
         log("@title: Validate SPP page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
-        log(" Validate UI Info display correctly");
-        log("Company Unit, Report By, Punter Type, Smart Master, Smart Agent, From Date, To Date and Show button");
-        Assert.assertEquals(sppPage.ddSport.getOptions(),SPORT_LIST_ALL,"Failed! Sport dropdown is not displayed");
-        Assert.assertTrue(sppPage.ddpReportBy.getOptions().contains("Group"),"Failed! Report By dropdown is not displayed");
-        Assert.assertTrue(sppPage.ddpPunterType.getOptions().contains("Smart Group"),"Failed! Punter Type dropdown is not displayed");
-        Assert.assertTrue(sppPage.ddpSmartMaster.getOptions().contains("QA Smart Master"),"Failed! Smart Master dropdown is not displayed");
-        Assert.assertTrue(sppPage.ddpSmartAgent.getOptions().contains("QA Smart Agent"),"Failed! Smart Agent dropdown is not displayed");
-        Assert.assertEquals(sppPage.lblFromDate.getText(),"From Date","Failed! From Date datetime picker is not displayed");
-        Assert.assertEquals(sppPage.lblToDate.getText(),"To Date","Failed! To Date datetime picker is not displayed");
-        log("Show Tax Amount, Show Bet Types, Show Leagues, Smart Group, Order By Win%, Reset All Filters and More Filters");
-        Assert.assertEquals(sppPage.lblShowTaxAmount.getText(),"Show Tax Amount","Failed! Show Tax Amount checkbox is not displayed");
-        Assert.assertTrue(sppPage.btnShowBetTypes.getText().contains("Show Bet Types"),"Failed! Show Bet Types button is not displayed");
-        Assert.assertTrue(sppPage.btnShowLeagues.getText().contains("Show Leagues"),"Failed! Show Leagues button is not displayed");
-        Assert.assertTrue(sppPage.btnSmartGroup.getText().contains("Smart Group"),"Failed! Smart Group button is not displayed");
-        Assert.assertEquals(sppPage.btnReset.getText(),"Reset All Filters","Failed! Reset button is not displayed");
-        Assert.assertEquals(sppPage.btnMoreFilters.getText(),"More Filters","Failed! More Filters button is not displayed");
-        Assert.assertEquals(sppPage.btnShow.getText(),"Show","Failed! Show button is not displayed");
-        log("SPP table header columns is correctly display");
-        Assert.assertEquals(sppPage.tblSPP.getHeaderNameOfRows(), SBPConstants.SPPPage.TABLE_HEADER,"FAILED! SPP Bets table header is incorrect display");
+        log("Validate UI Info display correctly");
+        sppPage.verifyUI();
         log("INFO: Executed completely");
     }
 
@@ -218,22 +202,24 @@ public class SPPTest extends BaseCaseAQS {
     @Parameters({"smartGroup","accountCode"})
     public void SPP_TC_2134(String smartGroup, String accountCode){
         log("@title: Validate Account PT Performance page is displayed succefully when clicking on PT");
-        String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
-        String todate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
-        log("@Step 1: Login with valid account");
-        log("@Step 2: Access Soccer > SPP");
-        SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
-        log("@Step 3: Filter with valid data");
-        sppPage.filter("Soccer", "Group","Smart Group","QA Smart Master","[All]",fromdate,todate);
-        String PT = sppPage.getRowDataOfGroup(smartGroup).get(sppPage.colPT-1);
-        log("@Step 4: Click on any data at PT column");
-        PTPerformancePopup ptPerformancePopup = sppPage.openAccountPTPerf(smartGroup);
-        log("Validate Account PT Performance page is displayed correctly title");
-        Assert.assertTrue(ptPerformancePopup.getTitlePage().contains("Account PT Performance"), "Failed! PT Performance page is not displayed");
-        log("Validate group code name is displayed correctly smart group name on header");
-        Assert.assertTrue(ptPerformancePopup.isGroupNameDisplayed(smartGroup),"Failed! Group name "+ smartGroup + " is not displayed!");
-        log("Validate PT% on SPP page is matched with PT% on Account PT Performance page");
-        Assert.assertTrue(ptPerformancePopup.isAccountPTMatched(accountCode,PT),"Failed! PT is not matched!");
+        // TODO: There is improvement AQS-4104
+        Assert.assertTrue(false,"FAILED! There is an improvement AQS-4104");
+//        String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
+//        String todate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
+//        log("@Step 1: Login with valid account");
+//        log("@Step 2: Access Soccer > SPP");
+//        SPPPage sppPage = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
+//        log("@Step 3: Filter with valid data");
+//        sppPage.filter("Soccer", "Group","Smart Group","QA Smart Master","[All]",fromdate,todate);
+//        String PT = sppPage.getRowDataOfGroup(smartGroup).get(sppPage.colPT-1);
+//        log("@Step 4: Click on any data at PT column");
+//        PTPerformancePopup ptPerformancePopup = sppPage.openAccountPTPerf(smartGroup);
+//        log("Validate Account PT Performance page is displayed correctly title");
+//        Assert.assertTrue(ptPerformancePopup.getTitlePage().contains("Account PT Performance"), "Failed! PT Performance page is not displayed");
+//        log("Validate group code name is displayed correctly smart group name on header");
+//        Assert.assertTrue(ptPerformancePopup.isGroupNameDisplayed(smartGroup),"Failed! Group name "+ smartGroup + " is not displayed!");
+//        log("Validate PT% on SPP page is matched with PT% on Account PT Performance page");
+//        Assert.assertTrue(ptPerformancePopup.isAccountPTMatched(accountCode,PT),"Failed! PT is not matched!");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.10.31"})
@@ -256,12 +242,14 @@ public class SPPTest extends BaseCaseAQS {
         int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get(sport),order);
-        welcomePage.waitSpinnerDisappeared();
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get(sport),order);
-        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get(sport),order);
-        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get(sport));
+        order.setBetId(String.valueOf(betId));
+//        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get(sport));
+        BetSettlementPage betSettlementPage = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed",creatDate,"","",accountCode);
+        betSettlementPage.settleAndSendSettlementEmail(order);
         log("@Step 1: Go to Soccer >> SPP page");
-        SPPPage page = welcomePage.navigatePage(SOCCER,SPP,SPPPage.class);
+        SPPPage page = betSettlementPage.navigatePage(SOCCER,SPP,SPPPage.class);
         Thread.sleep(120000);
         log("@Step 2: Select Cricket Sport and filter date that settled bets at precondition");
         String fromDate = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
@@ -273,7 +261,7 @@ public class SPPTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression", "2023.11.30","ethan3.0"})
     @TestRails(id = "2796")
     @Parameters({"smartGroup","accountCode"})
     public void SPP_TC_2796(String smartGroup, String accountCode){
@@ -295,9 +283,13 @@ public class SPPTest extends BaseCaseAQS {
 
         BetSettlementUtils.waitForBetIsUpdate(15);
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Cricket"),order);
-        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Cricket"),order);
-        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Cricket"));
+//        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Cricket"),order);
+//        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Cricket"));
 
+        order.setBetId(String.valueOf(betId));
+        BetSettlementPage betSettlementPage = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed",currentDate,"","",accountCode);
+        betSettlementPage.settleAndSendSettlementEmail(order);
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
@@ -308,11 +300,11 @@ public class SPPTest extends BaseCaseAQS {
         log("@Verify 1: Validate all Cricket Manual Bets display properly");
         int mBCricketBets = BetSettlementUtils.getListDoubleOfSettledBestJson("stake", apiCurrentDate, apiCurrentDate, accountCode, accountId, SPORT_ID_MAP.get("Cricket")).size();
         List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
-        Assert.assertEquals(mBCricketBets, Integer.valueOf(dataRowTable.get(sppPage.colMB - 1)), "FAILED! The filer Cricket MB is not correct");
+        Assert.assertEquals(mBCricketBets, Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("MB") - 1)), "FAILED! The filer Cricket MB is not correct");
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression", "2023.11.30","ethan3.0"})
     @TestRails(id = "2797")
     @Parameters({"accountCode", "smartGroup"})
     public void SPP_TC_2797(String accountCode, String smartGroup){
@@ -334,9 +326,13 @@ public class SPPTest extends BaseCaseAQS {
         BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Cricket"),order);
         welcomePage.waitSpinnerDisappeared();
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Cricket"),order);
-        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Cricket"),order);
-        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Cricket"));
+//        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Cricket"),order);
+//        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Cricket"));
 
+        order.setBetId(String.valueOf(betId));
+        BetSettlementPage betSettlementPage = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed",currentDate,"","",accountCode);
+        betSettlementPage.settleAndSendSettlementEmail(order);
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
@@ -345,11 +341,11 @@ public class SPPTest extends BaseCaseAQS {
         sppPage.selectShowBetTypes("MB");
         log("@Verify 1: Validate The Wins of Cricket Manual Bets displays correct Win = the amount value >0 (If bet is win, the Win column > 0)");
         List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
-        Assert.assertTrue(Integer.valueOf(dataRowTable.get(sppPage.colWins - 1)) > 0, "FAILED!  The Wins of Cricket Manual Bets is not correct");
+        Assert.assertTrue(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("Wins") - 1)) > 0, "FAILED!  The Wins of Cricket Manual Bets is not correct");
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression", "2023.11.30","ethan3.0"})
     @TestRails(id = "2798")
     @Parameters({"accountCode", "smartGroup"})
     public void SPP_TC_2798(String accountCode, String smartGroup){
@@ -373,9 +369,13 @@ public class SPPTest extends BaseCaseAQS {
         BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Cricket"),order);
         welcomePage.waitSpinnerDisappeared();
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Cricket"),order);
-        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Cricket"),order);
-        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Cricket"));
+//        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Cricket"),order);
+//        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Cricket"));
 
+        order.setBetId(String.valueOf(betId));
+        BetSettlementPage betSettlementPage = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed",currentDate,"","",accountCode);
+        betSettlementPage.settleAndSendSettlementEmail(order);
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
@@ -387,12 +387,12 @@ public class SPPTest extends BaseCaseAQS {
         List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
         int avg = sppPage.calculateAvg(stakeSettledBet);
         int turnOver = sppPage.calculateTotal(stakeSettledBet);
-        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.colAVgStake - 1)), avg, "FAILED! Average stake is not correct");
-        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.colTurnOver - 1)), turnOver, "FAILED! Turn Over is not correct");
+        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("Avg Stake") - 1)), avg, "FAILED! Average stake is not correct");
+        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("Turnover") - 1)), turnOver, "FAILED! Turn Over is not correct");
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression", "2023.11.30","ethan3.0"})
     @TestRails(id = "2799")
     @Parameters({"accountCode", "smartGroup"})
     public void SPP_TC_2799(String accountCode, String smartGroup){
@@ -415,9 +415,13 @@ public class SPPTest extends BaseCaseAQS {
         BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Cricket"),order);
         welcomePage.waitSpinnerDisappeared();
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Cricket"),order);
-        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Cricket"),order);
-        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Cricket"));
+//        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Cricket"),order);
+//        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Cricket"));
 
+        order.setBetId(String.valueOf(betId));
+        BetSettlementPage betSettlementPage = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
+        betSettlementPage.filter("Confirmed",currentDate,"","",accountCode);
+        betSettlementPage.settleAndSendSettlementEmail(order);
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
@@ -428,10 +432,10 @@ public class SPPTest extends BaseCaseAQS {
         List<Double> wLSettledBet = BetSettlementUtils.getListDoubleOfSettledBestJson("winLose", apiPreviousDate, apiCurrentDate, accountCode, accountId, SPORT_ID_MAP.get("Cricket"));
         List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
         int wLTotal = sppPage.calculateTotal(wLSettledBet);
-        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.colWL - 1)), wLTotal, "FAILED! Win/Lose is not correct");
+        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("W/L") - 1)), wLTotal, "FAILED! Win/Lose is not correct");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression", "2023.11.30","ethan3.0"})
     @TestRails(id = "2800")
     @Parameters({"smartGroup"})
     public void SPP_TC_2800(String smartGroup){
@@ -446,12 +450,12 @@ public class SPPTest extends BaseCaseAQS {
         sppPage.selectShowBetTypes("MB");
         log("@Verify 1: Validate Correct Win% = (W/L*100) / Turnover displays");
         List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
-        int wLPercent = Integer.valueOf(dataRowTable.get(sppPage.colWL-1))*100/ Integer.valueOf(dataRowTable.get(sppPage.colTurnOver-1));
-        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.colWLPercent - 1)), wLPercent, "FAILED! The value of WL% Cricket MB is not correct");
+        int wLPercent = Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("W/L") - 1))*100/ Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("Turnover") -1));
+        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("Win%") - 1)), wLPercent, "FAILED! The value of WL% Cricket MB is not correct");
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression", "2023.11.30","ethan3.0"})
     @TestRails(id = "2801")
     @Parameters({"accountCode", "smartGroup"})
     public void SPP_TC_2801(String accountCode, String smartGroup){
@@ -470,7 +474,7 @@ public class SPPTest extends BaseCaseAQS {
         sppPage.selectShowBetTypes("MB");
         log("@Verify 1: Validate all Cricket Manual Bets display properly");
         List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
-        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.colMB - 1)), mBCricketBets, "FAILED! The filer Cricket MB is not correct");
+        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("MP") - 1)), mBCricketBets, "FAILED! The filer Cricket MB is not correct");
         log("INFO: Executed completely");
     }
 

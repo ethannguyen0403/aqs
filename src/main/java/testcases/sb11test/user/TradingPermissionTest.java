@@ -36,7 +36,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2068")
     @Parameters("username")
     public void Trading_Permission_TC_2068(String username){
@@ -52,7 +52,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression_stg"})
+    @Test(groups = {"regression_stg","ethan3.0"})
     @TestRails(id = "2069")
     @Parameters("username")
     public void Trading_Permission_TC_2069(String username) throws InterruptedException {

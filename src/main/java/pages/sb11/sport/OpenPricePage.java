@@ -127,7 +127,7 @@ public class OpenPricePage extends WelcomePage {
         try {
             // 0 Select, 1 All => get league from index = 2
             List<String> lstLeague = getAllOptionNameFilter();
-            return lstLeague.get(0).trim();
+            return lstLeague.get(1).trim();
         } catch (Exception e) {
             System.out.println("There is NO League on day " + txtDate.getText());
             return null;

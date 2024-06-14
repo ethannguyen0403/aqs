@@ -13,7 +13,7 @@ import static common.SBPConstants.*;
 
 public class CricketResultEntryTest extends BaseCaseAQS {
 
-    @Test(groups = {"regression","ethan2.0"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2087")
     public void Cricket_ResultEntry_2087() {
         log("@title: Validate Result Entry for Cricket is displayed when navigate");
@@ -27,7 +27,7 @@ public class CricketResultEntryTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2088")
     public void Cricket_ResultEntry_2088(){
         log("@title: Validate UI on Cricket  Result Entry  is correctly displayed");
@@ -36,7 +36,7 @@ public class CricketResultEntryTest extends BaseCaseAQS {
         String leagueName ="QA League";
         String date = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
         Event event = new Event.Builder()
-                .sportName("Cricket")
+                .sportName(CRICKET)
                 .leagueName(leagueName)
                 .eventDate(date)
                 .home("QA Team 01")
@@ -57,16 +57,7 @@ public class CricketResultEntryTest extends BaseCaseAQS {
         CricketResultEntryPage cricketResultEntryPage = welcomePage.navigatePage(SPORT,RESULT_ENTRY, CricketResultEntryPage.class);
         cricketResultEntryPage.goToSport("Cricket");
         log("Validate UI Info display correctly");
-        log("Type, Date, Show League button, Leagues, Order By, Status and Show button");
-        Assert.assertEquals(cricketResultEntryPage.ddpType.getOptions(),TYPE_LIST,"Failed! Type dropdown is not displayed");
-        Assert.assertEquals(cricketResultEntryPage.lblDate.getText(),"Date","Failed! Date datetimepicker is not displayed");
-        Assert.assertEquals(cricketResultEntryPage.btnShowLeagues.getText(),"Show Leagues","Failed! Show Leagues button is not displayed");
-        Assert.assertTrue(cricketResultEntryPage.ddpLeague.getOptions().contains("All"),"Failed! League dropdown is not displayed");
-        Assert.assertEquals(cricketResultEntryPage.ddpOrderBy.getOptions(),ORDER_BY_LIST,"Failed! Order By dropdown is not displayed");
-        Assert.assertEquals(cricketResultEntryPage.ddpStatus.getOptions(),STATUS_LIST,"Failed! Status dropdown is not displayed");
-        Assert.assertEquals(cricketResultEntryPage.btnShow.getText(),"Show","Failed! Show button is not displayed");
-        log("Result Entry table header columns are correctly display");
-        Assert.assertEquals(cricketResultEntryPage.tbResult.getHeaderNameOfRows(), ResultEntry.RESULT_CRICKET_TABLE_HEADER,"FAILED! Result table header is incorrect display");
+        cricketResultEntryPage.verifyUI();
         log("INFO: Executed completely");
     }
 }

@@ -19,7 +19,7 @@ import static common.SBPConstants.*;
 
 public class OpenPriceTest extends BaseCaseAQS {
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2092")
     public void OpenPriceTC_2092(){
         log("@title: Validate Open Price page is displayed when navigate");
@@ -31,7 +31,7 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2093")
     public void OpenPriceTC_2093(){
         log("@title: Validate UI on Open Price is correctly displayed");
@@ -50,7 +50,7 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2094")
     public void OpenPriceTC_2094(){
         log("@title: Validate League list is displayed correctly when clicking Show Leagues");
@@ -66,7 +66,7 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan3.0"})
     @TestRails(id = "2095")
     public void OpenPriceTC_2095(){
         log("@title: Validate selected League is displayed correctly when clicking Show");
@@ -82,7 +82,7 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan3.0"})
     @TestRails(id = "2096")
     public void OpenPriceTC_2096(){
         log("@title: Validate updated Open Price is displayed correctly on BBT page");
