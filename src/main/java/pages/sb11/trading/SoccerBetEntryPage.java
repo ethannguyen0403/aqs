@@ -180,6 +180,7 @@ public class SoccerBetEntryPage extends BetEntryPage {
         int rowIndex = getEventRowIndex(eventName);
         int colIndex = colMore;
         tblEvent.getControlOfCell(1,colIndex, rowIndex,"div[contains(@class,'cursor-pointer cus-more')]").click();
+        waitSpinnerDisappeared();
         SoccerSPBBetSlipPopup popup = new SoccerSPBBetSlipPopup();
         popup.btnPlaceBet.isDisplayed();
         return popup;
