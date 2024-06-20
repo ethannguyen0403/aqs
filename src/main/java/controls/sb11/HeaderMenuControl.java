@@ -3,6 +3,8 @@ package controls.sb11;
 import com.paltech.element.BaseElement;
 import com.paltech.element.common.Label;
 import org.openqa.selenium.By;
+import org.testng.Assert;
+import utils.sb11.TrackingProgressUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,7 +116,7 @@ public class HeaderMenuControl extends BaseElement {
         int index = getMenuIndex(menu);
         return  Label.xpath(String.format("//div[@id='navbarTogglerDemo02']/ul[contains(@class,'navbar-nav')]//li[%s]",index));
     }
- public boolean isSubmenuDisplay(String menu, String subMenu){
+    public boolean isSubmenuDisplay(String menu, String subMenu){
         Label lblSubMenu = getSubMenuLabel(menu, subMenu);
         if(lblSubMenu == null){
             System.out.println(subMenu+ " is not displayed!");
@@ -123,7 +125,5 @@ public class HeaderMenuControl extends BaseElement {
             System.out.println(subMenu+ " displayed!");
             return true;
         }
-}
-
-
+    }
 }
