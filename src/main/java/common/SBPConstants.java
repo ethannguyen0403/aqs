@@ -186,6 +186,14 @@ public class SBPConstants {
             put("ERROR", "#dc3545");
         }
     };
+    public final static Map<String, String> STATUS_ICON_TRACKING_PROGRESS_BY_COLOR = new HashMap<String, String>() {
+        {
+            put("#28a745", "FINISHED");
+            put("#ffc107", "IN PROGRESS");
+            put("#f8f9fa", "NOT STARTED");
+            put("#dc3545", "ERROR");
+        }
+    };
     public static final Map<String, String> CRICKET_MARKET_TYPE_BET_LIST = new HashMap<String, String>() {
         {
             put("1X2", "Match Betting");
@@ -608,6 +616,7 @@ public class SBPConstants {
                 Arrays.asList("Crawl Win loss data");
         public final static String DATA_CRAWLING_STAGE_TOOLTIP_MES = "The initial phase involves automated collection of data from diverse sources ensuring its quality and completeness. This stage is pivotal as it directly impacts the subsequent Report Generating Stage where this data is transformed into actionable insights, influencing decisions and strategies";
         public final static String REPORT_GENERATING_STAGE_TOOLTIP_MES = "This critical phase transforms data into insightful reports, influencing strategic decisions. The reports generated here serve as valuable tools for data-driven decision-making and are typically utilized for General reports.";
+        public final static String ERROR_TOOLTIP_MES = "Full process includes Data Crawling Stage and Report Generating Stage of this line is FAIL";
 
     }
 }

@@ -489,4 +489,292 @@ public class TrackingProgressTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
+    @Test(groups = {"regression", "2024.V.5.0"})
+    @TestRails(id = "24033")
+    public void Tracking_Progress_24033() {
+        log("@title: Validate status circle is white when the step has not started its progress");
+        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
+        log("Precondition 2: User is in Tracking Progress page");
+        TrackingProgressPage page = welcomePage.navigatePage(GENERAL_REPORTS, TRACKING_PROGRESS, TrackingProgressPage.class);
+        log("Precondition 3: There are some steps has not started its progress");
+        log("@Step 1: Filter which has data");
+        String date = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        page.filter("All", "", date);
+        log("@Step 2: Observe status of step at precondition");
+        log("@Verify 1: Status circle is white");
+        page.verifyStatusBallDisplay(date, TrackingProgress.PROVIDER_LIST.get(1), "NOT STARTED");
+        page.verifyStatusBallDisplay(date, TrackingProgress.PROVIDER_LIST.get(2), "NOT STARTED");
+        page.verifyStatusBallDisplay(date, TrackingProgress.PROVIDER_LIST.get(3), "NOT STARTED");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2024.V.5.0"})
+    @TestRails(id = "24034")
+    public void Tracking_Progress_24034() {
+        log("@title: Validate the tooltip 'Status NOT STARTED' displays if hovering over white circle status");
+        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
+        log("Precondition 2: User is in Tracking Progress page");
+        TrackingProgressPage page = welcomePage.navigatePage(GENERAL_REPORTS, TRACKING_PROGRESS, TrackingProgressPage.class);
+        log("Precondition 3: There are some steps has not started its progress");
+        log("@Step 1: Filter which has data");
+        String date = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        page.filter("All", "", date);
+        log("@Step 2: Hover over white circle status of step at precondition");
+        log("@Verify 1: The tooltip 'Status NOT STARTED' displays");
+        page.verifyToolTipDisplay(date, TrackingProgress.PROVIDER_LIST.get(1), "NOT STARTED", "Status\nNOT STARTED");
+        page.verifyToolTipDisplay(date, TrackingProgress.PROVIDER_LIST.get(2), "NOT STARTED", "Status\nNOT STARTED");
+        page.verifyToolTipDisplay(date, TrackingProgress.PROVIDER_LIST.get(3), "NOT STARTED", "Status\nNOT STARTED");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2024.V.5.0"})
+    @TestRails(id = "24035")
+    public void Tracking_Progress_24035() {
+        log("@title: Validate status circle is yellow and will flash to emphasize when the step is in progress");
+        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
+        log("Precondition 2: User is in Tracking Progress page");
+        TrackingProgressPage page = welcomePage.navigatePage(GENERAL_REPORTS, TRACKING_PROGRESS, TrackingProgressPage.class);
+        log("Precondition 3: There are some In Progress steps");
+        log("@Step 1: Filter which has data");
+        String date = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        page.filter("All", "", date);
+        log("@Step 2: Observe status of step at precondition");
+        log("@Verify 1: Status circle is yellow and will flash to emphasize");
+        page.verifyStatusBallDisplay(date, TrackingProgress.PROVIDER_LIST.get(1), "IN PROGRESS");
+        page.verifyStatusBallDisplay(date, TrackingProgress.PROVIDER_LIST.get(2), "IN PROGRESS");
+        page.verifyStatusBallDisplay(date, TrackingProgress.PROVIDER_LIST.get(3), "IN PROGRESS");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2024.V.5.0"})
+    @TestRails(id = "24036")
+    public void Tracking_Progress_24036() {
+        log("@title: Validate the tooltip 'Status IN PROGRESS' displays if hovering over yellow circle status");
+        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
+        log("Precondition 2: User is in Tracking Progress page");
+        TrackingProgressPage page = welcomePage.navigatePage(GENERAL_REPORTS, TRACKING_PROGRESS, TrackingProgressPage.class);
+        log("Precondition 3: There are some In Progress steps");
+        log("@Step 1: Filter which has data");
+        String date = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        page.filter("All", "", date);
+        log("@Step 2: Hover over yellow circle status of step at precondition");
+        log("@Verify 1: The tooltip 'Status IN PROGRESS' displays");
+        page.verifyToolTipDisplay(date, TrackingProgress.PROVIDER_LIST.get(1), "IN PROGRESS", "Status\nIN PROGRESS");
+        page.verifyToolTipDisplay(date, TrackingProgress.PROVIDER_LIST.get(2), "IN PROGRESS", "Status\nIN PROGRESS");
+        page.verifyToolTipDisplay(date, TrackingProgress.PROVIDER_LIST.get(3), "IN PROGRESS", "Status\nIN PROGRESS");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2024.V.5.0"})
+    @TestRails(id = "24037")
+    public void Tracking_Progress_24037() {
+        log("@title: Validate status circle is green when the step has been done");
+        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
+        log("Precondition 2: User is in Tracking Progress page");
+        TrackingProgressPage page = welcomePage.navigatePage(GENERAL_REPORTS, TRACKING_PROGRESS, TrackingProgressPage.class);
+        log("@Step 1: Filter which has data");
+        String date = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        page.filter("All", "", date);
+        log("@Step 2: Observe status of step at precondition");
+        log("@Verify 1: Status circle is green");
+        page.verifyStatusBallDisplay(date, TrackingProgress.PROVIDER_LIST.get(1), "FINISHED");
+        page.verifyStatusBallDisplay(date, TrackingProgress.PROVIDER_LIST.get(2), "FINISHED");
+        page.verifyStatusBallDisplay(date, TrackingProgress.PROVIDER_LIST.get(3), "FINISHED");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2024.V.5.0"})
+    @TestRails(id = "24038")
+    public void Tracking_Progress_24038() {
+        log("@title: Validate the tooltip 'Status FINISHED; Start time <Date Time>; End time <Date Time>' displays if hovering over green circle status");
+        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
+        log("Precondition 2: User is in Tracking Progress page");
+        TrackingProgressPage page = welcomePage.navigatePage(GENERAL_REPORTS, TRACKING_PROGRESS, TrackingProgressPage.class);
+        log("@Step 1: Filter which has data");
+        String date = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        page.filter("All", "", date);
+        log("@Step 2: Hover over green circle status of step at precondition");
+        log("@Verify 1: The tooltip 'Status FINISHED; Start time <Date Time>; End time <Date Time>' displays");
+        page.verifyToolTipDisplay(date, TrackingProgress.PROVIDER_LIST.get(1), "FINISHED", "Status\nFINISHED");
+        page.verifyToolTipDisplay(date, TrackingProgress.PROVIDER_LIST.get(2), "FINISHED", "Status\nFINISHED");
+        page.verifyToolTipDisplay(date, TrackingProgress.PROVIDER_LIST.get(3), "FINISHED", "Status\nFINISHED");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2024.V.5.0"})
+    @TestRails(id = "24039")
+    public void Tracking_Progress_24039() {
+        log("@title: Validate all steps of that line will have status circle red when a step has errors (cannot run, be stuck)");
+        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
+        log("Precondition 2: User is in Tracking Progress page");
+        TrackingProgressPage page = welcomePage.navigatePage(GENERAL_REPORTS, TRACKING_PROGRESS, TrackingProgressPage.class);
+        log("@Step 1: Filter which has data");
+        String date = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        page.filter("All", "", date);
+        log("@Step 2: Observe status of step at precondition");
+        log("@Verify 1: All steps of that line will have status circle red");
+        page.verifyStatusBallDisplay(date, TrackingProgress.PROVIDER_LIST.get(1), "ERROR");
+        page.verifyStatusBallDisplay(date, TrackingProgress.PROVIDER_LIST.get(2), "ERROR");
+        page.verifyStatusBallDisplay(date, TrackingProgress.PROVIDER_LIST.get(3), "ERROR");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2024.V.5.0"})
+    @TestRails(id = "24040")
+    public void Tracking_Progress_24040() {
+        log("@title: Validate the proper tooltip displays when hovering over red circle status");
+        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
+        log("Precondition 2: User is in Tracking Progress page");
+        TrackingProgressPage page = welcomePage.navigatePage(GENERAL_REPORTS, TRACKING_PROGRESS, TrackingProgressPage.class);
+        log("@Step 1: Filter which has data");
+        String date = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        page.filter("All", "", date);
+        log("@Step 2: Hover over red circle status");
+        log("@Verify 1: The tooltip 'Status ERROR; Start time <Date Time>; End time <Date Time>' displays");
+        page.verifyToolTipDisplay(date, TrackingProgress.PROVIDER_LIST.get(1), "ERROR", "Status\nERROR");
+        page.verifyToolTipDisplay(date, TrackingProgress.PROVIDER_LIST.get(2), "ERROR", "Status\nERROR");
+        page.verifyToolTipDisplay(date, TrackingProgress.PROVIDER_LIST.get(3), "ERROR", "Status\nERROR");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2024.V.5.0"})
+    @TestRails(id = "24041")
+    public void Tracking_Progress_24041() {
+        log("@title: Validate the correct background color of the line having errors displays");
+        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
+        log("Precondition 2: User is in Tracking Progress page");
+        TrackingProgressPage page = welcomePage.navigatePage(GENERAL_REPORTS, TRACKING_PROGRESS, TrackingProgressPage.class);
+        log("@Step 1: Filter which has data");
+        String date = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        page.filter("All", "", date);
+        log("@Step 2: Observe the background color of the line having errors");
+        log("@Verify 1: The background color will be in red font");
+        page.verifyBackgroundIsRed(date, TrackingProgress.PROVIDER_LIST.get(1));
+        page.verifyBackgroundIsRed(date, TrackingProgress.PROVIDER_LIST.get(2));
+        page.verifyBackgroundIsRed(date, TrackingProgress.PROVIDER_LIST.get(3));
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2024.V.5.0"})
+    @TestRails(id = "24042")
+    public void Tracking_Progress_24042() {
+        log("@title: Validate the correct tooltip displays when hovering over the error line");
+        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
+        log("Precondition 2: User is in Tracking Progress page");
+        TrackingProgressPage page = welcomePage.navigatePage(GENERAL_REPORTS, TRACKING_PROGRESS, TrackingProgressPage.class);
+        log("@Step 1: Filter which has data");
+        String date = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        page.filter("All", "", date);
+        log("@Step 2: Hover over the line having errors");
+        log("@Verify 1: The tooltip with the content 'Full process includes Data Crawling Stage and Report Generating Stage of this line is FAIL' will display");
+        page.verifyTooltipError(date, TrackingProgress.PROVIDER_LIST.get(1), TrackingProgress.ERROR_TOOLTIP_MES);
+        page.verifyTooltipError(date, TrackingProgress.PROVIDER_LIST.get(2), TrackingProgress.ERROR_TOOLTIP_MES);
+        page.verifyTooltipError(date, TrackingProgress.PROVIDER_LIST.get(3), TrackingProgress.ERROR_TOOLTIP_MES);
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2024.V.5.0"})
+    @TestRails(id = "24044")
+    public void Tracking_Progress_24044() {
+        log("@title: Validate users can restart manually when there are errors");
+        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
+        log("Precondition 2: User is in Tracking Progress page");
+        String date = DateUtils.formatDate(TrackingProgressUtils.getSpecificDate(), "yyyy-MM-dd", "dd/MM/yyyy");
+        TrackingProgressPage page = welcomePage.clickToTrackingBall();
+        log("@Step 1: Filter which has data");
+        String lineCodeError = page.getLstLineCodeByStatus(date, "ERROR").get(0);
+        log("@Step 2: Try to click the Restart button in error line");
+        page.clickToRestart(lineCodeError, true);
+        log("@Verify 1: Can restart manually");
+        //Wait for page automation update
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        Assert.assertFalse(page.getSumStatusOfLineCode(lineCodeError).contains("ERROR"), "FAILED! Can not restart manualy");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2024.V.5.0"})
+    @TestRails(id = "24045")
+    public void Tracking_Progress_24045() {
+        log("@title: Validate the Restart button is enabled when all the steps have 'Finished' status or 'Error' status");
+        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
+        log("Precondition 2: User is in Tracking Progress page");
+        String date = DateUtils.formatDate(TrackingProgressUtils.getSpecificDate(), "yyyy-MM-dd", "dd/MM/yyyy");
+        TrackingProgressPage page = welcomePage.clickToTrackingBall();
+        log("@Step 1: Filter which has data");
+        String lineCode = page.getLstLineCodeByStatus(date, "FINISHED").get(0);
+        log("@Step 2: Observe Restart button of step at precondition");
+        log("@Verify 1: The Restart button is enabled");
+        Assert.assertTrue(page.getBtnRestart(lineCode).isEnabled(), String.format("FAILED! Restart button of %s displays incorrect", lineCode));
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2024.V.5.0"})
+    @TestRails(id = "24046")
+    public void Tracking_Progress_24046() {
+        log("@title: Validate the Restart button is disabled when all the steps have not 'Finished' status or not 'Error' status");
+        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
+        log("Precondition 2: User is in Tracking Progress page");
+        TrackingProgressPage page = welcomePage.navigatePage(GENERAL_REPORTS, TRACKING_PROGRESS, TrackingProgressPage.class);
+        log("@Step 1: Filter which has data");
+        String date = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        page.filter("All", "", date);
+        String lineCode = page.getLstLineCodeByStatus(date, "NOT STARTED").get(0);
+        log("@Step 2: Observe Restart button of step at precondition");
+        log("@Verify 1: The Restart button is disabled");
+        Assert.assertFalse(page.getBtnRestart(lineCode).isEnabled(), String.format("FAILED! Restart button of %s displays incorrect", lineCode));
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2024.V.5.0"})
+    @TestRails(id = "24047")
+    public void Tracking_Progress_24047() {
+        log("@title: Validate the system will restart the progress from Step 1 for that Line when click Restart button");
+        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
+        log("Precondition 2: User is in Tracking Progress page");
+        TrackingProgressPage page = welcomePage.navigatePage(GENERAL_REPORTS, TRACKING_PROGRESS, TrackingProgressPage.class);
+        log("@Step 1: Filter which has data");
+        String date = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
+        page.filter("All", "", date);
+        String lineCode = page.getLstLineCodeByStatus(date, "FINISHED").get(0);
+        log("@Step 2: Click Restart button of step at precondition");
+        page.clickToRestart(lineCode, true);
+        //Wait for page automation update
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        log("@Verify 1: The system will restart the progress from Step 1 for that Line");
+        Assert.assertFalse(page.getSumStatusOfLineCode(lineCode).contains("FINISHED"), "FAILED! Can not restart manualy");
+        log("INFO: Executed completely");
+    }
+
+    @Test(groups = {"regression", "2024.V.5.0"})
+    @TestRails(id = "24048")
+    public void Tracking_Progress_24048() {
+        log("@title: Validate the system will restart the progress from Step 1 for that Line when click Restart button");
+        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
+        log("Precondition 2: User is in Tracking Progress page");
+        TrackingProgressPage page = welcomePage.navigatePage(GENERAL_REPORTS, TRACKING_PROGRESS, TrackingProgressPage.class);
+        log("@Step 1: Filter which has data");
+        String date = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
+        page.filter("All", "", date);
+        String lineCode = page.getLstLineCodeByStatus(date, "FINISHED").get(0);
+        log("@Step 2: Click Restart button of step at precondition");
+        page.clickToRestart(lineCode, true);
+        //Wait for page automation update
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        log("@Verify 1: The system will restart the progress from Step 1 for that Line");
+        Assert.assertFalse(page.getSumStatusOfLineCode(lineCode).contains("FINISHED"), "FAILED! Can not restart manualy");
+        log("INFO: Executed completely");
+    }
+
 }
