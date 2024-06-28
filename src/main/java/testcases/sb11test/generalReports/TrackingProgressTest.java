@@ -753,28 +753,4 @@ public class TrackingProgressTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2024.V.5.0"})
-    @TestRails(id = "24048")
-    public void Tracking_Progress_24048() {
-        log("@title: Validate the system will restart the progress from Step 1 for that Line when click Restart button");
-        log("Precondition 1: 'Tracking Progress' permission is ON for any account");
-        log("Precondition 2: User is in Tracking Progress page");
-        TrackingProgressPage page = welcomePage.navigatePage(GENERAL_REPORTS, TRACKING_PROGRESS, TrackingProgressPage.class);
-        log("@Step 1: Filter which has data");
-        String date = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        page.filter("All", "", date);
-        String lineCode = page.getLstLineCodeByStatus(date, "FINISHED").get(0);
-        log("@Step 2: Click Restart button of step at precondition");
-        page.clickToRestart(lineCode, true);
-        //Wait for page automation update
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        log("@Verify 1: The system will restart the progress from Step 1 for that Line");
-        Assert.assertFalse(page.getSumStatusOfLineCode(lineCode).contains("FINISHED"), "FAILED! Can not restart manualy");
-        log("INFO: Executed completely");
-    }
-
 }

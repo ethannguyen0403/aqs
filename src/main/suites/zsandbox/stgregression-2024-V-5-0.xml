@@ -31,7 +31,7 @@
         <parameter name="companyCurrency" value="HKD"/>
         <parameter name="userNameOneRole" value="onerole"/>
         <parameter name="stakeSizeGroup" value="QA Client - Stake Group"/>
-        <parameter name='isAddTestRailResult' value='true'/>
+        <parameter name='isAddTestRailResult' value='false'/>
         <groups>
             <run>
                 <include name="2024.V.5.0"/>
