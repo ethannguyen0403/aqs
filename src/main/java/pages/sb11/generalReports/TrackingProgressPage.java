@@ -79,11 +79,9 @@ public class TrackingProgressPage extends WelcomePage {
     }
 
     public void selectLineCode(String... lineCode) {
-        ddLineCode.click();
         for (String lineCodeAc : lineCode) {
             ddLineCode.clickMenu(lineCodeAc);
         }
-        ddLineCode.click();
     }
 
     public void verifyLineCodeWasSelected(String... lineCode) {

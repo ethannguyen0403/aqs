@@ -228,7 +228,7 @@ public class TrackingProgressTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2024.V.5.0"})
+    @Test(groups = {"regression1", "2024.V.5.0"})
     @TestRails(id = "24017")
     public void Tracking_Progress_24017() {
         log("@title: Validate is able to select multiple lines from the selected Provider(s)");

@@ -60,7 +60,7 @@ public class TrackingProgressUtils {
     public static String getStatusOfIcon() {
         String specificDate = getSpecificDate();
         String status = "FINISHED";
-        if (Objects.nonNull(specificDate)) {
+        if (!Objects.nonNull(specificDate)) {
             return status;
         }
         JSONArray allData = null;
