@@ -48,7 +48,7 @@ public class BBTPage extends WelcomePage {
     public Button btnShowAgent = Button.xpath("//div[contains(text(),'Show Agents')]");
     public Button btnMoreFilter = Button.xpath("//div[contains(text(),'More Filters')]");
     public Button btnResetAllFilter = Button.xpath("//span[contains(text(),'Reset All Filters')]");
-    public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Button btnShowMoreFilter = Button.xpath("//button[contains(@class,'btn-show-filter')]");
     public Button btnLeagues = Button.xpath("//app-bbt//div[text()='Show Leagues ']");
     public Button btnClearAll = Button.xpath("//app-bbt//button[text()='Clear All']");
@@ -81,83 +81,151 @@ public class BBTPage extends WelcomePage {
     public void filter(String companyUnit, String sport, String smartType, String reportType, String fromDate, String toDate, String stake, String currency, String league){
         if (!companyUnit.isEmpty()){
             ddpCompanyUnit.selectByVisibleText(companyUnit);
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if(!sport.isEmpty()){
             ddpSport.selectByVisibleText(sport);
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if(!smartType.isEmpty()){
             ddpSmartType.selectByVisibleText(smartType);
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if(!reportType.isEmpty()){
             ddpReportType.selectByVisibleText(reportType);
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if (!fromDate.isEmpty()) {
             dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
-            waitSpinnerDisappeared();
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if (!toDate.isEmpty()) {
             dtpToDate.selectDate(toDate, "dd/MM/yyyy");
-            waitSpinnerDisappeared();
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if(!stake.isEmpty()){
             ddpStake.selectByVisibleText(stake);
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if(!currency.isEmpty()){
             ddpCurrency.selectByVisibleText(currency);
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if(!league.isEmpty()){
             btnLeagues.click();
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             btnClearAll.click();
             filterLeague(league);
         }
         btnShow.click();
-        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         scrollToShowFullResults();
     }
     public void filter(String companyUnit, String sport, String stakeSizeGroup, String reportType, String fromDate, String toDate, String league){
         if (!companyUnit.isEmpty()){
             ddpCompanyUnit.selectByVisibleText(companyUnit);
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if(!sport.isEmpty()){
             ddpSport.selectByVisibleText(sport);
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if(!stakeSizeGroup.isEmpty()){
             ddpStakeSizeGroup.selectByVisibleText(stakeSizeGroup);
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if(!reportType.isEmpty()){
             ddpReportType.selectByVisibleText(reportType);
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if (!fromDate.isEmpty()) {
             dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
-            waitSpinnerDisappeared();
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if (!toDate.isEmpty()) {
             dtpToDate.selectDate(toDate, "dd/MM/yyyy");
-            waitSpinnerDisappeared();
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if(!league.isEmpty()){
             btnLeagues.click();
-            waitSpinnerDisappeared();
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             btnClearAll.click();
             filterLeague(league);
         }
         btnShow.click();
-        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         scrollToShowFullResults();
     }
 
@@ -622,7 +690,11 @@ public class BBTPage extends WelcomePage {
 
     public void selectLeaguesFilter(boolean filterAll,String... leaguesName){
         btnLeagues.click();
-        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         if (filterAll){
             btnSelectAll.click();
         } else {
@@ -632,21 +704,33 @@ public class BBTPage extends WelcomePage {
             }
         }
         btnSetSelection.click();
-        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         btnShow.click();
-        waitSpinnerDisappeared();
+        waitPageLoad();
         scrollToShowFullResults();
     }
 
     public void selectGroupsFilter(String... groupName){
         btnShowGroup.click();
-        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         btnClearAll.click();
         for(String option: groupName){
             selectOptionOnFilter(option, true);
         }
         btnSetSelection.click();
-        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         btnShow.click();
         waitSpinnerDisappeared();
         scrollToShowFullResults();
@@ -661,7 +745,11 @@ public class BBTPage extends WelcomePage {
             selectOptionOnFilter(option, true);
         }
         btnSetSelection.click();
-        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         btnShow.click();
         waitSpinnerDisappeared();
         scrollToShowFullResults();
@@ -669,7 +757,11 @@ public class BBTPage extends WelcomePage {
 
     public void selectSmartTypeFilter(String smartType, String... optionName) {
         ddpSmartType.selectByVisibleText(smartType);
-        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         Button btnSmartFilter;
         switch (smartType) {
             case "Group":
@@ -692,7 +784,11 @@ public class BBTPage extends WelcomePage {
             selectOptionOnFilter(option, true);
         }
         btnSetSelection.click();
-        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         btnShow.click();
         waitSpinnerDisappeared();
         scrollToShowFullResults();
@@ -704,7 +800,11 @@ public class BBTPage extends WelcomePage {
             ddpLiveStatus.selectByVisibleText(option);
         }
         btnShowMoreFilter.click();
-        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean verifyFirstGroupNameUnderTeamName() {
@@ -758,7 +858,11 @@ public class BBTPage extends WelcomePage {
     }
     public void goToGroupType(String groupTypeName){
         ddpGroupType.selectByVisibleText(groupTypeName);
-        waitSpinnerDisappeared();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
     public boolean isBetDisplay(Order order, String groupName, boolean isHome, boolean isSmartGroup){
         int indexTable = isHome ? 1 : 2;
@@ -768,14 +872,14 @@ public class BBTPage extends WelcomePage {
         Table tblData = Table.xpath(tableXpath,colNumber);
         int rowNum = tblData.getNumberOfRows(false,true);
         for (int i = 1; i <= rowNum; i++){
-            String groupNameAc = tblData.getControlOfCell(1,1,i,null).getText().trim();
+            String groupNameAc = tblData.getControlOfCell(1,1,i,"span").getText().trim();
             if (groupNameAc.equals(groupName)){
-                String handicapAc = tblData.getControlOfCell(1,2,i,null).getText().trim();
-                String priceAc = tblData.getControlOfCell(1,3,i,"span").getText().trim();
+                String handicapAc = tblData.getControlOfCell(1,2,i,"span[2]").getText().trim();
+                String priceAc = tblData.getControlOfCell(1,3,i,null).getText().trim();
                 String stakeAc = tblData.getControlOfCell(1,4,i,null).getText().trim();
                 String curAc = tblData.getControlOfCell(1,colCur,i,null).getText().trim();
                 if (handicapAc.equals(String.format("%.2f",order.getHandicap()))
-                && priceAc.equals(String.format("%.3f (%s)",order.getPrice(),order.getOddType()))
+                && priceAc.equals(String.format("%.3f\n(%s)",order.getPrice(),order.getOddType()))
                 && stakeAc.equals(String.format("%.2f",order.getRequireStake()))
                 && curAc.equals(order.getAccountCurrency())){
                     return true;

@@ -310,7 +310,7 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         page.goToGroupType("Stake Size Group");
         log("@Step 3: Select filters that have data with any option in 'Stake Size Group' dropdown");
         log("@Step 4: Click on 'Show' button");
-        page.filter(KASTRAKI_LIMITED,SOCCER,stakeSizeGroup,"","","",lstOrder.get(0).getEvent().getLeagueName());
+        page.filter(KASTRAKI_LIMITED,SOCCER,stakeSizeGroup,"","","","");
         log("@Verify 1: Show correct bets by selected option in 'Stake Size Group' dropdown");
         Assert.assertTrue(page.isBetDisplay(lstOrder.get(0),stakeSizeGroup,true,false));
         log("INFO: Executed completely");
