@@ -378,7 +378,7 @@ public class BBTTest extends BaseCaseAQS {
             bbtPage.filter("", "", "", "", "", "", "", "", "");
             log("@Step 3: Click on 'T' column of any smart group");
             Last12DaysPerformancePage last12DaysPage = bbtPage.openLast12DayPerformanceFirstGroup();
-            Assert.assertTrue(!welcomePage.headerMenuControl.isSubmenuDisplay(SOCCER, BBT), "FAILED! Retained Earnings menu is displayed");
+            Assert.assertTrue(!welcomePage.headerMenuControl.isSubmenuDisplay(SOCCER, BBT), "FAILED! BBT menu is displayed");
             log("Verify 1: Validate Last 12 Days Performance is displayed correctly");
             Assert.assertTrue(last12DaysPage.getTitlePage().contains("Last 12 Days Performance"), "FAILED! Header of Last 12 Days Performance is not displayed correct");
             last12DaysPage.closePopup();

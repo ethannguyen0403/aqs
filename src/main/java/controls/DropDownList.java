@@ -28,10 +28,9 @@ public class DropDownList extends BaseElement {
     public List<String> getMenuList(){
         List<String> lstOption = new ArrayList<>();
         int index = 1;
-        this.click();
         Label subMenu;
         while (true){
-            subMenu = Label.xpath(String.format("%s%s[%s]",this._xpath,this._childXpath, index));
+            subMenu = Label.xpath(String.format("(%s%s)[%s]",this._xpath,this._childXpath, index));
             if(!subMenu.isDisplayed()){
                 return lstOption;
             }
@@ -42,12 +41,13 @@ public class DropDownList extends BaseElement {
 
     public void clickMenu(String name){
         int index = 1;
-        if(!Label.xpath(String.format("%s%s[%s]",this._xpath,this._childXpath, index)).isDisplayed())
-            this.click();
+//        if(!Label.xpath(String.format("%s%s[%s]",this._xpath,this._childXpath, index)).isDisplayed())
+        this.click();
         Label subMenu;
         while (true){
-            subMenu = Label.xpath(String.format("%s%s[%s]",this._xpath,this._childXpath, index));
+            subMenu = Label.xpath(String.format("(%s%s)[%s]",this._xpath,this._childXpath, index));
             if(!subMenu.isDisplayed()){
+                System.out.println(String.format("Error: There is no sub menu %s in the list", name));
                 return;
             }
             if(subMenu.getText().trim().contains(name)){
@@ -56,7 +56,7 @@ public class DropDownList extends BaseElement {
             }
             index += 1;
         }
-        System.out.println(String.format("Error: There is no sub menu %s in the list", name));
+        this.click();
     }
     public boolean isMenuActive(String name){
         int index = 1;
