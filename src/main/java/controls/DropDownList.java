@@ -41,8 +41,9 @@ public class DropDownList extends BaseElement {
 
     public void clickMenu(String name){
         int index = 1;
-//        if(!Label.xpath(String.format("%s%s[%s]",this._xpath,this._childXpath, index)).isDisplayed())
-        this.click();
+        if(!Label.xpath(String.format("%s%s[%s]",this._xpath,this._childXpath, index)).isDisplayed()){
+            this.click();
+        }
         Label subMenu;
         while (true){
             subMenu = Label.xpath(String.format("(%s%s)[%s]",this._xpath,this._childXpath, index));
@@ -56,7 +57,6 @@ public class DropDownList extends BaseElement {
             }
             index += 1;
         }
-        this.click();
     }
     public boolean isMenuActive(String name){
         int index = 1;
