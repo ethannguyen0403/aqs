@@ -27,7 +27,7 @@ import java.util.Map;
 import static common.SBPConstants.*;
 
 public class PTRiskControlTest extends BaseCaseAQS {
-    @Test(groups = {"smoke","ethan"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"clientCode","accountCode"})
     @TestRails(id = "1386")
     public void PTRiskControlTC_1386(String clientCode, String accountCode) throws IOException {
@@ -59,7 +59,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         Assert.assertTrue(ptPage.isForecastCorrect("29","-9","-18",true));
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"clientCode","accountCode"})
     @TestRails(id = "192")
     public void PTRiskControlTC_192(String clientCode, String accountCode) throws IOException {
@@ -99,7 +99,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         Assert.assertTrue(ptPage.isForecastCorrect("18","-9","-18",true));
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"clientCode","accountCode"})
     @TestRails(id = "1387")
     public void PTRiskControlTC_1387(String clientCode, String accountCode) throws IOException {
@@ -132,7 +132,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         Assert.assertTrue(ptPage.isForecastCorrect("9","-9","-18",true));
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"clientCode","accountCode"})
     @TestRails(id = "1388")
     public void PTRiskControlTC_1388(String clientCode, String accountCode) throws IOException {
