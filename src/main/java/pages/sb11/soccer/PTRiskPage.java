@@ -272,4 +272,20 @@ public class PTRiskPage extends WelcomePage {
         }
         return false;
     }
+
+    public void verifyUI() {
+        System.out.println("Company Unit, Report By, Live/NonLive, From Date, To Date, Order By, Bet Types, Leagues, Events, Clients, Smart Master, Smart Agent, Show button and Copy Report");
+        Assert.assertTrue(ddpCompanyUnit.isDisplayed(),"Company Unit dropdown box is not displayed!");
+        Assert.assertTrue(ddpReportType.isDisplayed(),"Report Type dropdown box is not displayed!");
+        Assert.assertTrue(ddpLiveNonLive.isDisplayed(),"Live/Non Live dropdown box is not displayed!");
+        Assert.assertTrue(txtFromDate.isDisplayed(),"From Date is not displayed!");
+        Assert.assertTrue(txtToDate.isDisplayed(),"To Date is not displayed!");
+        Assert.assertTrue(ddpOrderBy.isDisplayed(),"Live/Non Live dropdown box is not displayed!");
+        Assert.assertTrue(btnBetTypes.isDisplayed(),"Bet Types dropdown is not displayed!");
+        Assert.assertTrue(btnLeagues.isDisplayed(),"Leagues dropdown is not displayed!");
+        Assert.assertTrue(btnEvents.isDisplayed(),"Events dropdown is not displayed!");
+        Assert.assertTrue(btnClient.isDisplayed(),"Clients dropdown is not displayed!");
+        Assert.assertTrue(btnSmartMaster.isDisplayed(),"Smart Master dropdown is not displayed!");
+        Assert.assertTrue(btnSmartAgent.isDisplayed(),"Smart Agent dropdown is not displayed!");
+    }
 }

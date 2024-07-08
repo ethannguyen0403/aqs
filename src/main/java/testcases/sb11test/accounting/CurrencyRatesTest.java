@@ -59,7 +59,7 @@ public class CurrencyRatesTest extends BaseCaseAQS {
         log("INFO: Executed Completely!");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan4.0"})
     @TestRails(id = "2154")
     public void Currency_Rates_TC_2154(){
         log("@title: Validate can export Currency list to Excel file successfully");
