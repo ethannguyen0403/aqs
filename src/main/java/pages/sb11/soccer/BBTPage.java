@@ -3,6 +3,9 @@ package pages.sb11.soccer;
 import com.paltech.driver.DriverManager;
 import com.paltech.element.common.*;
 import com.paltech.utils.DateUtils;
+import static common.SBPConstants.*;
+
+import common.SBPConstants;
 import controls.DateTimePicker;
 import controls.Row;
 import controls.Table;
@@ -14,6 +17,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import utils.sb11.CompanySetUpUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,8 +42,8 @@ public class BBTPage extends WelcomePage {
     public TextBox txtToDate = TextBox.name("toDate");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
-    public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
-    public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
+    public Label lblFromDate = Label.xpath("//label[contains(text(),'From Date')]");
+    public Label lblToDate = Label.xpath("//label[contains(text(),'To Date')]");
     public AppArlertControl alert = AppArlertControl.xpath("//app-alert");
     public Label lblNoRecord = Label.xpath("//span[text()='No record found']");
 
@@ -51,7 +55,7 @@ public class BBTPage extends WelcomePage {
     public Button btnMoreFilter = Button.xpath("//div[contains(text(),'More Filters')]");
     public Button btnResetAllFilter = Button.xpath("//span[contains(text(),'Reset All Filters')]");
     public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
-    public Button btnShowMoreFilter = Button.xpath("//button[contains(@class,'btn-show-filter')]");
+    public Button btnShowMoreFilter = Button.xpath("//popover-container//button[contains(text(),'Show')]");
     public Button btnLeagues = Button.xpath("//app-bbt//div[text()='Show Leagues ']");
     public Button btnClearAll = Button.xpath("//app-bbt//button[text()='Clear All']");
     public Button btnSelectAll = Button.xpath("//app-bbt//button[text()='Select All']");
@@ -120,8 +124,12 @@ public class BBTPage extends WelcomePage {
             filterLeague(league);
         }
         btnShow.click();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         stopInterval();
-        waitSpinnerDisappeared();
         scrollToShowFullResults();
     }
     public void filter(String companyUnit, String sport, String stakeSizeGroup, String reportType, String fromDate, String toDate, String league){
@@ -156,8 +164,12 @@ public class BBTPage extends WelcomePage {
             filterLeague(league);
         }
         btnShow.click();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         stopInterval();
-        waitSpinnerDisappeared();
         scrollToShowFullResults();
     }
 
@@ -374,21 +386,22 @@ public class BBTPage extends WelcomePage {
             Assert.assertTrue(false, "Bet Type List is null");
         }
         for (String bet : betType) {
-            if (!bet.toUpperCase().contains("UNDER") && !bet.toUpperCase().contains("OVER")) {
+            if (!bet.toUpperCase().contains("UN") && !bet.toUpperCase().contains("OV")) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean verifyAllCountIconsResetToAll() {
-        List<WebElement> countIconList = iconCount.getWebElements();
-        for (WebElement icon : countIconList) {
-            if (!icon.getText().equalsIgnoreCase("All")) {
-                return false;
-            }
-        }
-        return countIconList.size() == 3 ? true : false;
+    public void verifyAllCountIconsResetToAll() {
+        Assert.assertEquals(ddpCompanyUnit.getFirstSelectedOption(), KASTRAKI_LIMITED,"FAILED! Company Unit displays incorrect");
+        Assert.assertEquals(ddpSmartType.getFirstSelectedOption(), SBPConstants.BBTPage.SMART_TYPE_LIST.get(0),"FAILED! Smart type displays incorrect");
+        Assert.assertEquals(ddpReportType.getFirstSelectedOption(), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0),"FAILED! Report type displays incorrect");
+        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        Assert.assertEquals(txtFromDate.getAttribute("value"), date,"FAILED! From date displays incorrect");
+        Assert.assertEquals(txtToDate.getAttribute("value"), date,"FAILED! To date displays incorrect");
+        Assert.assertEquals(ddpStake.getFirstSelectedOption(), "All","FAILED! Stake dropdown displays incorrect");
+        Assert.assertEquals(ddpCurrency.getFirstSelectedOption(), "All","FAILED! Currency dropdown displays incorrect");
     }
 
     public boolean verifyEventTimeDisplayCorrectWithTimeFilter(String fromDate, String toDate, List<String> dateList) {
@@ -634,8 +647,12 @@ public class BBTPage extends WelcomePage {
         btnSetSelection.click();
         waitSpinnerDisappeared();
         btnShow.click();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         stopInterval();
-        waitSpinnerDisappeared();
         scrollToShowFullResults();
     }
 
@@ -649,8 +666,12 @@ public class BBTPage extends WelcomePage {
         btnSetSelection.click();
         waitSpinnerDisappeared();
         btnShow.click();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         stopInterval();
-        waitSpinnerDisappeared();
         scrollToShowFullResults();
     }
 
@@ -664,8 +685,12 @@ public class BBTPage extends WelcomePage {
         }
         btnSetSelection.click();
         btnShow.click();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         stopInterval();
-        waitSpinnerDisappeared();
         scrollToShowFullResults();
     }
 
@@ -695,8 +720,12 @@ public class BBTPage extends WelcomePage {
         }
         btnSetSelection.click();
         btnShow.click();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         stopInterval();
-        waitSpinnerDisappeared();
         scrollToShowFullResults();
     }
 
@@ -706,8 +735,12 @@ public class BBTPage extends WelcomePage {
             ddpLiveStatus.selectByVisibleText(option);
         }
         btnShowMoreFilter.click();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         stopInterval();
-        waitSpinnerDisappeared();
     }
 
     public boolean verifyFirstGroupNameUnderTeamName() {
@@ -772,14 +805,14 @@ public class BBTPage extends WelcomePage {
         Table tblData = Table.xpath(tableXpath,colNumber);
         int rowNum = tblData.getNumberOfRows(false,true);
         for (int i = 1; i <= rowNum; i++){
-            String groupNameAc = tblData.getControlOfCell(1,1,i,"span").getText().trim();
+            String groupNameAc = isSmartGroup ? tblData.getControlOfCell(1,1,i,"a").getText().trim() : tblData.getControlOfCell(1,1,i,"span").getText().trim();
             if (groupNameAc.equals(groupName)){
                 String handicapAc = tblData.getControlOfCell(1,2,i,"span[2]").getText().trim();
-                String priceAc = tblData.getControlOfCell(1,3,i,null).getText().trim();
+                String priceAc = tblData.getControlOfCell(1,3,i,"div").getText().trim();
                 String stakeAc = tblData.getControlOfCell(1,4,i,null).getText().trim();
                 String curAc = tblData.getControlOfCell(1,colCur,i,null).getText().trim();
                 if (handicapAc.equals(String.format("%.2f",order.getHandicap()))
-                && priceAc.equals(String.format("%.3f\n(%s)",order.getPrice(),order.getOddType()))
+                && priceAc.equals(String.format("%.3f",order.getPrice(),order.getOddType()))
                 && stakeAc.equals(String.format("%.2f",order.getRequireStake()))
                 && curAc.equals(order.getAccountCurrency())){
                     return true;
@@ -796,5 +829,24 @@ public class BBTPage extends WelcomePage {
         } catch (ClassCastException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void verifyUI() {
+        System.out.println("Company Unit, Report By, Punter Type, Sport, From Date, To Date and Show button");
+        List<String> lstCompany = CompanySetUpUtils.getListCompany();
+        lstCompany.add(0,"All");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(), lstCompany, "Failed! Company Unit dropdown is not displayed");
+        Assert.assertEquals(ddpSport.getOptions(), SPORT_LIST, "Failed! Sport dropdown is not displayed");
+        Assert.assertEquals(ddpSmartType.getOptions(), SBPConstants.BBTPage.SMART_TYPE_LIST, "Failed! Smart Type dropdown is not displayed");
+        Assert.assertEquals(ddpReportType.getOptions(), SBPConstants.BBTPage.REPORT_TYPE_LIST, "Failed! Report Type dropdown is not displayed");
+        Assert.assertEquals(lblFromDate.getText(), "From Date", "Failed! From Date datetime picker is not displayed");
+        Assert.assertEquals(lblToDate.getText(), "To Date", "Failed! To Date datetime picker is not displayed");
+        System.out.println("Show Tax Amount, Show Bet Types, Show Leagues, Smart Group, Order By Win%, Reset All Filters and More Filters");
+        Assert.assertTrue(btnShowBetTypes.getText().contains("Show Bet Types"), "Failed! Show Bet Types button is not displayed");
+        Assert.assertTrue(btnShowLeagues.getText().contains("Show Leagues"), "Failed! Show Leagues button is not displayed");
+        Assert.assertTrue(btnShowGroup.getText().contains("Show Groups"), "Failed! Show Group button is not displayed");
+        Assert.assertEquals(btnResetAllFilter.getText(), "Reset All Filters", "Failed! Reset button is not displayed");
+        Assert.assertEquals(btnMoreFilter.getText(), "More Filters", "Failed! More Filters button is not displayed");
+        Assert.assertEquals(btnShow.getText(), "SHOW", "Failed! Show button is not displayed");
     }
 }

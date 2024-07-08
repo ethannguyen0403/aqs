@@ -303,6 +303,12 @@ public class BetSettlementPage extends WelcomePage {
         selectRowByOrderID(order);
         btnExportSelectedBet.scrollToTop();
         btnExportSelectedBet.click();
+        //wait for downloading
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
     public void exportSelectedBEt(Order order){
         selectOrder(order);
