@@ -48,48 +48,25 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression","ethan4.0"})
     @TestRails(id = "2108")
-    @Parameters({"accountCode","accountCurrency","smartGroup"})
-    public void MatchOddsLiabilityTC_2108(String accountCode, String accountCurrency, String smartGroup){
+    @Parameters({"accountCode","smartGroup"})
+    public void MatchOddsLiabilityTC_2108(String accountCode, String smartGroup){
         log("@title: Validate 1x2 bet from Bet Entry is displayed correctly on 1x2 Liability report");
         log("Precondition: Having an 1x2 bet which have been placed on Bet Entry");
-        String marketType = "1x2";
         String smartType = "Group";
-
-        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
-        String dateAPI = String.format(DateUtils.getDate(-1,"yyyy-MM-dd","GMT +7"));
-        BetEntryPage betEntryPage = welcomePage.navigatePage(TRADING,BET_ENTRY,BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage =betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,date,"All");
-        Event eventInfo = GetSoccerEventUtils.getFirstEvent(dateAPI,dateAPI,SOCCER,"");
-        Order order = new Order.Builder()
-                .sport(SOCCER)
-                .hdpPoint(0.00)
-                .price(2.15)
-                .requireStake(15.50)
-                .oddType("HK")
-                .betType("Back")
-                .accountCode(accountCode)
-                .accountCurrency(accountCurrency)
-                .marketType(marketType)
-                .stage("Full Time")
-                .selection("Home")
-                .liveHomeScore(0)
-                .liveAwayScore(0)
-                .home(eventInfo.getHome())
-                .away((eventInfo.getAway()))
-                .event(eventInfo)
-                .build();
-        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,date,eventInfo.getLeagueName());
-        SoccerSPBBetSlipPopup soccerSPBBetSlipPopup = soccerBetEntryPage.openSPBBetSlip(accountCode,eventInfo.getHome());
-        soccerSPBBetSlipPopup.placeMoreBet(order,false,false,true);
-
+        String date = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
         log("Get Bet ID of placed bet");
-        BetListPopup betListPopup = soccerBetEntryPage.openBetList(eventInfo.getHome());
-        order.setBetId(betListPopup.getBetID(order,marketType));
-        betListPopup.close();
-
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, date,true,accountCode,"Goals","1x2","Home","FullTime",2.15,0.00,"HK",15.50,
+                "BACK",false,"");
+        lstOrder.get(0).setHome(lstOrder.get(0).getEvent().getHome());
+        lstOrder.get(0).setAway(lstOrder.get(0).getEvent().getAway());
+        //Wait for Bet update on 1x2 Liability
+        try {
+            Thread.sleep(120000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > 1x2 Liability");
         MatchOddsLiabilityPage matchOddsLiabilityPage = welcomePage.navigatePage(SOCCER,MATCH_ODDS_LIABILITY, MatchOddsLiabilityPage.class);
@@ -97,13 +74,14 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
         log("@Step 4: Click Show");
         matchOddsLiabilityPage.filterResult(KASTRAKI_LIMITED, SOCCER, smartType,false,"All",date,date,"All",true);
         matchOddsLiabilityPage.filterGroups(smartGroup);
+        matchOddsLiabilityPage.filterLeague(lstOrder.get(0).getEvent().getLeagueName());
         log("Validate 1x2 bet from Bet Entry is displayed correctly on 1x2 Liability report");
-        matchOddsLiabilityPage.isOrderExist(order,smartGroup);
+        matchOddsLiabilityPage.isOrderExist(lstOrder.get(0),smartGroup);
 
-        log("@Post-Condition: Cancel Pending bet "+ order.getBetId() +" in Confirm Bet page");
+        log("@Post-Condition: Cancel Pending bet "+ lstOrder.get(0).getBetId() +" in Confirm Bet page");
         ConfirmBetsPage confirmBetsPage = matchOddsLiabilityPage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
         confirmBetsPage.filter(KASTRAKI_LIMITED,"","Pending",SOCCER,"All","Specific Date",date,"",accountCode);
-        confirmBetsPage.deleteOrder(order,true);
+        confirmBetsPage.deleteOrder(lstOrder.get(0),true);
         log("INFO: Executed completely");
     }
 }

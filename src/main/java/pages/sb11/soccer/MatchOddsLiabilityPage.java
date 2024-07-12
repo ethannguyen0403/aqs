@@ -33,8 +33,8 @@ public class MatchOddsLiabilityPage extends WelcomePage {
     public DropDownBox ddpStake = DropDownBox.xpath("//div[contains(text(),'Stake')]//following::select[1]");
     public TextBox txtFromDate = TextBox.name("fromDate");
     public TextBox txtToDate = TextBox.name("toDate");
-    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
-    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
+    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
+    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
 
     public Label lblShowBetType = Label.xpath("//div[contains(text(),'Show Bet Types')]");
     public Label lblShowLeagues = Label.xpath("//div[contains(text(),'Show Leagues')]");
@@ -43,6 +43,7 @@ public class MatchOddsLiabilityPage extends WelcomePage {
     public Label lblShowEvents = Label.xpath("//div[contains(text(),'Show Events')]");
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
     public Button btnSetSelection = Button.xpath("//button[contains(text(),'Set Selection')]");
+    public Button btnClearAll = Button.xpath("//button[contains(text(),'Clear All')]");
     public Table tblOrder = Table.xpath("//table",6);
     public Table tbOrderByGroup;
     int colEvent = 2;
@@ -55,15 +56,20 @@ public class MatchOddsLiabilityPage extends WelcomePage {
             cbPTBets.click();
         }
         ddpLiveNonLive.selectByVisibleText(liveNonLive);
-        if(!fromDate.isEmpty())
+        if(!fromDate.isEmpty()){
             dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-        if(!toDate.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!toDate.isEmpty()){
             dtpToDate.selectDate(toDate,"dd/MM/yyyy");
+            waitSpinnerDisappeared();
+        }
         ddpStake.selectByVisibleText(stake);
         if (isShow){
             btnShow.click();
+            waitSpinnerDisappeared();
         }
-        waitSpinnerDisappeared();
+
     }
 
     public void filterGroups(String groupCode){
@@ -73,6 +79,7 @@ public class MatchOddsLiabilityPage extends WelcomePage {
         cbGroup.jsClick();
         btnSetSelection.click();
         btnShow.click();
+        waitSpinnerDisappeared();
     }
 
     public boolean isOrderExist (Order order,String groupCode){
@@ -129,5 +136,15 @@ public class MatchOddsLiabilityPage extends WelcomePage {
         Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");
         System.out.println("Event table header columns is correctly display");
         Assert.assertEquals(tblOrder.getHeaderNameOfRows(), MatchOddsLiability.TABLE_HEADER,"FAILED! 1x2 Liability Bets table header is incorrect display");
+    }
+
+    public void filterLeague(String leagueName) {
+        lblShowLeagues.click();
+        btnClearAll.click();
+        CheckBox cbGroup = CheckBox.xpath(String.format("//div[contains(@class,'card-columns')]//span[text()='%s']//preceding::input[1]",leagueName));
+        cbGroup.jsClick();
+        btnSetSelection.click();
+        btnShow.click();
+        waitSpinnerDisappeared();
     }
 }

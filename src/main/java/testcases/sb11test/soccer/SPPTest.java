@@ -121,7 +121,7 @@ public class SPPTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression","ethan4.0"})
     @TestRails(id = "2130")
     public void SPP_TC_2130(){
         log("@title: Validate SPP page is displayed when navigate");
@@ -222,7 +222,7 @@ public class SPPTest extends BaseCaseAQS {
 //        Assert.assertTrue(ptPerformancePopup.isAccountPTMatched(accountCode,PT),"Failed! PT is not matched!");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31"})
+    @Test(groups = {"regression","2023.10.31","ethan3.0"})
     @TestRails(id = "2795")
     @Parameters({"accountCode","smartGroup"})
     public void SPP_TC_2795(String accountCode, String smartGroup) throws IOException, ParseException, InterruptedException {
@@ -455,7 +455,7 @@ public class SPPTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.11.30","ethan3.0"})
+    @Test(groups = {"regression", "2023.11.30","ethan4.0"})
     @TestRails(id = "2801")
     @Parameters({"accountCode", "smartGroup"})
     public void SPP_TC_2801(String accountCode, String smartGroup){
@@ -474,7 +474,7 @@ public class SPPTest extends BaseCaseAQS {
         sppPage.selectShowBetTypes("MB");
         log("@Verify 1: Validate all Cricket Manual Bets display properly");
         List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
-        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("MP") - 1)), mBCricketBets, "FAILED! The filer Cricket MB is not correct");
+        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("Bets") - 1)), mBCricketBets, "FAILED! The filer Cricket MB is not correct");
         log("INFO: Executed completely");
     }
 

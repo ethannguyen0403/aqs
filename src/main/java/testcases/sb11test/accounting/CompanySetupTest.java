@@ -29,6 +29,7 @@ import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import pages.sb11.role.RoleManagementPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.ChartOfAccountUtils;
+import utils.sb11.RoleManagementUtils;
 import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
@@ -77,6 +78,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     public void Company_Set_up_TC4334(){
         log("@title: Validate accounts with permission can access page");
         log("@Precondition: Active Company Set-up option in one role account");
+        RoleManagementUtils.updateRolePermission("one role","Company Set-up","INACTIVE");
         log("@Step 1: Login to SB11 site with account has 'Company Set-up' permission is ON");
         log("@Step 2: Navigate to Accounting > Company Set-up");
         CompanySetupPage companySetupPage = welcomePage.navigatePage(ACCOUNTING, COMPANY_SETUP, CompanySetupPage.class);
@@ -417,7 +419,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         Assert.assertTrue(lstHeader.contains("Running [HKD]"),"FAILED! Running [HKD] display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31"})
+    @Test(groups = {"regression","2023.10.31","ethan4.0"})
     @TestRails(id = "4357")
     @Parameters({"bookieSuperMasterCode","bookieMasterCode","accountCode"})
     public void Company_Set_up_TC4357(String bookieSuperMasterCode, String bookieMasterCode, String accountCode) throws InterruptedException {
@@ -599,7 +601,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "8572")
-    @Test(groups = {"regression", "2023.10.31"})
+    @Test(groups = {"regression", "2023.10.31","ethan4.0"})
     @Parameters({"companyName", "companyCurrency"})
     public void Company_Set_up_TC8572(String companyName, String companyCurrency) {
         log("@title: Validate that show the reporting currency of company correctly in 'Retained Earning' page");
@@ -615,7 +617,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "8573")
-    @Test(groups = {"regression", "2023.10.31"})
+    @Test(groups = {"regression", "2023.10.31","ethan4.0"})
     @Parameters({"companyName", "companyCurrency"})
     public void Company_Set_up_TC8573(String companyName, String companyCurrency) {
         log("@title: Validate that show the reporting currency of company correctly in 'Stockholders Equity' page");
@@ -631,7 +633,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "8574")
-    @Test(groups = {"regression", "2023.10.31"})
+    @Test(groups = {"regression", "2023.10.31","ethan4.0"})
     @Parameters({"companyName", "companyCurrency"})
     public void Company_Set_up_TC8574(String companyName, String companyCurrency) {
         log("@title: Validate that show the reporting currency of company correctly in 'Balance Sheet - Analysis' page");
@@ -647,7 +649,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "8575")
-    @Test(groups = {"regression", "2023.10.31"})
+    @Test(groups = {"regression", "2023.10.31","ethan4.0"})
     @Parameters({"companyName", "companyCurrency"})
     public void Company_Set_up_TC8575(String companyName, String companyCurrency) {
         log("@title: Validate that show the reporting currency of company correctly in 'Income Statement - Analysis' page");
@@ -663,7 +665,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "9148")
-    @Test(groups = {"regression", "2023.10.31","ethan2.0"})
+    @Test(groups = {"regression", "2023.10.31","ethan4.0"})
     @Parameters({"companyName", "companyCurrency"})
     public void Company_Set_up_TC9148(String companyName, String companyCurrency) {
         String lastDateOfPreviousMonth = "";

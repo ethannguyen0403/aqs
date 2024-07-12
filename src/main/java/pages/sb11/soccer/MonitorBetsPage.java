@@ -45,6 +45,7 @@ public class MonitorBetsPage extends WelcomePage {
     public Label lblShowBetType = Label.xpath("//div[contains(text(),'Show Bet Types')]");
     public Label lblShowLeagues = Label.xpath("//div[contains(text(),'Show Leagues')]");
     public Label lblShowMaster = Label.xpath("//div[contains(text(),'Show Masters')]");
+    public Label lblShowGroups = Label.xpath("//div[contains(text(),'Show Groups')]");
     public Label lblShowEvents = Label.xpath("//div[contains(text(),'Show Events')]");
     public Label lblShowTraders = Label.xpath("//div[contains(text(),'Show Traders')]");
     public Label lblResetAllFilters = Label.xpath("//span[contains(text(),'Reset All Filters')]");
@@ -67,6 +68,7 @@ public class MonitorBetsPage extends WelcomePage {
         }
         if (!betPlacedIn.isEmpty()){
             ddpBetPlacedIN.selectByVisibleText(betPlacedIn);
+            waitSpinnerDisappeared();
         }
         if (!betCount.isEmpty()){
             ddpBetCount.selectByVisibleText(betCount);
@@ -206,10 +208,40 @@ public class MonitorBetsPage extends WelcomePage {
     }
 
     public void showMasterByName(boolean show, String... masterName) {
-        lblShowMaster.click();
-        waitSpinnerDisappeared();
-        for(String option: masterName){
+        if (lblShowMaster.isDisplayed()){
+            lblShowMaster.click();
+        } else {
+            lblShowGroups.click();
+        }
+        //Wait for showing list because there is not loading icon
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        for (String option: masterName){
             selectOptionOnFilter(option, true);
+        }
+        btnSetSelection.click();
+        waitSpinnerDisappeared();
+        if (show){
+            btnShow.click();
+            waitSpinnerDisappeared();
+        }
+    }
+    public void showLeagues(boolean show, boolean filterAll, String... leagueName) {
+        lblShowLeagues.click();
+        //Wait for showing list because there is not loading icon
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        btnClearAll.click();
+        if (!filterAll){
+            for(String option: leagueName){
+                selectOptionOnFilter(option, true);
+            }
         }
         btnSetSelection.click();
         waitSpinnerDisappeared();
@@ -376,7 +408,7 @@ public class MonitorBetsPage extends WelcomePage {
         Assert.assertTrue(lblShowEvents.isDisplayed(),"Failed! Show Events label is not displayed");
         Assert.assertTrue(lblShowTraders.isDisplayed(),"Failed! Show Traders label is not displayed");
         Assert.assertTrue(lblResetAllFilters.isDisplayed(),"Failed! Reset All Filters label is not displayed");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed");
         System.out.println("Validate Monitor Bets table header columns is correctly display");
         Assert.assertEquals(tblOrder.getHeaderNameOfRows(), MonitorBets.TABLE_HEADER,"FAILED! Monitor Bets table header is incorrect display");
     }

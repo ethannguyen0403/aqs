@@ -139,7 +139,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         Assert.assertFalse(monitorBetsPage.isCheckACDisplay(accountCode),"FAILED! Bet(s) of smart punter is not shown when filter Normal Punter");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan4.0"})
     @TestRails(id = "134")
     @Parameters({"accountCode"})
     public void MonitorBetsTC_134(String accountCode) {
@@ -218,7 +218,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         Assert.assertFalse(monitorBetsPage.isEventDisplayCorrect(lstOrder.get(1)),"FAILED! Bet(s) that placed live shows");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan4.0"})
     @TestRails(id = "137")
     @Parameters({"accountCode","masterCode"})
     public void MonitorBetsTC_137(String accountCode, String masterCode) {
@@ -229,8 +229,10 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Step 1: Access 'Monitor Bets' page");
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
-        monitorBetsPage.ddpBetPlacedIN.selectByVisibleText("All Hours");
-        monitorBetsPage.showMasterByName(true,masterCode);
+        monitorBetsPage.filterResult("","Master","","All Hours","",false,"","","","",false);
+        monitorBetsPage.waitSpinnerDisappeared();
+        monitorBetsPage.showMasterByName(false,masterCode);
+        monitorBetsPage.showLeagues(true,true,"");
         log("@Step 3: Click T column");
         Last12DaysPerformancePage last12DaysPerformancePage = monitorBetsPage.openLast12DaysPerf(accountCode);
         log("Verify 1: Last 12 Days Performance report are shown");
@@ -265,7 +267,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         Assert.assertEquals(myActual,txtExpected,"FAILED! The copied text is wrong");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan4.0"})
     @TestRails(id = "139")
     @Parameters({"accountCode","masterCode"})
     public void MonitorBetsTC_139(String accountCode, String masterCode) {
@@ -281,8 +283,10 @@ public class MonitorBetsTest extends BaseCaseAQS {
         String lrbRule = "[LRB-Rule]";
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
-        monitorBetsPage.showMasterByName(false,masterCode);
-        monitorBetsPage.filterResult(SOCCER,smartType,punterType,betPlaceIn,betCount,false,lrbRule,"ALL","HKD","ALL",true);
+        monitorBetsPage.filterResult(SOCCER,smartType,punterType,betPlaceIn,betCount,false,lrbRule,"ALL","HKD","ALL",false);
+        monitorBetsPage.waitSpinnerDisappeared();
+        monitorBetsPage.showMasterByName(true,masterCode);
+        monitorBetsPage.showLeagues(true,true,"");
         log("@Step 3: Inspect bg color element of %L and %NL column");
         String colorL =  monitorBetsPage.getBGColorByColumnName("L",accountCode);
         String colorNL = monitorBetsPage.getBGColorByColumnName("NL",accountCode);
@@ -485,7 +489,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         Assert.assertEquals(colorHDP,MonitorBets.COLOR_CODE_HDP_COLUMN.get("HT HDP - Corner"),"FAILED! Color of HDP column is shown incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan4.0"})
     @TestRails(id = "142")
     @Parameters({"accountCode"})
     public void MonitorBetsTC_142(String accountCode) {
@@ -504,8 +508,12 @@ public class MonitorBetsTest extends BaseCaseAQS {
         MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
         log("@Step 2: Select filters with 'Stake' = 'Above 1K");
         monitorBetsPage.ddpStake.selectByVisibleText("Above 1K");
+        monitorBetsPage.waitSpinnerDisappeared();
+        monitorBetsPage.waitSpinnerDisappeared();
         log("@Step 3: Click on 'Show' button");
-        monitorBetsPage.showMasterByName(true,master);
+        monitorBetsPage.showMasterByName(false,master);
+        monitorBetsPage.waitSpinnerDisappeared();
+        monitorBetsPage.showLeagues(true,true,"");
         log("Verify 1: Show 'Smart Group' bet 1500 HKD");
         Assert.assertTrue(monitorBetsPage.isOrdersValidStake("Above 1K"),"FAILED! Show wrongly bet");
         log("INFO: Executed completely");
@@ -569,7 +577,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan4.0"})
     @TestRails(id = "2102")
     public void MonitorBetsTC_2102(){
         log("@title: Validate UI on Monitor Bets is correctly displayed");
@@ -581,7 +589,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan4.0"})
     @TestRails(id = "2103")
     public void MonitorBetsTC_2103(){
         log("@title: Validate Performance By Month is displayed correctly when clicking account at AC column");

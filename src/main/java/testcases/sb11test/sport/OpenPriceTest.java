@@ -82,7 +82,7 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","2024.V.3.0","ethan3.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan4.0"})
     @TestRails(id = "2096")
     public void OpenPriceTC_2096(){
         log("@title: Validate updated Open Price is displayed correctly on BBT page");
@@ -111,7 +111,8 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("@Step 5: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER,BBT, BBTPage.class);
         log("@Step 6: Filter with event at step 4");
-        bbtPage.filter("", "","","",date,date,"","",league);
+        String datefilter = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
+        bbtPage.filter("", "","","Settled Bets",datefilter,date,"","",league);
         log("Verify 1: Updated Open Price is displayed correctly on BBT page");
         bbtPage.verifyOpenPriceDisplay(homeTeamName, myOpenPrice,true);
         bbtPage.verifyOpenPriceDisplay(awayTeamName, myOpenPrice,false);
