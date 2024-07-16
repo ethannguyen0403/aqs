@@ -7,6 +7,7 @@ import controls.Table;
 import objects.Order;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import utils.sb11.CompanySetUpUtils;
 
 import java.util.List;
 
@@ -110,7 +111,9 @@ public class HandicapCornerLiabilityPage extends WelcomePage {
 
     public void verifyUI() {
         System.out.println("Company Unit, Smart Type, Show Only PT-Bets,Live/NonLive, From Date, To Date, Stake");
-        Assert.assertEquals(ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST_ALL,"Failed! Company Unit dropdown is not displayed");
+        List<String> lstCompany = CompanySetUpUtils.getListCompany();
+        lstCompany.add(0,"All");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(),lstCompany,"Failed! Company Unit dropdown is not displayed");
         Assert.assertEquals(ddpSmartType.getOptions(), SBPConstants.MatchOddsLiability.SMART_TYPE_LIST,"Failed! Smart Type dropdown is not displayed");
         Assert.assertEquals(lblPTBets.getText(),"PT-Bets","Failed! PT Bets checkbox is not displayed");
         Assert.assertEquals(lblFromDate.getText(),"From Date","Failed! From Date datetime picker is not displayed");
