@@ -28,8 +28,8 @@ public class OverUnderCornerLiabilityPage extends WelcomePage {
     public DropDownBox ddpStake = DropDownBox.xpath("//div[contains(text(),'Stake')]//following::select[1]");
     public TextBox txtFromDate = TextBox.name("fromDate");
     public TextBox txtToDate = TextBox.name("toDate");
-    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
-    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
+    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
+    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
     public DropDownBox ddpSport = DropDownBox.xpath("//div[contains(text(),'Sport')]//following::select[1]");
     public Label lblPTBets = Label.xpath("//span[contains(text(),'PT-Bets')]");
     public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
@@ -48,22 +48,36 @@ public class OverUnderCornerLiabilityPage extends WelcomePage {
     int colEvent = 1;
 
     public void filterResult(String companyUnit, String smartType, boolean isPTBets, String liveNonLive, String fromDate, String toDate, String stake, boolean isShow){
-        lblTitle.click();
-        ddpCompanyUnit.selectByVisibleText(companyUnit);
-        ddpSmartType.selectByVisibleText(smartType);
+        if (!companyUnit.isEmpty()){
+            ddpCompanyUnit.selectByVisibleText(companyUnit);
+            waitSpinnerDisappeared();
+        }
+        if (!smartType.isEmpty()){
+            ddpSmartType.selectByVisibleText(smartType);
+            waitSpinnerDisappeared();
+        }
         if (isPTBets){
             cbPTBets.click();
         }
-        ddpLiveNonLive.selectByVisibleText(liveNonLive);
-        if(!fromDate.isEmpty())
+        if (!liveNonLive.isEmpty()){
+            ddpLiveNonLive.selectByVisibleText(liveNonLive);
+        }
+        if(!fromDate.isEmpty()){
             dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-        if(!toDate.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!toDate.isEmpty()){
             dtpToDate.selectDate(toDate,"dd/MM/yyyy");
-        ddpStake.selectByVisibleText(stake);
+            waitSpinnerDisappeared();
+        }
+        if (!stake.isEmpty()){
+            ddpStake.selectByVisibleText(stake);
+            waitSpinnerDisappeared();
+        }
         if (isShow){
             btnShow.click();
+            waitSpinnerDisappeared();
         }
-        waitSpinnerDisappeared();
     }
 
     public void filterGroups(String groupCode){
@@ -73,6 +87,7 @@ public class OverUnderCornerLiabilityPage extends WelcomePage {
         cbGroup.click();
         btnSetSelection.click();
         btnShow.click();
+        waitSpinnerDisappeared();
     }
 
     public boolean isOrderExist (Order order, String groupCode){

@@ -36,7 +36,7 @@ public class HandicapLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan2.0"})
+    @Test(groups = {"regression","ethan4.0"})
     @TestRails(id = "2110")
     public void HandicapLiabilityTC_2110(){
         log("@title: Validate UI on Handicap Liability is correctly displayed");
