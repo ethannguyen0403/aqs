@@ -33,13 +33,31 @@
         <parameter name='isAddTestRailResult' value='false'/>
         <groups>
             <run>
-<!--                <include name="ethan4.0"/>-->
-                <include name="regression"/>
+                <include name="ethan4.0"/>
             </run>
         </groups>
 
         <classes>
+            <class name="testcases.sb11test.user.TradingPermissionTest"/>
+
+            <class name="testcases.sb11test.sport.OpenPriceTest"/>
+
+            <class name="testcases.sb11test.soccer.HandicapLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.HandicapCornerLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.OverUnderCornerLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.MonitorBetsTest"/>
+            <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
             <class name="testcases.sb11test.soccer.BBTTest"/>
+            <class name="testcases.sb11test.soccer.SPPTest"/>
+            <class name="testcases.sb11test.soccer.MatchOddsLiabilityTest"/>
+
+            <class name="testcases.sb11test.accounting.CurrencyRatesTest"/>
+            <class name="testcases.sb11test.accounting.CompanySetupTest"/>
+
+            <class name="testcases.sb11test.trading.BetSettlementTest"/>
+            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
+
+            <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
         </classes>
     </test>
 </suite>
