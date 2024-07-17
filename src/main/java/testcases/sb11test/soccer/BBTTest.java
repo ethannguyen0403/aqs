@@ -228,11 +228,14 @@ public class BBTTest extends BaseCaseAQS {
     @TestRails(id = "172")
     public void BBT_TC_172() {
         String betType = "HT-OU";
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         log("@title: Validate all bets in selected bet types display");
         log("@Step 1: Navigate to Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT, BBTPage.class);
         bbtPage.stopInterval();
         log("@Step 2: Filter Soccer with Bet type: " + betType);
+        bbtPage.dtpFromDate.selectDate(date,"dd/MM/yyyy");
+        bbtPage.waitSpinnerDisappeared();
         bbtPage.selectBetTypesFilter(SOCCER, betType);
         bbtPage.selectLeaguesFilter(true, "");
         log("@Verify 1: All bet HT-OU shows in results page");
