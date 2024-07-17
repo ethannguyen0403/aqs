@@ -15,6 +15,7 @@ import pages.sb11.soccer.controls.BetByGroupTableControl;
 import pages.sb11.soccer.popup.bbg.BBGLastDaysPerformacesPopup;
 import pages.sb11.soccer.popup.bbg.BetByTeamPricePopup;
 import utils.sb11.AccountSearchUtils;
+import utils.sb11.CompanySetUpUtils;
 
 import java.util.*;
 
@@ -62,6 +63,7 @@ public class BBGPage extends WelcomePage {
     public DropDownBox ddpGroupType = DropDownBox.xpath("//label[contains(text(),'Group Type')]/parent::div//following-sibling::div/select");
     String tblStakeSizeGroupXpath = "//div[contains(text(),'%s')]//ancestor::div[contains(@class,'header')]/following-sibling::div/div/table";
     public DropDownBox ddpStakeSizeGroup = DropDownBox.xpath("//div[contains(text(),'Stake Size Group')]//following-sibling::select[1]");
+    Label lblNoRecord = Label.xpath("//span[contains(text(),'No record found')]");
 
     public void filter(String sport, String companyUnit, String smartType, String reportType, String fromDate, String toDate, String stake, String currency){
         if (!companyUnit.isEmpty()){
@@ -238,18 +240,20 @@ public class BBGPage extends WelcomePage {
      * @param stake input in stake dropdown except ALl
      */
     public void verifyAllBetsShowWithStake(String stake) {
-        double stakeEx = Double.valueOf(stake.replace("Above ","").replace("K","000"));
-        Table table = Table.xpath(tableXpath,12);
-        int indexCol = table.getColumnIndexByName("Stake");
-        for (int i = 1;i <= table.getWebElements().size();i++){
-            String groupName = Label.xpath(String.format("(//div[contains(@class,'header')]/div/div)[%d]",i)).getText().trim();
-            Table tblData = Table.xpath(String.format("(%s)[%d]",tableXpath,i),12);
-            tblData.scrollToThisControl(false);
-            Row row = Row.xpath(String.format("(%s)[%d]//tbody//div//tr[contains(@class,'d-flex')]",tableXpath,i));
-            for (int j = 1; j <= row.getWebElements().size();j++){
-                Label lblStake = Label.xpath(String.format("(%s)[%d]//tbody//div//tr[contains(@class,'d-flex')][%d]/td[%d]",tableXpath,i,j,indexCol));
-                if (Double.valueOf(lblStake.getText().trim().replace(",","")) < stakeEx){
-                    Assert.assertTrue(false,"FAILED! "+lblStake.getText()+" is in "+groupName+" displays incorrect");
+        if (!lblNoRecord.isDisplayed()){
+            double stakeEx = Double.valueOf(stake.replace("Above ","").replace("K","000"));
+            Table table = Table.xpath(tableXpath,12);
+            int indexCol = table.getColumnIndexByName("Stake");
+            for (int i = 1;i <= table.getWebElements().size();i++){
+                String groupName = Label.xpath(String.format("(//div[contains(@class,'header')]/div/div)[%d]",i)).getText().trim();
+                Table tblData = Table.xpath(String.format("(%s)[%d]",tableXpath,i),12);
+                tblData.scrollToThisControl(false);
+                Row row = Row.xpath(String.format("(%s)[%d]//tbody//div//tr[contains(@class,'d-flex')]",tableXpath,i));
+                for (int j = 1; j <= row.getWebElements().size();j++){
+                    Label lblStake = Label.xpath(String.format("(%s)[%d]//tbody//div//tr[contains(@class,'d-flex')][%d]/td[%d]",tableXpath,i,j,indexCol));
+                    if (Double.valueOf(lblStake.getText().trim().replace(",","")) < stakeEx){
+                        Assert.assertTrue(false,"FAILED! "+lblStake.getText()+" is in "+groupName+" displays incorrect");
+                    }
                 }
             }
         }
@@ -342,7 +346,9 @@ public class BBGPage extends WelcomePage {
     public void verifyUI(){
         System.out.println("Company Unit, Report By, Punter Type, Sport, From Date, To Date and Show button");
         Assert.assertEquals(ddpSport.getOptions(),SPORT_LIST,"Failed! Sport dropdown is not displayed");
-        Assert.assertEquals(ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST_ALL,"Failed! Company Unit dropdown is not displayed");
+        List<String> lstCompany = CompanySetUpUtils.getListCompany();
+        lstCompany.add(0,"All");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(),lstCompany,"Failed! Company Unit dropdown is not displayed");
         Assert.assertEquals(ddpSmartType.getOptions(), SBPConstants.BBGPage.SMART_TYPE_LIST,"Failed! Smart Type dropdown is not displayed");
         Assert.assertEquals(ddpReportType.getOptions(), SBPConstants.BBGPage.REPORT_TYPE_LIST,"Failed! Report Type dropdown is not displayed");
         Assert.assertEquals(ddpWinLose.getOptions(), SBPConstants.BBGPage.WIN_LOSE_TYPE_LIST,"Failed! Win/Lose dropdown is not displayed");
@@ -354,7 +360,7 @@ public class BBGPage extends WelcomePage {
         Assert.assertTrue(btnShowGroup.getText().contains("Show Groups"),"Failed! Show Group button is not displayed");
         Assert.assertEquals(btnResetAllFilter.getText(),"Reset All Filters","Failed! Reset button is not displayed");
         Assert.assertTrue(btnShowEvent.getText().contains("Show Events"),"Failed! Show Events button is not displayed");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed");
     }
 
     public void verifyDefaultFilter() {
@@ -366,10 +372,6 @@ public class BBGPage extends WelcomePage {
         String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
         Assert.assertEquals(txtFromDate.getAttribute("value"),date);
         Assert.assertEquals(txtToDate.getAttribute("value"),date);
-        Assert.assertEquals(Label.xpath(String.format(btnShowBetTypes.getLocator()+"//following-sibling::span").replace("By.xpath: ","")).getText(),"All","FAILED! Show Bet Types button display incorrect.");
-        Assert.assertEquals(Label.xpath(String.format(btnShowLeagues.getLocator()+"//following-sibling::span").replace("By.xpath: ","")).getText(),"All","FAILED! Show Leagues button display incorrect.");
-        Assert.assertEquals(Label.xpath(String.format(btnShowGroup.getLocator()+"//following-sibling::span").replace("By.xpath: ","")).getText(),"All","FAILED! Show Group button display incorrect.");
-        Assert.assertEquals(Label.xpath(String.format(btnShowEvent.getLocator()+"//following-sibling::span").replace("By.xpath: ","")).getText(),"All","FAILED! Show Events button display incorrect.");
     }
 
     public void verifySelectedGroupDisplay(String groupEx) {

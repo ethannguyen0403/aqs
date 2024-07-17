@@ -38,7 +38,7 @@ public class BBGTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan2.0"})
+    @Test(groups = {"regression","ethan4.0"})
     @TestRails(id = "2148")
     public void BBG_TC_2148(){
         log("@title: Validate BBG page is displayed when navigate");
@@ -53,17 +53,16 @@ public class BBGTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan4.0"})
     @TestRails(id = "2149")
     public void BBG_TC_2149(){
         log("@title: Validate League Performance page is displayed successfully when clicking on Price");
         String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
-        String todate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Access Soccer > BBG");
         BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
 
         log("@Step 3: Filter with valid data");
-        bbgPage.filter("Soccer", KASTRAKI_LIMITED,"Group", "Pending Bets",fromdate,todate,"All","All");
+        bbgPage.filter("Soccer", KASTRAKI_LIMITED,"Group", "Pending Bets",fromdate,"","All","All");
 
         log("@Step 3:Click on any Price");
         String smartGroup = bbgPage.getFristSmartGroupName();
@@ -162,7 +161,7 @@ public class BBGTest extends BaseCaseAQS {
         Assert.assertEquals(page.ddpSport.getOptions(),SPORT_LIST,"FAILED! Sport dropdown displays incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.2.0"})
+    @Test(groups = {"regression","2024.V.2.0","ethan4.0"})
     @TestRails(id = "23638")
     public void BBG_TC_23638() {
         log("@title: Validate bets display accordingly when selecting each value in Sport list");
@@ -171,7 +170,7 @@ public class BBGTest extends BaseCaseAQS {
         String accountCode = "ClientCredit-AutoQC";
         String smartGroup = "QA Smart Group";
         String dateAPI = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
-        List<Order> lstOrder =  welcomePage.placeBetAPI(SOCCER,dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
+        List<Order> lstOrder =  welcomePage.placeBetAPI(SOCCER,dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
                 5.5,"BACK",false,"");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
@@ -241,7 +240,7 @@ public class BBGTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","2024.V.2.0","ethan3.0"})
+    @Test(groups = {"regression","2024.V.2.0","ethan4.0"})
     @TestRails(id = "23642")
     public void BBG_TC_23642() {
         log("@title: Validate bets display accordingly when selecting each value in Report Type list");
@@ -250,7 +249,7 @@ public class BBGTest extends BaseCaseAQS {
         String accountCode = "ClientCredit-AutoQC";
         String smartGroup = "QA Smart Group";
         String dateAPI = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
-        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,dateAPI,false,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
                 5.5,"BACK",false,"");
         ConfirmBetsUtils.confirmBetAPI(lstOrder.get(0));
         BetSettlementUtils.waitForBetIsUpdate(7);
@@ -263,7 +262,7 @@ public class BBGTest extends BaseCaseAQS {
         BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
         log("@Step 3: Select filters which have data with a Sport option (e.g. Soccer)");
         log("@Step 4: Click on 'Show' button");
-        page.filter("Soccer",KASTRAKI_LIMITED,"","Settled Bets","","","","");
+        page.filter("Soccer",KASTRAKI_LIMITED,"","Settled Bets",dateAPI,"","","");
         page.filterAdvance("Group",smartGroup);
         page.filterAdvance("Bet Types","FT-HDP");
         //wait for table update
@@ -330,7 +329,7 @@ public class BBGTest extends BaseCaseAQS {
         Assert.assertEquals(page.ddpStake.getOptions(), SBPConstants.BBGPage.STAKE_LIST,"FAILED! Stake list displays incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan4.0"})
     @TestRails(id = "23646")
     public void BBG_TC_23646() {
         log("@title: Validate all bets that matched selected currency and stake display");
@@ -359,7 +358,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 3: Filter From Date - To date which has data and other fields are default value");
         log("@Step 4: Click Show button");
         log("@Step 5: Click Show Bet Types dropdown list");
-        String date = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         page.filter("","","","Settled Bets",date,"","","");
         log("@Verify 1: All bets type (e.g. FT-HDP, HT-HDP, FT-Over/Under, HT-Over/Under) that have bets display");
         List<String> lstBetTypes = page.getLstNameInAdvanceFilter("Bet Types");
@@ -451,7 +450,7 @@ public class BBGTest extends BaseCaseAQS {
         page.verifyBetsShowCorrectByColumnName("Event",lstEvent);
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan4.0"})
     @TestRails(id = "23652")
     public void BBG_TC_23652() {
         log("@title: Validate all filters reset to default if click 'Reset All Filters' button");
