@@ -28,7 +28,7 @@ public class JournalReportsTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan2.0"})
+    @Test(groups = {"regression","ethan4.0"})
     @TestRails(id = "2166")
     @Parameters({"clientCode"})
     public void Journal_Reports_TC_2166(String clientCode){
