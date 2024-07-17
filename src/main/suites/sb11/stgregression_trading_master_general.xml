@@ -31,6 +31,7 @@
         <parameter name="companyName" value="Kastraki Limited"/>
         <parameter name="companyCurrency" value="HKD"/>
         <parameter name="userNameOneRole" value="onerole"/>
+        <parameter name="stakeSizeGroup" value="QA Client - Stake Group"/>
         <groups>
             <run>
                 <include name="regression" />

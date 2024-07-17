@@ -3,7 +3,7 @@ package testcases.sb11test.generalReports;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
-import common.SBPConstants;
+import static common.SBPConstants.*;
 import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -12,6 +12,7 @@ import pages.sb11.LoginPage;
 import pages.sb11.accounting.JournalReportsPage;
 import pages.sb11.generalReports.FeedReportPage;
 import pages.sb11.generalReports.popup.feedreport.ClientPopup;
+import pages.sb11.generalReports.popup.feedreport.InvoicePopup;
 import pages.sb11.generalReports.popup.feedreport.ProviderPopup;
 import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
@@ -31,7 +32,7 @@ public class FeedReportTest extends BaseCaseAQS {
         LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
         log("Verify 1: 'Feed Report' menu is hidden");
-        Assert.assertFalse(welcomePage.headerMenuControl.isSubmenuDisplay(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT));
+        Assert.assertFalse(welcomePage.headerMenuControl.isSubmenuDisplay(GENERAL_REPORTS,FEED_REPORT));
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.1.0"})
@@ -42,9 +43,9 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Expand General Reports menu");
         log("Verify 1: 'Feed Report' menu is hidden");
-        Assert.assertTrue(welcomePage.headerMenuControl.isSubmenuDisplay(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT));
+        Assert.assertTrue(welcomePage.headerMenuControl.isSubmenuDisplay(GENERAL_REPORTS,FEED_REPORT));
         log("@Step 3: Select Feed Report item");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("Verify 2: Feed Report page displays properly");
         Assert.assertTrue(page.lblTitle.getText().contains("Feed Report"),"FAILED! Title page displays incorrect");
         log("INFO: Executed completely");
@@ -56,11 +57,11 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Pre-condition: Feed Report permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Expand Company Unit dropdown list");
         log("Verify 1: Only displays option 'Kastraki Limited'");
         Assert.assertTrue(page.ddCompanyUnit.getNumberOfItems() == 1,"FAILED! Company Unit dropdown display incorrect");
-        Assert.assertTrue(page.ddCompanyUnit.getOptions().get(0).equals(SBPConstants.KASTRAKI_LIMITED),"FAILED! Company Unit dropdown display incorrect");
+        Assert.assertTrue(page.ddCompanyUnit.getOptions().get(0).equals(KASTRAKI_LIMITED),"FAILED! Company Unit dropdown display incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.1.0"})
@@ -70,11 +71,11 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Pre-condition: Feed Report permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Select Financial Year (e.g. Year 2022-2023)");
         String fromDate = "01/07/2023";
         String toDate = "31/07/2023";
-        page.filter(SBPConstants.KASTRAKI_LIMITED,"Year 2022-2023",fromDate,toDate);
+        page.filter(KASTRAKI_LIMITED,"Year 2022-2023",fromDate,toDate);
         log("@Step 4: Click From/To Date field");
         log("Verify 1: From/To Date field displays based on selected Financial Year at step #3\n" +
                 "e.g. Year 2022-2023 -> can select date from 1/8/2022 to 31/7/2023");
@@ -89,21 +90,21 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Pre-condition: Feed Report permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Select Financial Year (e.g. Year 2022-2023)");
         String fromDate = "01/08/2022";
         String toDate = "31/07/2023";
         log("@Step 4: Select From Date (e.g. 1/8/2022)");
         log("@Step 5: Select To Date more than 3 months from date (e.g. 1/7/2023)");
         log("@Step 6: Click Show button");
-        page.filter(SBPConstants.KASTRAKI_LIMITED,"Year 2022-2023",fromDate,toDate);
+        page.filter(KASTRAKI_LIMITED,"Year 2022-2023",fromDate,toDate);
         log("Verify 1: Error message 'Invalid time range. You can see data up to 3 months.' displays");
         page.btnShow.click();
-        Assert.assertEquals(page.appArlertControl.getWarningMessage(),SBPConstants.FeedReport.ERROR_MES_INVALID_TIME_RANGE,"FAILED! Error message display incorrect");
+        Assert.assertEquals(page.appArlertControl.getWarningMessage(),FeedReport.ERROR_MES_INVALID_TIME_RANGE,"FAILED! Error message display incorrect");
         log("@Step 7: Select To Date within 3 months from date (e.g. 1/11/2022)");
         log("@Step 8: Click Show button");
         fromDate = "01/07/2023";
-        page.filter(SBPConstants.KASTRAKI_LIMITED,"Year 2022-2023",fromDate,toDate);
+        page.filter(KASTRAKI_LIMITED,"Year 2022-2023",fromDate,toDate);
         log("Verify 2: Proper data displays");
         Assert.assertTrue(page.tblProviderFirst.getControlOfCell(1,1,1,null).getText().trim().contains(fromDate+" - "+toDate));
         log("INFO: Executed completely");
@@ -115,7 +116,7 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Pre-condition: Feed Report permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Filter which has data and do not input amount in any Provider/Client row");
         page.filter("","","","");
         log("Verify 1: Submit Transaction button should disable");
@@ -131,10 +132,10 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
         String providerName = "Auto Test";
         String valueAmount = "1.00";
-        String date = DateUtils.getDate(0,"dd/MM/yyyy",SBPConstants.GMT_7);
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Filter which has data");
-        page.filter(SBPConstants.KASTRAKI_LIMITED,"",date,date);
+        page.filter(KASTRAKI_LIMITED,"",date,date);
         log("@Step 4: Input amount in any Provider/Client row");
         page.inputAmount(providerName,providerName,valueAmount,date,true,false);
         log("Verify 1: Submit Transaction button should be enable");
@@ -150,11 +151,11 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
         String providerName = "Auto Test";
         String valueAmount = "1.00";
-        String date = DateUtils.getDate(-1,"dd/MM/yyyy",SBPConstants.GMT_7);
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Filter which has data");
         log("@Step 4: Select transaction date");
-        page.filter(SBPConstants.KASTRAKI_LIMITED,"",date,date);
+        page.filter(KASTRAKI_LIMITED,"",date,date);
         String previousProvider = page.getTotalProvider();
         log("@Step 5: Input amount (e.g. 1080) into any existing provider/client row");
         log("@Step 6: Click Submit Transaction button");
@@ -163,12 +164,12 @@ public class FeedReportTest extends BaseCaseAQS {
         log("Verify 1: Payment = current Payment + inputted amount");
         Assert.assertTrue(page.getTotalProvider().equals(String.format("%.2f",Double.valueOf(previousProvider)+Double.valueOf(valueAmount))));
         log("@Step 8: Go to Accounting >> Journal Reports");
-        JournalReportsPage journalReportsPage = page.navigatePage(SBPConstants.ACCOUNTING,SBPConstants.JOURNAL_REPORTS,JournalReportsPage.class);
+        JournalReportsPage journalReportsPage = page.navigatePage(ACCOUNTING,JOURNAL_REPORTS,JournalReportsPage.class);
         log("@Step 9: Filter by transaction date at step #4:\n" +
                 "Date Type = Transaction Date\n" +
                 "From Date To Date = <transaction date at step #4>\n" +
                 "Account Type = All");
-        journalReportsPage.filterReports(SBPConstants.KASTRAKI_LIMITED,"Transaction Date",date,date,"All","","Payment Feed","");
+        journalReportsPage.filterReports(KASTRAKI_LIMITED,"Transaction Date",date,date,"All","","Payment Feed","");
         log("Verify 2:  Feed Provider/Client at step #5 will have Sub-Account in Debit and Sub-Account in Credit, so:\n" +
                 "The inputted amount at step #5 of Sub-account in Debit will show in Debit column");
         Transaction transaction = new Transaction.Builder()
@@ -192,7 +193,7 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Pre-condition: Feed Report permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Click Provider button");
         ProviderPopup providerPopup = page.openProviderPopup();
         log("Verify 1: Provider dialog should open properly");
@@ -206,7 +207,7 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Pre-condition: Feed Report permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Click Provider button");
         ProviderPopup providerPopup = page.openProviderPopup();
         log("@Step 4: Click Add Provider button");
@@ -220,7 +221,7 @@ public class FeedReportTest extends BaseCaseAQS {
             log("@Step 6: Click Save button");
             ConfirmPopup confirmPopup = providerPopup.clickToSaveProvider(1);
             log("Verify 1: Confirmation message 'Are you sure to create <provider name>?' should display");
-            Assert.assertEquals(confirmPopup.getContentMessage(),String.format(SBPConstants.FeedReport.CONFIRM_MES_ADDING_PROVIDER,providerName)
+            Assert.assertEquals(confirmPopup.getContentMessage(),String.format(FeedReport.CONFIRM_MES_ADDING_PROVIDER,providerName)
                     ,"FAILED! Confirmation message display incorrect");
             log("@Step 7: Click Yes button in confirmation message");
             confirmPopup.btnYes.click();
@@ -238,7 +239,7 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Pre-condition: Feed Report permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Click Provider button");
         ProviderPopup providerPopup = page.openProviderPopup();
         log("@Step 4: Click Add Provider button");
@@ -259,7 +260,7 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Pre-condition: Feed Report permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Click Provider button");
         ProviderPopup providerPopup = page.openProviderPopup();
         log("@Step 4: Click Edit link of an existing");
@@ -288,7 +289,7 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Pre-condition: Feed Report permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Click Provider button");
         ProviderPopup providerPopup = page.openProviderPopup();
         log("@Post-step 4: add a provider");
@@ -312,7 +313,7 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Pre-condition: Feed Report permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Click Provider button");
         ProviderPopup providerPopup = page.openProviderPopup();
         log("@Post-step 4: add a provider");
@@ -340,21 +341,22 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Pre-condition: Feed Report permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Click Client button");
         ClientPopup clientPopup = page.openClientPopup();
         log("Verify 1: The Client dialog should display for viewing/editing/creating clients");
         Assert.assertTrue(clientPopup.lblTitle.isDisplayed(),"FAILED! Client Popup displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.1.0"})
+    @Test(groups = {"regression_stg","2024.V.1.0","ethan4.0"})
     @TestRails(id = "4104")
-    public void Feed_Report_4104() throws InterruptedException {
+    @Parameters({"emailAddress"})
+    public void Feed_Report_4104(String emailAddress) throws InterruptedException {
         log("@title: Validate can create client with proper information in Add Client state");
         log("@Pre-condition: Feed Report permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Click Client button");
         ClientPopup clientPopup = page.openClientPopup();
         log("@Step 4: Click Add Client button");
@@ -364,12 +366,15 @@ public class FeedReportTest extends BaseCaseAQS {
         String subaccDebit = "AutoExpenditureDebit - 011.000.000.000";
         String subaccCrebit = "AutoExpenditureCredit - 010.000.000.000";
         String cur = "HKD";
+        String companyName = "Automation Team";
+        String companyAddress = "Automation Team";
+        String invoiceCode = "112233";
         try {
-            clientPopup.addClient(providerName,clientName,clientName,cur,subaccDebit,subaccCrebit,false);
+            clientPopup.addClient(providerName,clientName,clientName,cur,subaccDebit,subaccCrebit, companyName, companyAddress, emailAddress, invoiceCode, cur,false);
             log("@Step 6: Click Save button");
             ConfirmPopup confirmPopup = clientPopup.clickToSaveProvider(1);
             log("Verify 1: Confirmation message 'Are you sure to create <provider name>?' should display");
-            Assert.assertEquals(confirmPopup.getContentMessage(),String.format(SBPConstants.FeedReport.CONFIRM_MES_ADDING_PROVIDER,clientName)
+            Assert.assertEquals(confirmPopup.getContentMessage(),String.format(FeedReport.CONFIRM_MES_ADDING_PROVIDER,clientName)
                     ,"FAILED! Confirmation message display incorrect");
             log("@Step 7: Click Yes button in confirmation message");
             confirmPopup.btnYes.click();
@@ -388,7 +393,7 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Pre-condition 2: Having some existing Providers");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Click Client button");
         ClientPopup clientPopup = page.openClientPopup();
         log("Verify 1: Data table of Provider will sort by Provider Name alphabetically ascending");
@@ -403,7 +408,7 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Pre-condition 2: Having some existing Providers");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Click Client button");
         ClientPopup clientPopup = page.openClientPopup();
         log("Verify 1: Data table of Client will sort by Provider Name alphabetically ascending and by Client Name if having the same provider");
@@ -417,11 +422,11 @@ public class FeedReportTest extends BaseCaseAQS {
         log("@Pre-condition : Feed Report permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Filter which has data");
-        String fromDate = DateUtils.getDate(-10,"dd/MM/yyyy",SBPConstants.GMT_7);
-        String toDate = DateUtils.getDate(0,"dd/MM/yyyy",SBPConstants.GMT_7);
-        page.filter(SBPConstants.KASTRAKI_LIMITED,"",fromDate,toDate);
+        String fromDate = DateUtils.getDate(-10,"dd/MM/yyyy",GMT_7);
+        String toDate = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED,"",fromDate,toDate);
         log("Verify 1: Summary table displays correct data\n" +
                 "CUR: HKD (as all the amount in this summary table will be in HKD)\n" +
                 "Provider = sum up 'Total in HKD' amounts of all providers (1)\n" +
@@ -439,19 +444,19 @@ public class FeedReportTest extends BaseCaseAQS {
         String providerName = "Auto Test";
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Filter which has data");
-        String fromDate = DateUtils.getDate(-3,"dd/MM/yyyy",SBPConstants.GMT_7);
-        page.filter(SBPConstants.KASTRAKI_LIMITED,"",fromDate,fromDate);
+        String fromDate = DateUtils.getDate(-3,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED,"",fromDate,fromDate);
         log("@Step 4: Get Payment (1)\n" +
                 "Get Payment[HKD] (2) of Provider at Precondition");
         page.inputAmount(providerName,providerName,"1.00",fromDate,true,true);
         String payment = FeedReportUtils.getPaymentValue(providerName,"","Payment",fromDate,fromDate);
         String paymentHKD = FeedReportUtils.getPaymentValue(providerName,"","Payment[HKD]",fromDate,fromDate);
         log("@Step 5: Go to Accounting >> Journal Reports");
-        JournalReportsPage journalReportsPage = page.navigatePage(SBPConstants.ACCOUNTING,SBPConstants.JOURNAL_REPORTS,JournalReportsPage.class);
+        JournalReportsPage journalReportsPage = page.navigatePage(ACCOUNTING,JOURNAL_REPORTS,JournalReportsPage.class);
         log("@Step 6: Filter by data of provider at step #3");
-        journalReportsPage.filterReports(SBPConstants.KASTRAKI_LIMITED,"Transaction Date",fromDate,fromDate,"All","","Payment Feed","");
+        journalReportsPage.filterReports(KASTRAKI_LIMITED,"Transaction Date",fromDate,fromDate,"All","","Payment Feed","");
         log("@Step 7: Get Total Foreign Debit/Total Foreign Credit of Sub-account at precondition (3)\n" +
                 "Get Total Foreign Debit in HKD/Total Foreign Credit in HKD of Sub-account at precondition (4)");
         String foreignDebit = journalReportsPage.getTotalByColumn(providerName,"Foreign Debit");
@@ -466,7 +471,7 @@ public class FeedReportTest extends BaseCaseAQS {
         Assert.assertTrue(paymentHKD.equals(totalCreditHKD),"FAILED! Credit in HKD is incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.1.0"})
+    @Test(groups = {"regression_stg","2024.V.1.0","ethan4.0"})
     @TestRails(id = "4109")
     public void Feed_Report_4109() {
         log("@title: Validate Client table displays correct data in Feed report ");
@@ -476,19 +481,20 @@ public class FeedReportTest extends BaseCaseAQS {
         String clientName = "Auto Client";
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Filter which has data");
-        String fromDate = DateUtils.getDate(-3,"dd/MM/yyyy",SBPConstants.GMT_7);
-        page.filter(SBPConstants.KASTRAKI_LIMITED,"",fromDate,fromDate);
+        String fromDate = DateUtils.getDate(-3,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED,"",fromDate,fromDate);
         log("@Step 4: Get Payment (1)\n" +
                 "Get Payment[HKD] (2) of Provider at Precondition");
-        page.inputAmount(providerName + " CLIENT",clientName,"1.00",fromDate,false,true);
+        InvoicePopup invoicePopup = page.inputAmount(providerName + " CLIENT",clientName,"1.00",fromDate,false,true);
+        invoicePopup.btnCancel.click();
         String payment = FeedReportUtils.getPaymentValue(providerName,clientName,"Payment",fromDate,fromDate);
         String paymentHKD = FeedReportUtils.getPaymentValue(providerName,clientName,"Payment[HKD]",fromDate,fromDate);
         log("@Step 5: Go to Accounting >> Journal Reports");
-        JournalReportsPage journalReportsPage = page.navigatePage(SBPConstants.ACCOUNTING,SBPConstants.JOURNAL_REPORTS,JournalReportsPage.class);
+        JournalReportsPage journalReportsPage = page.navigatePage(ACCOUNTING,JOURNAL_REPORTS,JournalReportsPage.class);
         log("@Step 6: Filter by data of provider at step #3");
-        journalReportsPage.filterReports(SBPConstants.KASTRAKI_LIMITED,"Transaction Date",fromDate,fromDate,"All","","Received Feed","");
+        journalReportsPage.filterReports(KASTRAKI_LIMITED,"Transaction Date",fromDate,fromDate,"All","","Received Feed","");
         log("@Step 7: Get Total Foreign Debit/Total Foreign Credit of Sub-account at precondition (3)\n" +
                 "Get Total Foreign Debit in HKD/Total Foreign Credit in HKD of Sub-account at precondition (4)");
         String foreignDebit = journalReportsPage.getTotalByColumn(providerName + " Client","Foreign Debit");
@@ -503,7 +509,7 @@ public class FeedReportTest extends BaseCaseAQS {
         Assert.assertTrue(paymentHKD.equals(totalCreditHKD),"FAILED! Credit in HKD is incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.1.0"})
+    @Test(groups = {"regression_stg","2024.V.1.0","ethan4.0"})
     @TestRails(id = "4135")
     public void Feed_Report_4135() {
         log("@title: Validate unable to edit any info of Providers/Clients that had feed transactions");
@@ -513,11 +519,11 @@ public class FeedReportTest extends BaseCaseAQS {
         String clientName = "Auto Client";
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Click Provider button");
         ProviderPopup providerPopup = page.openProviderPopup();
         log("Verify 1: There is a note 'Can not edit Provider/Client that had feed transactions'");
-        Assert.assertEquals(providerPopup.lblNote.getText(),SBPConstants.FeedReport.MES_NOTE_PROVIDER_CLIENT,"FAILED! Note displays incorrect");
+        Assert.assertEquals(providerPopup.lblNote.getText(),FeedReport.MES_NOTE_PROVIDER_CLIENT,"FAILED! Note displays incorrect");
         log("@Step 4: Click Edit link of provider that had transaction at precondition");
         log("@Step 5: Try to edit info");
         log("Verify 2: Could not edit info");
@@ -526,31 +532,35 @@ public class FeedReportTest extends BaseCaseAQS {
         providerPopup.closeToPopup();
         ClientPopup clientPopup = page.openClientPopup();
         log("Verify 3: There is a note 'Can not edit Provider/Client that had feed transactions'");
-        Assert.assertEquals(clientPopup.lblNote.getText(),SBPConstants.FeedReport.MES_NOTE_PROVIDER_CLIENT,"FAILED! Note displays incorrect");
+        Assert.assertEquals(clientPopup.lblNote.getText(),FeedReport.MES_NOTE_PROVIDER_CLIENT,"FAILED! Note displays incorrect");
         log("@Step 7: Click Edit link of client that had transaction at precondition");
         log("@Step 8: Try to edit info");
         log("Verify 4: Could not edit info");
-        Assert.assertFalse(clientPopup.isBtnEditCanClick(clientName),"FAILED! Edit button display incorrect");
+        clientPopup.checkCanEditClient(clientName);
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.1.0"})
+    @Test(groups = {"regression_stg","2024.V.1.0","ethan4.0"})
     @TestRails(id = "17953")
-    public void Feed_Report_17953() throws InterruptedException {
+    @Parameters({"emailAddress"})
+    public void Feed_Report_17953(String emailAddress) throws InterruptedException {
         log("@title: Validate can delete client successfully");
         log("@Pre-condition: Feed Report permission is ON for any account");
         String providerName = "Auto Test";
         String clientName = "Client Automation Testing";
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to 'General Reports' >> 'Feed Report' page");
-        FeedReportPage page = welcomePage.navigatePage(SBPConstants.GENERAL_REPORTS,SBPConstants.FEED_REPORT, FeedReportPage.class);
+        FeedReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,FEED_REPORT, FeedReportPage.class);
         log("@Step 3: Click Client button");
         ClientPopup clientPopup = page.openClientPopup();
         String subaccDebit = "AutoExpenditureDebit - 011.000.000.000";
         String subaccCrebit = "AutoExpenditureCredit - 010.000.000.000";
         String cur = "HKD";
+        String companyName = "Automation Team";
+        String companyAddress = "Automation Team";
+        String invoiceCode = "112233";
         try {
             log("@@Post-step 4: add a Client");
-            clientPopup.addClient(providerName,clientName,clientName,cur,subaccDebit,subaccCrebit,true);
+            clientPopup.addClient(providerName,clientName,clientName,cur,subaccDebit,subaccCrebit, companyName, companyAddress, emailAddress, invoiceCode, cur,true);
             log("@Step 5: Click X icon of an existing client at any row");
             log("@Step 6: Click Yes button");
             clientPopup.deleteClient(clientName,true);
