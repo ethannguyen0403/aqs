@@ -9,6 +9,7 @@ import pages.sb11.LoginPage;
 import pages.sb11.master.TermsAndConditionsPage;
 import pages.sb11.master.termsAndConditionsPopup.LogPopup;
 import testcases.BaseCaseAQS;
+import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         Assert.assertTrue(page.lblTitle.getText().contains("Terms and Conditions"),"FAILED! Term and Conditions page display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.4.0"})
+    @Test(groups = {"regression","2024.V.4.0","ethan4.0"})
     @TestRails(id = "17956")
     public void Term_And_Conditions_17956() {
         log("@title: Validate all existing companies display in Company Unit dropdown list");
@@ -54,8 +55,10 @@ public class TermsAndConditionsTest extends BaseCaseAQS {
         TermsAndConditionsPage page = welcomePage.navigatePage(MASTER,TERMS_AND_CONDITIONS, TermsAndConditionsPage.class);
         log("@Step 3: Expand Company Unit dropdown list");
         List<String> lstCU = page.ddpCompanyUnit.getOptions();
+        List<String> lstEx = CompanySetUpUtils.getListCompany();
+        lstEx.add(0,"All");
         log("Verify 1: 'All existing companies will display");
-        Assert.assertEquals(lstCU, COMPANY_UNIT_LIST_ALL,"FAILED! Term and Conditions page display incorrect");
+        Assert.assertEquals(lstCU, lstEx,"FAILED! Term and Conditions page display incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2024.V.2.0"})

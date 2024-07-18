@@ -397,7 +397,7 @@ public class BBGPage extends WelcomePage {
                 if (betTypeAc.equals(order.getBetType())
                     && selectionAc.equals(order.getSelection())
                     && handicapAc.equals(String.format("%.2f",order.getHandicap()))
-                    && priceAc.equals(String.format("%.3f (%s)",order.getPrice(),order.getOddType()))
+                    && priceAc.equals(String.format("%.3f",order.getPrice(),order.getOddType()))
                     && stakeAc.equals(String.format("%.2f",order.getRequireStake()))){
                     return true;
                 }

@@ -121,7 +121,11 @@ public class BBTPage extends WelcomePage {
             btnLeagues.click();
             waitSpinnerDisappeared();
             btnClearAll.click();
-            filterLeague(league);
+            filterLeague(false,league);
+        } else {
+            btnLeagues.click();
+            waitSpinnerDisappeared();
+            filterLeague(true,"");
         }
         btnShow.click();
         try {
@@ -161,7 +165,11 @@ public class BBTPage extends WelcomePage {
             btnLeagues.click();
             waitSpinnerDisappeared();
             btnClearAll.click();
-            filterLeague(league);
+            filterLeague(false,league);
+        } else {
+            btnLeagues.click();
+            waitSpinnerDisappeared();
+            filterLeague(true,"");
         }
         btnShow.click();
         try {
@@ -173,13 +181,17 @@ public class BBTPage extends WelcomePage {
         scrollToShowFullResults();
     }
 
-    private void filterLeague(String leagueName) {
-        Label lblSelectValue = Label.xpath(String.format("//table[@aria-label='group table']//span[text()=\"%s\"]//..//..//input",leagueName));
-        if (!lblSelectValue.isDisplayed()){
-            System.err.println(leagueName+" League is not displayed");
-            return;
+    private void filterLeague(boolean filterAll, String leagueName) {
+        if (filterAll){
+            btnSelectAll.click();
+        } else {
+            Label lblSelectValue = Label.xpath(String.format("//table[@aria-label='group table']//span[text()=\"%s\"]//..//..//input",leagueName));
+            if (!lblSelectValue.isDisplayed()){
+                System.err.println(leagueName+" League is not displayed");
+                return;
+            }
+            lblSelectValue.click();
         }
-        lblSelectValue.click();
         btnSetSelection.click();
     }
 
