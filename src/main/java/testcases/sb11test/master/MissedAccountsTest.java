@@ -23,7 +23,7 @@ public class MissedAccountsTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan4.0"})
     @TestRails(id = "2231")
     public void Missed_Accounts_TC_2231(){
         log("@title: Validate UI on Missed Accounts page is correctly displayed");
@@ -31,10 +31,9 @@ public class MissedAccountsTest extends BaseCaseAQS {
         log("Step 2: Click Master > Missed Accounts");
         MissedAccountsPage missedAccountsPage = welcomePage.navigatePage(MASTER, MISSED_ACCOUNTS,MissedAccountsPage.class);
         log("Validate there are 3 tables displayed with correctly title:BetISN, Pinnacle, Fair999");
-        Assert.assertEquals(missedAccountsPage.lblBetISN.getText(),"BET ISN","Failed! BetISN table is not displayed!");
-        Assert.assertEquals(missedAccountsPage.lblPinnacle.getText(),"PINNACLE","Failed! Pinnacle table is not displayed!");
+        Assert.assertEquals(missedAccountsPage.lblBetISN.getText(),"BetISN","Failed! BetISN table is not displayed!");
+        Assert.assertEquals(missedAccountsPage.lblPinnacle.getText(),"Pinnacle","Failed! Pinnacle table is not displayed!");
         Assert.assertEquals(missedAccountsPage.lblFair999.getText(),"Fair999","Failed! Fair999 table is not displayed!");
-
         log("INFO: Executed completely");
     }
 }

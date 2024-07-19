@@ -93,6 +93,7 @@ public class ClientSystemPage extends WelcomePage {
         int rowIndex = tbClient.getRowIndexContainValue(clientCode,tbClient.getColumnIndexByName("Client Name"),null);
         tbSuperMaster.getControlOfCell(1,tbSuperMaster.getColumnIndexByName("List"),rowIndex,null).click();
         waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
         return new MemberListPopup();
     }
 

@@ -351,7 +351,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id = "23954")
-    @Test(groups = {"regression", "2024.V.2.0","ethan"})
+    @Test(groups = {"regression", "2024.V.2.0","ethan4.0"})
     public void IncomeStatement_Analysis_TC23954() {
         log("@title: Validate data are sorted by Chart Code of Detail Types ascendingly");
         log("@pre-condition: Income Statement - Analysis permission is ON");
@@ -367,7 +367,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id = "23955")
-    @Test(groups = {"regression", "2024.V.2.0","ethan3.0"})
+    @Test(groups = {"regression", "2024.V.2.0","ethan4.0"})
     public void IncomeStatement_Analysis_TC23955() {
         log("@title: Validate Parent Accounts are sorted by Parent Account Number ascendingly within the same Detail Types");
         log("@pre-condition: Income Statement - Analysis permission is ON");

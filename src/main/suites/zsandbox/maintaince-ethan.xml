@@ -30,7 +30,8 @@
         <parameter name="companyName" value="Kastraki Limited"/>
         <parameter name="companyCurrency" value="HKD"/>
         <parameter name="userNameOneRole" value="onerole"/>
-        <parameter name='isAddTestRailResult' value='false'/>
+        <parameter name="stakeSizeGroup" value="QA Client - Stake Group"/>
+        <parameter name='isAddTestRailResult' value='true'/>
         <groups>
             <run>
                 <include name="ethan4.0"/>
@@ -44,20 +45,40 @@
 
             <class name="testcases.sb11test.soccer.HandicapLiabilityTest"/>
             <class name="testcases.sb11test.soccer.HandicapCornerLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.OverUnderLiabilityTest"/>
             <class name="testcases.sb11test.soccer.OverUnderCornerLiabilityTest"/>
             <class name="testcases.sb11test.soccer.MonitorBetsTest"/>
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
+            <class name="testcases.sb11test.soccer.BBGPhoneBettingTest"/>
             <class name="testcases.sb11test.soccer.BBTTest"/>
+            <class name="testcases.sb11test.soccer.BBGTest"/>
             <class name="testcases.sb11test.soccer.SPPTest"/>
             <class name="testcases.sb11test.soccer.MatchOddsLiabilityTest"/>
 
             <class name="testcases.sb11test.accounting.CurrencyRatesTest"/>
             <class name="testcases.sb11test.accounting.CompanySetupTest"/>
+            <class name="testcases.sb11test.accounting.JournalReportsTest"/>
 
+            <class name="testcases.sb11test.trading.AccountPercentTest"/>
             <class name="testcases.sb11test.trading.BetSettlementTest"/>
             <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
+            <class name="testcases.sb11test.trading.CricketSportTest"/>
+            <class name="testcases.sb11test.trading.StakeSizeGroupTest"/>
 
+            <class name="testcases.sb11test.master.ClientSystemTest"/>
+            <class name="testcases.sb11test.master.MissedAccountsTest"/>
+            <class name="testcases.sb11test.master.TermsAndConditionsTest"/>
+
+            <class name="testcases.sb11test.generalReports.ClosingJournalEntriesTest"/>
             <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
+            <class name="testcases.sb11test.generalReports.FeedReportTest"/>
+            <class name="testcases.sb11test.generalReports.WinLossDetailTest"/>
+
+            <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
+            <class name="testcases.sb11test.financialReports.IncomeStatementTest"/>
+            <class name="testcases.sb11test.financialReports.IncomeStatementAnalysisTest"/>
+            <class name="testcases.sb11test.financialReports.TrialBalanceTest"/>
+
         </classes>
     </test>
 </suite>

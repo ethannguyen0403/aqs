@@ -21,8 +21,8 @@ public class BetSettlementPage extends WelcomePage {
     public DropDownBox ddbMatchDate = DropDownBox.xpath("//select[@name='dropMatchDate']");
     public TextBox txtFromDate = TextBox.xpath("//div[text()=' From Date ']//..//input");
     public TextBox txtToDate = TextBox.xpath("//div[text()=' To Date ']//..//input");
-    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
-    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
+    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate, "//bs-datepicker-container");
+    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate, "//bs-datepicker-container");
     public TextBox txtAccStartWith = TextBox.xpath("//input[@name='txtAccStartsWith']");
     public TextBox txtAccountCode = TextBox.xpath("//input[@name='txtAccountCode']");
     public Button btnSearch = Button.xpath("//div[@class='container-fluid cbody']//button[contains(@class,'icon-search-custom')]");
@@ -41,24 +41,25 @@ public class BetSettlementPage extends WelcomePage {
     int coli = 2;
     int colBetDateEventDate = 3;
     int colBRBettrefId = 4;
-    int colSport = 5 ;
+    int colSport = 5;
     int colEvenLeagueName = 6;
     int colSelection = 7;
     int colHdp = 8;
     int colLive = 9;
     int colOdds = 10;
     int colStake = 11;
-    int colWinLoss =12;
+    int colWinLoss = 12;
     int colBetType = 13;
     int colSelect = 14;
-    public Table tblOrder = Table.xpath("//table",colTotal);
-    public String getTitlePage ()
-    {
+    public Table tblOrder = Table.xpath("//table", colTotal);
+
+    public String getTitlePage() {
         return lblTitle.getText().trim();
     }
 
     /**
      * Filter Confirm bets with input value
+     *
      * @param accStartWith
      * @param status
      * @param fromDate
@@ -68,21 +69,19 @@ public class BetSettlementPage extends WelcomePage {
     public void filter(String status, String fromDate, String toDate, String accStartWith, String accountCode) {
         btnLogout.moveToTheControl();
         ddbStatus.selectByVisibleText(status);
-       if(!fromDate.isEmpty())
-       {
-           if(ddbMatchDate.isDisplayed()) {
-               ddbMatchDate.selectByVisibleContainsText("Specific Date");
-           }
-           if(!fromDate.isEmpty()){
-               dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-           }
-           if(!toDate.isEmpty()) {
-               dtpToDate.selectDate(toDate,"dd/MM/yyyy");
-           }
-       }
+        if (!fromDate.isEmpty()) {
+            if (ddbMatchDate.isDisplayed()) {
+                ddbMatchDate.selectByVisibleContainsText("Specific Date");
+            }
+            if (!fromDate.isEmpty()) {
+                dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
+            }
+            if (!toDate.isEmpty()) {
+                dtpToDate.selectDate(toDate, "dd/MM/yyyy");
+            }
+        }
 
-        if(!accStartWith.isEmpty())
-        {
+        if (!accStartWith.isEmpty()) {
             txtAccStartWith.sendKeys(accStartWith);
         }
         txtAccountCode.sendKeys(accountCode);
@@ -100,45 +99,48 @@ public class BetSettlementPage extends WelcomePage {
 
     /**
      * Get order ID as expected row index
+     *
      * @param rowIndex
      * @return
      */
-    public String getOrderIndex(int rowIndex){
-        Label lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1,colBRBettrefId,rowIndex,"span[2]"));
+    public String getOrderIndex(int rowIndex) {
+        Label lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1, colBRBettrefId, rowIndex, "span[2]"));
         return lblOrderID.getText();
     }
 
     /**
      * Get row index of the order in the table
+     *
      * @param orderId
      * @return
      */
-    private int getOrderIndex(String orderId){
+    private int getOrderIndex(String orderId) {
         int i = 1;
         Label lblOrderID;
-        while (true){
-            lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1,colBRBettrefId,i,"span[2]"));
-            if(!lblOrderID.isDisplayed()){
-                System.out.println("The order id "+ orderId +" does not display in the table");
+        while (true) {
+            lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1, colBRBettrefId, i, "span[2]"));
+            if (!lblOrderID.isDisplayed()) {
+                System.out.println("The order id " + orderId + " does not display in the table");
                 return 0;
             }
-            if(lblOrderID.getText().contains(orderId)){
-                System.out.println("Found order "+orderId+" at row "+ i);
+            if (lblOrderID.getText().contains(orderId)) {
+                System.out.println("Found order " + orderId + " at row " + i);
                 return i;
             }
-            i = i+1;
+            i = i + 1;
         }
     }
 
-    private void selectOrder(Order order){
+    private void selectOrder(Order order) {
         selectRowByOrderID(order.getBetId());
 
     }
-    public void selectRowByOrderID(String order){
+
+    public void selectRowByOrderID(String order) {
         int rowIndex = getOrderIndex(order);
         CheckBox cb = CheckBox.xpath(tblOrder.getxPathOfCell(1, colSelect, rowIndex, "input"));
         cb.scrollToThisControl(false);
-        if(!cb.isSelected()){
+        if (!cb.isSelected()) {
             cb.click();
         }
     }
@@ -149,7 +151,7 @@ public class BetSettlementPage extends WelcomePage {
         TextBox winLose = TextBox.xpath(tblOrder.getxPathOfCell(1, colWinLoss, rowIndex, "input"));
         try {
             winLose.waitForElementToBePresent(winLose.getLocator(), 2);
-            if (winLose.getAttribute("value").isEmpty()){
+            if (winLose.getAttribute("value").isEmpty()) {
                 winLose.sendKeys("" + order.getRequireStake());
             }
             System.out.println("Fill win/lose");
@@ -160,9 +162,10 @@ public class BetSettlementPage extends WelcomePage {
 
     /**
      * Detete a order
+     *
      * @param order order id or bet id
      */
-    public void deleteOrder(Order order){
+    public void deleteOrder(Order order) {
         selectOrder(order);
         btnDelete.scrollToTop();
         btnDelete.click();
@@ -172,21 +175,22 @@ public class BetSettlementPage extends WelcomePage {
 
     /**
      * To check an orderid display in confirm bet table or not
+     *
      * @param orderID
      * @return
      */
-    public boolean isOrderDisplayInTheTable(String orderID){
+    public boolean isOrderDisplayInTheTable(String orderID) {
         int index = getOrderIndex(orderID);
-        if(index == 0)
+        if (index == 0)
             return false;
         return true;
     }
 
-    public String getWinlossAmountofOrder(Order order)  {
+    public String getWinlossAmountofOrder(Order order) {
         btnSearch.click();
         int rowindex = getOrderIndex(order.getBetId());
-        String winloss = tblOrder.getControlOfCell(1, colWinLoss,rowindex,"input").getAttribute("value");
-        if(winloss.equals("")){
+        String winloss = tblOrder.getControlOfCell(1, colWinLoss, rowindex, "input").getAttribute("value");
+        if (winloss.equals("")) {
             //wait for the bet is settled in 3s
             try {
                 Thread.sleep(20000);
@@ -196,11 +200,12 @@ public class BetSettlementPage extends WelcomePage {
         }
         return winloss;
     }
-    public String getWinlossSettledofOrder(Order order)  {
+
+    public String getWinlossSettledofOrder(Order order) {
         btnSearch.click();
         int rowindex = getOrderIndex(order.getBetId());
-        String winloss = tblOrder.getControlOfCell(1, tblOrder.getColumnIndexByName("Win/Lose"),rowindex,null).getText();
-        if(winloss.equals("")){
+        String winloss = tblOrder.getControlOfCell(1, tblOrder.getColumnIndexByName("Win/Lose"), rowindex, null).getText();
+        if (winloss.equals("")) {
             //wait for the bet is settled in 3s
             try {
                 Thread.sleep(20000);
@@ -213,74 +218,77 @@ public class BetSettlementPage extends WelcomePage {
 
     /**
      * Verify order in Bet Settlement page
+     *
      * @param order order info
      */
-    public void verifyOrderInfo(Order order){
+    public void verifyOrderInfo(Order order) {
         int rowindex = getOrderIndex(order.getBetId());
-        String brBetrefID = tblOrder.getControlOfCell(1, colBRBettrefId,rowindex,"//span[2]").getText();
-        String sport = tblOrder.getControlOfCell(1, colSport,rowindex,null).getText();
-        String eventLeague = tblOrder.getControlOfCell(1, colEvenLeagueName,rowindex,null).getText();
-        String selection = tblOrder.getControlOfCell(1, colSelection,rowindex,null).getText();
-        String hdp = tblOrder.getControlOfCell(1, colHdp,rowindex,null).getText();
-        String live = tblOrder.getControlOfCell(1, colLive,rowindex,null).getText();
-        String odds = tblOrder.getControlOfCell(1, colOdds,rowindex,null).getText();
-        String stake = tblOrder.getControlOfCell(1, colStake,rowindex,null).getText();
-     //   String winloss = tblOrder.getControlOfCell(1, colWinLoss,rowindex,null).getText();
-        String beType = tblOrder.getControlOfCell(1, colBetType,rowindex,null).getText();
-        Assert.assertTrue(brBetrefID.contains(brBetrefID), "Failed BR BetRef id 123 SB Betfef id at row "+rowindex+" is incorrect");
-        Assert.assertEquals(sport,SPORT_SIGN_MAP.get(order.getEvent().getSportName()), "Failed Sport at row "+rowindex+" is incorrect");
-        Assert.assertEquals(eventLeague,String.format("%s -vs- %s\n[%s]",order.getEvent().getHome(), order.getEvent().getAway(), order.getEvent().getLeagueName().toUpperCase()), "Failed! Event League Name at row "+rowindex+" is incorrect");
-        Assert.assertEquals(selection,order.getSelection(), "Failed! Selection at row "+rowindex+" is incorrect");
+        String brBetrefID = tblOrder.getControlOfCell(1, colBRBettrefId, rowindex, "//span[2]").getText();
+        String sport = tblOrder.getControlOfCell(1, colSport, rowindex, null).getText();
+        String eventLeague = tblOrder.getControlOfCell(1, colEvenLeagueName, rowindex, null).getText();
+        String selection = tblOrder.getControlOfCell(1, colSelection, rowindex, null).getText();
+        String hdp = tblOrder.getControlOfCell(1, colHdp, rowindex, null).getText();
+        String live = tblOrder.getControlOfCell(1, colLive, rowindex, null).getText();
+        String odds = tblOrder.getControlOfCell(1, colOdds, rowindex, null).getText();
+        String stake = tblOrder.getControlOfCell(1, colStake, rowindex, null).getText();
+        //   String winloss = tblOrder.getControlOfCell(1, colWinLoss,rowindex,null).getText();
+        String beType = tblOrder.getControlOfCell(1, colBetType, rowindex, null).getText();
+        Assert.assertTrue(brBetrefID.contains(brBetrefID), "Failed BR BetRef id 123 SB Betfef id at row " + rowindex + " is incorrect");
+        Assert.assertEquals(sport, SPORT_SIGN_MAP.get(order.getEvent().getSportName()), "Failed Sport at row " + rowindex + " is incorrect");
+        Assert.assertEquals(eventLeague, String.format("%s -vs- %s\n[%s]", order.getEvent().getHome(), order.getEvent().getAway(), order.getEvent().getLeagueName().toUpperCase()), "Failed! Event League Name at row " + rowindex + " is incorrect");
+        Assert.assertEquals(selection, order.getSelection(), "Failed! Selection at row " + rowindex + " is incorrect");
 
         String expectedBetType = order.getMarketType();
-        String expectedHDP = hdp.startsWith("+") ? "+"+hdp : hdp;
+        String expectedHDP = hdp.startsWith("+") ? "+" + hdp : hdp;
         String hdpSign = order.isNegativeHdp() ? "-" : "";
-        if(order.getEvent().getSportName().equalsIgnoreCase("Soccer")){
-            if (order.getMarketType().contains(("1x2"))){
+        if (order.getEvent().getSportName().equalsIgnoreCase("Soccer")) {
+            if (order.getMarketType().contains(("1x2"))) {
                 expectedBetType = String.format("%s-%s", EN_US.get(order.getStage()), "1x2");
             } else {
 
                 expectedBetType = String.format("%s-%s", EN_US.get(order.getStage()), EN_US.get(expectedBetType));
                 expectedHDP = String.format("%s%s", hdpSign, order.getHdpPoint());
             }
-            if (order.isLive()){
-                Assert.assertEquals(live,  String.format("%s - %s", order.getLiveHomeScore(),order.getLiveHomeScore()), "Failed! Live is incorrect");
+            if (order.isLive()) {
+                Assert.assertEquals(live, String.format("%s - %s", order.getLiveHomeScore(), order.getLiveHomeScore()), "Failed! Live is incorrect");
             }
-        }else if (order.getEvent().getSportName().equalsIgnoreCase("Cricket")) {
-            expectedHDP =  String.format("%s%s / %s%s", hdpSign + expectedHDP, order.getHandicapWtks(), hdpSign + expectedHDP, order.getHandicapRuns());
+        } else if (order.getEvent().getSportName().equalsIgnoreCase("Cricket")) {
+            expectedHDP = String.format("%s%s / %s%s", hdpSign + expectedHDP, order.getHandicapWtks(), hdpSign + expectedHDP, order.getHandicapRuns());
             Assert.assertEquals(live, "", "Failed! Live is incorrect");
-        }else {
+        } else {
             expectedBetType = "MB";
         }
-        if (order.isLive()){
-            Assert.assertEquals(hdp,expectedHDP, "Failed! HDP at row "+rowindex+" is incorrect");
+        if (order.isLive()) {
+            Assert.assertEquals(hdp, expectedHDP, "Failed! HDP at row " + rowindex + " is incorrect");
         }
-        Assert.assertEquals(odds,String.format("%.3f (%s)", order.getPrice(),order.getOddType()), "Failed! Odds at row "+rowindex+" is incorrect");
-        Assert.assertEquals(stake,String.format("%.2f", order.getRequireStake()), "Failed! Stake at row "+rowindex+" is incorrect");
+        Assert.assertEquals(odds, String.format("%.3f", order.getPrice(), order.getOddType()), "Failed! Odds at row " + rowindex + " is incorrect");
+        Assert.assertEquals(stake, String.format("%.2f", order.getRequireStake()), "Failed! Stake at row " + rowindex + " is incorrect");
         //Assert.assertEquals(winloss,"", "Failed!  Win loss at row "+rowindex+" is incorrect");
-        Assert.assertEquals(beType,expectedBetType, "Failed! Bet Type at row "+rowindex+" is incorrect");
+        Assert.assertEquals(beType, expectedBetType, "Failed! Bet Type at row " + rowindex + " is incorrect");
     }
 
     /**
      * To check an orderid display in confirm bet table or not
+     *
      * @param order
      * @return
      */
-    public boolean isOrderDisplayInTheTable(Order order){
+    public boolean isOrderDisplayInTheTable(Order order) {
         int index = getOrderIndex(order.getBetId());
-        if(index == 0)
+        if (index == 0)
             return false;
         return true;
     }
 
-    public void settleAndSendSettlementEmail(Order order){
-            selectOrder(order);
-            fillWinLose(order);
-            btnSettleSendSettlementEmail.scrollToTop();
-            btnSettleSendSettlementEmail.click();
-            waitSpinnerDisappeared();
-            ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
-            confirmPopupControl.confirmYes();
+    public void settleAndSendSettlementEmail(Order order) {
+        selectOrder(order);
+        fillWinLose(order);
+        btnSettleSendSettlementEmail.scrollToTop();
+        btnSettleSendSettlementEmail.click();
+        waitSpinnerDisappeared();
+        ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
+        confirmPopupControl.confirmYes();
+        waitSpinnerDisappeared();
     }
 
     public void sendBetListEmail(Order order) {
@@ -299,7 +307,8 @@ public class BetSettlementPage extends WelcomePage {
             System.out.println("Failed! Win/Lose data is not shown!");
         }
     }
-    public void exportSelectedOrderID(String order){
+
+    public void exportSelectedOrderID(String order) {
         selectRowByOrderID(order);
         btnExportSelectedBet.scrollToTop();
         btnExportSelectedBet.click();
@@ -310,27 +319,29 @@ public class BetSettlementPage extends WelcomePage {
             e.printStackTrace();
         }
     }
-    public void exportSelectedBEt(Order order){
+
+    public void exportSelectedBEt(Order order) {
         selectOrder(order);
         btnExportSelectedBet.scrollToTop();
         btnExportSelectedBet.click();
     }
-    public void verifyOrderManual(Order order){
+
+    public void verifyOrderManual(Order order) {
         int rowindex = getOrderIndex(order.getBetId());
-        String brBetrefID = tblOrder.getControlOfCell(1, colBRBettrefId,rowindex,null).getText();
-        String sport = tblOrder.getControlOfCell(1, colSport,rowindex,null).getText();
-        String eventLeague = tblOrder.getControlOfCell(1, colEvenLeagueName,rowindex,null).getText();
-        String selection = tblOrder.getControlOfCell(1, colSelection,rowindex,null).getText();
-        String odds = tblOrder.getControlOfCell(1, colOdds,rowindex,null).getText();
-        String stake = tblOrder.getControlOfCell(1, colStake,rowindex,null).getText();
-        String beType = tblOrder.getControlOfCell(1, colBetType,rowindex,null).getText();
+        String brBetrefID = tblOrder.getControlOfCell(1, colBRBettrefId, rowindex, null).getText();
+        String sport = tblOrder.getControlOfCell(1, colSport, rowindex, null).getText();
+        String eventLeague = tblOrder.getControlOfCell(1, colEvenLeagueName, rowindex, null).getText();
+        String selection = tblOrder.getControlOfCell(1, colSelection, rowindex, null).getText();
+        String odds = tblOrder.getControlOfCell(1, colOdds, rowindex, null).getText();
+        String stake = tblOrder.getControlOfCell(1, colStake, rowindex, null).getText();
+        String beType = tblOrder.getControlOfCell(1, colBetType, rowindex, null).getText();
         String expectedBetType = order.getMarketType();
-        Assert.assertTrue(brBetrefID.contains(order.getBetId()), "Failed BR BetRef id 123 SB Betfef id at row "+rowindex+" is incorrect");
-        Assert.assertEquals(sport,SPORT_SIGN_MAP.get(order.getSport()), "Failed Sport at row "+rowindex+" is incorrect");
-        Assert.assertEquals(eventLeague,"Manual Bet Description", "Failed! Event League Name at row "+rowindex+" is incorrect");
-        Assert.assertEquals(selection,order.getSelection(), "Failed! Selection at row "+rowindex+" is incorrect");
-        Assert.assertEquals(odds,String.format("%.3f (%s)", order.getPrice(),order.getOddType()), "Failed! Odds at row "+rowindex+" is incorrect");
-        Assert.assertEquals(stake,String.format("%.2f", order.getRequireStake()), "Failed! Stake at row "+rowindex+" is incorrect");
-        Assert.assertEquals(beType,expectedBetType, "Failed! Bet Type at row "+rowindex+" is incorrect");
+        Assert.assertTrue(brBetrefID.contains(order.getBetId()), "Failed BR BetRef id 123 SB Betfef id at row " + rowindex + " is incorrect");
+        Assert.assertEquals(sport, SPORT_SIGN_MAP.get(order.getSport()), "Failed Sport at row " + rowindex + " is incorrect");
+        Assert.assertEquals(eventLeague, "Manual Bet Description", "Failed! Event League Name at row " + rowindex + " is incorrect");
+        Assert.assertEquals(selection, order.getSelection(), "Failed! Selection at row " + rowindex + " is incorrect");
+        Assert.assertEquals(odds, String.format("%.3f", order.getPrice(), order.getOddType()), "Failed! Odds at row " + rowindex + " is incorrect");
+        Assert.assertEquals(stake, String.format("%.2f", order.getRequireStake()), "Failed! Stake at row " + rowindex + " is incorrect");
+        Assert.assertEquals(beType, expectedBetType, "Failed! Bet Type at row " + rowindex + " is incorrect");
     }
 }

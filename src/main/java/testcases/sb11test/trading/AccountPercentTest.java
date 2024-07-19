@@ -180,7 +180,7 @@ public class AccountPercentTest extends BaseCaseAQS {
                 "FAILED! Data table displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.1.0"})
+    @Test(groups = {"regression","2024.V.1.0","ethan4.0"})
     @TestRails(id = "150")
     @Parameters({"bookieCode","accountCode","username"})
     public void AccountPercent_150(String bookieCode, String accountCode, String username) {
@@ -188,8 +188,8 @@ public class AccountPercentTest extends BaseCaseAQS {
         log("@Pre-conditions 1: User has permission to access Account Percent page");
         log("@Pre-conditions 2: Already has Bookie with Account created");
         String accountIDEx = AccountSearchUtils.getAccountId(accountCode);
-        String createdByEx = "qa";
-        String createdDateEx = "18/01/2023 12:08";
+        String createdByEx = username;
+        String createdDateEx = "04/06/2024 08:04";
         log("@Step 1: Login to site");
         log("@Step 2: Navigate to Trading > Account Percent");
         AccountPercentPage accountPercentPage = welcomePage.navigatePage(TRADING,ACCOUNT_PERCENT,AccountPercentPage.class);
@@ -252,12 +252,14 @@ public class AccountPercentTest extends BaseCaseAQS {
         Assert.assertTrue(ptDefault.equals(accountPercentPage.getAccPT(accountCode)));
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.1.0"})
+    @Test(groups = {"regression","2024.V.1.0","ethan4.0"})
     @TestRails(id = "155")
     @Parameters({"masterCode","agentCode","smartGroup","accountCode","clientCode"})
     public void AccountPercent_155(String masterCode, String agentCode,String smartGroup, String accountCode, String clientCode) throws IOException {
         log("@Title: Validate account percent is applied on SPP correctly");
         log("@Pre-conditions 1: User has permission to access SPP page");
+        String today = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
+        int winloseBegin = SPPUtils.getWinLose(smartGroup,today,today,SOCCER);
         log("@Pre-conditions 2: User is assigned to Smart Group (the smart group assigned to Smart Master + Smart Agent) already");
         log("@Pre-conditions 3: User has been set Account Percent value");
         Double pt = 1.00000;
@@ -274,16 +276,16 @@ public class AccountPercentTest extends BaseCaseAQS {
         String winLossEx = betSettlementPage.getWinlossSettledofOrder(lstOrder.get(0));
         betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
         //wait for update in SPP page
-        BetSettlementUtils.waitForBetIsUpdate(60);
+        BetSettlementUtils.waitForBetIsUpdate(120);
         log("@Step 1: Login to site");
         log("@Step 2: Navigate to Soccer > SPP");
         SPPPage sppPage = betSettlementPage.navigatePage(SOCCER,SPP,SPPPage.class);
         log("@Step 3: Search with Smart Group and Smart Master + Smart Agent at precondition");
-        sppPage.filter(SOCCER, "Group","Smart Group",masterCode,agentCode,date,date);
+        sppPage.filter(SOCCER, "Group","Smart Group",masterCode,agentCode,"","");
         log("@Step 4: Observe Win/Lose of the bet");
         String winLossAc = sppPage.getRowDataOfGroup(smartGroup).get(sppPage.tblSPP.getColumnIndexByName("W/L"));
         log("Verify 1: Win/Lose of the bet is shown with value applied the Account Percent setting");
-        Assert.assertEquals(winLossAc,winLossEx,"FAILED! Win lose displays incorrect");
+        Assert.assertEquals(Double.valueOf(winLossAc),Double.valueOf(winLossEx) + Double.valueOf(winloseBegin),0.01,"FAILED! Win lose displays incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression"})

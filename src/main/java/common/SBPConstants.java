@@ -216,6 +216,7 @@ public class SBPConstants {
     };
     public static final Map<String, String> SPORT_ID_MAP = new HashMap<String, String>() {
         {
+            put("All", "-1");
             put("Soccer", "1");
             put("Cricket", "2");
             put("Basketball", "3");
@@ -541,7 +542,7 @@ public class SBPConstants {
     public static class ClosingJournalEntries {
         public final static String SUCCESS_MES_LAST_MONTH = "Closing Journal Entry for %s is completed.";
         public final static String MES_REMINDER_BEFORE_1_MONTH = "You will need to perform CJE for %s to have the correct balances";
-        public final static String MES_REMINDER_BEFORE_2_MONTH = "Are you sure to perform Closing Journal Entry for %s - %s?";
+        public final static String MES_REMINDER_BEFORE_2_MONTH = "Are you sure to perform Closing Journal Entries for %s - %s?";
     }
 
     public static class ConsolidatedClientBalance {

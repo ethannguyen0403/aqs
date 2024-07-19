@@ -62,7 +62,7 @@ public class BetEntrytUtils {
         List<Order> lstOrderReverse = Lists.reverse(lstOrder);
         String betid= "";
         if(arr.length()>0) {
-            for(int i =0; i < arr.length(); i ++) {
+            for(int i = 0; i < arr.length(); i ++) {
                 if(orderIndex >= lstOrder.size())
                     return Lists.reverse(lstOrderReverse);
                 JSONObject orderObj = arr.getJSONObject(i);
