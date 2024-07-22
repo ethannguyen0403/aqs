@@ -74,7 +74,7 @@ public class JournalReportsTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.12.29"})
+    @Test(groups = {"regression", "2023.12.29","ethan4.0"})
     @TestRails(id = "2161")
     public void Journal_Report_TC_2161(){
         log("@title: Validate there is the log of the Closing Journal ");
@@ -94,7 +94,7 @@ public class JournalReportsTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.12.29"})
+    @Test(groups = {"regression", "2023.12.29","ethan4.0"})
     @TestRails(id = "2162")
     public void Journal_Report_TC_2162(){
         log("@title: Validate the Total Debit = Total Credit after closing journal");
