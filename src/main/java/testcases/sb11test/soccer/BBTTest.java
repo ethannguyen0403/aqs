@@ -614,7 +614,12 @@ public class BBTTest extends BaseCaseAQS {
         List<String> lstFirstRowData = bbtPage.getFirstRowGroupData();
         PendingBetsPage pendingBetsPage = bbtPage.openPendingBetFirstGroup();
         String expectedHeader = lstFirstRowData.get(0) + " - " + lstFirstRowData.get(6);
-
+        //Wait for popup update
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         log("3. Validate NonLive Last 50 Bets is displayed correctly title with 2 tables header Punter Performance - Last 1 Year[NonLive Bets] and" +
                 "[smart group name] - [smart group currency]");
         Assert.assertEquals(pendingBetsPage.getTableHeader(), expectedHeader, "FAILED! Header of NonLive Last 50 Bets - Punter Performance - Last 1 Year[NonLive Bets] is not displayed correct");

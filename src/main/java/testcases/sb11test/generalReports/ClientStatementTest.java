@@ -918,7 +918,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke","ethan4.0"})
+    @Test(groups = {"smoke"})
     @Parameters({"clientCode"})
     @TestRails(id = "882")
     public void ClientStatementTC_882(String clientCode) {

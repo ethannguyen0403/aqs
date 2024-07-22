@@ -55,7 +55,7 @@ public class BBTPage extends WelcomePage {
     public Button btnMoreFilter = Button.xpath("//div[contains(text(),'More Filters')]");
     public Button btnResetAllFilter = Button.xpath("//span[contains(text(),'Reset All Filters')]");
     public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
-    public Button btnShowMoreFilter = Button.xpath("//popover-container//button[contains(text(),'Show')]");
+    public Button btnShowMoreFilter = Button.xpath("//popover-container//button[contains(text(),'SHOW')]");
     public Button btnLeagues = Button.xpath("//app-bbt//div[text()='Show Leagues ']");
     public Button btnClearAll = Button.xpath("//app-bbt//button[text()='Clear All']");
     public Button btnSelectAll = Button.xpath("//app-bbt//button[text()='Select All']");
