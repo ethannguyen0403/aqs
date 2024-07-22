@@ -247,7 +247,7 @@ public class BBGPhoneBettingPage extends WelcomePage {
     public void verifyWinLosePercentOfLeague() {
         double totalWinloseValue = Double.valueOf(Label.xpath(tblResult.getxPathOfCell(1,SBPConstants.BBGPhoneBetting.COLUMN_RESULT.get("Win/Lose"),1,null)).getText().trim().replace(",",""));
         double totalStakeValue = Double.valueOf(Label.xpath(tblResult.getxPathOfCell(1,SBPConstants.BBGPhoneBetting.COLUMN_RESULT.get("Stake"),1,null)).getText().trim().replace(",",""));
-        String totalWinlosePerEx = String.format("%.3f",(totalWinloseValue / totalStakeValue) * 100);
+        String totalWinlosePerEx = String.format("%.3f", (totalWinloseValue / totalStakeValue) * 100).equals("Infinity") ? "0.000" : String.format("%.3f", (totalWinloseValue / totalStakeValue) * 100);
         String totalWinlosePerAc = tblResult.getControlOfCell(1,SBPConstants.BBGPhoneBetting.COLUMN_RESULT.get("Win/Lose%"),1,null).getText().trim().replace(",","");
         Assert.assertEquals(Double.valueOf(totalWinlosePerAc.replace("%","")),Double.valueOf(totalWinlosePerEx),0.02,"FAILED! Win/loss % display incorrect");
     }
