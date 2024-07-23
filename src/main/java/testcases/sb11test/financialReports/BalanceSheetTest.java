@@ -168,7 +168,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
                 "Report = Before CJE");
         page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,monthInBalanceSheet,report,false);
         log("@Verify 1: Balance Amount = value that get at step #4");
-        Assert.assertEquals(page.getTotalAmount(LEDGER_GROUP_NAME_ASSET).getText(),totalAmountOfParentAcount,"FAILED! Balance Amount displays incorrect!");
+        Assert.assertEquals(page.getTotalAmount(LEDGER_GROUP_NAME_ASSET).getText().trim().replace(",",""),totalAmountOfParentAcount,"FAILED! Balance Amount displays incorrect!");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.10.31"})

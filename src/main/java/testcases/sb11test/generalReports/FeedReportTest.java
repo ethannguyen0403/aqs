@@ -503,10 +503,10 @@ public class FeedReportTest extends BaseCaseAQS {
         String totalCreditHKD = journalReportsPage.getTotalByColumn(providerName + " Client","Credit in HKD");
         log("Verify 1: Payment (1) = Total Foreign Debit/Total Foreign Credit of Sub-account at precondition (2)\n" +
                 "Payment[HKD] (2) = Total Foreign Debit in HKD/Total Foreign Credit in HKD of Sub-account at precondition (4)");
-        Assert.assertTrue(payment.equals(foreignDebit),"FAILED! Foreign Debit is incorrect");
-        Assert.assertTrue(payment.equals(foreignCredit),"FAILED! Foreign Credit is incorrect");
-        Assert.assertTrue(paymentHKD.equals(totalDebitHKD),"FAILED! Debit in HKD is incorrect");
-        Assert.assertTrue(paymentHKD.equals(totalCreditHKD),"FAILED! Credit in HKD is incorrect");
+        Assert.assertEquals(payment,foreignDebit,"FAILED! Foreign Debit is incorrect");
+        Assert.assertEquals(payment,foreignCredit,"FAILED! Foreign Credit is incorrect");
+        Assert.assertEquals(paymentHKD,totalDebitHKD,"FAILED! Debit in HKD is incorrect");
+        Assert.assertEquals(paymentHKD,totalCreditHKD,"FAILED! Credit in HKD is incorrect");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression_stg","2024.V.1.0","ethan4.0"})
