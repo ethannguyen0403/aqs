@@ -279,7 +279,7 @@ public class SPPPage extends WelcomePage {
         Assert.assertTrue(btnSmartGroup.getText().contains("Smart Group"),"Failed! Smart Group button is not displayed");
         Assert.assertEquals(btnReset.getText(),"Reset All Filters","Failed! Reset button is not displayed");
         Assert.assertEquals(btnMoreFilters.getText(),"More Filters","Failed! More Filters button is not displayed");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed");
         System.out.println("SPP table header columns is correctly display");
         Assert.assertEquals(tblSPP.getHeaderNameOfRows(), SBPConstants.SPPPage.TABLE_HEADER,"FAILED! SPP Bets table header is incorrect display");
     }

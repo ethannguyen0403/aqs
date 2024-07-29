@@ -27,7 +27,7 @@ import java.util.Map;
 import static common.SBPConstants.*;
 
 public class PTRiskControlTest extends BaseCaseAQS {
-    @Test(groups = {"smoke","ethan"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"clientCode","accountCode"})
     @TestRails(id = "1386")
     public void PTRiskControlTC_1386(String clientCode, String accountCode) throws IOException {
@@ -59,7 +59,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         Assert.assertTrue(ptPage.isForecastCorrect("29","-9","-18",true));
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"clientCode","accountCode"})
     @TestRails(id = "192")
     public void PTRiskControlTC_192(String clientCode, String accountCode) throws IOException {
@@ -99,7 +99,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         Assert.assertTrue(ptPage.isForecastCorrect("18","-9","-18",true));
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"clientCode","accountCode"})
     @TestRails(id = "1387")
     public void PTRiskControlTC_1387(String clientCode, String accountCode) throws IOException {
@@ -132,7 +132,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         Assert.assertTrue(ptPage.isForecastCorrect("9","-9","-18",true));
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"clientCode","accountCode"})
     @TestRails(id = "1388")
     public void PTRiskControlTC_1388(String clientCode, String accountCode) throws IOException {
@@ -182,7 +182,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan4.0"})
     @TestRails(id = "2124")
     public void PTRiskControlTC_2124(){
         log("@title: Validate UI on PT Risk Control is correctly displayed");
@@ -190,19 +190,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         log("@Step 2: Access Soccer > PT Risk Control");
         PTRiskPage ptRiskPage = welcomePage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
         log(" Validate UI Info display correctly");
-        log("Company Unit, Report By, Live/NonLive, From Date, To Date, Order By, Bet Types, Leagues, Events, Clients, Smart Master, Smart Agent, Show button and Copy Report");
-        Assert.assertTrue(ptRiskPage.ddpCompanyUnit.isDisplayed(),"Company Unit dropdown box is not displayed!");
-        Assert.assertTrue(ptRiskPage.ddpReportType.isDisplayed(),"Report Type dropdown box is not displayed!");
-        Assert.assertTrue(ptRiskPage.ddpLiveNonLive.isDisplayed(),"Live/Non Live dropdown box is not displayed!");
-        Assert.assertTrue(ptRiskPage.txtFromDate.isDisplayed(),"From Date is not displayed!");
-        Assert.assertTrue(ptRiskPage.txtToDate.isDisplayed(),"To Date is not displayed!");
-        Assert.assertTrue(ptRiskPage.ddpOrderBy.isDisplayed(),"Live/Non Live dropdown box is not displayed!");
-        Assert.assertTrue(ptRiskPage.btnBetTypes.isDisplayed(),"Bet Types dropdown is not displayed!");
-        Assert.assertTrue(ptRiskPage.btnLeagues.isDisplayed(),"Leagues dropdown is not displayed!");
-        Assert.assertTrue(ptRiskPage.btnEvents.isDisplayed(),"Events dropdown is not displayed!");
-        Assert.assertTrue(ptRiskPage.btnClient.isDisplayed(),"Clients dropdown is not displayed!");
-        Assert.assertTrue(ptRiskPage.btnSmartMaster.isDisplayed(),"Smart Master dropdown is not displayed!");
-        Assert.assertTrue(ptRiskPage.btnSmartAgent.isDisplayed(),"Smart Agent dropdown is not displayed!");
+        ptRiskPage.verifyUI();
         log("INFO: Executed completely");
     }
 
@@ -230,16 +218,16 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2128")
-    @Test(groups = {"regression","ethan2.0"})
+    @Test(groups = {"regression","ethan4.0"})
     public void PTRiskControlTC_2128(){
         log("@title: Validate that can copy report successfully");
-        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
+//        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > PT Risk Control");
         PTRiskPage ptRiskPage = welcomePage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
         log("@Step 3: Click Copy Report");
-        ptRiskPage.dtpFromDate.selectDate(date,"dd/MM/yyyy");
-        ptRiskPage.waitSpinnerDisappeared();
+//        ptRiskPage.dtpFromDate.selectDate(date,"dd/MM/yyyy");
+//        ptRiskPage.waitSpinnerDisappeared();
         ptRiskPage.btnShow.click();
         ptRiskPage.waitSpinnerDisappeared();
         ptRiskPage.btnCopy.click();

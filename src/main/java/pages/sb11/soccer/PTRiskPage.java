@@ -34,7 +34,7 @@ public class PTRiskPage extends WelcomePage {
     public Button btnClearAll = Button.xpath("//div[@class='modal-content']//div[@class='group-btn']//span[text()='Clear All']");
     public Button btnSetSelection = Button.xpath("//div[@class='modal-content']//div[@class='group-btn']//button[text()=' Set Selection ']");
     public Label lblFilterList = Label.xpath("//div[@class='modal-content']//div[@class='list-item-filter']//label[%s]");
-    public Button btnShow = Button.xpath("//app-pt-risk-control//button[text()='Show']");
+    public Button btnShow = Button.xpath("//app-pt-risk-control//button[text()='SHOW']");
     public Button btnCopy = Button.xpath("//app-pt-risk-control//button[text()='Copy Report ']");
     public Label messageSuccess = Label.xpath("(//div[contains(@class, 'message-box')]//span)[3]");
 
@@ -271,5 +271,21 @@ public class PTRiskPage extends WelcomePage {
             }
         }
         return false;
+    }
+
+    public void verifyUI() {
+        System.out.println("Company Unit, Report By, Live/NonLive, From Date, To Date, Order By, Bet Types, Leagues, Events, Clients, Smart Master, Smart Agent, Show button and Copy Report");
+        Assert.assertTrue(ddpCompanyUnit.isDisplayed(),"Company Unit dropdown box is not displayed!");
+        Assert.assertTrue(ddpReportType.isDisplayed(),"Report Type dropdown box is not displayed!");
+        Assert.assertTrue(ddpLiveNonLive.isDisplayed(),"Live/Non Live dropdown box is not displayed!");
+        Assert.assertTrue(txtFromDate.isDisplayed(),"From Date is not displayed!");
+        Assert.assertTrue(txtToDate.isDisplayed(),"To Date is not displayed!");
+        Assert.assertTrue(ddpOrderBy.isDisplayed(),"Live/Non Live dropdown box is not displayed!");
+        Assert.assertTrue(btnBetTypes.isDisplayed(),"Bet Types dropdown is not displayed!");
+        Assert.assertTrue(btnLeagues.isDisplayed(),"Leagues dropdown is not displayed!");
+        Assert.assertTrue(btnEvents.isDisplayed(),"Events dropdown is not displayed!");
+        Assert.assertTrue(btnClient.isDisplayed(),"Clients dropdown is not displayed!");
+        Assert.assertTrue(btnSmartMaster.isDisplayed(),"Smart Master dropdown is not displayed!");
+        Assert.assertTrue(btnSmartAgent.isDisplayed(),"Smart Agent dropdown is not displayed!");
     }
 }

@@ -7,6 +7,7 @@ import org.openqa.selenium.Keys;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.popup.feedreport.ClientPopup;
+import pages.sb11.generalReports.popup.feedreport.InvoicePopup;
 import pages.sb11.generalReports.popup.feedreport.ProviderPopup;
 import pages.sb11.popup.ConfirmPopup;
 import utils.sb11.FeedReportUtils;
@@ -50,7 +51,7 @@ public class FeedReportPage extends WelcomePage {
         waitSpinnerDisappeared();
     }
 
-    public void inputAmount(String providerClientTableName,String providerClientName, String valueAmount, String dateTrans, boolean provider , boolean submitTrans) {
+    public InvoicePopup inputAmount(String providerClientTableName, String providerClientName, String valueAmount, String dateTrans, boolean provider , boolean submitTrans) {
         String txtAmountByNameXpath = txtAmountByProviderNameXpath;
         if (!provider){
             txtAmountByNameXpath = txtAmountByClientNameXpath;
@@ -70,6 +71,9 @@ public class FeedReportPage extends WelcomePage {
             ConfirmPopup confirmPopup = new ConfirmPopup();
             confirmPopup.confirm(true);
             waitSpinnerDisappeared();
+            return new InvoicePopup();
+        } else {
+            return null;
         }
     }
     public String getTotalProvider(){

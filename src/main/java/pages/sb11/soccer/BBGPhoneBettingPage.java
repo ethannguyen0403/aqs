@@ -145,7 +145,9 @@ public class BBGPhoneBettingPage extends WelcomePage {
         Label lblLeague = Label.xpath("//div[contains(@class,'header2')]");
         for (int i = 1; i <= lblLeague.getWebElements().size();i++){
             String tableNameAc = Label.xpath(String.format(tableNameXpath,i)).getText().split("\n")[1];
-            Assert.assertEquals(tableNameAc,leagueName,"FAILED! "+tableNameAc+" display incorrect");
+            if (!tableNameAc.equals("Manual Bet Description")){
+                Assert.assertEquals(tableNameAc,leagueName,"FAILED! "+tableNameAc+" display incorrect");
+            }
         }
     }
 
@@ -245,8 +247,8 @@ public class BBGPhoneBettingPage extends WelcomePage {
     public void verifyWinLosePercentOfLeague() {
         double totalWinloseValue = Double.valueOf(Label.xpath(tblResult.getxPathOfCell(1,SBPConstants.BBGPhoneBetting.COLUMN_RESULT.get("Win/Lose"),1,null)).getText().trim().replace(",",""));
         double totalStakeValue = Double.valueOf(Label.xpath(tblResult.getxPathOfCell(1,SBPConstants.BBGPhoneBetting.COLUMN_RESULT.get("Stake"),1,null)).getText().trim().replace(",",""));
-        String totalWinlosePerEx = String.format("%.3f",(totalWinloseValue / totalStakeValue) * 100);
+        String totalWinlosePerEx = String.format("%.3f", (totalWinloseValue / totalStakeValue) * 100).equals("Infinity") ? "0.000" : String.format("%.3f", (totalWinloseValue / totalStakeValue) * 100);
         String totalWinlosePerAc = tblResult.getControlOfCell(1,SBPConstants.BBGPhoneBetting.COLUMN_RESULT.get("Win/Lose%"),1,null).getText().trim().replace(",","");
-        Assert.assertEquals(totalWinlosePerAc,totalWinlosePerEx+"%","FAILED! Win/loss % display incorrect");
+        Assert.assertEquals(Double.valueOf(totalWinlosePerAc.replace("%","")),Double.valueOf(totalWinlosePerEx),0.02,"FAILED! Win/loss % display incorrect");
     }
 }

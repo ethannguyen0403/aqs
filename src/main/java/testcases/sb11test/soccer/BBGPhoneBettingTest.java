@@ -111,7 +111,7 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         page.verifyShowBetTypeCorrect("FT-1x2");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan4.0"})
     @TestRails(id = "29423")
     public void BBGPhoneBettingTC_29423(){
         log("@title: Validate the league shows correctly when filtering");
@@ -400,7 +400,7 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         page.verifyWinLoseIsCalculatedCorrect(lstOrderRunner.get(0),lstOrderTelebet.get(0));
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.4.0"})
+    @Test(groups = {"regression","2024.V.4.0","ethan4.0"})
     @TestRails(id = "29436")
     public void BBGPhoneBettingTC_29436(){
         log("@title: Validate win/lose% displays correctly");

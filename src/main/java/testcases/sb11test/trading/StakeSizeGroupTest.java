@@ -74,7 +74,7 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         page.verifyLstClient(KASTRAKI_LIMITED);
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.4.0"})
+    @Test(groups = {"regression_stg","2024.V.4.0","ethan4.0"})
     @Parameters({"clientCode","accountCurrency","username"})
     @TestRails(id = "29570")
     public void Stake_Size_Group_29570(String clientCode, String accountCurrency, String username) {
@@ -145,7 +145,7 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         stakeSizeGroupPopup.verifyUIDefault();
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.4.0"})
+    @Test(groups = {"regression","2024.V.4.0","ethan4.0"})
     @Parameters({"clientCode","accountCurrency","username"})
     @TestRails(id = "29574")
     public void Stake_Size_Group_29574(String clientCode, String accountCurrency, String username) {
@@ -203,7 +203,7 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         Assert.assertEquals(alertMes,String.format(StakeSizeGroupNewPopup.ERROR_MES_GROUP_NAME_DUPLICATE,groupName),"FAILED! Error message display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.4.0"})
+    @Test(groups = {"regression","2024.V.4.0","ethan4.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "29577")
     public void Stake_Size_Group_29577(String clientCode) {
@@ -291,7 +291,7 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         Assert.assertEquals(page.ddpGroupType.getOptions(),SBPConstants.BBTPage.GROUP_TYPE_LIST,"FAILED! Group Type dropdown displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.5.0"})
+    @Test(groups = {"regression","2024.V.5.0","ethan4.0"})
     @Parameters({"stakeSizeGroup","accountCurrency"})
     @TestRails(id = "29619")
     public void Stake_Size_Group_29619(String stakeSizeGroup, String accountCurrency) {
@@ -303,14 +303,15 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
                 "BACK",false,"");
         lstOrder.get(0).setAccountCurrency(accountCurrency);
         //Wait for Order display
-        BetSettlementUtils.waitForBetIsUpdate(30);
+        BetSettlementUtils.waitForBetIsUpdate(180);
         log("@Step 1: Go to Soccer >> BBT");
         BBTPage page = welcomePage.navigatePage(SOCCER,BBT, BBTPage.class);
         log("@Step 2: Select Group Type = 'Stake Size Group'");
         page.goToGroupType("Stake Size Group");
         log("@Step 3: Select filters that have data with any option in 'Stake Size Group' dropdown");
         log("@Step 4: Click on 'Show' button");
-        page.filter(KASTRAKI_LIMITED,SOCCER,stakeSizeGroup,"","","","");
+        String datefilter = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter(KASTRAKI_LIMITED,SOCCER,stakeSizeGroup,"",datefilter,"","");
         log("@Verify 1: Show correct bets by selected option in 'Stake Size Group' dropdown");
         Assert.assertTrue(page.isBetDisplay(lstOrder.get(0),stakeSizeGroup,true,false));
         log("INFO: Executed completely");
@@ -326,7 +327,7 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
         Assert.assertEquals(page.ddpGroupType.getOptions(),SBPConstants.BBGPage.GROUP_TYPE_LIST,"FAILED! Group Type dropdown displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.5.0"})
+    @Test(groups = {"regression","2024.V.5.0","ethan4.0"})
     @Parameters({"stakeSizeGroup"})
     @TestRails(id = "29621")
     public void Stake_Size_Group_29621(String stakeSizeGroup) {
@@ -338,14 +339,15 @@ public class StakeSizeGroupTest extends BaseCaseAQS {
                 "BACK",false,"");
         lstOrder.get(0).setBetType("FT-HDP");
         //Wait for Order display
-        BetSettlementUtils.waitForBetIsUpdate(30);
+        BetSettlementUtils.waitForBetIsUpdate(180);
         log("@Step 1: Go to Soccer >> BBT");
         BBGPage page = welcomePage.navigatePage(SOCCER,BBG, BBGPage.class);
         log("@Step 2: Select Group Type = 'Stake Size Group'");
         page.goToGroupType("Stake Size Group");
         log("@Step 3: Select filters that have data with any option in 'Stake Size Group' dropdown");
         log("@Step 4: Click on 'Show' button");
-        page.filter(SOCCER,KASTRAKI_LIMITED,stakeSizeGroup,"","","");
+        String datefilter = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        page.filter(SOCCER,KASTRAKI_LIMITED,stakeSizeGroup,"",datefilter,"");
         log("@Verify 1: Show correct bets by selected option in 'Stake Size Group' dropdown");
         Assert.assertTrue(page.isBetDisplay(lstOrder.get(0),stakeSizeGroup,false));
         log("INFO: Executed completely");

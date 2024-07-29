@@ -36,7 +36,7 @@ public class OverUnderLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan2.0"})
+    @Test(groups = {"regression","ethan4.0"})
     @TestRails(id = "2116")
     public void OverUnderLiabilityTC_2116(){
         log("@title: Validate UI on Over/Under Liability is correctly displayed");
@@ -48,7 +48,7 @@ public class OverUnderLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression","ethan4.0"})
     @TestRails(id = "2117")
     @Parameters({"accountCode","smartGroup"})
     public void OverUnderLiabilityTC_2117(String accountCode, String smartGroup){
@@ -61,9 +61,12 @@ public class OverUnderLiabilityTest extends BaseCaseAQS {
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > Over/Under Liability");
         OverUnderLiabilityPage overUnderLiabilityPage = welcomePage.navigatePage(SOCCER,OVER_UNDER_LIABILITY, OverUnderLiabilityPage.class);
+        overUnderLiabilityPage.waitSpinnerDisappeared();
         log("@Step 3: Filter with event that having bet at Pre-condition ");
         log("@Step 4: Click Show");
-        overUnderLiabilityPage.filterResult(KASTRAKI_LIMITED, smartType,false,"All",date,date,"All",true);
+        overUnderLiabilityPage.filterResult(KASTRAKI_LIMITED, smartType,false,"All",date,"","All",true);
+        overUnderLiabilityPage.waitSpinnerDisappeared();
+        overUnderLiabilityPage.filterLeague("",true);
         overUnderLiabilityPage.filterGroups(smartGroup);
         log("Validate Over/Under bet from Bet Entry is displayed correctly on Over/Under Liability report");
         overUnderLiabilityPage.isOrderExist(lstOrder,smartGroup);

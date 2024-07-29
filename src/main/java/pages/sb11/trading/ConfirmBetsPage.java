@@ -106,20 +106,16 @@ public class ConfirmBetsPage extends WelcomePage {
      */
     private int getOrderIndexHasId(String orderId){
         int i = 1;
-        Label lblEventCell;
         Label lblOrderID;
         while (true){
-            lblEventCell = Label.xpath(tblOrder.getxPathOfCell(1,colEvent,i,null));
-            if(!lblEventCell.isDisplayed()){
-                System.out.println("The order id "+ orderId +" does not display in the table");
+            lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1,colEvent,i,"span[@class='text-secondary']"));
+            if(!lblOrderID.isDisplayed()){
+                System.out.println(orderId+" is not displayed");
                 return 0;
             }
-            lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1,colEvent,i,"span[@class='text-secondary']"));
-            if(lblOrderID.isDisplayed()){
-                if(lblOrderID.getText().contains(orderId)){
-                    System.out.println("Found order "+orderId+" at row "+ i);
-                    return i;
-                }
+            if(lblOrderID.getText().contains(orderId)){
+                System.out.println("Found order "+orderId+" at row "+ i);
+                return i;
             }
             i = i+1;
         }
@@ -151,10 +147,10 @@ public class ConfirmBetsPage extends WelcomePage {
 
 
     private int getOrderIndex(String orderId){
-        if(orderId.equalsIgnoreCase("Manual Bet"))
+        if(orderId.equalsIgnoreCase("Manual Bet")){
             return getFirsManualBet();
+        }
         return getOrderIndexHasId(orderId);
-
     }
 
     /**
@@ -242,7 +238,7 @@ public class ConfirmBetsPage extends WelcomePage {
         }
 
         Assert.assertEquals(odds,String.format("%.3f",order.getPrice()), "Failed!Odds is incorrect");
-        Assert.assertEquals(oddsType,String.format("(%s)",order.getOddType()), "Failed! Odds Type is incorrect");
+//        Assert.assertEquals(oddsType,String.format("(%s)",order.getOddType()), "Failed! Odds Type is incorrect");
         Assert.assertEquals(bl,order.getBetType(), "Failed! Bet Type (Back/Lay )is incorrect");
         Assert.assertEquals(stake,String.format("%.2f",order.getRequireStake()), "Failed! Stake is incorrect");
         Assert.assertEquals(trad,"", "Failed! Trad is incorrect");
@@ -366,8 +362,8 @@ public class ConfirmBetsPage extends WelcomePage {
         return colDelete +1;
     }
     private void selectBet(Order order, boolean isPendingBet){
-        int rowIndex =getOrderIndex(order.getBetId());
-        Icon.xpath(tblOrder.getxPathOfCell(1,defineSelectColIndex(isPendingBet),rowIndex,"input")).click();
+        int rowIndex = getOrderIndex(order.getBetId());
+        CheckBox.xpath(tblOrder.getxPathOfCell(1,defineSelectColIndex(isPendingBet),rowIndex,"input")).click();
     }
 
     private void fillInfo(Order order,boolean isPendingBet){

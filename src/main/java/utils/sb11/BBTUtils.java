@@ -23,7 +23,7 @@ public class BBTUtils {
         String api = environment.getSbpLoginURL() + "aqs-agent-service/bbt/data";
         String jsn = String.format("{\"sport\":%s,\"companyId\":%s,\"smartType\":\"GROUP\",\"reportType\":\"%s\",\"fromDate\":\"%s\",\"toDate\":\"%s\"," +
                         "\"stake\":\"All\",\"currency\":\"All\",\"betType\":[],\"leagueId\":[],\"smartGroupId\":[],\"live\":\"All\",\"pageSize\":5,\"pageNum\":1,\"timeZone\":\"Asia/Bangkok\"" +
-                        ",\"requestFrom\":\"BBT\"}"
+                        ",\"requestFrom\":\"BBT\",\"filterPt\":\"pt_pl\",\"eventBet\":-1}"
                 , sportId, companyId, reportType, fromDate, toDate);
         return WSUtils.getPOSTJSONObjectWithDynamicHeaders(api, jsn, headersParam);
     }
@@ -40,8 +40,8 @@ public class BBTUtils {
             JSONArray jsonArr = jsonObj.getJSONArray("data");
             if (jsonArr.length() > 0) {
                 for (int i = 0; i < jsonArr.length(); i++) {
-                    JSONObject orderObj = jsonArr.getJSONObject(i);
-                    lstLeagues.add(orderObj.getString("leagueName"));
+                    JSONArray orderArr = jsonArr.getJSONArray(i);
+                    lstLeagues.add(orderArr.getString(1));
                 }
                 return lstLeagues;
             }

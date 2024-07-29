@@ -310,7 +310,7 @@ public class CricketSportTest extends BaseCaseAQS {
         }
     }
     @TestRails(id = "66")
-    @Test(groups = {"regression","2023.11.30","ethan3.0"})
+    @Test(groups = {"regression","2023.11.30","ethan4.0"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void Cricket_Sport_66 (String accountCode, String accountCurrency, String emailAddress, String clientCode) throws InterruptedException, IOException {
         log("Validate 1x2 back bets settled correctly");
@@ -922,7 +922,7 @@ public class CricketSportTest extends BaseCaseAQS {
         }
     }
     @TestRails(id = "249")
-    @Test(groups = {"regression","2023.11.30","ethan3.0"})
+    @Test(groups = {"regression","2023.11.30","ethan4.0"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void Cricket_Sport_249 (String accountCode, String accountCurrency, String emailAddress, String clientCode) throws InterruptedException, IOException {
         log("Validate bet that placed on market Odd/Even settled correctly");
@@ -1006,7 +1006,7 @@ public class CricketSportTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id = "251")
-    @Test(groups = {"regression","2023.11.30","ethan3.0"})
+    @Test(groups = {"regression","2023.11.30","ethan4.0"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void Cricket_Sport_251 (String accountCode, String accountCurrency, String emailAddress, String clientCode) throws InterruptedException, IOException {
         log("Validate bet that placed on market Over/Under settled correctly");

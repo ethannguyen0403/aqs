@@ -58,7 +58,7 @@ public class WinLossDetailTest extends BaseCaseAQS {
     }
     @TestRails(id="23721")
     @Parameters({"env"})
-    @Test(groups = {"regression","2024.V.4.0"})
+    @Test(groups = {"regression1","2024.V.4.0","ethan4.0"})
     public void Win_Loss_Detail_TC23721(String env) {
         log("@title: Validate data table is displayed correctly data that was scraped from Merito");
         log("@pre-condition 1: Login with account that have 'Win Loss Detail' permission");

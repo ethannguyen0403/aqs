@@ -14,6 +14,7 @@ import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.role.RoleManagementPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.ChartOfAccountUtils;
+import utils.sb11.RoleManagementUtils;
 import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
@@ -41,7 +42,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2773")
-    @Test(groups = {"regression", "2023.11.30","ethan3.0"})
+    @Test(groups = {"regression", "2023.11.30","ethan4.0"})
     public void Trial_Balance_C2773() throws IOException {
         log("@title: Validate Debit/Credit data is matched correctly with Ledger Statement page");
         String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
@@ -89,11 +90,12 @@ public class TrialBalanceTest extends BaseCaseAQS {
         }
     }
     @TestRails(id = "2779")
-    @Test(groups = {"regression_stg", "2023.11.30"})
+    @Test(groups = {"regression_stg", "2023.11.30","ethan4.0"})
     @Parameters({"password", "userNameOneRole"})
     public void Trial_Balance_C2779(String password, String userNameOneRole) throws Exception {
         log("@title: Validate user can not access Trial Balance page when having no permission");
         log("Precondition: Deactivate Trial Balance option in one role account");
+        RoleManagementUtils.updateRolePermission("one role","Trial Balance","INACTIVE");
         log("@Step 1: Re-login with one role account account has 'Trial Balance' permission is OFF");
         LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
@@ -102,7 +104,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id = "21832")
-    @Test(groups = {"regression", "2024.V.2.0","ethan3.0"})
+    @Test(groups = {"regression", "2024.V.2.0","ethan4.0"})
     public void Trial_Balance_C21832() throws IOException {
         log("@title: Validate amount shows in Credit/Debit column when detail type = Asset");
         log("Pre-condition 1: Having some txn with detail type = Asset");
@@ -274,7 +276,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
         }
     }
     @TestRails(id = "21835")
-    @Test(groups = {"regression", "2024.V.2.0","ethan3.0"})
+    @Test(groups = {"regression", "2024.V.2.0","ethan4.0"})
     public void Trial_Balance_C21835() throws IOException {
         log("@title: Validate amount shows in Credit/Debit column when detail type = Capital");
         log("Pre-condition 1: Having some txn with detail type = Capital");
@@ -282,7 +284,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
         String ledgerAccNegaName = "AutoCapitalCreditNega";
         String ledgerAccNegaNum = "030.000.000.011";
         String ledgerGroupNega = "QA Ledger Auto Capital";
-        String ledgerNega = "300.000.000.001 - QA Ledger Auto Capital";
+        String ledgerNega = "300.000.000.100 - QA Ledger Auto Capital";
         int month = DateUtils.getMonth(GMT_7) - 1;
         int year = DateUtils.getYear("GMT +7");
         String firstDayOfMonth = DateUtils.getFirstDateOfMonth(year, month, "dd/MM/yyyy");
@@ -332,7 +334,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
         }
     }
     @TestRails(id = "21836")
-    @Test(groups = {"regression", "2024.V.2.0","ethan3.0"})
+    @Test(groups = {"regression", "2024.V.2.0","ethan4.0"})
     public void Trial_Balance_C21836() throws IOException {
         log("@title: Validate amount shows in Credit/Debit column when detail type = Income");
         log("Pre-condition 1: Having some txn with detail type = Income");
@@ -359,7 +361,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
             log("Pre-condition 2: Get value of debit/credit that will display in trial balance");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
             ledgerStatementPage.waitSpinnerDisappeared();
-            ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Income", LEDGER_GROUP_NAME_INCOME, firstDayOfMonth, lastDayOfMonth, "");
+            ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Income", LEDGER_GROUP_NAME_INCOME, firstDayOfMonth, lastDayOfMonth, "Before CJE");
             String valueDeEx = ledgerStatementPage.getGrandTotalByRunningBal("CUR Translation");
 
             ledgerStatementPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Income", ledgerNega, firstDayOfMonth, lastDayOfMonth, "");
@@ -369,7 +371,7 @@ public class TrialBalanceTest extends BaseCaseAQS {
             log("@Step 2: Filter with Month that is having data");
             String monthFilter = DateUtils.getMonthYear(GMT_7,-1,"yyyy - MMMM");
             page.filter(KASTRAKI_LIMITED,"",monthFilter,"");
-            String valueDeAc = page.getAmountValue(ChartOfAccountUtils.getChartCode(ChartOfAccountUtils.getAccountName(parentDebit,true)),page.colDeCurrentMonth);
+            String valueDeAc = page.getAmountValue(ChartOfAccountUtils.getChartCode(ChartOfAccountUtils.getAccountName(parentDebit,true)),page.colCreCurrentMonth);
             String valueCreAc = page.getAmountValue(ChartOfAccountUtils.getChartCode(ChartOfAccountUtils.getAccountName(ledgerNega,true)),page.colCreCurrentMonth);
             log("@Verify 1: The amount is positive, display it in Debit");
             Assert.assertEquals(valueDeAc,valueDeEx,"FAILED! Value Debit display incorrect");

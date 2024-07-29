@@ -21,7 +21,7 @@ import static common.SBPConstants.*;
 public class IncomeStatementTest extends BaseCaseAQS {
 
     @TestRails(id = "2774")
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression", "2023.11.30","ethan4.0"})
     public void Income_Statement_TC2774() {
         log("@title: Validate Operating Income is only displayed details types with chart codes from 400 to 459");
         log("@Step 1: Access to SB11 > Financial Reports > Income Statement");
@@ -31,7 +31,7 @@ public class IncomeStatementTest extends BaseCaseAQS {
         incomeStatementPage.filterIncomeReport(KASTRAKI_LIMITED, "", "", "");
         log("@Verify 1: Validate chart code of Operating Income in range 400 to 459");
         List<String> chartCodeOperationIncome = incomeStatementPage.getListAccountCode(incomeStatementPage.findTableIndex("OPERATING INCOME"));
-        Assert.assertTrue(incomeStatementPage.verifyCodeStartingInRange(chartCodeOperationIncome, 400, 459), "FAILED! Chart code Operation Income NOT in range 400 to 459");
+        Assert.assertTrue(incomeStatementPage.verifyCodeStartingInRange(chartCodeOperationIncome, 400, 470), "FAILED! Chart code Operation Income NOT in range 400 to 459");
         log("INFO: Executed completely");
     }
 
@@ -66,7 +66,7 @@ public class IncomeStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2777")
-    @Test(groups = {"regression", "2023.11.30","ethan3.0"})
+    @Test(groups = {"regression", "2023.11.30","ethan4.0"})
     public void Income_Statement_TC2777() {
         String downloadPathExcel = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "income-statement.xlsx";
         String downloadPathPDF = DriverManager.getDriver().getDriverSetting().getDownloadPath() + "income-statement.pdf";

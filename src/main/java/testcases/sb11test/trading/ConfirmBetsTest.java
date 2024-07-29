@@ -46,12 +46,12 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "179")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"accountCode"})
     public void Confirm_Bets_TC179(String accountCode) {
         log("@title:Validate deleted bets does not show in Bet Entry page");
         log("Precondition: Place a new bet on Bet Entry for Soccer and delete pending bet in confirm bet page");
-        String date = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +7"));
+        String date = String.format(DateUtils.getDate(0, "dd/MM/yyyy", "GMT +7"));
         List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,false,accountCode,"Goals","HDP","Home","FullTime",2.15,1.75,"HK",15.50,"BACK",false,"");
         ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Pending", SOCCER, "All", "Specific Date", date, "", accountCode);
@@ -279,13 +279,13 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "1000")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"accountCode"})
     public void Confirm_Bets_TC1000(String accountCode) {
         log("@title: Validate deleted bets does not show in Bet Settlement page");
         log("Precondition:There is a Confirmed bet and be deleted in Confirm bet page");
         String date = DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +7");
-        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,false,accountCode,"Goals","HDP","Home","FullTime",2.05,0.25,"HK",9.00,
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,true,accountCode,"Goals","HDP","Home","FullTime",2.05,0.25,"HK",9.00,
                 "BACK",false,"");
         ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Pending", SOCCER, "All", "Specific Date", date, "", accountCode);
@@ -297,7 +297,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("@Step 2: Filter Confirm status with the according account code");
         log("@Step 3: Click 'Search' and observe");
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed", "", "", "", lstOrder.get(0).getAccountCode());
+        betSettlementPage.filter("Confirmed", date, "", "", lstOrder.get(0).getAccountCode());
 
         log("@Veirfy 1 : Confirmed bet has been deleted does not show in Bet Settlement page");
         Assert.assertFalse(betSettlementPage.isOrderDisplayInTheTable(lstOrder.get(0)), "FAILED! The order is displayed when it is deleted in Confirm Bets page");
@@ -306,7 +306,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "1001")
-    @Test(groups = {"smoke","ethan3.0"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"accountCode"})
     public void Confirm_Bets_TC1001(String accountCode) {
         log("@title: Validate can update Pending Bets");
@@ -364,7 +364,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "185")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"accountCode"})
     public void Confirm_Bets_TC185(String accountCode) {
         log("@title: Validate can confirm bets and the confirmed bets will show in Bet Settlement page");
@@ -447,13 +447,13 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "186")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"accountCode"})
     public void Confirm_Bets_186(String accountCode) {
         log("@title: Validate can unconfirm the confirmed bets");
         log("Precondition:User has permission to access Confirm Bets page");
         log("Having at least an account that is having bet which is already confirmed\n");
-        String date = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", "GMT +7"));
+        String date = String.format(DateUtils.getDate(0, "dd/MM/yyyy", "GMT +7"));
 
         List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,false,accountCode,"Goals","HDP","Home","FullTime",2.05,0.25,"HK",9.00,"BACK",false,"");
         ConfirmBetsUtils.confirmBetAPI(lstOrder.get(0));

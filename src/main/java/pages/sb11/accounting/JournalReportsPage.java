@@ -211,7 +211,9 @@ public class JournalReportsPage extends WelcomePage {
 
     public void verifyUI(String clientCode) {
         System.out.println("Dropdown: Company Unit, Date Type, Account Type, Client/Bookie/Ledger, Transaction Type");
-        Assert.assertEquals(ddpCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"Failed! Company Unit dropdown is not displayed");
+        List<String> lstCompany = CompanySetUpUtils.getListCompany();
+        lstCompany.add(0,"All");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(), lstCompany,"Failed! Company Unit dropdown is not displayed");
         Assert.assertEquals(ddpDateType.getOptions(), SBPConstants.JournalReports.DATE_TYPE,"Failed! Date Type dropdown is not displayed");
         Assert.assertEquals(ddpAccountType.getOptions(), SBPConstants.JournalReports.ACCOUNT_TYPE,"Failed! Account Type dropdown is not displayed");
         Assert.assertTrue(ddpClientBookieLedger.getOptions().contains(clientCode),"Failed! Client dropdown is not displayed");

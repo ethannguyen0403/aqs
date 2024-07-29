@@ -46,6 +46,11 @@ public class CurrencyRatesPage extends WelcomePage {
     public void exportToExcel(){
         btnExport.scrollToTop();
         btnExport.click();
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void verifyCurCorrectFromOANDA(List<String> expectedCurList, String companyCurrency, String fromDate, String toDate ){

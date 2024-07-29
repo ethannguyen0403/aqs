@@ -25,14 +25,14 @@ import static common.SBPConstants.*;
 import static common.SBPConstants.FINANCIAL_YEAR;
 
 public class SPPTest extends BaseCaseAQS {
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"accountCode","smartGroup","superCode","clientCode","agentCode"})
     @TestRails(id = "1002")
     public void SPP_TC_1002(String accountCode, String smartGroup, String superCode,String clientCode,String agentCode){
          /*NOTE: Create QA Smart Master and QA Smart Agent for STG and PR) for consistent data*/
         String date = DateUtils.getDate(0,"dd/MM/yyyy","GMT +7");
         String dateAPI = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
-        String clientValue = String.format("%s - %s",superCode, clientCode );
+        String clientValue = String.format("%s - %s","QA2112", clientCode );
         log("@title: Validate WL in Client Statement matched with SPP page (#AQS-2073)");
         log("@Precondition: Having at least a settled bet. Group code ’"+smartGroup+" has 1 player "+accountCode+"\n" +
                 "The player has data on the filtered date (e.g."+date+" \n "+
@@ -56,10 +56,10 @@ public class SPPTest extends BaseCaseAQS {
         BetSettlementUtils.waitForBetIsUpdate(20);
         log("@Step 1: Go to Client Statement >> client point >> select the client");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
-        clientPage.filter("Client Point","Kastraki Limited",FINANCIAL_YEAR,clientValue,date,"");
+        clientPage.filter("Client Point",KASTRAKI_LIMITED,FINANCIAL_YEAR,clientValue,date,"");
 
         log("@Step 2: Click the client agent >> find the player >> observe win/loss");
-        String winlosePlayer = clientPage.getMemberSummary(agentCode,CLIENT_CREDIT_ACC).get(7);
+        String winlosePlayer = clientPage.getMemberSummary("QASAHK00",CLIENT_CREDIT_ACC).get(7);
 
         log("@Step 3: Go to SPP >> select all leagues >> select the group");
         log(String.format("Step 4: Select the date %s >> click Show", date));
@@ -72,7 +72,7 @@ public class SPPTest extends BaseCaseAQS {
 
     }
 
-    @Test(groups = {"smoke","ethan2.0"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"bookieCode","accountCode","bookieMasterCode","smartGroup","bookieSuperMasterCode"})
     @TestRails(id = "311")
     public void SPP_TC_311(String bookieCode,String accountCode, String bookieMasterCode,String smartGroup,String bookieSuperMasterCode) throws InterruptedException {
@@ -121,7 +121,7 @@ public class SPPTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression","ethan4.0"})
     @TestRails(id = "2130")
     public void SPP_TC_2130(){
         log("@title: Validate SPP page is displayed when navigate");
@@ -222,7 +222,7 @@ public class SPPTest extends BaseCaseAQS {
 //        Assert.assertTrue(ptPerformancePopup.isAccountPTMatched(accountCode,PT),"Failed! PT is not matched!");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31"})
+    @Test(groups = {"regression","2023.10.31","ethan3.0"})
     @TestRails(id = "2795")
     @Parameters({"accountCode","smartGroup"})
     public void SPP_TC_2795(String accountCode, String smartGroup) throws IOException, ParseException, InterruptedException {
@@ -455,7 +455,7 @@ public class SPPTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.11.30","ethan3.0"})
+    @Test(groups = {"regression", "2023.11.30","ethan4.0"})
     @TestRails(id = "2801")
     @Parameters({"accountCode", "smartGroup"})
     public void SPP_TC_2801(String accountCode, String smartGroup){
@@ -474,7 +474,7 @@ public class SPPTest extends BaseCaseAQS {
         sppPage.selectShowBetTypes("MB");
         log("@Verify 1: Validate all Cricket Manual Bets display properly");
         List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
-        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("MP") - 1)), mBCricketBets, "FAILED! The filer Cricket MB is not correct");
+        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("Bets") - 1)), mBCricketBets, "FAILED! The filer Cricket MB is not correct");
         log("INFO: Executed completely");
     }
 

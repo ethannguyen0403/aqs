@@ -177,7 +177,7 @@ public class LedgerStatementPage extends WelcomePage {
 
     public String getGrandTotalByRunningBal(String section){
         int index = section.equals("CUR Translation") ? 6 : 3;
-        return Label.xpath(String.format(lblGrandTotalbyRunningBalXpath,index)).getText();
+        return Label.xpath(String.format(lblGrandTotalbyRunningBalXpath,index)).getText().trim().replace(",","");
     }
 
     private Transaction verifyTransactionDisplayCorrectInRow(Transaction transaction, boolean isDebit, int rowIndex, String parentAcc){
@@ -294,7 +294,7 @@ public class LedgerStatementPage extends WelcomePage {
      */
     public String getTotalInHKD(String parentName, String section, String colName) {
         int indexCol = getIndexTotalColumn(section,colName);
-        return Label.xpath(String.format("(//span[contains(text(),'%s')]/ancestor::tr//following-sibling::tr[@class='total-row']//td)[%s]",parentName,indexCol)).getText().trim();
+        return Label.xpath(String.format("(//span[contains(text(),'%s')]/ancestor::tr//following-sibling::tr[@class='total-row']//td)[%s]",parentName,indexCol)).getText().trim().replace(",","");
     }
 
     public void verifyRunningBalAfterTriggering(double runBalBefore, double amountDebit, double amountCredit) {

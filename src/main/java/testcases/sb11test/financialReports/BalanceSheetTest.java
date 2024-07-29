@@ -140,7 +140,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.isTotalAmountDisplayCorrect(),"FAILED! Total amount of each Detail Type displays Incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan4.0"})
     @TestRails(id = "2789")
     public void Balance_Sheet_2789() {
         log("@title: Validate the Balance Amount is taken from Ledger Statement > 'Amounts are shown in HKD' section > Running Bal.' column");
@@ -154,7 +154,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
                 "Detail Type = 500.000.000 - QA Ledger Group Asset\n" +
                 "From Date 1/7/2023 To Date 31/7/2023\n" +
                 "Report = Before CJE");
-        String fromDate = ledgerStatementPage.getBeginDateOfFinanYear(FINANCIAL_YEAR);
+        String fromDate = String.format("01/%s",ledgerStatementPage.getLastDateAfterCJE("MM/yyyy"));
         String toDate = ledgerStatementPage.getLastDateAfterCJE("dd/MM/yyyy");
         String monthInBalanceSheet = ledgerStatementPage.getLastDateAfterCJE("yyyy - MMMM");
         String report = "Before CJE";
@@ -168,7 +168,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
                 "Report = Before CJE");
         page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,monthInBalanceSheet,report,false);
         log("@Verify 1: Balance Amount = value that get at step #4");
-        Assert.assertEquals(page.getTotalAmount(LEDGER_GROUP_NAME_ASSET).getText(),totalAmountOfParentAcount,"FAILED! Balance Amount displays incorrect!");
+        Assert.assertEquals(page.getTotalAmount(LEDGER_GROUP_NAME_ASSET).getText().trim().replace(",",""),totalAmountOfParentAcount,"FAILED! Balance Amount displays incorrect!");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.10.31"})
@@ -279,9 +279,9 @@ public class BalanceSheetTest extends BaseCaseAQS {
         log("@Step 3: Filter with detail type at pre-condition > observe");
         page.filter(SBPConstants.KASTRAKI_LIMITED, SBPConstants.FINANCIAL_YEAR, "", "",true);
         log("@Verify 1: Validate Asset/Liability/Capital detail type with balance = 0 are displayed when ticking 'Show Info with Balance/Txns' checkbox");
-        Assert.assertTrue(page.getTotalAmount("QA Ledger Auto Asset").getText().equals("0.00"),"FAILED! Balance of Asset displays incorrect");
-        Assert.assertTrue(page.getTotalAmount("QA Ledger Auto Liability").getText().equals("0.00"),"FAILED! Balance of Asset displays incorrect");
-        Assert.assertTrue(page.getTotalAmount("QA Ledger Auto Capital").getText().equals("0.00"),"FAILED! Balance of Asset displays incorrect");
+        Assert.assertEquals(page.getTotalAmount("QA Ledger Auto Asset").getText(),"0.00","FAILED! Balance of Asset displays incorrect");
+        Assert.assertEquals(page.getTotalAmount("QA Ledger Auto Liability").getText(),"0.00","FAILED! Balance of Asset displays incorrect");
+        Assert.assertEquals(page.getTotalAmount("QA Ledger Auto Capital").getText(),"0.00","FAILED! Balance of Asset displays incorrect");
         log("INFO: Executed completely");
     }
 }

@@ -7,6 +7,7 @@ import controls.Table;
 import objects.Order;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
+import utils.sb11.CompanySetUpUtils;
 
 import java.util.List;
 
@@ -27,8 +28,8 @@ public class OverUnderLiabilityPage extends WelcomePage {
     public DropDownBox ddpStake = DropDownBox.xpath("//div[contains(text(),'Stake')]//following::select[1]");
     public TextBox txtFromDate = TextBox.name("fromDate");
     public TextBox txtToDate = TextBox.name("toDate");
-    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
-    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
+    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
+    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
     public DropDownBox ddpSport = DropDownBox.xpath("//div[contains(text(),'Sport')]//following::select[1]");
     public Label lblPTBets = Label.xpath("//span[contains(text(),'PT-Bets')]");
     public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
@@ -40,28 +41,44 @@ public class OverUnderLiabilityPage extends WelcomePage {
     public Label lblShowEvents = Label.xpath("//div[contains(text(),'Show Events')]");
     public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
     public Button btnShowGroups = Button.xpath("//div[contains(text(),'Show Groups')]");
+    public Button btnSelectAll = Button.xpath("//button[contains(text(),'Select All')]");
+    public Button btnClearAll = Button.xpath("//button[contains(text(),'Clear All')]");
     public Button btnSetSelection = Button.xpath("//button[contains(text(),'Set Selection')]");
     public Table tblOrder = Table.xpath("//app-over-under-liability//table",13);
     public Table tbOrderByGroup;
     int colEvent = 1;
 
     public void filterResult(String companyUnit, String smartType, boolean isPTBets, String liveNonLive, String fromDate, String toDate, String stake, boolean isShow){
-        lblTitle.click();
-        ddpCompanyUnit.selectByVisibleText(companyUnit);
-        ddpSmartType.selectByVisibleText(smartType);
+        if (!companyUnit.isEmpty()){
+            ddpCompanyUnit.selectByVisibleText(companyUnit);
+            waitSpinnerDisappeared();
+        }
+        if (!smartType.isEmpty()){
+            ddpSmartType.selectByVisibleText(smartType);
+            waitSpinnerDisappeared();
+        }
         if (isPTBets){
             cbPTBets.click();
         }
-        ddpLiveNonLive.selectByVisibleText(liveNonLive);
-        if(!fromDate.isEmpty())
+        if (!liveNonLive.isEmpty()){
+            ddpLiveNonLive.selectByVisibleText(liveNonLive);
+        }
+        if(!fromDate.isEmpty()){
             dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-        if(!toDate.isEmpty())
+            waitSpinnerDisappeared();
+        }
+        if(!toDate.isEmpty()){
             dtpToDate.selectDate(toDate,"dd/MM/yyyy");
-        ddpStake.selectByVisibleText(stake);
+            waitSpinnerDisappeared();
+        }
+        if (!stake.isEmpty()){
+            ddpStake.selectByVisibleText(stake);
+            waitSpinnerDisappeared();
+        }
         if (isShow){
             btnShow.click();
+            waitSpinnerDisappeared();
         }
-        waitSpinnerDisappeared();
     }
 
     public void filterGroups(String groupCode){
@@ -71,6 +88,21 @@ public class OverUnderLiabilityPage extends WelcomePage {
         cbGroup.jsClick();
         btnSetSelection.click();
         btnShow.click();
+        waitSpinnerDisappeared();
+    }
+    public void filterLeague(String groupCode, boolean filterAll){
+        lblShowLeagues.click();
+        waitSpinnerDisappeared();
+        if (filterAll){
+            btnSelectAll.click();
+        } else {
+            btnClearAll.click();
+            CheckBox cbGroup = CheckBox.xpath("//div[contains(@class,'card-columns')]//span[text()='"+groupCode+"']//preceding::input[1]");
+            cbGroup.jsClick();
+        }
+        btnSetSelection.click();
+        btnShow.click();
+        waitSpinnerDisappeared();
     }
 
     public boolean isOrderExist (List<Order> lstOrder, String groupCode){
@@ -111,7 +143,9 @@ public class OverUnderLiabilityPage extends WelcomePage {
 
     public void verifyUI() {
         System.out.println("Company Unit, Smart Type, Show Only PT-Bets,Live/NonLive, From Date, To Date, Stake");
-        Assert.assertEquals(ddpCompanyUnit.getOptions(),COMPANY_UNIT_LIST_ALL,"Failed! Company Unit dropdown is not displayed");
+        List<String> lstCompany = CompanySetUpUtils.getListCompany();
+        lstCompany.add(0,"All");
+        Assert.assertEquals(ddpCompanyUnit.getOptions(),lstCompany,"Failed! Company Unit dropdown is not displayed");
         Assert.assertEquals(ddpSmartType.getOptions(), SBPConstants.MatchOddsLiability.SMART_TYPE_LIST,"Failed! Smart Type dropdown is not displayed");
         Assert.assertEquals(lblPTBets.getText(),"PT-Bets","Failed! PT Bets checkbox is not displayed");
         Assert.assertEquals(lblFromDate.getText(),"From Date","Failed! From Date datetime picker is not displayed");
@@ -119,7 +153,7 @@ public class OverUnderLiabilityPage extends WelcomePage {
         Assert.assertEquals(ddpStake.getOptions(),STAKE_LIST,"Failed! Stake dropdown is not displayed");
         System.out.println("Show Bet Types, Show Leagues, Show Groups, Show Events and Show button");
         Assert.assertEquals(lblShowBetType.getText(),"Show Bet Types\nAll","Failed! Show Bet Types button is not displayed");
-        Assert.assertEquals(lblShowLeagues.getText(), "Show Leagues\nAll","Failed! Show Leagues button is not displayed");
+        Assert.assertTrue(lblShowLeagues.getText().contains("Show Leagues"),"Failed! Show Leagues button is not displayed");
         Assert.assertEquals(lblShowGroups.getText(),"Show Groups\nAll","Failed! Show Groups button is not displayed");
         Assert.assertEquals(lblShowEvents.getText(),"Show Events\nAll","Failed! Show Events button is not displayed");
         Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");

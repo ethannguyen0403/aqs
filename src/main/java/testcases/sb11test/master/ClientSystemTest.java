@@ -126,7 +126,7 @@ public class ClientSystemTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan2.0"})
+    @Test(groups = {"regression","ethan4.0"})
     @TestRails(id = "2213")
     @Parameters({"clientCode"})
     public void Client_System_2213(String clientCode){

@@ -61,7 +61,7 @@ public class BetSettlementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="188")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"accountCode"})
     public void BetSettlement_TC188(String accountCode) {
         log("@title: Validate bet in Bet settlement is re-settled with correct winloss after update bet info in Confirm Bets page");
@@ -69,7 +69,7 @@ public class BetSettlementTest extends BaseCaseAQS {
                 "For example bet is place back, HDP -0.25 odds 1.050 HKD, stake 12 and winlose value 12.6\n" +
                 "\n");
         String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
-        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,false,accountCode,"Goals","HDP","Home","FullTime",1.110,0.25,
+        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,true,accountCode,"Goals","HDP","Home","FullTime",1.110,0.25,
                 "HK",11,"BACK",false,"");
         log("@Step 2:Navigate to Trading > Bet Settlement > Search bet of the account at precondition in Confirmed mode");
         ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING, CONFIRM_BETS,ConfirmBetsPage.class);
@@ -96,9 +96,9 @@ public class BetSettlementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="203")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"accountCode"})
-    public void BetSettlement_TC203(String accountCode) throws IOException {
+    public void BetSettlement_TC203(String accountCode) {
         log("@title: Validate that user can export file successfully");
         log("Precondition: User has permission to access Bet Settlement page \n" +
                 "Having an account with Confirmed bet settle Win/Lose");
@@ -122,7 +122,7 @@ public class BetSettlementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="204")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"accountCode"})
     public void BetSettlement_TC204(String accountCode){
         log("@title: Validate that user can send Bets List email successfully");
@@ -148,7 +148,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="205")
-    @Test(groups = {"smoke","ethan2.0"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"accountCode"})
     public void BetSettlement_TC205(String accountCode){
         log("@title: Validate that user can Settled and Send Settlement email successfully");
@@ -182,7 +182,7 @@ public class BetSettlementTest extends BaseCaseAQS {
     }
 
     @TestRails(id="206")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan4.0"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void BetSettlement_TC206(String accountCode,String accountCurrency,String emailAddress,String clientCode){
         log("@title: Validate all information display correctly in statement email (AQS-2020)");
