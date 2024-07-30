@@ -81,7 +81,7 @@ public class ConfirmBetsPage extends WelcomePage {
      * @param accountCode
      */
     public void filter(String companyUnit, String accStartWith, String status, String sport, String betType,String dateType, String fromDate, String toDate, String accountCode){
-        waitPageLoad();
+        waitSpinnerDisappeared();
         ddbCompanyUnit.selectByVisibleText(companyUnit);
         txtAccStartWith.sendKeys(accStartWith);
         ddbStatus.selectByVisibleText(status);
@@ -96,7 +96,7 @@ public class ConfirmBetsPage extends WelcomePage {
             dtpToDate.selectDate(toDate,"dd/MM/yyyy");
         txtAccountCode.sendKeys(accountCode);
         btnShow.click();
-        waitPageLoad();
+        waitSpinnerDisappeared();
     }
 
     /**
@@ -321,7 +321,7 @@ public class ConfirmBetsPage extends WelcomePage {
      * @param isPending to define column delete icon based on filter Pending (true) or Confirm(false) status
      */
     public void deleteOrder(Order order, boolean isPending){
-        int rowIndex =getOrderIndex(order.getBetId());
+        int rowIndex = getOrderIndex(order.getBetId());
         Icon xButton =  Icon.xpath(tblOrder.getxPathOfCell(1,defineDeleteColIndex(isPending),rowIndex,"i"));
         xButton.jsClick();
         ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
