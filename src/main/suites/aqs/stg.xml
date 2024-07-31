@@ -13,13 +13,13 @@
         <parameter name='isProxy' value='false'/>
         <parameter name='username' value='AutoQC'/>
         <parameter name='password' value='5pjguoEh1fnSILpykWt1vQ=='/>
-        <parameter name='isAddTestRailResult' value='true'/>
+        <parameter name='isAddTestRailResult' value='false'/>
         <parameter name='isThrown' value='true'/>
         <parameter name="appname" value="aqs"/>
         <groups>
             <run>
-                <include name="smoke" />
-                <include name="smoke_qc" />
+                <include name="smoke1" />
+                <include name="smoke_qc1" />
             </run>
         </groups>
 

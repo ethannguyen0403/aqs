@@ -25,10 +25,10 @@
         <parameter name="agentCode" value="QASAHK00"/>
         <parameter name="bookieMasterCode" value="Ma-QA101-QA Test"/>
         <parameter name="bookieSuperMasterCode" value="SM-QA1-QA Test"/>
-        <parameter name='isAddTestRailResult' value='true'/>
+        <parameter name='isAddTestRailResult' value='false'/>
         <groups>
             <run>
-                <include name="smoke" />
+                <include name="smoke1" />
             </run>
         </groups>
 
