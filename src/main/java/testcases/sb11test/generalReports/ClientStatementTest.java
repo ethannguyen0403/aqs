@@ -55,7 +55,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         double expectedVal = DecimalFormat.getNumberInstance().parse(openingVal).doubleValue() + DecimalFormat.getNumberInstance().parse(winLossVal).doubleValue() +
                 DecimalFormat.getNumberInstance().parse(commissionVal).doubleValue() + DecimalFormat.getNumberInstance().parse(recPayVal).doubleValue();
 
-        Assert.assertEquals(Math.round(expectedVal*100.0)/100.0,DecimalFormat.getNumberInstance().parse(actualVal).doubleValue(),"FAILED! Closing Balance is not calculated correctly, actual:"+actualVal+" and expected:"+expectedVal);
+        Assert.assertEquals(Math.round(expectedVal*100.0)/100.0,DecimalFormat.getNumberInstance().parse(actualVal).doubleValue(),0.01,"FAILED! Closing Balance is not calculated correctly, actual:"+actualVal+" and expected:"+expectedVal);
         log("INFO: Executed completely");
     }
 

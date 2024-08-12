@@ -10,6 +10,7 @@ public class HomePage extends Header {
     public <T> T activeMenu(String menu, Class<T> expectedPage) {
         clickMenuHeader(menu);
         // add wait method if to wait data complete loaded
+        waitSpinLoad();
         return PageFactory.initElements(DriverManager.getDriver(), expectedPage);
     }
     private void clickMenuHeader(String menuName){

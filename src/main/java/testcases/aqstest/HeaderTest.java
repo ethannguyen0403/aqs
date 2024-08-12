@@ -6,6 +6,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.ess.ChangePasswordPopup;
 import testcases.BaseCaseAQS;
+import utils.aqs.ChangePasswordUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.List;
@@ -88,7 +89,8 @@ public class HeaderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
         }finally {
             /**Post-condition: re-update new password to old password */
-            betOrderPage.changePassword(newPass,currentPass,currentPass,true);
+//            betOrderPage.changePassword(newPass,currentPass,currentPass,true);
+            ChangePasswordUtils.changePassword(newPass,currentPass);
         }
 
     }
