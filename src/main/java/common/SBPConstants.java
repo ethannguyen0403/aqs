@@ -89,7 +89,7 @@ public class SBPConstants {
     public final static String BBG_PHONE_BETTING = "BBG - Phone Betting";
 
     public final static String PLACE_BET_SUCCESS_MSG = "The bet was placed successfully";
-    public final static String FINANCIAL_YEAR = "Year 2023-2024";
+    public final static String FINANCIAL_YEAR = "Year 2024-2025";
     public final static String KASTRAKI_LIMITED = "Kastraki Limited";
     public final static String FAIR = "Fair";
     public final static String CLIENT_CREDIT_ACC = "ClientCredit-AutoQC";
