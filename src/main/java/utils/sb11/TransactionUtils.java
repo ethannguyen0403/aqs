@@ -53,7 +53,7 @@ public class TransactionUtils {
                         "    \"isValidAmount\": true,\n" +
                         "    \"amount\": \"%s\",\n" +
                         "    \"remark\": \"%s\",\n" +
-                        "    \"transactionType\": \"PT Rebate\",\n" +
+                        "    \"transactionType\": \"%s\",\n" +
                         "    \"typeId\": \"%s\",\n" +
                         "    \"transactionDate\": \"%s\",\n" +
                         "    \"transaction\": \"Withdraw\"\n" +
@@ -70,13 +70,14 @@ public class TransactionUtils {
                         "    \"isValidAmount\": true,\n" +
                         "    \"amount\": \"%s\",\n" +
                         "    \"remark\": \"%s\",\n" +
-                        "    \"transactionType\": \"PT Rebate\",\n" +
+                        "    \"transactionType\": \"%s\",\n" +
                         "    \"typeId\": \"%s\",\n" +
                         "    \"transactionDate\": \"%s\",\n" +
                         "    \"transaction\": \"Deposit\"\n" +
                         "  }]\n"
-                , accountIdFrom, trans.getDebitAccountCode(), fromType, prefix1, trans.getAmountDebit(), trans.getRemark(), typeId, trans.getTransDate(),
-                accountIdTo, trans.getCreditAccountCode(), fromType, prefix2, trans.getAmountCredit(), trans.getRemark(), typeId, trans.getTransDate());
+                , accountIdFrom, trans.getDebitAccountCode(), fromType, prefix1, trans.getAmountDebit(), trans.getRemark(), trans.getTransType(), typeId, trans.getTransDate(),
+                accountIdTo, trans.getCreditAccountCode(), fromType, prefix2, trans.getAmountCredit(), trans.getRemark(), trans.getTransType(), typeId, trans.getTransDate());
+        WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
         WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
     }
 
@@ -117,7 +118,7 @@ public class TransactionUtils {
                         "    \"isValidAmount\": true,\n" +
                         "    \"amount\": %s,\n" +
                         "    \"remark\": \"%s\",\n" +
-                        "    \"transactionType\": \"PT Rebate\",\n" +
+                        "    \"transactionType\": \"%s\",\n" +
                         "    \"typeId\": -1,\n" +
                         "    \"transactionDate\": \"%s\",\n" +
                         "    \"transaction\": \"Withdraw\"\n" +
@@ -138,15 +139,15 @@ public class TransactionUtils {
                         "    \"isValidAmount\": true,\n" +
                         "    \"amount\": %s,\n" +
                         "    \"remark\": \"%s\",\n" +
-                        "    \"transactionType\": \"PT Rebate\",\n" +
+                        "    \"transactionType\": \"%s\",\n" +
                         "    \"typeId\": -1,\n" +
                         "    \"transactionDate\": \"%s\",\n" +
                         "    \"transaction\": \"Deposit\"\n" +
                         "  }]\n"
                 , Integer.parseInt(accountIdFrom), trans.getLedgerDebit(), trans.getLedgerDebitNumber(), ledgerType, prefix1, Integer.parseInt(accountIdFrom), trans.getLedgerDebit(),
-                trans.getLedgerDebit(), trans.getAmountDebit(), trans.getRemark(), trans.getTransDate(),
+                trans.getLedgerDebit(), trans.getAmountDebit(), trans.getRemark(), trans.getTransType(), trans.getTransDate(),
                 Integer.parseInt(accountIdTo), trans.getLedgerCredit(), trans.getLedgerCreditNumber(), ledgerType, prefix2, Integer.parseInt(accountIdTo), trans.getLedgerCredit(),
-                trans.getLedgerCredit(), trans.getAmountDebit(), trans.getRemark(), trans.getTransDate());
+                trans.getLedgerCredit(), trans.getAmountDebit(), trans.getRemark(), trans.getTransType(), trans.getTransDate());
         WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
     }
 

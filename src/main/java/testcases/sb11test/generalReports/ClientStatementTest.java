@@ -24,7 +24,7 @@ import java.util.Collections;
 import static common.SBPConstants.*;
 
 public class ClientStatementTest extends BaseCaseAQS {
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "309")
     public void ClientStatementTC_309(String clientCode) throws ParseException {
@@ -93,7 +93,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters("clientCode")
     @TestRails(id = "587")
     public void ClientStatementTC_587(String clientCode) {
@@ -119,7 +119,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters("clientCode")
     @TestRails(id = "588")
     public void ClientStatementTC_588(String clientCode) {
@@ -166,7 +166,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "861")
     public void ClientStatementTC_861(String clientCode) {
@@ -264,7 +264,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke","ethan"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "866")
     public void ClientStatementTC_866(String clientCode) throws IOException {
@@ -273,20 +273,23 @@ public class ClientStatementTest extends BaseCaseAQS {
         String level = "Player";
         String actualRecPayVal;
         String expectedRecPayVal;
-        long remark = DateUtils.getMilliSeconds();
         String viewBy = "Client Point";
         String superMasterCode = "QA2112 - ";
         log("Precondition: Add transaction for the Client account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String fromDate = DateUtils.formatDate(transDate,"yyyy-MM-dd","dd/MM/yyyy");
+        String desClient = "TC_866 Automation Testing Transaction Client: " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .clientDebit(clientCode).clientCredit(clientCode)
-                .amountDebit(1).amountCredit(1).remark("TC_866 Automation Testing Transaction Client: " + remark)
-                .transDate(transDate).transType("Tax Rebate").level(level)
+                .amountDebit(1).amountCredit(1).remark(desClient)
+                .transDate(transDate).transType("Payment Other").level(level)
                 .debitAccountCode(CLIENT_DEBIT_ACC)
                 .creditAccountCode(CLIENT_CREDIT_ACC)
                 .build();
         try {
             TransactionUtils.addTransByAPI(transaction,"Client",CLIENT_DEBIT_ACC,CLIENT_CREDIT_ACC,"","",clientCode);
+            welcomePage.waitSpinnerDisappeared();
+            JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Client",CLIENT_DEBIT_ACC,"Payment Other",desClient);
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -302,20 +305,24 @@ public class ClientStatementTest extends BaseCaseAQS {
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Client Debit balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
         } finally {
             log("@Post-condition: Add transaction for the Client account into Credit");
+            String desTxn = "TC_866 Automation Testing Transaction Client: Post-condition for txn";
             Transaction transactionPost = new Transaction.Builder()
                     .clientDebit(clientCode).clientCredit(clientCode)
-                    .amountDebit(1).amountCredit(1).remark("TC_866 Automation Testing Transaction Client: Post-condition for txn " + remark)
-                    .transDate(transDate).transType("Tax Rebate").level(level)
+                    .amountDebit(1).amountCredit(1).remark(desTxn)
+                    .transDate(transDate).transType("Received Comm/Rebate").level(level)
                     .debitAccountCode(CLIENT_CREDIT_ACC)
                     .creditAccountCode(CLIENT_DEBIT_ACC)
                     .build();
             TransactionUtils.addTransByAPI(transactionPost,"Client",CLIENT_CREDIT_ACC,CLIENT_DEBIT_ACC,"","",clientCode);
+            welcomePage.waitSpinnerDisappeared();
+            log("@Post-condition: authorize transaction");
+            JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Client",CLIENT_DEBIT_ACC,"Received Comm/Rebate",desTxn);
         }
 
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke","ethan2.0"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "867")
     public void ClientStatementTC_867(String clientCode) throws IOException {
@@ -324,15 +331,16 @@ public class ClientStatementTest extends BaseCaseAQS {
         String level = "Player";
         String actualRecPayVal;
         String expectedRecPayVal;
-        long remark = DateUtils.getMilliSeconds();
         String viewBy = "Client Point";
         String superMasterCode = "QA2112 - ";
         log("Precondition: Add transaction for the Client account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String fromDate = DateUtils.formatDate(transDate,"yyyy-MM-dd","dd/MM/yyyy");
+        String desClient = "TC_867 Automation Testing Transaction Client: " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .clientDebit(clientCode).clientCredit(clientCode)
-                .amountDebit(1).amountCredit(1).remark("TC_867 Automation Testing Transaction Client: " + remark)
-                .transDate(transDate).transType("Tax Rebate").level(level)
+                .amountDebit(1).amountCredit(1).remark(desClient)
+                .transDate(transDate).transType("Payment Other").level(level)
                 .debitAccountCode(CLIENT_DEBIT_ACC)
                 .creditAccountCode(CLIENT_CREDIT_ACC)
                 .build();
@@ -348,6 +356,8 @@ public class ClientStatementTest extends BaseCaseAQS {
             actualRecPayVal = popup.getSummaryCellValue(CLIENT_DEBIT_ACC,popup.colRecPay).replace(",","");
             popup.closeSummaryPopup();
             TransactionUtils.addTransByAPI(transaction,"Client",CLIENT_DEBIT_ACC,CLIENT_CREDIT_ACC,"","",clientCode);
+            welcomePage.waitSpinnerDisappeared();
+            JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Client",CLIENT_DEBIT_ACC,"Payment Other",desClient);
             expectedRecPayVal = String.format("%.2f",transaction.getAmountDebit()+ Double.valueOf(actualRecPayVal));
             clientPage.filter(viewBy, KASTRAKI_LIMITED,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
             clientPage.openSummaryPopup(agentCode);
@@ -355,21 +365,24 @@ public class ClientStatementTest extends BaseCaseAQS {
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Client Credit balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
         } finally {
             log("@Post-condition: Add transaction for the Client account into Credit");
+            String desTxn = "TC_867 Automation Testing Transaction Client: Post-condition for txn";
             Transaction transactionPost = new Transaction.Builder()
                     .clientDebit(clientCode).clientCredit(clientCode)
                     .amountDebit(1).amountCredit(1)
-                    .remark("TC_867 Automation Testing Transaction Client: Post-condition for txn " + remark)
-                    .transDate(transDate).transType("Tax Rebate").level(level)
+                    .remark(desTxn)
+                    .transDate(transDate).transType("Received Comm/Rebate").level(level)
                     .debitAccountCode(CLIENT_CREDIT_ACC)
                     .creditAccountCode(CLIENT_DEBIT_ACC)
                     .build();
             TransactionUtils.addTransByAPI(transactionPost,"Client",CLIENT_CREDIT_ACC,CLIENT_DEBIT_ACC,"","",clientCode);
+            welcomePage.waitSpinnerDisappeared();
+            JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Client",CLIENT_DEBIT_ACC,"Received Comm/Rebate",desTxn);
         }
 
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "871")
     public void ClientStatementTC_871(String clientCode) throws IOException {
@@ -377,11 +390,12 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        long remark = DateUtils.getMilliSeconds();
         String viewBy = "Client Point";
         String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Asset Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String fromDate = DateUtils.formatDate(transDate,"yyyy-MM-dd","dd/MM/yyyy");
+        String desAs = "TC_871 Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(LEDGER_ASSET_CREDIT_NAME)
                 .ledgerCreditNumber(LEDGER_ASSET_CREDIT_NUMBER)
@@ -389,12 +403,14 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(LEDGER_ASSET_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("TC_871 Automation Testing Transaction Client: Pre-condition " + remark)
+                .remark(desAs)
                 .transDate(transDate)
-                .transType("Tax Rebate")
+                .transType("Payment Other")
                 .build();
         try {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
+            welcomePage.waitSpinnerDisappeared();
+            JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Ledger",LEDGER_ASSET_CREDIT_NAME,"Payment Other",desAs);
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -408,6 +424,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Asset 'Debit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
         } finally {
             log("@Post-condition: Add transaction for the Asset Ledger account into Credit");
+            String remarkTXN = "TC_871 Automation Testing Transaction Client: Post-condition for txn";
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(LEDGER_ASSET_DEBIT_NAME)
                     .ledgerCreditNumber(LEDGER_ASSET_DEBIT_NUMBER)
@@ -415,16 +432,19 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(LEDGER_ASSET_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("TC_871 Automation Testing Transaction Client: Post-condition for txn " + remark)
+                    .remark(remarkTXN)
                     .transDate(transDate)
-                    .transType("Tax Rebate")
+                    .transType("Received Comm/Rebate")
                     .build();
             TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
+            welcomePage.waitSpinnerDisappeared();
+            log("@Post-condition: authorize transaction");
+            JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", LEDGER_ASSET_CREDIT_NAME, "Received Comm/Rebate", remarkTXN);
         }
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "872")
     public void ClientStatementTC_872(String clientCode) throws IOException {
@@ -432,11 +452,12 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        long remark = DateUtils.getMilliSeconds();
         String viewBy = "Client Point";
         String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Asset Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String fromDate = DateUtils.formatDate(transDate,"yyyy-MM-dd","dd/MM/yyyy");
+        String desAs = "TC_872 Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(LEDGER_ASSET_CREDIT_NAME)
                 .ledgerCreditNumber(LEDGER_ASSET_CREDIT_NUMBER)
@@ -444,12 +465,14 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(LEDGER_ASSET_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("TC_872 Automation Testing Transaction Client: Pre-condition " + remark)
+                .remark(desAs)
                 .transDate(transDate)
-                .transType("Tax Rebate")
+                .transType("Payment Other")
                 .build();
         try {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
+            welcomePage.waitSpinnerDisappeared();
+            JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Ledger",LEDGER_ASSET_CREDIT_NAME,"Payment Other",desAs);
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -463,6 +486,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Asset 'Credit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
         } finally {
             log("@Post-condition: Add transaction for the Asset Ledger account into Debit");
+            String remarkTXN = "TC_872 Automation Testing Transaction Client: Post-condition for txn";
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(LEDGER_ASSET_DEBIT_NAME)
                     .ledgerCreditNumber(LEDGER_ASSET_DEBIT_NUMBER)
@@ -470,16 +494,19 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(LEDGER_ASSET_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("TC_872 Automation Testing Transaction Client: Post-condition for txn " + remark)
+                    .remark(remarkTXN)
                     .transDate(transDate)
-                    .transType("Tax Rebate")
+                    .transType("Received Comm/Rebate")
                     .build();
             TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
+            welcomePage.waitSpinnerDisappeared();
+            log("@Post-condition: authorize transaction");
+            JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", LEDGER_ASSET_CREDIT_NAME, "Received Comm/Rebate", remarkTXN);
         }
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_qc"})
+    @Test(groups = {"smoke_qc","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "873")
     public void ClientStatementTC_873(String clientCode) throws IOException {
@@ -487,11 +514,12 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        long remark = DateUtils.getMilliSeconds();
         String viewBy = "Client Point";
         String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Liability Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String fromDate = DateUtils.formatDate(transDate,"yyyy-MM-dd","dd/MM/yyyy");
+        String desLia = "TC_873 Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(LEDGER_LIABILITY_CREDIT_NAME)
                 .ledgerCreditNumber(LEDGER_LIABILITY_CREDIT_NUMBER)
@@ -499,12 +527,14 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(LEDGER_LIABILITY_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("TC_873 Automation Testing Transaction Client: Pre-condition " + remark)
+                .remark(desLia)
                 .transDate(transDate)
-                .transType("Tax Rebate")
+                .transType("Payment Operational")
                 .build();
         try {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_LIABILITY,LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
+            welcomePage.waitSpinnerDisappeared();
+             JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Ledger",LEDGER_LIABILITY_CREDIT_NAME,"Payment Operational",desLia);
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -518,6 +548,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Liability 'Debit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
         } finally {
             log("@Post-condition: Add transaction for the Liability Ledger account into Credit");
+            String remarkTXN = "TC_873 Automation Testing Transaction Client: Post-condition for txn";
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(LEDGER_LIABILITY_DEBIT_NAME)
                     .ledgerCreditNumber(LEDGER_LIABILITY_DEBIT_NUMBER)
@@ -525,16 +556,19 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(LEDGER_LIABILITY_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("TC_873 Automation Testing Transaction Client: Post-condition for txn " + remark)
+                    .remark(remarkTXN)
                     .transDate(transDate)
-                    .transType("Tax Rebate")
+                    .transType("Received Comm/Rebate")
                     .build();
             TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_LIABILITY,LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
+            welcomePage.waitSpinnerDisappeared();
+            log("@Post-condition: authorize transaction");
+            JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", LEDGER_LIABILITY_CREDIT_NAME, "Received Comm/Rebate", remarkTXN);
         }
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_qc"})
+    @Test(groups = {"smoke_qc","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "874")
     public void ClientStatementTC_874(String clientCode) throws IOException {
@@ -542,11 +576,12 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        long remark = DateUtils.getMilliSeconds();
         String viewBy = "Client Point";
         String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Liability Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String fromDate = DateUtils.formatDate(transDate,"yyyy-MM-dd","dd/MM/yyyy");
+        String desLia = "TC_874 Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(LEDGER_LIABILITY_CREDIT_NAME)
                 .ledgerCreditNumber(LEDGER_LIABILITY_CREDIT_NUMBER)
@@ -554,12 +589,14 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(LEDGER_LIABILITY_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("TC_874 Automation Testing Transaction Client: Pre-condition " + remark)
+                .remark(desLia)
                 .transDate(transDate)
-                .transType("Tax Rebate")
+                .transType("Payment Operational")
                 .build();
         try {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_LIABILITY,LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
+            welcomePage.waitSpinnerDisappeared();
+            JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Ledger",LEDGER_LIABILITY_CREDIT_NAME,"Payment Operational",desLia);
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -573,6 +610,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Liability 'Credit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
         } finally {
             log("@Post-condition: Add transaction for the Liability Ledger account into Debit");
+            String remarkTXN = "TC_874 Automation Testing Transaction Client: Post-condition for txn";
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(LEDGER_LIABILITY_DEBIT_NAME)
                     .ledgerCreditNumber(LEDGER_LIABILITY_DEBIT_NUMBER)
@@ -580,16 +618,19 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(LEDGER_LIABILITY_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("TC_874 Automation Testing Transaction Client: Post-condition for txn " + remark)
+                    .remark(remarkTXN)
                     .transDate(transDate)
-                    .transType("Tax Rebate")
+                    .transType("Payment Operational")
                     .build();
             TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_LIABILITY,LEDGER_GROUP_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,LEDGER_PARENT_NAME_LIABILITY,"");
+            welcomePage.waitSpinnerDisappeared();
+            log("@Post-condition: authorize transaction");
+            JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", LEDGER_LIABILITY_CREDIT_NAME, "Received Comm/Rebate", remarkTXN);
         }
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_qc"})
+    @Test(groups = {"smoke_qc","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "875")
     public void ClientStatementTC_875(String clientCode) throws IOException {
@@ -597,11 +638,12 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        long remark = DateUtils.getMilliSeconds();
         String viewBy = "Client Point";
         String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Capital Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String fromDate = DateUtils.formatDate(transDate,"yyyy-MM-dd","dd/MM/yyyy");
+        String desCap = "TC_875 Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(LEDGER_CAPITAL_CREDIT_NAME)
                 .ledgerCreditNumber(LEDGER_CAPITAL_CREDIT_NUMBER)
@@ -609,12 +651,14 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(LEDGER_CAPITAL_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("TC_875 Automation Testing Transaction Client: Pre-condition " + remark)
+                .remark(desCap)
                 .transDate(transDate)
-                .transType("Tax Rebate")
+                .transType("Payment Other")
                 .build();
         try {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_CAPITAL,LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
+            welcomePage.waitSpinnerDisappeared();
+            JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Ledger",LEDGER_CAPITAL_CREDIT_NAME,"Payment Other",desCap);
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -628,6 +672,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Capital 'Debit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
         } finally {
             log("@Post-condition: Add transaction for the Capital Ledger account into Credit");
+            String remarkTXN = "TC_875 Automation Testing Transaction Client: Post-condition for txn";
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(LEDGER_CAPITAL_DEBIT_NAME)
                     .ledgerCreditNumber(LEDGER_CAPITAL_DEBIT_NUMBER)
@@ -635,16 +680,19 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(LEDGER_CAPITAL_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("TC_875 Automation Testing Transaction Client: Post-condition for txn " + remark)
+                    .remark(remarkTXN)
                     .transDate(transDate)
-                    .transType("Tax Rebate")
+                    .transType("Received Comm/Rebate")
                     .build();
             TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_CAPITAL,LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
+            welcomePage.waitSpinnerDisappeared();
+            log("@Post-condition: authorize transaction");
+            JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", LEDGER_CAPITAL_CREDIT_NAME, "Received Comm/Rebate", remarkTXN);
         }
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_qc"})
+    @Test(groups = {"smoke_qc","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "876")
     public void ClientStatementTC_876(String clientCode) throws IOException {
@@ -652,11 +700,12 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        long remark = DateUtils.getMilliSeconds();
         String viewBy = "Client Point";
         String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Capital Ledger account into Credit");
-        String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd",GMT_7));
+        String fromDate = DateUtils.formatDate(transDate,"yyyy-MM-dd","dd/MM/yyyy");
+        String desCap = "TC_876 Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(LEDGER_CAPITAL_CREDIT_NAME)
                 .ledgerCreditNumber(LEDGER_CAPITAL_CREDIT_NUMBER)
@@ -664,12 +713,14 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(LEDGER_CAPITAL_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("TC_876 Automation Testing Transaction Client: Pre-condition " + remark)
+                .remark(desCap)
                 .transDate(transDate)
-                .transType("Tax Rebate")
+                .transType("Payment Other")
                 .build();
         try {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_CAPITAL,LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
+            welcomePage.waitSpinnerDisappeared();
+            JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Ledger",LEDGER_CAPITAL_CREDIT_NAME,"Payment Other",desCap);
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -683,6 +734,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Capital 'Credit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
         } finally {
             log("@Post-condition: Add transaction for the Capital Ledger account into Debit");
+            String remarkTXN = "TC_876 Automation Testing Transaction Client: Post-condition for txn";
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(LEDGER_CAPITAL_DEBIT_NAME)
                     .ledgerCreditNumber(LEDGER_CAPITAL_DEBIT_NUMBER)
@@ -690,16 +742,19 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(LEDGER_CAPITAL_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("TC_876 Automation Testing Transaction Client: Post-condition for txn" + remark)
+                    .remark(remarkTXN)
                     .transDate(transDate)
-                    .transType("Tax Rebate")
+                    .transType("Received Comm/Rebate")
                     .build();
             TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_CAPITAL,LEDGER_GROUP_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,LEDGER_PARENT_NAME_CAPITAL,"");
+            welcomePage.waitSpinnerDisappeared();
+            log("@Post-condition: authorize transaction");
+            JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", LEDGER_CAPITAL_CREDIT_NAME, "Received Comm/Rebate", remarkTXN);
         }
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_qc"})
+    @Test(groups = {"smoke_qc","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "877")
     public void ClientStatementTC_877(String clientCode) throws IOException {
@@ -707,11 +762,12 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        long remark = DateUtils.getMilliSeconds();
         String viewBy = "Client Point";
         String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Income Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String fromDate = DateUtils.formatDate(transDate,"yyyy-MM-dd","dd/MM/yyyy");
+        String desInc = "TC_877 Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(LEDGER_INCOME_CREDIT_NAME)
                 .ledgerCreditNumber(LEDGER_INCOME_CREDIT_NUMBER)
@@ -719,12 +775,14 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(LEDGER_INCOME_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("TC_877 Automation Testing Transaction Client: Pre-condition " + remark)
+                .remark(desInc)
                 .transDate(transDate)
-                .transType("Tax Rebate")
+                .transType("Payment Other")
                 .build();
         try {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_INCOME,LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
+            welcomePage.waitSpinnerDisappeared();
+            JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Ledger",LEDGER_INCOME_CREDIT_NAME,"Payment Other",desInc);
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -738,6 +796,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Income 'Debit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
         } finally {
             log("@Post-condition: Add transaction for the Income Ledger account into Credit");
+            String remarkTXN = "TC_877 Automation Testing Transaction Client: Post-condition for txn";
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(LEDGER_INCOME_DEBIT_NAME)
                     .ledgerCreditNumber(LEDGER_INCOME_DEBIT_NUMBER)
@@ -745,15 +804,18 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(LEDGER_INCOME_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("TC_877 Automation Testing Transaction Client: Post-condition for txn" + remark)
+                    .remark(remarkTXN)
                     .transDate(transDate)
-                    .transType("Tax Rebate")
+                    .transType("Received Comm/Rebate")
                     .build();
             TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_INCOME,LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
+            welcomePage.waitSpinnerDisappeared();
+            log("@Post-condition: authorize transaction");
+            JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", LEDGER_INCOME_CREDIT_NAME, "Received Comm/Rebate", remarkTXN);
         }
         log("INFO: Executed completely");
     }
-    @Test(groups = {"smoke_qc"})
+    @Test(groups = {"smoke_qc","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "878")
     public void ClientStatementTC_878(String clientCode) throws IOException {
@@ -761,11 +823,12 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        long remark = DateUtils.getMilliSeconds();
         String viewBy = "Client Point";
         String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Income Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String fromDate = DateUtils.formatDate(transDate,"yyyy-MM-dd","dd/MM/yyyy");
+        String desInc = "TC_878 Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(LEDGER_INCOME_CREDIT_NAME)
                 .ledgerCreditNumber(LEDGER_INCOME_CREDIT_NUMBER)
@@ -773,12 +836,14 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(LEDGER_INCOME_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("TC_878 Automation Testing Transaction Client: Pre-condition " + remark)
+                .remark(desInc)
                 .transDate(transDate)
-                .transType("Tax Rebate")
+                .transType("Payment Other")
                 .build();
         try {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_INCOME,LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
+            welcomePage.waitSpinnerDisappeared();
+            JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Ledger",LEDGER_INCOME_CREDIT_NAME,"Payment Other",desInc);
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -792,6 +857,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Income 'Credit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
         } finally {
             log("@Post-condition: Add transaction for the Income Ledger account into Debit");
+            String remarkTXN = "TC_878 Automation Testing Transaction Client: Post-condition for txn";
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(LEDGER_INCOME_DEBIT_NAME)
                     .ledgerCreditNumber(LEDGER_INCOME_DEBIT_NUMBER)
@@ -799,16 +865,19 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(LEDGER_INCOME_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("TC_878 Automation Testing Transaction Client: Post-condition for txn" + remark)
+                    .remark(remarkTXN)
                     .transDate(transDate)
-                    .transType("Tax Rebate")
+                    .transType("Received Comm/Rebate")
                     .build();
             TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_INCOME,LEDGER_GROUP_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,LEDGER_PARENT_NAME_INCOME,"");
+            welcomePage.waitSpinnerDisappeared();
+            log("@Post-condition: authorize transaction");
+            JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", LEDGER_INCOME_CREDIT_NAME, "Received Comm/Rebate", remarkTXN);
         }
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_qc"})
+    @Test(groups = {"smoke_qc","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "879")
     public void ClientStatementTC_879(String clientCode) throws IOException {
@@ -816,11 +885,12 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        long remark = DateUtils.getMilliSeconds();
         String viewBy = "Client Point";
         String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Expenditure Ledger account into Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String fromDate = DateUtils.formatDate(transDate,"yyyy-MM-dd","dd/MM/yyyy");
+        String desExp = "TC_879 Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(LEDGER_EXPENDITURE_CREDIT_NAME)
                 .ledgerCreditNumber(LEDGER_EXPENDITURE_CREDIT_NUMBER)
@@ -828,12 +898,14 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(LEDGER_EXPENDITURE_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("TC_879 Automation Testing Transaction Client: Pre-condition " + remark)
+                .remark(desExp)
                 .transDate(transDate)
-                .transType("Tax Rebate")
+                .transType("Payment Other")
                 .build();
         try {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
+            welcomePage.waitSpinnerDisappeared();
+            JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Ledger",LEDGER_EXPENDITURE_CREDIT_NAME,"Payment Other",desExp);
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -847,6 +919,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Expenditure 'Debit' balance is not added correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
         } finally {
             log("@Post-condition: Add transaction for the Expenditure Ledger account into Credit");
+            String remarkTXN = "TC_879 Automation Testing Transaction Client: Post-condition for txn";
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(LEDGER_EXPENDITURE_DEBIT_NAME)
                     .ledgerCreditNumber(LEDGER_EXPENDITURE_DEBIT_NUMBER)
@@ -854,16 +927,19 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(LEDGER_EXPENDITURE_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("TC_879 Automation Testing Transaction Client: Post-condition for txn" + remark)
+                    .remark(remarkTXN)
                     .transDate(transDate)
-                    .transType("Tax Rebate")
+                    .transType("Received Comm/Rebate")
                     .build();
             TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
+            welcomePage.waitSpinnerDisappeared();
+            log("@Post-condition: authorize transaction");
+            JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", LEDGER_EXPENDITURE_CREDIT_NAME, "Received Comm/Rebate", remarkTXN);
         }
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_qc"})
+    @Test(groups = {"smoke_qc","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "880")
     public void ClientStatementTC_880(String clientCode) throws IOException {
@@ -871,11 +947,12 @@ public class ClientStatementTest extends BaseCaseAQS {
         String agentLedCode = "QATE00-LED";
         String expectedRecPayVal;
         String actualRecPayVal;
-        long remark = DateUtils.getMilliSeconds();
         String viewBy = "Client Point";
         String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Expenditure Ledger account into Credit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String fromDate = DateUtils.formatDate(transDate,"yyyy-MM-dd","dd/MM/yyyy");
+        String desExp = "TC_880 Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(LEDGER_EXPENDITURE_CREDIT_NAME)
                 .ledgerCreditNumber(LEDGER_EXPENDITURE_CREDIT_NUMBER)
@@ -883,12 +960,14 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(LEDGER_EXPENDITURE_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("TC_880 Automation Testing Transaction Client: Pre-condition " + remark)
+                .remark(desExp)
                 .transDate(transDate)
-                .transType("Tax Rebate")
+                .transType("Payment Other")
                 .build();
         try {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
+            welcomePage.waitSpinnerDisappeared();
+            JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Ledger",LEDGER_EXPENDITURE_CREDIT_NAME,"Payment Other",desExp);
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -902,6 +981,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             Assert.assertEquals(actualRecPayVal,expectedRecPayVal,"FAILED! Expenditure 'Credit' balance is not deducted correctly, actual:"+actualRecPayVal+" and expected:"+expectedRecPayVal);
         } finally {
             log("@Post-condition: Add transaction for the Expenditure Ledger account into Debit");
+            String remarkTXN = "TC_880 Automation Testing Transaction Client: Post-condition for txn";
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(LEDGER_EXPENDITURE_DEBIT_NAME)
                     .ledgerCreditNumber(LEDGER_EXPENDITURE_DEBIT_NUMBER)
@@ -909,11 +989,14 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(LEDGER_EXPENDITURE_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("TC_880 Automation Testing Transaction Client: Post-condition for txn " + remark)
+                    .remark(remarkTXN)
                     .transDate(transDate)
-                    .transType("Tax Rebate")
+                    .transType("Received Comm/Rebate")
                     .build();
             TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
+            welcomePage.waitSpinnerDisappeared();
+            log("@Post-condition: authorize transaction");
+            JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", LEDGER_EXPENDITURE_CREDIT_NAME, "Received Comm/Rebate", remarkTXN);
         }
         log("INFO: Executed completely");
     }
@@ -1014,18 +1097,19 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "1004")
     public void ClientStatementTC_1004(String clientCode) throws IOException {
         log("@Validate Rec/Pay/CA/RB/Adj Txns dialog displays with properly value when clicked on Rec/Pay/CA/RB/Adj link");
         String agentLedCode = "QATE00-LED";
         String actualRecPayVal;
-        long remark = DateUtils.getMilliSeconds();
         String viewBy = "Client Point";
         String superMasterCode = "QA2112 - ";
         log("@Precondition: Add transaction for the Asset Ledger account to show value Rec/Pay");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String fromDate = DateUtils.formatDate(transDate,"yyyy-MM-dd","dd/MM/yyyy");
+        String desAs = "TC_1004 Automation Testing Transaction Client: Pre-condition " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(LEDGER_ASSET_CREDIT_NAME)
                 .ledgerCreditNumber(LEDGER_ASSET_CREDIT_NUMBER)
@@ -1033,12 +1117,14 @@ public class ClientStatementTest extends BaseCaseAQS {
                 .ledgerDebitNumber(LEDGER_ASSET_DEBIT_NUMBER)
                 .amountDebit(1)
                 .amountCredit(1)
-                .remark("TC_1004 Automation Testing Transaction Client: Pre-condition " + remark)
+                .remark(desAs)
                 .transDate(transDate)
-                .transType("Tax Rebate")
+                .transType("Payment Other")
                 .build();
         try {
             TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
+            welcomePage.waitSpinnerDisappeared();
+            JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", LEDGER_ASSET_CREDIT_NAME, "Payment Other", desAs);
             log("@Step 1: Navigate to General Reports > Client Statement");
             ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
             clientPage.waitSpinnerDisappeared();
@@ -1053,6 +1139,7 @@ public class ClientStatementTest extends BaseCaseAQS {
             Assert.assertEquals(String.format("%.2f",transaction.getAmountDebit()),actualRecPayVal,"FAILED! Total Running is not calculated correctly, actual: "+ actualRecPayVal + " and expected: "+transaction.getAmountDebit());
         } finally {
             log("@Post-condition: Add transaction for the Asset Ledger account into Debit");
+            String remarkTXN = "TC_1004 Automation Testing Transaction Client: Post-condition for txn";
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(LEDGER_ASSET_DEBIT_NAME)
                     .ledgerCreditNumber(LEDGER_ASSET_DEBIT_NUMBER)
@@ -1060,11 +1147,14 @@ public class ClientStatementTest extends BaseCaseAQS {
                     .ledgerDebitNumber(LEDGER_ASSET_CREDIT_NUMBER)
                     .amountDebit(1)
                     .amountCredit(1)
-                    .remark("TC_1004 Automation Testing Transaction Client: Post-condition for txn " + remark)
+                    .remark(remarkTXN)
                     .transDate(transDate)
-                    .transType("Tax Rebate")
+                    .transType("Received Comm/Rebate")
                     .build();
             TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_ASSET,LEDGER_GROUP_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,LEDGER_PARENT_NAME_ASSET,"");
+            welcomePage.waitSpinnerDisappeared();
+            log("@Post-condition: authorize transaction");
+            JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", LEDGER_ASSET_CREDIT_NAME, "Received Comm/Rebate", remarkTXN);
         }
         log("INFO: Executed completely");
     }

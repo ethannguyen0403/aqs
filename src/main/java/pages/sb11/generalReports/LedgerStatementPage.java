@@ -37,7 +37,7 @@ public class LedgerStatementPage extends WelcomePage {
     public Label lblToDate = Label.xpath("//div[text()='To Date']");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
-    public Button btnShow = Button.xpath("//app-ledger-statement//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//app-ledger-statement//button[contains(@class,'btn-show')]");
     public Button btnExportToExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
     public Button btnExportToPDF = Button.xpath("//button[contains(text(),'Export To PDF')]");
     public Label lblGrandTotalbyRunningBal = Label.xpath("//td[text()='Grand Total in HKD']/following-sibling::td[3]");

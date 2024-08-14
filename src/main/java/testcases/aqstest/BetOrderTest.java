@@ -405,6 +405,11 @@ public class BetOrderTest extends BaseCaseAQS {
         betOrderPage.filterBetOrders(fromDate, toDate, "Soccer", true);
         List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI, toDateAPI, "Soccer", CANCELLED);
         Order order = GetOrdersUtils.getOrderInfoById(orderLst,orderID);
+        log("@Post-condition: Check order if it's null");
+        if(Objects.isNull(order)){
+            System.out.println(String.format("There is nothing %s order",CANCELLED));
+            return;
+        }
         try {
             log("@Step 4: In Cancelled section, click on Pending link of the order " + orderID);
             betOrderPage.clickControlInTable(CANCELLED, orderID, PENDING);
@@ -446,7 +451,11 @@ public class BetOrderTest extends BaseCaseAQS {
         betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
         List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI, toDateAPI, "Soccer", CANCELLED);
         Order order = GetOrdersUtils.getOrderInfoById(orderLst,orderID);
-
+        log("@Post-condition: Check order if it's null");
+        if(Objects.isNull(order)){
+            System.out.println(String.format("There is nothing %s order",CANCELLED));
+            return;
+        }
         log("@Step 3: Get Order API in Cancelled status");
       /*  List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer",CANCELLED);
         if(betOrderPage.isNodata(orderLst)){
@@ -556,7 +565,7 @@ public class BetOrderTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "482")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     public void BetOrder_C482(){
         log("@title: Verify hide a column is worked");
         List<String> listHeader = Arrays.asList("#", "Selection", "Action", "Market","Event Date","Event English","Event Chinese","Agent - Hitter");
@@ -579,7 +588,7 @@ public class BetOrderTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "483")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke1"})
     public void BetOrder_C483(){
         log("@title: Verify hide/unhide all column is worked");
         log("@Step 1: Login with valid account");

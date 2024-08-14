@@ -13,6 +13,7 @@ import pages.sb11.generalReports.popup.bookiestatement.*;
 import testcases.BaseCaseAQS;
 import utils.sb11.AccountSearchUtils;
 import utils.sb11.BookieInfoUtils;
+import utils.sb11.JournalReportsUtils;
 import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
@@ -22,7 +23,7 @@ import static common.SBPConstants.*;
 
 public class BookieStatementTest extends BaseCaseAQS {
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan5.0"})
     @TestRails(id = "183")
     public void BookieStatementTC_183() throws InterruptedException {
         String bookieCode = "QA01";
@@ -63,7 +64,7 @@ public class BookieStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke","ethan2.0"})
+    @Test(groups = {"smoke","ethan5.0"})
     @TestRails(id = "1639")
     public void BookieStatementTC_1639() throws InterruptedException {
         String bookieName = "QA Bookie";
@@ -98,7 +99,7 @@ public class BookieStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke","ethan2.0"})
+    @Test(groups = {"smoke","ethan5.0"})
     @TestRails(id = "184")
     public void BookieStatementTC_184() throws IOException, InterruptedException {
         String bookieName = "QA Bookie";
@@ -111,14 +112,17 @@ public class BookieStatementTest extends BaseCaseAQS {
         log("@title: Validate Payment transaction displays correctly");
         log("Precondition: Add txn for Bookie Super in Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
+        String fromDate = DateUtils.formatDate(transDate,"yyyy-MM-dd","dd/MM/yyyy");
+        String remark = "Automation Testing Transaction Bookie: " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
-                .amountDebit(1).amountCredit(1).remark("Automation Testing Transaction Bookie: " + DateUtils.getMilliSeconds())
-                .transDate(transDate).transType("Tax Rebate").level(level)
+                .amountDebit(1).amountCredit(1).remark(remark)
+                .transDate(transDate).transType("Payment Other").level(level)
                 .debitAccountCode(accountCodeDebit).creditAccountCode(accountCodeCredit)
                 .build();
         try {
             TransactionUtils.addTransByAPI(transaction,"Bookie",accountCodeDebit,accountCodeCredit,"","",bookieName);
-
+            welcomePage.waitSpinnerDisappeared();
+            JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Bookie",accountCodeDebit,"Payment Other",remark);
             log("@Step 1: Login with valid account");
             log("@Step 2: Click General Reports > Bookie Statement");
             BookieStatementPage bookieStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, BOOKIE_STATEMENT,BookieStatementPage.class);
@@ -133,12 +137,16 @@ public class BookieStatementTest extends BaseCaseAQS {
                     + " RPCRBA: " + valueDebit);
         } finally {
             log("Post-Condition: Add txn for Bookie Super in Credit");
+            String desTxn = "Automation Testing Transaction Bookie Post-condition: " + DateUtils.getMilliSeconds();
             Transaction transactionPost = new Transaction.Builder()
-                    .amountDebit(1).amountCredit(1).remark("Automation Testing Transaction Bookie Post-condition: " + DateUtils.getMilliSeconds())
-                    .transDate(transDate).transType("Tax Rebate").level(level)
+                    .amountDebit(1).amountCredit(1).remark(desTxn)
+                    .transDate(transDate).transType("Received Comm/Rebate").level(level)
                     .debitAccountCode(accountCodeCredit).creditAccountCode(accountCodeDebit)
                     .build();
             TransactionUtils.addTransByAPI(transactionPost,"Bookie",accountCodeCredit,accountCodeDebit,"","",bookieName);
+            welcomePage.waitSpinnerDisappeared();
+            log("@Post-condition: authorize transaction");
+            JournalReportsUtils.tickAuthorize(fromDate,fromDate,"Bookie",accountCodeDebit,"Received Comm/Rebate",desTxn);
         }
         log("INFO: Executed completely");
     }

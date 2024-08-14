@@ -156,7 +156,18 @@ public class ClientStatementPage extends WelcomePage {
             lblCellAgent.scrollToThisControl(false);
             lblCellAgent.click();
 //            Label.xpath(xpath + "/a").click();
-            waitSpinnerDisappeared();
+            Label lblNoRecord = Label.xpath("//app-ledger-member-summary//td[contains(text(),'No Records Found.')]");
+            int i = 0;
+            while (i < 10){
+                if (!lblNoRecord.isDisplayed()){
+                    break;
+                }
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             return new ClientSummaryPopup();
         }
     }
