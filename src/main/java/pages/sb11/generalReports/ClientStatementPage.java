@@ -155,7 +155,6 @@ public class ClientStatementPage extends WelcomePage {
         } else {
             lblCellAgent.scrollToThisControl(false);
             lblCellAgent.click();
-//            Label.xpath(xpath + "/a").click();
             Label lblNoRecord = Label.xpath("//app-ledger-member-summary//td[contains(text(),'No Records Found.')]");
             int i = 0;
             while (i < 10){

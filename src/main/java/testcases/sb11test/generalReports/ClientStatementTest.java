@@ -1001,12 +1001,12 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "882")
     public void ClientStatementTC_882(String clientCode) {
         log("@Validate Win/Lose Summary dialog displays with properly value when clicked on Win/Lose link");
-        String agentCode = "QASAHK00";
+        String agentCode = "QATE01-PT";
         String expectedRecPayVal;
         String actualRecPayVal;
         String viewBy = "Client Point";
@@ -1016,19 +1016,15 @@ public class ClientStatementTest extends BaseCaseAQS {
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         Order order = new Order.Builder()
                 .price(1.5).requireStake(15)
-                .oddType("HK").accountCode(CLIENT_CREDIT_ACC)
+                .oddType("HK").accountCode("QATE02-PT")
                 .createDate(transDate)
                 .eventDate(transDate + " 23:59:00")
                 .selection("Home " + DateUtils.getMilliSeconds())
                 .build();
         int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
-        String accountId = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
+        String accountId = AccountSearchUtils.getAccountId("QATE02-PT");
         BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Soccer"),order);
-        welcomePage.waitSpinnerDisappeared();
-        int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Soccer"),order);
-        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Soccer"),order);
-        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Soccer"));
-
+        BetSettlementUtils.sendManualBetSettleJson("QATE02-PT","Soccer",order);
         log("@Step 1: Navigate to General Reports > Client Statement");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.waitSpinnerDisappeared();
@@ -1036,12 +1032,12 @@ public class ClientStatementTest extends BaseCaseAQS {
         clientPage.filter(viewBy, KASTRAKI_LIMITED,FINANCIAL_YEAR,superMasterCode + clientCode,"","");
         log("@Step 3: Open Summary popup of agent and get Win/Lose of the player");
         ClientSummaryPopup popup = clientPage.openSummaryPopup(agentCode);
-        expectedRecPayVal = popup.getSummaryCellValue(CLIENT_CREDIT_ACC,popup.colWinLose);
+        expectedRecPayVal = popup.getSummaryCellValue("QATE02-PT",popup.colWinLose);
         log("@Step 4: Open win lose summary popup of player");
-        ClientSummaryWinlosePopup winlosePopup = popup.openWinLoseSummaryPopup(CLIENT_CREDIT_ACC);
+        ClientSummaryWinlosePopup winlosePopup = popup.openWinLoseSummaryPopup("QATE02-PT");
         winlosePopup.waitSpinnerDisappeared();
         log("@Validate the WinLose balance show properly");
-        actualRecPayVal = winlosePopup.getGrandTotal(winlosePopup.colWinLoseTotal) ;
+        actualRecPayVal = winlosePopup.getGrandTotal(winlosePopup.colWinLoseTotal);
         Assert.assertEquals(expectedRecPayVal,actualRecPayVal,"FAILED! Win/Loss balance is not shown correctly, actual: "+actualRecPayVal+ " and expected: "+expectedRecPayVal);
         log("INFO: Executed completely");
     }

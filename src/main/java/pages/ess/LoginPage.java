@@ -35,8 +35,9 @@ public class LoginPage {
             txtCode.sendKeys(code);
         }
         btnLogin.click();
-        txtUsername.isDisplayedShort(10);
-        return new BetOrderPage();
+        BetOrderPage betOrderPage = new BetOrderPage();
+        betOrderPage.lblBetOrders.waitForControlInvisible();
+        return betOrderPage;
     }
 
 }
