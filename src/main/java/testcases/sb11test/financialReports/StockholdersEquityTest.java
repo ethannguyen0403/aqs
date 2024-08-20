@@ -13,6 +13,7 @@ import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.role.RoleManagementPage;
 import testcases.BaseCaseAQS;
 import utils.ExcelUtils;
+import utils.sb11.CompanySetUpUtils;
 import utils.sb11.RoleManagementUtils;
 import utils.testraildemo.TestRails;
 
@@ -27,36 +28,32 @@ import static common.SBPConstants.*;
 public class StockholdersEquityTest extends BaseCaseAQS {
 
     @TestRails(id = "2802")
-    @Test(groups = {"regression_stg", "2023.12.29"})
+    @Test(groups = {"regression_stg", "2023.12.29","ethan5.0"})
     @Parameters({"password", "userNameOneRole"})
     public void Stockholder_Equity_TC2802(String password, String userNameOneRole) throws Exception {
         log("@title: Validate Stockholders Equity menu is hidden if not active Stockholders Equity permission");
         log("Precondition: Stockholders Equity permission is OFF for any account");
-        RoleManagementUtils.updateRolePermission("one role","Stockholders Equity","INACTIVE");
+        RoleManagementUtils.updateRolePermission("one role",STOCKHOLDERS_EQUITY,"INACTIVE");
         log("@Step 1: Re-login with one role account account has 'Stockholders Equity' permission is OFF");
         LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
-        TrialBalancePage trialBalancePage =
-                welcomePage.navigatePage(FINANCIAL_REPORTS, TRIAL_BALANCE, TrialBalancePage.class);
         log("@Verify 1: 'Stockholders Equity' menu is hidden displays");
-        Assert.assertTrue(!welcomePage.headerMenuControl.isSubmenuDisplay(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY), "FAILED! Stockholders Equity menu is displayed");
+        Assert.assertFalse(welcomePage.headerMenuControl.isSubmenuDisplay(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY), "FAILED! Stockholders Equity menu is displayed");
         log("INFO: Executed completely");
     }
 
     @TestRails(id = "2803")
-    @Test(groups = {"regression_stg", "2023.12.29"})
+    @Test(groups = {"regression_stg", "2023.12.29","ethan5.0"})
     @Parameters({"password", "userNameOneRole"})
     public void Stockholder_Equity_TC2803(String password, String userNameOneRole) throws Exception {
         log("@title: Validate Stockholders Equity menu displays if active Stockholders Equity permission");
         log("Precondition: Stockholders Equity permission is ON for any account");
-        RoleManagementPage roleManagementPage = welcomePage.navigatePage(ROLE, ROLE_MANAGEMENT, RoleManagementPage.class);
-        roleManagementPage.selectRole("one role").switchPermissions(STOCKHOLDERS_EQUITY, true);
+        RoleManagementUtils.updateRolePermission("one role",STOCKHOLDERS_EQUITY,"ACTIVE");
         log("@Step 1: Re-login with one role account account has 'Stockholders Equity' permission is ON");
-        LoginPage loginPage = roleManagementPage.logout();
+        LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
-        StockHoldersEquityPage stockPage =
-                welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
-        log("@Verify 1: 'Stockholders Equity' menu is hidden displays");
+        welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
+        log("@Verify 1: 'Stockholders Equity' menu displays");
         Assert.assertTrue(welcomePage.headerMenuControl.isSubmenuDisplay(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY), "FAILED! Stockholders Equity menu is NOT displayed");
         log("INFO: Executed completely");
     }
@@ -107,23 +104,23 @@ public class StockholdersEquityTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2807")
-    @Test(groups = {"regression", "2023.12.29","ethan3.0"})
+    @Test(groups = {"regression", "2023.12.29","ethan5.0"})
     public void Stockholder_Equity_TC2807()  {
         //Financial year of Fair: From August - To July
-        String fromDate = String.format("01/08/%s", FINANCIAL_YEAR_LIST.get(2).replace("Year ", "").split("-")[0]);
-        String toDate = String.format("31/07/%s", FINANCIAL_YEAR_LIST.get(2).replace("Year ", "").split("-")[1]);
+        String fromDate = String.format("01/08/%s", FINANCIAL_YEAR_LIST.get(3).replace("Year ", "").split("-")[0]);
+        String toDate = String.format("31/07/%s", FINANCIAL_YEAR_LIST.get(3).replace("Year ", "").split("-")[1]);
         log("@title: Validate correct Capital Issued - Capital Stock value displays");
         log("Precondition: Get Running Bal value of Parent Account 301.000.000.000 - Capital Stock from Ledger Statement > " +
                 "'Amounts are shown in HKD' section > 'Running Bal.' column in any financial year (1)");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
         ledgerStatementPage.waitSpinnerDisappeared();
-        ledgerStatementPage.showLedger(COMPANY_UNIT_LIST.get(3), FINANCIAL_YEAR_LIST.get(2), "", CAPITAL_PARENT_ACCOUNT, fromDate, toDate, "");
+        ledgerStatementPage.showLedger("Fair", FINANCIAL_YEAR_LIST.get(3), "", CAPITAL_PARENT_ACCOUNT, fromDate, toDate, "");
         String capitalAccountValue = ledgerStatementPage.getTotalInHKD(CAPITAL_PARENT_ACCOUNT,"CUR Translation","Running Bal.");
         log("@Step 1: Navigate Financial Report > Stockholders Equity");
         StockHoldersEquityPage stockPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, STOCKHOLDERS_EQUITY, StockHoldersEquityPage.class);
-        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", COMPANY_UNIT_LIST.get(3), FINANCIAL_YEAR));
-        stockPage.filter(COMPANY_UNIT_LIST.get(3), FINANCIAL_YEAR_LIST.get(2));
+        log(String.format("@Step 2: Filter with valid data company: %s, financial year: %s", CompanySetUpUtils.getListCompany().get(3), FINANCIAL_YEAR));
+        stockPage.filter("Fair", FINANCIAL_YEAR_LIST.get(3));
         log("@Verify 1: Capital Issued - Capital Stock = 301.000.000.000 - Capital Stock (1) at precondition");
         Assert.assertEquals(stockPage.getAmount(StockHoldersEquityPage.CAPITAL_ISSUED), capitalAccountValue, "FAILED! Capital issue is not correct from Ledger Statement");
         log("INFO: Executed completely");
@@ -220,7 +217,7 @@ public class StockholdersEquityTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "16196")
-    @Test(groups = {"regression", "2023.12.29"})
+    @Test(groups = {"regression", "2023.12.29","ethan5.0"})
     public void Stockholder_Equity_TC16196()  {
         log("@title: Validate label 'Total Stockholder's Equity' is displayed in bold");
         RetainedEarningsPage retainedEarningsPage =

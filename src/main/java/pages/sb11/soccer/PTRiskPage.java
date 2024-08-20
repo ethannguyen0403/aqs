@@ -57,20 +57,14 @@ public class PTRiskPage extends WelcomePage {
         ddpLiveNonLive.selectByVisibleText(liveNonlive);
         waitSpinnerDisappeared();
         if(!fromDate.isEmpty()){
+            dtpFromDate.waitForControlInvisible();
             dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-            try {
-                Thread.sleep(4000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            waitSpinnerDisappeared();
         }
         if(!toDate.isEmpty()){
+            dtpToDate.waitForControlInvisible();
             dtpToDate.selectDate(toDate,"dd/MM/yyyy");
-            try {
-                Thread.sleep(4000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            waitSpinnerDisappeared();
         }
         if (!leagueName.isEmpty()){
             filterLeague(leagueName);
@@ -109,13 +103,19 @@ public class PTRiskPage extends WelcomePage {
     private void filterLeague(String leagueName) {
         btnLeagues.click();
         waitSpinnerDisappeared();
+        btnClearAll.waitForControlInvisible();
         btnClearAll.click();
         int i = 1;
-        while (true) {
-            Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div[%s]//label[1]",i));
+        while (i < 10) {
+            Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div//label[contains(text(),'%s')]",leagueName));
             if (!lblSelectValue.isDisplayed()) {
-                System.out.println("Cannot find out league in list of Leagues: " + leagueName);
-                break;
+                btnSetSelection.click();
+                waitSpinnerDisappeared();
+                btnShow.click();
+                waitSpinnerDisappeared();
+                btnLeagues.click();
+                waitSpinnerDisappeared();
+                btnClearAll.click();
             }
             if(lblSelectValue.getText().equalsIgnoreCase(leagueName)) {
                 lblSelectValue.click();
@@ -124,6 +124,11 @@ public class PTRiskPage extends WelcomePage {
                 break;
             }
             i = i + 1;
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
     public void filterSmartMaster(String masterName) {

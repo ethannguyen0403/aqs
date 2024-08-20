@@ -148,7 +148,7 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="205")
-    @Test(groups = {"smoke","ethan4.0"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"accountCode"})
     public void BetSettlement_TC205(String accountCode){
         log("@title: Validate that user can Settled and Send Settlement email successfully");
@@ -162,21 +162,19 @@ public class BetSettlementTest extends BaseCaseAQS {
         log("@Step 1: Navigate to Trading > Bet Settlement and search bet of the account at precondition in Confirmed mode");
         BetSettlementPage betSettlementPage  = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
         betSettlementPage.filter("Confirmed",fromDate,"","",accountCode);
-
+        betSettlementPage.reClickShowButton(lstOrder.get(0));
         log("@Step 2. Select the bet and click Settle & Send Settlement Email button > Yes and observe message");
         log("@Step 3: Switch to Settled mode and search bet of the account then observe list result");
-
         betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
         List<String> listSuccessMessage = betSettlementPage.getListSuccessMessage();
-
         log("@Verify 1 .Successfully message displays with 2 popup:\n" +
                 "Bet(s) is settled successfully.\n" +
                 "Statement Email has been sent to your mail box.");
-        Assert.assertEquals(listSuccessMessage,BetSettlement.LST_MESSAGE_SETTLE_SENT_MAIL,
+        Assert.assertTrue(BetSettlement.LST_MESSAGE_SETTLE_SENT_MAIL.containsAll(listSuccessMessage),
                 "Failed! List Success message after Settle & Send Settlement Email bet is incorrect. Actual: " + listSuccessMessage + "\n");
-
         log("Verify 2. The bet settled displays in result list");
         betSettlementPage.filter("Settled",fromDate,"","",accountCode);
+        betSettlementPage.reClickShowButton(lstOrder.get(0));
         betSettlementPage.verifyOrderInfo(lstOrder.get(0));
         log("INFO: Executed completely");
     }

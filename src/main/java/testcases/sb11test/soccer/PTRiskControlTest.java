@@ -218,7 +218,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2128")
-    @Test(groups = {"regression","ethan4.0"})
+    @Test(groups = {"regression","ethan5.0"})
     public void PTRiskControlTC_2128(){
         log("@title: Validate that can copy report successfully");
 //        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
@@ -237,7 +237,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2126")
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression","ethan5.0"})
     @Parameters({"accountCode","accountCurrency"})
     public void PTRiskControlTC_2126(String accountCode,String accountCurrency){
         log("@title: Validate Full Time Over Under bet is displayed correctly on PT Risk Control > Over Under tab");
@@ -261,7 +261,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2127")
-    @Test(groups = {"regression","2023.12.31","ethan3.0"})
+    @Test(groups = {"regression","2023.12.31","ethan5.0"})
     @Parameters({"accountCode","accountCurrency"})
     public void PTRiskControlTC_2127(String accountCode,String accountCurrency){
         log("@title: Validate Half time Handicap bet is displayed and disappear when place bet in Bet Entry then removed" );
@@ -300,7 +300,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         ptRiskPage = confirmBetsPage.navigatePage(SOCCER,PT_RISK_CONTROL, PTRiskPage.class);
 
         log("Verify 2: verify Bet is removed when bet is removed in Confirm bet");
-        ptRiskPage.filter("", KASTRAKI_LIMITED,"Normal","All",date,date, lstOrder.get(0).getEvent().getLeagueName());
+        ptRiskPage.filter("", KASTRAKI_LIMITED,"Normal","All",date,date,"");
         ptRiskPage.filterSmartMaster(smartMaster);
         Assert.assertTrue(ptRiskPage.verifyRemoveBet(lstOrder.get(0)),"FAILED! Bet still display");
         log("INFO: Executed completely");
@@ -324,7 +324,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3416")
-    @Test(groups = {"regression", "2023.10.31","ethan3.0"})
+    @Test(groups = {"regression", "2023.10.31","ethan5.0"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3416(String accountCode) {
         String currentDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
@@ -340,6 +340,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
                         .home("QA Basketball Team 1").away("QA Basketball Team 2")
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
         EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get("Basketball"));
+        welcomePage.waitSpinnerDisappeared();
         String leagueID = EventScheduleUtils.getLeagueID(eventBasketball.getLeagueName(), SPORT_ID_MAP.get("Basketball"));
         String eventID = EventScheduleUtils.getEventID(dateAPI, leagueID);
         eventBasketball.setEventId(eventID);
@@ -365,7 +366,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3417")
-    @Test(groups = {"regression", "2023.10.31","ethan3.0"})
+    @Test(groups = {"regression", "2023.10.31","ethan5.0"})
     @Parameters({"accountCode"})
     public void PTRiskControlTC_3417(String accountCode) {
         String currentDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
@@ -382,6 +383,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
                         .home("QA Basketball Team 1").away("QA Basketball Team 2")
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
         EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get("Basketball"));
+        welcomePage.waitSpinnerDisappeared();
         String dateMAP = DateUtils.getDate(0, "yyyy-MM-dd HH:mm:ss", GMT_7);
         String eventID = EventMapping.getEventID(eventBasketball,provider,dateMAP);
         eventBasketball.setEventId(eventID);

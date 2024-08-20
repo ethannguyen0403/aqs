@@ -96,7 +96,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "190")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"accountCode"})
     public void Confirm_Bets_TC190(String accountCode) {
         log("@title:Validate can delete multiple Confirmed Bets");
@@ -111,19 +111,16 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING, CONFIRM_BETS, ConfirmBetsPage.class);
         log("@Step 3. Input account at the precondition to 'Account Code' field");
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Confirmed", SOCCER, "All", "Specific Date", date, "", accountCode);
-
         log("@Step 4 Tick on check-boxes of some bets'");
         log("@Step 5. Click on 'Delete Selected' and observe");
         confirmBetsPage.deleteSelectedOrders(lstOrder, false);
-
         log("@Verify: Users can delete multiple confirmed bets and they will be no longer displayed");
         Assert.assertFalse(confirmBetsPage.isOrdersDisplayInTheTable(lstOrder), "Failed! The order still displayed after delete");
-
         log("INFO: Executed completely");
     }
 
     @TestRails(id = "308")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"accountCode"})
     public void Confirm_Bets_TC308(String accountCode) {
         log("@title: Validate can delete Confirmed Bet");
@@ -219,7 +216,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "181")
-    @Test(groups = {"smoke","ethan3.0"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"accountCode"})
     public void Confirm_Bets_TC181(String accountCode) {
         log("@title:Validate bet info is correctly in Confirm Bet and Bet Setlement after update a bets in Confirm status");
@@ -266,11 +263,10 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         confirmBetsPage.verifyOrder(lstOrder.get(0));
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
         betSettlementPage.filter("Confirmed", date, "", "", accountCode);
-
+        betSettlementPage.reClickShowButton(lstOrder.get(0));
         log("@Verify 2 : Bets display correctly information in Bet Settlement page");
         betSettlementPage.verifyOrderInfo(lstOrder.get(0));
         log("INFO: Executed completely");
-
         log("@Pos-condition: Deleted the order");
         betSettlementPage.deleteOrder(lstOrder.get(0));
         log("@Pos-condition: Deleted the event Cricket");
@@ -279,7 +275,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "1000")
-    @Test(groups = {"smoke","ethan4.0"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"accountCode"})
     public void Confirm_Bets_TC1000(String accountCode) {
         log("@title: Validate deleted bets does not show in Bet Settlement page");
@@ -334,9 +330,9 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "942")
-    @Test(groups = {"smoke"})
-    @Parameters({"accountCode", "accountCurrency"})
-    public void Confirm_Bets_TC942(String accountCode, String accountCurrency) {
+    @Test(groups = {"smoke","ethan5.0"})
+    @Parameters({"accountCode"})
+    public void Confirm_Bets_TC942(String accountCode) {
         log("@title:Validate updated bets reflect correctly in the bet list of Bet Settlement page");
         log("Precondition: Using the updated bets in the test case C182");
         log("Note: Tobe able settled order after place bet > commfirmed and settled => we should place in the event in the past");
@@ -346,25 +342,22 @@ public class ConfirmBetsTest extends BaseCaseAQS {
                 "HK",15.50,"BACK",false,"");
         //Confirm Bet
         ConfirmBetsUtils.confirmBetAPI(lstOrder);
-        BetSettlementUtils.waitForBetIsUpdate(10);
         log("@Step 1: Login to SB11 >> go to Bet Settlement >> Confirmed");
         BetSettlementPage betSettlementPage = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
         betSettlementPage.filter("Confirmed", date, todate, "", accountCode);
-
+        betSettlementPage.reClickShowButton(lstOrder.get(0));
         log("@Step 2: Select the bet >>  click 'Settle and Send Settlement Email'");
         betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
-
         log("@Step 3: Select status as Settled");
         betSettlementPage.filter("Settled", date, todate ,"", accountCode);
-
+        betSettlementPage.reClickShowButton(lstOrder.get(0));
         log("@Verify 1 : Validate the bet displays with the updated values");
         betSettlementPage.verifyOrderInfo(lstOrder.get(0));
-
         log("INFO: Executed completely");
     }
 
     @TestRails(id = "185")
-    @Test(groups = {"smoke","ethan4.0"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"accountCode"})
     public void Confirm_Bets_TC185(String accountCode) {
         log("@title: Validate can confirm bets and the confirmed bets will show in Bet Settlement page");
@@ -385,6 +378,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Pending", SOCCER, "All", "Specific Date", date, "", accountCode);
         confirmBetsPage.confirmBet(lstOrder.get(0));
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Confirmed", SOCCER, "All", "Specific Date", date, "", accountCode);
+        confirmBetsPage.reClickShowButton(lstOrder.get(0));
         log("@Veirfy 1 : User can confirm bet successfully");
         confirmBetsPage.verifyOrder(lstOrder.get(0));
         log("@step 7: Navigate to Trading > Bet Settlement");
@@ -392,6 +386,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("Step 9: Observe confirmed bet at step 4");
         BetSettlementPage betSettlementPage = confirmBetsPage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
         betSettlementPage.filter("Confirmed", date, "", "", lstOrder.get(0).getAccountCode());
+        betSettlementPage.reClickShowButton(lstOrder.get(0));
         log("@Veirfy 2 : Confirmed bets is shown in Bet Settlement page correctly");
         betSettlementPage.verifyOrderInfo(lstOrder.get(0));
         log("@Pos-condition: Deleted the order");
@@ -400,7 +395,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "182")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"accountCode", "accountCurrency"})
     public void Confirm_Bets_182(String accountCode, String accountCurrency) {
         log("@title: Validate updated bets reflect correctly in the bet list of Bet Entry page");
@@ -410,17 +405,16 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,true,accountCode,"Goals","HDP","Home","FullTime",2.05,0.25,
                 "HK",15.50,"BACK",false,"");
-        //Confirm Bet
-        ConfirmBetsUtils.confirmBetAPI(lstOrder);
-        BetSettlementUtils.waitForBetIsUpdate(10);
-        log("@Step 1: Login to SB11 >> go to Confirm Bets >> Confirmed Bets >> search the bet");
-        ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING,CONFIRM_BETS,ConfirmBetsPage.class);
-        log("@Step 2: Select the bet >> change selection as away team, hdp point, and bet type");
-        log("@Step 3: Click Update Bet button");
         lstOrder.get(0).setSelection(lstOrder.get(0).getEvent().getAway());
         lstOrder.get(0).setHdpPoint(0.50);
         lstOrder.get(0).setBetType("Lay");
         lstOrder.get(0).setAccountCurrency(accountCurrency);
+        //Confirm Bet
+        ConfirmBetsUtils.confirmBetAPI(lstOrder);
+        log("@Step 1: Login to SB11 >> go to Confirm Bets >> Confirmed Bets >> search the bet");
+        ConfirmBetsPage confirmBetsPage = welcomePage.navigatePage(TRADING,CONFIRM_BETS,ConfirmBetsPage.class);
+        log("@Step 2: Select the bet >> change selection as away team, hdp point, and bet type");
+        log("@Step 3: Click Update Bet button");
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Confirmed", lstOrder.get(0).getEvent().getSportName(), "All", "Specific Date", date, "", accountCode);
         confirmBetsPage.updateOrder(lstOrder.get(0), false);
 
@@ -447,7 +441,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "186")
-    @Test(groups = {"smoke","ethan4.0"})
+    @Test(groups = {"smoke","ethan5.0"})
     @Parameters({"accountCode"})
     public void Confirm_Bets_186(String accountCode) {
         log("@title: Validate can unconfirm the confirmed bets");
@@ -470,7 +464,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
 
         log("@Step 4: Filter with account at pre-condition and Status is Pending > click Show > observe");
         confirmBetsPage.filter(KASTRAKI_LIMITED, "", "Pending", lstOrder.get(0).getEvent().getSportName(), "All", "Specific Date", date, "", accountCode);
-
+        confirmBetsPage.reClickShowButton(lstOrder.get(0));
         log("@Verify 1:Unconfirmed bets should move from Confirm list to Pending list successfully");
         confirmBetsPage.verifyOrder(lstOrder.get(0));
 

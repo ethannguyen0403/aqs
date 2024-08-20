@@ -26,7 +26,7 @@ public class IncomeStatementAnalysisPage extends WelcomePage {
     DropDownBox ddbFinancialYear = DropDownBox.xpath("//div[contains(text(),'Financial Year')]/following::select[1]");
     public DropDownBox ddMonth = DropDownBox.xpath("//div[text()= 'Month']/parent::div//select");
     DropDownBox ddReport = DropDownBox.xpath("//div[text()= 'Report']/parent::div//select");
-    Button btnShow = Button.name("btnShow");
+    Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Button btnExportExcel = Button.xpath("//button//*[contains(@class, 'far fa-file-excel')]");
     public Button btnExportPDF = Button.xpath("//button//*[contains(@class, 'far fa-file-pdf')]");
     public Label lblAmountAreShow = Label.xpath("//app-aqs-bet//label[contains(text(), 'Amounts are shown in')]");

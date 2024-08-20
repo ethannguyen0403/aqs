@@ -271,6 +271,7 @@ public class ConfirmBetsPage extends WelcomePage {
      * @param order order id or bet id
      */
     public void confirmBet(Order order){
+        reClickShowButton(order);
         selectBet(order,true);
         btnConfirmBet.click();
         waitSpinnerDisappeared();
@@ -281,6 +282,7 @@ public class ConfirmBetsPage extends WelcomePage {
      * @param order order id or bet id
      */
     public void unConfirmBet(Order order, boolean isPending){
+        reClickShowButton(order);
         selectBet(order,isPending);
         btnUnConfirmSelected.click();
         waitPageLoad();
@@ -291,6 +293,7 @@ public class ConfirmBetsPage extends WelcomePage {
      * @param  isPending  the status of bet true is for Bet Pending, false for Bet Confirmed
      */
     public void updateOrder(Order order,boolean isPending){
+        reClickShowButton(order);
         fillInfo(order,isPending);
         btnUpdateBet.click();
         waitSpinnerDisappeared();
@@ -311,6 +314,7 @@ public class ConfirmBetsPage extends WelcomePage {
      */
     public void duplicateBetForSPBS7(Order order)
     {
+        reClickShowButton(order);
         selectBet(order,true);
         btnDuplcateBetForSPBPS7.click();
     }
@@ -321,12 +325,14 @@ public class ConfirmBetsPage extends WelcomePage {
      * @param isPending to define column delete icon based on filter Pending (true) or Confirm(false) status
      */
     public void deleteOrder(Order order, boolean isPending){
+        reClickShowButton(order);
         int rowIndex = getOrderIndex(order.getBetId());
         Icon xButton =  Icon.xpath(tblOrder.getxPathOfCell(1,defineDeleteColIndex(isPending),rowIndex,"i"));
         xButton.jsClick();
         ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
         confirmPopupControl.confirmYes();
-        waitPageLoad();
+        waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
         //Add wait for element completely disappear on DOM
         xButton.waitForControlInvisible();
     }
@@ -336,12 +342,13 @@ public class ConfirmBetsPage extends WelcomePage {
      * @param lstOrder the list order
      */
     public void deleteSelectedOrders(List<Order> lstOrder, boolean isPending){
+        reClickShowButton(lstOrder.get(0));
         selectBets(lstOrder,isPending);
         lblDeleteSelected.click();
         lblDeleteSelected.scrollToTop();
         ConfirmPopupControl confirmPopupControl = ConfirmPopupControl.xpath("//app-confirm");
         confirmPopupControl.confirmYes();
-        waitPageLoad();
+        waitSpinnerDisappeared();
     }
 
     private void selectBets(List<Order> lstOrder,boolean isPending){
@@ -449,5 +456,23 @@ public class ConfirmBetsPage extends WelcomePage {
         Assert.assertEquals(tblOrder.getHeaderNameOfRows(), SBPConstants.ConfirmBets.TABLE_HEADER_ORDER, "Failed! Order table is not displayed!");
         Assert.assertEquals(tblPending.getHeaderNameOfRows(), SBPConstants.ConfirmBets.TABLE_HEADER_PENDING, "Failed! Pending Accounts table is not displayed!");
         Assert.assertEquals(tblConfirm.getHeaderNameOfRows(), SBPConstants.ConfirmBets.TABLE_HEADER_CONFIRMED, "Failed! Confirmed Accounts table is not displayed!");
+    }
+
+    /**
+     * This methods is used to click show button if order is not updated
+     */
+    public void reClickShowButton(Order order){
+        for (int i = 0; i < 5; i++){
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            if (isOrderDisplayInTheTable(order)){
+                break;
+            }
+            btnShow.click();
+            waitSpinnerDisappeared();
+        }
     }
 }

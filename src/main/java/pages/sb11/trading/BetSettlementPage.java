@@ -166,6 +166,7 @@ public class BetSettlementPage extends WelcomePage {
      * @param order order id or bet id
      */
     public void deleteOrder(Order order) {
+        reClickShowButton(order);
         selectOrder(order);
         btnDelete.scrollToTop();
         btnDelete.click();
@@ -343,5 +344,22 @@ public class BetSettlementPage extends WelcomePage {
         Assert.assertEquals(odds, String.format("%.3f", order.getPrice(), order.getOddType()), "Failed! Odds at row " + rowindex + " is incorrect");
         Assert.assertEquals(stake, String.format("%.2f", order.getRequireStake()), "Failed! Stake at row " + rowindex + " is incorrect");
         Assert.assertEquals(beType, expectedBetType, "Failed! Bet Type at row " + rowindex + " is incorrect");
+    }
+    /**
+     * This methods is used to click show button if order is not updated
+     */
+    public void reClickShowButton(Order order){
+        for (int i = 0; i < 5; i++){
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            if (isOrderDisplayInTheTable(order)){
+                break;
+            }
+            btnSearch.click();
+            waitSpinnerDisappeared();
+        }
     }
 }

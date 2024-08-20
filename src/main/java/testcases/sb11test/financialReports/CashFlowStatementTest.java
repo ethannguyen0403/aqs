@@ -65,7 +65,7 @@ public class CashFlowStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "8545")
-    @Test(groups = {"regression", "2023.12.29"})
+    @Test(groups = {"regression", "2023.12.29","ethan5.0"})
     public void Cash_Flow_Statement_TC8545() {
         log("@title: Validate Total in HKD data is matched correctly with total (Debit in HKD-Credit in HKD) on Transaction Details");
         String transType = "Payment Client";
@@ -74,7 +74,7 @@ public class CashFlowStatementTest extends BaseCaseAQS {
         CashFlowStatementPage cashFlowStatementPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, CASH_FLOW_STATEMENT, CashFlowStatementPage.class);
         log("@Step 1: Filter with valid data: Date 02/11/2023");
-        cashFlowStatementPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "02/11/2023", "02/11/2023");
+        cashFlowStatementPage.filter(KASTRAKI_LIMITED, "Year 2023-2024", "02/11/2023", "02/11/2023");
         double totalHKDPayClient = cashFlowStatementPage.getAmountTotalInHKDTransTable(transType);
         log("@Step 2: Open Transaction detail of type: " +  transType);
         TransactionDetailsPopup popup = cashFlowStatementPage.goToTransactionDetails(transType);

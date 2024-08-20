@@ -51,14 +51,14 @@ public class IncomeStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2776")
-    @Test(groups = {"regression", "2023.11.30"})
+    @Test(groups = {"regression", "2023.11.30","ethan5.0"})
     public void Income_Statement_TC2776() {
         log("@title: Validate Non-Operating Income is only displayed details types with chart code starting from 460 to 5xx");
         log("@Step 1: Access to SB11 > Financial Reports > Income Statement");
         IncomeStatementPage incomeStatementPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT, IncomeStatementPage.class);
         log("@Step 2: Filter with current Month");
-        incomeStatementPage.filterIncomeReport("SK1122", "", "", "");
+        incomeStatementPage.filterIncomeReport(KASTRAKI_LIMITED, "", "", "");
         log("@Verify 1: Validate chart code of Non-Operating Income in range 460 to 5xx");
         List<String> chartCodeOperationIncome = incomeStatementPage.getListAccountCode(incomeStatementPage.findTableIndex("NON-OPERATING INCOME"));
         Assert.assertTrue(incomeStatementPage.verifyCodeStartingInRange(chartCodeOperationIncome, 460, 500), "FAILED! Chart code Operation Income NOT in range 460 to 5xx");

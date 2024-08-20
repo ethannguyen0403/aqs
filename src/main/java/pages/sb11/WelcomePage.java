@@ -153,4 +153,13 @@ public class WelcomePage extends Header{
         }
         return lstOrder;
     }
+
+    public String pickFinancialYear(String financialYear) {
+        if (DateUtils.getDate(0,"MM",GMT_7).equals("08")){
+            String previousYear = String.valueOf(Integer.valueOf(financialYear.split(" ")[1].split("-")[0]) - 1);
+            String lastYear = String.valueOf(Integer.valueOf(financialYear.split(" ")[1].split("-")[1]) - 1);
+            return String.format("Year %s-%s",previousYear,lastYear);
+        }
+        return financialYear;
+    }
 }
