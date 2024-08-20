@@ -93,6 +93,7 @@ public class BookieStatementPage extends WelcomePage {
         btnShow.doubleClick();
 //        btnShow.click();
         waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
     }
 
     private void filterBookie(String bookieCode) throws InterruptedException {

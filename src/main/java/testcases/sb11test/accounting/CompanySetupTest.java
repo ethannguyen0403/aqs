@@ -57,12 +57,13 @@ public class CompanySetupTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "4333")
-    @Test(groups = {"regression", "2023.10.31","ethan"})
+    @Test(groups = {"regression", "2023.10.31","ethan5.0"})
     @Parameters({"password","userNameOneRole"})
     public void Company_Set_up_TC4333(String password, String usernameOneRole) throws Exception{
         String companyURL = environment.getSbpLoginURL() + "#/aqs-report/company-set-up";
         log("@title: Validate accounts without permission cannot access page by external link");
         log("@Precondition: Deactivate Company Set-up option in one role account");
+        RoleManagementUtils.updateRolePermission("one role","Company Set-up","INACTIVE");
         log("@Step 1: Re-login with one role account account has 'Company Set-up' permission is OFF");
         LoginPage loginPage = welcomePage.logout();
         loginPage.login(usernameOneRole, StringUtils.decrypt(password));
@@ -88,7 +89,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "4335")
-    @Test(groups = {"regression", "2023.10.31"})
+    @Test(groups = {"regression", "2023.10.31","ethan5.0"})
     public void Company_Set_up_TC4335() {
         log("@title: Validate UI on 'Create Company' dialog is shown correctly");
         log("@Step 1: Navigate to Accounting > Company Set-up");
@@ -96,13 +97,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         log("@Step 2: Click on create button");
         CompanySetupCreatePopup createPopup = companySetupPage.openCreatePopup();
         log("@Verify 1: Validate Create Company popup displayed correct");
-        Assert.assertTrue(createPopup.txtCompanyName.isDisplayed() && createPopup.txtCompanyName.isEnabled(), "Failed! Company name text box is not displayed");
-        Assert.assertTrue(createPopup.txtCompanyAddress.isDisplayed() && createPopup.txtCompanyName.isEnabled(), "Failed! Company address text box is not displayed");
-        Assert.assertTrue(createPopup.btnClear.isDisplayed(), "Failed! Button Clear is not displayed");
-        Assert.assertTrue(createPopup.btnSubmit.isDisplayed(), "Failed! Button Submit is not displayed");
-        Assert.assertEquals(createPopup.ddlFirstMonth.getOptions(), MONTH_NAME_LIST, "Failed! Accounting Period - First month option list is not correct");
-        Assert.assertEquals(createPopup.ddlClosingMonth.getOptions(), MONTH_NAME_LIST, "Failed! Accounting Period - Closing month option list is not correct");
-        Assert.assertEquals(createPopup.ddlCurrency.getOptions(), CURRENCY_LIST_WITHOUT_ALL,"Failed! Dropdown Currency option list is not correct");
+        createPopup.verifyUI();
         log("INFO: Executed completely");
     }
 
@@ -126,7 +121,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "4343")
-    @Test(groups = {"regression", "2023.10.31","ethan2.0"})
+    @Test(groups = {"regression", "2023.10.31","ethan5.0"})
     @Parameters({"companyName", "companyCurrency"})
     public void Company_Set_up_TC4343(String companyName, String companyCurrency) {
         String toDayAvoidLastDayOfMonth = "";
@@ -160,7 +155,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "4345")
-    @Test(groups = {"regression", "2023.10.31"})
+    @Test(groups = {"regression", "2023.10.31","ethan5.0"})
     @Parameters({"companyName", "companyCurrency"})
     public void Company_Set_up_TC4345(String companyName, String companyCurrency) {
         log("@title: Validate that show the reporting currency of company correctly in 'Client Balance' page");
@@ -372,7 +367,7 @@ public class CompanySetupTest extends BaseCaseAQS {
                 clientBalanceDetailPage.lblValueGrandTotalFooter.getText(),"FAILED! Total Balance in HKD display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31","ethan3.0"})
+    @Test(groups = {"regression","2023.10.31","ethan5.0"})
     @TestRails(id = "4355")
     public void Company_Set_up_TC4355() {
         log("@title: Validate that show currency 'HKD' in 'Bookie Balance' page when filtering Company Unit = All ");
@@ -419,7 +414,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         Assert.assertTrue(lstHeader.contains("Running [HKD]"),"FAILED! Running [HKD] display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31","ethan4.0"})
+    @Test(groups = {"regression","2023.10.31","ethan5.0"})
     @TestRails(id = "4357")
     @Parameters({"bookieSuperMasterCode","bookieMasterCode","accountCode"})
     public void Company_Set_up_TC4357(String bookieSuperMasterCode, String bookieMasterCode, String accountCode) throws InterruptedException {
@@ -449,10 +444,10 @@ public class CompanySetupTest extends BaseCaseAQS {
         BookieAgentSummaryPopup bookieAgentSummaryPopup = page.openBookieAgentSummary(bookieSuperMasterCode,bookieMasterCode);
         BookieAgentDetailPopup bookieAgentDetailPopup = bookieAgentSummaryPopup.openAgentDetailPopup(agentCode);
         log("@Verify 3: show header table text: 'Debit [HKD]', 'Credit [HKD]', 'Running [HKD]'.");
-        ArrayList<String> lstHeader2 = bookieAgentDetailPopup.tblAgentDetail.getHeaderNameOfRows();
+        List<String> lstHeader2 = bookieAgentDetailPopup.getHeaderAgentDetailList();
         Assert.assertTrue(lstHeader2.contains("Debit [HKD]"),"FAILED! Debit [HKD] display incorrect.");
         Assert.assertTrue(lstHeader2.contains("Credit [HKD]"),"FAILED! Credit [HKD] display incorrect.");
-        Assert.assertTrue(lstHeader2.contains("Running [HKD]"),"FAILED! Running [HKD] display incorrect.");        log("@Step 8: Click on MS and observe");
+        Assert.assertTrue(lstHeader2.contains("Running [HKD]"),"FAILED! Running [HKD] display incorrect.");
         log("@Step 8: Close dialog");
         bookieAgentDetailPopup.closeIcon.click();
         bookieAgentSummaryPopup.closeIcon.click();
@@ -467,28 +462,26 @@ public class CompanySetupTest extends BaseCaseAQS {
         Assert.assertTrue(lstHeader3.contains("Running [HKD]"),"FAILED! Running [HKD] display incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31","ethan2.0"})
+    @Test(groups = {"regression","2023.10.31","ethan5.0"})
     @TestRails(id = "4360")
-    public void Company_Set_up_TC4360() throws InterruptedException {
+    public void Company_Set_up_TC4360() {
         log("@title: Validate that display financial year correctly by company's accounting period in 'Ledger Statement' page");
         log("@pre-condition: Login with valid account");
         log("@Step 1: Go to General Report >> Ledger Statement");
         LedgerStatementPage page = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         log("@Step 2: Select company unit 'Aquifer' and observe financial year");
         page.ddCompanyUnit.selectByVisibleText("Aquifer");
-        //wait for dropdown update
-        Thread.sleep(5000);
+        page.txtFromDate.waitForControlInvisible();
         log("@Verify 1: financial Year filter will list options as a single year");
         Assert.assertEquals(page.ddFinancialYear.getOptions(),FINANCIAL_YEAR_LIST_1_YEAR,"FAILED! Financial 1 year display incorrect.");
         log("@Step 3: Select company unit 'Kastraki' and observe financial year");
         page.ddCompanyUnit.selectByVisibleText(KASTRAKI_LIMITED);
-        //wait for dropdown update
-        Thread.sleep(5000);
+        page.txtFromDate.waitForControlInvisible();
         log("@Verify 2: financial Year filter will list options as period of 2 year");
         Assert.assertEquals(page.ddFinancialYear.getOptions(),FINANCIAL_YEAR_LIST,"FAILED! Financial period of 2 year display incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31"})
+    @Test(groups = {"regression","2023.10.31","ethan5.0"})
     @TestRails(id = "4361")
     public void Company_Set_up_TC4361() {
         log("@title: Validate that display financial year correctly by company's accounting period in 'Client Balance' page");
@@ -512,7 +505,7 @@ public class CompanySetupTest extends BaseCaseAQS {
         Assert.assertTrue(page.ddFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_NEW),"FAILED! all options of both kind of financial year display incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31"})
+    @Test(groups = {"regression","2023.10.31","ethan5.0"})
     @TestRails(id = "4362")
     public void Company_Set_up_TC4362() {
         log("@title: Validate that display financial year correctly by company's accounting period in 'Bookie Balance' page");
@@ -536,31 +529,31 @@ public class CompanySetupTest extends BaseCaseAQS {
         Assert.assertTrue(page.ddFinancial.getOptions().equals(FINANCIAL_YEAR_LIST_NEW),"FAILED! all options of both kind of financial year display incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31"})
+    @Test(groups = {"regression","2023.10.31","ethan5.0"})
     @TestRails(id = "4363")
-    public void Company_Set_up_TC4363() throws InterruptedException {
+    public void Company_Set_up_TC4363() {
         log("@title: Validate that display financial year correctly by company's accounting period in 'Client Statement' page");
         log("@pre-condition: Login with valid account");
         log("@Step 1: Go to General Report >> Client Statement");
         ClientStatementPage page = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         log("@Step 2: Select company unit 'Aquifer' and observe financial year");
         page.ddpCompanyUnit.selectByVisibleText("Aquifer");
-        Thread.sleep(5000);
+        page.txtFromDate.waitForControlInvisible();
         log("@Verify 1: financial Year filter will list options as a single year");
         Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_1_YEAR),"FAILED! Financial 1 year display incorrect.");
         log("@Step 3: Select company unit 'Kastraki' and observe financial year");
         page.ddpCompanyUnit.selectByVisibleText(KASTRAKI_LIMITED);
-        Thread.sleep(5000);
+        page.txtFromDate.waitForControlInvisible();
         log("@Verify 2: financial Year filter will list options as period of 2 year");
         Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST),"FAILED! Financial period of 2 year display incorrect.");
         log("@Step 4: Select company unit 'Kastraki' and observe financial year");
         page.ddpCompanyUnit.selectByVisibleText("All");
-        Thread.sleep(5000);
+        page.txtFromDate.waitForControlInvisible();
         log("@Verify 3: financial Year filter will list all options of both kind of financial year");
         Assert.assertTrue(page.ddpFinancialYear.getOptions().equals(FINANCIAL_YEAR_LIST_NEW),"FAILED! all options of both kind of financial year display incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31"})
+    @Test(groups = {"regression","2023.10.31","ethan5.0"})
     @TestRails(id = "4364")
     public void Company_Set_up_TC4364() {
         log("@title: Validate that display financial year correctly by company's accounting period in 'Bookie Statement' page");
@@ -665,7 +658,7 @@ public class CompanySetupTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "9148")
-    @Test(groups = {"regression", "2023.10.31","ethan4.0"})
+    @Test(groups = {"regression", "2023.10.31","ethan5.0"})
     @Parameters({"companyName", "companyCurrency"})
     public void Company_Set_up_TC9148(String companyName, String companyCurrency) {
         String lastDateOfPreviousMonth = "";
@@ -676,10 +669,10 @@ public class CompanySetupTest extends BaseCaseAQS {
         log(String.format("@Precondition: Company %s has currency as %s", companyName, companyCurrency) );
         log("@Step 1: Navigate to  General Reports > Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
-
+        String financialYear = welcomePage.pickFinancialYear(FINANCIAL_YEAR);
         lastDateOfPreviousMonth = ledgerStatementPage.getLastDateOfPreviousMonth("dd/MM/yyyy", "GMT +7");
         log(String.format("@Step 2: Filter with Company: %s on the last date of previous month", companyName));
-        ledgerStatementPage.showLedger(companyName, "", "", "", lastDateOfPreviousMonth, lastDateOfPreviousMonth, "");
+        ledgerStatementPage.showLedger(companyName, financialYear, "", "", lastDateOfPreviousMonth, lastDateOfPreviousMonth, "");
         ledgerStatementPage.waitSpinnerDisappeared();
         log(String.format("@Verify 1: Validate  the table has \"CUR transaction in %s\" is displayed.", companyCurrency));
         Assert.assertTrue(ledgerStatementPage.lblAmountShowCurrency.isDisplayed(),  "FAILED! The table CUR transaction is not shown");
