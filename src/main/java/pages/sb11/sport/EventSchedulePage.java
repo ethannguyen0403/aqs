@@ -126,6 +126,7 @@ public class EventSchedulePage extends WelcomePage {
     public void addEvent(Event event){
         fillEventInfo(event,1);
         btnSubmit.click();
+        waitSpinnerDisappeared();
     }
     public void deleteEvent(Event event){
         goToSport(event.getSportName());

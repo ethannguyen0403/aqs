@@ -22,7 +22,7 @@ public class Header {
     public Button btnLogout = Button.xpath("//div[@id='navbarSupportedContent']//button[text()='Logout']");
     public Icon iconLogo = Icon.xpath("//span[contains(@class,'main-icon')]");
     public DropDownList ddlMenu = DropDownList.xpath("//div[contains(@class,'dropdown')]", "//ul[contains(@class,'dropdown-content ng-star-inserted')]/li");
-    public HeaderMenuControl headerMenuControl = HeaderMenuControl.xpath("//div[@id='navbarTogglerDemo02']/ul[contains(@class,'navbar-nav')]");
+    public HeaderMenuControl headerMenuControl = HeaderMenuControl.xpath("//app-navigation-bars//header");
     Label lblSpin = Label.xpath("//div[contains(@class,'la-ball-clip-rotate')]");
     public Icon icTrackingProgress = Icon.xpath("//button[contains(@class,'status-ball')]");
     Label lblMesToolTipOfTrackingBall = Label.xpath("//popover-container//div[contains(@class,'body')]/div[1]/p");

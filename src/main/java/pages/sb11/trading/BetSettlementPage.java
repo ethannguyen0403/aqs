@@ -138,7 +138,19 @@ public class BetSettlementPage extends WelcomePage {
 
     public void selectRowByOrderID(String order) {
         int rowIndex = getOrderIndex(order);
-        CheckBox cb = CheckBox.xpath(tblOrder.getxPathOfCell(1, colSelect, rowIndex, "input"));
+        for (int i = 0; i < 5; i++){
+            if (!(rowIndex == 0)){
+                break;
+            }
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            btnSearch.click();
+            waitSpinnerDisappeared();
+        }
+            CheckBox cb = CheckBox.xpath(tblOrder.getxPathOfCell(1, colSelect, rowIndex, "input"));
         cb.scrollToThisControl(false);
         if (!cb.isSelected()) {
             cb.click();
@@ -345,17 +357,18 @@ public class BetSettlementPage extends WelcomePage {
         Assert.assertEquals(stake, String.format("%.2f", order.getRequireStake()), "Failed! Stake at row " + rowindex + " is incorrect");
         Assert.assertEquals(beType, expectedBetType, "Failed! Bet Type at row " + rowindex + " is incorrect");
     }
+
     /**
      * This methods is used to click show button if order is not updated
      */
-    public void reClickShowButton(Order order){
-        for (int i = 0; i < 5; i++){
+    public void reClickShowButton(Order order) {
+        for (int i = 0; i < 5; i++) {
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            if (isOrderDisplayInTheTable(order)){
+            if (isOrderDisplayInTheTable(order)) {
                 break;
             }
             btnSearch.click();

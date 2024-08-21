@@ -17,8 +17,8 @@ public class CricketResultEntryPage extends WelcomePage {
     }
     public Button btnSoccer = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Soccer')]");
     public Button btnCricket = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Cricket')]");
-    public Button btnShowLeagues = Button.xpath("//button[contains(text(),'Show Leagues')]");
-    public Button btnShow = Button.xpath("//button[text()='Show']");
+    public Button btnShowLeagues = Button.xpath("//button[contains(@class,'btn-show-league')]");
+    public Button btnShow = Button.xpath("//button[text()='SHOW']");
     public DropDownBox ddpType = DropDownBox.id("type");
     public DropDownBox ddpLeague = DropDownBox.id("sport");
     public DropDownBox ddpOrderBy = DropDownBox.id("betType");
@@ -115,11 +115,11 @@ public class CricketResultEntryPage extends WelcomePage {
         System.out.println("Type, Date, Show League button, Leagues, Order By, Status and Show button");
         Assert.assertEquals(ddpType.getOptions(),TYPE_LIST,"Failed! Type dropdown is not displayed");
         Assert.assertEquals(lblDate.getText(),"Date","Failed! Date datetimepicker is not displayed");
-        Assert.assertEquals(btnShowLeagues.getText(),"Show Leagues","Failed! Show Leagues button is not displayed");
+        Assert.assertEquals(btnShowLeagues.getText(),"SHOW LEAGUES","Failed! Show Leagues button is not displayed");
         Assert.assertTrue(ddpLeague.getOptions().contains("All"),"Failed! League dropdown is not displayed");
         Assert.assertEquals(ddpOrderBy.getOptions(),ORDER_BY_LIST,"Failed! Order By dropdown is not displayed");
         Assert.assertEquals(ddpStatus.getOptions(),STATUS_LIST,"Failed! Status dropdown is not displayed");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed");
         System.out.println("Result Entry table header columns are correctly display");
         Assert.assertEquals(tbResult.getHeaderNameOfRows(), ResultEntry.RESULT_CRICKET_TABLE_HEADER,"FAILED! Result table header is incorrect display");
     }

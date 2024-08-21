@@ -29,7 +29,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression","ethan5.0"})
     @TestRails(id = "2074")
     public void Cricket_League_Season_Team_Info_TC_2074(){
         log("@title:Validate UI on League/Season/Team Info for Cricket is correctly displayed");

@@ -34,13 +34,10 @@ public class HeaderMenuControl extends BaseElement {
         }
         lblMainMenu.click();
         lblMainMenu.moveAndHoverOnControl();
-        try {
-            Thread.sleep(1500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        lblMainMenu.waitForControlInvisible();
 //        Label lblSubMenu =Label.xpath(String.format("%s//div[contains(@class,'dropdown-menu')]//span[contains(text(),'%s')]",_xpath,subMenu));
-        Label lblSubMenu = Label.xpath(String.format("%s//span[text()='%s']/parent::a/following-sibling::div//span[contains(text(),'%s')]",_xpath,menu,subMenu));
+        //app-navigation-bars//header//span[text()='Soccer']/parent::a//following-sibling::[contains(text(),'1x2')]
+        Label lblSubMenu = Label.xpath(String.format("%s//span[text()='%s']/parent::a/following-sibling::ul//a[contains(text(),'%s')]",_xpath,menu,subMenu));
         if(!lblSubMenu.isDisplayed()){
             System.out.println("DEBUG! The sub menu "+subMenu+" under menu "+menu+" does not display");
             return null;

@@ -135,7 +135,21 @@ public class SPPPage extends WelcomePage {
     public LeaguePerformancePage openLeaguePerformance(String groupName){
         String tableXpath = String.format("//th[contains(text(),'%s')]//ancestor::table",groupName);
         Table tblSPP1 = Table.xpath(tableXpath,15);
-        int rowIndex = getRowContainsGroupName(tableXpath,colGroupCode,groupName);
+        int rowIndex = 0;
+        for (int i = 0; i < 10; i++){
+            int index = getRowContainsGroupName(tableXpath,colGroupCode,groupName);
+            if (!(index == 0)){
+                rowIndex = index;
+                break;
+            }
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            btnShow.click();
+            waitSpinnerDisappeared();
+        }
         tblSPP1.getControlOfCellSPP(1,colGroupCode, rowIndex,null).click();
         DriverManager.getDriver().switchToWindow();
         return new LeaguePerformancePage();
