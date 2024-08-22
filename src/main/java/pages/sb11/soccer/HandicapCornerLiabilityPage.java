@@ -28,18 +28,18 @@ public class HandicapCornerLiabilityPage extends WelcomePage {
     public DropDownBox ddpStake = DropDownBox.xpath("//div[contains(text(),'Stake')]//following::select[1]");
     public TextBox txtFromDate = TextBox.name("fromDate");
     public TextBox txtToDate = TextBox.name("toDate");
-    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-days-calendar-view");
-    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-days-calendar-view");
+    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
+    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
     public Label lblPTBets = Label.xpath("//span[contains(text(),'PT-Bets')]");
-    public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
-    public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
+    public Label lblFromDate = Label.xpath("//label[contains(text(),'From Date')]");
+    public Label lblToDate = Label.xpath("//label[contains(text(),'To Date')]");
     public DropDownBox ddpSport = DropDownBox.xpath("//div[contains(text(),'Sport')]//following::select[1]");
 
     public Label lblShowBetType = Label.xpath("//div[contains(text(),'Show Bet Types')]");
     public Label lblShowLeagues = Label.xpath("//div[contains(text(),'Show Leagues')]");
     public Label lblShowGroups = Label.xpath("//div[contains(text(),'Show Groups')]");
     public Label lblShowEvents = Label.xpath("//div[contains(text(),'Show Events')]");
-    public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Button btnShowGroups = Button.xpath("//div[contains(text(),'Show Groups')]");
     public Button btnSetSelection = Button.xpath("//button[contains(text(),'Set Selection')]");
     public Table tblOrder = Table.xpath("//app-handicap-corner-liability//table",15);
@@ -124,7 +124,7 @@ public class HandicapCornerLiabilityPage extends WelcomePage {
         Assert.assertEquals(lblShowLeagues.getText(), "Show Leagues\nAll","Failed! Show Leagues button is not displayed");
         Assert.assertEquals(lblShowGroups.getText(),"Show Groups\nAll","Failed! Show Groups button is not displayed");
         Assert.assertEquals(lblShowEvents.getText(),"Show Events\nAll","Failed! Show Events button is not displayed");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed");
         System.out.println("Event table header columns is correctly display");
         Assert.assertEquals(tblOrder.getHeaderNameOfRows(), SBPConstants.HandicapCornerLiability.TABLE_HEADER,"FAILED! Handicap Corner Liability Bets table header is incorrect display");
     }

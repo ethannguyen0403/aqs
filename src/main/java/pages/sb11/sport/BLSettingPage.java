@@ -28,7 +28,7 @@ public class BLSettingPage extends WelcomePage {
     public Label lblDate = Label.xpath("//label[(text()='Date')]");
     public DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-days-calendar-view");
     public Button btnShowLeagues = Button.xpath("//app-bl-settings//button[contains(@class,'btn-show-league')]");
-    public Button btnShow = Button.xpath("//button[text()='Show']");
+    public Button btnShow = Button.xpath("(//button[contains(@class,'btn-show')])[2]");
     public DropDownBox ddpLeague = DropDownBox.id("sport");
     public DropDownBox ddpOrderBy = DropDownBox.id("betType");
     public Table tbBLSettings = Table.xpath("//div[contains(@class,'main-box-header')]//following::table[1]",8);

@@ -32,7 +32,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@title: Validate BBG page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > BBG");
-        BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("Validate BBG page is displayed with correctly title");
         Assert.assertTrue(bbgPage.getTitlePage().contains("Bets By Group"), "Failed! BBG page is not displayed");
         log("INFO: Executed completely");
@@ -45,7 +45,7 @@ public class BBGTest extends BaseCaseAQS {
         String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > BBG");
-        BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Filter with valid data");
         bbgPage.filter("Soccer", KASTRAKI_LIMITED,"Group", "Pending Bets",fromdate,"","All","All");
         log(" Validate UI Info display correctly");
@@ -59,7 +59,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@title: Validate League Performance page is displayed successfully when clicking on Price");
         String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Access Soccer > BBG");
-        BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
 
         log("@Step 3: Filter with valid data");
         bbgPage.filter("Soccer", KASTRAKI_LIMITED,"Group", "Pending Bets",fromdate,"","All","All");
@@ -86,7 +86,7 @@ public class BBGTest extends BaseCaseAQS {
         String fromdate = String.format(DateUtils.getDate(-5,"dd/MM/yyyy","GMT +7"));
         String todate = String.format(DateUtils.getDate(0,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Access Soccer > BBG");
-        BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
 
         log("@Step 3: Filter with valid data");
         bbgPage.filter("Soccer", KASTRAKI_LIMITED,"Group", "Pending Bets",fromdate,todate,"All","All");
@@ -125,7 +125,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition: Account is activated permission 'BBG'");
         log("@Step 1: Navigate to the site");
         log("@Step 2: Expand menu 'Soccer' and access 'BBG' page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Expand Company Unit dropdown list");
         log("@Verify 1: Company Unit includes all created company units in Accounting >> Company Set-up");
         List<String> lstEx = CompanySetUpUtils.getListCompany();
@@ -139,7 +139,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition: Account is activated permission 'BBG'");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Select filters which have data with a Company Unit option (e.g. Kastraki Limited)");
         log("@Step 4: Click on 'Show' button");
         page.filter("",KASTRAKI_LIMITED,"","","","","","");
@@ -155,7 +155,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition: Account is activated permission 'BBG'");
         log("@Step 1: Navigate to the site");
         log("@Step 2: Expand menu 'Soccer' and access 'BBG' page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Expand Sport dropdown list");
         log("@Verify 1: Sport includes Soccer, Cricket, Basketball, Tennis, American Football and Ice Hockey");
         Assert.assertEquals(page.ddpSport.getOptions(),SPORT_LIST,"FAILED! Sport dropdown displays incorrect.");
@@ -174,7 +174,7 @@ public class BBGTest extends BaseCaseAQS {
                 5.5,"BACK",false,"");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Select filters which have data with a Sport option (e.g. Soccer)");
         log("@Step 4: Click on 'Show' button");
         page.filter("Soccer",KASTRAKI_LIMITED,"","","","","","");
@@ -197,7 +197,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition: Account is activated permission 'BBG'");
         log("@Step 1: Navigate to the site");
         log("@Step 2: Expand menu 'Soccer' and access 'BBG' page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Expand Smart Type dropdown list");
         log("@Verify 1: Smart Type includes Group, Master, Agent");
         Assert.assertEquals(page.ddpSmartType.getOptions(), SBPConstants.BBGPage.SMART_TYPE_LIST,"FAILED! Smart Type dropdown displays incorrect.");
@@ -215,7 +215,7 @@ public class BBGTest extends BaseCaseAQS {
                 5.5,"BACK",false,"");
         log("@Step 1: Navigate to the site");
         log("@Step 2: Expand menu 'Soccer' and access 'BBG' page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Select filters which have data with a Smart Type option (e.g. Group)");
         log("@Step 4: Click on 'Show' button");
         page.filter("Soccer",KASTRAKI_LIMITED,"","","","","","");
@@ -233,7 +233,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition: Account is activated permission 'BBG'");
         log("@Step 1: Navigate to the site");
         log("@Step 2: Expand menu 'Soccer' and access 'BBG' page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Expand Report Type dropdown list");
         log("@Verify 1: Report Type includes Pending Bets, Settled Bets");
         Assert.assertEquals(page.ddpReportType.getOptions(), SBPConstants.BBGPage.REPORT_TYPE_LIST,"FAILED! Report type dropdown displays incorrect.");
@@ -259,7 +259,7 @@ public class BBGTest extends BaseCaseAQS {
         betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Select filters which have data with a Sport option (e.g. Soccer)");
         log("@Step 4: Click on 'Show' button");
         page.filter("Soccer",KASTRAKI_LIMITED,"","Settled Bets",dateAPI,"","","");
@@ -282,7 +282,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition: Account is activated permission 'BBG'");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Try to select over 7 dates at From Date and To date field");
         String fromDate = String.format(DateUtils.getDate(-9,"dd/MM/yyyy",GMT_7));
         page.filter("","","","",fromDate,"","","");
@@ -306,7 +306,7 @@ public class BBGTest extends BaseCaseAQS {
         Order orderSettled = BetSettlementUtils.getOrderInDayByAccountCode(accountCode,date,"Soccer");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Select filters with currency 'EUR' as the preconditions");
         log("@Step 4: Click on 'Show' button");
         String dateFilter = DateUtils.getDate(-3,"dd/MM/yyyy",GMT_7);
@@ -323,7 +323,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition: Account is activated permission 'BBG'");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Expand Stake dropdown list");
         log("@Verify 1: All bets that placed with the selected currency display");
         Assert.assertEquals(page.ddpStake.getOptions(), SBPConstants.BBGPage.STAKE_LIST,"FAILED! Stake list displays incorrect.");
@@ -336,7 +336,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition: Account is activated permission 'BBG'");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Select any currency (e.g. CNY)");
         String cur = "CNY";
         log("@Step 4: Expand Stake dropdown list then select any option (e.g. >1K)");
@@ -354,7 +354,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition: Account is activated permission 'BBG'");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Filter From Date - To date which has data and other fields are default value");
         log("@Step 4: Click Show button");
         log("@Step 5: Click Show Bet Types dropdown list");
@@ -372,7 +372,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition: Account is activated permission 'BBG'");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Filter From Date - To date which has data and other fields are default value");
         log("@Step 4: Click Show button");
         log("@Step 5: Click Show Bet Types dropdown list");
@@ -393,7 +393,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition: Account is activated permission 'BBG'");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Filter From Date - To date which has data and other fields are default value");
         log("@Step 4: Click Show button");
         log("@Step 5: Click Show Leagues dropdown list");
@@ -415,7 +415,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition: Account is activated permission 'BBG'");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Filter From Date - To date which has data and other fields are default value");
         log("@Step 4: Click Show button");
         log("@Step 5: Click Show Groups dropdown list");
@@ -437,7 +437,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition: Account is activated permission 'BBG'");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Filter From Date - To date which has data and other fields are default value");
         log("@Step 4: Click Show button");
         log("@Step 5: Click Show Events dropdown list");
@@ -457,7 +457,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@pre-condition: Account is activated permission 'BBG'");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to Soccer >> BBG page");
-        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,BBGPage.class);
+        BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         log("@Step 3: Filter by any field (e.g. Smart Type, Leagues) then click Show button");
         String date = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
         page.filter("",KASTRAKI_LIMITED,"Master","Settled Bets",date,"","Above 1K","HKD");

@@ -297,13 +297,13 @@ public class EventSchedulePage extends WelcomePage {
         System.out.println("Event Schedule table: League, Date Time and Show button");
         Assert.assertEquals(lblLeague.getText(),"League","Failed! League dropdown is not displayed!");
         Assert.assertEquals(lblDateTime.getText(),"Date Time","Failed! Date Time datetime picker is not displayed!");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed!");
         System.out.println("Schedule List table: Home, Away, Team, Show League, Datetime and Show button");
         Assert.assertEquals(lblHome.getText(),"Home","Failed! Home radio button is not displayed!");
         Assert.assertEquals(lblAway.getText(),"Away","Failed! Away radio button is not displayed!");
         Assert.assertEquals(lblTeam.getText(),"Team","Failed! Team searchbox is not displayed!");
         Assert.assertEquals(btnShowLeague.getText(),"Show League","Failed! Show League button is not displayed!");
-        Assert.assertEquals(btnShowSchedule.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(btnShowSchedule.getText(),"SHOW","Failed! Show button is not displayed!");
         System.out.println("Event Schedule and Schedule List table header columns are correctly display");
         Assert.assertEquals(tblLeagueBody.getHeaderNameOfRows(), SBPConstants.EventSchedule.TABLE_HEADER_LEAGUE_LIST,"FAILED! League table header is incorrect display");
         Assert.assertEquals(tblEventBody.getHeaderNameOfRows(), SBPConstants.EventSchedule.TABLE_HEADER_SCHEDULE_LIST,"FAILED! Schedule table header is incorrect display");

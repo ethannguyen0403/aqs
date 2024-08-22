@@ -25,6 +25,9 @@ public class HeaderMenuControl extends BaseElement {
     public void clickSubMenu(String menu, String subMenu){
         getSubMenuLabel(menu,subMenu).click();
     }
+    public void clickSubMenu(String menu, String subMenu, String subSubMenu){
+        getSubMenuLabel(menu,subMenu,subSubMenu).click();
+    }
 
     private Label getSubMenuLabel(String menu, String subMenu){
         Label lblMainMenu  = Label.xpath(String.format("%s//span[text()='%s']",_xpath, menu));
@@ -34,9 +37,6 @@ public class HeaderMenuControl extends BaseElement {
         }
         lblMainMenu.click();
         lblMainMenu.moveAndHoverOnControl();
-        lblMainMenu.waitForControlInvisible();
-//        Label lblSubMenu =Label.xpath(String.format("%s//div[contains(@class,'dropdown-menu')]//span[contains(text(),'%s')]",_xpath,subMenu));
-        //app-navigation-bars//header//span[text()='Soccer']/parent::a//following-sibling::[contains(text(),'1x2')]
         Label lblSubMenu = Label.xpath(String.format("%s//span[text()='%s']/parent::a/following-sibling::ul//a[contains(text(),'%s')]",_xpath,menu,subMenu));
         if(!lblSubMenu.isDisplayed()){
             System.out.println("DEBUG! The sub menu "+subMenu+" under menu "+menu+" does not display");
@@ -44,23 +44,29 @@ public class HeaderMenuControl extends BaseElement {
         }
         lblSubMenu.waitForElementToBePresent(lblSubMenu.getLocator());
         return lblSubMenu;
-        /*
-        int index = getMenuIndex(menu);
-        Label lblMenu = Label.xpath(String.format("%s//li[%s]",_xpath,index));
-        lblMenu.click();
-        int i = 1;
-        Label lblSubMenu ;
-        while (true){
-            lblSubMenu = Label.xpath(String.format("%s//li[%s]//div[contains(@class,'dropdown-menu')]//a[%s]",_xpath,index,i));
-            if(!lblSubMenu.isDisplayed()){
-                System.out.println("DEBUG! The sub menu "+subMenu+" does not display");
-                return null;
-            }
-            if(lblSubMenu.getText().equals(subMenu)){
-                return lblSubMenu;
-            }
-            i = i+1;
-        }*/
+    }
+
+    private Label getSubMenuLabel(String menu, String subMenu, String subOfSubMenu){
+        Label lblMainMenu  = Label.xpath(String.format("%s//span[text()='%s']",_xpath, menu));
+        if(!lblMainMenu.isDisplayed()) {
+            System.out.println("DEBUG! The menu " + menu + " does not display");
+            return null;
+        }
+        lblMainMenu.click();
+        lblMainMenu.moveAndHoverOnControl();
+        Label lblSubMenu = Label.xpath(String.format("%s//span[text()='%s']/parent::a/following-sibling::ul/li/a[contains(text(),'%s')]",_xpath,menu,subMenu));
+        if(!lblSubMenu.isDisplayed()){
+            System.out.println("DEBUG! The sub menu "+subMenu+" under menu "+menu+" does not display");
+            return null;
+        }
+        lblSubMenu.moveAndHoverOnControl();
+        Label lblSubOfSubMenu = Label.xpath(String.format("%s//span[text()='%s']/parent::a/following-sibling::ul/li/a[contains(text(),'%s')]/following-sibling::ul//a[text()='%s']",_xpath,menu,subMenu,subOfSubMenu));
+        if(!lblSubOfSubMenu.isDisplayed()){
+            System.out.println(String.format("DEBUG! The sub menu %s of %s under menu %s does not display",subOfSubMenu,subMenu,menu));
+            return null;
+        }
+        lblSubOfSubMenu.moveAndHoverOnControl();
+        return lblSubOfSubMenu;
     }
 
 

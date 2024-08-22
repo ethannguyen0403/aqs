@@ -59,6 +59,12 @@ public class Header {
         waitSpinnerDisappeared();
         return PageFactory.initElements(DriverManager.getDriver(), expectedPage);
     }
+    public <T> T navigatePage(String menu, String submenu, String subSubMenu, Class<T> expectedPage) {
+        headerMenuControl.clickSubMenu(menu,submenu,subSubMenu);
+        lblUserName.moveAndHoverOnControl();
+        waitSpinnerDisappeared();
+        return PageFactory.initElements(DriverManager.getDriver(), expectedPage);
+    }
 
     public boolean isPageDisplayCorrect(String menu, String subMenu){
         return headerMenuControl.isSubmenuDisplay(menu,subMenu);
