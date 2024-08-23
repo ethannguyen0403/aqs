@@ -28,9 +28,9 @@ public class PhoneBettingPage extends WelcomePage {
     public TextBox txtToDate = TextBox.xpath("//app-phone-betting-report//span[text() = 'To Date']//following::input[2]");
     public Label lblFromDate = Label.xpath("//app-phone-betting-report//span[text() = 'From Date']");
     public Label lblToDate = Label.xpath("//app-phone-betting-report//span[text() = 'To Date']");
-    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
-    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
-    public Button btnShow = Button.xpath("//button[text()='Show']");
+    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
+    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
 
     public void verifyUI() {
         System.out.println("Dropdown: Company Unit, Financial Year, Sports");
@@ -43,6 +43,6 @@ public class PhoneBettingPage extends WelcomePage {
         Assert.assertEquals(lblFromDate.getText(),"From Date","Failed! From Date datetimepicker is not displayed!");
         Assert.assertEquals(lblToDate.getText(),"To Date","Failed! To Date datetimepicker is not displayed!");
         System.out.println("Button: Show button");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed!");
     }
 }

@@ -24,7 +24,7 @@ public class FeedReportPage extends WelcomePage {
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
     public TextBox txtTransactionDate = TextBox.name("transactionDate");
     public DateTimePicker dtpTransactionDate = DateTimePicker.xpath(txtTransactionDate,"//bs-datepicker-container");
-    public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Table tblTotalValue = Table.xpath("//app-feed-report//div[@class='ng-star-inserted']/table",4);
     public Button btnSubmitTrans = Button.xpath("//button[contains(text(),'Submit Transaction')]");
     public String txtAmountByProviderNameXpath = "//td[contains(text(),'%s Between')]//parent::tr//following-sibling::tr//th[contains(text(),'%s')]//following-sibling::td//input";

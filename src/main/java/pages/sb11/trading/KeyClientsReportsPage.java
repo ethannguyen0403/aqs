@@ -20,7 +20,7 @@ public class KeyClientsReportsPage extends WelcomePage {
     public TextBox txtToDate = TextBox.name("toDate");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
-    public Button btnShow = Button.xpath("//button[text()='Show']");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Label lblAmountNote = Label.xpath("//label[text()='Amounts are shown in [HKD]']");
     public Label lblAlertThan1Month = Label.xpath("//alert//span[contains(text(),'Date range should not be more than 1 month')]");
     int totalColumn = 8;

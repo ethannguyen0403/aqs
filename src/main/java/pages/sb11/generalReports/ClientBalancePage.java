@@ -22,7 +22,7 @@ public class ClientBalancePage extends WelcomePage {
     TextBox txtDate = TextBox.name("fromDate");
     DateTimePicker dtpDate = DateTimePicker.xpath(txtDate, "//bs-datepicker-container");
     public DropDownBox ddShowTotal = DropDownBox.xpath("//div[contains(text(),'Show Total')]//following::select[1]");
-    protected Button btnShow = Button.name("btnShow");
+    protected Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     TextBox txtSMCode = TextBox.xpath("//div[contains(text(),'SM Code')]/parent::div//input");
     public int totalCol = 7;
     public int colClientName = 2;

@@ -19,7 +19,7 @@ public class TermsAndConditionsPage extends WelcomePage {
     public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
     DropDownBox ddClientBookie = DropDownBox.xpath("//div[text()='Client/Bookie']//following-sibling::div//select");
     public DropDownBox ddClientBookieList = DropDownBox.xpath("//div[contains(text(),'List')]//following-sibling::select");
-    Button btnShow = Button.xpath("//button[text()='Show']");
+    Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     int clientBookieNamecol = 2;
     public Table tblData = Table.xpath("//app-terms-and-conditions//table",9);
     public void filter(String companyUnit, String clientBookieType, String clientBookieName){

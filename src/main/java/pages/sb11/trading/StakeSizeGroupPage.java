@@ -18,7 +18,7 @@ public class StakeSizeGroupPage extends WelcomePage {
     public Label lblTitle = Label.xpath("//div[contains(@class, 'card-header')]//span");
     public DropDownBox ddCompanyUnit = DropDownBox.xpath("//div[text()='Company Unit']//following-sibling::select");
     public DropDownBox ddClient = DropDownBox.xpath("//div[text()='Client']//following-sibling::select");
-    public Button btnShow = Button.xpath("//button[text()='Show']");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     Table tblData = Table.xpath("//app-stake-size-grouping//table",10);
     Button btnAddGroup = Button.xpath("//app-stake-size-grouping//button[contains(text(),'Add group')]");
     public void filter(String companyUnit, String clientName){

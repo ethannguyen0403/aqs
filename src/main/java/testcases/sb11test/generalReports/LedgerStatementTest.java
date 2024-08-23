@@ -33,7 +33,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Other";
         String debitExpAcc = LEDGER_EXPENDITURE_DEBIT_NAME + " - " + LEDGER_EXPENDITURE_DEBIT_NUMBER;
         String creditExpAcc = LEDGER_EXPENDITURE_CREDIT_NAME + " - " + LEDGER_EXPENDITURE_CREDIT_NUMBER;
-        String descExpenditure = "Expenditure Transaction " + DateUtils.getMilliSeconds();
+        String descExpenditure = "TC_841 Expenditure Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
@@ -50,6 +50,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitExpAcc, transType, descExpenditure);
@@ -89,7 +90,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Other";
         String debitExpAcc = LEDGER_EXPENDITURE_DEBIT_NAME + " - " + LEDGER_EXPENDITURE_DEBIT_NUMBER;
         String creditExpAcc = LEDGER_EXPENDITURE_CREDIT_NAME + " - " + LEDGER_EXPENDITURE_CREDIT_NUMBER;
-        String descExpenditure = "Expenditure Transaction " + DateUtils.getMilliSeconds();
+        String descExpenditure = "TC_842 Expenditure Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
@@ -106,6 +107,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitExpAcc, transType, descExpenditure);
@@ -146,7 +148,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Feed";
         String debitExpAcc = LEDGER_EXPENDITURE_DEBIT_NAME + " - " + LEDGER_EXPENDITURE_DEBIT_NUMBER;
         String creditExpAcc = LEDGER_EXPENDITURE_CREDIT_NAME + " - " + LEDGER_EXPENDITURE_CREDIT_NUMBER;
-        String descExpenditure = "Expenditure Transaction " + DateUtils.getMilliSeconds();
+        String descExpenditure = "TC_843 Expenditure Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
@@ -163,6 +165,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitExpAcc, transType, descExpenditure);
@@ -207,7 +210,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Feed";
         String debitExpAcc = LEDGER_EXPENDITURE_DEBIT_NAME + " - " + LEDGER_EXPENDITURE_DEBIT_NUMBER;
         String creditExpAcc = LEDGER_EXPENDITURE_CREDIT_NAME + " - " + LEDGER_EXPENDITURE_CREDIT_NUMBER;
-        String descExpenditure = "Expenditure Transaction " + DateUtils.getMilliSeconds();
+        String descExpenditure = "TC_844 Expenditure Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
@@ -225,6 +228,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitExpAcc, transType, descExpenditure);
@@ -267,7 +271,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Other";
         String debitAstAcc = LEDGER_ASSET_DEBIT_NAME + " - " + LEDGER_ASSET_DEBIT_NUMBER;
         String creditAstAcc = LEDGER_ASSET_CREDIT_NAME + " - " + LEDGER_ASSET_CREDIT_NUMBER;
-        String descAsset = "Asset Transaction " + DateUtils.getMilliSeconds();
+        String descAsset = "TC_845 Asset Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         String date = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
@@ -285,6 +289,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitAstAcc, transType, descAsset);
@@ -324,7 +329,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Other";
         String debitAstAcc = LEDGER_ASSET_DEBIT_NAME + " - " + LEDGER_ASSET_DEBIT_NUMBER;
         String creditAstAcc = LEDGER_ASSET_CREDIT_NAME + " - " + LEDGER_ASSET_CREDIT_NUMBER;
-        String descAsset = "Asset Transaction " + DateUtils.getMilliSeconds();
+        String descAsset = "TC_846 Asset Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         String date = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
@@ -342,6 +347,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitAstAcc, transType, descAsset);
@@ -381,7 +387,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Feed";
         String debitAstAcc = LEDGER_ASSET_DEBIT_NAME + " - " + LEDGER_ASSET_DEBIT_NUMBER;
         String creditAstAcc = LEDGER_ASSET_CREDIT_NAME + " - " + LEDGER_ASSET_CREDIT_NUMBER;
-        String descAsset = "Asset Transaction " + DateUtils.getMilliSeconds();
+        String descAsset = "TC_847 Asset Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
@@ -398,6 +404,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitAstAcc, transType, descAsset);
@@ -440,7 +447,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Feed";
         String debitAstAcc = LEDGER_ASSET_DEBIT_NAME + " - " + LEDGER_ASSET_DEBIT_NUMBER;
         String creditAstAcc = LEDGER_ASSET_CREDIT_NAME + " - " + LEDGER_ASSET_CREDIT_NUMBER;
-        String descAsset = "Asset Transaction " + DateUtils.getMilliSeconds();
+        String descAsset = "TC_848 Asset Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
 
@@ -459,6 +466,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitAstAcc, transType, descAsset);
@@ -501,7 +509,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Other";
         String debitLibAcc = LEDGER_LIABILITY_DEBIT_NAME + " - " + LEDGER_LIABILITY_DEBIT_NUMBER;
         String creditLibAcc = LEDGER_LIABILITY_CREDIT_NAME + " - " + LEDGER_LIABILITY_CREDIT_NUMBER;
-        String descLiability = "Liability Transaction " + DateUtils.getMilliSeconds();
+        String descLiability = "TC_849 Liability Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder().ledgerDebit(debitLibAcc).ledgerCredit(creditLibAcc).ledgerDebitCur("HKD").ledgerCreditCur("HKD")
@@ -509,6 +517,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitLibAcc, transType, descLiability);
@@ -549,7 +558,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Other";
         String debitLibAcc = LEDGER_LIABILITY_DEBIT_NAME + " - " + LEDGER_LIABILITY_DEBIT_NUMBER;
         String creditLibAcc = LEDGER_LIABILITY_CREDIT_NAME + " - " + LEDGER_LIABILITY_CREDIT_NUMBER;
-        String descLiability = "Liability Transaction " + DateUtils.getMilliSeconds();
+        String descLiability = "TC_850 Liability Transaction " + DateUtils.getMilliSeconds();
         JournalEntriesPage journalEntriesPage = welcomePage.navigatePage(ACCOUNTING, JOURNAL_ENTRIES, JournalEntriesPage.class);
         log("@Step 3: In Debit, select From = Ledger, Ledger = ledger account at precondition then click Add");
         Transaction transaction = new Transaction.Builder()
@@ -567,6 +576,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitLibAcc, transType, descLiability);
@@ -612,7 +622,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String debitLiaAcc = LEDGER_LIABILITY_DEBIT_NAME + " - " + LEDGER_LIABILITY_DEBIT_NUMBER;
         String creditLiaAcc = LEDGER_LIABILITY_CREDIT_NAME + " - " + LEDGER_LIABILITY_CREDIT_NUMBER;
         String cur = "HKD";
-        String descLia = "Liability Transaction " + DateUtils.getMilliSeconds();
+        String descLia = "TC_851 Liability Transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitLiaAcc)
                 .ledgerCredit(creditLiaAcc)
@@ -625,6 +635,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transType(JournalEntries.TRANSACTION_TYPE_LIST.get(5))
                 .build();
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitLiaAcc, JournalEntries.TRANSACTION_TYPE_LIST.get(5), descLia);
@@ -674,7 +685,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String debitLiaAcc = LEDGER_LIABILITY_DEBIT_NAME + " - " + LEDGER_LIABILITY_DEBIT_NUMBER;
         String creditLiaAcc = LEDGER_LIABILITY_CREDIT_NAME + " - " + LEDGER_LIABILITY_CREDIT_NUMBER;
         String cur = "HKD";
-        String descLia = "Liability Transaction " + DateUtils.getMilliSeconds();
+        String descLia = "TC_852 Liability Transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitLiaAcc)
                 .ledgerCredit(creditLiaAcc)
@@ -687,6 +698,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .transType(JournalEntries.TRANSACTION_TYPE_LIST.get(5))
                 .build();
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitLiaAcc, JournalEntries.TRANSACTION_TYPE_LIST.get(5), descLia);
@@ -729,7 +741,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Other";
         String debitCapitalAcc = LEDGER_CAPITAL_DEBIT_NAME + " - " + LEDGER_CAPITAL_DEBIT_NUMBER;
         String creditCapitalAcc = LEDGER_CAPITAL_CREDIT_NAME + " - " + LEDGER_CAPITAL_CREDIT_NUMBER;
-        String desCap = "Auto run for Capital transaction " + DateUtils.getMilliSeconds();
+        String desCap = "TC_853 Auto run for Capital transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitCapitalAcc)
                 .ledgerCredit(creditCapitalAcc)
@@ -749,6 +761,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 6: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitCapitalAcc, transType, desCap);
@@ -790,7 +803,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Other";
         String debitCapitalAcc = LEDGER_CAPITAL_DEBIT_NAME + " - " + LEDGER_CAPITAL_DEBIT_NUMBER;
         String creditCapitalAcc = LEDGER_CAPITAL_CREDIT_NAME + " - " + LEDGER_CAPITAL_CREDIT_NUMBER;
-        String desCap = "Auto run for Capital transaction " + DateUtils.getMilliSeconds();
+        String desCap = "TC_854 Auto run for Capital transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitCapitalAcc)
                 .ledgerCredit(creditCapitalAcc)
@@ -810,6 +823,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 6: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitCapitalAcc, transType, desCap);
@@ -851,7 +865,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Feed";
         String debitCapitalAcc = LEDGER_CAPITAL_DEBIT_NAME + " - " + LEDGER_CAPITAL_DEBIT_NUMBER;
         String creditCapitalAcc = LEDGER_CAPITAL_CREDIT_NAME + " - " + LEDGER_CAPITAL_CREDIT_NUMBER;
-        String desCap = "Auto run for Capital transaction " + DateUtils.getMilliSeconds();
+        String desCap = "TC_855 Auto run for Capital transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitCapitalAcc)
                 .ledgerCredit(creditCapitalAcc)
@@ -871,6 +885,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 6: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitCapitalAcc, transType, desCap);
@@ -913,7 +928,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Feed";
         String debitCapitalAcc = LEDGER_CAPITAL_DEBIT_NAME + " - " + LEDGER_CAPITAL_DEBIT_NUMBER;
         String creditCapitalAcc = LEDGER_CAPITAL_CREDIT_NAME + " - " + LEDGER_CAPITAL_CREDIT_NUMBER;
-        String desCap = "Auto run for Capital transaction " + DateUtils.getMilliSeconds();
+        String desCap = "TC_856 Auto run for Capital transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitCapitalAcc)
                 .ledgerCredit(creditCapitalAcc)
@@ -933,6 +948,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 6: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitCapitalAcc, transType, desCap);
@@ -975,7 +991,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Other";
         String debitIncomeAcc = LEDGER_INCOME_DEBIT_NAME + " - " + LEDGER_INCOME_DEBIT_NUMBER;
         String creditIncomeAcc = LEDGER_INCOME_CREDIT_NAME + " - " + LEDGER_INCOME_CREDIT_NUMBER;
-        String desInc = "Auto run for Income transaction " + DateUtils.getMilliSeconds();
+        String desInc = "TC_857 Auto run for Income transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitIncomeAcc)
                 .ledgerCredit(creditIncomeAcc)
@@ -995,6 +1011,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 6: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitIncomeAcc, transType, desInc);
@@ -1036,7 +1053,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Other";
         String debitIncomeAcc = LEDGER_INCOME_DEBIT_NAME + " - " + LEDGER_INCOME_DEBIT_NUMBER;
         String creditIncomeAcc = LEDGER_INCOME_CREDIT_NAME + " - " + LEDGER_INCOME_CREDIT_NUMBER;
-        String desInc = "Auto run for Income transaction " + DateUtils.getMilliSeconds();
+        String desInc = "TC_858 Auto run for Income transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitIncomeAcc)
                 .ledgerCredit(creditIncomeAcc)
@@ -1056,6 +1073,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 6: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitIncomeAcc, transType, desInc);
@@ -1098,7 +1116,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Feed";
         String debitIncomeAcc = LEDGER_INCOME_DEBIT_NAME + " - " + LEDGER_INCOME_DEBIT_NUMBER;
         String creditIncomeAcc = LEDGER_INCOME_CREDIT_NAME + " - " + LEDGER_INCOME_CREDIT_NUMBER;
-        String desInc = "Auto run for Income transaction " + DateUtils.getMilliSeconds();
+        String desInc = "TC_859 Auto run for Income transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitIncomeAcc)
                 .ledgerCredit(creditIncomeAcc)
@@ -1118,6 +1136,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 6: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitIncomeAcc, transType, desInc);
@@ -1160,7 +1179,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         String transType = "Payment Feed";
         String debitIncomeAcc = LEDGER_INCOME_DEBIT_NAME + " - " + LEDGER_INCOME_DEBIT_NUMBER;
         String creditIncomeAcc = LEDGER_INCOME_CREDIT_NAME + " - " + LEDGER_INCOME_CREDIT_NUMBER;
-        String desInc = "Auto run for Income transaction " + DateUtils.getMilliSeconds();
+        String desInc = "TC_860 Auto run for Income transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitIncomeAcc)
                 .ledgerCredit(creditIncomeAcc)
@@ -1180,6 +1199,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 5: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 6: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", debitIncomeAcc, transType, desInc);
@@ -1339,7 +1359,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 "Credit: Amount = 106.9HKD (C)");
         double valueB = 100.9;
         double valueC = 100.9;
-        String desInc = "Auto run for Income transaction " + DateUtils.getMilliSeconds();
+        String desInc = "TC_15754 Auto run for Income transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitIncomeAcc)
                 .ledgerCredit(creditIncomeAcc)
@@ -1354,6 +1374,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 6: Click Submit button");
         log("@Step 7: Click Yes button in reminder dialog");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, true);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", debitIncomeAcc, transType, desInc);
         log("@Step 8: Go to General Reports >> System Monitoring page");
@@ -1409,7 +1430,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 "Credit: Amount = 106.4HKD (C)");
         double valueB = 100.9;
         double valueC = 100.9;
-        String desExp = "Auto run for Expenditure transaction " + DateUtils.getMilliSeconds();
+        String desExp = "TC_23700 Auto run for Expenditure transaction " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .ledgerDebit(debitExpAcc)
                 .ledgerCredit(creditExpAcc)
@@ -1424,6 +1445,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("@Step 6: Click Submit button");
         log("@Step 7: Click Yes button in reminder dialog");
         journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, true);
+        journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", debitExpAcc, transType, desExp);
         log("@Step 8: Go to General Reports >> System Monitoring page");

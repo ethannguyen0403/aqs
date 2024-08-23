@@ -31,7 +31,7 @@ public class ClientSystemPage extends WelcomePage {
     public Label lblClientName = Label.xpath("//label[text()='Client Name']");
     public TextBox txtClientName = TextBox.id("name");
 
-    public Button btnShow = Button.xpath("//button[text()='Show']");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Button btnAddClient = Button.xpath("//button[text()='Add Client']");
     public Button btnExportToExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
 
@@ -119,7 +119,7 @@ public class ClientSystemPage extends WelcomePage {
         System.out.println("Textbox: Client Name");
         Assert.assertEquals(lblClientName.getText(),"Client Name","Failed! Client Name textbox is not displayed!");
         System.out.println("Button: Show, Add Bookie, Export To Excel");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed!");
         Assert.assertEquals(btnAddClient.getText(),"Add Client","Failed! Add Client button is not displayed!");
         Assert.assertEquals(btnExportToExcel.getText(),"Export To Excel","Failed! Export To Excel button is not displayed!");
         System.out.println("Validate Client System table is displayed with correct header");

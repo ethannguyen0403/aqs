@@ -451,7 +451,7 @@ public class ConfirmBetsPage extends WelcomePage {
         Assert.assertEquals(lblAccStartWith.getText(), "Acc Starts With", "Failed! Acc Start With textbox is not displayed!");
         Assert.assertEquals(lblAccountCode.getText(), "Account Code", "Failed! Account Code textbox is not displayed!");
         System.out.println("Button: Show button");
-        Assert.assertEquals(btnShow.getText(), "Show", "Failed! Show button is not displayed!");
+        Assert.assertEquals(btnShow.getText(), "SHOW", "Failed! Show button is not displayed!");
         System.out.println("Validate there are 3 tables displayed");
         Assert.assertEquals(tblOrder.getHeaderNameOfRows(), SBPConstants.ConfirmBets.TABLE_HEADER_ORDER, "Failed! Order table is not displayed!");
         Assert.assertEquals(tblPending.getHeaderNameOfRows(), SBPConstants.ConfirmBets.TABLE_HEADER_PENDING, "Failed! Pending Accounts table is not displayed!");

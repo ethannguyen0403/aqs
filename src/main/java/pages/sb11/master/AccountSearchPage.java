@@ -18,7 +18,7 @@ public class AccountSearchPage extends WelcomePage {
     public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//span[contains(text(),'Company Unit')]//following::select[1]");
     public DropDownBox ddpType = DropDownBox.xpath("//span[contains(text(),'Type')]//following::select[1]");
     public TextBox txtAccountSearch = TextBox.name("searchBy");
-    public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
 
     public Label lblAccountInfo = Label.xpath("//span[text()='Account Info']");
     public Label lblBookieInfo = Label.xpath("//app-account-search//span[text()='Bookie Info']");
