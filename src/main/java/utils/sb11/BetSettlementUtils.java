@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static common.SBPConstants.SPORT_ID_MAP;
 import static testcases.BaseCaseAQS.environment;
 
 public class BetSettlementUtils {
@@ -32,8 +33,7 @@ public class BetSettlementUtils {
     }
 
     public static JSONArray getOrderConfirmedListJson(String accountId, String sportId, Order order) throws IOException {
-        if (sportId.equals(""))
-        {
+        if (sportId.equals("")) {
             sportId = "0";
         }
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
@@ -47,7 +47,7 @@ public class BetSettlementUtils {
         String jsn = String.format("{\n" +
                         "    \"fromDatePS7\":\"%s\",\n" +
                         "    \"status\": \"CONFIRMED\",\n" +
-                        "    \"dateMode\": \"ALL_DATE\",\n" +
+                        "    \"dateMode\": \"SPECIFIC_DATE\",\n" +
                         "    \"toDatePS7\": \"%s\",\n" +
                         "    \"accCodeStartWith\": \"\",\n" +
                         "    \"accCode\": \"%s\",\n" +
@@ -58,86 +58,108 @@ public class BetSettlementUtils {
                         "    \"accountId\": \"%s\",\n" +
                         "    \"sportId\": \"%s\"\n" +
                         "  }\n"
-                , order.getCreateDate(), order.getCreateDate(), order.getAccountCode(), accountId,sportId);
+                , String.format("%s 12:00:00",order.getCreateDate()), String.format("%s 12:00:00",order.getCreateDate()), order.getAccountCode(), accountId, sportId);
         return WSUtils.getPOSTJSONArrayWithDynamicHeaders(api, jsn, headersParam);
     }
-    public static void sendManualBetSettleJson(String accountId, Order order, int betId, int wagerId, String sportId){
-       try{
-           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = sdf.parse(order.getEventDate());
-        long millis = date.getTime();
-        String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
-        Map<String, String> headersParam = new HashMap<String, String>() {
-            {
-                put("Authorization", autho);
-                put("Content-Type", Configs.HEADER_JSON);
-            }
-        };
-        int handicap = 0;
-        if (!(order.getMarketType() == null)){
-            if (order.getMarketType().equals("OverUnder")){
-                handicap = 1;
-            }
-        }
 
-        String api = environment.getSbpLoginURL() + "aqs-agent-service/trading/bet-settlement/settle?";
-        String jsn = String.format("{\n" +
-                        "  \"bets\": [\n" +
-                        "    {\n" +
-                        "      \"placeDate\": \"%s\",\n" +
-                        "      \"eventDate\": \"%s\",\n" +
-                        "      \"league\": \"Manual Bet Description\",\n" +
-                        "      \"home\": \"\",\n" +
-                        "      \"away\": \"\",\n" +
-                        "      \"stake\": %s,\n" +
-                        "      \"marketType\": \"MB\",\n" +
-                        "      \"status\": \"SETTLED\",\n" +
-                        "      \"selection\": \"%s\",\n" +
-                        "      \"handicap\": %s,\n" +
-                        "      \"live\": \"\",\n" +
-                        "      \"liveScores\": \"\",\n" +
-                        "      \"odds\": %s,\n" +
-                        "      \"id\": %s,\n" +
-                        "      \"eventId\": 0,\n" +
-                        "      \"bookieId\": \"0\",\n" +
-                        "      \"marketTypeName\": \"\",\n" +
-                        "      \"winLose\": 5,\n" +
-                        "      \"pt\": 0,\n" +
-                        "      \"originalOdds\": %s,\n" +
-                        "      \"oddsFormat\": \"%s\",\n" +
-                        "      \"originalOddsFormat\": \"%s\",\n" +
-                        "      \"source\": \"MB\",\n" +
-                        "      \"wagerId\": %s,\n" +
-                        "      \"sportId\": %s,\n" +
-                        "      \"runs\": 0,\n" +
-                        "      \"wtks\": 0,\n" +
-                        "      \"betCreateType\": \"BET_ENTRY\",\n" +
-                        "      \"type\": \"BACK\",\n" +
-                        "      \"selected\": true\n" +
-                        "    }\n" +
-                        "  ],\n" +
-                        "  \"transactionDate\": %s,\n" +
-                        "  \"sendMailRequest\": {\n" +
-                        "    \"accountId\": %s,\n" +
-                        "    \"filters\": [\n" +
-                        "      {\n" +
-                        "        \"id\": %s,\n" +
-                        "        \"source\": \"MB\",\n" +
-                        "        \"wagerId\": %s\n" +
-                        "      }\n" +
-                        "    ]\n" +
-                        "  }\n" +
-                        "}"
-                , order.getCreateDate() +"T16:59:00.000+00:00", order.getCreateDate() + "T16:59:00.000+00:00", order.getRequireStake(), order.getSelection(),handicap,
-                order.getPrice(), betId, order.getPrice(), order.getOddType(), order.getOddType(), wagerId, sportId, millis, accountId, betId, wagerId);
+    public static void sendManualBetSettleJson(String accountId, Order order, int betId, int wagerId, String sportId) {
+        try {
+            String transDate = DateUtils.getDate(0,"yyyy-MM-dd",SBPConstants.GMT_7);
+            String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
+            Map<String, String> headersParam = new HashMap<String, String>() {
+                {
+                    put("Authorization", autho);
+                    put("Content-Type", Configs.HEADER_JSON);
+                }
+            };
+            int handicap = 0;
+            if (!(order.getMarketType() == null)) {
+                if (order.getMarketType().equals("OverUnder")) {
+                    handicap = 1;
+                }
+            }
+
+            String api = environment.getSbpLoginURL() + "aqs-agent-service/trading/bet-settlement/settle?";
+            String jsn = String.format("{\n" +
+                            "  \"bets\": [\n" +
+                            "    {\n" +
+                            "      \"placeDate\": \"%s\",\n" +
+                            "      \"eventDate\": \"%s\",\n" +
+                            "      \"league\": \"Manual Bet Description\",\n" +
+                            "      \"home\": \"\",\n" +
+                            "      \"away\": \"\",\n" +
+                            "      \"stake\": %s,\n" +
+                            "      \"marketType\": \"MB\",\n" +
+                            "      \"status\": \"SETTLED\",\n" +
+                            "      \"selection\": \"%s\",\n" +
+                            "      \"handicap\": %s,\n" +
+                            "      \"live\": false,\n" +
+                            "      \"liveScores\": \"\",\n" +
+                            "      \"odds\": %s,\n" +
+                            "      \"id\": %s,\n" +
+                            "      \"eventId\": 0,\n" +
+                            "      \"bookieId\": \"0\",\n" +
+                            "      \"marketTypeName\": \"Manual Bet\",\n" +
+                            "      \"winLose\": 5,\n" +
+                            "      \"pt\": 0,\n" +
+                            "      \"originalOdds\": %s,\n" +
+                            "      \"oddsFormat\": \"%s\",\n" +
+                            "      \"originalOddsFormat\": \"%s\",\n" +
+                            "      \"source\": \"MB\",\n" +
+                            "      \"wagerId\": %s,\n" +
+                            "      \"sportId\": %s,\n" +
+                            "      \"runs\": 0,\n" +
+                            "      \"wtks\": 0,\n" +
+                            "      \"betCreateType\": \"BET_ENTRY\",\n" +
+                            "      \"type\": \"BACK\",\n" +
+                            "      \"settlementDate\": null,\n" +
+                            "      \"selected\": true\n" +
+                            "    }\n" +
+                            "  ],\n" +
+                            "  \"transactionDate\": \"%s\",\n" +
+                            "  \"sendMailRequest\": {\n" +
+                            "    \"accountId\": %s,\n" +
+                            "    \"filters\": [\n" +
+                            "      {\n" +
+                            "        \"id\": %s,\n" +
+                            "        \"source\": \"MB\",\n" +
+                            "        \"wagerId\": %s\n" +
+                            "      }\n" +
+                            "    ]\n" +
+                            "  }\n" +
+                            "}"
+                    , order.getCreateDate() + "T16:59:00.000+00:00", order.getCreateDate() + "T16:59:00.000+00:00", order.getRequireStake(), order.getSelection(), handicap,
+                    order.getPrice(), betId, order.getPrice(), order.getOddType(), order.getOddType(), wagerId, sportId, transDate, accountId, betId, wagerId);
 
             WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
-        }catch (IOException | ParseException e){
-           System.out.println(e.getMessage());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
-    public static void sendBetSettleAPI(Order order){
-        try{
+    public static void sendManualBetSettleJson(String accountCode, String sport, Order order){
+        String accountId = AccountSearchUtils.getAccountId(accountCode);
+        int betId = 0;
+        int wagerId = 0;
+        int i = 0;
+        while (i < 5) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get(sport),order);
+            wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get(sport),order);
+            if (!(betId == 0) || !(wagerId == 0)){
+                sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get(sport));
+                break;
+            }
+            i++;
+        }
+        sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get(sport));
+    }
+
+    public static void sendBetSettleAPI(Order order) {
+        try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date date = sdf.parse(order.getEventDate());
             long millis = date.getTime();
@@ -160,19 +182,21 @@ public class BetSettlementUtils {
                             "    ],\n" +
                             "    \"transactionDate\": %s\n" +
                             "}"
-                    , order.getBetId(),order.getWinLose(),order.isWinLose(),millis);
+                    , order.getBetId(), order.getWinLose(), order.isWinLose(), millis);
 
             WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
-        }catch (IOException | ParseException e){
+        } catch (IOException | ParseException e) {
             System.out.println(e.getMessage());
         }
     }
-    public static void sendBetSettleAPI(List<Order> lstOrder){
-        for (int i = 0; i < lstOrder.size(); i++){
+
+    public static void sendBetSettleAPI(List<Order> lstOrder) {
+        for (int i = 0; i < lstOrder.size(); i++) {
             sendBetSettleAPI(lstOrder.get(i));
         }
     }
-    private static String buildJsonPayload(String fromDatePS7, String toDatePS7, String status,String accountCode, String accountId, String sportID){
+
+    private static String buildJsonPayload(String fromDatePS7, String toDatePS7, String status, String accountCode, String accountId, String sportID) {
         return String.format("{\n" +
                 "  \"fromDatePS7\": \"%s\",\n" +
                 "  \"toDatePS7\": \"%s\",\n" +
@@ -186,11 +210,11 @@ public class BetSettlementUtils {
                 "  \"timeZone\": \"Asia/Saigon\",\n" +
                 "  \"accountId\": %s,\n" +
                 "  \"sportId\": %s\n" +
-                "}", fromDatePS7, toDatePS7, status,accountCode, accountId, sportID);
+                "}", fromDatePS7, toDatePS7, status, accountCode, accountId, sportID);
     }
 
     public static List<Double> getListDoubleOfSettledBestJson(String keyValue, String toDate, String fromDate, String accountCode,
-                                                              String accountId, String sportID){
+                                                              String accountId, String sportID) {
         JSONArray jsonArr = null;
         List<Double> listStake = new ArrayList<>();
         try {
@@ -253,19 +277,20 @@ public class BetSettlementUtils {
         return betId;
     }
 
-    public static void waitForBetIsUpdate(int timeSecond){
+    public static void waitForBetIsUpdate(int timeSecond) {
         // Thread sleep to wait for bet is updated in Db
-        try{
-            Thread.sleep(timeSecond*1000);
-        }catch (Exception e){
+        try {
+            Thread.sleep(timeSecond * 1000);
+        } catch (Exception e) {
         }
     }
-    public static Order getOrderInDayByAccountCode(String accountCode,String date, String sport){
+
+    public static Order getOrderInDayByAccountCode(String accountCode, String date, String sport) {
         JSONArray jsonArr = null;
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         String sportID = SBPConstants.SPORT_ID_MAP.get(sport);
         String apiDate = DateUtils.formatDate(date, "dd/MM/yyyy", "yyyy-MM-dd");
-        String apiToDate = DateUtils.getDate(0,"yyyy-MM-dd",SBPConstants.GMT_7);
+        String apiToDate = DateUtils.getDate(0, "yyyy-MM-dd", SBPConstants.GMT_7);
         try {
             jsonArr = getSettledListJson(apiDate, apiToDate, accountCode, accountId, sportID);
         } catch (Exception e) {
@@ -294,4 +319,5 @@ public class BetSettlementUtils {
         }
         return null;
     }
+
 }

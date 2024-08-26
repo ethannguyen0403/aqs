@@ -25,7 +25,7 @@ public class BLSettingTest extends BaseCaseAQS {
         Assert.assertEquals(blSettingPage.btnShowLeagues.getText(),"Show Leagues","Failed! Show League button is not displayed!");
         Assert.assertTrue(blSettingPage.ddpLeague.getOptions().contains("All"),"Failed! League dropdown is not displayed!");
         Assert.assertEquals(blSettingPage.ddpOrderBy.getOptions(),ORDER_BY_LIST,"Failed! Order By dropdown is not displayed!");
-        Assert.assertEquals(blSettingPage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(blSettingPage.btnShow.getText(),"SHOW","Failed! Show button is not displayed!");
         log("Validate BL Settings table header columns is correctly display");
         Assert.assertEquals(blSettingPage.tbBLSettings.getHeaderNameOfRows(), BLSettings.TABLE_HEADER,"FAILED! BL Settings table header is incorrect display");
         log("INFO: Executed completely");

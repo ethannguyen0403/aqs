@@ -139,7 +139,7 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
             default:
                 System.out.println("Input wrongly month value!");
         }
-        return Label.xpath(tblBalance.getxPathOfCell(1, colIndex, rowIndex, null)).getText().trim();
+        return Label.xpath(tblBalance.getxPathOfCell(1, colIndex, rowIndex, null)).getText().trim().replace(",","");
     }
 
     /**
@@ -313,5 +313,16 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void verifyTxnValueOfAccount(String accountName) {
+        Double creditSelectedMonth = Double.valueOf(getValueDeCreOfSubAcc(accountName, "current",false)) == 0.00 ?
+                Double.valueOf(getValueDeCreOfSubAcc(accountName, "current",true)) : -Double.valueOf(getValueDeCreOfSubAcc(accountName, "current",false));
+
+        Double creditPreviousMonth = Double.valueOf(getValueDeCreOfSubAcc(accountName, "previous",false)) == 0.00 ?
+                Double.valueOf(getValueDeCreOfSubAcc(accountName, "previous",true)) : -Double.valueOf(getValueDeCreOfSubAcc(accountName, "previous",false));
+        String creditTxns = getValueDeCreOfSubAcc(accountName,"txns", false).equals("0.00") ?
+                getValueDeCreOfSubAcc(accountName,"txns", true) : getValueDeCreOfSubAcc(accountName,"txns", false);
+        Assert.assertEquals(creditTxns, String.format("%.2f", creditSelectedMonth-creditPreviousMonth).replace("-",""), "FAILED! Txns data is not correct");
     }
 }

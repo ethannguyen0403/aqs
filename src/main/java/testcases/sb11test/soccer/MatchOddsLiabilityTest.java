@@ -36,7 +36,7 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression","ethan5.0"})
     @TestRails(id = "2107")
     public void MatchOddsLiabilityTC_2107(){
         log("@title: Validate UI on 1x2 Liability is correctly displayed");
@@ -48,7 +48,7 @@ public class MatchOddsLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan4.0"})
+    @Test(groups = {"regression","ethan5.0"})
     @TestRails(id = "2108")
     @Parameters({"accountCode","smartGroup"})
     public void MatchOddsLiabilityTC_2108(String accountCode, String smartGroup){

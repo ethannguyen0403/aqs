@@ -140,13 +140,14 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.isTotalAmountDisplayCorrect(),"FAILED! Total amount of each Detail Type displays Incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.3.0","ethan4.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan5.0"})
     @TestRails(id = "2789")
     public void Balance_Sheet_2789() {
         log("@title: Validate the Balance Amount is taken from Ledger Statement > 'Amounts are shown in HKD' section > Running Bal.' column");
         log("@Pre-condition: Balance Sheet permission is ON for any account");
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go To Ledger Statement");
+        String financialYear = welcomePage.pickFinancialYear(FINANCIAL_YEAR);
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
         log("@Step 3: Filter data of any ledger account as example as below:\n" +
                 "Financial Year = Year 2023-2024\n" +
@@ -159,14 +160,14 @@ public class BalanceSheetTest extends BaseCaseAQS {
         String monthInBalanceSheet = ledgerStatementPage.getLastDateAfterCJE("yyyy - MMMM");
         String report = "Before CJE";
         log("@Step 4: Get 'CUR Translation in HKD' section > Running Bal.' column");
-        String totalAmountOfParentAcount = ledgerStatementPage.getTotalInHKD(KASTRAKI_LIMITED,FINANCIAL_YEAR,LedgerStatement.ACCOUNT_TYPE.get(1),QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT,fromDate,toDate,report,LEDGER_GROUP_NAME_ASSET,"CUR Translation","Running Bal.");
+        String totalAmountOfParentAcount = ledgerStatementPage.getTotalInHKD(KASTRAKI_LIMITED,financialYear,LedgerStatement.ACCOUNT_TYPE.get(1),QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT,fromDate,toDate,report,LEDGER_GROUP_NAME_ASSET,"CUR Translation","Running Bal.");
         log("@Step 5: Go to Financial Reports >> Balance Sheet page");
         BalanceSheetPage page = ledgerStatementPage.navigatePage(FINANCIAL_REPORTS,BALANCE_SHEET,BalanceSheetPage.class);
         log("@Step 6: Filter data of account: 222.222.222.000 - Auto Asset Group on selected month at step #3\n" +
                 "Financial Year = Year 2022-2023\n" +
                 "Month = 2023 - July\n" +
                 "Report = Before CJE");
-        page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,monthInBalanceSheet,report,false);
+        page.filter(KASTRAKI_LIMITED,financialYear,monthInBalanceSheet,report,false);
         log("@Verify 1: Balance Amount = value that get at step #4");
         Assert.assertEquals(page.getTotalAmount(LEDGER_GROUP_NAME_ASSET).getText().trim().replace(",",""),totalAmountOfParentAcount,"FAILED! Balance Amount displays incorrect!");
         log("INFO: Executed completely");
@@ -267,7 +268,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         // }
         // log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.2.0"})
+    @Test(groups = {"regression","2024.V.2.0","ethan5.0"})
     @TestRails(id = "16195")
     public void Balance_Sheet_16195() {
         log("@title: Validate Asset/Liability/Capital detail type with balance = 0 are displayed when ticking 'Show Info with Balance/Txns' checkbox");
@@ -280,8 +281,8 @@ public class BalanceSheetTest extends BaseCaseAQS {
         page.filter(SBPConstants.KASTRAKI_LIMITED, SBPConstants.FINANCIAL_YEAR, "", "",true);
         log("@Verify 1: Validate Asset/Liability/Capital detail type with balance = 0 are displayed when ticking 'Show Info with Balance/Txns' checkbox");
         Assert.assertEquals(page.getTotalAmount("QA Ledger Auto Asset").getText(),"0.00","FAILED! Balance of Asset displays incorrect");
-        Assert.assertEquals(page.getTotalAmount("QA Ledger Auto Liability").getText(),"0.00","FAILED! Balance of Asset displays incorrect");
-        Assert.assertEquals(page.getTotalAmount("QA Ledger Auto Capital").getText(),"0.00","FAILED! Balance of Asset displays incorrect");
+        Assert.assertEquals(page.getTotalAmount("QA Non-Operating Expenses").getText(),"0.00","FAILED! Balance of Asset displays incorrect");
+        Assert.assertEquals(page.getTotalAmount("QA Ledger Group Income").getText(),"0.00","FAILED! Balance of Asset displays incorrect");
         log("INFO: Executed completely");
     }
 }

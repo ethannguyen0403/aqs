@@ -32,7 +32,7 @@ public class BBGPhoneBettingPage extends WelcomePage {
     public Button btnShowLeagues = Button.xpath("//button[contains(text(),' Show  Leagues ')]");
     public Button btnHideLeagues = Button.xpath("//button[contains(text(),' Hide  Leagues ')]");
     public Button btnShowWinLose = Button.xpath("//button[contains(text(),' Show  Win/Lose ')]");
-    public Button btnShow = Button.xpath("(//button[contains(text(),'Show')])[4]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Table tblOrder = Table.xpath("//app-phone-betting//table",12);
     Button btnClearAll = Button.xpath("//span[contains(text(),'Clear All')]");
     Button btnSelectAll = Button.xpath("//span[contains(text(),'Select All')]");

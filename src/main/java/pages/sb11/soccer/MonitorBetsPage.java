@@ -49,7 +49,7 @@ public class MonitorBetsPage extends WelcomePage {
     public Label lblShowEvents = Label.xpath("//div[contains(text(),'Show Events')]");
     public Label lblShowTraders = Label.xpath("//div[contains(text(),'Show Traders')]");
     public Label lblResetAllFilters = Label.xpath("//span[contains(text(),'Reset All Filters')]");
-    public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Table tblOrder = Table.xpath("//app-monitor-bets//table",11);
     public Button btnClearAll = Button.xpath("//button[text()='Clear All']");
     public Button btnSetSelection = Button.xpath("//button[text()='Set Selection']");

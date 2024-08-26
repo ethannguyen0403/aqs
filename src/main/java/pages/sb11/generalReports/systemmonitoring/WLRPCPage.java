@@ -24,7 +24,7 @@ public class WLRPCPage extends WelcomePage {
     DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container/div/div");
     DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container/div/div");
     public DropDownBox ddCurrency = DropDownBox.xpath("//div[contains(text(),'Currency')]//following-sibling::select");
-    public Button btnShow = Button.xpath("//button[text()='Show']");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Button btnExportToExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
     Label lblNoted = Label.xpath("//span[contains(text(),'Support from-date and to-date within 3 months')]");
     public Label lblNoRecord = Label.xpath("//div[contains(text(),'No records found.')]");

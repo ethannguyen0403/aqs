@@ -23,7 +23,7 @@ public class ARandAPReconciliationPage extends WelcomePage {
     public TextBox txtEndingDate = TextBox.xpath("//div[text()='Ending Date']//following-sibling::div//input");
     public DateTimePicker dtpBeginDate = DateTimePicker.xpath(txtBeginDate,"//bs-datepicker-container");
     public DateTimePicker dtpEndingDate = DateTimePicker.xpath(txtEndingDate,"//bs-datepicker-container");
-    public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Table tblData = Table.xpath("//table[contains(@class,'table-custom')]",10);
     public Table tblHeader = Table.xpath("(//div[@class='ng-star-inserted']//table[contains(@class,'fbody')])[1]",10);
     public Table tblTodaySettle = Table.xpath("//table[contains(@class,'total-settlement')]",10);

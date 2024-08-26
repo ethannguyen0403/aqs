@@ -26,8 +26,8 @@ public class BookieInfoPage extends WelcomePage {
     public TextBox txtBookie = TextBox.name("searchBy");
     public Label lblBookie = Label.xpath("//div[text()='Bookie']");
 
-    public Button btnSearch = Button.xpath("//button[text()='Search']");
-    public Button btnShow = Button.xpath("//button[text()='Show']");
+    public Button btnSearch = Button.xpath("(//button[contains(@class,'btn-show')])[1]");
+    public Button btnShow = Button.xpath("(//button[contains(@class,'btn-show')])[2]");
     public Button btnAddBookie = Button.xpath("//button[contains(@class,'btn-outline-success')]");
     public Button btnExportToExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
 
@@ -100,8 +100,8 @@ public class BookieInfoPage extends WelcomePage {
         System.out.println("Textbox: Bookie");
         Assert.assertEquals(lblBookie.getText(),"Bookie","Failed! Bookie textbox is not displayed!");
         System.out.println("Button: Search, Show, Add Bookie, Export To Excel");
-        Assert.assertEquals(btnSearch.getText(),"Search","Failed! Search button is not displayed!");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(btnSearch.getText(),"SEARCH","Failed! Search button is not displayed!");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed!");
         Assert.assertEquals(btnAddBookie.getText(),"Add Bookie","Failed! Add Bookie button is not displayed!");
         Assert.assertEquals(btnExportToExcel.getText(),"Export To Excel","Failed! Export To Excel button is not displayed!");
         System.out.println("Validate Bookie Info table is displayed with correct header");

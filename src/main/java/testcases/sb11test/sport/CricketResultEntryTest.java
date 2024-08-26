@@ -27,7 +27,7 @@ public class CricketResultEntryTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression","ethan5.0"})
     @TestRails(id = "2088")
     public void Cricket_ResultEntry_2088(){
         log("@title: Validate UI on Cricket  Result Entry  is correctly displayed");

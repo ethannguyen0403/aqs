@@ -34,7 +34,7 @@ public class AutoCreatedAccountsTest extends BaseCaseAQS {
         Assert.assertTrue(autoCreatedAccountsPage.lblFromDate.getText().contains("From Date"),"Failed! From Date datetimepicker is not displayed!");
         Assert.assertTrue(autoCreatedAccountsPage.lblToDate.getText().contains("To Date"),"Failed! To Date datetimepicker is not displayed!");
         log("Button: Search");
-        Assert.assertEquals(autoCreatedAccountsPage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(autoCreatedAccountsPage.btnShow.getText(),"SHOW","Failed! Show button is not displayed!");
         log("Validate Auto-created Accounts table is displayed with correctly header column");
         Assert.assertEquals(autoCreatedAccountsPage.tbAutoCreate.getHeaderNameOfRows(), AutoCreatedAccounts.TABLE_HEADER,"Failed! Auto-created Accounts table is displayed with incorrectly header column");
         log("INFO: Executed completely");

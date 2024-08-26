@@ -1,5 +1,6 @@
 package pages.sb11.soccer;
 
+import com.paltech.driver.DriverManager;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
@@ -20,8 +21,8 @@ public class PTRiskPage extends WelcomePage {
     public DropDownBox ddpLiveNonLive = DropDownBox.id("betSelected1");
     public TextBox txtFromDate = TextBox.xpath("//div[contains(text(),'From Date')]/following-sibling::div//input");
     public TextBox txtToDate = TextBox.xpath("//div[contains(text(),'To Date')]/following-sibling::div//input");
-    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
-    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
+    public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate, "//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
+    public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate, "//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
 
     public DropDownBox ddpOrderBy = DropDownBox.id("typeSelected3");
     public DropDownBox ddpSport = DropDownBox.id("sportSelect");
@@ -39,43 +40,42 @@ public class PTRiskPage extends WelcomePage {
     public Label messageSuccess = Label.xpath("(//div[contains(@class, 'message-box')]//span)[3]");
 
     @Override
-    public String getTitlePage ()
-    {
+    public String getTitlePage() {
         return this.lblTitle.getText().trim();
     }
 
-    public void filter(String sport, String clientCode, String companyUnit, String reportType, String liveNonlive, String fromDate, String toDate, String leagueName){
-        ddpSport.selectByVisibleContainsText(sport);
-        filter(clientCode, companyUnit, reportType, liveNonlive, fromDate, toDate,leagueName);
-    }
-
-    public void filter(String clientCode, String companyUnit, String reportType, String liveNonlive, String fromDate, String toDate, String leagueName)  {
-        ddpCompanyUnit.selectByVisibleText(companyUnit);
-        waitSpinnerDisappeared();
-        ddpReportType.selectByVisibleText(reportType);
-        waitSpinnerDisappeared();
-        ddpLiveNonLive.selectByVisibleText(liveNonlive);
-        waitSpinnerDisappeared();
-        if(!fromDate.isEmpty()){
-            dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
-            try {
-                Thread.sleep(4000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+    public void filter(String clientCode, String companyUnit, String sport, String reportType, String liveNonlive, String fromDate, String toDate, String leagueName) {
+        if (!companyUnit.isEmpty()) {
+            ddpCompanyUnit.selectByVisibleText(companyUnit);
+            waitSpinnerDisappeared();
         }
-        if(!toDate.isEmpty()){
-            dtpToDate.selectDate(toDate,"dd/MM/yyyy");
-            try {
-                Thread.sleep(4000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        if (!sport.isEmpty()){
+            ddpSport.selectByVisibleText(sport);
+            waitSpinnerDisappeared();
         }
-        if (!leagueName.isEmpty()){
+        if (!reportType.isEmpty()){
+            ddpReportType.selectByVisibleText(reportType);
+            waitSpinnerDisappeared();
+        }
+        if (!liveNonlive.isEmpty()){
+            ddpLiveNonLive.selectByVisibleText(liveNonlive);
+            waitSpinnerDisappeared();
+        }
+        if (!fromDate.isEmpty()) {
+            dtpFromDate.waitForControlInvisible();
+            dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
+            waitSpinnerDisappeared();
+        }
+        if (!toDate.isEmpty()) {
+            dtpToDate.waitForControlInvisible();
+            dtpToDate.selectDate(toDate, "dd/MM/yyyy");
+            waitSpinnerDisappeared();
+        }
+        if (!leagueName.isEmpty()) {
+            checkLeagueDisplay(companyUnit, sport, reportType, fromDate, toDate, leagueName);
             filterLeague(leagueName);
         }
-        if (!clientCode.isEmpty()){
+        if (!clientCode.isEmpty()) {
             btnClient.click();
             btnClearAll.click();
             filterClient(clientCode);
@@ -84,19 +84,44 @@ public class PTRiskPage extends WelcomePage {
         waitSpinnerDisappeared();
     }
 
+    private void checkLeagueDisplay(String companyUnit, String sport, String reportType, String fromDate, String toDate, String leagueName) {
+        btnLeagues.click();
+        waitSpinnerDisappeared();
+        btnClearAll.waitForControlInvisible();
+        waitSpinnerDisappeared();
+        btnClearAll.click();
+        int i = 1;
+        while (i < 10) {
+            Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div//label[contains(text(),'%s')]", leagueName));
+            if (!lblSelectValue.isDisplayed()){
+                DriverManager.getDriver().refresh();
+                waitSpinnerDisappeared();
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                filter("",companyUnit,sport,reportType,"",fromDate,toDate,"");
+                i = i + 1;
+                continue;
+            }
+            break;
+        }
+    }
+
     private void filterClient(String clientCode) {
         if (clientCode.isEmpty())
             return;
         int i = 1;
         String out[] = clientCode.split("-");
-        clientCode = out[1].replace(" ","");
+        clientCode = out[1].replace(" ", "");
         while (true) {
-            Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div[%s]//label[1]",i));
+            Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div[%s]//label[1]", i));
             if (!lblSelectValue.isDisplayed()) {
                 System.out.println("Cannot find out client in list of Client: " + clientCode);
                 break;
             }
-            if(lblSelectValue.getText().replace(" ","").equalsIgnoreCase(clientCode)) {
+            if (lblSelectValue.getText().replace(" ", "").equalsIgnoreCase(clientCode)) {
                 lblSelectValue.click();
                 btnSetSelection.click();
                 waitSpinnerDisappeared();
@@ -109,35 +134,48 @@ public class PTRiskPage extends WelcomePage {
     private void filterLeague(String leagueName) {
         btnLeagues.click();
         waitSpinnerDisappeared();
+        btnClearAll.waitForControlInvisible();
+        waitSpinnerDisappeared();
         btnClearAll.click();
         int i = 1;
-        while (true) {
-            Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div[%s]//label[1]",i));
+        while (i < 10) {
+            Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div//label[contains(text(),'%s')]", leagueName));
             if (!lblSelectValue.isDisplayed()) {
-                System.out.println("Cannot find out league in list of Leagues: " + leagueName);
-                break;
+                btnSetSelection.click();
+                waitSpinnerDisappeared();
+                btnShow.click();
+                waitSpinnerDisappeared();
+                btnLeagues.click();
+                waitSpinnerDisappeared();
+                btnClearAll.click();
             }
-            if(lblSelectValue.getText().equalsIgnoreCase(leagueName)) {
+            if (lblSelectValue.getText().equalsIgnoreCase(leagueName)) {
                 lblSelectValue.click();
                 btnSetSelection.click();
                 waitSpinnerDisappeared();
                 break;
             }
             i = i + 1;
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
+
     public void filterSmartMaster(String masterName) {
         btnSmartMaster.click();
         waitSpinnerDisappeared();
         btnClearAll.click();
         int i = 1;
         while (true) {
-            Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div[%s]//label[1]",i));
+            Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div[%s]//label[1]", i));
             if (!lblSelectValue.isDisplayed()) {
                 System.out.println("Cannot find out league in list of Leagues: " + masterName);
                 break;
             }
-            if(lblSelectValue.getText().equalsIgnoreCase(masterName)) {
+            if (lblSelectValue.getText().equalsIgnoreCase(masterName)) {
                 lblSelectValue.click();
                 btnSetSelection.click();
                 break;
@@ -149,7 +187,7 @@ public class PTRiskPage extends WelcomePage {
     }
 
     public PTRiskBetListPopup openBetList(String homeName) {
-        Label homeNameXpath = Label.xpath(String.format("//app-pt-risk-control//th[@id='team-infor']//div[text()='%s']",homeName));
+        Label homeNameXpath = Label.xpath(String.format("//app-pt-risk-control//th[@id='team-infor']//div[text()='%s']", homeName));
         homeNameXpath.click();
         waitSpinnerDisappeared();
         return new PTRiskBetListPopup();
@@ -162,19 +200,19 @@ public class PTRiskPage extends WelcomePage {
         if (isHDP) {
             int rowHDPIndex = 2;
             for (int i = 1; i < rowTotalScoreCol; i++) {
-                Label cellValueXpath = Label.xpath(String.format("//app-pt-risk-control//th[@id='team-infor']//..//..//tr[%s]//td[%s]//span",rowHDPIndex,i));
+                Label cellValueXpath = Label.xpath(String.format("//app-pt-risk-control//th[@id='team-infor']//..//..//tr[%s]//td[%s]//span", rowHDPIndex, i));
                 String cellValue = cellValueXpath.getText();
                 try {
                     if (i >= 1 && i <= 8) {
-                        Assert.assertEquals(fullWinVal,cellValue);
+                        Assert.assertEquals(fullWinVal, cellValue);
                         forecastCorrect = true;
                     }
-                    if (i == 9){
-                        Assert.assertEquals(haflWinVal,cellValue);
+                    if (i == 9) {
+                        Assert.assertEquals(haflWinVal, cellValue);
                         forecastCorrect = true;
                     }
                     if (i > 9) {
-                        Assert.assertEquals(fullLoseVal,cellValue);
+                        Assert.assertEquals(fullLoseVal, cellValue);
                         forecastCorrect = true;
                     }
                 } catch (Exception e) {
@@ -187,18 +225,18 @@ public class PTRiskPage extends WelcomePage {
         return forecastCorrect;
     }
 
-    public boolean isBetTypeBasketIs1X2(){
+    public boolean isBetTypeBasketIs1X2() {
         btnBetTypes.click();
         waitSpinnerDisappeared();
         Label lblValueList = Label.xpath("//div[@class='modal-content']//div[@class='list-item-filter']//div//label");
-        boolean is1Item = lblValueList.getWebElements().size()==1 ? true: false;
+        boolean is1Item = lblValueList.getWebElements().size() == 1 ? true : false;
         int index = 1;
-        while(is1Item){
+        while (is1Item) {
             Label lblValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div//label[%s]", index));
-            if(lblValue.isDisplayed()){
-                return lblValue.getText().equalsIgnoreCase("1x2")? true:false;
+            if (lblValue.isDisplayed()) {
+                return lblValue.getText().equalsIgnoreCase("1x2") ? true : false;
             }
-            if(!lblValue.isDisplayed()){
+            if (!lblValue.isDisplayed()) {
                 System.out.println("NOT Found item");
                 return false;
             }
@@ -206,54 +244,54 @@ public class PTRiskPage extends WelcomePage {
         return is1Item;
     }
 
-    public Map<String, String> getEntriesValueOfTableSport(String leagueName, String teamName, String indexHeaderRow, String indexValueRow){
+    public Map<String, String> getEntriesValueOfTableSport(String leagueName, String teamName, String indexHeaderRow, String indexValueRow) {
         String tableXpath = getXpathPTSportLeagueTable(leagueName, teamName);
         Map<String, String> entries = new LinkedHashMap<>();
         int i = 1;
-        while(true){
+        while (true) {
             Label primaryCell = Label.xpath(tableXpath + String.format("/tr[%s]//td[%s]", indexHeaderRow, i));
             Label valueCell = Label.xpath(tableXpath + String.format("/tr[%s]//td[%s]", indexValueRow, i));
-            if(primaryCell.isDisplayed() && valueCell.isDisplayed()){
+            if (primaryCell.isDisplayed() && valueCell.isDisplayed()) {
                 entries.put(primaryCell.getText().trim(), valueCell.getText().trim());
                 i++;
             }
-            if(!primaryCell.isDisplayed() || !valueCell.isDisplayed()){
+            if (!primaryCell.isDisplayed() || !valueCell.isDisplayed()) {
                 System.out.println("NOT Found the value return Map entry");
                 return entries;
             }
         }
     }
 
-    public String getXpathPTSportLeagueTable(String leagueName, String teamName){
+    public String getXpathPTSportLeagueTable(String leagueName, String teamName) {
         int tableLeagueIndex = findTableSportIndex(leagueName);
         int indexTeamTable = 1;
-        while(true){
+        while (true) {
             Label lblCellValue = Label.xpath(String.format("//div[@class='bet-list']/table[%s]//table[%s]//th", tableLeagueIndex, indexTeamTable));
-            if(lblCellValue.getText().contains(teamName)){
+            if (lblCellValue.getText().contains(teamName)) {
                 System.out.println("Found table of League Name: " + leagueName + ", team Name: " + teamName);
                 break;
             }
             indexTeamTable++;
-            if(!lblCellValue.isDisplayed()){
-                System.out.println("NOT Found table of League Name: " +  leagueName + ", team Name: " + teamName);
+            if (!lblCellValue.isDisplayed()) {
+                System.out.println("NOT Found table of League Name: " + leagueName + ", team Name: " + teamName);
                 indexTeamTable = -1;
                 break;
             }
         }
-        return String.format("//div[@class='bet-list']/table[%s]//table[%s]", indexTeamTable,tableLeagueIndex);
+        return String.format("//div[@class='bet-list']/table[%s]//table[%s]", indexTeamTable, tableLeagueIndex);
     }
 
 
-    public int findTableSportIndex(String leagueName){
+    public int findTableSportIndex(String leagueName) {
         int index = 1;
-        while(true){
+        while (true) {
             Label lblCellName = Label.xpath(String.format("//div[@class='bet-list']/table[%s]/tr", index));
-            if(lblCellName.getText().equalsIgnoreCase(leagueName)){
+            if (lblCellName.getText().equalsIgnoreCase(leagueName)) {
                 System.out.println("Found table of League Name: " + leagueName);
                 return index;
             }
             index++;
-            if(!lblCellName.isDisplayed()){
+            if (!lblCellName.isDisplayed()) {
                 System.out.println("NOT Found table of League Name: " + leagueName);
                 return -1;
             }
@@ -261,12 +299,12 @@ public class PTRiskPage extends WelcomePage {
     }
 
     public boolean verifyRemoveBet(Order order) {
-        Label homeNameXpath = Label.xpath(String.format("//app-pt-risk-control//th[@id='team-infor']//div[text()=\"%s\"]",order.getEvent().getHome()));
-        if (!homeNameXpath.isDisplayed()){
+        Label homeNameXpath = Label.xpath(String.format("//app-pt-risk-control//th[@id='team-infor']//div[text()=\"%s\"]", order.getEvent().getHome()));
+        if (!homeNameXpath.isDisplayed()) {
             return true;
         } else {
             PTRiskBetListPopup ptRiskBetListPopup = openBetList(order.getEvent().getHome());
-            if (!ptRiskBetListPopup.verifyOrder(order)){
+            if (!ptRiskBetListPopup.verifyOrder(order)) {
                 return true;
             }
         }
@@ -275,17 +313,17 @@ public class PTRiskPage extends WelcomePage {
 
     public void verifyUI() {
         System.out.println("Company Unit, Report By, Live/NonLive, From Date, To Date, Order By, Bet Types, Leagues, Events, Clients, Smart Master, Smart Agent, Show button and Copy Report");
-        Assert.assertTrue(ddpCompanyUnit.isDisplayed(),"Company Unit dropdown box is not displayed!");
-        Assert.assertTrue(ddpReportType.isDisplayed(),"Report Type dropdown box is not displayed!");
-        Assert.assertTrue(ddpLiveNonLive.isDisplayed(),"Live/Non Live dropdown box is not displayed!");
-        Assert.assertTrue(txtFromDate.isDisplayed(),"From Date is not displayed!");
-        Assert.assertTrue(txtToDate.isDisplayed(),"To Date is not displayed!");
-        Assert.assertTrue(ddpOrderBy.isDisplayed(),"Live/Non Live dropdown box is not displayed!");
-        Assert.assertTrue(btnBetTypes.isDisplayed(),"Bet Types dropdown is not displayed!");
-        Assert.assertTrue(btnLeagues.isDisplayed(),"Leagues dropdown is not displayed!");
-        Assert.assertTrue(btnEvents.isDisplayed(),"Events dropdown is not displayed!");
-        Assert.assertTrue(btnClient.isDisplayed(),"Clients dropdown is not displayed!");
-        Assert.assertTrue(btnSmartMaster.isDisplayed(),"Smart Master dropdown is not displayed!");
-        Assert.assertTrue(btnSmartAgent.isDisplayed(),"Smart Agent dropdown is not displayed!");
+        Assert.assertTrue(ddpCompanyUnit.isDisplayed(), "Company Unit dropdown box is not displayed!");
+        Assert.assertTrue(ddpReportType.isDisplayed(), "Report Type dropdown box is not displayed!");
+        Assert.assertTrue(ddpLiveNonLive.isDisplayed(), "Live/Non Live dropdown box is not displayed!");
+        Assert.assertTrue(txtFromDate.isDisplayed(), "From Date is not displayed!");
+        Assert.assertTrue(txtToDate.isDisplayed(), "To Date is not displayed!");
+        Assert.assertTrue(ddpOrderBy.isDisplayed(), "Live/Non Live dropdown box is not displayed!");
+        Assert.assertTrue(btnBetTypes.isDisplayed(), "Bet Types dropdown is not displayed!");
+        Assert.assertTrue(btnLeagues.isDisplayed(), "Leagues dropdown is not displayed!");
+        Assert.assertTrue(btnEvents.isDisplayed(), "Events dropdown is not displayed!");
+        Assert.assertTrue(btnClient.isDisplayed(), "Clients dropdown is not displayed!");
+        Assert.assertTrue(btnSmartMaster.isDisplayed(), "Smart Master dropdown is not displayed!");
+        Assert.assertTrue(btnSmartAgent.isDisplayed(), "Smart Agent dropdown is not displayed!");
     }
 }

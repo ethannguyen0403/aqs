@@ -24,7 +24,7 @@ public class IPMonitoringPage extends WelcomePage {
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
     public TextBox txtToDate = TextBox.name("toDate");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
-    public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Table tblData = Table.xpath("//table",7);
     public void filter(String bookie, String country, String ip, String accountCode, String fromDate, String toDate){
         if (!bookie.isEmpty()){

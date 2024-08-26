@@ -38,7 +38,7 @@ public class HandicapLiabilityPage extends WelcomePage {
     public Label lblShowLeagues = Label.xpath("//div[contains(text(),'Show Leagues')]");
     public Label lblShowGroups = Label.xpath("//div[contains(text(),'Show Groups')]");
     public Label lblShowEvents = Label.xpath("//div[contains(text(),'Show Events')]");
-    public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Button btnShowGroups = Button.xpath("//div[contains(text(),'Show Groups')]");
     public Button btnSetSelection = Button.xpath("//button[contains(text(),'Set Selection')]");
     public Table tblOrder = Table.xpath("//app-handicap-liability//table",15);
@@ -115,7 +115,7 @@ public class HandicapLiabilityPage extends WelcomePage {
         Assert.assertEquals(ddpStake.getOptions(),STAKE_LIST,"Failed! Stake dropdown is not displayed");
         System.out.println("Show Bet Types, Show Leagues, Show Groups, Show Events and Show button");
         Assert.assertEquals(lblShowBetType.getText(),"Show Bet Types\nAll","Failed! Show Bet Types button is not displayed");
-        Assert.assertEquals(lblShowLeagues.getText(), "Show Leagues\nAll","Failed! Show Leagues button is not displayed");
+        Assert.assertEquals(lblShowLeagues.getText(), "Show Leagues\n1","Failed! Show Leagues button is not displayed");
         Assert.assertEquals(lblShowGroups.getText(),"Show Groups\nAll","Failed! Show Groups button is not displayed");
         Assert.assertEquals(lblShowEvents.getText(),"Show Events\nAll","Failed! Show Events button is not displayed");
         Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");

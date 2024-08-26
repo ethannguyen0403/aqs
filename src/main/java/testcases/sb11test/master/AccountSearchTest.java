@@ -39,7 +39,7 @@ public class AccountSearchTest extends BaseCaseAQS {
         log("Textbox: Search");
         Assert.assertTrue(accountSearchPage.txtAccountSearch.isDisplayed(),"Failed! Show button is not displayed!");
         log("Button: Show");
-        Assert.assertEquals(accountSearchPage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(accountSearchPage.btnShow.getText(),"SHOW","Failed! Show button is not displayed!");
         log("INFO: Executed completely");
     }
 

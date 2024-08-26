@@ -17,7 +17,7 @@ public class UserActivityMonitoringPage extends WelcomePage {
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
     public TextBox txtUsername = TextBox.xpath("//div[contains(text(),'Username')]//following-sibling::div//input");
-    public Button btnShow = Button.xpath("//button[text()='Show']");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     int colNum = 5;
     public Table tblUser = Table.xpath("//table",colNum);
 
@@ -26,8 +26,8 @@ public class UserActivityMonitoringPage extends WelcomePage {
             dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
             waitSpinnerDisappeared();
         }
-        if (!fromDate.isEmpty()){
-            dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+        if (!toDate.isEmpty()){
+            dtpToDate.selectDate(fromDate,"dd/MM/yyyy");
             waitSpinnerDisappeared();
         }
         txtUsername.sendKeys(username);

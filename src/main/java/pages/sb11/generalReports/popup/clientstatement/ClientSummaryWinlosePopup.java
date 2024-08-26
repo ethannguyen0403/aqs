@@ -15,7 +15,7 @@ public class ClientSummaryWinlosePopup {
     Label lblSpin = Label.xpath("//div[contains(@class,'la-ball-clip-rotate')]");
 
     public String getGrandTotal(int colIndex) {
-        return Label.xpath(String.format("(//td[text()='Grand Total']/following-sibling::td)[%s]",colIndex)).getText();
+        return Label.xpath(String.format("(//td[text()='Grand Total']/following-sibling::td)[%s]",colIndex)).getText().trim();
     }
     public void waitSpinnerDisappeared() {
         while(lblSpin.isDisplayed()) {

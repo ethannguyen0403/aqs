@@ -19,7 +19,7 @@ public class BookieBalancePage extends WelcomePage {
     DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container");
     TextBox txtBookieCode = TextBox.xpath("//div[contains(text(),'Bookie Code')]/parent::div//input");
     public DropDownBox ddShowTotalIn = DropDownBox.xpath("//div[contains(text(),'Show Total In')]/parent::div//select");
-    Button btnShow = Button.xpath("//button[text()='Show']");
+    Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public int colBookie = 2;
     public int colTotalInHKD = 3;
     public Table tblBookie = Table.xpath("(//table)[1]",7);
@@ -41,6 +41,7 @@ public class BookieBalancePage extends WelcomePage {
             txtBookieCode.sendKeys(bookieCode);
         }
         btnShow.click();
+        waitSpinnerDisappeared();
         waitSpinnerDisappeared();
     }
     public BalanceDetailPage openBalanceDetailByBookie(String bookieName){

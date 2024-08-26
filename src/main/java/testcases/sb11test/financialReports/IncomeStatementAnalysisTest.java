@@ -133,7 +133,7 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
         int firstCodeIndex = 3;
         String month = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[0];
         String year = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[1];
-        int previousYear = DateUtils.getYear("GMT +7") - 1;
+        int previousYear = Integer.parseInt(FINANCIAL_YEAR.split(" ")[1].split("-")[0]);
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data with Before CJE option");
@@ -159,13 +159,13 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3411")
-    @Test(groups = {"regression", "2024.V.1.0","ethan3.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan5.0"})
     public void IncomeStatement_Analysis_TC3411() {
         log("@title: Validate [Filtered month] amounts displays correctly with After CJE option");
         int firstCodeIndex = 3;
         String month = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[0];
         String year = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[1];
-        int previousYear = DateUtils.getYear("GMT +7") - 1;
+        int previousYear = Integer.parseInt(FINANCIAL_YEAR.split(" ")[1].split("-")[0]);
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage = welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data with Before CJE option");
@@ -218,65 +218,63 @@ public class IncomeStatementAnalysisTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "3413")
-    @Test(groups = {"regression", "2024.V.1.0","ethan3.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan5.0"})
     public void IncomeStatement_Analysis_TC3413() {
         log("@title: Validate [previous financial year] displays correct amount ");
         int firstCodeIndex = 3;
-        String month = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[0];
-        String year = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[1];
-        int previousYear = DateUtils.getYear("GMT +7") - 1;
-        String lblFilterPreviousYear = String.format("Year %s-%s", previousYear - 1, previousYear);
+        String financialYear = welcomePage.pickFinancialYear(FINANCIAL_YEAR);
+        int previousYear = Integer.parseInt(financialYear.split(" ")[1].split("-")[0]);
+        String yearMonth = String.format("%d - %s",previousYear + 1,DateUtils.getMonthYear("GMT +7", -1, "MMMM"));
 
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data with Before CJE option");
-        incomeAnaPage.filter(KASTRAKI_LIMITED, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
-        String amountIncome = incomeAnaPage.getCellValueOfMonthCol(lblFilterPreviousYear.toUpperCase(), firstCodeIndex).replace("-", "");
+        incomeAnaPage.filter(KASTRAKI_LIMITED, financialYear, yearMonth, REPORT_TYPE.get(0));
+        String amountIncome = incomeAnaPage.getCellValueOfMonthCol(financialYear.toUpperCase(), firstCodeIndex).replace("-", "");
         String chartCodeAccount = incomeAnaPage.getChartCodeAccount(firstCodeIndex);
 
         log("@Step 3: Go to General Reports >> Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
         ledgerStatementPage.waitSpinnerDisappeared();
         log(String.format("@Step 4: Get value of Account: %s and filter time: 01/08/%s - 31/07/%s on Ledger Statement page",
-                chartCodeAccount, previousYear - 1, previousYear));
+                chartCodeAccount, previousYear, previousYear + 1));
         log("@Step info: If filter financial year =2022-2023, then amounts of previous financial year is the YEAR 2021-2022 can get from ledger statement from 01-08-2021 to 31-07-2022");
-        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, lblFilterPreviousYear, "All", chartCodeAccount,
-                String.format("01/08/%s", previousYear - 1),
-                String.format("31/07/%s", previousYear), REPORT_TYPE.get(0));
-        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal("Shown in HKD");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, financialYear, "All", chartCodeAccount,
+                String.format("01/08/%s", previousYear),
+                String.format("31/07/%s", previousYear + 1), REPORT_TYPE.get(0));
+        String amountLedger = ledgerStatementPage.getTotalInHKD(chartCodeAccount,"CUR Translation","Running Bal.");
         log("@Verify 1: Validate [previous financial year] display amounts of details type, parent accounts in the previous financial year accordingly");
         Assert.assertEquals(amountIncome, amountLedger, "FAILED! The amounts of [previous financial year] displays incorrect");
         log("INFO: Executed completely");
     }
 
     @TestRails(id = "3414")
-    @Test(groups = {"regression", "2024.V.1.0","ethan3.0"})
+    @Test(groups = {"regression", "2024.V.1.0","ethan5.0"})
     public void IncomeStatement_Analysis_TC3414() {
         log("@title: Validate [Filtered financial year] displays correct amount");
         int firstCodeIndex = 3;
-        String month = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[0];
-        String year = DateUtils.getMonthYear("GMT +7", 0, "MMMM/yyyy").split("/")[1];
-        int previousYear = DateUtils.getYear("GMT +7") - 1;
-        String lblFilterYear = String.format("Year %s-%s", previousYear, year);
+        String financialYear = welcomePage.pickFinancialYear(FINANCIAL_YEAR);
+        int previousYear = Integer.parseInt(financialYear.split(" ")[1].split("-")[0]);;
+        String yearMonth = String.format("%d - %s",previousYear + 1,DateUtils.getMonthYear("GMT +7", -1, "MMMM"));
 
         log("@Step 1: Go to Financial Reports >> Income Statement - Analysis");
         IncomeStatementAnalysisPage incomeAnaPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, INCOME_STATEMENT_ANALYSIS, IncomeStatementAnalysisPage.class);
         log("@Step 2: Filter which have data with Before CJE option");
-        incomeAnaPage.filter(KASTRAKI_LIMITED, "", String.format("%s - %s", year, month), REPORT_TYPE.get(0));
-        String amountIncome = incomeAnaPage.getCellValueOfMonthCol(lblFilterYear.toUpperCase(), firstCodeIndex).replace("-", "");
+        incomeAnaPage.filter(KASTRAKI_LIMITED, financialYear, yearMonth, REPORT_TYPE.get(0));
+        String amountIncome = incomeAnaPage.getCellValueOfMonthCol(financialYear.toUpperCase(), firstCodeIndex).replace("-", "");
         String chartCodeAccount = incomeAnaPage.getChartCodeAccount(firstCodeIndex);
 
         log("@Step 3: Go to General Reports >> Ledger Statement");
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
         ledgerStatementPage.waitSpinnerDisappeared();
         log(String.format("@Step 4: Get value of Account: %s and filter time: 01/08/%s - 31/07/%s on Ledger Statement page",
-                chartCodeAccount, previousYear, year));
+                chartCodeAccount, previousYear, previousYear + 1));
         log("@Step info: If filter financial year =2022-2023, then amounts of previous financial year is the YEAR 2021-2022 can get from ledger statement from 01-08-2021 to 31-07-2022");
-        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, lblFilterYear, "All", chartCodeAccount, String.format("01/08/%s", previousYear),
-                String.format("31/07/%s", year), REPORT_TYPE.get(0));
-        String amountLedger = ledgerStatementPage.getGrandTotalByRunningBal("Shown in HKD");
+        ledgerStatementPage.showLedger(KASTRAKI_LIMITED, financialYear, "All", chartCodeAccount, String.format("01/08/%s", previousYear),
+                String.format("31/07/%s", previousYear + 1), REPORT_TYPE.get(0));
+        String amountLedger = ledgerStatementPage.getTotalInHKD(chartCodeAccount,"CUR Translation","Running Bal.");
         log("@Verify 1: Validate display amounts of details type, parent accounts in the filtered financial year accordingly");
         Assert.assertEquals(Double.valueOf(amountIncome), Double.valueOf(amountLedger),1.0, "FAILED! The amounts of [Filtered financial year] displays incorrect");
         log("INFO: Executed completely");

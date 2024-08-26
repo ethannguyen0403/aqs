@@ -36,7 +36,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.12.29","ethan2.0"})
+    @Test(groups = {"regression", "2023.12.29","ethan5.0"})
     @TestRails(id = "2811")
     public void BalanceSheetAnalysisTC_2811() {
         log("@title: Validate can Export To Excel successfully");
@@ -45,7 +45,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         BalanceSheetAnalysisPage balanceAnalysisPage =
                 welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 3: Filter with month that has data");
-        balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
+        balanceAnalysisPage.filter(KASTRAKI_LIMITED, "Year 2023-2024", "2023 - December", REPORT_TYPE.get(0));
         log("@Step 4: Click to export excel button");
         balanceAnalysisPage.exportFile("Excel");
         log("@Verify 1: Validate excel file was downloaded successfully");
@@ -55,7 +55,7 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Post-condition: delete download file");
     }
 
-    @Test(groups = {"regression", "2023.12.29","ethan"})
+    @Test(groups = {"regression", "2023.12.29","ethan5.0"})
     @TestRails(id = "2812")
     public void BalanceSheetAnalysisTC_2812(){
         log("@title: Validate data will sort by Parent Account Number ascendingly");
@@ -63,14 +63,14 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
         BalanceSheetAnalysisPage balanceAnalysisPage = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 3: Filter with month that has data");
-        balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
+        balanceAnalysisPage.filter(KASTRAKI_LIMITED, "Year 2023-2024", "2023 - December", REPORT_TYPE.get(0));
         log("@Verify 1: Data should sort by Parent Account Number ascendingly");
         List<String> assetAccount = balanceAnalysisPage.getParentAccountList("Asset");
         Assert.assertTrue(balanceAnalysisPage.verifyParentAccountSortAsc(assetAccount, true), "FAILED! Parent account of Asset is not sorted asc. List: "+ assetAccount);
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.12.29","ethan"})
+    @Test(groups = {"regression", "2023.12.29","ethan5.0"})
     @TestRails(id = "9143")
     public void BalanceSheetAnalysisTC_9143(){
         log("@title: Validate Debit column data is displayed correctly positive amount from Ledger Statement - 'Amounts are shown in HKD' section");
@@ -79,10 +79,10 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         int year = DateUtils.getYear("GMT +7");
         String firstDayOfMonth = DateUtils.getFirstDateOfMonth(year, month, "dd/MM/yyyy");
         String lastDayOfMonth = DateUtils.getLastDateOfMonth(year, month, "dd/MM/yyyy");
-
+        String financialYear = welcomePage.pickFinancialYear(FINANCIAL_YEAR);
         LedgerStatementPage ledgerPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
         ledgerPage.waitSpinnerDisappeared();
-        ledgerPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Asset", QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT, firstDayOfMonth, lastDayOfMonth, REPORT_TYPE.get(0));
+        ledgerPage.showLedger(KASTRAKI_LIMITED, financialYear, "Asset", QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT, firstDayOfMonth, lastDayOfMonth, REPORT_TYPE.get(0));
         String totalLedger = ledgerPage.getTotalInHKD(QA_LEDGER_GROUP_ASSET_PARENT_ACCOUNT,"CUR Translation","Running Bal.");
         boolean isPositiveNumber = ledgerPage.isTotalAmountPositiveNumber("Total in HKD", "CUR Translation", "Running Bal.");
         log("@Step 1: Login with valid account");
@@ -90,13 +90,13 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         BalanceSheetAnalysisPage balanceAnalysisPage = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 3: Filter with month that has transactions at pre-condition");
         String monthFilter = DateUtils.getLastDateOfMonth(year, month, "yyyy - MMMM");
-        balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, monthFilter, REPORT_TYPE.get(0));
+        balanceAnalysisPage.filter(KASTRAKI_LIMITED, financialYear, monthFilter, REPORT_TYPE.get(0));
         log("@Verify 1: Validate Debit column data is displayed correctly positive amount from Ledger Statement - 'Amounts are shown in HKD' section");
         String creditValue = balanceAnalysisPage.getValueDeCreOfSubAcc(LEDGER_GROUP_NAME_ASSET, "current",isPositiveNumber);
         Assert.assertEquals(creditValue, totalLedger, "FAILED! Data of Balance sheet table is not correct");
     }
 
-    @Test(groups = {"regression", "2023.12.29","ethan3.0"})
+    @Test(groups = {"regression", "2023.12.29","ethan5.0"})
     @TestRails(id = "9144")
     public void BalanceSheetAnalysisTC_9144(){
         log("@title: Validate Credit column data is displayed correctly negative amount from Ledger Statement - 'Amounts are shown in HKD' section");
@@ -105,10 +105,10 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         int year = DateUtils.getYear("GMT +7");
         String firstDayOfMonth = DateUtils.getFirstDateOfMonth(year, month, "dd/MM/yyyy");
         String lastDayOfMonth = DateUtils.getLastDateOfMonth(year, month, "dd/MM/yyyy");
-
+        String financialYear = welcomePage.pickFinancialYear(FINANCIAL_YEAR);
         LedgerStatementPage ledgerPage = welcomePage.navigatePage(GENERAL_REPORTS, LEDGER_STATEMENT, LedgerStatementPage.class);
         ledgerPage.waitSpinnerDisappeared();
-        ledgerPage.showLedger(KASTRAKI_LIMITED, FINANCIAL_YEAR, "Asset", QA_ASSET_PARENT_ACCOUNT_700, firstDayOfMonth, lastDayOfMonth, REPORT_TYPE.get(0));
+        ledgerPage.showLedger(KASTRAKI_LIMITED, financialYear, "Asset", QA_ASSET_PARENT_ACCOUNT_700, firstDayOfMonth, lastDayOfMonth, REPORT_TYPE.get(0));
         String totalLedger = ledgerPage.getTotalInHKD(QA_ASSET_PARENT_ACCOUNT_700,"CUR Translation","Running Bal.");
         boolean isPositiveNumber = ledgerPage.isTotalAmountPositiveNumber("Total in HKD", "CUR Translation", "Running Bal.");
 
@@ -117,13 +117,13 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         BalanceSheetAnalysisPage balanceAnalysisPage = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 3: Filter with month that has transactions at pre-condition");
         String monthFilter = DateUtils.getLastDateOfMonth(year, month, "yyyy - MMMM");
-        balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, monthFilter, REPORT_TYPE.get(0));
+        balanceAnalysisPage.filter(KASTRAKI_LIMITED, financialYear, monthFilter, REPORT_TYPE.get(0));
         log("@Verify 1: Validate Credit column data is displayed correctly negative amount from Ledger Statement - 'Amounts are shown in HKD' section");
         String debitValue = balanceAnalysisPage.getValueDeCreOfSubAcc(LEDGER_GROUP_NAME_ASSET_700, "current",isPositiveNumber);
         Assert.assertEquals(debitValue, totalLedger, "FAILED! Data of Balance sheet table is not correct");
     }
 
-    @Test(groups = {"regression", "2023.12.29","ethan"})
+    @Test(groups = {"regression", "2023.12.29","ethan5.0"})
     @TestRails(id = "9145")
     public void BalanceSheetAnalysisTC_9145(){
         log("@title: Validate Txns column data is taken Debit/Credit amount of the selected month then minus the amount in the previous month");
@@ -131,12 +131,9 @@ public class BalanceSheetAnalysisTest extends BaseCaseAQS {
         log("@Step 2: Access to SB11 > Financial Reports > Balance Sheet - Analysis");
         BalanceSheetAnalysisPage balanceAnalysisPage = welcomePage.navigatePage(FINANCIAL_REPORTS, BALANCE_SHEET_ANALYSIS, BalanceSheetAnalysisPage.class);
         log("@Step 3: Filter with month that has data");
-        balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "2023 - December", REPORT_TYPE.get(0));
+        balanceAnalysisPage.filter(KASTRAKI_LIMITED, FINANCIAL_YEAR, "", REPORT_TYPE.get(0));
         log("@Verify 1: Validate Txns column data is displayed = Debit/Credit amount of the selected month then minus the amount in the previous month ");
-        Double creditSelectedMonth = Double.valueOf(balanceAnalysisPage.getValueDeCreOfSubAcc(LEDGER_GROUP_NAME_ASSET, "current",false));
-        Double creditPreviousMonth = Double.valueOf(balanceAnalysisPage.getValueDeCreOfSubAcc(LEDGER_GROUP_NAME_ASSET, "previous",false));
-        String creditTxns = balanceAnalysisPage.getValueDeCreOfSubAcc(LEDGER_GROUP_NAME_ASSET,"txns", false);
-        Assert.assertEquals(creditTxns, String.format("%.2f", creditSelectedMonth-creditPreviousMonth), "FAILED! Txns data is not correct");
+        balanceAnalysisPage.verifyTxnValueOfAccount(LEDGER_GROUP_NAME_ASSET);
     }
 
     @Test(groups = {"regression", "2024.V.2.0","ethan2.0"})

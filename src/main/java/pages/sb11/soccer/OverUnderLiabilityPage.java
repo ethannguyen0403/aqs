@@ -39,7 +39,7 @@ public class OverUnderLiabilityPage extends WelcomePage {
     public Label lblShowLeagues = Label.xpath("//div[contains(text(),'Show Leagues')]");
     public Label lblShowGroups = Label.xpath("//div[contains(text(),'Show Groups')]");
     public Label lblShowEvents = Label.xpath("//div[contains(text(),'Show Events')]");
-    public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Button btnShowGroups = Button.xpath("//div[contains(text(),'Show Groups')]");
     public Button btnSelectAll = Button.xpath("//button[contains(text(),'Select All')]");
     public Button btnClearAll = Button.xpath("//button[contains(text(),'Clear All')]");
@@ -156,7 +156,7 @@ public class OverUnderLiabilityPage extends WelcomePage {
         Assert.assertTrue(lblShowLeagues.getText().contains("Show Leagues"),"Failed! Show Leagues button is not displayed");
         Assert.assertEquals(lblShowGroups.getText(),"Show Groups\nAll","Failed! Show Groups button is not displayed");
         Assert.assertEquals(lblShowEvents.getText(),"Show Events\nAll","Failed! Show Events button is not displayed");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed");
         System.out.println("Event table header columns is correctly display");
         Assert.assertEquals(tblOrder.getHeaderNameOfRows(), SBPConstants.OverUnderLiability.TABLE_HEADER,"FAILED! Over/Under Liability Bets table header is incorrect display");
     }

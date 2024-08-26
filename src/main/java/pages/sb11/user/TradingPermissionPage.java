@@ -26,7 +26,7 @@ public class TradingPermissionPage extends WelcomePage {
     public DropDownBox ddpUserRole = DropDownBox.xpath("//div[contains(text(),'User Role')]//following::select[1]");
     public Label lblUsername = Label.xpath("//div[contains(text(),'Username')]");
     public TextBox txtUsername = TextBox.name("user-name");
-    public Button btnShow = Button.xpath("//app-trading-permission//button[text()='Show']");
+    public Button btnShow = Button.xpath("//app-trading-permission//button[contains(@class,'btn-show')]");
     public Table tbTradPermission = Table.xpath("//app-trading-permission//table",colTotal);
     public Label messageDialog = Label.xpath("//app-alert//div[@class='message-box']");
 
@@ -45,10 +45,12 @@ public class TradingPermissionPage extends WelcomePage {
         if (isChecked){
             if(!isChecking) {
                 cbAutoAssign.click();
+                waitSpinnerDisappeared();
             }
         } else {
             if(isChecking) {
                 cbAutoAssign.click();
+                waitSpinnerDisappeared();
             }
         }
     }
@@ -128,7 +130,7 @@ public class TradingPermissionPage extends WelcomePage {
         Assert.assertEquals(ddpCompanyUnit.getOptions(), CompanySetUpUtils.getListCompany(),"FAILED! Company Unit dropdown is not displayed!");
         Assert.assertTrue(ddpUserRole.getOptions().contains("Administrator"), "FAILED! Company Unit dropdown is not displayed!");
         Assert.assertEquals(lblUsername.getText(), "Username","FAILED! Username textbox is not displayed!");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed!");
         System.out.println("Customer table header columns is correctly display");
         Assert.assertEquals(tbTradPermission.getHeaderNameOfRows(), SBPConstants.TradingPermission.TABLE_HEADER,"FAILED! Pending table header is incorrect display");
     }

@@ -25,7 +25,7 @@ public class WinLossDetailPage extends WelcomePage {
     Button btnToday = Button.xpath("//span[text()='Today']//parent::button");
     Button btnYesterday = Button.xpath("//span[text()='Yesterday']//parent::button");
     Button btnLastWeek = Button.xpath("//span[text()='Last Week']//parent::button");
-    Button btnShow = Button.xpath("//span[text()='Show']//parent::button");
+    Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     Button btnDownloadExport = Button.xpath("//span[text()='Download Export File']//parent::button");
     Table tblData = Table.xpath("//table",28);
 

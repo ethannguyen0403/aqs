@@ -17,9 +17,9 @@ public class TransactionVerificationPage extends WelcomePage {
     public DropDownBox ddpWebsite = DropDownBox.xpath("//div[contains(text(),'Website')]//following::select[1]");
     public DropDownBox ddpSiteLogin = DropDownBox.xpath("//div[contains(text(),'Site Login')]//following::select[1]");
     public TextBox txtDate = TextBox.name("fromDate");
-    public DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-days-calendar-view");
+    public DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container");
     public Label lblDate = Label.xpath("//div[contains(text(),'Date')]");
-    public Button btnShow = Button.xpath("//button[text()='Show']");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
 
     public void filterTxn (String website, String siteLogin, String date){
         ddpWebsite.selectByVisibleText(website);
