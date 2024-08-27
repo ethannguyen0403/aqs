@@ -31,7 +31,7 @@ public class EventSchedulePage extends WelcomePage {
     Table tblEvent = Table.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//table",totalTblEventCol);
     Table tblLeague = Table.xpath("//app-schedule-list//table[contains(@class,'tbl-create-event-schedule')]",3);
     Button btnAdd = Button.xpath("//div[contains(@class,'modal-footer')]//button[contains(@class,'btn')][1]");
-    Button btnSubmit = Button.xpath("//div[contains(@class,'modal-footer')]//button[contains(@class,'btn')][2]");
+    Button btnSubmit = Button.xpath("//div[contains(@class,'modal-footer')]//button[contains(@class,'btn') and text()='Submit']");
     TextBox txtEventNumber = TextBox.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//div[contains(@class,'modal-footer')]//input");
     Label lblClear = Label.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//div[contains(@class,'modal-footer')]//span[contains(@class,'text-clear')]");
     RadioButton rbHome = RadioButton.xpath("//app-schedule-list//div[@class='league-header']//input[@id='homeTeamCheck']");
@@ -74,6 +74,7 @@ public class EventSchedulePage extends WelcomePage {
         //wait for league dropdown upload
         waitSpinnerDisappeared();
         selectLeague(league);
+        waitSpinnerDisappeared();
         if(!date.isEmpty()){
             dtpDateTime.selectDate(date,"dd/MM/yyyy");
         }

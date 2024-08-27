@@ -357,7 +357,7 @@ public class BetOrderTest extends BaseCaseAQS {
         try {
             PlaceOrderUtils.prepareOrder(orderID, headersParam);
             placeOverUnder(orderID, headersParam);
-
+            betOrderPage.waitSpinLoad();
             log(String.format("@Step 2: Filter Soccer data from %s to %s ", fromDate, toDate));
             betOrderPage.filterBetOrders(fromDate, toDate, "Soccer", true);
 
