@@ -36,7 +36,7 @@ public class JournalEntriesPage extends WelcomePage {
     public TextBox txtDateTrans = TextBox.xpath("//app-transaction-creation//span[contains(text(),'Remark')]//following::input[2]");
     public DateTimePicker dtpTrans = DateTimePicker.xpath(txtDateTrans,"//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
     public DropDownBox ddTransactionType = DropDownBox.xpath("//app-transaction-creation//span[contains(text(),'Transaction Type')]//following::select[1]");
-    public Button btnSubmit = Button.xpath("//app-transaction-creation//span[contains(text(),'Submit')]");
+    public Button btnSubmit = Button.xpath("//app-transaction-creation//span[contains(text(),'Submit')] | //app-transaction-creation//button[contains(text(),'Submit')]");
     public TextBox txtDebitAmount = TextBox.xpath("//app-transaction-creation//span[contains(text(),'Debit')]//following::table[1]//input");
     public TextBox txtCreditAmount = TextBox.xpath("//app-transaction-creation//span[contains(text(),'Credit')]//following::table[1]//input");
     int totalCol = 7;

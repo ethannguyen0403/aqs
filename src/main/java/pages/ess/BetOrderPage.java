@@ -73,13 +73,13 @@ public class BetOrderPage extends HomePage {
     }
 
     private void verifyDataInARowCorrectLyAsStatus(Table table, Order order, int rowIndex) {
-        String selectionName = table.getControlOfCell(1, colSelection, rowIndex, "div[1]//span[1]").getText();
-        String liveScore = table.getControlOfCell(1, colSelection, rowIndex, "div[1]//span[2]").getText();
-        String stageType = table.getControlOfCell(1, colMarket, rowIndex, "a").getText(); // FT-OU
-        String marketName = table.getControlOfCell(1, colMarket, rowIndex, "p").getText(); // Goald - IR
+        String selectionName = table.getControlOfCell(1, colSelection, rowIndex, "div[1]//span[1]").getText().trim();
+        String liveScore = table.getControlOfCell(1, colSelection, rowIndex, "div[1]//span[2]").getText().trim();
+        String stageType = table.getControlOfCell(1, colMarket, rowIndex, "a").getText().trim(); // FT-OU
+        String marketName = table.getControlOfCell(1, colMarket, rowIndex, "p").getText().trim(); // Goald - IR
         String eventDate = table.getControlOfCell(1, colEventDate, rowIndex, "span").getText();
-        String eventFullName = table.getControlOfCell(1, colEventEnglish, rowIndex, "span[1]").getText();
-        String competitionName = table.getControlOfCell(1, colEventEnglish, rowIndex, "span[2]").getText();
+        String eventFullName = table.getControlOfCell(1, colEventEnglish, rowIndex, "span[1]").getText().trim();
+        String competitionName = table.getControlOfCell(1, colEventEnglish, rowIndex, "span[2]").getText().trim();
         String agent = table.getControlOfCell(1, colAgentHilter, rowIndex, "span[1]").getText();
         String hitter = table.getControlOfCell(1, colAgentHilter, rowIndex, "span[2]").getText();
         String operator = table.getControlOfCell(1, colAgentHilter, rowIndex, "span[3]").getText();

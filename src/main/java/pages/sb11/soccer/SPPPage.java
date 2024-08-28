@@ -187,7 +187,7 @@ public class SPPPage extends WelcomePage {
     }
 
     public List<String> getRowDataOfGroup(String groupName){
-       return getGroupTable(groupName);
+        return getGroupTable(groupName);
     }
 
     private SmartGroupPopup clickSmartGroup(){
@@ -201,7 +201,6 @@ public class SPPPage extends WelcomePage {
     private List<String> getGroupTable(String groupName){
         int index = 1;
         Table tblGroup;
-        String groupCode;
         String tableXpath;
         while (true){
             tableXpath ="//app-spp//div[contains(@class,'filter bg-white')]["+ index +"]/table";
@@ -223,17 +222,27 @@ public class SPPPage extends WelcomePage {
         String cellXpath;
         int rowIndex = 1;
         String groupCode;
-        while (true){
+        int i = 0;
+        while (i < 10){
             cellXpath = String.format("%s%s", tblTableXpath, String.format("//tbody[1]/tr[%s]/th[%s]", rowIndex, colIndex));
             Label lblCel = Label.xpath(cellXpath);
-            if(!lblCel.isDisplayed())
-                return 0;
+            if(!lblCel.isDisplayed()){
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                btnShow.click();
+                waitSpinnerDisappeared();
+            }
             groupCode = lblCel.getText().trim();
             if(groupCode.equals(groupName)){
                 return rowIndex;
             }
             rowIndex = rowIndex +1;
+            i= i + 1;
         }
+        return 0;
     }
 
     // handle for get a data on input row
