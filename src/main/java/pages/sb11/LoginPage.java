@@ -1,6 +1,7 @@
 package pages.sb11;
 
 import com.paltech.element.common.Button;
+import com.paltech.element.common.Icon;
 import com.paltech.element.common.Label;
 import com.paltech.element.common.TextBox;
 import com.paltech.utils.DateUtils;
@@ -9,7 +10,9 @@ import common.SBPConstants;
 public class LoginPage {
     public TextBox txtUsername = TextBox.xpath("//input[@formcontrolname='username']");
     public TextBox txtPassword = TextBox.xpath("//input[@formcontrolname='password']");
+    public Icon icEyePwd = Icon.xpath("//input[@formcontrolname='password']//preceding-sibling::span//em[contains(@class,'fa-eye-slash')]");
     public TextBox txtCode = TextBox.xpath("//input[@formcontrolname='code']");
+    public Icon icEyeCode = Icon.xpath("//input[@formcontrolname='code']//preceding-sibling::span//em[contains(@class,'fa-eye-slash')]");
     public Button btnLogin = Button.xpath("//button[contains(@class,'btn-login')]");
     public Button btnCopyRight = Button.xpath("//em[contains(@class, 'far fa-copyright')]");
     Label tabEurope = Label.xpath("//app-login-camouflage//div[contains(@class,'top-panel')]//ul/li/span[text()='EUROPE']");
@@ -24,10 +27,12 @@ public class LoginPage {
     public WelcomePage login(String username, String password){
         openLoginForm();
         txtUsername.sendKeys(username);
+        icEyePwd.click();
         txtPassword.sendKeys(password);
         if(txtCode.isDisplayed()){
             String today= DateUtils.getDate(0,"yyyyMd", SBPConstants.GMT_8);
             String code = String.format("%s%s@))*",today,username);
+            icEyeCode.click();
             txtCode.sendKeys(code);
         }
         btnLogin.click();
