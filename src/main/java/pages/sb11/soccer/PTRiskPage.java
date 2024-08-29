@@ -49,15 +49,15 @@ public class PTRiskPage extends WelcomePage {
             ddpCompanyUnit.selectByVisibleText(companyUnit);
             waitSpinnerDisappeared();
         }
-        if (!sport.isEmpty()){
+        if (!sport.isEmpty()) {
             ddpSport.selectByVisibleText(sport);
             waitSpinnerDisappeared();
         }
-        if (!reportType.isEmpty()){
+        if (!reportType.isEmpty()) {
             ddpReportType.selectByVisibleText(reportType);
             waitSpinnerDisappeared();
         }
-        if (!liveNonlive.isEmpty()){
+        if (!liveNonlive.isEmpty()) {
             ddpLiveNonLive.selectByVisibleText(liveNonlive);
             waitSpinnerDisappeared();
         }
@@ -85,15 +85,15 @@ public class PTRiskPage extends WelcomePage {
     }
 
     private void checkLeagueDisplay(String companyUnit, String sport, String reportType, String fromDate, String toDate, String leagueName) {
-        btnLeagues.click();
-        waitSpinnerDisappeared();
-        btnClearAll.waitForControlInvisible();
-        waitSpinnerDisappeared();
-        btnClearAll.click();
         int i = 1;
         while (i < 10) {
+            btnLeagues.click();
+            waitSpinnerDisappeared();
+            btnClearAll.waitForControlInvisible();
+            waitSpinnerDisappeared();
+            btnClearAll.click();
             Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div//label[contains(text(),'%s')]", leagueName));
-            if (!lblSelectValue.isDisplayed()){
+            if (!lblSelectValue.isDisplayed()) {
                 DriverManager.getDriver().refresh();
                 waitSpinnerDisappeared();
                 try {
@@ -101,7 +101,7 @@ public class PTRiskPage extends WelcomePage {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                filter("",companyUnit,sport,reportType,"",fromDate,toDate,"");
+                filter("", companyUnit, sport, reportType, "", fromDate, toDate, "");
                 i = i + 1;
                 continue;
             }
@@ -137,30 +137,14 @@ public class PTRiskPage extends WelcomePage {
         btnClearAll.waitForControlInvisible();
         waitSpinnerDisappeared();
         btnClearAll.click();
-        int i = 1;
-        while (i < 10) {
-            Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div//label[contains(text(),'%s')]", leagueName));
-            if (!lblSelectValue.isDisplayed()) {
-                btnSetSelection.click();
-                waitSpinnerDisappeared();
-                btnShow.click();
-                waitSpinnerDisappeared();
-                btnLeagues.click();
-                waitSpinnerDisappeared();
-                btnClearAll.click();
-            }
-            if (lblSelectValue.getText().equalsIgnoreCase(leagueName)) {
-                lblSelectValue.click();
-                btnSetSelection.click();
-                waitSpinnerDisappeared();
-                break;
-            }
-            i = i + 1;
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div//label[contains(text(),'%s')]", leagueName));
+        if (!lblSelectValue.isDisplayed()) {
+            System.out.println(String.format("%s still not display", leagueName));
+        }
+        if (lblSelectValue.getText().equalsIgnoreCase(leagueName)) {
+            lblSelectValue.click();
+            btnSetSelection.click();
+            waitSpinnerDisappeared();
         }
     }
 

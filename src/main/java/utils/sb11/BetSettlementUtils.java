@@ -32,10 +32,7 @@ public class BetSettlementUtils {
         return WSUtils.getPOSTJSONArrayWithDynamicHeaders(endPoint, payLoad, headersParam);
     }
 
-    public static JSONArray getOrderConfirmedListJson(String accountId, String sportId, Order order) throws IOException {
-        if (sportId.equals("")) {
-            sportId = "0";
-        }
+    public static JSONArray getOrderConfirmedListJson(String accountId, Order order) throws IOException {
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
         Map<String, String> headersParam = new HashMap<String, String>() {
             {
@@ -56,15 +53,15 @@ public class BetSettlementUtils {
                         "    \"bookieId\": \"\",\n" +
                         "    \"timeZone\": \"Asia/Bangkok\",\n" +
                         "    \"accountId\": \"%s\",\n" +
-                        "    \"sportId\": \"%s\"\n" +
+                        "    \"sportId\": 0\n" +
                         "  }\n"
-                , String.format("%s 12:00:00",order.getCreateDate()), String.format("%s 12:00:00",order.getCreateDate()), order.getAccountCode(), accountId, sportId);
+                , String.format("%s 12:00:00", order.getCreateDate()), String.format("%s 12:00:00", order.getCreateDate()), order.getAccountCode(), accountId);
         return WSUtils.getPOSTJSONArrayWithDynamicHeaders(api, jsn, headersParam);
     }
 
     public static void sendManualBetSettleJson(String accountId, Order order, int betId, int wagerId, String sportId) {
         try {
-            String transDate = DateUtils.getDate(0,"yyyy-MM-dd",SBPConstants.GMT_7);
+            String transDate = DateUtils.getDate(0, "yyyy-MM-dd", SBPConstants.GMT_7);
             String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
             Map<String, String> headersParam = new HashMap<String, String>() {
                 {
@@ -136,7 +133,8 @@ public class BetSettlementUtils {
             System.out.println(e.getMessage());
         }
     }
-    public static void sendManualBetSettleJson(String accountCode, String sport, Order order){
+
+    public static void sendManualBetSettleJson(String accountCode, String sport, Order order) {
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         int betId = 0;
         int wagerId = 0;
@@ -147,15 +145,15 @@ public class BetSettlementUtils {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get(sport),order);
-            wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get(sport),order);
-            if (!(betId == 0) || !(wagerId == 0)){
-                sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get(sport));
+            betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get(sport), order);
+            wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get(sport), order);
+            if (!(betId == 0) || !(wagerId == 0)) {
+                sendManualBetSettleJson(accountId, order, betId, wagerId, SPORT_ID_MAP.get(sport));
                 break;
             }
             i++;
         }
-        sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get(sport));
+        sendManualBetSettleJson(accountId, order, betId, wagerId, SPORT_ID_MAP.get(sport));
     }
 
     public static void sendBetSettleAPI(Order order) {
@@ -237,7 +235,7 @@ public class BetSettlementUtils {
         JSONArray jsonArr = null;
         int betId = 0;
         try {
-            jsonArr = getOrderConfirmedListJson(accountId, sportId, order);
+            jsonArr = waitOrderConfirmedListDisplay(accountId, order);
         } catch (Exception e) {
             e.getMessage();
         }
@@ -246,8 +244,7 @@ public class BetSettlementUtils {
                 for (int i = 0; i < jsonArr.length(); i++) {
                     JSONObject orderObj = jsonArr.getJSONObject(i);
                     if (orderObj.getString("selection").equals(order.getSelection())) {
-                        betId = orderObj.getInt("id");
-                        return betId;
+                        return orderObj.getInt("id");
                     }
                 }
             }
@@ -255,11 +252,48 @@ public class BetSettlementUtils {
         return betId;
     }
 
+    private static JSONArray waitOrderConfirmedListDisplay(String accountId, Order order) {
+        JSONArray jsonArr = null;
+        int i = 0;
+        while (i < 3) {
+            try {
+                jsonArr = getOrderConfirmedListJson(accountId, order);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            if (jsonArr.length() == 0) {
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                i = i + 1;
+                continue;
+            } else if (jsonArr.length() > 0) {
+                for (int j = 0; j < jsonArr.length(); j++) {
+                    JSONObject orderObj = jsonArr.getJSONObject(j);
+                    if (orderObj.getString("selection").equals(order.getSelection())) {
+                        break;
+                    }
+                }
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                i = i + 1;
+                continue;
+            }
+            break;
+        }
+        return jsonArr;
+    }
+
     public static int getConfirmedBetWagerId(String accountId, String sportId, Order order) {
         JSONArray jsonArr = null;
         int betId = 0;
         try {
-            jsonArr = getOrderConfirmedListJson(accountId, sportId, order);
+            jsonArr = getOrderConfirmedListJson(accountId, order);
         } catch (Exception e) {
             e.getMessage();
         }
@@ -268,8 +302,7 @@ public class BetSettlementUtils {
                 for (int i = 0; i < jsonArr.length(); i++) {
                     JSONObject orderObj = jsonArr.getJSONObject(i);
                     if (orderObj.getString("selection").equals(order.getSelection())) {
-                        betId = orderObj.getInt("wagerId");
-                        return betId;
+                        return orderObj.getInt("wagerId");
                     }
                 }
             }

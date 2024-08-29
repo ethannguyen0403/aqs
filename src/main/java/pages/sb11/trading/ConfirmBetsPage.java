@@ -462,6 +462,9 @@ public class ConfirmBetsPage extends WelcomePage {
      * This methods is used to click show button if order is not updated
      */
     public void reClickShowButton(Order order){
+        if (Objects.isNull(order.getOrderId())){
+            order.setOrderId(order.getBetId());
+        }
         for (int i = 0; i < 5; i++){
             try {
                 Thread.sleep(2000);
@@ -472,6 +475,7 @@ public class ConfirmBetsPage extends WelcomePage {
                 break;
             }
             btnShow.click();
+            waitSpinnerDisappeared();
             waitSpinnerDisappeared();
         }
     }

@@ -48,12 +48,9 @@ public class SPPTest extends BaseCaseAQS {
         int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
         String accountId = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
         BetEntrytUtils.placeManualBetAPI(companyId, accountId, SPORT_ID_MAP.get("Soccer"), order);
-        BetSettlementUtils.waitForBetIsUpdate(15);
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Soccer"), order);
         int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Soccer"), order);
-        BetSettlementUtils.waitForBetIsUpdate(5);
         BetSettlementUtils.sendManualBetSettleJson(accountId, order, betId, wagerId, SPORT_ID_MAP.get("Soccer"));
-        BetSettlementUtils.waitForBetIsUpdate(20);
         log("@Step 1: Go to Client Statement >> client point >> select the client");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.filter("Client Point",KASTRAKI_LIMITED,FINANCIAL_YEAR,clientValue,date,"");
@@ -66,7 +63,6 @@ public class SPPTest extends BaseCaseAQS {
         SPPPage sppPage = clientPage.navigatePage(SOCCER,SPP,SPPPage.class);
         sppPage.filter("All", "Group","Smart Group","QA Smart Master","QA Smart Agent",date,date);
         String winloseSPP = sppPage.getRowDataOfGroup("QA Smart Group").get(sppPage.colWL);
-
         log("@verify 1: Validate the win/loss in the Client statement (step 2) matches with the win/loss of the group in the SPP page");
         sppPage.verifyAmountDataMatch(winlosePlayer,winloseSPP);
 
@@ -104,7 +100,6 @@ public class SPPTest extends BaseCaseAQS {
         SPPPage sppPage = bookieStatementPage.navigatePage(SOCCER,SPP,SPPPage.class);
         sppPage.filter("All", "Group","Smart Group","QA Smart Master","QA Smart Agent","","");
         String winloseSPP = sppPage.getRowDataOfGroup("QA Smart Group").get(sppPage.colWL);
-
         log("@verify 1: Validate the win/loss in the Client statement (step 2) matches with the win/loss of the group in the SPP page");
         sppPage.verifyAmountDataMatch(winlosePlayer,winloseSPP);
     }
