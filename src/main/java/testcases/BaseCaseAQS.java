@@ -71,7 +71,7 @@ public class BaseCaseAQS {
         if (isAddTestRailResult) {
             System.out.println("Add New Test Run in TestRails");
             client = new APIClient("https://paltech.testrail.io");
-            client.setUser("tim.dang@pal.net.vn");
+            client.setUser("isabella.huynh@pal.net.vn");
             client.setPassword("P@l332211");
             Map data = new HashMap();
             //data.put("suite_id",true);
