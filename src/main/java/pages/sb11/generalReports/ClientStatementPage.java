@@ -26,7 +26,7 @@ public class ClientStatementPage extends WelcomePage {
     public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(@class,'p-2 pb-4 pr-0 filter')][2]//select");
     public DropDownBox ddpFinancialYear = DropDownBox.xpath("//div[contains(@class,'p-2 pb-4 pr-0 filter')][3]//select");
     DropDownBox ddpClients = DropDownBox.xpath("//div[contains(@class,'p-2 pb-4 pr-0 filter')][4]//select");
-    TextBox txtFromDate = TextBox.name("fromDate");
+    public TextBox txtFromDate = TextBox.name("fromDate");
     TextBox txtToDate = TextBox.name("toDate");
     Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate, "//bs-datepicker-container//div[contains(@class,'bs-datepicker-container')]//div[contains(@class,'bs-calendar-container ')]");
@@ -155,8 +155,19 @@ public class ClientStatementPage extends WelcomePage {
         } else {
             lblCellAgent.scrollToThisControl(false);
             lblCellAgent.click();
-//            Label.xpath(xpath + "/a").click();
             waitSpinnerDisappeared();
+            Label lblNoRecord = Label.xpath("//app-ledger-member-summary//td[contains(text(),'No Records Found.')]");
+            int i = 0;
+            while (i < 10){
+                if (!lblNoRecord.isDisplayed()){
+                    break;
+                }
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             return new ClientSummaryPopup();
         }
     }

@@ -24,7 +24,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan2.0"})
+    @Test(groups = {"regression","ethan5.0"})
     @TestRails(id = "2067")
     public void Trading_Permission_TC_2067(){
         log("@title: Validate UI on Trading Permission is correctly displayed");
@@ -36,7 +36,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan4.0"})
+    @Test(groups = {"regression","ethan5.0"})
     @TestRails(id = "2068")
     @Parameters("username")
     public void Trading_Permission_TC_2068(String username){
@@ -52,7 +52,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression_stg","ethan3.0"})
+    @Test(groups = {"regression_stg","ethan5.0"})
     @TestRails(id = "2069")
     @Parameters("username")
     public void Trading_Permission_TC_2069(String username) throws InterruptedException {
@@ -68,7 +68,7 @@ public class TradingPermissionTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression_stg"})
+    @Test(groups = {"regression_stg","ethan5.0"})
     @TestRails(id = "2070")
     @Parameters("userNameOneRole")
     public void Trading_Permission_TC_2070(String username) throws InterruptedException {

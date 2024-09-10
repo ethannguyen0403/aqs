@@ -39,7 +39,7 @@ public class OverUnderCornerLiabilityPage extends WelcomePage {
     public Label lblShowLeagues = Label.xpath("//div[contains(text(),'Show Leagues')]");
     public Label lblShowGroups = Label.xpath("//div[contains(text(),'Show Groups')]");
     public Label lblShowEvents = Label.xpath("//div[contains(text(),'Show Events')]");
-    public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Button btnShowGroups = Button.xpath("//div[contains(text(),'Show Groups')]");
     public Button btnSetSelection = Button.xpath("//button[contains(text(),'Set Selection')]");
     public Table tblOrder = Table.xpath("//app-over-under-corner-liability//table",13);

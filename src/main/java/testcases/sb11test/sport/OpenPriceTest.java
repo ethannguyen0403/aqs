@@ -31,7 +31,7 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression", "ethan5.0"})
     @TestRails(id = "2093")
     public void OpenPriceTC_2093(){
         log("@title: Validate UI on Open Price is correctly displayed");
@@ -42,8 +42,8 @@ public class OpenPriceTest extends BaseCaseAQS {
         log("Date, Show League button, Leagues and Show button");
         openPricePage.filterResult("","All",true);
         Assert.assertEquals(openPricePage.lblDate.getText(),"Date","Failed! Date datetime picker is not displayed!");
-        Assert.assertEquals(openPricePage.btnShowLeagues.getText(),"Show Leagues","Failed! Show League button is not displayed!");
-        Assert.assertEquals(openPricePage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(openPricePage.btnShowLeagues.getText(),"SHOW LEAGUES","Failed! Show League button is not displayed!");
+        Assert.assertEquals(openPricePage.btnShow.getText(),"SHOW","Failed! Show button is not displayed!");
         log("Event table header columns is correctly display");
         log("Header is " + openPricePage.tbOpenPrice.getHeaderNameOfRows());
         Assert.assertEquals(openPricePage.tbOpenPrice.getHeaderNameOfRows(), OpenPrice.TABLE_HEADER,"FAILED! Open Price table header is incorrect display");

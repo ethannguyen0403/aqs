@@ -86,6 +86,15 @@ public class BetListPopup {
     public Order verifyOrderInfoDisplay(Order order, String marketType, String createDate){
         // to get row index with expected market type
         int startIndex = getStartRowWithMarketType(marketType);
+        if (startIndex == 0){
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            icRefresh.click();
+            startIndex = getStartRowWithMarketType(marketType);
+        }
         int i = startIndex +1;
         while(true){
             String accountCode = tblOrder.getControlOfCell(1,colAccount,i,null).getText().trim();

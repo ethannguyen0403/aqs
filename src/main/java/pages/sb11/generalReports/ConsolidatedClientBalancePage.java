@@ -32,7 +32,7 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
     TextBox txtDate = TextBox.name("fromDate");
     public DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-datepicker-container");
     public TextBox txtClientName = TextBox.xpath("//div[contains(text(),'Client Name')]//following-sibling::div//input");
-    public Button btnShow = Button.name("btnShow");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Button btnExportExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
     public Button btnExportPDF = Button.xpath("//button[contains(text(),'Export To PDF')]");
     public Button btnCreateClient = Button.xpath("//button[text()='Create/Manage Client Groups']");

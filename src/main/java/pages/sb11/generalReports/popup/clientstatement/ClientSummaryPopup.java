@@ -123,20 +123,10 @@ public class ClientSummaryPopup extends WelcomePage {
     }
 
     public ClientSummaryWinlosePopup openWinLoseSummaryPopup(String accountCode) {
-        Label lblAccountCode;
-        Label lblWinlose;
-        int i = 1;
-        while (true){
-            lblAccountCode = Label.xpath(tblSummary.getxPathOfCell(1,colAccountCode,i,null));
-            lblWinlose = Label.xpath(tblSummary.getxPathOfCell(1,colWinLose,i,null) + "//a");
-            if(lblAccountCode.getText().equalsIgnoreCase(accountCode)){
-                lblWinlose.click();
-                waitSpinnerDisappeared();
-                DriverManager.getDriver().switchToWindow();
-                return new ClientSummaryWinlosePopup();
-            }
-            i = i+1;
-        }
+        tblSummary.getControlBasedValueOfDifferentColumnOnRow(accountCode,1,colAccountCode,1,null,colWinLose,"a",true,false).click();
+        waitSpinnerDisappeared();
+        DriverManager.getDriver().switchToWindow();
+        return new ClientSummaryWinlosePopup();
     }
 
     public ClientMemberTransactionPopup openMemberTransactionPopup(String accountCode) {
@@ -146,8 +136,8 @@ public class ClientSummaryPopup extends WelcomePage {
             lblAccountCode = Label.xpath(tblSummary.getxPathOfCell(1,colAccountCode,i,null));
             if(lblAccountCode.getText().equalsIgnoreCase(accountCode)){
                 lblAccountCode.click();
-                DriverManager.getDriver().switchToWindow();
                 waitSpinnerDisappeared();
+                DriverManager.getDriver().switchToWindow();
                 return new ClientMemberTransactionPopup();
             }
             i = i+1;

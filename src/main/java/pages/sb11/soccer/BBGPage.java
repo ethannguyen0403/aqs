@@ -51,7 +51,7 @@ public class BBGPage extends WelcomePage {
     public Button btnShowEvent = Button.xpath("//div[contains(text(),'Show Events')]");
     public Button btnHideEvent = Button.xpath("//div[contains(text(),'Hide Events')]");
     public Button btnResetAllFilter = Button.xpath("//span[contains(text(),'Reset All Filters')]");
-    public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     BetByGroupTableControl  firstBetByGroupTableControl = BetByGroupTableControl.xpath(String.format("%s[%d]", xPathBetByGroupTableControl, 1));
 
     int totalColumnNumber = 13;

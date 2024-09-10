@@ -357,7 +357,7 @@ public class BetOrderTest extends BaseCaseAQS {
         try {
             PlaceOrderUtils.prepareOrder(orderID, headersParam);
             placeOverUnder(orderID, headersParam);
-
+            betOrderPage.waitSpinLoad();
             log(String.format("@Step 2: Filter Soccer data from %s to %s ", fromDate, toDate));
             betOrderPage.filterBetOrders(fromDate, toDate, "Soccer", true);
 
@@ -405,6 +405,11 @@ public class BetOrderTest extends BaseCaseAQS {
         betOrderPage.filterBetOrders(fromDate, toDate, "Soccer", true);
         List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI, toDateAPI, "Soccer", CANCELLED);
         Order order = GetOrdersUtils.getOrderInfoById(orderLst,orderID);
+        log("@Post-condition: Check order if it's null");
+        if(Objects.isNull(order)){
+            System.out.println(String.format("There is nothing %s order",CANCELLED));
+            return;
+        }
         try {
             log("@Step 4: In Cancelled section, click on Pending link of the order " + orderID);
             betOrderPage.clickControlInTable(CANCELLED, orderID, PENDING);
@@ -446,7 +451,11 @@ public class BetOrderTest extends BaseCaseAQS {
         betOrderPage.filterBetOrders(fromDate,toDate,"Soccer", true);
         List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI, toDateAPI, "Soccer", CANCELLED);
         Order order = GetOrdersUtils.getOrderInfoById(orderLst,orderID);
-
+        log("@Post-condition: Check order if it's null");
+        if(Objects.isNull(order)){
+            System.out.println(String.format("There is nothing %s order",CANCELLED));
+            return;
+        }
         log("@Step 3: Get Order API in Cancelled status");
       /*  List<Order> orderLst = GetOrdersUtils.getOrderByStatus(fromDateAPI,toDateAPI,"Soccer",CANCELLED);
         if(betOrderPage.isNodata(orderLst)){

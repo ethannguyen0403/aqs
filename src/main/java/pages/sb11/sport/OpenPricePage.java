@@ -24,12 +24,12 @@ public class OpenPricePage extends WelcomePage {
     public TextBox txtDate = TextBox.name("dp");
     public Label lblDate = Label.xpath("//label[(text()='Date')]");
     public DateTimePicker dtpDate = DateTimePicker.xpath(txtDate,"//bs-days-calendar-view");
-    public Button btnShowLeagues = Button.xpath("//button[text()='Show Leagues']");
-    public Button btnShow = Button.xpath("//button[text()='Show']");
+    public Button btnShowLeagues = Button.xpath("//button[contains(@class,'btn-show-league')]");
+    public Button btnShow = Button.xpath("(//button[contains(@class,'btn-show')])[2]");
     public Button btnSubmit = Button.xpath("//button[contains(text(),'Submit')]");
     public Button btnLeague = Button.xpath("//div[contains(@class, 'col-league-width')]//button");
     public Button btnClose = Button.xpath("//em[@class='fas fa-times fa-2x']");
-    public Button btnSetSelection = Button.xpath("//button[contains(@class, 'set-selection-btn')]");
+    public Button btnSetSelection = Button.xpath("//button[contains(@class, 'set-selection')]");
     public Button btnSelectAll = Button.xpath("//button[contains(@class, 'select-all-btn')]");
     public DropDownBox ddpLeague = DropDownBox.id("league");
     public Table tbOpenPrice = Table.xpath("//div[contains(@class,'main-box-header')]//following::table[1]",13);
@@ -98,7 +98,7 @@ public class OpenPricePage extends WelcomePage {
     }
 
     private void filterLeague(String leagueName) {
-        Label lblSelectValue = Label.xpath(String.format("//div[@class='list-item-filter']//label[contains(text(),\"%s\")]",leagueName));
+        Label lblSelectValue = Label.xpath(String.format("//div[@class='list-item-filter']//label[contains(text(),'%s')]",leagueName));
         lblSelectValue.click();
         btnSetSelection.click();
     }
@@ -127,7 +127,7 @@ public class OpenPricePage extends WelcomePage {
         try {
             // 0 Select, 1 All => get league from index = 2
             List<String> lstLeague = getAllOptionNameFilter();
-            return lstLeague.get(1).trim();
+            return lstLeague.get(0).trim();
         } catch (Exception e) {
             System.out.println("There is NO League on day " + txtDate.getText());
             return null;

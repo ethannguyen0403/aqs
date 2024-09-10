@@ -23,7 +23,7 @@ public class PositionTakingReportPage extends WelcomePage {
     public DropDownBox ddCUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following-sibling::div/select");
     public DropDownBox ddFinancialYear = DropDownBox.xpath("//div[contains(text(),'Financial Year')]//following-sibling::div/select");
     public DropDownBox ddBookie = DropDownBox.xpath("//div[contains(text(),'Bookies')]//following-sibling::div/select");
-    public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public AppArlertControl alert = AppArlertControl.xpath("//app-alert");
     public TextBox txtFromDate = TextBox.name("fromDate");
     public TextBox txtToDate = TextBox.name("toDate");

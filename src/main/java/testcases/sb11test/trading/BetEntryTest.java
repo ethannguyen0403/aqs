@@ -242,7 +242,7 @@ public class BetEntryTest extends BaseCaseAQS {
     }
 
     @TestRails(id="341")
-    @Test(groups = {"smoke_qc","ethan"})
+    @Test(groups = {"smoke_qc","ethan5.0"})
     @Parameters({"accountCode","accountCurrency"})
     public void BetEntry_TC341(String accountCode,String accountCurrency){
         log("@title: Validate can place bet for soccer with option copy bet to SPBPS7 as same odds\n");

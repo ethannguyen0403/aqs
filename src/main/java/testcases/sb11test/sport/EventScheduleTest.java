@@ -11,6 +11,7 @@ import pages.sb11.sport.EventSchedulePage;
 import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.SoccerBetEntryPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.EventScheduleUtils;
 import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
@@ -20,7 +21,7 @@ public class EventScheduleTest extends BaseCaseAQS {
 
     @TestRails(id="1041")
     @Parameters({"accountCode"})
-    @Test(groups = {"smoke","ethan"})
+    @Test(groups = {"smoke","ethan5.0"})
     public void EventSchedule_TC1041(){
         log("@title: Validate the events is added in Schedule list and show correctly in Bet entry");
         log("@Precondition: Have a specific League Name, Home Team, Away Team for testing line\n" +
@@ -49,25 +50,27 @@ public class EventScheduleTest extends BaseCaseAQS {
         log("@Step 5: Click Submit");
         eventSchedulePage.showLeague(event.getLeagueName(),event.getEventDate());
         eventSchedulePage.addEvent(event);
-        log("@Step 6: In the Schedules List section, select Show league link, find and select league\" QA Soccer League\" and click the show button");
-        log("@Verify 1: Verify event info displayed correctly in the Schedule List");
-        Assert.assertTrue(eventSchedulePage.getSuccessMessage().contains("Event schedule is created successfully"),"FAILED! Success message is incorrect displayed");
-        eventSchedulePage.showScheduleList(leagueName,true,"QA Team 01",date);
-        Assert.assertTrue(eventSchedulePage.verifyEventInSchedulelist(event),"Failed! Event info incorrect after created");
+        try {
+            log("@Step 6: In the Schedules List section, select Show league link, find and select league\" QA Soccer League\" and click the show button");
+            log("@Verify 1: Verify event info displayed correctly in the Schedule List");
+            Assert.assertTrue(eventSchedulePage.getSuccessMessage().contains("Event schedule is created successfully"),"FAILED! Success message is incorrect displayed");
+            eventSchedulePage.showScheduleList(leagueName,true,"QA Team 01",date);
+            Assert.assertTrue(eventSchedulePage.verifyEventInSchedulelist(event),"Failed! Event info incorrect after created");
 
-        log("@Step 7: Navigate to Trading> Bet Entry go to Soccer page and filter the league in today");
-        BetEntryPage betEntryPage = eventSchedulePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
-        SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
-        soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,date,leagueName);
+            log("@Step 7: Navigate to Trading> Bet Entry go to Soccer page and filter the league in today");
+            BetEntryPage betEntryPage = eventSchedulePage.navigatePage(TRADING, BET_ENTRY,BetEntryPage.class);
+            SoccerBetEntryPage soccerBetEntryPage = betEntryPage.goToSoccer();
+            soccerBetEntryPage.showLeague(KASTRAKI_LIMITED,date,leagueName);
 
-        log("@Verify 2: League info is correctly displayed in Bet Entry page");
-        Assert.assertTrue(soccerBetEntryPage.isLeagueExist(leagueName),"FAILED! League "+ leagueName+" does not display in the list");
-        Assert.assertTrue(soccerBetEntryPage.isEventExist(event), "FAILED! Event "+event.getHome() +" & "+ event.getAway()+" under league "+ leagueName+" does not display in the list");
-
-        log("@Postcondition: Delete the event");
-        eventSchedulePage = soccerBetEntryPage.navigatePage(SPORT,EVENT_SCHEDULE, EventSchedulePage.class);
-        eventSchedulePage.deleteEvent(event);
-        log("INFO: Executed completely");
+            log("@Verify 2: League info is correctly displayed in Bet Entry page");
+            Assert.assertTrue(soccerBetEntryPage.isLeagueExist(leagueName),"FAILED! League "+ leagueName+" does not display in the list");
+            Assert.assertTrue(soccerBetEntryPage.isEventExist(event), "FAILED! Event "+event.getHome() +" & "+ event.getAway()+" under league "+ leagueName+" does not display in the list");
+        } finally {
+            log("@Postcondition: Delete the event");
+            String dateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7"));
+            EventScheduleUtils.deleteEventByAPI(event,dateAPI);
+            log("INFO: Executed completely");
+        }
     }
 
     @Test(groups = {"regression","ethan3.0"})

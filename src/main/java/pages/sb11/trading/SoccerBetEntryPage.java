@@ -313,6 +313,6 @@ public class SoccerBetEntryPage extends BetEntryPage {
         System.out.println("Datetimepicker: Date");
         Assert.assertEquals(lblDate.getText(),"Date","Failed! Date datetimepicker is not displayed!");
         System.out.println("Button: Show button");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed!");
     }
 }

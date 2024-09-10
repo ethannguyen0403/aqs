@@ -3,6 +3,7 @@ package pages.sb11.sport;
 import com.paltech.element.common.*;
 import common.SBPConstants;
 import controls.DateTimePicker;
+import controls.DropDownList;
 import controls.Table;
 import objects.Event;
 import org.testng.Assert;
@@ -13,9 +14,10 @@ public class EventSchedulePage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");
     Button btnSoccer = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Soccer')]");
     Button btnCricket = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Cricket')]");
-    DropDownBox ddpLeague = DropDownBox.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-header']//div[@class='filter-league']//select");
-    TextBox txtDateTime = TextBox.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-header']//div[@class='card-body']//input");
-    DateTimePicker dtpDateTime = DateTimePicker.xpath(txtDateTime,"//bs-days-calendar-view");
+    TextBox txtLeague = TextBox.xpath("//div[@role='combobox']/input");
+    DropDownList ddpLeague = DropDownList.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-header']//div[@class='filter-league']//ng-select","//div//span[contains(@class,'ng-option-label')]");
+    TextBox txtDateTime = TextBox.xpath("//span[text()='Date Time']//parent::div//following-sibling::div/input");
+    DateTimePicker dtpDateTime = DateTimePicker.xpath(txtDateTime,"//bs-datepicker-container");
     public Button btnShow = Button.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-header']//div[@class='card-body']//button[contains(@class,'btn-show')]");
     int totalTblEventCol = 8;
     int colD = 1;
@@ -28,8 +30,8 @@ public class EventSchedulePage extends WelcomePage {
     int colStatus = 8;
     Table tblEvent = Table.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//table",totalTblEventCol);
     Table tblLeague = Table.xpath("//app-schedule-list//table[contains(@class,'tbl-create-event-schedule')]",3);
-    Button btnAdd = Button.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//div[contains(@class,'modal-footer')]//button[contains(@class,'btn-show')][1]");
-    Button btnSubmit = Button.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//div[contains(@class,'modal-footer')]//button[contains(@class,'btn-show')][2]");
+    Button btnAdd = Button.xpath("//div[contains(@class,'modal-footer')]//button[contains(@class,'btn')][1]");
+    Button btnSubmit = Button.xpath("//div[contains(@class,'modal-footer')]//button[contains(@class,'btn') and text()='Submit']");
     TextBox txtEventNumber = TextBox.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//div[contains(@class,'modal-footer')]//input");
     Label lblClear = Label.xpath("//app-event-schedule-entry//app-league-entry//div[@class='league-body']//div[contains(@class,'modal-footer')]//span[contains(@class,'text-clear')]");
     RadioButton rbHome = RadioButton.xpath("//app-schedule-list//div[@class='league-header']//input[@id='homeTeamCheck']");
@@ -38,7 +40,7 @@ public class EventSchedulePage extends WelcomePage {
     TextBox txtScheduleListDateTime = TextBox.xpath("//app-schedule-list//div[@class='league-header']//input[contains(@class,'league-date')]");
     TextBox txtTeam = TextBox.xpath("//app-schedule-list//div[@class='card-body league-card-body']//input[contains(@class,'team-name-input')]");
     DateTimePicker dtpScheduleListDateTime= DateTimePicker.xpath(txtScheduleListDateTime,"//bs-days-calendar-view");
-    public Button btnShowSchedule = Button.xpath("//app-schedule-list//div[@class='league-header']//button[contains(@class,'show-btn-league')]");
+    public Button btnShowSchedule = Button.xpath("//app-schedule-list//button[contains(@class,'btn-show')]");
     int totalEventScheduleColumn = 11;
     int totalLeagueColumn = 8;
     int colNum =1;
@@ -69,14 +71,27 @@ public class EventSchedulePage extends WelcomePage {
     }
 
     public void showLeague(String league, String date){
-        //To wait page completely loaded the list league
-        waitPageLoad();
-        ddpLeague.selectByVisibleText(league);
+        //wait for league dropdown upload
+        waitSpinnerDisappeared();
+        selectLeague(league);
+        waitSpinnerDisappeared();
         if(!date.isEmpty()){
             dtpDateTime.selectDate(date,"dd/MM/yyyy");
         }
         btnShow.click();
         waitSpinnerDisappeared();
+    }
+    public void selectLeague(String league){
+        txtLeague.waitForControlInvisible();
+        txtLeague.sendKeys(league);
+        waitSpinnerDisappeared();
+        Label lblLeague = Label.xpath(String.format("//div[contains(@class,'ng-option')]"));
+        if (lblLeague.isDisplayed()){
+            lblLeague.click();
+            waitSpinnerDisappeared();
+            return;
+        }
+        System.out.println("The league is not displayed");
     }
 
     public void selectLeagueInScheduleList(String league){
@@ -112,6 +127,7 @@ public class EventSchedulePage extends WelcomePage {
     public void addEvent(Event event){
         fillEventInfo(event,1);
         btnSubmit.click();
+        waitSpinnerDisappeared();
     }
     public void deleteEvent(Event event){
         goToSport(event.getSportName());
@@ -282,13 +298,13 @@ public class EventSchedulePage extends WelcomePage {
         System.out.println("Event Schedule table: League, Date Time and Show button");
         Assert.assertEquals(lblLeague.getText(),"League","Failed! League dropdown is not displayed!");
         Assert.assertEquals(lblDateTime.getText(),"Date Time","Failed! Date Time datetime picker is not displayed!");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed!");
         System.out.println("Schedule List table: Home, Away, Team, Show League, Datetime and Show button");
         Assert.assertEquals(lblHome.getText(),"Home","Failed! Home radio button is not displayed!");
         Assert.assertEquals(lblAway.getText(),"Away","Failed! Away radio button is not displayed!");
         Assert.assertEquals(lblTeam.getText(),"Team","Failed! Team searchbox is not displayed!");
         Assert.assertEquals(btnShowLeague.getText(),"Show League","Failed! Show League button is not displayed!");
-        Assert.assertEquals(btnShowSchedule.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(btnShowSchedule.getText(),"SHOW","Failed! Show button is not displayed!");
         System.out.println("Event Schedule and Schedule List table header columns are correctly display");
         Assert.assertEquals(tblLeagueBody.getHeaderNameOfRows(), SBPConstants.EventSchedule.TABLE_HEADER_LEAGUE_LIST,"FAILED! League table header is incorrect display");
         Assert.assertEquals(tblEventBody.getHeaderNameOfRows(), SBPConstants.EventSchedule.TABLE_HEADER_SCHEDULE_LIST,"FAILED! Schedule table header is incorrect display");

@@ -16,8 +16,8 @@ public class SoccerResultEntryPage extends WelcomePage {
     }
     public Button btnSoccer = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Soccer')]");
     public Button btnCricket = Button.xpath("//div[contains(@class,'card-body')]//span[contains(text(),'Cricket')]");
-    public Button btnShowLeagues = Button.xpath("//button[contains(text(),'Show Leagues')]");
-    public Button btnShow = Button.xpath("//button[@class='btn btn-show']");
+    public Button btnShowLeagues = Button.xpath("//button[contains(@class,'btn-show-league')]");
+    public Button btnShow = Button.xpath("(//button[contains(@class,'btn-show')])[2]");
     public DropDownBox ddpType = DropDownBox.id("type");
     public DropDownBox ddpLeague = DropDownBox.id("sport");
     public DropDownBox ddpOrderBy = DropDownBox.id("betType");
@@ -64,7 +64,7 @@ public class SoccerResultEntryPage extends WelcomePage {
         Assert.assertTrue(ddpLeague.getOptions().contains("All"),"Failed! League dropdown is not displayed");
         Assert.assertEquals(ddpOrderBy.getOptions(),ORDER_BY_LIST,"Failed! Order By dropdown is not displayed");
         Assert.assertEquals(ddpStatus.getOptions(),STATUS_LIST,"Failed! Status dropdown is not displayed");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed");
         System.out.println("2 notes are displayed correctly");
         filterResult("Normal","","All","KOT","All",true);
         Assert.assertEquals(lblYellowcells.getText(), "Yellow cells are fields that 7M doesn't provide info.","Failed! Note 1 is not displayed");

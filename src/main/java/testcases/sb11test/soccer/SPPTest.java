@@ -48,12 +48,9 @@ public class SPPTest extends BaseCaseAQS {
         int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
         String accountId = AccountSearchUtils.getAccountId(CLIENT_CREDIT_ACC);
         BetEntrytUtils.placeManualBetAPI(companyId, accountId, SPORT_ID_MAP.get("Soccer"), order);
-        BetSettlementUtils.waitForBetIsUpdate(15);
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Soccer"), order);
         int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Soccer"), order);
-        BetSettlementUtils.waitForBetIsUpdate(5);
         BetSettlementUtils.sendManualBetSettleJson(accountId, order, betId, wagerId, SPORT_ID_MAP.get("Soccer"));
-        BetSettlementUtils.waitForBetIsUpdate(20);
         log("@Step 1: Go to Client Statement >> client point >> select the client");
         ClientStatementPage clientPage = welcomePage.navigatePage(GENERAL_REPORTS,CLIENT_STATEMENT,ClientStatementPage.class);
         clientPage.filter("Client Point",KASTRAKI_LIMITED,FINANCIAL_YEAR,clientValue,date,"");
@@ -66,7 +63,6 @@ public class SPPTest extends BaseCaseAQS {
         SPPPage sppPage = clientPage.navigatePage(SOCCER,SPP,SPPPage.class);
         sppPage.filter("All", "Group","Smart Group","QA Smart Master","QA Smart Agent",date,date);
         String winloseSPP = sppPage.getRowDataOfGroup("QA Smart Group").get(sppPage.colWL);
-
         log("@verify 1: Validate the win/loss in the Client statement (step 2) matches with the win/loss of the group in the SPP page");
         sppPage.verifyAmountDataMatch(winlosePlayer,winloseSPP);
 
@@ -104,7 +100,6 @@ public class SPPTest extends BaseCaseAQS {
         SPPPage sppPage = bookieStatementPage.navigatePage(SOCCER,SPP,SPPPage.class);
         sppPage.filter("All", "Group","Smart Group","QA Smart Master","QA Smart Agent","","");
         String winloseSPP = sppPage.getRowDataOfGroup("QA Smart Group").get(sppPage.colWL);
-
         log("@verify 1: Validate the win/loss in the Client statement (step 2) matches with the win/loss of the group in the SPP page");
         sppPage.verifyAmountDataMatch(winlosePlayer,winloseSPP);
     }
@@ -222,10 +217,10 @@ public class SPPTest extends BaseCaseAQS {
 //        Assert.assertTrue(ptPerformancePopup.isAccountPTMatched(accountCode,PT),"Failed! PT is not matched!");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31","ethan3.0"})
+    @Test(groups = {"regression","2023.10.31","ethan5.0"})
     @TestRails(id = "2795")
     @Parameters({"accountCode","smartGroup"})
-    public void SPP_TC_2795(String accountCode, String smartGroup) throws IOException, ParseException, InterruptedException {
+    public void SPP_TC_2795(String accountCode, String smartGroup) {
         log("@title: Validate the Cricket Manual Bets display properly");
         log("@pre-condition 1: SPP permission is ON");
         log("@pre-condition 1: There are some placed and settled MB from Bet Entry > Mixed Sport page");
@@ -242,22 +237,23 @@ public class SPPTest extends BaseCaseAQS {
         int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
         String accountId = AccountSearchUtils.getAccountId(accountCode);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get(sport),order);
+        welcomePage.waitSpinnerDisappeared();
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get(sport),order);
         order.setBetId(String.valueOf(betId));
 //        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get(sport));
         BetSettlementPage betSettlementPage = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed",creatDate,"","",accountCode);
+        String fromDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        betSettlementPage.filter("Confirmed",fromDate,"","",accountCode);
         betSettlementPage.settleAndSendSettlementEmail(order);
         log("@Step 1: Go to Soccer >> SPP page");
         SPPPage page = betSettlementPage.navigatePage(SOCCER,SPP,SPPPage.class);
-        Thread.sleep(120000);
         log("@Step 2: Select Cricket Sport and filter date that settled bets at precondition");
-        String fromDate = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
-        page.filter(sport,"Group","Smart Group","QA Smart Master","",fromDate,fromDate);
+        page.filter(sport,"Group","Smart Group","QA Smart Master","",fromDate,"");
         log("@Step 3: Open League Performance by Smart Group Name");
         LeaguePerformancePage leaguePerformancePage = page.openLeaguePerformance(smartGroup);
         log("@Verify 1: The Cricket Manual Bets display properly");
-        Assert.assertEquals(leaguePerformancePage.getTableHeaderInRange(), smartGroup + " - League Performance for " + creatDate + " To " + creatDate);
+        fromDate = DateUtils.formatDate(fromDate,"dd/MM/yyyy","yyyy-MM-dd");
+        Assert.assertEquals(leaguePerformancePage.getTableHeaderInRange(), smartGroup + " - League Performance for " + fromDate + " To " + creatDate);
         log("INFO: Executed completely");
     }
 
@@ -280,21 +276,21 @@ public class SPPTest extends BaseCaseAQS {
                 .build();
         int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
         BetEntrytUtils.placeManualBetAPI(companyId,accountId, SPORT_ID_MAP.get("Cricket"),order);
-
-        BetSettlementUtils.waitForBetIsUpdate(15);
+        welcomePage.waitSpinnerDisappeared();
         int betId = BetSettlementUtils.getConfirmedBetId(accountId, SPORT_ID_MAP.get("Cricket"),order);
 //        int wagerId = BetSettlementUtils.getConfirmedBetWagerId(accountId, SPORT_ID_MAP.get("Cricket"),order);
 //        BetSettlementUtils.sendManualBetSettleJson(accountId,order,betId,wagerId, SPORT_ID_MAP.get("Cricket"));
 
         order.setBetId(String.valueOf(betId));
         BetSettlementPage betSettlementPage = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed",currentDate,"","",accountCode);
+        String fromDate = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
+        betSettlementPage.filter("Confirmed",fromDate,"","",accountCode);
         betSettlementPage.settleAndSendSettlementEmail(order);
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
         log("@Step 3: Filter with Cricket sport");
-        sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", currentDate, currentDate);
+        sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", fromDate, currentDate);
         sppPage.selectShowBetTypes("MB");
 
         log("@Verify 1: Validate all Cricket Manual Bets display properly");

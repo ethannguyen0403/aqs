@@ -24,7 +24,7 @@ public class FundReconciliationPage extends WelcomePage {
     public TextBox txtEndingDate = TextBox.xpath("//div[text()='Ending Date']//following-sibling::div//input");
     public DateTimePicker dtpBeginDate = DateTimePicker.xpath(txtBeginDate,"//bs-datepicker-container");
     public DateTimePicker dtpEndingDate = DateTimePicker.xpath(txtEndingDate,"//bs-datepicker-container");
-    public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Table tblEndingBalance = Table.xpath("//table[1]",1);
     public Table tblTodaySettle = Table.xpath("//table[contains(@class,'total-settlement')]",10);
     public Table tblSubAcc = Table.xpath("(//table)[2]",11);

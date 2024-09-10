@@ -37,7 +37,7 @@ public class LedgerStatementPage extends WelcomePage {
     public Label lblToDate = Label.xpath("//div[text()='To Date']");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
-    public Button btnShow = Button.xpath("//app-ledger-statement//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//app-ledger-statement//button[contains(@class,'btn-show')]");
     public Button btnExportToExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
     public Button btnExportToPDF = Button.xpath("//button[contains(text(),'Export To PDF')]");
     public Label lblGrandTotalbyRunningBal = Label.xpath("//td[text()='Grand Total in HKD']/following-sibling::td[3]");
@@ -69,6 +69,7 @@ public class LedgerStatementPage extends WelcomePage {
             waitSpinnerDisappeared();
         }
         if (!financialYear.isEmpty()){
+            txtFromDate.waitForControlInvisible();
             ddFinancialYear.selectByVisibleText(financialYear);
             waitSpinnerDisappeared();
         }
@@ -78,9 +79,10 @@ public class LedgerStatementPage extends WelcomePage {
         }
         if (!ledgerGroup.isEmpty()){
             ddLedgerGroup.selectByVisibleContainsText(ledgerGroup);
+            waitSpinnerDisappeared();
         }
         if (!fromDate.isEmpty()){
-            dtpFromDate.selectDate(fromDate, "dd/MM/yyyy");
+            dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
         }
         if (!toDate.isEmpty()){
             dtpToDate.selectDate(toDate, "dd/MM/yyyy");
@@ -89,11 +91,9 @@ public class LedgerStatementPage extends WelcomePage {
             ddReport.selectByVisibleText(report);
         }
         btnShow.click();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        btnShow.waitForControlInvisible();
+        waitSpinnerDisappeared();
+
     }
 
     public Transaction verifyLedgerTrans(Transaction trans, boolean isDebit, String ledgerGroup){
@@ -155,7 +155,7 @@ public class LedgerStatementPage extends WelcomePage {
             }
         }
 //        return tbLedger.getControlBasedValueOfDifferentColumnOnRow(subAccName,1,colLedger,1,null,indexCol,null,false,false).getText().trim();
-        return Label.xpath(String.format("//a[contains(text(),'%s')]//ancestor::tr//td[%d]",subAccName,indexCol)).getText().trim();
+        return Label.xpath(String.format("//a[contains(text(),'%s')]//ancestor::tr//td[%d]",subAccName,indexCol)).getText().trim().replace(",","");
     }
     public String getTotalAmountInOriginCurrency(String toTalName){
         return tbLedger.getControlBasedValueOfDifferentColumnOnRow(toTalName,1,colTotal,1,null,colAmountTotalOriginCurrency,null,false,false).getText().trim();

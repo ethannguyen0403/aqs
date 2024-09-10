@@ -20,7 +20,7 @@ public class RetainedEarningsPage extends WelcomePage {
     private int colDesLimit = 3;
 
     protected Label lblTitle = Label.xpath("//div[contains(@class, 'card-header')]//span");
-    protected Button btnShow = Button.xpath("//button[text()='Show']");
+    protected Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public DropDownBox ddCompanyUnit = DropDownBox.xpath("//div[text()= 'Company Unit']/parent::div//select");
     public DropDownBox ddFinancialYear = DropDownBox.xpath("//div[text()= 'Financial Year']/parent::div//select");
     Table tblTotal = Table.xpath("//app-retained-earnings//table[@id='my-table']", totalCol);
@@ -88,7 +88,7 @@ public class RetainedEarningsPage extends WelcomePage {
         int rowIndex = getDesRowIndex(amountDes);
         String amountDesValue = Label.xpath(
                 tblTotal.getControlxPathBasedValueOfDifferentColumnOnRow(amountDes, 1, colDes, rowIndex, null, colAmount, null, false,
-                        false)).getText().trim();
+                        false)).getText().trim().replace(",","");
         if (amountDesValue.isEmpty() || amountDesValue.equals("")) {
             System.out.println("Can NOT found amount of Description name:  " + amountDes + " in the table");
         }

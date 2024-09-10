@@ -65,19 +65,19 @@ public class MonitorBetsTest extends BaseCaseAQS {
         Assert.assertFalse(new MonitorBetsPage().lblTitle.isDisplayed(), "FAILED! Monitor Bets page can access by external link");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.11.29"})
+    @Test(groups = {"regression1","2023.11.29"})
     @TestRails(id = "52")
     public void MonitorBetsTC_52() {
         log("@title: Validate accounts with permission can access 'Monitor Bets' page");
         log("@Pre-condition: Account is inactivated permission 'Monitor Bets'");
         log("@Step 1: Navigate to the site");
         log("@Step 2: Expand menu 'Soccer' and access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("Verify 1: User cannot access 'Monitor Bets' page");
         Assert.assertTrue(monitorBetsPage.lblTitle.isDisplayed(), "FAILED! Monitor Bets page can access by external link");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.11.29"})
+    @Test(groups = {"regression1","2023.11.29"})
     @TestRails(id = "53")
     public void MonitorBetsTC_53(){
         log("@title: Validate sound is played if a new bet comes when speaker is on");
@@ -85,13 +85,13 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Pre-condition 2: Punter account is added to a smart group in Trading Smart System Smart Group");
         log("@Step 1: Navigate to the site");
         log("@Step 2: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 3: Validate when there's a new bet of the punter account come");
         log("Verify 1: Bet(s) is auto shown on the report without refreshing the page");
         Assert.assertTrue(monitorBetsPage.isCheckBetsUpdateCorrect(),"FAILED! Bets update incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.11.29"})
+    @Test(groups = {"regression1","2023.11.29"})
     @TestRails(id = "132")
     public void MonitorBetsTC_132() {
         log("@title: Validate normal punters are only shown when filter Normal Punter type");
@@ -104,7 +104,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
                 5.5,"BACK",false,"");
         log("@Step 1: Login to the site");
         log("@Step 2: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);;
         log("@Step 3: Observe the data by the default filters, Punter Type = Smart Punter");
         monitorBetsPage.filterResult("","","Smart Punter","","",false,"","","","",true);
         log("Verify 1: Bet(s) of normal punter is not shown when filter Smart Punter");
@@ -128,7 +128,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
                 5.5,"BACK",false,"");
         log("@Step 1: Login to the site");
         log("@Step 2: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);;
         log("@Step 3: Observe the data by the default filters, Punter Type = Smart Punter");
         monitorBetsPage.filterResult("","","Smart Punter","","",false,"","","","",true);
         log("Verify 1: Bet(s) of smart punter is shown when filter Smart Punter");
@@ -157,7 +157,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
                 5.5,"BACK",false,"").get(0));
         log("@Step 1: Login to the site");
         log("@Step 2: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 3: Check on Today Event(s) checkbox");
         monitorBetsPage.filterResult("","","","","",true,"","","","",true);
         log("Verify 1: Only bets that placed today will show");
@@ -184,7 +184,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         BetSettlementUtils.waitForBetIsUpdate(15);
         log("@Step 1: Login to the site");
         log("@Step 2: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 3: Select Live option at Live/Non Live dropdown list");
         monitorBetsPage.filterResult("","","","","",false,"","Live","","",true);
         log("Verify 1: Only Live bets are shown");
@@ -210,7 +210,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
                 5.5,"BACK",false,"").get(0));
         log("@Step 1: Login to the site");
         log("@Step 2: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 3: Select Live option at Live/Non Live dropdown list");
         monitorBetsPage.filterResult("","","","","",false,"","Non-Live","","",true);
         log("Verify 1: Only Non-Live bets are shown");
@@ -227,7 +227,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@Pre-condition 2: The account is added to any smart group in Trading Smart System Smart Group");
         log("@Pre-condition 3: The account have some settled Bet(s) within 12 days");
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.filterResult("","Master","","All Hours","",false,"","","","",false);
         monitorBetsPage.waitSpinnerDisappeared();
@@ -256,7 +256,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         welcomePage.placeBetAPI(SOCCER,dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1.121,-0.5,"HK",
                 5.5,"BACK",false,"");
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.filterResult(SOCCER,smartType,punterType,betPlaceIn,betCount,false,lrbRule,"ALL","HKD","ALL",true);
         log("@Step 3: Click copy button then paste the text");
@@ -281,7 +281,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         String betPlaceIn = "All Hours";
         String betCount = "Last 300 Bets";
         String lrbRule = "[LRB-Rule]";
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.filterResult(SOCCER,smartType,punterType,betPlaceIn,betCount,false,lrbRule,"ALL","HKD","ALL",false);
         monitorBetsPage.waitSpinnerDisappeared();
@@ -333,7 +333,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         welcomePage.placeBetAPI(SOCCER,dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1,0.5,"HK",
                 5.5,"BACK",false,"");
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.showBetType(true,"FT-HDP");
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
@@ -354,7 +354,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         welcomePage.placeBetAPI(SOCCER,dateAPI,true,accountCode,"Goals","HDP","Home","HalfTime",1,0.5,"HK",
                 5.5,"BACK",false,"");
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.showBetType(true,"HT-HDP");
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
@@ -375,7 +375,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         welcomePage.placeBetAPI(SOCCER,dateAPI,true,accountCode,"Goals","OU","Over","HalfTime",1,0.5,"HK",
                 5.5,"BACK",false,"");
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.showBetType(true,"HT-OU");
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
@@ -396,7 +396,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         welcomePage.placeBetAPI(SOCCER,dateAPI,true,accountCode,"Goals","OU","Over","FullTime",1,0.5,"HK",
                 5.5,"BACK",false,"");
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.showBetType(true,"FT-OU");
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
@@ -417,7 +417,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         welcomePage.placeBetAPI(SOCCER,dateAPI,true,accountCode,"Corners","HDP","Home","FullTime",1,0.5,"HK",
                 5.5,"BACK",false,"");
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.showBetType(true,"FT-HDP-CN");
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
@@ -438,7 +438,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         welcomePage.placeBetAPI(SOCCER,dateAPI,true,accountCode,"Corners","OU","Over","FullTime",1,0.5,"HK",
                 5.5,"BACK",false,"");
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.showBetType(true,"FT-OU-CN");
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
@@ -459,7 +459,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         welcomePage.placeBetAPI(SOCCER,dateAPI,true,accountCode,"Corners","OU","Over","HalfTime",1,0.5,"HK",
                 5.5,"BACK",false,"");
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.showBetType(true,"HT-OU-CN");
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
@@ -480,7 +480,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         welcomePage.placeBetAPI(SOCCER,dateAPI,true,accountCode,"Corners","HDP","Home","HalfTime",1,0.5,"HK",
                 5.5,"BACK",false,"");
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 2: Filter data of player account at precondition");
         monitorBetsPage.showBetType(true,"HT-HDP-CN");
         log("@Step 3: Inspect bg color element of HDP column for bets at precondition");
@@ -505,7 +505,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         welcomePage.placeBetAPI(SOCCER,dateAPI,true,accountCode,"Corners","HDP","Home","FullTime",1,-0.5,"HK",
                 500,"BACK",false,"");
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 2: Select filters with 'Stake' = 'Above 1K");
         monitorBetsPage.ddpStake.selectByVisibleText("Above 1K");
         monitorBetsPage.waitSpinnerDisappeared();
@@ -531,7 +531,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,dateAPI,true,accountCode,"Goals","HDP","Home","FullTime",1,-0.5,"HK",
                 5.55,"BACK",false,"");
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 2: Select filters which has bet of precondition");
         log("@Step 3: Click on 'Show' button");
         monitorBetsPage.showMasterByName(true,master);
@@ -552,7 +552,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
     public void MonitorBetsTC_144() {
         log("@title: Validate data is shown according to the filtered currency");
         log("@Step 1: Access 'Monitor Bets' page");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 2: Select filters with 'Currency' = 'INR'");
         log("@Step 3: Click on 'Show' button");
         monitorBetsPage.filterResult("","","","All Hours","",false,"","","INR","",true);
@@ -571,7 +571,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@title: Validate Monitor Bets page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > Monitor Bets");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("Validate Monitor Bets page is displayed with correctly title");
         Assert.assertTrue(monitorBetsPage.getTitlePage().contains(MONITOR_BETS), "Failed! Monitor Bets page is not displayed");
         log("INFO: Executed completely");
@@ -583,7 +583,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("@title: Validate UI on Monitor Bets is correctly displayed");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Sport > Monitor Bets");
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("Validate UI on BL Settings is correctly displayed");
         monitorBetsPage.verifyUI();
         log("INFO: Executed completely");
@@ -601,7 +601,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         String betPlaceIn = "All Hours";
         String betCount = "Last 300 Bets";
         String lrbRule = "[LRB-Rule]";
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 3: Filter with valid info and click Show");
         log("@Step 4: Click any currency at AC column");
         monitorBetsPage.filterResult(SOCCER,smartType,punterType,betPlaceIn,betCount,false,lrbRule,"ALL","HKD","ALL",true);
@@ -627,7 +627,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         String betPlaceIn = "All Hours";
         String betCount = "Last 300 Bets";
         String lrbRule = "[LRB-Rule]";
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 3: Filter with valid info and click Show");
         log("@Step 4: Click any currency at Stake column");
         monitorBetsPage.filterResult(SOCCER,smartType,punterType,betPlaceIn,betCount,false,lrbRule,"ALL","HKD",stake,true);
@@ -653,7 +653,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         String betPlaceIn = "All Hours";
         String betCount = "Last 300 Bets";
         String lrbRule = "[LRB-Rule]";
-        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS, MonitorBetsPage.class);
+        MonitorBetsPage monitorBetsPage = welcomePage.navigatePage(SOCCER,MONITOR_BETS,"All", MonitorBetsPage.class);
         log("@Step 3: Filter with valid info and click Show");
         log("@Step 4: Click any currency at T column");
         monitorBetsPage.filterResult(SOCCER,smartType,punterType,betPlaceIn,betCount,false,lrbRule,"ALL","HKD",stake,true);

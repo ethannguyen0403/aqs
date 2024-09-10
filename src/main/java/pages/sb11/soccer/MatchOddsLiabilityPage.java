@@ -27,8 +27,8 @@ public class MatchOddsLiabilityPage extends WelcomePage {
     public CheckBox cbPTBets = CheckBox.xpath("//div[contains(text(),'Show Only')]//following::input[1]");
     public DropDownBox ddpSport = DropDownBox.xpath("//div[contains(text(),'Sport')]//following::select[1]");
     public Label lblPTBets = Label.xpath("//span[contains(text(),'PT-Bets')]");
-    public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
-    public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
+    public Label lblFromDate = Label.xpath("//label[contains(text(),'From Date')]");
+    public Label lblToDate = Label.xpath("//label[contains(text(),'To Date')]");
     public DropDownBox ddpLiveNonLive = DropDownBox.xpath("//div[contains(text(),'Live/NonLive')]//following::select[1]");
     public DropDownBox ddpStake = DropDownBox.xpath("//div[contains(text(),'Stake')]//following::select[1]");
     public TextBox txtFromDate = TextBox.name("fromDate");
@@ -41,7 +41,7 @@ public class MatchOddsLiabilityPage extends WelcomePage {
     public Label lblShowGroups = Label.xpath("//div[contains(text(),'Show Groups')]");
     public Button btnShowGroups = Button.xpath("//div[contains(text(),'Show Groups')]");
     public Label lblShowEvents = Label.xpath("//div[contains(text(),'Show Events')]");
-    public Button btnShow = Button.xpath("//button[contains(text(),'Show')]");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Button btnSetSelection = Button.xpath("//button[contains(text(),'Set Selection')]");
     public Button btnClearAll = Button.xpath("//button[contains(text(),'Clear All')]");
     public Table tblOrder = Table.xpath("//table",6);
@@ -49,9 +49,13 @@ public class MatchOddsLiabilityPage extends WelcomePage {
     int colEvent = 2;
 
     public void filterResult(String companyUnit, String sport, String smartType, boolean isPTBets, String liveNonLive, String fromDate, String toDate, String stake, boolean isShow){
+        lblFromDate.waitForControlInvisible();
         ddpCompanyUnit.selectByVisibleText(companyUnit);
+        waitSpinnerDisappeared();
         ddpSport.selectByVisibleText(sport);
+        waitSpinnerDisappeared();
         ddpSmartType.selectByVisibleText(smartType);
+        waitSpinnerDisappeared();
         if (isPTBets){
             cbPTBets.click();
         }
@@ -65,6 +69,7 @@ public class MatchOddsLiabilityPage extends WelcomePage {
             waitSpinnerDisappeared();
         }
         ddpStake.selectByVisibleText(stake);
+        waitSpinnerDisappeared();
         if (isShow){
             btnShow.click();
             waitSpinnerDisappeared();
@@ -130,10 +135,10 @@ public class MatchOddsLiabilityPage extends WelcomePage {
         Assert.assertEquals(ddpStake.getOptions(),STAKE_LIST,"Failed! Stake dropdown is not displayed");
         System.out.println("Show Bet Types, Show Leagues, Show Groups, Show Events and Show button");
         Assert.assertEquals(lblShowBetType.getText(),"Show Bet Types\nAll","Failed! Show Bet Types button is not displayed");
-        Assert.assertEquals(lblShowLeagues.getText(), "Show Leagues\nAll","Failed! Show Leagues button is not displayed");
+        Assert.assertEquals(lblShowLeagues.getText(), "Show Leagues\n1","Failed! Show Leagues button is not displayed");
         Assert.assertEquals(lblShowGroups.getText(),"Show Groups\nAll","Failed! Show Groups button is not displayed");
         Assert.assertEquals(lblShowEvents.getText(),"Show Events\nAll","Failed! Show Events button is not displayed");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed");
         System.out.println("Event table header columns is correctly display");
         Assert.assertEquals(tblOrder.getHeaderNameOfRows(), MatchOddsLiability.TABLE_HEADER,"FAILED! 1x2 Liability Bets table header is incorrect display");
     }

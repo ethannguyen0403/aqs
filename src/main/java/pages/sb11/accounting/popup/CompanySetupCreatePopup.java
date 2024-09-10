@@ -3,6 +3,10 @@ package pages.sb11.accounting.popup;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.TextBox;
+import org.testng.Assert;
+
+import static common.SBPConstants.CURRENCY_LIST_WITHOUT_ALL;
+import static common.SBPConstants.MONTH_NAME_LIST;
 
 public class CompanySetupCreatePopup {
 
@@ -26,4 +30,13 @@ public class CompanySetupCreatePopup {
         }
     }
 
+    public void verifyUI() {
+        Assert.assertTrue(txtCompanyName.isDisplayed() && txtCompanyName.isEnabled(), "Failed! Company name text box is not displayed");
+        Assert.assertTrue(txtCompanyAddress.isDisplayed() && txtCompanyName.isEnabled(), "Failed! Company address text box is not displayed");
+        Assert.assertTrue(btnClear.isDisplayed(), "Failed! Button Clear is not displayed");
+        Assert.assertTrue(btnSubmit.isDisplayed(), "Failed! Button Submit is not displayed");
+        Assert.assertEquals(ddlFirstMonth.getOptions(), MONTH_NAME_LIST, "Failed! Accounting Period - First month option list is not correct");
+        Assert.assertEquals(ddlClosingMonth.getOptions(), MONTH_NAME_LIST, "Failed! Accounting Period - Closing month option list is not correct");
+        Assert.assertEquals(ddlCurrency.getOptions(), CURRENCY_LIST_WITHOUT_ALL,"Failed! Dropdown Currency option list is not correct");
+    }
 }

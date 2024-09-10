@@ -17,7 +17,7 @@ public class AnalysePage extends WelcomePage {
     private DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
     private TextBox txtToDate = TextBox.xpath("//app-analyse//input[@name='toDate']");
     private DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
-    public Button btnShow = Button.xpath("//app-analyse//button[text()='Show']");
+    public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
 
     public CreateNewLinePopup openCreateNewLinePopup(){
         btnCreateManage.click();
