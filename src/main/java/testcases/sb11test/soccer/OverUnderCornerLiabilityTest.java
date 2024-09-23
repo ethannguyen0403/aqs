@@ -35,7 +35,7 @@ public class OverUnderCornerLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression","ethan6.0"})
     @TestRails(id = "2119")
     public void OverUnderCornerLiabilityTC_2119(){
         log("@title: Validate UI on Over/Under Corner Liability is correctly displayed");
@@ -47,7 +47,7 @@ public class OverUnderCornerLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan4.0"})
+    @Test(groups = {"regression","ethan6.0"})
     @TestRails(id = "2120")
     @Parameters({"accountCode","smartGroup"})
     public void OverUnderCornerLiabilityTC_2120(String accountCode, String smartGroup){
@@ -65,7 +65,8 @@ public class OverUnderCornerLiabilityTest extends BaseCaseAQS {
         log("@Step 3: Filter with event that having bet at Pre-condition ");
         log("@Step 4: Click Show");
         overUnderCornerLiabilityPage.filterResult(KASTRAKI_LIMITED, smartType,false,"All",date,"","All",true);
-        overUnderCornerLiabilityPage.filterGroups(smartGroup);
+        overUnderCornerLiabilityPage.filterGroups(smartGroup,false);
+        overUnderCornerLiabilityPage.showLeagues(true,true,"");
         log("Validate 1x2 bet from Bet Entry is displayed correctly on 1x2 Liability report");
         overUnderCornerLiabilityPage.isOrderExist(lstOrder.get(0),smartGroup);
         log("@Post-Condition: Cancel Pending bet "+ lstOrder.get(0).getBetId() +" in Confirm Bet page");

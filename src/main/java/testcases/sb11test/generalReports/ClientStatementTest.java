@@ -215,7 +215,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan6.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "865")
     public void ClientStatementTC_865(String clientCode) {
@@ -241,6 +241,7 @@ public class ClientStatementTest extends BaseCaseAQS {
 
         log("@Step 2: Filter a client with client point view");
         clientPage.filter(viewBy, KASTRAKI_LIMITED, FINANCIAL_YEAR, clientCode, "","");
+        clientPage.tickFilter(false,true,true,true);
 
         log("Validate value of agent COM in main page match with member summary page");
         openingVal = clientPage.getAgentCellValue(agentComCode,clientPage.colOpening);
@@ -264,7 +265,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke","ethan5.0"})
+    @Test(groups = {"smoke","ethan6.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "866")
     public void ClientStatementTC_866(String clientCode) throws IOException {
@@ -322,7 +323,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke","ethan5.0"})
+    @Test(groups = {"smoke","ethan6.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "867")
     public void ClientStatementTC_867(String clientCode) throws IOException {
@@ -382,7 +383,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke","ethan5.0"})
+    @Test(groups = {"smoke","ethan6.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "871")
     public void ClientStatementTC_871(String clientCode) throws IOException {
@@ -444,7 +445,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke","ethan5.0"})
+    @Test(groups = {"smoke","ethan6.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "872")
     public void ClientStatementTC_872(String clientCode) throws IOException {
@@ -506,7 +507,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_qc","ethan5.0"})
+    @Test(groups = {"smoke_qc","ethan6.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "873")
     public void ClientStatementTC_873(String clientCode) throws IOException {
@@ -568,7 +569,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_qc","ethan5.0"})
+    @Test(groups = {"smoke_qc","ethan6.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "874")
     public void ClientStatementTC_874(String clientCode) throws IOException {
@@ -630,7 +631,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_qc","ethan5.0"})
+    @Test(groups = {"smoke_qc","ethan6.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "875")
     public void ClientStatementTC_875(String clientCode) throws IOException {
@@ -692,7 +693,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_qc","ethan5.0"})
+    @Test(groups = {"smoke_qc","ethan6.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "876")
     public void ClientStatementTC_876(String clientCode) throws IOException {
@@ -754,7 +755,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_qc","ethan5.0"})
+    @Test(groups = {"smoke_qc","ethan6.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "877")
     public void ClientStatementTC_877(String clientCode) throws IOException {
@@ -815,7 +816,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         }
         log("INFO: Executed completely");
     }
-    @Test(groups = {"smoke_qc","ethan5.0"})
+    @Test(groups = {"smoke_qc","ethan6.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "878")
     public void ClientStatementTC_878(String clientCode) throws IOException {
@@ -877,7 +878,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_qc","ethan5.0"})
+    @Test(groups = {"smoke_qc","ethan6.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "879")
     public void ClientStatementTC_879(String clientCode) throws IOException {
@@ -939,7 +940,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke_qc","ethan5.0"})
+    @Test(groups = {"smoke_qc","ethan6.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "880")
     public void ClientStatementTC_880(String clientCode) throws IOException {
@@ -1093,7 +1094,7 @@ public class ClientStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke","ethan5.0"})
+    @Test(groups = {"smoke","ethan6.0"})
     @Parameters({"clientCode"})
     @TestRails(id = "1004")
     public void ClientStatementTC_1004(String clientCode) throws IOException {

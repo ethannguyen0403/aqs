@@ -19,7 +19,7 @@ public class BetByGroupTableControl extends BaseElement {
     int betDateCol = 3;
     int eventCol = 4;
     int priceCol = 9;
-    int traderCol = 13;
+    int traderCol = 12;
     private BetByGroupTableControl(By locator, String xpathExpression) {
         super(locator);
         this._xpath = xpathExpression;

@@ -38,6 +38,7 @@ public class PTRiskPage extends WelcomePage {
     public Button btnShow = Button.xpath("//app-pt-risk-control//button[text()='SHOW']");
     public Button btnCopy = Button.xpath("//app-pt-risk-control//button[text()='Copy Report ']");
     public Label messageSuccess = Label.xpath("(//div[contains(@class, 'message-box')]//span)[3]");
+    public Label lblNoRecord = Label.xpath("//span[contains(@class,'no-record')]");
 
     @Override
     public String getTitlePage() {

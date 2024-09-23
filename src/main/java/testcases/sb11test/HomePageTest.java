@@ -13,7 +13,7 @@ import static common.ESSConstants.*;
 
 public class HomePageTest extends BaseCaseAQS {
 
-    @Test(groups = {"regression"})
+    @Test(groups = {"regression","ethan6.0"})
     @Parameters("username")
     @TestRails(id = "2061")
     public void Homepage_TC_2061(){

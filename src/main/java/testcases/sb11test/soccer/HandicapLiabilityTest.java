@@ -36,7 +36,7 @@ public class HandicapLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan4.0"})
+    @Test(groups = {"regression","ethan6.0"})
     @TestRails(id = "2110")
     public void HandicapLiabilityTC_2110(){
         log("@title: Validate UI on Handicap Liability is correctly displayed");
@@ -48,7 +48,7 @@ public class HandicapLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression","ethan6.0"})
     @TestRails(id = "2111")
     @Parameters({"accountCode","accountCurrency","smartGroup"})
     public void HandicapLiabilityTC_2111(String accountCode, String accountCurrency, String smartGroup){
@@ -65,7 +65,8 @@ public class HandicapLiabilityTest extends BaseCaseAQS {
         log("@Step 3: Filter with event that having bet at Pre-condition ");
         log("@Step 4: Click Show");
         handicapLiabilityPage.filterResult(KASTRAKI_LIMITED, smartType,false,"All",date,date,"All",true);
-        handicapLiabilityPage.filterGroups(smartGroup);
+        handicapLiabilityPage.filterGroups(smartGroup,false);
+        handicapLiabilityPage.showLeagues(true,true,"");
         log("Verify 1: Validate Handicap bet from Bet Entry is displayed correctly on Handicap Liability report");
         handicapLiabilityPage.isOrderExist(lstOrder,smartGroup);
 

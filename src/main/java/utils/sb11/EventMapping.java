@@ -65,14 +65,16 @@ public class EventMapping {
         if (Objects.nonNull(jsonObject)) {
             if (jsonObject.length() > 0) {
                 JSONArray jsonArrayEvent = jsonObject.getJSONArray("lcEvents");
-                JSONObject eventObject = jsonArrayEvent.getJSONObject(0);
-                event = new Event.Builder()
-                        .eventId(String.valueOf(eventObject.getInt("providerEventId")))
-                        .home(eventObject.getString("homeTeam"))
-                        .away(eventObject.getString("awayTeam"))
-                        .leagueName(eventObject.getString("leagueName"))
-                        .eventDate(eventObject.getString("matchDate"))
-                        .build();
+                if (!jsonArrayEvent.isEmpty()){
+                    JSONObject eventObject = jsonArrayEvent.getJSONObject(0);
+                    event = new Event.Builder()
+                            .eventId(String.valueOf(eventObject.getInt("providerEventId")))
+                            .home(eventObject.getString("homeTeam"))
+                            .away(eventObject.getString("awayTeam"))
+                            .leagueName(eventObject.getString("leagueName"))
+                            .eventDate(eventObject.getString("matchDate"))
+                            .build();
+                }
             }
         }
         return event;

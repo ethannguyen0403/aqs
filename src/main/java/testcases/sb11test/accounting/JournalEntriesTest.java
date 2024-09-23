@@ -13,6 +13,7 @@ import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
 import utils.sb11.ChartOfAccountUtils;
 import utils.sb11.CompanySetUpUtils;
+import utils.sb11.JournalReportsUtils;
 import utils.sb11.TransactionUtils;
 import utils.testraildemo.TestRails;
 
@@ -170,7 +171,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     }
 
     @TestRails(id="2164")
-    @Test(groups = {"regression","ethan"})
+    @Test(groups = {"regression","ethan6.0"})
     @Parameters({"companyName"})
     public void Journal_Entries_TC_2164(String companyName) throws IOException {
         String lgDebitCur = "HKD";
@@ -197,6 +198,9 @@ public class JournalEntriesTest extends BaseCaseAQS {
         log("@Step 4: Input Amount for Debit and Credit (should be same e.g 10)");
         log("@Step 5: Choose Transaction Type = any and click Submit");
         journalEntriesPage.addTransaction(transaction,AccountType.LEDGER,AccountType.LEDGER,transaction.getRemark(),transaction.getTransDate(),transaction.getTransType(),true,false);
+        journalEntriesPage.waitSpinnerDisappeared();
+        String transDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", "AutoExpenditureDebit - 011.000.000.000", transType, descExpenditure);
         try {
             log("@Step 6: Navigate to General > Ledger Statement and search the transaction of ledger at precondition");
             LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
@@ -216,6 +220,8 @@ public class JournalEntriesTest extends BaseCaseAQS {
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
             TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,"");
+            journalEntriesPage.waitSpinnerDisappeared();
+            JournalReportsUtils.tickAuthorize(transDate, transDate, "Ledger", "AutoExpenditureDebit - 011.000.000.000", "Tax Rebate", "Automation Testing Transaction Ledger: Post-condition for txn");
         }
         log("INFO: Executed completely");
     }

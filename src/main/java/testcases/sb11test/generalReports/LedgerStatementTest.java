@@ -82,7 +82,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "842")
-    @Test(groups = {"smoke","ethan5.0"})
+    @Test(groups = {"smoke","ethan6.0"})
     public void Ledger_Statement_TC842() throws IOException {
         log("@title: Validate transaction Credit of Ledger Type = Expenditure");
         log("@Step 1: Login to SB11 site");
@@ -321,7 +321,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "846")
-    @Test(groups = {"smoke_qc","ethan5.0"})
+    @Test(groups = {"smoke_qc","ethan6.0"})
     public void Ledger_Statement_TC846() throws IOException {
         log("@title: Validate transaction Credit of Ledger Type = Asset");
         log("@Step 1: Login to SB11 site");
@@ -549,7 +549,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "850")
-    @Test(groups = {"smoke_qc","ethan5.0"})
+    @Test(groups = {"smoke_qc","ethan6.0"})
     public void Ledger_Statement_TC850() throws IOException {
         log("@title: Validate transaction Credit of Ledger Type = Liability");
         log("@Step 1: Login to SB11 site");
@@ -608,7 +608,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "851")
-    @Test(groups = {"smoke_qc", "2024.V.3.0","ethan5.0"})
+    @Test(groups = {"smoke_qc", "ethan6.0"})
     public void Ledger_Statement_TC851() throws IOException {
         log("@title: Validate value calculated correctly for Ledger Type = Liability (Credit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Liability");
@@ -734,7 +734,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "853")
-    @Test(groups = {"smoke_qc","ethan5.0"})
+    @Test(groups = {"smoke_qc","ethan6.0"})
     public void Ledger_Statement_TC853() throws IOException {
         log("@title: Validate transaction Credit of Ledger Type = Capital");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
@@ -796,7 +796,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "854")
-    @Test(groups = {"smoke_qc","ethan5.0"})
+    @Test(groups = {"smoke_qc","ethan6.0"})
     public void Ledger_Statement_TC854() throws IOException {
         log("@title: Validate transaction Debit of Ledger Type = Capital");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");
@@ -858,7 +858,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "855")
-    @Test(groups = {"smoke_qc","ethan5.0"})
+    @Test(groups = {"smoke_qc","ethan6.0"})
     public void Ledger_Statement_TC855() throws IOException {
         log("@title:Validate value calculated correctly for Ledger Type = Capital (Credit)");
         log("@Step Precondition: Already have ledger account created in Accounting > Chart of Account with Account Type = Capital");

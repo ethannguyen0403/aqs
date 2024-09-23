@@ -13,7 +13,7 @@ import static common.SBPConstants.*;
 import static common.SBPConstants.COUNTRY_LIST;
 
 public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression","ethan6.0"})
     @TestRails(id = "2073")
     public void Cricket_League_Season_Team_Info_TC_2073(){
         log("@title: Validate League/Season/Team Info for Cricket is displayed when navigate");

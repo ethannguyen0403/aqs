@@ -32,8 +32,8 @@ public class OverUnderCornerLiabilityPage extends WelcomePage {
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
     public DropDownBox ddpSport = DropDownBox.xpath("//div[contains(text(),'Sport')]//following::select[1]");
     public Label lblPTBets = Label.xpath("//span[contains(text(),'PT-Bets')]");
-    public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
-    public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
+    public Label lblFromDate = Label.xpath("//label[contains(text(),'From Date')]");
+    public Label lblToDate = Label.xpath("//label[contains(text(),'To Date')]");
 
     public Label lblShowBetType = Label.xpath("//div[contains(text(),'Show Bet Types')]");
     public Label lblShowLeagues = Label.xpath("//div[contains(text(),'Show Leagues')]");
@@ -42,6 +42,7 @@ public class OverUnderCornerLiabilityPage extends WelcomePage {
     public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
     public Button btnShowGroups = Button.xpath("//div[contains(text(),'Show Groups')]");
     public Button btnSetSelection = Button.xpath("//button[contains(text(),'Set Selection')]");
+    public Button btnClearAll = Button.xpath("//button[text()='Clear All']");
     public Table tblOrder = Table.xpath("//app-over-under-corner-liability//table",13);
 
     public Table tbOrderByGroup;
@@ -80,14 +81,16 @@ public class OverUnderCornerLiabilityPage extends WelcomePage {
         }
     }
 
-    public void filterGroups(String groupCode){
+    public void filterGroups(String groupCode, boolean show){
         CheckBox cbGroup = CheckBox.xpath("//div[contains(@class,'card-columns')]//span[text()='"+groupCode+"']//preceding::input[1]");
         btnShowGroups.click();
         waitSpinnerDisappeared();
         cbGroup.click();
         btnSetSelection.click();
-        btnShow.click();
-        waitSpinnerDisappeared();
+        if (show){
+            btnShow.click();
+            waitSpinnerDisappeared();
+        }
     }
 
     public boolean isOrderExist (Order order, String groupCode){
@@ -136,11 +139,43 @@ public class OverUnderCornerLiabilityPage extends WelcomePage {
         Assert.assertEquals(ddpStake.getOptions(),STAKE_LIST,"Failed! Stake dropdown is not displayed");
         System.out.println("Show Bet Types, Show Leagues, Show Groups, Show Events and Show button");
         Assert.assertEquals(lblShowBetType.getText(),"Show Bet Types\nAll","Failed! Show Bet Types button is not displayed");
-        Assert.assertEquals(lblShowLeagues.getText(), "Show Leagues\nAll","Failed! Show Leagues button is not displayed");
+        Assert.assertTrue(lblShowLeagues.getText().contains("Show Leagues"), "Failed! Show Leagues button is not displayed");
         Assert.assertEquals(lblShowGroups.getText(),"Show Groups\nAll","Failed! Show Groups button is not displayed");
         Assert.assertEquals(lblShowEvents.getText(),"Show Events\nAll","Failed! Show Events button is not displayed");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed");
         System.out.println("Event table header columns is correctly display");
         Assert.assertEquals(tblOrder.getHeaderNameOfRows(), SBPConstants.OverUnderCornerLiability.TABLE_HEADER,"FAILED! Over/Under Corner Liability Bets table header is incorrect display");
+    }
+    public void showLeagues(boolean show, boolean filterAll, String... leagueName) {
+        lblShowLeagues.click();
+        //Wait for showing list because there is not loading icon
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        btnClearAll.click();
+        if (!filterAll){
+            for(String option: leagueName){
+                selectOptionOnFilter(option, true);
+            }
+        }
+        btnSetSelection.click();
+        waitSpinnerDisappeared();
+        if (show){
+            btnShow.click();
+            waitSpinnerDisappeared();
+        }
+    }
+    public void selectOptionOnFilter(String optionName, boolean isChecked) {
+        CheckBox chkOption = CheckBox.xpath(String.format("//th[.=\"%s\"]/preceding-sibling::th[1]/input", optionName));
+        if (isChecked) {
+            if (!chkOption.isSelected()) {
+                chkOption.select();
+            }
+        } else {
+            if (chkOption.isSelected())
+                chkOption.deSelect();
+        }
     }
 }
