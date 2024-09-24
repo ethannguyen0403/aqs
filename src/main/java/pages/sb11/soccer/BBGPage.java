@@ -39,8 +39,8 @@ public class BBGPage extends WelcomePage {
     public TextBox txtToDate = TextBox.name("toDate");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
-    public Label lblFromDate = Label.xpath("//div[contains(text(),'From Date')]");
-    public Label lblToDate = Label.xpath("//div[contains(text(),'To Date')]");
+    public Label lblFromDate = Label.xpath("//label[contains(text(),'From Date')]");
+    public Label lblToDate = Label.xpath("//label[contains(text(),'To Date')]");
 
     public Button btnShowBetTypes = Button.xpath("//div[contains(text(),'Show Bet Types')]");
     public Button btnHideBetTypes = Button.xpath("//div[contains(text(),'Hide Bet Types')]");
@@ -65,11 +65,7 @@ public class BBGPage extends WelcomePage {
     public DropDownBox ddpStakeSizeGroup = DropDownBox.xpath("//div[contains(text(),'Stake Size Group')]//following-sibling::select[1]");
     Label lblNoRecord = Label.xpath("//span[contains(text(),'No record found')]");
 
-    public void filter(String sport, String companyUnit, String smartType, String reportType, String fromDate, String toDate, String stake, String currency){
-        if (!companyUnit.isEmpty()){
-            ddpCompanyUnit.selectByVisibleText(companyUnit);
-            waitSpinnerDisappeared();
-        }
+    public void filter(String sport, String smartType, String reportType, String fromDate, String toDate, String stake, String currency){
         if(!sport.isEmpty()){
             ddpSport.selectByVisibleText(sport);
             waitSpinnerDisappeared();
@@ -84,6 +80,7 @@ public class BBGPage extends WelcomePage {
         }
         if(!fromDate.isEmpty()){
             dtpFromDate.selectDate(fromDate,"dd/MM/yyyy");
+            waitSpinnerDisappeared();
             waitSpinnerDisappeared();
         }
         if(!toDate.isEmpty()){
@@ -100,6 +97,7 @@ public class BBGPage extends WelcomePage {
         }
         btnShow.click();
         waitSpinnerDisappeared();
+
     }
     public void filter(String sport, String companyUnit, String stakeSizeGroup, String reportType, String fromDate, String toDate){
         if (!companyUnit.isEmpty()){
@@ -172,7 +170,9 @@ public class BBGPage extends WelcomePage {
             cbName = CheckBox.xpath(String.format("//div[contains(@class,'card-columns')]//span[text()='%s']//preceding::input[1]",name));
         }
         cbName.jsClick();
+        waitSpinnerDisappeared();
         btnSetSelection.click();
+        waitSpinnerDisappeared();
         btnShow.click();
         waitSpinnerDisappeared();
     }
@@ -346,9 +346,6 @@ public class BBGPage extends WelcomePage {
     public void verifyUI(){
         System.out.println("Company Unit, Report By, Punter Type, Sport, From Date, To Date and Show button");
         Assert.assertEquals(ddpSport.getOptions(),SPORT_LIST,"Failed! Sport dropdown is not displayed");
-        List<String> lstCompany = CompanySetUpUtils.getListCompany();
-        lstCompany.add(0,"All");
-        Assert.assertEquals(ddpCompanyUnit.getOptions(),lstCompany,"Failed! Company Unit dropdown is not displayed");
         Assert.assertEquals(ddpSmartType.getOptions(), SBPConstants.BBGPage.SMART_TYPE_LIST,"Failed! Smart Type dropdown is not displayed");
         Assert.assertEquals(ddpReportType.getOptions(), SBPConstants.BBGPage.REPORT_TYPE_LIST,"Failed! Report Type dropdown is not displayed");
         Assert.assertEquals(ddpWinLose.getOptions(), SBPConstants.BBGPage.WIN_LOSE_TYPE_LIST,"Failed! Win/Lose dropdown is not displayed");
@@ -364,7 +361,6 @@ public class BBGPage extends WelcomePage {
     }
 
     public void verifyDefaultFilter() {
-        Assert.assertEquals(ddpCompanyUnit.getFirstSelectedOption(),"All");
         Assert.assertEquals(ddpSmartType.getFirstSelectedOption(),"Group");
         Assert.assertEquals(ddpReportType.getFirstSelectedOption(),"Pending Bets");
         Assert.assertEquals(ddpStake.getFirstSelectedOption(),"All");
@@ -405,5 +401,13 @@ public class BBGPage extends WelcomePage {
         }
         System.out.println("FAILED! Bet is not displayed");
         return false;
+    }
+    public void stopInterval(){
+        try {
+            String jcode = "(function(w){w = w || window; var i = w.setInterval(function(){},100000); while(i>=0) { w.clearInterval(i--); }})(/*window*/);";
+            DriverManager.getDriver().executeJavascript(jcode);
+        } catch (ClassCastException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

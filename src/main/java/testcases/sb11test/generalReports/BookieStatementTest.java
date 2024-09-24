@@ -99,7 +99,7 @@ public class BookieStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"smoke","ethan5.0"})
+    @Test(groups = {"smoke","ethan6.0"})
     @TestRails(id = "184")
     public void BookieStatementTC_184() throws IOException, InterruptedException {
         String bookieName = "QA Bookie";
@@ -113,7 +113,7 @@ public class BookieStatementTest extends BaseCaseAQS {
         log("Precondition: Add txn for Bookie Super in Debit");
         String transDate = String.format(DateUtils.getDate(0,"yyyy-MM-dd","GMT +7"));
         String fromDate = DateUtils.formatDate(transDate,"yyyy-MM-dd","dd/MM/yyyy");
-        String remark = "Automation Testing Transaction Bookie: " + DateUtils.getMilliSeconds();
+        String remark = "TC 184 Automation Testing Transaction Bookie: " + DateUtils.getMilliSeconds();
         Transaction transaction = new Transaction.Builder()
                 .amountDebit(1).amountCredit(1).remark(remark)
                 .transDate(transDate).transType("Payment Other").level(level)

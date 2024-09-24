@@ -19,7 +19,8 @@ public class GetSoccerEventUtils {
     private static JSONObject getEventsAPIJson(String fromDate, String toDate, String sport) throws UnsupportedEncodingException {
         String json =  String.format("fromDate=%s 12:00:00&toDate=%s 11:59:59&timeZone=Asia/Bangkok&sportName=%s",fromDate,toDate,sport);
         json = json.replace(" ","%");
-        String api = String.format("%saqs-bet-entry/entry-bet/event-date?%s",environment.getSbpLoginURL(),json);
+//        String api = String.format("%saqs-bet-entry/entry-bet/event-date?%s",environment.getSbpLoginURL(),json);
+        String api = String.format("%saqs-bet-entry/entry-bet/event-date",environment.getSbpLoginURL());
         String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
         Map<String, String> headers = new HashMap<String, String>()
         {
@@ -28,7 +29,7 @@ public class GetSoccerEventUtils {
                 put("Content-Type",Configs.HEADER_FORM_URLENCODED);
             }
         };
-        return  WSUtils.getPOSTJSONObjectWithDynamicHeaders(api,null,headers);
+        return  WSUtils.getPOSTJSONObjectWithDynamicHeaders(api,json,headers);
     }
 
     public static Event getFirstEvent(String fromDate, String toDate, String sport, String league) {

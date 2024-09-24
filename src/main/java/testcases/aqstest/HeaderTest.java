@@ -67,7 +67,7 @@ public class HeaderTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id = "464")
-    @Test(groups = {"smoke"})
+    @Test(groups = {"smoke","ethan6.0"})
     @Parameters({"username","password"})
     public void HeaderTC_C464(String username, String password) throws Exception {
         log("@title: Verify Can change password success");

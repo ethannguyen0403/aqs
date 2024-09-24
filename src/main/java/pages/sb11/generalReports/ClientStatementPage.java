@@ -36,7 +36,10 @@ public class ClientStatementPage extends WelcomePage {
     Table tblSuper = Table.xpath("//app-client-detail//table[@id='table-super']", colTotal);
     Table tblMaster = Table.xpath("//app-client-detail//table[@id='table-master']",colTotal);
     //Table tblAgent = Table.xpath("//app-client-detail//div[%s]//table[@id='table-agent']",colTotal);
-
+    CheckBox cb5Decimal = CheckBox.name("showAmountIn5Decimals");
+    CheckBox cbBalanceTxn = CheckBox.name("ShowInfoWithBalanceTxns");
+    CheckBox cbNegativeValue = CheckBox.name("ShowNegativeValues");
+    CheckBox cbIncludeLedger = CheckBox.name("IncludeLedgers");
     @Override
     public String getTitlePage() {
         return this.lblTitle.getText().trim();
@@ -204,5 +207,46 @@ public class ClientStatementPage extends WelcomePage {
             }
         }
         return valueEx;
+    }
+
+    public void tickFilter(boolean decimals, boolean balanceTxn, boolean negativeValue, boolean includeLedgers) {
+        if (decimals){
+            if (!cb5Decimal.isSelected()){
+                cb5Decimal.click();
+            }
+        } else {
+            if (cb5Decimal.isSelected()){
+                cb5Decimal.click();
+            }
+        }
+        if (balanceTxn){
+            if (!cbBalanceTxn.isSelected()){
+                cbBalanceTxn.click();
+            }
+        } else {
+            if (cbBalanceTxn.isSelected()){
+                cbBalanceTxn.click();
+            }
+        }
+        if (negativeValue){
+            if (!cbNegativeValue.isSelected()){
+                cbNegativeValue.click();
+            }
+        } else {
+            if (cbNegativeValue.isSelected()){
+                cbNegativeValue.click();
+            }
+        }
+        if (includeLedgers){
+            if (!cbIncludeLedger.isSelected()){
+                cbIncludeLedger.click();
+            }
+        } else {
+            if (cbIncludeLedger.isSelected()){
+                cbIncludeLedger.click();
+            }
+        }
+        btnShow.click();
+        waitSpinnerDisappeared();
     }
 }

@@ -12,7 +12,7 @@ import static common.SBPConstants.*;
 
 public class BLSettingTest extends BaseCaseAQS {
 
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression","ethan6.0"})
     @TestRails(id = "2097")
     public void BLSettingsTC_2097(){
         log("@title: Validate UI on Open Price is correctly displayed");
@@ -22,7 +22,7 @@ public class BLSettingTest extends BaseCaseAQS {
         log("Validate UI on BL Settings is correctly displayed");
         log("Date, Show League button, Leagues and Show button");
         Assert.assertEquals(blSettingPage.lblDate.getText(), "Date","Failed! Date datetime picker is not displayed!");
-        Assert.assertEquals(blSettingPage.btnShowLeagues.getText(),"Show Leagues","Failed! Show League button is not displayed!");
+        Assert.assertEquals(blSettingPage.btnShowLeagues.getText(),"SHOW LEAGUES","Failed! Show League button is not displayed!");
         Assert.assertTrue(blSettingPage.ddpLeague.getOptions().contains("All"),"Failed! League dropdown is not displayed!");
         Assert.assertEquals(blSettingPage.ddpOrderBy.getOptions(),ORDER_BY_LIST,"Failed! Order By dropdown is not displayed!");
         Assert.assertEquals(blSettingPage.btnShow.getText(),"SHOW","Failed! Show button is not displayed!");

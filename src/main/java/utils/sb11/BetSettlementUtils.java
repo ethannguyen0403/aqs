@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static common.SBPConstants.GMT_7;
 import static common.SBPConstants.SPORT_ID_MAP;
 import static testcases.BaseCaseAQS.environment;
 
@@ -158,9 +159,6 @@ public class BetSettlementUtils {
 
     public static void sendBetSettleAPI(Order order) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = sdf.parse(order.getEventDate());
-            long millis = date.getTime();
             String autho = String.format("Bearer  %s", AppUtils.tokenfromLocalStorage("token-user"));
             Map<String, String> headersParam = new HashMap<String, String>() {
                 {
@@ -172,18 +170,21 @@ public class BetSettlementUtils {
             String jsn = String.format("{\n" +
                             "    \"bets\": [\n" +
                             "        {\n" +
+                            "            \"marketType\": \"%s\",\n" +
                             "            \"id\": %s,\n" +
-                            "            \"winLose\": \"%s\",\n" +
-                            "            \"source\": \"PS7\",\n" +
-                            "            \"canUpdateWinLoss\": %s\n" +
+                            "            \"winLose\": %s,\n" +
+                            "            \"source\": \"PS7\"\n" +
                             "        }\n" +
                             "    ],\n" +
-                            "    \"transactionDate\": %s\n" +
+                            "    \"transactionDate\": \"%s\",\n" +
+                            "    \"sendMailRequest\": {\n" +
+                            "        \"accountId\": %s\n" +
+                            "    }\n" +
                             "}"
-                    , order.getBetId(), order.getWinLose(), order.isWinLose(), millis);
+                    , order.getMarketType(), order.getBetId(), order.getWinLose(), DateUtils.getDate(0,"yyyy-MM-dd",GMT_7),AccountSearchUtils.getAccountId(order.getAccountCode()));
 
             WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }

@@ -76,7 +76,7 @@ public class HeaderMenuControl extends BaseElement {
         Label lblMenu;
         List<String> lstMenu = new ArrayList<>();
         while (true) {
-            lblMenu = Label.xpath(String.format("%s//li[%s]",_xpath, i));
+            lblMenu = Label.xpath(String.format("(%s//span)[%s]",_xpath, i));
             if (!lblMenu.isDisplayed()) {
                 return lstMenu;
             }

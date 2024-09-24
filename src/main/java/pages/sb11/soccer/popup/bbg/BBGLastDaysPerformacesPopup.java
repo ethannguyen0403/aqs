@@ -5,5 +5,6 @@ import com.paltech.element.common.Label;
 public class BBGLastDaysPerformacesPopup {
     public Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span");
     public Label lblLast1Month = Label.xpath("//table[1]//preceding::div[1]");
+    public Label lblNoRecord = Label.xpath("//td[contains(text(),'No record found')]");
     public String getTitlePage (){return lblTitle.getText().trim();}
 }

@@ -41,14 +41,16 @@ public class TransactionUtils {
             }
         };
         String api = environment.getSbpLoginURL() + "aqs-agent-service/payment/transaction-submission";
-        String jsn = String.format("[{\n" +
+
+        String jsn = String.format("{\n" +
+                        "    \"listAccounts\": [\n" +
+                        "        {\n" +
                         "    \"accountId\": \"%s\",\n" +
                         "    \"accountCode\": \"%s\",\n" +
                         "    \"type\": \"%s\",\n" +
                         "    \"currencyCode\": \"HKD\",\n" +
                         "    \"accountLedgerType\": \"\",\n" +
                         "    \"prefix\": \"%s\",\n" +
-                        "    \"cashBalance\": 318.9505,\n" +
                         "    \"companyId\": 1,\n" +
                         "    \"isValidAmount\": true,\n" +
                         "    \"amount\": \"%s\",\n" +
@@ -65,7 +67,6 @@ public class TransactionUtils {
                         "    \"currencyCode\": \"HKD\",\n" +
                         "    \"accountLedgerType\": \"\",\n" +
                         "    \"prefix\": \"%s\",\n" +
-                        "    \"cashBalance\": 435.72,\n" +
                         "    \"companyId\": 1,\n" +
                         "    \"isValidAmount\": true,\n" +
                         "    \"amount\": \"%s\",\n" +
@@ -74,10 +75,11 @@ public class TransactionUtils {
                         "    \"typeId\": \"%s\",\n" +
                         "    \"transactionDate\": \"%s\",\n" +
                         "    \"transaction\": \"Deposit\"\n" +
-                        "  }]\n"
+                        "        }\n" +
+                        "    ]\n" +
+                        "}"
                 , accountIdFrom, trans.getDebitAccountCode(), fromType, prefix1, trans.getAmountDebit(), trans.getRemark(), trans.getTransType(), typeId, trans.getTransDate(),
                 accountIdTo, trans.getCreditAccountCode(), fromType, prefix2, trans.getAmountCredit(), trans.getRemark(), trans.getTransType(), typeId, trans.getTransDate());
-        WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
         WSUtils.sendPOSTRequestDynamicHeaders(api, jsn, headersParam);
     }
 
@@ -102,14 +104,14 @@ public class TransactionUtils {
             }
         };
         String api = environment.getSbpLoginURL() + "aqs-agent-service/payment/transaction-submission";
-        String jsn = String.format("[{\n" +
+        String jsn = String.format("{\n" +
+                        "    \"listAccounts\": [{\n" +
                         "    \"ledgerId\": %s,\n" +
                         "    \"ledgerName\": \"%s\",\n" +
                         "    \"ledgerNum\": \"%s\",\n" +
                         "    \"accountLedgerType\": \"%s\",\n" +
                         "    \"prefix\": \"%s\",\n" +
                         "    \"currencyCode\": \"HKD\",\n" +
-                        "    \"cashBalance\": 0,\n" +
                         "    \"companyId\": 1,\n" +
                         "    \"type\": \"Ledger\",\n" +
                         "    \"accountId\": %s,\n" +
@@ -130,7 +132,6 @@ public class TransactionUtils {
                         "    \"accountLedgerType\": \"%s\",\n" +
                         "    \"prefix\": \"%s\",\n" +
                         "    \"currencyCode\": \"HKD\",\n" +
-                        "    \"cashBalance\": 0,\n" +
                         "    \"companyId\": 1,\n" +
                         "    \"type\": \"Ledger\",\n" +
                         "    \"accountId\": %s,\n" +
@@ -143,7 +144,7 @@ public class TransactionUtils {
                         "    \"typeId\": -1,\n" +
                         "    \"transactionDate\": \"%s\",\n" +
                         "    \"transaction\": \"Deposit\"\n" +
-                        "  }]\n"
+                        "  }]}\n"
                 , Integer.parseInt(accountIdFrom), trans.getLedgerDebit(), trans.getLedgerDebitNumber(), ledgerType, prefix1, Integer.parseInt(accountIdFrom), trans.getLedgerDebit(),
                 trans.getLedgerDebit(), trans.getAmountDebit(), trans.getRemark(), trans.getTransType(), trans.getTransDate(),
                 Integer.parseInt(accountIdTo), trans.getLedgerCredit(), trans.getLedgerCreditNumber(), ledgerType, prefix2, Integer.parseInt(accountIdTo), trans.getLedgerCredit(),

@@ -218,18 +218,16 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2128")
-    @Test(groups = {"regression", "ethan5.0"})
+    @Test(groups = {"regression", "ethan6.0"})
     public void PTRiskControlTC_2128() {
         log("@title: Validate that can copy report successfully");
-//        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
+        String date = String.format(DateUtils.getDate(-1,"dd/MM/yyyy","GMT +7"));
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > PT Risk Control");
         PTRiskPage ptRiskPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
         log("@Step 3: Click Copy Report");
-//        ptRiskPage.dtpFromDate.selectDate(date,"dd/MM/yyyy");
-//        ptRiskPage.waitSpinnerDisappeared();
-        ptRiskPage.btnShow.click();
-        ptRiskPage.waitSpinnerDisappeared();
+        ptRiskPage.filter("","","","","",date,date,"");
+        ptRiskPage.lblNoRecord.waitForControlInvisible();
         ptRiskPage.btnCopy.click();
         log("Message success should display correctly as \"Copied!\"");
         Assert.assertEquals(ptRiskPage.messageSuccess.getText(), "Copied", "Failed! Copy button is not worked");
@@ -261,7 +259,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2127")
-    @Test(groups = {"regression", "2023.12.31", "ethan5.0"})
+    @Test(groups = {"regression", "ethan6.0"})
     @Parameters({"accountCode", "accountCurrency"})
     public void PTRiskControlTC_2127(String accountCode, String accountCurrency) {
         log("@title: Validate Half time Handicap bet is displayed and disappear when place bet in Bet Entry then removed");
