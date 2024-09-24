@@ -7,6 +7,7 @@ import com.paltech.element.common.TextBox;
 
 import static common.ESSConstants.CHANGE_PASSWORD;
 import static testcases.BaseCaseAQS.homePage;
+import static testcases.BaseCaseAQS.welcomePage;
 
 public class ChangePasswordPopup {
     public Popup popup = Popup.xpath("//app-change-password");
@@ -17,6 +18,7 @@ public class ChangePasswordPopup {
     public Button btnClose = Button.xpath("//button[contains(text(), 'Close')]");
     public Button btnUpdate = Button.xpath("//button[contains(text(), 'Update')]");
     public Label messageSuccess = Label.xpath("//p[contains(@class, 'text-success')]");
+    Label lblSpin = Label.xpath("//div[contains(@class,'la-ball-clip-rotate')]");
 
 //    public ChangePasswordPage(By locator, String xpathExpression){
 //        super(locator);
@@ -37,6 +39,7 @@ public class ChangePasswordPopup {
         txtNewPassword.sendKeys(newPassword);
         txtConfirmPassword.sendKeys(confirmPassword);
         btnUpdate.click();
+        lblSpin.waitForControlInvisible();
         String message = messageSuccess.getText();
         if (isClose){
             btnClose.click();
