@@ -112,7 +112,7 @@ public class OpenPriceTest extends BaseCaseAQS {
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER,BBT,"All", BBTPage.class);
         log("@Step 6: Filter with event at step 4");
         String datefilter = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
-        bbtPage.filter("", "","","Settled Bets",datefilter,date,"","",league);
+        bbtPage.filter("","","Settled Bets",datefilter,date,"","",league);
         log("Verify 1: Updated Open Price is displayed correctly on BBT page");
         bbtPage.verifyOpenPriceDisplay(homeTeamName, myOpenPrice,true);
         bbtPage.verifyOpenPriceDisplay(awayTeamName, myOpenPrice,false);

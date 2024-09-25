@@ -84,11 +84,7 @@ public class BBTPage extends WelcomePage {
     String tblDataXpath = "//div[contains(text(),'%s')]//ancestor::div[contains(@class,'header')]/following-sibling::div/div[%d]//table";
 
 
-    public void filter(String companyUnit, String sport, String smartType, String reportType, String fromDate, String toDate, String stake, String currency, String league){
-        if (!companyUnit.isEmpty()){
-            ddpCompanyUnit.selectByVisibleText(companyUnit);
-            waitSpinnerDisappeared();
-        }
+    public void filter(String sport, String smartType, String reportType, String fromDate, String toDate, String stake, String currency, String league){
         if(!sport.isEmpty()){
             ddpSport.selectByVisibleText(sport);
             waitSpinnerDisappeared();
@@ -134,7 +130,6 @@ public class BBTPage extends WelcomePage {
             throw new RuntimeException(e);
         }
         stopInterval();
-        scrollToShowFullResults();
     }
     public void filter(String companyUnit, String sport, String stakeSizeGroup, String reportType, String fromDate, String toDate, String league){
         if (!companyUnit.isEmpty()){
@@ -406,7 +401,6 @@ public class BBTPage extends WelcomePage {
     }
 
     public void verifyAllCountIconsResetToAll() {
-        Assert.assertEquals(ddpCompanyUnit.getFirstSelectedOption(), KASTRAKI_LIMITED,"FAILED! Company Unit displays incorrect");
         Assert.assertEquals(ddpSmartType.getFirstSelectedOption(), SBPConstants.BBTPage.SMART_TYPE_LIST.get(0),"FAILED! Smart type displays incorrect");
         Assert.assertEquals(ddpReportType.getFirstSelectedOption(), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0),"FAILED! Report type displays incorrect");
         String date = DateUtils.getDate(0,"dd/MM/yyyy",GMT_7);
@@ -459,7 +453,7 @@ public class BBTPage extends WelcomePage {
     public List<String> getListLeagueTime() {
         int index = 1;
         List<String> leaguesList = new ArrayList<>();
-        while (true) {
+        while (index <= 20) {
             Label leagueName = Label.xpath(tblBBT.getLeagueTimeXpath(index));
             if (leagueName.isDisplayed()) {
                 leaguesList.add(leagueName.getText());
@@ -469,11 +463,12 @@ public class BBTPage extends WelcomePage {
                 return leaguesList;
             }
         }
+        return leaguesList;
     }
 
     public List<String> getListColOfAllBBTTable(int colOrder) {
         List<String> expectedList = new ArrayList<>();
-        for (int i = 1; i <= tblBBT.getTableControl().getWebElements().size(); i++) {
+        for (int i = 1; i <= 20; i++) {
             String cellValue = tblBBT.getTableControl(i).getControlOfCell(1, colOrder, 1, null).getText().trim();
             if (!cellValue.isEmpty())
                 expectedList.add(cellValue);
@@ -526,7 +521,7 @@ public class BBTPage extends WelcomePage {
     public List<String> getListAllLeaguesName() {
         int index = 1;
         List<String> leaguesList = new ArrayList<>();
-        while (true) {
+        while (index <= 20) {
             Label leagueName = Label.xpath(tblBBT.getLeagueNameXpath(index));
             if (leagueName.isDisplayed()) {
                 leaguesList.add(leagueName.getText());
@@ -537,6 +532,7 @@ public class BBTPage extends WelcomePage {
                 return leaguesList;
             }
         }
+        return leaguesList;
     }
 
     public boolean verifyAllElementOfListAreTheSame(String expectedValue, List<String> actualList){
@@ -546,7 +542,7 @@ public class BBTPage extends WelcomePage {
     public boolean verifyFilterDisplayWithOption(String... options) {
         List<String> listFilter = getAllOptionNameFilter();
         if (listFilter.isEmpty() || listFilter == null) return false;
-        if (!Arrays.asList(options).containsAll(listFilter)) return false;
+        if (!listFilter.containsAll(Arrays.asList(options))) return false;
         return true;
     }
 
@@ -675,6 +671,7 @@ public class BBTPage extends WelcomePage {
         for(String option: groupName){
             selectOptionOnFilter(option, true);
         }
+        waitSpinnerDisappeared();
         btnSetSelection.click();
         waitSpinnerDisappeared();
         btnShow.click();
@@ -762,7 +759,7 @@ public class BBTPage extends WelcomePage {
     }
 
     public void selectOptionOnFilter(String optionName, boolean isChecked) {
-        CheckBox chkOption = CheckBox.xpath(String.format("//th[.=\"%s\"]/preceding-sibling::th[1]/input", optionName));
+        CheckBox chkOption = CheckBox.xpath(String.format("//th[.='%s']/preceding-sibling::th[1]/input", optionName));
         if (isChecked) {
             if (!chkOption.isSelected()) {
                 chkOption.select();
@@ -845,9 +842,6 @@ public class BBTPage extends WelcomePage {
 
     public void verifyUI() {
         System.out.println("Company Unit, Report By, Punter Type, Sport, From Date, To Date and Show button");
-        List<String> lstCompany = CompanySetUpUtils.getListCompany();
-        lstCompany.add(0,"All");
-        Assert.assertEquals(ddpCompanyUnit.getOptions(), lstCompany, "Failed! Company Unit dropdown is not displayed");
         Assert.assertEquals(ddpSport.getOptions(), SPORT_LIST, "Failed! Sport dropdown is not displayed");
         Assert.assertEquals(ddpSmartType.getOptions(), SBPConstants.BBTPage.SMART_TYPE_LIST, "Failed! Smart Type dropdown is not displayed");
         Assert.assertEquals(ddpReportType.getOptions(), SBPConstants.BBTPage.REPORT_TYPE_LIST, "Failed! Report Type dropdown is not displayed");
@@ -860,5 +854,20 @@ public class BBTPage extends WelcomePage {
         Assert.assertEquals(btnResetAllFilter.getText(), "Reset All Filters", "Failed! Reset button is not displayed");
         Assert.assertEquals(btnMoreFilter.getText(), "More Filters", "Failed! More Filters button is not displayed");
         Assert.assertEquals(btnShow.getText(), "SHOW", "Failed! Show button is not displayed");
+    }
+
+    public void clickToCheckBoxHeader(String checkboxName, boolean click) {
+        CheckBox cbName = CheckBox.xpath(String.format("//label[contains(text(),'%s')]//preceding-sibling::input",checkboxName));
+        if (click){
+            if (!cbName.isSelected()){
+                cbName.click();
+            }
+        } else {
+            if (cbName.isSelected()){
+                cbName.click();
+            }
+        }
+        waitSpinnerDisappeared();
+        stopInterval();
     }
 }
