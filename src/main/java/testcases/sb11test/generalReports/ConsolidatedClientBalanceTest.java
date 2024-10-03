@@ -13,6 +13,8 @@ import pages.sb11.accounting.CompanySetupPage;
 import pages.sb11.generalReports.ClientBalancePage;
 import pages.sb11.generalReports.ConsolidatedClientBalancePage;
 import testcases.BaseCaseAQS;
+import utils.sb11.RoleManagementUtils;
+import utils.sb11.UserManagementUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
@@ -25,6 +27,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
     public void Consolidated_Client_Balance_5280(String password, String userNameOneRole) throws Exception {
         log("@title: Validate accounts without permission cannot see the menu");
         log("@pre-condition: Account is inactivated permission 'Company Set-up'");
+        RoleManagementUtils.updateRolePermission("one role","Consolidated Client Balance","INACTIVE");
         log("@Step 1: Navigate to the site");
         LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
@@ -34,12 +37,13 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="5281")
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan7.0"})
     @Parameters({"password", "userNameOneRole"})
     public void Consolidated_Client_Balance_5281(String password, String userNameOneRole) throws Exception {
         log("@title: Validate accounts without permission cannot access page");
         String url = environment.getSbpLoginURL() + "#/aqs-report/general-reports/consolidated-client-balance";
         log("@pre-condition: Account is inactivated permission 'Consolidated Client Balance'");
+        RoleManagementUtils.updateRolePermission("one role","Consolidated Client Balance","INACTIVE");
         log("@Step 1: Navigate to the site");
         LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));
@@ -62,7 +66,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="5283")
-    @Test(groups = {"regression","2023.12.29","ethan2.0"})
+    @Test(groups = {"regression","2023.12.29","ethan7.0"})
     public void Consolidated_Client_Balance_5283() {
         log("@title: Validate UI on Consolidated Client Balance is correctly displayed");
         log("@pre-condition: Account is activated permission 'Company Set-up'");
@@ -125,7 +129,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
     }
     @TestRails(id="5286")
     @Parameters({"clientCode"})
-    @Test(groups = {"regression","2024.V.1.0","ethan"})
+    @Test(groups = {"regression","2024.V.1.0","ethan7.0"})
     public void Consolidated_Client_Balance_5286(String clientCode) {
         log("@title: Validate filters work properly");
         log("@pre-condition 1: Consolidated Client Balance permission is ON");
@@ -161,7 +165,7 @@ public class ConsolidatedClientBalanceTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="5288")
-    @Test(groups = {"regression","2024.V.1.0","ethan"})
+    @Test(groups = {"regression","2024.V.1.0","ethan7.0"})
     public void Consolidated_Client_Balance_5288() {
         log("@title: Validate filters work properly");
         log("@pre-condition: Consolidated Client Balance permission is ON");

@@ -27,6 +27,7 @@ public class ClientBalancePage extends WelcomePage {
     public int totalCol = 7;
     public int colClientName = 2;
     public Table tblClientBalance = Table.xpath("//table[@id='table1']", totalCol);
+    public Table tblCurrency = Table.xpath("//table[@id='table2']", 4);
     public int colBookieName = 2;
     public Table tblBookieBalance = Table.xpath("//div[@id='bookie-balance-summary']//table[not(contains(@style,' '))]", 3);
 
@@ -90,7 +91,11 @@ public class ClientBalancePage extends WelcomePage {
         List<String> lstValue = new ArrayList<>();
         List<String> colEx = Arrays.asList("Deposit","Total Balance HKD","HKD");
         for (int i = 0; i < colEx.size(); i++){
-            lstValue.add(tblClientBalance.getControlOfCellSPP(1,tblClientBalance.getColumnIndexByName(colEx.get(i)),1,null).getText());
+            if (!(tblClientBalance.getColumnIndexByName(colEx.get(i)) == -1)){
+                lstValue.add(tblClientBalance.getControlOfCellSPP(1,tblClientBalance.getColumnIndexByName(colEx.get(i)),1,null).getText());
+            } else {
+                lstValue.add(tblCurrency.getControlOfCellSPP(1,tblCurrency.getColumnIndexByName(colEx.get(i)),1,null).getText());
+            }
         }
         return lstValue;
     }

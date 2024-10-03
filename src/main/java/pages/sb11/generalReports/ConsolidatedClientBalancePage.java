@@ -36,8 +36,8 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
     public Button btnExportExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
     public Button btnExportPDF = Button.xpath("//button[contains(text(),'Export To PDF')]");
     public Button btnCreateClient = Button.xpath("//button[text()='Create/Manage Client Groups']");
-    int numCol = 12;
-    public Table tblInfo = Table.xpath("//table",numCol);
+    public Table tblInfo = Table.xpath("//table[1]",8);
+    public Table tblCurrency = Table.xpath("//table[2]",4);
     Label lblTotalOfTotalBalance = Label.xpath("//th[text()=' Total']//following-sibling::th[5]");
 
 
@@ -56,6 +56,7 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
         Assert.assertFalse(btnCreateClient.isEnabled(),"FAILED! Create/Manage Client Groups button display incorrect");
 
         List<String> lstHeader = tblInfo.getHeaderNameOfRows();
+        lstHeader.addAll(tblCurrency.getHeaderNameOfRows());
         Assert.assertEquals(lstHeader,SBPConstants.ConsolidatedClientBalance.HEADER_NAME,"FAILED! Header name display incorrect");
     }
 
@@ -145,7 +146,7 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
         Assert.assertTrue(DropDownBox.xpath(tblInfo.getxPathOfCellSPP(1,tblInfo.getColumnIndexByName("Status"),2,"select")).isDisplayed(),"FAILED! Status display incorrect");
         Assert.assertEquals(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Deposit"),2,null).getText().trim(),deposit,"FAILED! Deposit display incorrect");
         Assert.assertEquals(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("Total Balance HKD"),2,null).getText().trim(),totalBalance,"FAILED! Total Balance HKD display incorrect");
-        Assert.assertEquals(tblInfo.getControlOfCellSPP(1,tblInfo.getColumnIndexByName("HKD"),2,null).getText().trim(),hkdValue,"FAILED! HKD column display incorrect");
+        Assert.assertEquals(tblCurrency.getControlOfCellSPP(1,tblCurrency.getColumnIndexByName("HKD"),2,null).getText().trim(),hkdValue,"FAILED! HKD column display incorrect");
     }
 
     public void verifyDataTableDisplay() {
@@ -181,6 +182,10 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
     }
     public Label getCellOfRow(String groupName, String columnName, int rowIndex){
         int columnIndex = tblInfo.getColumnIndexByName(columnName);
+        if (columnIndex == -1){
+            columnIndex = tblCurrency.getColumnIndexByName(columnName);
+            return Label.xpath(String.format("//table[2]//tr[contains(@class,'bg-white')][%s]//th[%s]",rowIndex,columnIndex));
+        }
         return Label.xpath(String.format("(//table//span[contains(text(),'%s')]//ancestor::tr//following-sibling::tr[contains(@class,'bg-white')])[%s]//th[%s]",groupName,rowIndex,columnIndex));
     }
 
