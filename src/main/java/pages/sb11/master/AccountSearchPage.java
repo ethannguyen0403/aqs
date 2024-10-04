@@ -34,8 +34,7 @@ public class AccountSearchPage extends WelcomePage {
     public Label lblAddressBook = Label.xpath("//app-account-search//span[text()='Account - Address Book']");
     public Label lblSmartGroupInfo = Label.xpath("//app-account-search//span[text()='Smart Group Info']");
     public Label lblNoRecordFound = Label.xpath("//app-account-search//span[contains(text(),'No record found.')]");
-    public Label lblClientNameValue = Label.xpath("((//div[@class='panel-header'])[3]//following-sibling::table//td)[2]");
-
+    public Label lblClientNameValue = Label.xpath("//div[@class='panel-header']//span[text()='Client Info']//following::table[1]//th[text()='Client Name']//following-sibling::td");
     public void filterAccount (String companyUnit, String type, String accountCodeID){
         ddpCompanyUnit.selectByVisibleText(companyUnit);
         ddpType.selectByVisibleText(type);
