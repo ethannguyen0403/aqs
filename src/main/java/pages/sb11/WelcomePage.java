@@ -162,4 +162,8 @@ public class WelcomePage extends Header{
         }
         return financialYear;
     }
+    public String getBeginDateOfFinanYear(String financialYear){
+        String yearBegin = financialYear.replace("Year ","").split("-")[0];
+        return String.format("01/08/%s",yearBegin);
+    }
 }

@@ -133,7 +133,6 @@ public class BetSettlementPage extends WelcomePage {
 
     private void selectOrder(Order order) {
         selectRowByOrderID(order.getBetId());
-
     }
 
     public void selectRowByOrderID(String order) {
@@ -150,8 +149,9 @@ public class BetSettlementPage extends WelcomePage {
             btnSearch.click();
             waitSpinnerDisappeared();
         }
-            CheckBox cb = CheckBox.xpath(tblOrder.getxPathOfCell(1, colSelect, rowIndex, "input"));
+        CheckBox cb = CheckBox.xpath(tblOrder.getxPathOfCell(1, colSelect, rowIndex, "input"));
         cb.scrollToThisControl(false);
+        waitSpinnerDisappeared();
         if (!cb.isSelected()) {
             cb.click();
         }
@@ -294,6 +294,7 @@ public class BetSettlementPage extends WelcomePage {
     }
 
     public void settleAndSendSettlementEmail(Order order) {
+        reClickShowButton(order);
         selectOrder(order);
         fillWinLose(order);
         btnSettleSendSettlementEmail.scrollToTop();
@@ -340,6 +341,7 @@ public class BetSettlementPage extends WelcomePage {
     }
 
     public void verifyOrderManual(Order order) {
+        reClickShowButton(order);
         int rowindex = getOrderIndex(order.getBetId());
         String brBetrefID = tblOrder.getControlOfCell(1, colBRBettrefId, rowindex, null).getText();
         String sport = tblOrder.getControlOfCell(1, colSport, rowindex, null).getText();

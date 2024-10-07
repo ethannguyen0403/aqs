@@ -72,7 +72,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         Assert.assertEquals(mesWarning,String.format(PositionTakingReport.WARNING_FINANCIAL_YEAR_MES,preYear,afterYear),"FAILED! Error message display incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29","ethan"})
+    @Test(groups = {"regression","2023.12.29","ethan7.0"})
     @TestRails(id = "4188")
     public void Position_Taking_Report_4188() {
         log("@title: Validate the filtered range is limited to 1 month");
@@ -81,7 +81,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         log("@Step 2: Go to General Reports >> Position Taking Report page");
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Select a Financial Year");
-        page.ddFinancialYear.selectByVisibleText(FINANCIAL_YEAR_LIST.get(3));
+        page.ddFinancialYear.selectByVisibleText(FINANCIAL_YEAR_LIST.get(4));
         log("@Step 4: Try to filter date range > 1 month");
         String dateNo = DateUtils.getDate(-40,"dd/MM/yyyy",GMT_7);
         page.dtpFromDate.selectDate(dateNo,"dd/MM/yyyy");
@@ -164,7 +164,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         Assert.assertTrue(page.isFormatBookieNameDisplay("Pinnacle2","EUR",curMain),"FAILED! The Bookie Names do not show as a link with the format");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan7.0"})
     @TestRails(id = "4198")
     public void Position_Taking_Report_4198() {
         log("@title: Validate correct Till [selected To date] displays");
@@ -176,7 +176,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         String clientStatement = "PSM1000 - PSM Group Limited";
         String agentCode = "PSMEU02-PT";
         String bookieName = "[EUR >> HKD] Pinnacle2";
-        String fromDate = "01/08/2023";
+        String fromDate = welcomePage.getBeginDateOfFinanYear(FINANCIAL_YEAR);
         PositionTakingReportPage page = welcomePage.navigatePage(GENERAL_REPORTS,POSITION_TAKING_REPORT, PositionTakingReportPage.class);
         log("@Step 3: Filter which has data");
         page.filter(KASTRAKI_LIMITED,FINANCIAL_YEAR,"All","","");
@@ -291,7 +291,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
         Assert.assertTrue(page.isTotalWinLoseDisplay(),"FAILED! Total win/lose value = sum amount of all bookies for each column displays incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan7.0"})
     @TestRails(id = "4342")
     public void Position_Taking_Report_4342() {
         log("@title: Validate the correct client displays if there is a client of a similar account");

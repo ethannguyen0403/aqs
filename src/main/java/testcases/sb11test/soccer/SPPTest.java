@@ -54,7 +54,7 @@ public class SPPTest extends BaseCaseAQS {
 
         log("@Step 3: Go to SPP >> select all leagues >> select the group");
         log(String.format("Step 4: Select the date %s >> click Show", date));
-        SPPPage sppPage = clientPage.navigatePage(SOCCER, SPP, SPPPage.class);
+        SPPPage sppPage = clientPage.navigatePage(SOCCER, SPP,"All", SPPPage.class);
         sppPage.filter("All", "Group", "Smart Group", "QA Smart Master", "QA Smart Agent", dateFilter, dateFilter);
         String winloseSPP = sppPage.getRowDataOfGroup("Auto QC Group").get(sppPage.colWL);
         log("@verify 1: Validate the win/loss in the Client statement (step 2) matches with the win/loss of the group in the SPP page");
@@ -87,7 +87,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 5: Go to SPP >> select all leagues >> select the group");
         log(String.format("Step 6: Select the date %s >> click Show", fromDate));
         log("@Step 7: Observe the win/loss of the group");
-        SPPPage sppPage = bookieStatementPage.navigatePage(SOCCER, SPP, SPPPage.class);
+        SPPPage sppPage = bookieStatementPage.navigatePage(SOCCER, SPP,"All", SPPPage.class);
         sppPage.filter("All", "Group", "Smart Group", "QA Smart Master", "QA Smart Agent", "", "");
         String winloseSPP = sppPage.getRowDataOfGroup("Auto QC Group").get(sppPage.colWL);
         log("@verify 1: Validate the win/loss in the Client statement (step 2) matches with the win/loss of the group in the SPP page");
@@ -100,7 +100,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@title: Validate SPP page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
-        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP,"All", SPPPage.class);
         log("Validate SPP page is displayed with correctly title");
         Assert.assertTrue(sppPage.getTitlePage().contains(SPP), "Failed! SPP page is not displayed");
         log("INFO: Executed completely");
@@ -112,7 +112,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@title: Validate SPP page is displayed when navigate");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
-        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP,"All", SPPPage.class);
         log("Validate UI Info display correctly");
         sppPage.verifyUI();
         log("INFO: Executed completely");
@@ -125,7 +125,7 @@ public class SPPTest extends BaseCaseAQS {
         String date = String.format(DateUtils.getDate(-3, "dd/MM/yyyy", "GMT +7"));
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
-        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP,"All", SPPPage.class);
         log("@Step 3: Filter with valid data");
         sppPage.filter("Soccer", "Group", "Smart Group", "[All]", "[All]", date, date);
         log("@Step 4: Check on Show Tax Amount checkbox");
@@ -145,7 +145,7 @@ public class SPPTest extends BaseCaseAQS {
         String todate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", "GMT +7"));
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
-        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP,"All", SPPPage.class);
         log("@Step 3: Filter with valid data");
         sppPage.filter("Soccer", "Group", "Smart Group", "QA Smart Master", "[All]", fromdate, todate);
         log("@Step 4: Click on any group code");
@@ -172,7 +172,7 @@ public class SPPTest extends BaseCaseAQS {
         String todate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", "GMT +7"));
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
-        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP,"All", SPPPage.class);
         log("@Step 3: Filter with valid data");
         sppPage.filter("Soccer", "Group", "Smart Group", "QA Smart Master", "[All]", fromdate, todate);
         log("@Step 4: Click on any data at MP column");
@@ -247,7 +247,7 @@ public class SPPTest extends BaseCaseAQS {
             betSettlementPage.filter("Confirmed", fromDate, "", "", accountCode);
             betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
             log("@Step 1: Go to Soccer >> SPP page");
-            SPPPage page = betSettlementPage.navigatePage(SOCCER, SPP, SPPPage.class);
+            SPPPage page = betSettlementPage.navigatePage(SOCCER, SPP,"All", SPPPage.class);
             log("@Step 2: Select Cricket Sport and filter date that settled bets at precondition");
             page.filter(sportName, "Group", "Smart Group", "QA Smart Master", "", fromDate, "");
             log("@Step 3: Open League Performance by Smart Group Name");
@@ -300,7 +300,7 @@ public class SPPTest extends BaseCaseAQS {
             betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
             log("@Step 1: Login with valid account");
             log("@Step 2: Access Soccer > SPP");
-            SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+            SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP,"All", SPPPage.class);
             log("@Step 3: Filter with Cricket sport");
             sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", "", currentDate);
 
@@ -352,7 +352,7 @@ public class SPPTest extends BaseCaseAQS {
             betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
             log("@Step 1: Login with valid account");
             log("@Step 2: Access Soccer > SPP");
-            SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+            SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP,"All", SPPPage.class);
             log(String.format("@Step 3: Filter with Smart Group: %s, and Bet Types: MB", smartGroup));
             sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", previousDate, currentDate);
             log("@Verify 1: Validate The Wins of Cricket Manual Bets displays correct Win = the amount value >0 (If bet is win, the Win column > 0)");
@@ -406,7 +406,7 @@ public class SPPTest extends BaseCaseAQS {
             betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
             log("@Step 1: Login with valid account");
             log("@Step 2: Access Soccer > SPP");
-            SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+            SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP,"All", SPPPage.class);
             log(String.format("@Step 3: Filter with Smart Group: %s, and Bet Types: MB", smartGroup));
             sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", previousDate, currentDate);
             log("@Verify 1: Validate the correct Avg Stake and Turnover of Cricket Manual Bets displays");
@@ -464,7 +464,7 @@ public class SPPTest extends BaseCaseAQS {
             betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
             log("@Step 1: Login with valid account");
             log("@Step 2: Access Soccer > SPP");
-            SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+            SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP,"All", SPPPage.class);
             log(String.format("@Step 3: Filter with Smart Group: %s, and Bet Types: MB", smartGroup));
             sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", previousDate, currentDate);
             log("@Verify 1: Validate the correct Avg Stake and Turnover of Cricket Manual Bets displays");
@@ -511,7 +511,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@title: Validate can filter by MB bet types");
         log("@Step 1: Login with valid account");
         log("@Step 2: Access Soccer > SPP");
-        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP,"All", SPPPage.class);
         log(String.format("@Step 3: Filter with Smart Group: %s, and Bet Types: MB", smartGroup));
         sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", previousDate, currentDate);
         log("@Verify 1: Validate all Cricket Manual Bets display properly");

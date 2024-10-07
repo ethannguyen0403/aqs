@@ -273,7 +273,9 @@ public class ConfirmBetsPage extends WelcomePage {
     public void confirmBet(Order order){
         reClickShowButton(order);
         selectBet(order,true);
-        btnConfirmBet.click();
+        if (btnConfirmBet.isDisplayed()){
+            btnConfirmBet.click();
+        }
         waitSpinnerDisappeared();
     }
 
@@ -305,7 +307,10 @@ public class ConfirmBetsPage extends WelcomePage {
      */
     public void confirmMultipleBets(List<Order> lstOrder){
        selectBets(lstOrder,true);
-       btnConfirmBet.click();
+       if (btnConfirmBet.isEnabled()){
+           btnConfirmBet.click();
+       }
+        waitSpinnerDisappeared();
     }
 
     /**
@@ -354,6 +359,7 @@ public class ConfirmBetsPage extends WelcomePage {
     private void selectBets(List<Order> lstOrder,boolean isPending){
         for (Order order: lstOrder
         ) {
+            reClickShowButton(order);
             selectBet(order,isPending);
         }
     }
@@ -370,7 +376,10 @@ public class ConfirmBetsPage extends WelcomePage {
     }
     private void selectBet(Order order, boolean isPendingBet){
         int rowIndex = getOrderIndex(order.getBetId());
-        CheckBox.xpath(tblOrder.getxPathOfCell(1,defineSelectColIndex(isPendingBet),rowIndex,"input")).click();
+        CheckBox checkBox = CheckBox.xpath(tblOrder.getxPathOfCell(1,defineSelectColIndex(isPendingBet),rowIndex,"input"));
+        if (!checkBox.isSelected()){
+            checkBox.click();
+        }
     }
 
     private void fillInfo(Order order,boolean isPendingBet){
