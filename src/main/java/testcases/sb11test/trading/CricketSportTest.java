@@ -922,7 +922,7 @@ public class CricketSportTest extends BaseCaseAQS {
         }
     }
     @TestRails(id = "249")
-    @Test(groups = {"regression","2023.11.30","ethan4.0"})
+    @Test(groups = {"regression","2023.11.30","ethan7.0"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void Cricket_Sport_249 (String accountCode, String accountCurrency, String emailAddress, String clientCode) throws InterruptedException, IOException {
         log("Validate bet that placed on market Odd/Even settled correctly");
@@ -1006,7 +1006,7 @@ public class CricketSportTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id = "251")
-    @Test(groups = {"regression","2023.11.30","ethan4.0"})
+    @Test(groups = {"regression","2023.11.30","ethan7.0"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void Cricket_Sport_251 (String accountCode, String accountCurrency, String emailAddress, String clientCode) throws InterruptedException, IOException {
         log("Validate bet that placed on market Over/Under settled correctly");
@@ -1071,7 +1071,7 @@ public class CricketSportTest extends BaseCaseAQS {
         }
     }
     @TestRails(id = "252")
-    @Test(groups = {"regression","2023.11.30","ethan"})
+    @Test(groups = {"regression","2023.11.30","ethan7.0"})
     @Parameters({"accountCode","clientCode"})
     public void Cricket_Sport_252 (String accountCode, String clientCode) throws IOException {
         log("@title: Validate Cricket manual bets settled correctly");
@@ -1107,12 +1107,12 @@ public class CricketSportTest extends BaseCaseAQS {
         log("@Step 3:  Click Settle & Send Settlement Email button > observe");
         betSettlementPage.settleAndSendSettlementEmail(order);
         log("Verify 2: Bets disappear from Confirm and move to the Settled section.");
-        betSettlementPage.filter("Settled", date, "","", accountCode);
+        betSettlementPage.filter("Settled", "", "","", accountCode);
         betSettlementPage.verifyOrderManual(order);
         log("INFO: Executed completely");
     }
     @TestRails(id = "175")
-    @Test(groups = {"regression","2023.11.30","ethan3.0"})
+    @Test(groups = {"regression","2023.11.30","ethan7.0"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void Cricket_Sport_175 (String accountCode, String accountCurrency, String emailAddress, String clientCode) throws InterruptedException, IOException {
         log("Validate bet that placed on market DNB settled correctly");

@@ -40,6 +40,7 @@ public class ResultEntryUtils {
                         "        \"eventStatus\": \"%s\",\n" +
                         "        \"scores\": [\n" +
                         "            {\n" +
+                        "                \"scoreType\": \"FT_RESULT\",\n" +
                         "                \"periodId\": 100,\n" +
                         "                \"typeId\": 700,\n" +
                         "                \"generalKey\": \"cricketResult\",\n" +
