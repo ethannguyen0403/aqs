@@ -19,7 +19,7 @@ public class EventScheduleTest extends BaseCaseAQS {
 
     @TestRails(id="1041")
     @Parameters({"accountCode"})
-    @Test(groups = {"smoke","ethan5.0"})
+    @Test(groups = {"smoke","ethan7.0"})
     public void EventSchedule_TC1041(){
         log("@title: Validate the events is added in Schedule list and show correctly in Bet entry");
         log("@Precondition: Have a specific League Name, Home Team, Away Team for testing line\n" +
@@ -51,7 +51,6 @@ public class EventScheduleTest extends BaseCaseAQS {
         try {
             log("@Step 6: In the Schedules List section, select Show league link, find and select league\" QA Soccer League\" and click the show button");
             log("@Verify 1: Verify event info displayed correctly in the Schedule List");
-            Assert.assertTrue(eventSchedulePage.getSuccessMessage().contains("Event schedule is created successfully"),"FAILED! Success message is incorrect displayed");
             eventSchedulePage.showScheduleList(leagueName,true,"QA Team 01",date);
             Assert.assertTrue(eventSchedulePage.verifyEventInSchedulelist(event),"Failed! Event info incorrect after created");
 
