@@ -10,10 +10,12 @@ import pages.sb11.trading.*;
 import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.popup.BetListPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.*;
+import utils.sb11.sport.EventScheduleUtils;
+import utils.sb11.trading.BetEntrytUtils;
+import utils.sb11.trading.BetSettlementUtils;
+import utils.sb11.trading.ConfirmBetsUtils;
 import utils.testraildemo.TestRails;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static common.SBPConstants.*;

@@ -14,8 +14,7 @@ import pages.sb11.WelcomePage;
 import pages.sb11.soccer.controls.BetByGroupTableControl;
 import pages.sb11.soccer.popup.bbg.BBGLastDaysPerformacesPopup;
 import pages.sb11.soccer.popup.bbg.BetByTeamPricePopup;
-import utils.sb11.AccountSearchUtils;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.master.AccountSearchUtils;
 
 import java.util.*;
 

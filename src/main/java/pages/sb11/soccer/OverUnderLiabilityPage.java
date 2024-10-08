@@ -7,11 +7,10 @@ import controls.Table;
 import objects.Order;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
 
 import java.util.List;
 
-import static common.SBPConstants.COMPANY_UNIT_LIST_ALL;
 import static common.SBPConstants.STAKE_LIST;
 
 public class OverUnderLiabilityPage extends WelcomePage {

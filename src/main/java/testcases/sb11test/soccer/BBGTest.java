@@ -1,10 +1,8 @@
 package testcases.sb11test.soccer;
 
-import com.paltech.element.common.Label;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
 import common.SBPConstants;
-import objects.Event;
 import objects.Order;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -15,10 +13,11 @@ import pages.sb11.soccer.popup.bbg.BBGLastDaysPerformacesPopup;
 import pages.sb11.soccer.popup.bbg.BetByTeamPricePopup;
 import pages.sb11.trading.BetSettlementPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.*;
+import utils.sb11.role.RoleManagementUtils;
+import utils.sb11.trading.BetSettlementUtils;
+import utils.sb11.trading.ConfirmBetsUtils;
 import utils.testraildemo.TestRails;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

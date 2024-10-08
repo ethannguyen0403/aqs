@@ -7,11 +7,10 @@ import com.paltech.element.common.TextBox;
 import controls.DateTimePicker;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
 
 import java.util.List;
 
-import static common.SBPConstants.COMPANY_UNIT_LIST_ALL;
 import static common.SBPConstants.FINANCIAL_YEAR_LIST_NEW;
 
 public class PhoneBettingPage extends WelcomePage {

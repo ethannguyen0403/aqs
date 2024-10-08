@@ -7,10 +7,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.master.BookieInfoPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
-
-import java.io.IOException;
 
 import static common.SBPConstants.*;
 

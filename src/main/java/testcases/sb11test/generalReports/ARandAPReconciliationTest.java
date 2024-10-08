@@ -11,13 +11,11 @@ import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.generalReports.SystemMonitoringPage;
 import pages.sb11.generalReports.systemmonitoring.ARandAPReconciliationPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.ChartOfAccountUtils;
-import utils.sb11.TransactionUtils;
-import utils.sb11.UserManagementUtils;
+import utils.sb11.accounting.TransactionUtils;
+import utils.sb11.user.UserManagementUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
-import java.util.List;
 
 import static common.SBPConstants.*;
 

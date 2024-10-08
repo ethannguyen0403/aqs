@@ -15,7 +15,7 @@ import pages.sb11.master.ClientSystemPage;
 import pages.sb11.master.clientsystempopup.AccountListPopup;
 import pages.sb11.trading.AccountPercentPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.List;

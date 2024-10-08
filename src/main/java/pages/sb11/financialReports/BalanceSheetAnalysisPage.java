@@ -8,7 +8,7 @@ import com.paltech.utils.DoubleUtils;
 import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
-import utils.sb11.BalanceSheetAnalysisUtils;
+import utils.sb11.financialReports.BalanceSheetAnalysisUtils;
 
 import java.util.ArrayList;
 import java.util.List;

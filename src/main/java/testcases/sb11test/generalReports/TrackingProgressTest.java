@@ -9,8 +9,8 @@ import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
 import pages.sb11.generalReports.TrackingProgressPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.RoleManagementUtils;
-import utils.sb11.TrackingProgressUtils;
+import utils.sb11.role.RoleManagementUtils;
+import utils.sb11.generalReports.TrackingProgressUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.Arrays;

@@ -16,9 +16,9 @@ import pages.sb11.generalReports.popup.feedreport.InvoicePopup;
 import pages.sb11.generalReports.popup.feedreport.ProviderPopup;
 import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.FeedReportUtils;
-import utils.sb11.feedreport.ClientPopupUtils;
-import utils.sb11.feedreport.ProviderPopupUtils;
+import utils.sb11.generalReports.FeedReportUtils;
+import utils.sb11.generalReports.feedreport.ClientPopupUtils;
+import utils.sb11.generalReports.feedreport.ProviderPopupUtils;
 import utils.testraildemo.TestRails;
 
 public class FeedReportTest extends BaseCaseAQS {

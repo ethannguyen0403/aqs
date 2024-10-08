@@ -21,7 +21,13 @@ import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.popup.BetListPopup;
 import pages.sb11.trading.popup.CricketBetSlipPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.*;
+import utils.sb11.master.AccountSearchUtils;
+import utils.sb11.sport.EventScheduleUtils;
+import utils.sb11.sport.LeagueSeasonTeamInfoUtils;
+import utils.sb11.sport.ResultEntryUtils;
+import utils.sb11.trading.AccountPercentUtils;
+import utils.sb11.trading.BetEntrytUtils;
+import utils.sb11.trading.BetSettlementUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
@@ -34,12 +40,13 @@ import static common.SBPConstants.BetSettlement.BET_LIST_STATEMENT_EMAIL;
 
 public class CricketSportTest extends BaseCaseAQS {
     @TestRails(id = "61")
-    @Test(groups = {"regression","2023.11.30","ethan2.0"})
+    @Test(groups = {"regression","2023.11.30","ethan7.0"})
     public void Cricket_Sport_61() {
         log("Validate users can add cricket leagues");
         log("@pre-condition: Account is activated permission");
         log("@Step 1: Login to SB11 >> Go to League/Season/Team Info");
         CricketLeagueSeasonTeamInfoPage cricketLeagueSeasonTeamInfoPage = welcomePage.navigatePage(SPORT,LEAGUE_SEASON_TEAM_INFO, CricketLeagueSeasonTeamInfoPage.class);
+        cricketLeagueSeasonTeamInfoPage.waitSpinnerDisappeared();
         cricketLeagueSeasonTeamInfoPage.goToCricket();
         log("@Step 2: Click + icon to open the create dialog");
         CreateCricketLeaguePopup createCricketLeaguePopup = cricketLeagueSeasonTeamInfoPage.openAddLeaguePopup();
@@ -53,8 +60,9 @@ public class CricketSportTest extends BaseCaseAQS {
             Assert.assertFalse(cricketLeagueSeasonTeamInfoPage.tbLeague.getRowIndexContainValue(leagueName, cricketLeagueSeasonTeamInfoPage.tbLeague.getColumnIndexByName("League Name"),null)
                     == 0, "FAILED! Can not add new Cricket List");
         } finally {
-            ConfirmDeleteLeaguePopup delPopup = cricketLeagueSeasonTeamInfoPage.openDeleteLeaguePopup(leagueName);
-            delPopup.deleteLeague(true);
+//            ConfirmDeleteLeaguePopup delPopup = cricketLeagueSeasonTeamInfoPage.openDeleteLeaguePopup(leagueName);
+//            delPopup.deleteLeague(true);
+            LeagueSeasonTeamInfoUtils.deleteLeague(CRICKET,leagueName);
         }
 
         log("INFO: Executed completely");
@@ -69,6 +77,7 @@ public class CricketSportTest extends BaseCaseAQS {
         String leagueName = "QA Cricket Auto League";
         String country = "Asia";
         CricketLeagueSeasonTeamInfoPage cricketLeagueSeasonTeamInfoPage = welcomePage.navigatePage(SPORT,LEAGUE_SEASON_TEAM_INFO, CricketLeagueSeasonTeamInfoPage.class);
+        cricketLeagueSeasonTeamInfoPage.waitSpinnerDisappeared();
         cricketLeagueSeasonTeamInfoPage.goToCricket();
         log("@Step 2: Filter and select the league >> Click + icon at 'Team List' to open the create dialog");
         cricketLeagueSeasonTeamInfoPage.filterLeague("All",country,leagueName);
@@ -84,14 +93,15 @@ public class CricketSportTest extends BaseCaseAQS {
             Assert.assertTrue(cricketLeagueSeasonTeamInfoPage.isTeamDisplayed(leagueName,"",team.getTeamName()),"FAILED! The team is not created");
         } finally {
             log("@post-condition: Delete Team");
-            cricketLeagueSeasonTeamInfoPage.deleteTeamName(leagueName,"",team.getTeamName());
-            log("@post-condition: Validate The team is deleted successfully");
-            Assert.assertFalse(cricketLeagueSeasonTeamInfoPage.isTeamDisplayed(leagueName,"",team.getTeamName()),"FAILED! The team is not deleted");
+//            cricketLeagueSeasonTeamInfoPage.deleteTeamName(leagueName,"",team.getTeamName());
+//            log("@post-condition: Validate The team is deleted successfully");
+//            Assert.assertFalse(cricketLeagueSeasonTeamInfoPage.isTeamDisplayed(leagueName,"",team.getTeamName()),"FAILED! The team is not deleted");
+            LeagueSeasonTeamInfoUtils.deleteTeam(CRICKET,leagueName,team.getTeamName());
         }
         log("INFO: Executed completely");
     }
     @TestRails(id = "63")
-    @Test(groups = {"regression","2023.11.30","ethan"})
+    @Test(groups = {"regression","2023.11.30","ethan7.0"})
     public void Cricket_Sport_63() {
         log("Validate users can schedule events");
         log("@pre-condition 1: Account is activated permission");
@@ -372,7 +382,7 @@ public class CricketSportTest extends BaseCaseAQS {
         }
     }
     @TestRails(id = "67")
-    @Test(groups = {"regression","2023.11.30","ethan3.0"})
+    @Test(groups = {"regression","2023.11.30","ethan7.0"})
     @Parameters({"accountCode","accountCurrency","emailAddress","clientCode"})
     public void Cricket_Sport_67 (String accountCode, String accountCurrency, String emailAddress, String clientCode) throws InterruptedException, IOException {
         log("Validate 1x2 lay bets settled correctly");

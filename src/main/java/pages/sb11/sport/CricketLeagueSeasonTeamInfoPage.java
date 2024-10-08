@@ -40,8 +40,10 @@ public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
     public Label lblTeamName = Label.xpath("//div[contains(text(),'Team Name')]");
 
     public void goToCricket(){
-        ddGoTo.selectByVisibleText("Cricket");
-        waitSpinnerDisappeared();
+        if (ddGoTo.isDisplayed(5)){
+            ddGoTo.selectByVisibleText("Cricket");
+            waitSpinnerDisappeared();
+        }
     }
 
     public CreateCricketLeaguePopup openAddLeaguePopup(){
@@ -80,6 +82,7 @@ public class CricketLeagueSeasonTeamInfoPage extends WelcomePage {
         waitSpinnerDisappeared();
         int index = tbLeague.getRowIndexContainValue(leagueName,tbLeague.getColumnIndexByName("League Name"),null);
         tbLeague.getControlOfCell(1,colDeleteLeague,index,null).click();
+        waitSpinnerDisappeared();
         return new ConfirmDeleteLeaguePopup();
     }
     public boolean isTeamDisplayed(String leagueName, String seasonName, String teamName){

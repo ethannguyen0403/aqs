@@ -12,8 +12,8 @@ import objects.Order;
 import org.testng.Assert;
 import pages.sb11.trading.popup.CricketBetSlipPopup;
 import pages.sb11.trading.popup.BetListPopup;
-import utils.sb11.BetEntrytUtils;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.trading.BetEntrytUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
 
 import java.util.List;
 

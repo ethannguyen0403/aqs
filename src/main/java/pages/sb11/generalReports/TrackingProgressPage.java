@@ -17,7 +17,7 @@ import org.testng.Assert;
 import org.testng.SkipException;
 import pages.sb11.WelcomePage;
 import pages.sb11.popup.ConfirmPopup;
-import utils.sb11.TrackingProgressUtils;
+import utils.sb11.generalReports.TrackingProgressUtils;
 
 import java.util.*;
 

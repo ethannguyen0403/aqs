@@ -12,7 +12,11 @@ import pages.sb11.generalReports.popup.clientstatement.ClientMemberTransactionPo
 import pages.sb11.generalReports.popup.clientstatement.ClientSummaryPopup;
 import pages.sb11.generalReports.popup.clientstatement.ClientSummaryWinlosePopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.*;
+import utils.sb11.accounting.JournalReportsUtils;
+import utils.sb11.accounting.TransactionUtils;
+import utils.sb11.master.AccountSearchUtils;
+import utils.sb11.trading.BetEntrytUtils;
+import utils.sb11.trading.BetSettlementUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;

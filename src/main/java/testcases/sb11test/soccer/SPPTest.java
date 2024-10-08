@@ -12,15 +12,15 @@ import pages.sb11.generalReports.ClientStatementPage;
 import pages.sb11.soccer.LeaguePerformancePage;
 import pages.sb11.soccer.PerformanceByMonthPage;
 import pages.sb11.soccer.SPPPage;
-import pages.sb11.soccer.popup.PTPerformancePopup;
 import pages.sb11.trading.BetSettlementPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.*;
-import utils.sb11.EventMapping;
+import utils.sb11.master.AccountSearchUtils;
+import utils.sb11.sport.EventMappingUtils;
+import utils.sb11.sport.EventScheduleUtils;
+import utils.sb11.trading.BetSettlementUtils;
+import utils.sb11.trading.ConfirmBetsUtils;
 import utils.testraildemo.TestRails;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.List;
 
 import static common.SBPConstants.*;
@@ -229,14 +229,14 @@ public class SPPTest extends BaseCaseAQS {
         EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
-        String eventID = EventMapping.getEventID(event, provider, dateMAP);
+        String eventID = EventMappingUtils.getEventID(event, provider, dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET, provider, dateMAP);
+        Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET, provider, dateMAP);
         if (eventProvider == null) {
             System.out.println("There are not event in Provider today");
             return;
         }
-        EventMapping.mappingEvent(eventID, eventProvider, provider, sportName);
+        EventMappingUtils.mappingEvent(eventID, eventProvider, provider, sportName);
         try {
             log("@pre-condition 1.3: Place betlog");
             List<Order> lstOrder = welcomePage.placeBetAPI(sportName, datePlace, event, accountCode, "MatchBetting", "MatchBetting", event.getHome(), "FullTime", 1, 0.00,
@@ -257,7 +257,7 @@ public class SPPTest extends BaseCaseAQS {
             Assert.assertEquals(leaguePerformancePage.getTableHeaderInRange(), smartGroup + " - League Performance for " + fromDate + " To " + creatDate);
             log("INFO: Executed completely");
         } finally {
-            EventMapping.unMappingEvent(event.getEventId(), eventProvider, provider);
+            EventMappingUtils.unMappingEvent(event.getEventId(), eventProvider, provider);
             EventScheduleUtils.deleteEventByAPI(event, dateAPI);
         }
     }
@@ -282,14 +282,14 @@ public class SPPTest extends BaseCaseAQS {
         EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
-        String eventID = EventMapping.getEventID(event, provider, dateMAP);
+        String eventID = EventMappingUtils.getEventID(event, provider, dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET, provider, dateMAP);
+        Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET, provider, dateMAP);
         if (eventProvider == null) {
             System.out.println("There are not event in Provider today");
             return;
         }
-        EventMapping.mappingEvent(eventID, eventProvider, provider, sportName);
+        EventMappingUtils.mappingEvent(eventID, eventProvider, provider, sportName);
         try {
             log("@pre-condition 1.3: Place betlog");
             List<Order> lstOrder = welcomePage.placeBetAPI(sportName, datePlace, event, accountCode, "MatchBetting", "MatchBetting", event.getHome(), "FullTime", 1, 0.00,
@@ -310,7 +310,7 @@ public class SPPTest extends BaseCaseAQS {
             Assert.assertEquals(mBCricketBets, Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("Bets") - 1)), "FAILED! The filer Cricket MB is not correct");
             log("INFO: Executed completely");
         } finally {
-            EventMapping.unMappingEvent(event.getEventId(), eventProvider, provider);
+            EventMappingUtils.unMappingEvent(event.getEventId(), eventProvider, provider);
             EventScheduleUtils.deleteEventByAPI(event, dateAPI);
         }
     }
@@ -334,14 +334,14 @@ public class SPPTest extends BaseCaseAQS {
         EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
-        String eventID = EventMapping.getEventID(event, provider, dateMAP);
+        String eventID = EventMappingUtils.getEventID(event, provider, dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET, provider, dateMAP);
+        Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET, provider, dateMAP);
         if (eventProvider == null) {
             System.out.println("There are not event in Provider today");
             return;
         }
-        EventMapping.mappingEvent(eventID, eventProvider, provider, sportName);
+        EventMappingUtils.mappingEvent(eventID, eventProvider, provider, sportName);
         try {
             log("@pre-condition 1.3: Place betlog");
             List<Order> lstOrder = welcomePage.placeBetAPI(sportName, previousDate, event, accountCode, "MatchBetting", "MatchBetting", event.getHome(), "FullTime", 1, 0.00,
@@ -360,7 +360,7 @@ public class SPPTest extends BaseCaseAQS {
             Assert.assertTrue(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("Wins") - 1)) > 0, "FAILED!  The Wins of Cricket Manual Bets is not correct");
             log("INFO: Executed completely");
         } finally {
-            EventMapping.unMappingEvent(event.getEventId(), eventProvider, provider);
+            EventMappingUtils.unMappingEvent(event.getEventId(), eventProvider, provider);
             EventScheduleUtils.deleteEventByAPI(event, dateAPI);
         }
     }
@@ -388,14 +388,14 @@ public class SPPTest extends BaseCaseAQS {
         EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
-        String eventID = EventMapping.getEventID(event, provider, dateMAP);
+        String eventID = EventMappingUtils.getEventID(event, provider, dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET, provider, dateMAP);
+        Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET, provider, dateMAP);
         if (eventProvider == null) {
             System.out.println("There are not event in Provider today");
             return;
         }
-        EventMapping.mappingEvent(eventID, eventProvider, provider, sportName);
+        EventMappingUtils.mappingEvent(eventID, eventProvider, provider, sportName);
         try {
             log("@pre-condition 1.3: Place betlog");
             List<Order> lstOrder = welcomePage.placeBetAPI(sportName, previousDate, event, accountCode, "MatchBetting", "MatchBetting", event.getHome(), "FullTime", 1, 0.00,
@@ -418,7 +418,7 @@ public class SPPTest extends BaseCaseAQS {
             Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("Turnover") - 1)), turnOver, "FAILED! Turn Over is not correct");
             log("INFO: Executed completely");
         } finally {
-            EventMapping.unMappingEvent(event.getEventId(), eventProvider, provider);
+            EventMappingUtils.unMappingEvent(event.getEventId(), eventProvider, provider);
             EventScheduleUtils.deleteEventByAPI(event, dateAPI);
         }
     }
@@ -446,14 +446,14 @@ public class SPPTest extends BaseCaseAQS {
         EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
-        String eventID = EventMapping.getEventID(event, provider, dateMAP);
+        String eventID = EventMappingUtils.getEventID(event, provider, dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET, provider, dateMAP);
+        Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET, provider, dateMAP);
         if (eventProvider == null) {
             System.out.println("There are not event in Provider today");
             return;
         }
-        EventMapping.mappingEvent(eventID, eventProvider, provider, sportName);
+        EventMappingUtils.mappingEvent(eventID, eventProvider, provider, sportName);
         try {
             log("@pre-condition 1.3: Place betlog");
             List<Order> lstOrder = welcomePage.placeBetAPI(sportName, previousDate, event, accountCode, "MatchBetting", "MatchBetting", event.getHome(), "FullTime", 1, 0.00,
@@ -474,7 +474,7 @@ public class SPPTest extends BaseCaseAQS {
             Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("W/L") - 1)), wLTotal, "FAILED! Win/Lose is not correct");
             log("INFO: Executed completely");
         } finally {
-            EventMapping.unMappingEvent(event.getEventId(), eventProvider, provider);
+            EventMappingUtils.unMappingEvent(event.getEventId(), eventProvider, provider);
             EventScheduleUtils.deleteEventByAPI(event, dateAPI);
         }
     }

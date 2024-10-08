@@ -14,9 +14,8 @@ import pages.sb11.generalReports.SystemMonitoringPage;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.CompanySetUpUtils;
-import utils.sb11.JournalReportsUtils;
-import utils.sb11.TransactionUtils;
+import utils.sb11.accounting.JournalReportsUtils;
+import utils.sb11.accounting.TransactionUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;

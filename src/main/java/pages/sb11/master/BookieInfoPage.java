@@ -9,7 +9,7 @@ import common.SBPConstants;
 import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
 
 public class BookieInfoPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");

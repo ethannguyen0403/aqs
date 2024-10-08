@@ -1,17 +1,15 @@
 package testcases.sb11test.sport;
 
 import com.paltech.utils.DateUtils;
-import common.SBPConstants;
 import objects.Event;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import pages.sb11.accounting.ChartOfAccountPage;
 import pages.sb11.sport.EventSchedulePage;
 import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.SoccerBetEntryPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.EventScheduleUtils;
+import utils.sb11.sport.EventScheduleUtils;
 import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;

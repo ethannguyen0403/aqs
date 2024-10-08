@@ -5,24 +5,16 @@ import com.paltech.utils.DateUtils;
 import objects.Event;
 import objects.Order;
 import org.openqa.selenium.support.PageFactory;
-import pages.sb11.Header;
 import com.paltech.element.common.Button;
 import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
-import com.paltech.element.common.TextBox;
-import controls.DateTimePicker;
-import controls.Table;
-import pages.ess.popup.ColumnSettingPopup;
 import pages.sb11.WelcomePage;
-import pages.sb11.trading.popup.BetSlipPopup;
-import utils.sb11.BetEntrytUtils;
-import utils.sb11.GetSoccerEventUtils;
+import utils.sb11.trading.BetEntrytUtils;
+import utils.sb11.trading.GetSoccerEventUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static common.SBPConstants.BET_ENTRY;
-import static common.SBPConstants.TRADING;
 import static org.apache.commons.lang3.BooleanUtils.and;
 
 public class BetEntryPage extends WelcomePage {

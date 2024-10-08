@@ -1,7 +1,6 @@
 package pages.sb11.accounting;
 
 import com.paltech.element.common.*;
-import com.paltech.utils.DateUtils;
 import common.SBPConstants;
 import controls.DateTimePicker;
 import controls.Table;
@@ -10,7 +9,7 @@ import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 import pages.sb11.popup.ConfirmPopup;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

@@ -9,20 +9,17 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.soccer.PTRiskPage;
 import pages.sb11.soccer.popup.PTRiskBetListPopup;
-import pages.sb11.trading.BasketballBetEntryPage;
-import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.ConfirmBetsPage;
-import pages.sb11.trading.SoccerBetEntryPage;
-import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.*;
-import utils.sb11.EventMapping;
+import utils.sb11.master.AccountListUtils;
+import utils.sb11.sport.EventMappingUtils;
+import utils.sb11.sport.EventScheduleUtils;
+import utils.sb11.trading.AccountPercentUtils;
+import utils.sb11.trading.BetSettlementUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static common.SBPConstants.*;
 
@@ -383,7 +380,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get("Basketball"));
         welcomePage.waitSpinnerDisappeared();
         String dateMAP = DateUtils.getDate(0, "yyyy-MM-dd HH:mm:ss", GMT_7);
-        String eventID = EventMapping.getEventID(eventBasketball, provider, dateMAP);
+        String eventID = EventMappingUtils.getEventID(eventBasketball, provider, dateMAP);
         eventBasketball.setEventId(eventID);
         log("@Precondition-Step 2: Place some Basketball 1x2 match bets");
         try {
@@ -496,7 +493,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
                         .openTime("17:00").eventStatus("InRunning").isLive(true).isN(false).build();
         EventScheduleUtils.addEventByAPI(eventBasketball, dateAPI, SPORT_ID_MAP.get("Basketball"));
         String dateMAP = DateUtils.getDate(0, "yyyy-MM-dd HH:mm:ss", GMT_7);
-        String eventID = EventMapping.getEventID(eventBasketball, provider, dateMAP);
+        String eventID = EventMappingUtils.getEventID(eventBasketball, provider, dateMAP);
         eventBasketball.setEventId(eventID);
         log("@Precondition-Step 2: Set % PT of Basketball on Account List");
         AccountListUtils.setAccountListPTAPI(accountCode, percent, true, AccountListUtils.SportName.basketball);

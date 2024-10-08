@@ -3,7 +3,6 @@ package testcases.sb11test.soccer;
 import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
-import objects.Event;
 import objects.Order;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -17,17 +16,14 @@ import pages.sb11.trading.ConfirmBetsPage;
 import pages.sb11.trading.SmartGroupPage;
 import pages.sb11.trading.SmartSystemPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.BetEntrytUtils;
-import utils.sb11.BetSettlementUtils;
-import utils.sb11.GetSoccerEventUtils;
-import utils.sb11.RoleManagementUtils;
+import utils.sb11.trading.BetSettlementUtils;
+import utils.sb11.role.RoleManagementUtils;
 import utils.testraildemo.TestRails;
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static common.SBPConstants.*;

@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import pages.sb11.sport.CricketLeagueSeasonTeamInfoPage;
 import testcases.BaseCaseAQS;
 import pages.sb11.sport.popup.*;
+import utils.sb11.sport.LeagueSeasonTeamInfoUtils;
 import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;
@@ -54,12 +55,16 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         cricketLeagueSeasonTeamInfoPage.goToCricket();
         log("@Step 3:  Click + button on League table");
         CreateCricketLeaguePopup createCricketLeaguePopup = cricketLeagueSeasonTeamInfoPage.openAddLeaguePopup();
-        log("@Step 4: Fill full info > click Submit");
-        createCricketLeaguePopup.addLeague(leagueName, leagueName, country, "", "", true,true,true);
-        log("Validate that can add new Cricket List successfully");
-        cricketLeagueSeasonTeamInfoPage.filterLeague("All",country,leagueName);
-        Assert.assertFalse(cricketLeagueSeasonTeamInfoPage.tbLeague.getRowIndexContainValue(leagueName, cricketLeagueSeasonTeamInfoPage.tbLeague.getColumnIndexByName("League Name"),null)
-        == 0, "FAILED! Can not add new Cricket List");
+        try {
+            log("@Step 4: Fill full info > click Submit");
+            createCricketLeaguePopup.addLeague(leagueName, leagueName, country, "", "", true,true,true);
+            log("Validate that can add new Cricket List successfully");
+            cricketLeagueSeasonTeamInfoPage.filterLeague("All",country,leagueName);
+            Assert.assertFalse(cricketLeagueSeasonTeamInfoPage.tbLeague.getRowIndexContainValue(leagueName, cricketLeagueSeasonTeamInfoPage.tbLeague.getColumnIndexByName("League Name"),null)
+                    == 0, "FAILED! Can not add new Cricket List");
+        } finally {
+            LeagueSeasonTeamInfoUtils.deleteLeague(CRICKET,leagueName);
+        }
         log("INFO: Executed completely");
     }
 
@@ -92,6 +97,7 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
         String leagueName = "QA Cricket League Auto";
         String teamName = "QA Cricket Team Auto";
         CricketLeagueSeasonTeamInfoPage cricketLeagueSeasonTeamInfoPage = welcomePage.navigatePage(SPORT,LEAGUE_SEASON_TEAM_INFO, CricketLeagueSeasonTeamInfoPage.class);
+        cricketLeagueSeasonTeamInfoPage.waitSpinnerDisappeared();
         cricketLeagueSeasonTeamInfoPage.goToCricket();
         log("@Step 3: Select a League > Click + button on Team List table");
         CreateCricketTeamPopup createTeamPopup = cricketLeagueSeasonTeamInfoPage.openAddTeamPopup(leagueName,"");
@@ -100,9 +106,14 @@ public class CricketLeagueSeasonTeamInfoTest extends BaseCaseAQS {
                 .teamName("Qatar(U23)")
                 .country("Other")
                 .build();
-        createTeamPopup.addNewTeam(team,true);
-        log("Validate that can add new Cricket Team successfully");
-        cricketLeagueSeasonTeamInfoPage.isTeamDisplayed(leagueName,"",teamName);
+
+        try {
+            createTeamPopup.addNewTeam(team,true);
+            log("Validate that can add new Cricket Team successfully");
+            cricketLeagueSeasonTeamInfoPage.isTeamDisplayed(leagueName,"",teamName);
+        } finally {
+            LeagueSeasonTeamInfoUtils.deleteTeam(CRICKET,leagueName,team.getTeamName());
+        }
         log("INFO: Executed completely");
     }
 }

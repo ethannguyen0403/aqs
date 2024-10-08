@@ -10,7 +10,7 @@ import pages.sb11.generalReports.popup.feedreport.ClientPopup;
 import pages.sb11.generalReports.popup.feedreport.InvoicePopup;
 import pages.sb11.generalReports.popup.feedreport.ProviderPopup;
 import pages.sb11.popup.ConfirmPopup;
-import utils.sb11.FeedReportUtils;
+import utils.sb11.generalReports.FeedReportUtils;
 
 import java.io.IOException;
 

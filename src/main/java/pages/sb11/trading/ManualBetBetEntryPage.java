@@ -7,7 +7,7 @@ import common.SBPConstants;
 import controls.DateTimePicker;
 import org.testng.Assert;
 import pages.sb11.popup.ConfirmPopup;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
 
 public class ManualBetBetEntryPage extends BetEntryPage {
     Label lblTitle = Label.xpath("//app-bet-entry-mixed-sport//div[contains(@class,'main-box-header')]/div[1]/span");

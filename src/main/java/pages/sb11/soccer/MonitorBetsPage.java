@@ -7,14 +7,12 @@ import com.paltech.element.common.DropDownBox;
 import com.paltech.element.common.Label;
 import common.SBPConstants;
 import controls.Table;
-import objects.Event;
 import objects.Order;
 import org.openqa.selenium.support.Color;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
-import utils.sb11.StakeSizeGroupUtils;
+import utils.sb11.trading.StakeSizeGroupUtils;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

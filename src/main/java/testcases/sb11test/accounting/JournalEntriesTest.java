@@ -1,7 +1,6 @@
 package testcases.sb11test.accounting;
 
 import com.paltech.utils.DateUtils;
-import common.SBPConstants;
 import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -11,10 +10,8 @@ import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.ChartOfAccountUtils;
-import utils.sb11.CompanySetUpUtils;
-import utils.sb11.JournalReportsUtils;
-import utils.sb11.TransactionUtils;
+import utils.sb11.accounting.JournalReportsUtils;
+import utils.sb11.accounting.TransactionUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;

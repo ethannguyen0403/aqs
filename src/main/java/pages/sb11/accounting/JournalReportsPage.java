@@ -11,8 +11,8 @@ import controls.Table;
 import objects.Transaction;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
-import utils.sb11.CompanySetUpUtils;
-import utils.sb11.CurrencyRateUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
+import utils.sb11.accounting.CurrencyRateUtils;
 
 import java.util.ArrayList;
 import java.util.List;

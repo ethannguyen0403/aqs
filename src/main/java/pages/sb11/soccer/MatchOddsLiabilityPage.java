@@ -1,15 +1,12 @@
 package pages.sb11.soccer;
 
 import com.paltech.element.common.*;
-import common.SBPConstants;
 import controls.DateTimePicker;
 import controls.Table;
 import objects.Order;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
-import utils.sb11.CompanySetUpUtils;
-
-import javax.swing.*;
+import utils.sb11.accounting.CompanySetUpUtils;
 
 import java.util.List;
 
