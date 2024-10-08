@@ -1028,7 +1028,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
-            String remarkTXN = String.format("Automation Testing Transaction Ledger: Post-condition for txn %s", DateUtils.getMilliSeconds());
+            String remarkTXN = String.format("TC_857 Automation Testing Transaction Ledger: Post-condition for txn %s", DateUtils.getMilliSeconds());
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(LEDGER_INCOME_DEBIT_NAME).ledgerCreditNumber(LEDGER_INCOME_DEBIT_NUMBER)
@@ -1091,7 +1091,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
-            String remarkTXN = String.format("Automation Testing Transaction Ledger: Post-condition for txn %s", DateUtils.getMilliSeconds());
+            String remarkTXN = String.format("TC_858 Automation Testing Transaction Ledger: Post-condition for txn %s", DateUtils.getMilliSeconds());
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(LEDGER_INCOME_DEBIT_NAME).ledgerCreditNumber(LEDGER_INCOME_DEBIT_NUMBER)
@@ -1154,7 +1154,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
-            String remarkTXN = String.format("Automation Testing Transaction Ledger: Post-condition for txn %s", DateUtils.getMilliSeconds());
+            String remarkTXN = String.format("TC_859 Automation Testing Transaction Ledger: Post-condition for txn %s", DateUtils.getMilliSeconds());
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(LEDGER_INCOME_DEBIT_NAME).ledgerCreditNumber(LEDGER_INCOME_DEBIT_NUMBER)
@@ -1218,7 +1218,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
             log("INFO: Executed completely");
         } finally {
             log("@Post-condition: Revert transaction amount for Credit/Debit Income Ledger in case throws exceptions");
-            String remarkTXN = String.format("Automation Testing Transaction Ledger: Post-condition for txn %s", DateUtils.getMilliSeconds());
+            String remarkTXN = String.format("TC_860 Automation Testing Transaction Ledger: Post-condition for txn %s", DateUtils.getMilliSeconds());
             String currentDate = DateUtils.getDate(0, "yyyy-MM-dd", "GMT +7");
             Transaction transactionPost = new Transaction.Builder()
                     .ledgerCredit(LEDGER_INCOME_DEBIT_NAME).ledgerCreditNumber(LEDGER_INCOME_DEBIT_NUMBER)

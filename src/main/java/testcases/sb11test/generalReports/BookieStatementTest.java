@@ -152,7 +152,7 @@ public class BookieStatementTest extends BaseCaseAQS {
     @Parameters({"bookieCode","bookieSuperMasterCode"})
     public void BookieStatementTC_1052(String bookieCode, String bookieSuperMasterCode) throws IOException, InterruptedException {
         String level = "Super";
-        String remark = "Transaction between bookie and ledger" + DateUtils.getMilliSeconds();
+        String remark = "TC_1052 Transaction between bookie and ledger" + DateUtils.getMilliSeconds();
         String transType = "Payment Other";
         log("@title: Validate users can make transactions successfully between bookie and ledger");
         log("Precondition: A super account in Bookie System that linked to agent-COM in Client System (e.g. SM-QA1-QA Test)\n" +
