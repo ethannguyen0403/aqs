@@ -116,7 +116,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("@Step 4 Tick on check-boxes of some bets'");
         log("@Step 5. Click on 'Delete Selected' and observe");
         confirmBetsPage.deleteSelectedOrders(lstOrder, false);
-        log("@Verify: Users can delete multiple confirmed bets and they will be no longer displayed");
+        log("@Verify 1: Users can delete multiple confirmed bets and they will be no longer displayed");
         Assert.assertFalse(confirmBetsPage.isOrdersDisplayInTheTable(lstOrder), "Failed! The order still displayed after delete");
         log("INFO: Executed completely");
     }
