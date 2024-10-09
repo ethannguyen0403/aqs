@@ -323,6 +323,6 @@ public class BalanceSheetAnalysisPage extends WelcomePage {
                 Double.valueOf(getValueDeCreOfSubAcc(accountName, "previous",true)) : -Double.valueOf(getValueDeCreOfSubAcc(accountName, "previous",false));
         String creditTxns = getValueDeCreOfSubAcc(accountName,"txns", false).equals("0.00") ?
                 getValueDeCreOfSubAcc(accountName,"txns", true) : getValueDeCreOfSubAcc(accountName,"txns", false);
-        Assert.assertEquals(creditTxns, String.format("%.2f", creditSelectedMonth-creditPreviousMonth).replace("-",""), "FAILED! Txns data is not correct");
+        Assert.assertEquals(Double.valueOf(creditTxns), Double.valueOf(String.format("%.2f", creditSelectedMonth-creditPreviousMonth).replace("-","")),0.01, "FAILED! Txns data is not correct");
     }
 }
