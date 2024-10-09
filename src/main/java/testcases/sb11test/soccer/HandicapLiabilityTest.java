@@ -1,24 +1,15 @@
 package testcases.sb11test.soccer;
 
 import com.paltech.utils.DateUtils;
-import objects.Event;
 import objects.Order;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.soccer.HandicapLiabilityPage;
-import pages.sb11.soccer.MatchOddsLiabilityPage;
-import pages.sb11.trading.BetEntryPage;
 import pages.sb11.trading.ConfirmBetsPage;
-import pages.sb11.trading.SoccerBetEntryPage;
-import pages.sb11.trading.popup.BetListPopup;
-import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.BetEntrytUtils;
-import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static common.SBPConstants.*;

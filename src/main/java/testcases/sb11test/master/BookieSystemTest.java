@@ -8,7 +8,6 @@ import pages.sb11.master.bookiesystempopup.AccountListPopup;
 import pages.sb11.master.bookiesystempopup.AgentListPopup;
 import pages.sb11.master.bookiesystempopup.MasterListPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;

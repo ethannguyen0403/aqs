@@ -13,9 +13,7 @@ import pages.sb11.master.clientsystempopup.AccountListPopup;
 import pages.sb11.master.clientsystempopup.AgentListPopup;
 import pages.sb11.master.clientsystempopup.MasterListPopup;
 import pages.sb11.master.clientsystempopup.MemberListPopup;
-import utils.sb11.CompanySetUpUtils;
-
-import static common.SBPConstants.COMPANY_UNIT_LIST;
+import utils.sb11.accounting.CompanySetUpUtils;
 
 public class ClientSystemPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");

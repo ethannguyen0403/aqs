@@ -8,8 +8,7 @@ import common.SBPConstants;
 import controls.Table;
 import org.testng.Assert;
 import pages.sb11.master.bookiesystempopup.AccountListPopup;
-import pages.sb11.master.bookiesystempopup.AgentListPopup;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
 
 public class BookieAgentPage {
     Label lblTitle = Label.xpath("//div[contains(@class,'card-header')]//span[1]");

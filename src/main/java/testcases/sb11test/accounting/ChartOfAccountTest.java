@@ -7,8 +7,7 @@ import pages.sb11.soccer.popup.coa.CreateDetailTypePopup;
 import pages.sb11.soccer.popup.coa.CreateParentAccountPopup;
 import pages.sb11.soccer.popup.coa.CreateSubAccountPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.ChartOfAccountUtils;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.accounting.ChartOfAccountUtils;
 import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;

@@ -16,8 +16,10 @@ import pages.sb11.soccer.BBTPage;
 import pages.sb11.trading.*;
 import pages.sb11.trading.BetEntryPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.*;
-import utils.sb11.EventMapping;
+import utils.sb11.role.RoleManagementUtils;
+import utils.sb11.soccer.BBTUtils;
+import utils.sb11.sport.EventScheduleUtils;
+import utils.sb11.trading.BetEntrytUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;

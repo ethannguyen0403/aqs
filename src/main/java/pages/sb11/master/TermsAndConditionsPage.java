@@ -8,7 +8,7 @@ import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.master.termsAndConditionsPopup.LogPopup;
-import utils.sb11.ClientSystemUtils;
+import utils.sb11.master.ClientSystemUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

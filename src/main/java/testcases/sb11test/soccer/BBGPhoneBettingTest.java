@@ -10,8 +10,8 @@ import pages.sb11.LoginPage;
 import pages.sb11.soccer.BBGPhoneBettingPage;
 import pages.sb11.trading.BetSettlementPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.BetSettlementUtils;
-import utils.sb11.ConfirmBetsUtils;
+import utils.sb11.trading.BetSettlementUtils;
+import utils.sb11.trading.ConfirmBetsUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.List;

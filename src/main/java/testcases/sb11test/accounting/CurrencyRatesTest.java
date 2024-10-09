@@ -1,19 +1,14 @@
 package testcases.sb11test.accounting;
 
 import com.paltech.driver.DriverManager;
-import com.paltech.utils.DateUtils;
 import com.paltech.utils.FileUtils;
-import common.SBPConstants;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.accounting.CurrencyRatesPage;
-import pages.sb11.soccer.BBGPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
-import java.io.IOException;
 import java.util.List;
 
 import static common.SBPConstants.*;

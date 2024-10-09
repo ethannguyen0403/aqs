@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.popup.ConfirmPopup;
-import utils.sb11.ChartOfAccountUtils;
+import utils.sb11.accounting.ChartOfAccountUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

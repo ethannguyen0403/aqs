@@ -9,15 +9,12 @@ import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
-import pages.sb11.accounting.CompanySetupPage;
 import pages.sb11.generalReports.ClientBalancePage;
 import pages.sb11.generalReports.ConsolidatedClientBalancePage;
 import testcases.BaseCaseAQS;
-import utils.sb11.RoleManagementUtils;
-import utils.sb11.UserManagementUtils;
+import utils.sb11.role.RoleManagementUtils;
 import utils.testraildemo.TestRails;
 
-import java.io.IOException;
 import java.util.List;
 
 public class ConsolidatedClientBalanceTest extends BaseCaseAQS {

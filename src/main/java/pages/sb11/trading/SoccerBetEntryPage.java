@@ -9,8 +9,8 @@ import org.testng.Assert;
 import pages.sb11.trading.popup.BetListPopup;
 import pages.sb11.trading.popup.SoccerBetSlipPopup;
 import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
-import utils.sb11.BetEntrytUtils;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.trading.BetEntrytUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
 
 import java.util.List;
 import java.util.Random;

@@ -3,8 +3,6 @@ package controls.sb11;
 import com.paltech.element.BaseElement;
 import com.paltech.element.common.Label;
 import org.openqa.selenium.By;
-import org.testng.Assert;
-import utils.sb11.TrackingProgressUtils;
 
 import java.util.ArrayList;
 import java.util.List;

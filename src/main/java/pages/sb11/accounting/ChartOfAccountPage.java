@@ -3,15 +3,13 @@ package pages.sb11.accounting;
 import com.paltech.element.common.*;
 import common.SBPConstants;
 import controls.Table;
-import objects.Order;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
-import pages.sb11.control.ConfirmPopupControl;
 import pages.sb11.soccer.popup.coa.CreateDetailTypePopup;
 import pages.sb11.soccer.popup.coa.CreateParentAccountPopup;
 import pages.sb11.soccer.popup.coa.CreateSubAccountPopup;
 import pages.sb11.soccer.popup.coa.DeletePopup;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
 
 public class ChartOfAccountPage extends WelcomePage {
     Label lblTitle = Label.xpath("//div[contains(@class,'modal-header')]//span[1]");

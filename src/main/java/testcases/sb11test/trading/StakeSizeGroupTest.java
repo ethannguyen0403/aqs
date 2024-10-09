@@ -14,7 +14,7 @@ import pages.sb11.soccer.MonitorBetsPage;
 import pages.sb11.trading.StakeSizeGroupPage;
 import pages.sb11.trading.popup.StakeSizeGroupPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.BetSettlementUtils;
+import utils.sb11.trading.BetSettlementUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.List;

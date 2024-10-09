@@ -13,7 +13,7 @@ import org.testng.Assert;
 import org.testng.SkipException;
 import pages.sb11.generalReports.TrackingProgressPage;
 import pages.sb11.popup.ChangePasswordPopup;
-import utils.sb11.TrackingProgressUtils;
+import utils.sb11.generalReports.TrackingProgressUtils;
 
 public class Header {
     public Icon icBell = Icon.xpath("//div[@id='navbarSupportedContent']//div[contains(@class,'fa-bell')]");

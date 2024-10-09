@@ -5,7 +5,6 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.user.TradingPermissionPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;

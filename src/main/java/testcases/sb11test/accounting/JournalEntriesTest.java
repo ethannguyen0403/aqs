@@ -1,7 +1,6 @@
 package testcases.sb11test.accounting;
 
 import com.paltech.utils.DateUtils;
-import common.SBPConstants;
 import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -11,10 +10,8 @@ import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.ChartOfAccountUtils;
-import utils.sb11.CompanySetUpUtils;
-import utils.sb11.JournalReportsUtils;
-import utils.sb11.TransactionUtils;
+import utils.sb11.accounting.JournalReportsUtils;
+import utils.sb11.accounting.TransactionUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
@@ -37,7 +34,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         Transaction transaction = new Transaction.Builder()
                 .bookieDebit(bookieCode)
                 .level(level)
-                .debitAccountCode(bookieSuperMasterCode)
+                .debitAccountCode("SM-FE9-QA Test")
                 .bookieCredit(bookieCode)
                 .level(level)
                 .creditAccountCode(bookieSuperMasterCode)
@@ -104,7 +101,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
                 .debitAccountCode(bookieSuperMasterCode)
                 .bookieCredit(bookieCode)
                 .level(level)
-                .creditAccountCode(bookieSuperMasterCode)
+                .creditAccountCode("SM-FE9-QA Test")
                 .amountDebit(1)
                 .amountCredit(1)
                 .remark(remark)
@@ -141,7 +138,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
         Transaction transaction = new Transaction.Builder()
                 .clientDebit(clientCode)
                 .level(level)
-                .debitAccountCode(bookieSuperMasterCode)
+                .debitAccountCode("SM-FE9-QA Test")
                 .clientCredit(clientCode)
                 .level(level)
                 .creditAccountCode(bookieSuperMasterCode)
@@ -216,7 +213,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
                     .ledgerCredit(LEDGER_EXPENDITURE_DEBIT_NAME).ledgerCreditNumber(LEDGER_EXPENDITURE_DEBIT_NUMBER)
                     .ledgerDebit(LEDGER_EXPENDITURE_CREDIT_NAME).ledgerDebitNumber(LEDGER_EXPENDITURE_CREDIT_NUMBER)
                     .amountDebit(1).amountCredit(1)
-                    .remark("Automation Testing Transaction Ledger: Post-condition for txn")
+                    .remark("C2164 Automation Testing Transaction Ledger: Post-condition for txn")
                     .transDate(currentDate)
                     .transType("Tax Rebate").build();
             TransactionUtils.addTransByAPI(transactionPost,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,"");

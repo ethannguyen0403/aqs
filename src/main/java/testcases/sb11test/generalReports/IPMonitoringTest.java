@@ -3,22 +3,15 @@ package testcases.sb11test.generalReports;
 import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
-import objects.Event;
-import objects.Order;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
 import pages.sb11.generalReports.IPMonitoringPage;
-import pages.sb11.soccer.MonitorBetsPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.BetEntrytUtils;
-import utils.sb11.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.List;
 
 import static common.SBPConstants.*;
 public class IPMonitoringTest extends BaseCaseAQS {

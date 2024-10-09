@@ -1,7 +1,6 @@
 package testcases.sb11test.generalReports;
 
 import com.paltech.utils.DateUtils;
-import common.SBPConstants;
 import objects.Transaction;
 import org.openqa.selenium.support.Color;
 import org.testng.Assert;
@@ -11,11 +10,9 @@ import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.generalReports.SystemMonitoringPage;
 import pages.sb11.generalReports.systemmonitoring.FundReconciliationPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.ChartOfAccountUtils;
-import utils.sb11.TransactionUtils;
+import utils.sb11.accounting.TransactionUtils;
 import utils.testraildemo.TestRails;
 
-import java.awt.*;
 import java.io.IOException;
 
 import static common.SBPConstants.*;

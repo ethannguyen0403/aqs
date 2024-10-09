@@ -14,7 +14,7 @@ import org.testng.Assert;
 import org.testng.Reporter;
 import pages.sb11.WelcomePage;
 import testcases.BaseCaseAQS;
-import utils.sb11.ChartOfAccountUtils;
+import utils.sb11.accounting.ChartOfAccountUtils;
 
 import java.util.*;
 import java.util.regex.Matcher;

@@ -8,13 +8,11 @@ import org.testng.annotations.Test;
 import pages.sb11.LoginPage;
 import pages.sb11.financialReports.RetainedEarningsPage;
 import pages.sb11.financialReports.StockHoldersEquityPage;
-import pages.sb11.financialReports.TrialBalancePage;
 import pages.sb11.generalReports.LedgerStatementPage;
-import pages.sb11.role.RoleManagementPage;
 import testcases.BaseCaseAQS;
 import utils.ExcelUtils;
-import utils.sb11.CompanySetUpUtils;
-import utils.sb11.RoleManagementUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
+import utils.sb11.role.RoleManagementUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;

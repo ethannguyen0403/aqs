@@ -4,10 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.master.AccountSearchPage;
-import pages.sb11.master.BookieSuperPage;
-import pages.sb11.master.BookieSystemPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;

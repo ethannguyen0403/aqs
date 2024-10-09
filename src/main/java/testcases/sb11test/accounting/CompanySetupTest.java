@@ -26,11 +26,9 @@ import pages.sb11.generalReports.popup.clientstatement.ClientMemberTransactionPo
 import pages.sb11.generalReports.popup.clientstatement.ClientSummaryPopup;
 import pages.sb11.generalReports.popup.clientstatement.ClientLedgerRecPayPopup;
 import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
-import pages.sb11.role.RoleManagementPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.ChartOfAccountUtils;
-import utils.sb11.RoleManagementUtils;
-import utils.sb11.TransactionUtils;
+import utils.sb11.role.RoleManagementUtils;
+import utils.sb11.accounting.TransactionUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;

@@ -6,7 +6,7 @@ import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.user.popup.*;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
 
 public class TradingPermissionPage extends WelcomePage {
     int colTotal = 9;

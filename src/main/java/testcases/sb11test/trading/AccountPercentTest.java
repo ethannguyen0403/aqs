@@ -4,8 +4,6 @@ import com.paltech.driver.DriverManager;
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.StringUtils;
 import common.ESSConstants;
-import common.SBPConstants;
-import objects.Event;
 import objects.Order;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -15,11 +13,14 @@ import pages.sb11.soccer.SPPPage;
 import pages.sb11.trading.AccountPercentPage;
 import pages.sb11.trading.BetSettlementPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.*;
+import utils.sb11.master.AccountSearchUtils;
+import utils.sb11.soccer.SPPUtils;
+import utils.sb11.trading.AccountPercentUtils;
+import utils.sb11.trading.BetSettlementUtils;
+import utils.sb11.trading.ConfirmBetsUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static common.SBPConstants.*;

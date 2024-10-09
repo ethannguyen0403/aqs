@@ -2,7 +2,6 @@ package testcases.sb11test.generalReports;
 
 import com.paltech.utils.DateUtils;
 import com.paltech.utils.DoubleUtils;
-import common.SBPConstants;
 import objects.Transaction;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -11,10 +10,8 @@ import pages.sb11.accounting.JournalEntriesPage;
 import pages.sb11.generalReports.BookieStatementPage;
 import pages.sb11.generalReports.popup.bookiestatement.*;
 import testcases.BaseCaseAQS;
-import utils.sb11.AccountSearchUtils;
-import utils.sb11.BookieInfoUtils;
-import utils.sb11.JournalReportsUtils;
-import utils.sb11.TransactionUtils;
+import utils.sb11.accounting.JournalReportsUtils;
+import utils.sb11.accounting.TransactionUtils;
 import utils.testraildemo.TestRails;
 
 import java.io.IOException;
@@ -155,7 +152,7 @@ public class BookieStatementTest extends BaseCaseAQS {
     @Parameters({"bookieCode","bookieSuperMasterCode"})
     public void BookieStatementTC_1052(String bookieCode, String bookieSuperMasterCode) throws IOException, InterruptedException {
         String level = "Super";
-        String remark = "Transaction between bookie and ledger" + DateUtils.getMilliSeconds();
+        String remark = "TC_1052 Transaction between bookie and ledger" + DateUtils.getMilliSeconds();
         String transType = "Payment Other";
         log("@title: Validate users can make transactions successfully between bookie and ledger");
         log("Precondition: A super account in Bookie System that linked to agent-COM in Client System (e.g. SM-QA1-QA Test)\n" +

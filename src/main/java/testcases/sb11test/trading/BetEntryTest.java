@@ -13,10 +13,9 @@ import pages.sb11.trading.popup.BetListPopup;
 import pages.sb11.trading.popup.SoccerBetSlipPopup;
 import pages.sb11.trading.popup.SoccerSPBBetSlipPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.BetEntrytUtils;
-import utils.sb11.CompanySetUpUtils;
-import utils.sb11.EventScheduleUtils;
-import utils.sb11.GetSoccerEventUtils;
+import utils.sb11.trading.BetEntrytUtils;
+import utils.sb11.sport.EventScheduleUtils;
+import utils.sb11.trading.GetSoccerEventUtils;
 import utils.testraildemo.TestRails;
 
 import java.text.ParseException;

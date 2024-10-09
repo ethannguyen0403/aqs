@@ -8,7 +8,7 @@ import controls.Table;
 import objects.Transaction;
 import org.testng.Assert;
 import pages.sb11.generalReports.LedgerStatementPage;
-import utils.sb11.CurrencyRateUtils;
+import utils.sb11.accounting.CurrencyRateUtils;
 
 import java.util.List;
 

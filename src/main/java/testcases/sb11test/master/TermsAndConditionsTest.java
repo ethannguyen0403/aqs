@@ -9,7 +9,7 @@ import pages.sb11.LoginPage;
 import pages.sb11.master.TermsAndConditionsPage;
 import pages.sb11.master.termsAndConditionsPopup.LogPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.ArrayList;

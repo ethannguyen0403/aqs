@@ -9,9 +9,8 @@ import controls.Table;
 import org.testng.Assert;
 import pages.sb11.WelcomePage;
 import pages.sb11.master.popup.UpdatePTPopup;
-import utils.sb11.CompanySetUpUtils;
+import utils.sb11.accounting.CompanySetUpUtils;
 
-import static common.SBPConstants.COMPANY_UNIT_LIST;
 import static common.SBPConstants.KASTRAKI_LIMITED;
 
 public class AccountListPage extends WelcomePage {

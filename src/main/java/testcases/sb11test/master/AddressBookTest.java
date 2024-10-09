@@ -4,10 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import pages.sb11.master.AddressBookPage;
-import pages.sb11.master.AutoCreatedAccountsPage;
 import pages.sb11.master.popup.EmailSendingHistoryPopup;
 import testcases.BaseCaseAQS;
-import utils.sb11.CompanySetUpUtils;
 import utils.testraildemo.TestRails;
 
 import static common.SBPConstants.*;

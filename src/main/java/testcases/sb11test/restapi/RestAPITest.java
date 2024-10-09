@@ -10,8 +10,12 @@ import org.testng.annotations.Test;
 import pages.sb11.restapi.RestAPI;
 import pages.sb11.trading.BetSettlementPage;
 import testcases.BaseCaseAQS;
-import utils.sb11.*;
-import utils.sb11.EventMapping;
+import utils.sb11.sport.EventMappingUtils;
+import utils.sb11.sport.EventScheduleUtils;
+import utils.sb11.sport.ResultEntryUtils;
+import utils.sb11.trading.BetEntrytUtils;
+import utils.sb11.trading.BetSettlementUtils;
+import utils.sb11.trading.ConfirmBetsUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.*;
@@ -38,10 +42,10 @@ public class RestAPITest extends BaseCaseAQS {
         EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
-        String eventID = EventMapping.getEventID(event,provider,dateMAP);
+        String eventID = EventMappingUtils.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET,provider,dateMAP);
-        EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
+        Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET,provider,dateMAP);
+        EventMappingUtils.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Place log");
         List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
                 "HK",1.00,"BACK",false,"1.00");
@@ -67,7 +71,7 @@ public class RestAPITest extends BaseCaseAQS {
                     "}");
             Assert.assertTrue(RestAPI.isBetSettleDisplay(jsonArray,lstOrder.get(0)),"FAILED! Result display incorrect");
         } finally {
-            EventMapping.unMappingEvent(event.getEventId(),eventProvider,provider);
+            EventMappingUtils.unMappingEvent(event.getEventId(),eventProvider,provider);
             EventScheduleUtils.deleteEventByAPI(event,dateAPI);
         }
         log("INFO: Executed completely");
@@ -92,10 +96,10 @@ public class RestAPITest extends BaseCaseAQS {
         EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
-        String eventID = EventMapping.getEventID(event,provider,dateMAP);
+        String eventID = EventMappingUtils.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET,provider,dateMAP);
-        EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
+        Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET,provider,dateMAP);
+        EventMappingUtils.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Place betlog");
         List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
                 "HK",1.00,"BACK",false,"2.00");
@@ -121,7 +125,7 @@ public class RestAPITest extends BaseCaseAQS {
                     "}");
             Assert.assertTrue(RestAPI.isBetSettleDisplay(jsonArray,lstOrder.get(0)),"FAILED! Result display incorrect");
         } finally {
-            EventMapping.unMappingEvent(event.getEventId(),eventProvider,provider);
+            EventMappingUtils.unMappingEvent(event.getEventId(),eventProvider,provider);
             EventScheduleUtils.deleteEventByAPI(event,dateAPI);
         }
         log("INFO: Executed completely");
@@ -145,10 +149,10 @@ public class RestAPITest extends BaseCaseAQS {
         EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
-        String eventID = EventMapping.getEventID(event,provider,dateMAP);
+        String eventID = EventMappingUtils.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET,provider,dateMAP);
-        EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
+        Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET,provider,dateMAP);
+        EventMappingUtils.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Place bet");
         Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("OverUnder").marketType("OverUnder").runs(1.00).selection("Over").sport(sportName)
                 .stage("FullTime").createDate(date).eventDate(dateAPI + " 23:59:00").odds(1).handicap(0.00).oddType("HK").requireStake(1.00).betType("OU")
@@ -169,7 +173,7 @@ public class RestAPITest extends BaseCaseAQS {
             log("@Verify 1: No result return");
             Assert.assertFalse(RestAPI.isBetSettleDisplay(jsonArray,lstOrder.get(0)),"FAILED! Result display incorrect");
         } finally {
-            EventMapping.unMappingEvent(event.getEventId(),eventProvider,provider);
+            EventMappingUtils.unMappingEvent(event.getEventId(),eventProvider,provider);
             EventScheduleUtils.deleteEventByAPI(event,dateAPI);
         }
         log("INFO: Executed completely");
@@ -194,10 +198,10 @@ public class RestAPITest extends BaseCaseAQS {
         EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
-        String eventID = EventMapping.getEventID(event,provider,dateMAP);
+        String eventID = EventMappingUtils.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET,provider,dateMAP);
-        EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
+        Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET,provider,dateMAP);
+        EventMappingUtils.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Place bet");
         List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
                 "HK",1.00,"BACK",false,"1.00");
@@ -223,7 +227,7 @@ public class RestAPITest extends BaseCaseAQS {
                     "}");
             Assert.assertTrue(RestAPI.isBetSettleDisplay(jsonArray,lstOrder.get(0)),"FAILED! Result display incorrect");
         } finally {
-            EventMapping.unMappingEvent(event.getEventId(),eventProvider,provider);
+            EventMappingUtils.unMappingEvent(event.getEventId(),eventProvider,provider);
             EventScheduleUtils.deleteEventByAPI(event,dateAPI);
         }
         log("INFO: Executed completely");
@@ -248,10 +252,10 @@ public class RestAPITest extends BaseCaseAQS {
         EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
-        String eventID = EventMapping.getEventID(event,provider,dateMAP);
+        String eventID = EventMappingUtils.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET,provider,dateMAP);
-        EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
+        Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET,provider,dateMAP);
+        EventMappingUtils.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Set Result of Event");
         ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
         log("@pre-condition 1.4: Place bet");
@@ -273,7 +277,7 @@ public class RestAPITest extends BaseCaseAQS {
             log("@Verify 1: No result return when both sum home/away w/l = 0");
             Assert.assertFalse(RestAPI.isBetSettleDisplay(jsonArray,lstOrder.get(2)),"FAILED! Result display incorrect");
         } finally {
-            EventMapping.unMappingEvent(event.getEventId(),eventProvider,provider);
+            EventMappingUtils.unMappingEvent(event.getEventId(),eventProvider,provider);
             EventScheduleUtils.deleteEventByAPI(event,dateAPI);
         }
         log("INFO: Executed completely");
@@ -298,10 +302,10 @@ public class RestAPITest extends BaseCaseAQS {
         EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
-        String eventID = EventMapping.getEventID(event,provider,dateMAP);
+        String eventID = EventMappingUtils.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET,provider,dateMAP);
-        EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
+        Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET,provider,dateMAP);
+        EventMappingUtils.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Set Result of Event");
         ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
         log("@pre-condition 1.4: Place bet");
@@ -324,7 +328,7 @@ public class RestAPITest extends BaseCaseAQS {
             log("@Verify 1: W/L amount show on homeWinLose cause sum stake at Home > sum stake at Away");
             Assert.assertTrue(RestAPI.getWinLose(jsonArray,lstOrder.get(2),"homeWinLose").equals("10.0"),"FAILED! Result display incorrect");
         } finally {
-            EventMapping.unMappingEvent(event.getEventId(),eventProvider,provider);
+            EventMappingUtils.unMappingEvent(event.getEventId(),eventProvider,provider);
             EventScheduleUtils.deleteEventByAPI(event,dateAPI);
         }
         log("INFO: Executed completely");
@@ -350,10 +354,10 @@ public class RestAPITest extends BaseCaseAQS {
         EventScheduleUtils.addEventByAPI(event, dateAPI, SPORT_ID_MAP.get(sportName));
         log("@pre-condition 1.2: mapping event");
         String dateMAP = DateUtils.getDate(-1, "yyyy-MM-dd HH:mm:ss", GMT_7);
-        String eventID = EventMapping.getEventID(event,provider,dateMAP);
+        String eventID = EventMappingUtils.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
-        Event eventProvider = EventMapping.getFirstProviderEvent(CRICKET,provider,dateMAP);
-        EventMapping.mappingEvent(eventID,eventProvider,provider,sportName);
+        Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET,provider,dateMAP);
+        EventMappingUtils.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Set Result of Event");
         ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
         log("@pre-condition 1.4: Place bet");
@@ -376,7 +380,7 @@ public class RestAPITest extends BaseCaseAQS {
             log("@Verify 1: W/L amount show on awayWinLose cause sum stake at Home > sum stake at Away");
             Assert.assertTrue(RestAPI.getWinLose(jsonArray,lstOrder.get(2),"awayWinLose").equals("-10.0"),"FAILED! Result display incorrect");
         } finally {
-            EventMapping.unMappingEvent(event.getEventId(),eventProvider,provider);
+            EventMappingUtils.unMappingEvent(event.getEventId(),eventProvider,provider);
             EventScheduleUtils.deleteEventByAPI(event,dateAPI);
         }
         log("INFO: Executed completely");
