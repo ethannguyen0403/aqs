@@ -93,7 +93,7 @@ public class PTRiskPage extends WelcomePage {
             btnClearAll.waitForControlInvisible();
             waitSpinnerDisappeared();
             btnClearAll.click();
-            Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div//label[contains(text(),'%s')]", leagueName));
+            Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div//label[contains(text(),\"%s\")]", leagueName));
             if (!lblSelectValue.isDisplayed()) {
                 DriverManager.getDriver().refresh();
                 waitSpinnerDisappeared();
@@ -138,7 +138,7 @@ public class PTRiskPage extends WelcomePage {
         btnClearAll.waitForControlInvisible();
         waitSpinnerDisappeared();
         btnClearAll.click();
-        Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div//label[contains(text(),'%s')]", leagueName));
+        Label lblSelectValue = Label.xpath(String.format("//div[@class='modal-content']//div[@class='list-item-filter']//div//label[contains(text(),\"%s\")]", leagueName));
         if (!lblSelectValue.isDisplayed()) {
             System.out.println(String.format("%s still not display", leagueName));
         }

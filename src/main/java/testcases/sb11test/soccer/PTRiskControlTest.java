@@ -24,7 +24,7 @@ import java.util.List;
 import static common.SBPConstants.*;
 
 public class PTRiskControlTest extends BaseCaseAQS {
-    @Test(groups = {"smoke", "ethan4.0"})
+    @Test(groups = {"smoke", "ethan7.0"})
     @Parameters({"clientCode", "accountCode"})
     @TestRails(id = "1386")
     public void PTRiskControlTC_1386(String clientCode, String accountCode) throws IOException {
@@ -96,7 +96,7 @@ public class PTRiskControlTest extends BaseCaseAQS {
         Assert.assertTrue(ptPage.isForecastCorrect("18", "-9", "-18", true));
     }
 
-    @Test(groups = {"smoke", "ethan4.0"})
+    @Test(groups = {"smoke", "ethan7.0"})
     @Parameters({"clientCode", "accountCode"})
     @TestRails(id = "1387")
     public void PTRiskControlTC_1387(String clientCode, String accountCode) throws IOException {
