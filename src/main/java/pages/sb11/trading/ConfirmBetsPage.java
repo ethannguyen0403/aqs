@@ -305,6 +305,9 @@ public class ConfirmBetsPage extends WelcomePage {
      * @param lstOrder
      */
     public void confirmMultipleBets(List<Order> lstOrder){
+        for (Order order: lstOrder) {
+            reClickShowButton(order);
+        }
        selectBets(lstOrder,true);
        if (btnConfirmBet.isEnabled()){
            btnConfirmBet.click();
@@ -346,8 +349,7 @@ public class ConfirmBetsPage extends WelcomePage {
      * @param lstOrder the list order
      */
     public void deleteSelectedOrders(List<Order> lstOrder, boolean isPending){
-        for (Order order: lstOrder
-        ) {
+        for (Order order: lstOrder) {
             reClickShowButton(order);
         }
         selectBets(lstOrder,isPending);

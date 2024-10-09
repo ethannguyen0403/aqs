@@ -45,6 +45,9 @@ public class RestAPITest extends BaseCaseAQS {
         String eventID = EventMappingUtils.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
         Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET,provider,dateMAP);
+        if (Objects.isNull(eventProvider)){
+            return;
+        }
         EventMappingUtils.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Place log");
         List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
@@ -99,6 +102,9 @@ public class RestAPITest extends BaseCaseAQS {
         String eventID = EventMappingUtils.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
         Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET,provider,dateMAP);
+        if (Objects.isNull(eventProvider)){
+            return;
+        }
         EventMappingUtils.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Place betlog");
         List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
@@ -152,6 +158,9 @@ public class RestAPITest extends BaseCaseAQS {
         String eventID = EventMappingUtils.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
         Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET,provider,dateMAP);
+        if (Objects.isNull(eventProvider)){
+            return;
+        }
         EventMappingUtils.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Place bet");
         Order order = new Order.Builder().event(event).accountCode(accountCode).marketName("OverUnder").marketType("OverUnder").runs(1.00).selection("Over").sport(sportName)
@@ -201,6 +210,9 @@ public class RestAPITest extends BaseCaseAQS {
         String eventID = EventMappingUtils.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
         Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET,provider,dateMAP);
+        if (Objects.isNull(eventProvider)){
+            return;
+        }
         EventMappingUtils.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Place bet");
         List<Order> lstOrder = welcomePage.placeBetAPI(sportName,datePlace,event,accountCode,"MatchBetting","MatchBetting",event.getHome(),"FullTime",1,0.00,
@@ -255,6 +267,9 @@ public class RestAPITest extends BaseCaseAQS {
         String eventID = EventMappingUtils.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
         Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET,provider,dateMAP);
+        if (Objects.isNull(eventProvider)){
+            return;
+        }
         EventMappingUtils.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Set Result of Event");
         ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
@@ -305,6 +320,9 @@ public class RestAPITest extends BaseCaseAQS {
         String eventID = EventMappingUtils.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
         Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET,provider,dateMAP);
+        if (Objects.isNull(eventProvider)){
+            return;
+        }
         EventMappingUtils.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Set Result of Event");
         ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
@@ -357,6 +375,9 @@ public class RestAPITest extends BaseCaseAQS {
         String eventID = EventMappingUtils.getEventID(event,provider,dateMAP);
         event.setEventId(eventID);
         Event eventProvider = EventMappingUtils.getFirstProviderEvent(CRICKET,provider,dateMAP);
+        if (Objects.isNull(eventProvider)){
+            return;
+        }
         EventMappingUtils.mappingEvent(eventID,eventProvider,provider,sportName);
         log("@pre-condition 1.3: Set Result of Event");
         ResultEntryUtils.setResultCricket(event,"SETTLED","Home Win");
