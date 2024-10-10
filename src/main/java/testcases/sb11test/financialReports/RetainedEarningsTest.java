@@ -72,7 +72,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2818")
-    @Test(groups = {"regression", "2023.10.31", "ethan5.0"})
+    @Test(groups = {"regression", "2023.10.31", "ethan7.0"})
     public void Retained_Earnings_TC2818() {
         String ledgerValue = "";
         log("@title: Validate correct Retained Earnings value displays");
@@ -84,7 +84,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         ledgerStatementPage.waitSpinnerDisappeared();
         int month = DateUtils.getMonth(GMT_7) - 1;
         int year = DateUtils.getYear("GMT +7");
-        String fromDate = String.format("01/08/%s", year - 1);
+        String fromDate = ledgerStatementPage.getBeginDateOfFinanYear(FINANCIAL_YEAR);
         String lastdayOfPreMonth = DateUtils.getLastDateOfMonth(year, month, "dd/MM/yyyy");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED, financialYear, "All", detailTypeRetained, fromDate, lastdayOfPreMonth, "After CJE");
         ledgerValue = ledgerStatementPage.getValueOfSubAcc(ledgerName, "CUR Translation", "Running Bal.");
@@ -99,7 +99,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2819")
-    @Test(groups = {"regression", "2023.10.31", "ethan5.0"})
+    @Test(groups = {"regression", "2023.10.31", "ethan7.0"})
     public void Retained_Earnings_TC2819() {
         String detailTypeRetained = "302.000.000.000 - Retained Earnings";
         String netProfitLoss = "";
@@ -111,7 +111,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         ledgerStatementPage.waitSpinnerDisappeared();
         int month = DateUtils.getMonth(GMT_7) - 1;
         int year = DateUtils.getYear("GMT +7");
-        String fromDate = String.format("01/08/%s", year - 1);
+        String fromDate = ledgerStatementPage.getBeginDateOfFinanYear(FINANCIAL_YEAR);
         String lastdayOfPreMonth = DateUtils.getLastDateOfMonth(year, month, "dd/MM/yyyy");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED, financialYear, "All", detailTypeRetained, fromDate, lastdayOfPreMonth, "After CJE");
         netProfitLoss = ledgerStatementPage.getValueOfSubAcc(ledgerName, "CUR Translation", "Running Bal.");
@@ -127,7 +127,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2820")
-    @Test(groups = {"regression", "2023.10.31", "ethan5.0"})
+    @Test(groups = {"regression", "2023.10.31", "ethan7.0"})
     public void Retained_Earnings_TC2820() {
         String detailTypeDividend = "303.000.000.000 - Dividend";
         String ledgerValue = "";
@@ -139,7 +139,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         ledgerStatementPage.waitSpinnerDisappeared();
         int month = DateUtils.getMonth(GMT_7) - 1;
         int year = DateUtils.getYear("GMT +7");
-        String fromDate = String.format("01/08/%s", year - 1);
+        String fromDate = ledgerStatementPage.getBeginDateOfFinanYear(FINANCIAL_YEAR);
         String lastdayOfPreMonth = DateUtils.getLastDateOfMonth(year, month, "dd/MM/yyyy");
         ledgerStatementPage.showLedger(KASTRAKI_LIMITED, financialYear, "All", detailTypeDividend, fromDate, lastdayOfPreMonth, "After CJE");
         ledgerValue = ledgerStatementPage.getTotalInHKD(ledgerName, "CUR Translation", "Running Bal.");
@@ -155,7 +155,7 @@ public class RetainedEarningsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "2821")
-    @Test(groups = {"regression", "2023.10.31", "ethan"})
+    @Test(groups = {"regression", "2023.10.31", "ethan7.0"})
     public void Retained_Earnings_TC2821() {
         String downloadPath = getDownloadPath() + "retained-earnings.xlsx";
         List<String> columExcel = Arrays.asList("No", "Description", "Amount");
@@ -174,9 +174,9 @@ public class RetainedEarningsTest extends BaseCaseAQS {
         log("@Verify 1: Validate can export Retained Earnings to Excel file successfully'");
         Assert.assertTrue(FileUtils.doesFileNameExist(downloadPath), "Failed to download Expected document");
         log("@Verify 2: Validate value in Excel report is correct'");
-        Assert.assertEquals(amountRetained, ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Beginning Retained Earnings", 3, 7).replace("-", ""), "FAILED! Excel value Retained Earnings is not correct.");
-        Assert.assertEquals(amountNetProfit, ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Beginning Retained Earnings", 3, 8).replace("-", ""), "FAILED! Excel value Net Income/Loss from Operation is not correct.");
-        Assert.assertEquals(amountDividend, ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Beginning Retained Earnings", 3, 9).replace("-", ""), "FAILED! Excel value Dividends is not correct.");
+        Assert.assertEquals(amountRetained, ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Beginning Retained Earnings", 3, 7).replace("-", "").replace(",",""), "FAILED! Excel value Retained Earnings is not correct.");
+        Assert.assertEquals(amountNetProfit, ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Beginning Retained Earnings", 3, 8).replace("-", "").replace(",",""), "FAILED! Excel value Net Income/Loss from Operation is not correct.");
+        Assert.assertEquals(amountDividend, ExcelUtils.getCellByColumnAndRowIndex(downloadPath, "Beginning Retained Earnings", 3, 9).replace("-", "").replace(",",""), "FAILED! Excel value Dividends is not correct.");
         log("@Verify 3: Validate data should have format 'comma' for thousand number");
         Assert.assertTrue(retainedEarningsPage.isAmountNumberCorrectFormat(amountRetained), "FAILED! Amount number Retained is not correct format");
         Assert.assertTrue(retainedEarningsPage.isAmountNumberCorrectFormat(amountNetProfit), "FAILED! Amount number Net Profit is not correct format");
