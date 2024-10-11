@@ -10,6 +10,7 @@ import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.generalReports.SystemMonitoringPage;
 import pages.sb11.generalReports.systemmonitoring.FundReconciliationPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.accounting.JournalReportsUtils;
 import utils.sb11.accounting.TransactionUtils;
 import utils.testraildemo.TestRails;
 
@@ -19,7 +20,7 @@ import static common.SBPConstants.*;
 
 
 public class FundReconciliationTest extends BaseCaseAQS {
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan7.0"})
     @TestRails(id = "17670")
     public void Fund_Reconciliation_TC_17670() throws IOException {
         log("@title: Validate Transaction Details of sub-accounts displays properly");
@@ -29,7 +30,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         String ledgerNumber = "101.000.001.000";
         String groupName = "Cash";
         String parentName = "Pretty Cash";
-        String desc = "Automation Testing Transaction " + DateUtils.getMilliSeconds();
+        String desc = "TC_17670 Automation Testing Transaction " + DateUtils.getMilliSeconds();
         String currentDate = DateUtils.getDate(-1, "yyyy-MM-dd", "GMT +7");
         double valueDebit= 2.00;
         Transaction transactionPost = new Transaction.Builder()
@@ -40,6 +41,9 @@ public class FundReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,parentName,parentName,"");
+        welcomePage.waitSpinnerDisappeared();
+        String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >>Fund Reconciliation");
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
@@ -50,7 +54,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         Assert.assertEquals(page.getValueByDesc(desc,"Debit"),String.format("%.2f",valueDebit),"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan7.0"})
     @TestRails(id = "17671")
     public void Fund_Reconciliation_TC_17671() throws IOException {
         log("@title: Validate the Description displays correctly");
@@ -72,6 +76,9 @@ public class FundReconciliationTest extends BaseCaseAQS {
                 .transType("Payment Other").build();
 
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,parentName,parentName,"");
+        welcomePage.waitSpinnerDisappeared();
+        String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >>Fund Reconciliation");
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
@@ -82,7 +89,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         Assert.assertEquals(page.getValueByDesc(desc,"Description"),desc,"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan7.0"})
     @TestRails(id = "17672")
     @Parameters({"username"})
     public void Fund_Reconciliation_TC_17672(String username) throws IOException {
@@ -105,6 +112,9 @@ public class FundReconciliationTest extends BaseCaseAQS {
                 .transType("Payment Other").build();
 
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,parentName,parentName,"");
+        welcomePage.waitSpinnerDisappeared();
+        String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >>Fund Reconciliation");
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
@@ -118,7 +128,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         Assert.assertEquals(page.getValueByDesc(desc,"Processed By"),username,"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan7.0"})
     @TestRails(id = "17673")
     public void Fund_Reconciliation_TC_17673() throws IOException {
         log("@title: Validate the CUR displays correctly");
@@ -141,6 +151,9 @@ public class FundReconciliationTest extends BaseCaseAQS {
                 .transType("Payment Other").build();
 
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,parentName,parentName,"");
+        welcomePage.waitSpinnerDisappeared();
+        String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >>Fund Reconciliation");
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
@@ -151,7 +164,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         Assert.assertEquals(page.getValueByDesc(desc,"CUR"),curEx,"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan7.0"})
     @TestRails(id = "17674")
     public void Fund_Reconciliation_TC_17674() throws IOException {
         log("@title: Validate the Running Balance displays correctly");
@@ -172,6 +185,9 @@ public class FundReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,parentName,parentName,"");
+        welcomePage.waitSpinnerDisappeared();
+        String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Pre-condition 3: Get Running Bal in Ledger Statement");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
@@ -193,7 +209,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         Assert.assertEquals(page.getValueByDesc(desc,"Running Balance"),runningEx,"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan7.0"})
     @TestRails(id = "17680")
     @Parameters({"username"})
     public void Fund_Reconciliation_TC_17680(String username) throws IOException {
@@ -215,6 +231,9 @@ public class FundReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,parentName,parentName,"");
+        welcomePage.waitSpinnerDisappeared();
+        String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >>Fund Reconciliation");
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);
@@ -228,7 +247,7 @@ public class FundReconciliationTest extends BaseCaseAQS {
         Assert.assertEquals(page.getValueByDesc(desc,"Authorised By"),username,"FAILED! Transaction displays incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan7.0"})
     @TestRails(id = "17681")
     public void Fund_Reconciliation_TC_17681() throws IOException {
         log("@title: Validate the Closing Balance row displays correct value");
@@ -249,6 +268,9 @@ public class FundReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,parentName,parentName,"");
+        welcomePage.waitSpinnerDisappeared();
+        String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >>Fund Reconciliation");
         FundReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(FUND_RECONCILIATION, FundReconciliationPage.class);

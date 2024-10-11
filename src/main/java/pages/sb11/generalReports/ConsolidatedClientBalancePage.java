@@ -151,7 +151,7 @@ public class ConsolidatedClientBalancePage extends WelcomePage {
 
     public void verifyDataTableDisplay() {
         int numberRow = getNumberRowByGroup("Player");
-        String blackColorAc = getCellOfRow("Player","GBP",1).getColour("color");
+        String blackColorAc = getCellOfRow("Player",tblCurrency.getHeaderNameOfRows().get(0),1).getColour("color");
         String negativeColorAc = getCellOfRow("Player","Total Balance HKD",1).getColour("color");
         String positiveColorAc = getCellOfRow("Player","Total Balance HKD",numberRow).getColour("color");
         Assert.assertTrue(Color.fromString(blackColorAc).asHex().equals("#212529"),"FAILED! Color of 0 display incorrect!");
