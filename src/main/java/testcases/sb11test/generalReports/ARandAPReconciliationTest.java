@@ -11,6 +11,7 @@ import pages.sb11.generalReports.LedgerStatementPage;
 import pages.sb11.generalReports.SystemMonitoringPage;
 import pages.sb11.generalReports.systemmonitoring.ARandAPReconciliationPage;
 import testcases.BaseCaseAQS;
+import utils.sb11.accounting.JournalReportsUtils;
 import utils.sb11.accounting.TransactionUtils;
 import utils.sb11.user.UserManagementUtils;
 import utils.testraildemo.TestRails;
@@ -72,7 +73,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="17665")
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan7.0"})
     public void AR_and_AP_ReconciliationTest_17665() throws IOException {
         log("@title: Validate the Description displays correctly");
         log("@pre-condition 1: 'A/R and A/P Reconciliation' permission is ON for any account");
@@ -92,6 +93,8 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
+        String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >> A/R and A/P Reconciliation");
         ARandAPReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(AR_AND_AP_RECONCILIATION, ARandAPReconciliationPage.class);
@@ -104,7 +107,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="17666")
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan7.0"})
     public void AR_and_AP_ReconciliationTest_17666() throws IOException {
         log("@title: Validate the CUR displays correctly");
         log("@pre-condition 1: 'A/R and A/P Reconciliation' permission is ON for any account");
@@ -125,6 +128,8 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
+        String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >> A/R and A/P Reconciliation");
         ARandAPReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(AR_AND_AP_RECONCILIATION, ARandAPReconciliationPage.class);
@@ -137,7 +142,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="17667")
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan7.0"})
     public void AR_and_AP_ReconciliationTest_17667() throws IOException {
         log("@title: Validate the Debit/Credit displays correctly");
         log("@pre-condition 1: 'A/R and A/P Reconciliation' permission is ON for any account");
@@ -157,6 +162,8 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
+        String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >> A/R and A/P Reconciliation");
         ARandAPReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(AR_AND_AP_RECONCILIATION, ARandAPReconciliationPage.class);
@@ -169,7 +176,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="17668")
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan7.0"})
     public void AR_and_AP_ReconciliationTest_17668() throws IOException {
         log("@title: Validate the Running Balance displays correctly");
         log("@pre-condition 1: 'A/R and A/P Reconciliation' permission is ON for any account");
@@ -189,6 +196,8 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
+        String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Pre-condition 3: Get Running Bal in Ledger Statement");
         String transDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
         LedgerStatementPage ledgerStatementPage = welcomePage.navigatePage(GENERAL_REPORTS,LEDGER_STATEMENT,LedgerStatementPage.class);
@@ -211,7 +220,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
     @TestRails(id="17669")
-    @Test(groups = {"regression_stg","2024.V.2.0","ethan2.0"})
+    @Test(groups = {"regression_stg","2024.V.2.0","ethan7.0"})
     public void AR_and_AP_ReconciliationTest_17669() throws IOException {
         log("@title: Validate the confirm checkbox works properly");
         log("@pre-condition 1: 'A/R and A/P Reconciliation' permission is ON for any account");
@@ -231,6 +240,8 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
+        String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Go to General Reports >> System Monitoring >> A/R and A/P Reconciliation");
         ARandAPReconciliationPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(AR_AND_AP_RECONCILIATION, ARandAPReconciliationPage.class);

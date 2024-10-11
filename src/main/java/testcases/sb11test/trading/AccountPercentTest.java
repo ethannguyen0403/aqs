@@ -253,7 +253,7 @@ public class AccountPercentTest extends BaseCaseAQS {
         Assert.assertTrue(ptDefault.equals(accountPercentPage.getAccPT(accountCode)));
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.1.0","ethan4.0"})
+    @Test(groups = {"regression","2024.V.1.0","ethan7.0"})
     @TestRails(id = "155")
     @Parameters({"masterCode","agentCode","smartGroup","accountCode","clientCode"})
     public void AccountPercent_155(String masterCode, String agentCode,String smartGroup, String accountCode, String clientCode) throws IOException {
@@ -280,7 +280,7 @@ public class AccountPercentTest extends BaseCaseAQS {
         BetSettlementUtils.waitForBetIsUpdate(120);
         log("@Step 1: Login to site");
         log("@Step 2: Navigate to Soccer > SPP");
-        SPPPage sppPage = betSettlementPage.navigatePage(SOCCER,SPP,SPPPage.class);
+        SPPPage sppPage = betSettlementPage.navigatePage(SOCCER,SPP,"All",SPPPage.class);
         log("@Step 3: Search with Smart Group and Smart Master + Smart Agent at precondition");
         sppPage.filter(SOCCER, "Group","Smart Group",masterCode,agentCode,"","");
         log("@Step 4: Observe Win/Lose of the bet");

@@ -88,17 +88,17 @@ public class WLRPCTest extends BaseCaseAQS {
     }
 
     @TestRails(id="23983")
-    @Test(groups = {"regression","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan7.0"})
     public void WLRPCT_23983(){
         log("@title: Validate the error message displays when showing data with invalid date range");
         log("@pre-condition 1: Client and Bookie have some data");
         log("@Step 1: Go to General Reports > System Monitoring > WL & RPC");
         WLRPCPage page = welcomePage.navigatePage(GENERAL_REPORTS,SYSTEM_MONITORING, SystemMonitoringPage.class).goToTabName(WL_RPC, WLRPCPage.class);
         log("@Step 2: Select invalid date range (out of the 3 months range)");
-        String fromDate = DateUtils.getDate(-92,"dd/MM/yyyy",GMT_7);
+        String fromDate = DateUtils.getDate(-95,"dd/MM/yyyy",GMT_7);
         page.filter("","",fromDate,"","");
         log("@Step 3: Select Search button");
-        page.btnShow.click();
+        page.btnShow.doubleClick();
         String mesAc = page.appArlertControl.getWarningMessage();
         log("Verify 1: Error message should display \"Invalid date range. You can see data up to 3 months.\"");
         Assert.assertEquals(mesAc,WLRPCT.MES_INVALID_DATE_RANGE,"FAILED! Message displays incorrect");
