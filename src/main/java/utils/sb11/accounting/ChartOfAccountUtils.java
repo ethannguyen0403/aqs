@@ -10,7 +10,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 import utils.AppUtils;
 
-import java.io.IOException;
 import java.util.*;
 
 import static testcases.BaseCaseAQS.environment;
@@ -188,6 +187,24 @@ public class ChartOfAccountUtils {
         }
         return lstParent;
     }
+    public static List<String> getLstParentAccountNumber(String ledgerGroupId){
+        List<String> lstParent = new ArrayList<>();
+        JSONArray jsonArr = null;
+        try {
+            jsonArr = getParentGroupListJson(ledgerGroupId);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        if (Objects.nonNull(jsonArr)) {
+            if (jsonArr.length() > 0) {
+                for (int i = 0; i < jsonArr.length(); i++) {
+                    JSONObject orderObj = jsonArr.getJSONObject(i);
+                    lstParent.add(orderObj.getString("parentAccountNumber"));
+                }
+            }
+        }
+        return lstParent;
+    }
 
 
     /**
@@ -271,5 +288,22 @@ public class ChartOfAccountUtils {
         headers.add("Authorization",autho);
         HttpEntity<String> entity = new HttpEntity<>(headers);
         restTemplate.exchange(api, HttpMethod.DELETE, entity,String.class);
+    }
+
+    /**
+     * Get detail type name by parent account code
+     * @param parentAccCode
+     * @return
+     */
+    public static String getDetailTypeName(String parentAccCode) {
+        List<String> lstDetailType = getLstLedgerGroup();
+        for (String detailType : lstDetailType){
+            String detailTypeId = getLedgerGroupId(detailType);
+            List<String> lstParentCode = getLstParentAccountNumber(detailTypeId);
+            if (lstParentCode.contains(parentAccCode)){
+                return detailType;
+            }
+        }
+        return null;
     }
 }
