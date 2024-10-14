@@ -93,6 +93,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
+        welcomePage.waitSpinnerDisappeared();
         String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
@@ -128,6 +129,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
+        welcomePage.waitSpinnerDisappeared();
         String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
@@ -162,6 +164,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
+        welcomePage.waitSpinnerDisappeared();
         String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
@@ -196,6 +199,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
+        welcomePage.waitSpinnerDisappeared();
         String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Pre-condition 3: Get Running Bal in Ledger Statement");
@@ -240,6 +244,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
+        welcomePage.waitSpinnerDisappeared();
         String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
@@ -277,6 +282,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
+        welcomePage.waitSpinnerDisappeared();
         String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
@@ -315,6 +321,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
+        welcomePage.waitSpinnerDisappeared();
         String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
@@ -352,6 +359,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
+        welcomePage.waitSpinnerDisappeared();
         String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
@@ -388,6 +396,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
+        welcomePage.waitSpinnerDisappeared();
         String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerName, "Payment Other", desc);
         log("@Step 1: Login by account at precondition");
@@ -578,6 +587,7 @@ public class ARandAPReconciliationTest extends BaseCaseAQS {
                 .transDate(currentDate)
                 .transType("Payment Other").build();
         TransactionUtils.addTransByAPI(transactionPost,"Ledger",groupName,groupName,groupName,groupName,"");
+        welcomePage.waitSpinnerDisappeared();
         String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledgerDebitName, "Payment Other", desc);
         try {
