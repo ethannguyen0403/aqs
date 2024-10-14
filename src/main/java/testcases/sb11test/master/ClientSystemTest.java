@@ -30,7 +30,7 @@ public class ClientSystemTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan2.0"})
+    @Test(groups = {"regression","ethan7.0"})
     @TestRails(id = "2207")
     public void Client_System_2207(){
         log("@title: Validate UI on Client System is correctly displayed");
