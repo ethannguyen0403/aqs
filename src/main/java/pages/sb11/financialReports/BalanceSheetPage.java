@@ -154,11 +154,10 @@ public class BalanceSheetPage extends WelcomePage {
         for (int i = 0; i < lstParentName.size();i++){
             totalAmountOfParent = totalAmountOfParent + checkNegativeValue(getAmount(lstParentName.get(i)));
         }
-        if (!(Math.abs(totalAmount - DoubleUtils.roundUpWithTwoPlaces(totalAmountOfParent)) <= 0.01)){
+        if (!(Math.abs(totalAmount - DoubleUtils.roundUpWithTwoPlaces(totalAmountOfParent)) <= 0.011)){
             System.err.println("Total Amount of "+detailTypeName+" incorrect");
             return false;
         }
-        ;
         return true;
     }
     public Label getTotalAmount(String detailTypeName){

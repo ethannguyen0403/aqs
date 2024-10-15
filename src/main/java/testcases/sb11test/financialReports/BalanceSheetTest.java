@@ -126,7 +126,7 @@ public class BalanceSheetTest extends BaseCaseAQS {
         Assert.assertTrue(page.isDetailTypeSortCorrect("CAPITAL"),"FAILED! Detail Type sort Incorrect in Capital table");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.10.31","ethan2.0"})
+    @Test(groups = {"regression","2023.10.31","ethan7.0"})
     @TestRails(id = "2788")
     public void Balance_Sheet_2788() {
         log("@title: Validate there is a total amount for each Detail Type");

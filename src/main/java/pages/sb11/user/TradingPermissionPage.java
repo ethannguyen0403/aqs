@@ -36,6 +36,7 @@ public class TradingPermissionPage extends WelcomePage {
         txtUsername.sendKeys(username);
         btnShow.click();
         waitSpinnerDisappeared();
+        waitSpinnerDisappeared();
     }
 
     public void clickAutoAssignAll(String username, boolean isChecked){

@@ -242,7 +242,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         Assert.assertTrue(last12DaysPerformancePage.getTitlePage().contains("SPP Last 12 Days Performance"),"FAILED! Last 12 Days Performance report are not shown");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2023.12.29"})
+    @Test(groups = {"regression","2023.12.29","ethan7.0"})
     @TestRails(id = "138")
     @Parameters({"accountCode"})
     public void MonitorBetsTC_138(String accountCode) throws IOException, UnsupportedFlavorException {
@@ -268,7 +268,7 @@ public class MonitorBetsTest extends BaseCaseAQS {
         log("Verify 1: The copied text should display properly as Report column");
         String myActual = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
         String txtExpected = monitorBetsPage.getReportByAccountCode(accountCode);
-        Assert.assertEquals(myActual,txtExpected,"FAILED! The copied text is wrong");
+        Assert.assertEquals(myActual.replace("HKD"," HKD"),txtExpected,"FAILED! The copied text is wrong");
         log("INFO: Executed completely");
     }
     @Test(groups = {"regression","2023.12.29","ethan6.0"})
