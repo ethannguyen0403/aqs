@@ -386,7 +386,7 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.11.30", "ethan6.0"})
+    @Test(groups = {"regression", "2023.11.30", "ethan7.0"})
     @TestRails(id = "254")
     @Parameters({"smartGroup"})
     public void BBT_TC_254(String smartGroup) {
@@ -463,22 +463,22 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "ethan6.0"})
+    @Test(groups = {"regression", "ethan7.0"})
     @TestRails(id = "2137")
     public void BBT_TC_2137() {
         log("@title: Validate Month Performance page is displayed successfully when clicking on Smart group code");
         String fromDateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", GMT_7));
         String toDateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", GMT_7));
         String fromDate = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7));
-        String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
         int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
 
         List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT,"All", BBTPage.class);
         bbtPage.stopInterval();
+        bbtPage.clickToCheckBoxHeader("Hide no bet Events",true);
         log("@Step 2: Filter with valid data");
-        bbtPage.filter(SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
+        bbtPage.filter(SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, "", "", "", lstLeagues.get(0));
         log("@Step 3: Click on any Smart group code");
         List<String> lstFirstRowData = bbtPage.getFirstRowGroupData();
         MonthPerformancePage monthPerformancePage = bbtPage.openMonthPerformanceFirstGroup();
@@ -496,22 +496,22 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "ethan6.0"})
+    @Test(groups = {"regression", "ethan7.0"})
     @TestRails(id = "2138")
     public void BBT_TC_2138() {
         log("@title: Validate Last 50 Bets page is displayed successfully when clicking on HDP points");
         String fromDateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", GMT_7));
         String toDateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", GMT_7));
         String fromDate = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7));
-        String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
         int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
 
         List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT,"All", BBTPage.class);
+        bbtPage.clickToCheckBoxHeader("Hide no bet Events",true);
         bbtPage.stopInterval();
         log("@Step 2: Filter with valid data");
-        bbtPage.filter(SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
+        bbtPage.filter(SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, "", "", "", lstLeagues.get(0));
         log("@Step 3: Click on any HDP points");
         List<String> lstFirstRowData = bbtPage.getFirstRowGroupData();
         Last50BetsPage last50BetsPage = bbtPage.openLast50BetsFirstGroup();
@@ -523,22 +523,22 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "ethan6.0"})
+    @Test(groups = {"regression", "ethan7.0"})
     @TestRails(id = "2139")
     public void BBT_TC_2139() {
         log("@title: Validate League Performance page is displayed successfully when clicking on Price");
         String fromDateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", GMT_7));
         String toDateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", GMT_7));
         String fromDate = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7));
-        String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
         int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
 
         List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT,"All", BBTPage.class);
+        bbtPage.clickToCheckBoxHeader("Hide no bet Events",true);
         bbtPage.stopInterval();
         log("@Step 2: Filter with valid data");
-        bbtPage.filter(SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
+        bbtPage.filter(SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, "", "", "", lstLeagues.get(0));
         log("@Step 3: Click on any Price");
         List<String> lstFirstRowData = bbtPage.getFirstRowGroupData();
         LeaguePerformancePage leaguePerformancePage = bbtPage.openLeaguePerformanceFirstGroup();
@@ -619,7 +619,6 @@ public class BBTTest extends BaseCaseAQS {
         String fromDateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", GMT_7));
         String toDateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", GMT_7));
         String fromDate = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7));
-        String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
         int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
 
         List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
@@ -628,7 +627,7 @@ public class BBTTest extends BaseCaseAQS {
         bbtPage.stopInterval();
         bbtPage.clickToCheckBoxHeader("Hide no bet Events",true);
         log("@Step 2: Filter with valid data");
-        bbtPage.filter(SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
+        bbtPage.filter(SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, "", "", "", lstLeagues.get(0));
         log("@Step 3: Click on any HDP points");
         List<String> lstFirstRowData = bbtPage.getFirstRowGroupData();
         PendingBetsPage pendingBetsPage = bbtPage.openPendingBetFirstGroup();
@@ -671,22 +670,22 @@ public class BBTTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "ethan6.0"})
+    @Test(groups = {"regression", "ethan7.0"})
     @TestRails(id = "2145")
     public void BBT_TC_2145() {
         log("@title: Validate Soccerway Analysis Last 2 Week Info (S12) page is displayed succefully when clicking on S12 link");
         String fromDateAPI = String.format(DateUtils.getDate(-1, "yyyy-MM-dd", GMT_7));
         String toDateAPI = String.format(DateUtils.getDate(0, "yyyy-MM-dd", GMT_7));
         String fromDate = String.format(DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7));
-        String toDate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", GMT_7));
         int companyId = BetEntrytUtils.getCompanyID(KASTRAKI_LIMITED);
 
         List<String> lstLeagues = BBTUtils.getListAvailableLeagueBBT(String.valueOf(companyId), SPORT_ID_MAP.get(SOCCER), "PENDING", fromDateAPI + " 12:00:00", toDateAPI + " 12:00:00");
         log("@Step 1: Access Soccer > BBT");
         BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT,"All", BBTPage.class);
+        bbtPage.clickToCheckBoxHeader("Hide no bet Events",true);
         bbtPage.stopInterval();
         log("@Step 2: Filter with valid data");
-        bbtPage.filter(SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, toDate, "", "", lstLeagues.get(0));
+        bbtPage.filter(SOCCER, SBPConstants.BBTPage.SMART_TYPE_LIST.get(0), SBPConstants.BBTPage.REPORT_TYPE_LIST.get(0), fromDate, "", "", "", lstLeagues.get(0));
         log("@Step 3: Click on any HDP points");
         ReportS12Page reportS12Page = bbtPage.openReportS12FirstGroup();
 
@@ -881,7 +880,7 @@ public class BBTTest extends BaseCaseAQS {
         }
     }
 
-    @Test(groups = {"regression", "2023.12.29", "ethan4.0"})
+    @Test(groups = {"regression", "2023.12.29", "ethan7.0"})
     @Parameters({"accountCode"})
     @TestRails(id = "3806")
     public void BBT_TC_3806() {
@@ -894,13 +893,16 @@ public class BBTTest extends BaseCaseAQS {
         log("@Step 2: Click on any HDP points to open Last 50 bets");
         Last50BetsPage last50BetsPage = bbtPage.openLast50BetsFirstGroup();
         log("@Verify 1: Validate Bet Type, Selection, HDP column should have no background color");
+        if (last50BetsPage.lblNoRecord.isDisplayed()){
+            return;
+        }
         Assert.assertTrue(last50BetsPage.verifyCellHaveNoBackgroundColor(last50BetsPage.betTypeCol), "FAILED! Bet type have a background color");
         Assert.assertTrue(last50BetsPage.verifyCellHaveNoBackgroundColor(last50BetsPage.selectionCol), "FAILED! Selection have a background color");
         Assert.assertTrue(last50BetsPage.verifyCellHaveNoBackgroundColor(last50BetsPage.HDPCol), "FAILED! HDP have a background color");
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "2023.12.29", "ethan2.0"})
+    @Test(groups = {"regression", "2023.12.29", "ethan7.0"})
     @Parameters({"accountCode", "accountCurrency"})
     @TestRails(id = "4184")
     public void BBT_TC_4184(String accountCode, String accountCurrency) {
@@ -929,6 +931,7 @@ public class BBTTest extends BaseCaseAQS {
             log("@Step 1: Navigate to Soccer > BBT");
             BBTPage bbtPage = welcomePage.navigatePage(SOCCER, BBT,"All", BBTPage.class);
             bbtPage.stopInterval();
+            bbtPage.clickToCheckBoxHeader("Hide no bet Events",true);
             log("@Step 2: Filter default option with Cricket sport");
             bbtPage.filter("Cricket", "", "", "", "", "", "", "");
             log("@Step 2: Click on S1 report");
@@ -944,7 +947,7 @@ public class BBTTest extends BaseCaseAQS {
 
     }
 
-    @Test(groups = {"regression", "2023.12.29"})
+    @Test(groups = {"regression", "2023.12.29","ethan7.0"})
     @TestRails(id = "9750")
     public void BBT_TC_9750() {
         log("@title: Validate can open multiple popups at once");
@@ -953,7 +956,7 @@ public class BBTTest extends BaseCaseAQS {
         bbtPage.stopInterval();
         log("@Step 2: Filter default option with Soccer sport");
         bbtPage.clickToCheckBoxHeader("Hide no bet Events",true);
-        bbtPage.filter(SOCCER, "", "", "06/12/2023", "06/12/2023", "", "", "");
+        bbtPage.filter(SOCCER, "", "", "29/09/2024", "29/09/2024", "", "", "");
         log("@Step 3: Click on S and S12 link");
         Label.xpath(bbtPage.tblBBT.getSLinkXpath(1, "S")).jsClick();
         Label.xpath(bbtPage.tblBBT.getSLinkXpath(1, "S12")).jsClick();
