@@ -156,7 +156,7 @@ public class SBPConstants {
     public final static List<String> STATUS_LIST = Arrays.asList("All", "Pending", "Settled", "Void All", "Void FT Only");
     public final static List<String> SPORT_LIST = Arrays.asList("Soccer", "Cricket", "Basketball", "Tennis", "American Football", "Ice Hockey");
     public final static List<String> SPORT_LIST_ALL = Arrays.asList("All", "Soccer", "Cricket", "Basketball", "Tennis", "American Football", "Ice Hockey");
-    public final static List<String> PROVIDER_LIST = Arrays.asList("Pinnacle", "Bet ISN", "PS7", "Fair999");
+    public final static List<String> PROVIDER_LIST = Arrays.asList("Pinnacle", "Bet ISN", "PS7", "Fair999","IBCBet","SBO");
     public final static List<String> LIVE_NONLIVE_LIST = Arrays.asList("ALL", "Live", "Non-Live");
     public final static List<String> CURRENCY_LIST = Arrays.asList("ALL", "AUD", "CAD", "CNY", "AED", "EUR", "HKD", "INR", "IDR", "JPY", "MYR", "KPW", "PKR", "PHP", "SGD", "ZAR", "KRW", "LKR", "GBP", "TWD", "THB", "USD", "VND");
     public final static List<String> CURRENCY_LIST_WITHOUT_ALL = Arrays.asList("AUD", "CAD", "CNY", "AED", "EUR", "HKD", "INR", "IDR", "JPY", "MYR", "KPW", "PKR", "PHP", "SGD", "ZAR", "KRW", "LKR", "GBP", "TWD", "THB", "USD", "VND");
