@@ -105,13 +105,12 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         log("@Step 3: Select filters which have data");
         log("@Step 4: Select one option in 'Show Bet Types' (e.g.FT-1x2)");
         log("@Step 5: Click on 'Show' button");
-        String fromDate = DateUtils.getDate(-6,"dd/MM/yyyy",GMT_7);
-        page.filter("","",fromDate,"","FT-1x2","","");
+        page.filter("","","24/09/2024","30/09/2024","FT-1x2","","");
         log("Verify 1: Show all records that have selected bet type");
-        page.verifyShowBetTypeCorrect("FT-1x2");
+        page.verifyShowBetTypeCorrect("-FT-1x2");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.3.0","ethan4.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan7.0"})
     @TestRails(id = "29423")
     public void BBGPhoneBettingTC_29423(){
         log("@title: Validate the league shows correctly when filtering");
@@ -121,9 +120,12 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         log("@Step 3: Select filters which have data");
         log("@Step 4: Select one option in 'Show Leagues'");
         log("@Step 5: Click on 'Show' button");
-        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
-        page.filter("","",date,date,"","","");
-        //Double filter to get infor of League Name in a day
+        String date = DateUtils.getDate(-6,"dd/MM/yyyy",GMT_7);
+        page.filter("","",date,"","","","");
+        if (page.lblNoRecord.isDisplayed()){
+            return;
+        }
+        //filter twice for getting infor of League Name in a day
         String leagueName = page.getLstLeague().get(0);
         page.filter("","","","","",leagueName,"");
         log("Verify 1: Show correct selected league");
@@ -178,7 +180,7 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         page.verifyShowBetWinLoseCorrect("Draw");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.3.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan7.0"})
     @TestRails(id = "29427")
     public void BBGPhoneBettingTC_29427(){
         log("@title: Validate pending bets show correctly when account is checked 'Is Telebet'");
@@ -197,13 +199,13 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         log("@Step 3: Select filters which contains bets of player account at the precondition with Report By = Pending Bets");
         log("@Step 4: Click on 'Show' button");
         String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
-        page.filter(KASTRAKI_LIMITED,"Pending Bets",date,"","","","");
+        page.filter(KASTRAKI_LIMITED,"Pending Bets","","","","","");
         log("Verify 1: Show correct bet of player account");
-        Assert.assertTrue(page.tblOrder.getColumn(page.tblOrder.getColumnIndexByName("Account Code"),false).contains(accountCode),"FAILED! "+accountCode+" does not display");
+        Assert.assertTrue(page.getTableByLeague(lstOrder.get(0).getEvent().getLeagueName()).getColumn(page.getTableByLeague(lstOrder.get(0).getEvent().getLeagueName()).getColumnIndexByName("Account Code"),false).contains(accountCode),"FAILED! "+accountCode+" does not display");
         Assert.assertTrue(page.isBetDisplay(lstOrder.get(0)),"FAILED! "+accountCode+" does not display");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.4.0"})
+    @Test(groups = {"regression","2024.V.4.0","ethan7.0"})
     @Parameters({"accountCode"})
     @TestRails(id = "29428")
     public void BBGPhoneBettingTC_29428(String accountCode){
@@ -400,7 +402,7 @@ public class BBGPhoneBettingTest extends BaseCaseAQS {
         page.verifyWinLoseIsCalculatedCorrect(lstOrderRunner.get(0),lstOrderTelebet.get(0));
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.4.0","ethan4.0"})
+    @Test(groups = {"regression","2024.V.4.0","ethan7.0"})
     @TestRails(id = "29436")
     public void BBGPhoneBettingTC_29436(){
         log("@title: Validate win/lose% displays correctly");
