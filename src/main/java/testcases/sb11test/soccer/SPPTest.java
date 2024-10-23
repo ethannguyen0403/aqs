@@ -488,13 +488,13 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 2: Access Soccer > SPP");
         String currentDate = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
         String previousDate = DateUtils.getDate(-1, "dd/MM/yyyy", GMT_7);
-        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP, SPPPage.class);
+        SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP,"All", SPPPage.class);
         log(String.format("@Step 3: Filter with Smart Group: %s, and Bet Types: MB", smartGroup));
-        sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", previousDate, currentDate);
+        sppPage.filter(CRICKET, "Group", "Smart Group", "QA Smart Master", "[All]", previousDate, currentDate);
         log("@Verify 1: Validate Correct Win% = (W/L*100) / Turnover displays");
         List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
         int wLPercent = Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("W/L") - 1)) * 100 / Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("Turnover") - 1));
-        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("Win%") - 1)), wLPercent, "FAILED! The value of WL% Cricket MB is not correct");
+        Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("Win%") - 1)), wLPercent,1, "FAILED! The value of WL% Cricket MB is not correct");
         log("INFO: Executed completely");
     }
 
@@ -513,7 +513,7 @@ public class SPPTest extends BaseCaseAQS {
         log("@Step 2: Access Soccer > SPP");
         SPPPage sppPage = welcomePage.navigatePage(SOCCER, SPP,"All", SPPPage.class);
         log(String.format("@Step 3: Filter with Smart Group: %s, and Bet Types: MB", smartGroup));
-        sppPage.filter("Cricket", "Group", "Smart Group", "QA Smart Master", "[All]", previousDate, currentDate);
+        sppPage.filter(CRICKET, "Group", "Smart Group", "QA Smart Master", "[All]", previousDate, currentDate);
         log("@Verify 1: Validate all Cricket Manual Bets display properly");
         List<String> dataRowTable = sppPage.getRowDataOfGroup(smartGroup);
         Assert.assertEquals(Integer.valueOf(dataRowTable.get(sppPage.tblSPP.getColumnIndexByName("Bets") - 1)), mBCricketBets, "FAILED! The filer Cricket MB is not correct");

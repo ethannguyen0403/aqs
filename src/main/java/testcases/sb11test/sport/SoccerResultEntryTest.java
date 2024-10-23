@@ -25,7 +25,7 @@ public class SoccerResultEntryTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression","ethan7.0"})
     @TestRails(id = "2086")
     public void Soccer_ResultEntry_2086(){
         log("@title: Validate UI on Soccer  Result Entry  is correctly displayed");

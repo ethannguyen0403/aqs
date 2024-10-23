@@ -183,6 +183,11 @@ public class BetOrderPage extends HomePage {
 
     public BetSlipPopup openConfirmPopup(String orderID) {
         getControlOnTableBasedOnOrderID("Confirm", orderID, "Bet").click();
+        ConfirmPopup confirmPopup = new ConfirmPopup();
+        if (confirmPopup.btnYes.isDisplayed()){
+            confirmPopup.btnYes.click();
+            waitSpinLoad();
+        }
         return new BetSlipPopup();
     }
 

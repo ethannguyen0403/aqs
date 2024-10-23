@@ -23,8 +23,8 @@ public class BBGPhoneBettingPage extends WelcomePage {
 
     public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//div[contains(text(),'Company Unit')]//following::select[1]");
     public DropDownBox ddpReportBy = DropDownBox.xpath("//div[contains(text(),'Report By')]//following::select[1]");
-    public TextBox txtFromDate = TextBox.name("fromDate");
-    public TextBox txtToDate = TextBox.xpath("//div[contains(text(),'To Date')]/following::input");
+    public TextBox txtFromDate = TextBox.xpath("//div[contains(text(),'From Date')]/following::input[1]");
+    public TextBox txtToDate = TextBox.xpath("//div[contains(text(),'To Date')]/following::input[1]");
     public DateTimePicker dtpFromDate = DateTimePicker.xpath(txtFromDate,"//bs-datepicker-container");
     public DateTimePicker dtpToDate = DateTimePicker.xpath(txtToDate,"//bs-datepicker-container");
 
@@ -43,6 +43,7 @@ public class BBGPhoneBettingPage extends WelcomePage {
     String tableXpathByEvent = "//app-phone-betting//div[contains(@class,'header')]//span[contains(text(),'%s -vs- %s')]//following::table[1]";
     Table tblResult = Table.xpath("//table[@id='resultTable']",12);
     String lblResultXpath = "//table//tr[contains(@class,'total')]//td[%d]";
+    public Label lblNoRecord = Label.xpath("//td[contains(text(),'No record found')]");
 
     public void filter(String companyUnit, String reportBy, String fromdate, String toDate, String betType, String league, String winlose){
         if (!companyUnit.isEmpty()){
@@ -51,6 +52,7 @@ public class BBGPhoneBettingPage extends WelcomePage {
         }
         if (!reportBy.isEmpty()){
             ddpReportBy.selectByVisibleText(reportBy);
+            waitSpinnerDisappeared();
             waitSpinnerDisappeared();
         }
         if (!fromdate.isEmpty()){
@@ -187,7 +189,7 @@ public class BBGPhoneBettingPage extends WelcomePage {
     }
 
     public boolean isBetDisplay(Order order) {
-        Table tblLeague = Table.xpath(String.format(tableXpathByEvent,order.getEvent().getHome(),order.getEvent().getAway()),13);
+        Table tblLeague = getTableByLeague(order.getEvent().getLeagueName());
         int numberRow = tblLeague.getNumberOfRows(false,true);
         for (int i = 1; i <= numberRow; i++){
             if (tblLeague.getControlOfCell(1,tblLeague.getColumnIndexByName("Account Code"),i,"span").getText().trim().equals(order.getAccountCode())
@@ -203,7 +205,7 @@ public class BBGPhoneBettingPage extends WelcomePage {
     }
 
     public boolean isPriceBackgroundDisplay(Order order, String colorCode) {
-        Table tblLeague = Table.xpath(String.format(tableXpathByEvent,order.getEvent().getHome(),order.getEvent().getAway()),13);
+        Table tblLeague = getTableByLeague(order.getEvent().getLeagueName());
         int numberRow = tblLeague.getNumberOfRows(false,true);
         for (int i = 1; i <= numberRow; i++){
             if (tblLeague.getControlOfCell(1,tblLeague.getColumnIndexByName("Account Code"),i,"span").getText().trim().equals(order.getAccountCode())
@@ -245,10 +247,16 @@ public class BBGPhoneBettingPage extends WelcomePage {
     }
 
     public void verifyWinLosePercentOfLeague() {
+        if (lblNoRecord.isDisplayed()){
+            return;
+        }
         double totalWinloseValue = Double.valueOf(Label.xpath(tblResult.getxPathOfCell(1,SBPConstants.BBGPhoneBetting.COLUMN_RESULT.get("Win/Lose"),1,null)).getText().trim().replace(",",""));
         double totalStakeValue = Double.valueOf(Label.xpath(tblResult.getxPathOfCell(1,SBPConstants.BBGPhoneBetting.COLUMN_RESULT.get("Stake"),1,null)).getText().trim().replace(",",""));
         String totalWinlosePerEx = String.format("%.3f", (totalWinloseValue / totalStakeValue) * 100).equals("Infinity") ? "0.000" : String.format("%.3f", (totalWinloseValue / totalStakeValue) * 100);
         String totalWinlosePerAc = tblResult.getControlOfCell(1,SBPConstants.BBGPhoneBetting.COLUMN_RESULT.get("Win/Lose%"),1,null).getText().trim().replace(",","");
         Assert.assertEquals(Double.valueOf(totalWinlosePerAc.replace("%","")),Double.valueOf(totalWinlosePerEx),0.02,"FAILED! Win/loss % display incorrect");
+    }
+    public Table getTableByLeague(String leagueName){
+        return Table.xpath(String.format("//span[contains(text(),'%s')]//following::div[1]//table",leagueName),13);
     }
 }

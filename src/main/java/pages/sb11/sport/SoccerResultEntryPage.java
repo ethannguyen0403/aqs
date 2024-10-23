@@ -60,7 +60,7 @@ public class SoccerResultEntryPage extends WelcomePage {
         System.out.println("Type, Date, Show League button, Leagues, Order By, Status and Show button");
         Assert.assertEquals(ddpType.getOptions(),TYPE_LIST,"Failed! Type dropdown is not displayed");
         Assert.assertEquals(lblDate.getText(),"Date","Failed! Date datetimepicker is not displayed");
-        Assert.assertEquals(btnShowLeagues.getText(),"Show Leagues","Failed! Show Leagues button is not displayed");
+        Assert.assertEquals(btnShowLeagues.getText(),"SHOW LEAGUES","Failed! Show Leagues button is not displayed");
         Assert.assertTrue(ddpLeague.getOptions().contains("All"),"Failed! League dropdown is not displayed");
         Assert.assertEquals(ddpOrderBy.getOptions(),ORDER_BY_LIST,"Failed! Order By dropdown is not displayed");
         Assert.assertEquals(ddpStatus.getOptions(),STATUS_LIST,"Failed! Status dropdown is not displayed");

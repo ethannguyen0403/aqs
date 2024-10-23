@@ -24,7 +24,7 @@ import java.util.List;
 import static common.SBPConstants.*;
 
 public class PTRiskControlTest extends BaseCaseAQS {
-    @Test(groups = {"smoke", "ethan4.0"})
+    @Test(groups = {"smoke", "ethan7.0"})
     @Parameters({"clientCode", "accountCode"})
     @TestRails(id = "1386")
     public void PTRiskControlTC_1386(String clientCode, String accountCode) throws IOException {
@@ -34,26 +34,30 @@ public class PTRiskControlTest extends BaseCaseAQS {
         //Configurate Account Percent
         String superMasterCode = "QA2112 - ";
         Double percent = 1.5;
-        AccountPercentUtils.setAccountPercentAPI(accountCode, clientCode, superMasterCode, percent);
-        clientCode = superMasterCode + clientCode;
-        //Place bet HDP
-        String date = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
-        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, date, true, accountCode, "Goals", "HDP", "Home", "FullTime", 1.6, 1.75, "HK",
-                12, "BACK", false, "");
-        log("@Step 1: Login with valid account");
-        log("@Step 2: Navigate to Soccer > PT Risk Control");
-        PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
-        ptPage.waitSpinnerDisappeared();
-        log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
-        ptPage.filter(clientCode, KASTRAKI_LIMITED, SOCCER, "Normal", "All", "", "", lstOrder.get(0).getEvent().getLeagueName());
-        log("Step 4: Open bet list of league");
-        PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(lstOrder.get(0).getEvent().getHome());
-        String actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
-        log("@Validate data of account setting Account Percent show on PT% column");
-        Assert.assertEquals(String.valueOf(percent), actualPTVal);
-        ptRiskPopup.closeBetListPopup();
-        log("@Validate win/lose forecast of odds type HK on HDP row show correctly");
-        Assert.assertTrue(ptPage.isForecastCorrect("29", "-9", "-18", true));
+        try {
+            AccountPercentUtils.setAccountPercentAPI(accountCode, clientCode, superMasterCode, percent);
+            clientCode = superMasterCode + clientCode;
+            //Place bet HDP
+            String date = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+            List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, date, true, accountCode, "Goals", "HDP", "Home", "FullTime", 1.6, 1.75, "HK",
+                    12, "BACK", false, "");
+            log("@Step 1: Login with valid account");
+            log("@Step 2: Navigate to Soccer > PT Risk Control");
+            PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
+            ptPage.waitSpinnerDisappeared();
+            log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
+            ptPage.filter(clientCode, KASTRAKI_LIMITED, SOCCER, "Normal", "All", "", "", lstOrder.get(0).getEvent().getLeagueName());
+            log("Step 4: Open bet list of league");
+            PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(lstOrder.get(0).getEvent().getHome());
+            String actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
+            log("@Validate data of account setting Account Percent show on PT% column");
+            Assert.assertEquals(String.valueOf(percent), actualPTVal);
+            ptRiskPopup.closeBetListPopup();
+            log("@Validate win/lose forecast of odds type HK on HDP row show correctly");
+            Assert.assertTrue(ptPage.isForecastCorrect("29", "-9", "-18", true));
+        } finally {
+            AccountPercentUtils.setAccountPercentAPI(accountCode, clientCode, superMasterCode, 1.0);
+        }
     }
 
     @Test(groups = {"smoke", "ethan4.0"})
@@ -68,35 +72,40 @@ public class PTRiskControlTest extends BaseCaseAQS {
         String superMasterCode = "QA2112 - ";
         String actualPTVal;
         Double percent = 1.5;
-        AccountPercentUtils.setAccountPercentAPI(accountCode, clientCode, superMasterCode, percent);
-
-        clientCode = superMasterCode + clientCode;
-
-        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, date, true, accountCode, "Goals", "HDP", "Home", "FullTime", 2.0, 1.75, "EU",
-                12, "BACK", false, "");
-        //Wait for Bet update in PT page
         try {
-            Thread.sleep(40000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            AccountPercentUtils.setAccountPercentAPI(accountCode, clientCode, superMasterCode, percent);
+
+            clientCode = superMasterCode + clientCode;
+
+            List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, date, true, accountCode, "Goals", "HDP", "Home", "FullTime", 2.0, 1.75, "EU",
+                    12, "BACK", false, "");
+            //Wait for Bet update in PT page
+            try {
+                Thread.sleep(40000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            log("@Step 1: Login with valid account");
+            log("@Step 2: Navigate to Soccer > PT Risk Control");
+            PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
+            ptPage.waitSpinnerDisappeared();
+            log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
+            ptPage.filter(clientCode, KASTRAKI_LIMITED, SOCCER, "Normal", "All", "", "", lstOrder.get(0).getEvent().getLeagueName());
+            log("Step 4: Open bet list of league");
+            PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(lstOrder.get(0).getEvent().getHome());
+            actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
+            log("@Validate data of account setting Account Percent show on PT% column");
+            Assert.assertEquals(String.valueOf(percent), actualPTVal);
+            ptRiskPopup.closeBetListPopup();
+            log("@Validate win/lose forecast of odds type EU on HDP row show correctly");
+            Assert.assertTrue(ptPage.isForecastCorrect("18", "-9", "-18", true));
+        } finally {
+            AccountPercentUtils.setAccountPercentAPI(accountCode, clientCode, superMasterCode, 1.0);
         }
-        log("@Step 1: Login with valid account");
-        log("@Step 2: Navigate to Soccer > PT Risk Control");
-        PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
-        ptPage.waitSpinnerDisappeared();
-        log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
-        ptPage.filter(clientCode, KASTRAKI_LIMITED, SOCCER, "Normal", "All", "", "", lstOrder.get(0).getEvent().getLeagueName());
-        log("Step 4: Open bet list of league");
-        PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(lstOrder.get(0).getEvent().getHome());
-        actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
-        log("@Validate data of account setting Account Percent show on PT% column");
-        Assert.assertEquals(String.valueOf(percent), actualPTVal);
-        ptRiskPopup.closeBetListPopup();
-        log("@Validate win/lose forecast of odds type EU on HDP row show correctly");
-        Assert.assertTrue(ptPage.isForecastCorrect("18", "-9", "-18", true));
+
     }
 
-    @Test(groups = {"smoke", "ethan4.0"})
+    @Test(groups = {"smoke", "ethan7.0"})
     @Parameters({"clientCode", "accountCode"})
     @TestRails(id = "1387")
     public void PTRiskControlTC_1387(String clientCode, String accountCode) throws IOException {
@@ -107,26 +116,31 @@ public class PTRiskControlTest extends BaseCaseAQS {
         //Set account percent
         String superMasterCode = "QA2112 - ";
         Double percent = 1.5;
-        AccountPercentUtils.setAccountPercentAPI(accountCode, clientCode, superMasterCode, percent);
-        String actualPTVal;
-        clientCode = superMasterCode + clientCode;
+        try {
+            AccountPercentUtils.setAccountPercentAPI(accountCode, clientCode, superMasterCode, percent);
+            String actualPTVal;
+            clientCode = superMasterCode + clientCode;
 
-        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, date, true, accountCode, "Goals", "HDP", "Home", "FullTime", 0.5, 1.75, "MY",
-                12, "BACK", false, "");
-        log("@Step 1: Login with valid account");
-        log("@Step 2: Navigate to Soccer > PT Risk Control");
-        PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
-        ptPage.waitSpinnerDisappeared();
-        log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
-        ptPage.filter(clientCode, KASTRAKI_LIMITED, SOCCER, "Normal", "All", "", "", lstOrder.get(0).getEvent().getLeagueName());
-        log("Step 4: Open bet list of league");
-        PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(lstOrder.get(0).getEvent().getHome());
-        actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
-        log("@Validate data of account setting Account Percent show on PT% column");
-        Assert.assertEquals(String.valueOf(percent), actualPTVal);
-        ptRiskPopup.closeBetListPopup();
-        log("@Validate win/lose forecast of odds type MY on HDP row show correctly");
-        Assert.assertTrue(ptPage.isForecastCorrect("9", "-9", "-18", true));
+            List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, date, true, accountCode, "Goals", "HDP", "Home", "FullTime", 0.5, 1.75, "MY",
+                    12, "BACK", false, "");
+            log("@Step 1: Login with valid account");
+            log("@Step 2: Navigate to Soccer > PT Risk Control");
+            PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
+            ptPage.waitSpinnerDisappeared();
+            log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
+            ptPage.filter(clientCode, KASTRAKI_LIMITED, SOCCER, "Normal", "All", "", "", lstOrder.get(0).getEvent().getLeagueName());
+            log("Step 4: Open bet list of league");
+            PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(lstOrder.get(0).getEvent().getHome());
+            actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
+            log("@Validate data of account setting Account Percent show on PT% column");
+            Assert.assertEquals(String.valueOf(percent), actualPTVal);
+            ptRiskPopup.closeBetListPopup();
+            log("@Validate win/lose forecast of odds type MY on HDP row show correctly");
+            Assert.assertTrue(ptPage.isForecastCorrect("9", "-9", "-18", true));
+        } finally {
+            AccountPercentUtils.setAccountPercentAPI(accountCode, clientCode, superMasterCode, 1.0);
+        }
+
     }
 
     @Test(groups = {"smoke", "ethan4.0"})
@@ -140,31 +154,35 @@ public class PTRiskControlTest extends BaseCaseAQS {
         String superMasterCode = "QA2112 - ";
         String actualPTVal;
         Double percent = 1.5;
-        AccountPercentUtils.setAccountPercentAPI(accountCode, clientCode, superMasterCode, percent);
-        clientCode = superMasterCode + clientCode;
-
-        List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, date, true, accountCode, "Goals", "HDP", "Home", "FullTime", 1.5, 1.75, "ID",
-                12, "BACK", false, "");
-        //Wait for Bet update in PT page
         try {
-            Thread.sleep(40000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            AccountPercentUtils.setAccountPercentAPI(accountCode, clientCode, superMasterCode, percent);
+            clientCode = superMasterCode + clientCode;
+
+            List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER, date, true, accountCode, "Goals", "HDP", "Home", "FullTime", 1.5, 1.75, "ID",
+                    12, "BACK", false, "");
+            //Wait for Bet update in PT page
+            try {
+                Thread.sleep(40000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            log("@Step 1: Login with valid account");
+            log("@Step 2: Navigate to Soccer > PT Risk Control");
+            PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
+            ptPage.waitSpinnerDisappeared();
+            log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
+            ptPage.filter(clientCode, KASTRAKI_LIMITED, SOCCER, "Normal", "All", "", "", lstOrder.get(0).getEvent().getLeagueName());
+            log("Step 4: Open bet list of league");
+            PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(lstOrder.get(0).getEvent().getHome());
+            actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
+            log("@Validate data of account setting Account Percent show on PT% column");
+            Assert.assertEquals(String.valueOf(percent), actualPTVal);
+            ptRiskPopup.closeBetListPopup();
+            log("@Validate win/lose forecast of odds type ID on HDP row show correctly");
+            Assert.assertTrue(ptPage.isForecastCorrect("27", "-9", "-18", true));
+        } finally {
+            AccountPercentUtils.setAccountPercentAPI(accountCode, clientCode, superMasterCode, 1.0);
         }
-        log("@Step 1: Login with valid account");
-        log("@Step 2: Navigate to Soccer > PT Risk Control");
-        PTRiskPage ptPage = welcomePage.navigatePage(SOCCER, PT_RISK_CONTROL, PTRiskPage.class);
-        ptPage.waitSpinnerDisappeared();
-        log("@Step 3: Filter with Report Type = Normal with League and Client placed bet");
-        ptPage.filter(clientCode, KASTRAKI_LIMITED, SOCCER, "Normal", "All", "", "", lstOrder.get(0).getEvent().getLeagueName());
-        log("Step 4: Open bet list of league");
-        PTRiskBetListPopup ptRiskPopup = ptPage.openBetList(lstOrder.get(0).getEvent().getHome());
-        actualPTVal = ptRiskPopup.getBetListCellValue(accountCode, ptRiskPopup.colPTPercent);
-        log("@Validate data of account setting Account Percent show on PT% column");
-        Assert.assertEquals(String.valueOf(percent), actualPTVal);
-        ptRiskPopup.closeBetListPopup();
-        log("@Validate win/lose forecast of odds type ID on HDP row show correctly");
-        Assert.assertTrue(ptPage.isForecastCorrect("27", "-9", "-18", true));
     }
 
     @Test(groups = {"regression"})

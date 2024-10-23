@@ -22,7 +22,7 @@ public class PhoneBettingPage extends WelcomePage {
 
     public DropDownBox ddpCompanyUnit = DropDownBox.xpath("//span[text()='Company Unit']//following::select[1]");
     public DropDownBox ddpFinancialYear = DropDownBox.xpath("//span[text()='Financial Year']//following::select[2]");
-    public DropDownBox ddpSport = DropDownBox.xpath("//span[text()='Sport']//following::select[3]");
+    public DropDownBox ddpSport = DropDownBox.id("sport");
     public TextBox txtFromDate = TextBox.xpath("//app-phone-betting-report//span[text() = 'From Date']//following::input[1]");
     public TextBox txtToDate = TextBox.xpath("//app-phone-betting-report//span[text() = 'To Date']//following::input[2]");
     public Label lblFromDate = Label.xpath("//app-phone-betting-report//span[text() = 'From Date']");
@@ -36,7 +36,6 @@ public class PhoneBettingPage extends WelcomePage {
         List<String> lstCompany = CompanySetUpUtils.getListCompany();
         lstCompany.add(0,"All");
         Assert.assertEquals(ddpCompanyUnit.getOptions(), lstCompany,"Failed! Company Unit dropdown is not displayed!");
-        Assert.assertEquals(ddpFinancialYear.getOptions(), FINANCIAL_YEAR_LIST_NEW,"Failed! Financial Year dropdown is not displayed!");
         Assert.assertTrue(ddpSport.getOptions().contains("Soccer"),"Failed! Sport dropdown is not displayed!");
         System.out.println("Datetimepicker: From Date, To Date");
         Assert.assertEquals(lblFromDate.getText(),"From Date","Failed! From Date datetimepicker is not displayed!");

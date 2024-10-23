@@ -88,7 +88,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     }
 
     @TestRails(id="4179")
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression","ethan7.0"})
     @Parameters({"bookieCode","bookieSuperMasterCode"})
     public void Journal_Entries_TC_4179(String bookieCode, String bookieSuperMasterCode) throws InterruptedException {
         String level = "Super";
@@ -128,7 +128,7 @@ public class JournalEntriesTest extends BaseCaseAQS {
     }
 
     @TestRails(id="4180")
-    @Test(groups = {"regression","ethan3.0"})
+    @Test(groups = {"regression","ethan7.0"})
     @Parameters({"clientCode","bookieSuperMasterCode"})
     public void Journal_Entries_TC_4180(String clientCode, String bookieSuperMasterCode) throws InterruptedException {
         String level = "Super";

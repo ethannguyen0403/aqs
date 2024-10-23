@@ -1264,7 +1264,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression", "ethan2.0"})
+    @Test(groups = {"regression", "ethan7.0"})
     @TestRails(id = "2770")
     public void Ledger_Statement_2770() {
         String detailType = "000.000.001.000 - QA Ledger Group Income";
@@ -1323,7 +1323,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression_stg", "2024.V.2.0", "ethan"})
+    @Test(groups = {"regression_stg", "2024.V.2.0", "ethan7.0"})
     @TestRails(id = "15754")
     public void Ledger_Statement_15754() {
         log("@title: Validate there is only 1 CJE Income transaction with the updated/latest amounts after users trigger a CJE manually");
@@ -1372,7 +1372,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .build();
         log("@Step 6: Click Submit button");
         log("@Step 7: Click Yes button in reminder dialog");
-        journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, true);
+        journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
         journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", debitIncomeAcc, transType, desInc);
@@ -1393,7 +1393,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
         ledgerStatementPage.verifyRunningBalAfterTriggering(valueA, valueB, valueC);
     }
 
-    @Test(groups = {"regression_stg", "2024.V.2.0", "ethan3.0"})
+    @Test(groups = {"regression_stg", "2024.V.2.0", "ethan7.0"})
     @TestRails(id = "23700")
     public void Ledger_Statement_23700() {
         log("@title: Validate there is only 1 CJE Expenditure transaction with the updated/latest amounts after users trigger a CJE manually");
@@ -1443,7 +1443,7 @@ public class LedgerStatementTest extends BaseCaseAQS {
                 .build();
         log("@Step 6: Click Submit button");
         log("@Step 7: Click Yes button in reminder dialog");
-        journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, true);
+        journalEntriesPage.addTransaction(transaction, AccountType.LEDGER, AccountType.LEDGER, transaction.getRemark(), transaction.getTransDate(), transaction.getTransType(), true, false);
         journalEntriesPage.waitSpinnerDisappeared();
         log("@Post-condition: authorize transaction");
         JournalReportsUtils.tickAuthorize(fromDate, fromDate, "Ledger", debitExpAcc, transType, desExp);

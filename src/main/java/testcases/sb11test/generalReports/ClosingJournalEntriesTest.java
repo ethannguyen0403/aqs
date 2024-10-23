@@ -14,6 +14,7 @@ import pages.sb11.generalReports.popup.clientstatement.LedgerDetailPopup;
 import pages.sb11.generalReports.systemmonitoring.ClosingJournalEntriesPage;
 import pages.sb11.popup.ConfirmPopup;
 import testcases.BaseCaseAQS;
+import utils.sb11.accounting.JournalReportsUtils;
 import utils.sb11.accounting.TransactionUtils;
 import utils.testraildemo.TestRails;
 
@@ -89,7 +90,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         page.verifyddMonthOption();
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2023.12.29","ethan2.0"})
+    @Test(groups = {"regression_stg","2023.12.29","ethan7.0"})
     @TestRails(id = "9845")
     public void Closing_Journal_Entries_9845() throws IOException {
         log("@title: Validate can perform CJE for the selected month for sub-accounts of the selected Company Unit by clicking 'Perform CJE' button");
@@ -102,7 +103,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM");
         String month = s.format(new Date(cal.getTimeInMillis()));
         String transType = "Payment Other";
-        String remark = "Auto Testing Closing Journal Entries. Please ignore this, Thank you!";
+        String remark = "TC_9845 Auto Testing Closing Journal Entries. Please ignore this, Thank you!";
         String detailType = "QA Ledger Group Expenditure";
         Transaction transaction = new Transaction.Builder()
                 .ledgerCredit(ledger).ledgerCreditNumber(numberLeder)
@@ -111,8 +112,10 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
                 .transDate(month+"-12")
                 .remark(remark)
                 .transType(transType).build();
-
         TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
+        welcomePage.waitSpinnerDisappeared();
+        String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledger, transType, remark);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Click General Reports >> System Monitoring menu");
         log("@Step 3: Click 'Closing Journal Entries' button");
@@ -140,7 +143,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         Assert.assertEquals(ledgerDetailPopup.getClosingValue(),"0.00","FAILED! Running Bal. of Closing Journal display incorrect");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression_stg","2023.12.29","ethan2.0"})
+    @Test(groups = {"regression_stg","2023.12.29","ethan7.0"})
     @TestRails(id = "9846")
     public void Closing_Journal_Entries_9846() throws IOException {
         log("@title: Validate can perform CJE for the selected month for sub-accounts of the selected Company Unit by clicking 'Perform CJE' button");
@@ -154,7 +157,7 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
         String month = s.format(new Date(cal.getTimeInMillis()));
 
         String transType = "Payment Other";
-        String remark = "Auto Testing Closing Journal Entries. Please ignore this, Thank you!";
+        String remark = "TC_9846 Auto Testing Closing Journal Entries. Please ignore this, Thank you!";
         String detailType = "QA Ledger Group Expenditure";
 
         Transaction transaction = new Transaction.Builder()
@@ -166,7 +169,9 @@ public class ClosingJournalEntriesTest extends BaseCaseAQS {
                 .transType(transType).build();
 
         TransactionUtils.addTransByAPI(transaction,"Ledger",LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_GROUP_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,LEDGER_PARENT_NAME_EXPENDITURE,"");
-
+        welcomePage.waitSpinnerDisappeared();
+        String transDateAPI = DateUtils.getDate(0, "dd/MM/yyyy", GMT_7);
+        JournalReportsUtils.tickAuthorize(transDateAPI, transDateAPI, "Ledger", ledger, transType, remark);
         log("@Step 1: Login by account at precondition");
         log("@Step 2: Click General Reports >> System Monitoring menu");
         log("@Step 3: Click 'Closing Journal Entries' button");

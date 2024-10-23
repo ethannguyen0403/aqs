@@ -133,7 +133,7 @@ public class SPPPage extends WelcomePage {
     }
 
     public LeaguePerformancePage openLeaguePerformance(String groupName){
-        String tableXpath = String.format("//th[contains(text(),'%s')]//ancestor::table",groupName);
+        String tableXpath = String.format("//th[contains(text(),\"%s\")]//ancestor::table",groupName);
         Table tblSPP1 = Table.xpath(tableXpath,15);
         int rowIndex = 0;
         for (int i = 0; i < 10; i++){

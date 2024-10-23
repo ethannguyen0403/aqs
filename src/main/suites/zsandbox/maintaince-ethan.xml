@@ -31,31 +31,47 @@
         <parameter name="companyCurrency" value="HKD"/>
         <parameter name="userNameOneRole" value="onerole"/>
         <parameter name="stakeSizeGroup" value="QA Client - Stake Group"/>
-        <parameter name='isAddTestRailResult' value='true'/>
+        <parameter name='isAddTestRailResult' value='false'/>
         <groups>
             <run>
-                <include name="ethan6.0"/>
+                <include name="regression1"/>
+                <include name="regression_stg1"/>
+<!--                <include name="ethan7.0"/>-->
             </run>
         </groups>
 
         <classes>
             <class name="testcases.sb11test.soccer.PTRiskControlTest"/>
-            <class name="testcases.sb11test.generalReports.BookieStatementTest"/>
+            <class name="testcases.sb11test.trading.ConfirmBetsTest"/>
             <class name="testcases.sb11test.generalReports.ClientStatementTest"/>
+            <class name="testcases.sb11test.restapi.RestAPITest"/>
+            <class name="testcases.sb11test.financialReports.BalanceSheetAnalysisTest"/>
+            <class name="testcases.sb11test.financialReports.RetainedEarningsTest"/>
+            <class name="testcases.sb11test.financialReports.IncomeStatementAnalysisTest"/>
+            <class name="testcases.sb11test.master.BookieInfoTest"/>
+            <class name="testcases.sb11test.generalReports.ConsolidatedClientBalanceTest"/>
+            <class name="testcases.sb11test.generalReports.PositionTakingReportTest"/>
+            <class name="testcases.sb11test.trading.TransactionVerificationTest"/>
+            <class name="testcases.sb11test.trading.PhoneBettingTest"/>
+            <class name="testcases.sb11test.generalReports.FundReconciliationTest"/>
+            <class name="testcases.sb11test.generalReports.WLRPCTest"/>
             <class name="testcases.sb11test.generalReports.LedgerStatementTest"/>
-
+            <class name="testcases.sb11test.trading.AccountPercentTest"/>
+            <class name="testcases.sb11test.generalReports.ARandAPReconciliationTest"/>
+            <class name="testcases.sb11test.master.ClientSystemTest"/>
+            <class name="testcases.sb11test.generalReports.ClosingJournalEntriesTest"/>
+            <class name="testcases.sb11test.financialReports.BalanceSheetTest"/>
             <class name="testcases.sb11test.soccer.SPPTest"/>
-            <class name="testcases.sb11test.sport.OpenPriceTest"/>
-            <class name="testcases.sb11test.sport.CricketLeagueSeasonTeamInfoTest"/>
-            <class name="testcases.sb11test.soccer.MatchOddsLiabilityTest"/>
+            <class name="testcases.sb11test.user.TradingPermissionTest"/>
             <class name="testcases.sb11test.soccer.MonitorBetsTest"/>
-            <class name="testcases.sb11test.HomePageTest"/>
-            <class name="testcases.sb11test.soccer.HandicapLiabilityTest"/>
-            <class name="testcases.sb11test.soccer.OverUnderCornerLiabilityTest"/>
             <class name="testcases.sb11test.accounting.JournalEntriesTest"/>
-            <class name="testcases.sb11test.sport.BLSettingTest"/>
             <class name="testcases.sb11test.soccer.BBGTest"/>
             <class name="testcases.sb11test.soccer.BBTTest"/>
+            <class name="testcases.sb11test.soccer.OverUnderLiabilityTest"/>
+            <class name="testcases.sb11test.soccer.BBGPhoneBettingTest"/>
+            <class name="testcases.sb11test.sport.EventMappingTest"/>
+            <class name="testcases.sb11test.sport.SoccerResultEntryTest"/>
+
 
         </classes>
     </test>

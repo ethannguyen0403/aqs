@@ -190,6 +190,7 @@ public class BBGPage extends WelcomePage {
 
     public BetByTeamPricePopup clickFirstPriceCell(){
        firstBetByGroupTableControl.clickPriceColumn("");
+       waitSpinnerDisappeared();
        DriverManager.getDriver().switchToWindow();
        return new BetByTeamPricePopup();
     }

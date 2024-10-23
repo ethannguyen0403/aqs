@@ -116,7 +116,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
         log("@Step 4 Tick on check-boxes of some bets'");
         log("@Step 5. Click on 'Delete Selected' and observe");
         confirmBetsPage.deleteSelectedOrders(lstOrder, false);
-        log("@Verify: Users can delete multiple confirmed bets and they will be no longer displayed");
+        log("@Verify 1: Users can delete multiple confirmed bets and they will be no longer displayed");
         Assert.assertFalse(confirmBetsPage.isOrdersDisplayInTheTable(lstOrder), "Failed! The order still displayed after delete");
         log("INFO: Executed completely");
     }
@@ -146,7 +146,7 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "881")
-    @Test(groups = {"smoke","ethan3.0"})
+    @Test(groups = {"smoke","ethan7.0"})
     @Parameters({"accountCode"})
     public void Confirm_Bets_TC881(String accountCode) {
         log("@title: Validate can delete multiple Pending Bets");
@@ -332,26 +332,26 @@ public class ConfirmBetsTest extends BaseCaseAQS {
     }
 
     @TestRails(id = "942")
-    @Test(groups = {"smoke","ethan5.0"})
+    @Test(groups = {"smoke","ethan7.0"})
     @Parameters({"accountCode"})
     public void Confirm_Bets_TC942(String accountCode) {
         log("@title:Validate updated bets reflect correctly in the bet list of Bet Settlement page");
         log("Precondition: Using the updated bets in the test case C182");
         log("Note: Tobe able settled order after place bet > commfirmed and settled => we should place in the event in the past");
         String todate = String.format(DateUtils.getDate(0, "dd/MM/yyyy", "GMT +7"));
-        String date = DateUtils.getDate(-2,"dd/MM/yyyy",GMT_7);
+        String date = DateUtils.getDate(-1,"dd/MM/yyyy",GMT_7);
         List<Order> lstOrder = welcomePage.placeBetAPI(SOCCER,date,true,accountCode,"Goals","HDP","Home","FullTime",2.05,0.25,
                 "HK",15.50,"BACK",false,"");
         //Confirm Bet
         ConfirmBetsUtils.confirmBetAPI(lstOrder);
         log("@Step 1: Login to SB11 >> go to Bet Settlement >> Confirmed");
         BetSettlementPage betSettlementPage = welcomePage.navigatePage(TRADING, BET_SETTLEMENT, BetSettlementPage.class);
-        betSettlementPage.filter("Confirmed", date, todate, "", accountCode);
+        betSettlementPage.filter("Confirmed", date, "", "", accountCode);
         betSettlementPage.reClickShowButton(lstOrder.get(0));
         log("@Step 2: Select the bet >>  click 'Settle and Send Settlement Email'");
         betSettlementPage.settleAndSendSettlementEmail(lstOrder.get(0));
         log("@Step 3: Select status as Settled");
-        betSettlementPage.filter("Settled", date, todate ,"", accountCode);
+        betSettlementPage.filter("Settled", date, "" ,"", accountCode);
         betSettlementPage.reClickShowButton(lstOrder.get(0));
         log("@Verify 1 : Validate the bet displays with the updated values");
         betSettlementPage.verifyOrderInfo(lstOrder.get(0));

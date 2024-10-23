@@ -167,7 +167,7 @@ public class LedgerDetailPopup {
         }
     }
     public String getClosingValue(){
-        List<String> lstValue = tbLedger.getColumn(colRunORG,true);
-        return lstValue.get(lstValue.size() - 2);
+        List<String> lstValue = tbLedger.getColumn(colRunGBP,true);
+        return lstValue.get(lstValue.size() - 1);
     }
 }

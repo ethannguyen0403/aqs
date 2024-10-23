@@ -30,7 +30,7 @@ public class ClientSystemPage extends WelcomePage {
     public TextBox txtClientName = TextBox.id("name");
 
     public Button btnShow = Button.xpath("//button[contains(@class,'btn-show')]");
-    public Button btnAddClient = Button.xpath("//button[text()='Add Client']");
+    public Button btnAddClient = Button.xpath("//button[contains(text(),'Add Client')]");
     public Button btnExportToExcel = Button.xpath("//button[contains(text(),'Export To Excel')]");
 
     public Table tbClient = Table.xpath("//div[@class='d-inline-block col-6']//table",6);

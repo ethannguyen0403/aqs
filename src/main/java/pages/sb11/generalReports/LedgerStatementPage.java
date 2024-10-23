@@ -320,7 +320,7 @@ public class LedgerStatementPage extends WelcomePage {
         Assert.assertEquals(lblFromDate.getText(),"From Date","Failed! From Date datetimepicker is not displayed!");
         Assert.assertEquals(lblToDate.getText(),"To Date","Failed! To Date datetimepicker is not displayed!");
         System.out.println("Button: Show, Export To Excel, Export to PDF");
-        Assert.assertEquals(btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(btnShow.getText(),"SHOW","Failed! Show button is not displayed!");
         Assert.assertEquals(btnExportToExcel.getText(),"Export To Excel","Failed! Export To Excel button is not displayed!");
         Assert.assertEquals(btnExportToPDF.getText(),"Export To PDF","Failed! Export To PDF button is not displayed!");
         System.out.println("Validate Ledger Statement table is displayed with correctly header column");

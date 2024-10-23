@@ -16,6 +16,7 @@ import pages.sb11.master.clientsystempopup.AccountListPopup;
 import pages.sb11.trading.AccountPercentPage;
 import testcases.BaseCaseAQS;
 import utils.sb11.accounting.CompanySetUpUtils;
+import utils.sb11.role.RoleManagementUtils;
 import utils.testraildemo.TestRails;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class PositionTakingReportTest extends BaseCaseAQS {
     public void Position_Taking_Report_4185(String password, String userNameOneRole) throws Exception {
         log("@title: Validate 'Position Taking Report' menu is hidden if not active Position Taking Report permission");
         log("@Pre-condition: Position Taking Report permission is OFF for any account");
+        RoleManagementUtils.updateRolePermission("one role","Position Taking Report","INACTIVE");
         log("@Step 1: Login by account at precondition");
         LoginPage loginPage = welcomePage.logout();
         loginPage.login(userNameOneRole, StringUtils.decrypt(password));

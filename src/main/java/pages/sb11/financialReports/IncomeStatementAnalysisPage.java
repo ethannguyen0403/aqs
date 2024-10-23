@@ -59,8 +59,8 @@ public class IncomeStatementAnalysisPage extends WelcomePage {
         if (accountCodeList == null || accountCodeList.isEmpty()) return false;
         for (String accountCode : accountCodeList) {
             int firstChartCode = Integer.valueOf(accountCode.split("\\.")[0].trim());
-            if (firstChartCode < startRange || firstChartCode > endRange){
-                System.out.println("FAILED! "+firstChartCode+" is not between "+startRange+" and "+endRange);
+            if (firstChartCode < startRange || firstChartCode > endRange) {
+                System.out.println("FAILED! " + firstChartCode + " is not between " + startRange + " and " + endRange);
                 return false;
             }
         }
@@ -80,14 +80,14 @@ public class IncomeStatementAnalysisPage extends WelcomePage {
 
     /**
      * @param groupName the param with input values are: OPERATING INCOME, OPERATING EXPENSES, NON-OPERATING INCOME
-     * */
+     */
     public List<String> getCodeListOfGroup(String groupName) {
         int startIndex = getRowIndexByGroup(groupName) + 1;
         List<String> listCode = new ArrayList<>();
         while (true) {
             Label lblAccountCode;
             lblAccountCode = Label.xpath(tblIncomeAnalysis.getxPathOfCell(1, colGroupCode, startIndex, null));
-            if ( lblAccountCode.getText().trim().toLowerCase().contains(groupName.toLowerCase())) {
+            if (lblAccountCode.getText().trim().toLowerCase().contains(groupName.toLowerCase())) {
                 System.out.println("Found the total row of: " + groupName + " break the loop");
                 return listCode;
             }
@@ -101,15 +101,14 @@ public class IncomeStatementAnalysisPage extends WelcomePage {
     }
 
     /**
-     *
      * @param month input value with format MMMM
-     * @param year input value with format yyyy
+     * @param year  input value with format yyyy
      */
     public void verifyAmountNetProfitColorIsCorrect(String month, String year) {
         String lblYear = String.format("%s - %s", month, year);
-        double income = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Operating Income")).replace(",","")));
-        double expense = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Operating Expenses")).replace(",","")));
-        double nonIncome = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Non-Operating Income")).replace(",","")));
+        double income = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Operating Income")).replace(",", "")));
+        double expense = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Operating Expenses")).replace(",", "")));
+        double nonIncome = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Non-Operating Income")).replace(",", "")));
         BaseElement cellControl = getNetProfitLossControl(lblYear);
         if (income - expense + nonIncome > 0) {
             verifyElementColorIsCorrect(cellControl, true);
@@ -175,25 +174,25 @@ public class IncomeStatementAnalysisPage extends WelcomePage {
         return Label.xpath(String.format("//tfoot//tr//td[%s]", colIndex));
     }
 
-    public BaseElement getCellControlOfMonthCol(String colMonthName, int rowIndex){
+    public BaseElement getCellControlOfMonthCol(String colMonthName, int rowIndex) {
         int colIndex = tblIncomeAnalysis.getColumnIndexByName(colMonthName) + 1;
         return tblIncomeAnalysis.getControlOfCell(1, colIndex, rowIndex, null);
     }
 
-    public int getRowIndexByGroup(String groupName){
+    public int getRowIndexByGroup(String groupName) {
         int i = 1;
         Label lblGroupName;
-        while (true){
-            lblGroupName = Label.xpath(tblIncomeAnalysis.getxPathOfCell(1, colGroupCode,i,null));
-            if(!lblGroupName.isDisplayed()) {
-                System.out.println("Can NOT found the group:  "+groupName+" in the table");
+        while (true) {
+            lblGroupName = Label.xpath(tblIncomeAnalysis.getxPathOfCell(1, colGroupCode, i, null));
+            if (!lblGroupName.isDisplayed()) {
+                System.out.println("Can NOT found the group:  " + groupName + " in the table");
                 return -1;
             }
-            if(lblGroupName.getText().trim().equalsIgnoreCase(groupName)){
-                System.out.println("Found the group "+groupName+" in the table");
+            if (lblGroupName.getText().trim().equalsIgnoreCase(groupName)) {
+                System.out.println("Found the group " + groupName + " in the table");
                 return i;
             }
-            i = i +1;
+            i = i + 1;
         }
     }
 
@@ -203,101 +202,152 @@ public class IncomeStatementAnalysisPage extends WelcomePage {
         return String.format("%s - %s", numberAcc, nameAcc);
     }
 
-    public void verifyPreviousMonthDisplay(String monthFilter, String expectedPreviousMonth){
+    public void verifyPreviousMonthDisplay(String monthFilter, String expectedPreviousMonth) {
         Label lblMonthFilter = Label.xpath(String.format("//th[text()='%s']/preceding-sibling::th[1]", monthFilter));
         Assert.assertEquals(lblMonthFilter.getText().trim(), expectedPreviousMonth, "FAILED! Previous month compare to the filtered month not correct");
     }
 
-    public boolean verifyExcelDataInCommaFormat(List<Map<String, String>> exelData, String colMonthName){
-        for(Map<String, String> month: exelData){
-            if(!isAmountNumberCorrectCommaFormat(month.get(colMonthName).replace("-",""))){
+    public boolean verifyExcelDataInCommaFormat(List<Map<String, String>> exelData, String colMonthName) {
+        for (Map<String, String> month : exelData) {
+            if (!isAmountNumberCorrectCommaFormat(month.get(colMonthName).replace("-", ""))) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean isAmountNumberCorrectCommaFormat(String number){
+    public boolean isAmountNumberCorrectCommaFormat(String number) {
         Pattern pattern = Pattern.compile("^\\d{1,3}([ ,]?\\d{3})*([.,]\\d+)?$");
         Matcher matcher = pattern.matcher(number);
         return matcher.find();
     }
 
-    public List<String> getLstDetailTypeOfGroup(String groupName){
+    /**
+     * @param groupName: just for "OPERATING EXPENSES" and "NON-OPERATING INCOME"
+     */
+    public List<String> getLstDetailTypeOfGroup(String groupName) {
         List<String> lstDetailTypeEx = new ArrayList<>();
-        List<WebElement> lstDetailType = DriverManager.getDriver().findElements(By.xpath(String.format("//table//td[text()='%s']/parent::tr/following-sibling::tr",groupName)));
-        for (int i = 0; i < lstDetailType.size(); i++){
-            if (lstDetailType.get(i).getAttribute("class").contains("tbl-total-head")){
-                lstDetailTypeEx.add(Label.xpath(String.format("(//table//td[text()='%s']/parent::tr/following-sibling::tr)[%s]//td[1]",groupName,i+1)).getText());
-            } else if (lstDetailType.get(i).getAttribute("class").contains("tbl-total-foot")){
+        List<WebElement> lstDetailType = DriverManager.getDriver().findElements(By.xpath(String.format("//table//td[text()='%s']/parent::tr/following-sibling::tr", groupName)));
+        for (int i = 0; i < lstDetailType.size(); i++) {
+            if (lstDetailType.get(i).getAttribute("class").contains("tbl-total-head")) {
+                lstDetailTypeEx.add(Label.xpath(String.format("(//table//td[text()='%s']/parent::tr/following-sibling::tr)[%s]//td[1]", groupName, i + 1)).getText());
+            } else if (lstDetailType.get(i).getAttribute("class").contains("tbl-total-foot")) {
                 break;
             }
         }
         return lstDetailTypeEx;
     }
 
-    public List<String> getLstParentAccInGroup(String detaiType){
+
+    public List<String> getLstParentAccCodeInGroup(String detaiType) {
         List<String> lstParentEx = new ArrayList<>();
-        List<WebElement> lstParent = DriverManager.getDriver().findElements(By.xpath(String.format("//table//td[text()='%s']/parent::tr/following-sibling::tr",detaiType)));
-        for (int i = 0; i < lstParent.size(); i++){
-            if (lstParent.get(i).getAttribute("class").contains("tbl-total-parent")){
-                lstParentEx.add(Label.xpath(String.format("(//table//td[text()='%s']/parent::tr/following-sibling::tr)[%s]//td[1]",detaiType,i+1)).getText());
-            } else if (lstParent.get(i).getAttribute("class").contains("tbl-total-head") || lstParent.get(i).getAttribute("class").contains("tbl-total-foot")){
+        List<WebElement> lstParent = DriverManager.getDriver().findElements(By.xpath(String.format("//table//td[text()='%s']/parent::tr/following-sibling::tr", detaiType)));
+        for (int i = 0; i < lstParent.size(); i++) {
+            if (lstParent.get(i).getAttribute("class").contains("tbl-total-parent")) {
+                lstParentEx.add(Label.xpath(String.format("(//table//td[text()='%s']/parent::tr/following-sibling::tr)[%s]//td[1]", detaiType, i + 1)).getText());
+            } else if (lstParent.get(i).getAttribute("class").contains("tbl-total-head") || lstParent.get(i).getAttribute("class").contains("tbl-total-foot")) {
                 break;
             }
         }
         return lstParentEx;
     }
 
+    /**
+     * @param groupName: just for "OPERATING EXPENSES" and "NON-OPERATING INCOME"
+     */
     public void verifySortDetailType(String groupName) {
         List<String> lstDetailType = getLstDetailTypeOfGroup(groupName);
-        if (lstDetailType.size()==1){
+        List<String> lstCodeDetailType = new ArrayList<>();
+        for (String detailType : lstDetailType) {
+            lstCodeDetailType.add(ChartOfAccountUtils.getChartCode(detailType));
+        }
+        if (lstDetailType.size() == 1) {
             Assert.assertTrue(true);
         } else {
-            List<String> lstSorted = ChartOfAccountUtils.getLstLedgerGroup();
-            List<String> lstEx = new ArrayList<>();
-            for (String string : lstSorted){
-                if (lstDetailType.contains(string)){
-                    lstEx.add(string);
-                }
-            }
-            Assert.assertEquals(lstDetailType,lstEx,"FAILED! The list is not sorted by Ascending");
+            Assert.assertTrue(isSortByAsc(lstCodeDetailType), String.format("FAILED! Detail type of %s display incorrect", groupName));
         }
     }
 
+    /**
+     * just for "OPERATING INCOME"
+     */
+    public void verifySortDetailType() {
+        List<String> lstParentAccCodeInGroup = getLstParentAccCodeInGroup("Net Commission Income (Loss)");
+        //Get lst detail type of each parent account code
+        List<String> lstDetailType = new ArrayList<>();
+        for (String parentAccCode : lstParentAccCodeInGroup) {
+            String detailType = ChartOfAccountUtils.getDetailTypeName(parentAccCode);
+            lstDetailType.add(ChartOfAccountUtils.getChartCode(detailType));
+        }
+        for (int i = 1; i < lstDetailType.size(); i++) {
+            if (lstDetailType.get(i).compareTo(lstDetailType.get(i - 1)) < 0) {
+                Assert.assertTrue(false, String.format("FAILED! OPERATING INCOME sorts Detail type incorrect"));
+            }
+        }
+    }
+
+    /**
+     * @param groupName: just for "OPERATING EXPENSES" and "NON-OPERATING INCOME"
+     */
     public void verifySortParentAcc(String groupName) {
         List<String> lstDetailType = getLstDetailTypeOfGroup(groupName);
-        for (int i = 0; i < lstDetailType.size();i++){
-            List<String> lstParent = getLstParentAccInGroup(lstDetailType.get(i));
-            isSortByAsc(lstParent);
+        for (String detailType : lstDetailType) {
+            List<String> lstParent = getLstParentAccCodeInGroup(detailType);
+            Assert.assertTrue(isSortByAsc(lstParent), String.format("FAILED! The %s parent code list is not sorted by Ascending", groupName));
         }
     }
-    public void isSortByAsc(List<String> lstSort){
-        List<String> lstSorted = new ArrayList<>();
-        for (String string : lstSort){
-            lstSorted.add(string);
-        }
-        Collections.sort(lstSorted);
-        Assert.assertEquals(lstSort,lstSorted,"FAILED! The list is not sorted by Ascending");
-    }
+
     /**
-     *
+     * just for "OPERATING INCOME"
+     */
+    public void verifySortParentAcc() {
+        List<String> lstParentAccCodeInGroup = getLstParentAccCodeInGroup("Net Commission Income (Loss)");
+        //Get Detail Type of each Parent Account Code
+        List<String> lstDetailType = new ArrayList<>();
+        for (String parentAccCode : lstParentAccCodeInGroup) {
+            String detailType = ChartOfAccountUtils.getDetailTypeName(parentAccCode);
+            lstDetailType.add(ChartOfAccountUtils.getChartCode(detailType));
+        }
+        // Group the parent account codes by detail type
+        Map<String, List<String>> groupedAccounts = new HashMap<>();
+        for (int i = 0; i < lstParentAccCodeInGroup.size(); i++) {
+            String accountCode = lstParentAccCodeInGroup.get(i);
+            String detailType = lstDetailType.get(i);
+            groupedAccounts.computeIfAbsent(detailType, k -> new ArrayList<>()).add(accountCode);
+        }
+        // Check if the account codes in each detail type group are sorted
+        for (Map.Entry<String, List<String>> entry : groupedAccounts.entrySet()) {
+            List<String> accountCodesForDetailType = entry.getValue();
+            Assert.assertTrue(isSortByAsc(accountCodesForDetailType), String.format("FAILED! The %s parent code list is not sorted by Ascending", "OPERATING INCOME"));
+        }
+    }
+
+    public boolean isSortByAsc(List<String> lstSort) {
+        for (int i = 1; i < lstSort.size(); i++) {
+            if (lstSort.get(i).compareTo(lstSort.get(i - 1)) < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * @param month input value with format MMMM
-     * @param year input value with format yyyy
+     * @param year  input value with format yyyy
      */
     public void verifyValueNetProfitDisplay(String month, String year) {
         String lblYear = String.format("%s - %s", month, year);
-        double amountIncome = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Operating Income")).replace(",","")));
-        double amountExpense = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Operating Expenses")).replace(",","")));
-        double amountNonIncome = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Non-Operating Income")).replace(",","")));
-        double amountNetProfitAc = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getNetProfitLoss(lblYear).replace(",","")));
+        double amountIncome = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Operating Income")).replace(",", "")));
+        double amountExpense = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Operating Expenses")).replace(",", "")));
+        double amountNonIncome = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getTotalAmount(lblYear, getRowIndexByGroup("Total Non-Operating Income")).replace(",", "")));
+        double amountNetProfitAc = DoubleUtils.roundUpWithTwoPlaces(Double.valueOf(getNetProfitLoss(lblYear).replace(",", "")));
         double amountNetProfitEx = DoubleUtils.roundUpWithTwoPlaces(amountIncome - amountExpense + amountNonIncome);
         //BA accept difference 0.01
-        Assert.assertEquals(amountNetProfitAc,amountNetProfitEx,0.01,"FAILED!"+amountNetProfitEx+" difference from "+amountNetProfitAc);
+        Assert.assertEquals(amountNetProfitAc, amountNetProfitEx, 0.01, "FAILED!" + amountNetProfitEx + " difference from " + amountNetProfitAc);
     }
 
     public void exportFile(String type) {
-        if (type.equals("Excel")){
+        if (type.equals("Excel")) {
             btnExportExcel.click();
         } else {
             btnExportPDF.click();

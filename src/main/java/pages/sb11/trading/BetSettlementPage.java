@@ -137,8 +137,8 @@ public class BetSettlementPage extends WelcomePage {
 
     public void selectRowByOrderID(String order) {
         int rowIndex = getOrderIndex(order);
-        for (int i = 0; i < 5; i++){
-            if (!(rowIndex == 0)){
+        for (int i = 0; i < 5; i++) {
+            if (!(rowIndex == 0)) {
                 break;
             }
             try {

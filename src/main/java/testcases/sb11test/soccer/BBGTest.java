@@ -53,7 +53,7 @@ public class BBGTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan6.0"})
+    @Test(groups = {"regression","ethan7.0"})
     @TestRails(id = "2149")
     public void BBG_TC_2149(){
         log("@title: Validate League Performance page is displayed successfully when clicking on Price");
@@ -63,8 +63,9 @@ public class BBGTest extends BaseCaseAQS {
         bbgPage.waitSpinnerDisappeared();
         log("@Step 3: Filter with valid data");
         bbgPage.filter("Soccer","Group", "Settled Bets",fromdate,"","All","All");
-
+        bbgPage.stopInterval();
         log("@Step 3:Click on any Price");
+        bbgPage.waitSpinnerDisappeared();
         String smartGroup = bbgPage.getFristSmartGroupName();
         BetByTeamPricePopup bbtPopup = bbgPage.clickFirstPriceCell();
 
@@ -73,6 +74,7 @@ public class BBGTest extends BaseCaseAQS {
 
         log("Verify 2  Validate 2 tables should display with format: [smart group name] - League Performance for Last 1 Month");
         bbtPopup.lblNoRecord.waitForControlInvisible();
+        bbtPopup.waitSpinnerDisappeared();
         Assert.assertEquals(bbtPopup.lblLast1Month.getText(),String.format("%s - League Performance for Last 1 Month",smartGroup),"Failed! League Performance for Last 1 Month title is incorrect");
 
         log("Verify 3  Validate 2 tables should display with format: [smart group name] - League Performance for Last 3 Month");
@@ -80,7 +82,7 @@ public class BBGTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan6.0"})
+    @Test(groups = {"regression","ethan7.0"})
     @TestRails(id = "2150")
     public void BBG_TC_2150(){
         log("@title:Validate Last 12 Days Performance page is displayed successfully when clicking on Trader");
@@ -89,8 +91,9 @@ public class BBGTest extends BaseCaseAQS {
         BBGPage bbgPage = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
         bbgPage.waitSpinnerDisappeared();
         log("@Step 3: Filter with valid data");
-        bbgPage.filter("Soccer","Group", "Settled Bets",fromdate,"","All","All");
-
+        bbgPage.filter(SOCCER,"Group", "Settled Bets",fromdate,"","All","All");
+        bbgPage.stopInterval();
+        bbgPage.waitSpinnerDisappeared();
         log("@Step 3:Click on any Trader");
         String smartGroupCurrency = bbgPage.getFristSmartGroupCurrency();
         String smartGroup = bbgPage.getFristSmartGroupName();
@@ -98,6 +101,7 @@ public class BBGTest extends BaseCaseAQS {
 
         log("Verify 1 Validate League Performance is displayed correctly title");
         bbtPopup.lblNoRecord.waitForControlInvisible();
+        bbtPopup.waitSpinnerDisappeared();
         Assert.assertEquals(bbtPopup.getTitlePage(),"BBG Last 12 Days Performance","Failed! Popup title is incorrect");
 
         log("Verify 2  Validate 2 tables should display with format: [smart group name] - League Performance for Last 1 Month");
@@ -133,7 +137,7 @@ public class BBGTest extends BaseCaseAQS {
 //        Assert.assertTrue(page.ddpCompanyUnit.getOptions().containsAll(lstEx),"FAILED! Company Unit dropdown displays incorrect.");
 //        log("INFO: Executed completely");
 //    }
-    @Test(groups = {"regression","2024.V.2.0","ethan6.0"})
+    @Test(groups = {"regression","2024.V.2.0","ethan7.0"})
     @TestRails(id = "23624")
     public void BBG_TC_23624() {
         log("@title: Validate bets display accordingly when selecting each value in Company Unit list");
@@ -145,6 +149,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 4: Click on 'Show' button");
         String fromdate = DateUtils.getDate(-3,"dd/MM/yyyy","GMT +7");
         page.filter("","","Settled Bets",fromdate,"","","");
+        page.waitSpinnerDisappeared();
         log("@Verify 1: Show all bets of all smart accounts belonging to Kastraki Limited");
         String firstAcc = page.getFirstRowGroupData().get(page.tblBBG.getColumnIndexByName("Account")-1);
         Assert.assertTrue(page.verifyAccBelongToKastraki(firstAcc),"FAILED! Account displays incorrect.");
@@ -205,7 +210,7 @@ public class BBGTest extends BaseCaseAQS {
         Assert.assertEquals(page.ddpSmartType.getOptions(), SBPConstants.BBGPage.SMART_TYPE_LIST,"FAILED! Smart Type dropdown displays incorrect.");
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.2.0","ethan6.0"})
+    @Test(groups = {"regression","2024.V.2.0","ethan7.0"})
     @TestRails(id = "23640")
     @Parameters({"accountCode","smartGroup"})
     public void BBG_TC_23640(String accountCode,String smartGroup) {
@@ -218,11 +223,13 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 1: Navigate to the site");
         log("@Step 2: Expand menu 'Soccer' and access 'BBG' page");
         BBGPage page = welcomePage.navigatePage(SOCCER,BBG,"All",BBGPage.class);
+        page.waitSpinnerDisappeared();
         log("@Step 3: Select filters which have data with a Smart Type option (e.g. Group)");
         log("@Step 4: Click on 'Show' button");
         page.filter("Soccer","","","","","","");
         page.filterAdvance("Group",smartGroup);
         log("@Verify 1: Show all bets of all smart accounts");
+        page.waitSpinnerDisappeared();
         List<String> rowEx = page.getFirstRowGroupData();
         Assert.assertEquals(lstOrder.get(0).getAccountCode(),rowEx.get(page.tblBBG.getColumnIndexByName("Account")-1),
                 "FAILED! Account code displays incorrect.");
@@ -296,7 +303,7 @@ public class BBGTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","2024.V.3.0","ethan6.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan7.0"})
     @TestRails(id = "23644")
     @Parameters({"accountCode","accountCurrency", "smartGroup"})
     public void BBG_TC_23644(String accountCode, String accountCurrency,String smartGroup) {
@@ -313,6 +320,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@Step 4: Click on 'Show' button");
         page.filter("","","Settled Bets",date,"","",accountCurrency);
         page.filterAdvance("Group",smartGroup);
+        page.waitSpinnerDisappeared();
         log("@Verify 1: Display the bet at the preconditions");
         Assert.assertTrue(page.isOrderDisplayCorrect(orderSettled,smartGroup));
         log("INFO: Executed completely");
@@ -387,7 +395,7 @@ public class BBGTest extends BaseCaseAQS {
         page.verifyBetsShowCorrectByColumnName("Bet Type",lstBetType);
         log("INFO: Executed completely");
     }
-    @Test(groups = {"regression","2024.V.3.0","ethan6.0"})
+    @Test(groups = {"regression","2024.V.3.0","ethan7.0"})
     @TestRails(id = "23649")
     public void BBG_TC_23649() {
         log("@title: Validate all leagues that have events in filtered date range display");
@@ -405,6 +413,7 @@ public class BBGTest extends BaseCaseAQS {
         log("@Verify 1: All leagues that have events in filtered date range display");
         String league = page.getLstNameInAdvanceFilter("Leagues").get(0);
         page.filterAdvance("Leagues",league);
+        page.waitSpinnerDisappeared();
         List<String> lstEvent = page.getLstNameInAdvanceFilter("Events");
         page.verifyBetsShowCorrectByColumnName("Event",lstEvent);
         log("INFO: Executed completely");

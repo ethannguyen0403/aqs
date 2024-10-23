@@ -104,10 +104,11 @@ public class ConfirmBetsPage extends WelcomePage {
      */
     private int getOrderIndexHasId(String orderId){
         int i = 1;
-        Label lblOrderID;
+        Label lblOrderID,lblOrderIDManual;
         while (true){
             lblOrderID = Label.xpath(tblOrder.getxPathOfCell(1,colEvent,i,"span[@class='text-secondary']"));
-            if(!lblOrderID.isDisplayed()){
+            lblOrderIDManual = Label.xpath(tblOrder.getxPathOfCell(1,colEvent,i,"span[contains(@class,'text-truncate')]"));
+            if(!lblOrderID.isDisplayed() && !lblOrderIDManual.isDisplayed()){
                 System.out.println(orderId+" is not displayed");
                 return 0;
             }
@@ -304,6 +305,9 @@ public class ConfirmBetsPage extends WelcomePage {
      * @param lstOrder
      */
     public void confirmMultipleBets(List<Order> lstOrder){
+        for (Order order: lstOrder) {
+            reClickShowButton(order);
+        }
        selectBets(lstOrder,true);
        if (btnConfirmBet.isEnabled()){
            btnConfirmBet.click();
@@ -345,7 +349,9 @@ public class ConfirmBetsPage extends WelcomePage {
      * @param lstOrder the list order
      */
     public void deleteSelectedOrders(List<Order> lstOrder, boolean isPending){
-        reClickShowButton(lstOrder.get(0));
+        for (Order order: lstOrder) {
+            reClickShowButton(order);
+        }
         selectBets(lstOrder,isPending);
         lblDeleteSelected.click();
         lblDeleteSelected.scrollToTop();
@@ -357,7 +363,6 @@ public class ConfirmBetsPage extends WelcomePage {
     private void selectBets(List<Order> lstOrder,boolean isPending){
         for (Order order: lstOrder
         ) {
-            reClickShowButton(order);
             selectBet(order,isPending);
         }
     }

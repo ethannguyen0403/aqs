@@ -14,6 +14,7 @@ public class Last50BetsPage {
     public int selectionCol = 8;
     public int HDPCol = 9;
     public Table tblLast50Bets = Table.xpath("//app-pending-bets//table", totalCol);
+    public Label lblNoRecord = Label.xpath("//td[text()='No record found.']");
 
 
     public boolean verifyCellHaveNoBackgroundColor(int colIndex) {

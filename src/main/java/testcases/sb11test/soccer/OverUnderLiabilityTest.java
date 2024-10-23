@@ -28,7 +28,7 @@ public class OverUnderLiabilityTest extends BaseCaseAQS {
         log("INFO: Executed completely");
     }
 
-    @Test(groups = {"regression","ethan4.0"})
+    @Test(groups = {"regression","ethan7.0"})
     @TestRails(id = "2116")
     public void OverUnderLiabilityTC_2116(){
         log("@title: Validate UI on Over/Under Liability is correctly displayed");

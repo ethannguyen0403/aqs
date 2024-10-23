@@ -41,7 +41,7 @@ public class TransactionVerificationTest extends BaseCaseAQS {
         log("Datetime picker: Txn Date");
         Assert.assertEquals(transactionVerificationPage.lblDate.getText(),"Txn Date","Failed! Txn Date datetimepicker is not displayed!");
         log("Button: Show");
-        Assert.assertEquals(transactionVerificationPage.btnShow.getText(),"Show","Failed! Show button is not displayed!");
+        Assert.assertEquals(transactionVerificationPage.btnShow.getText(),"SHOW","Failed! Show button is not displayed!");
         log("INFO: Executed completely");
     }
 }
